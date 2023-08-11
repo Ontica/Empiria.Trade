@@ -70,4 +70,15 @@
     <ProjectReference Include="..\Core\Empiria.Trade.Core.csproj" />
     <ProjectReference Include="..\Products\Empiria.Trade.Products.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Domain\" />
+    <Folder Include="Adapters\" />
+    <Folder Include="Data\" />
+    <Folder Include="UseCases\" />
+    <Folder Include="Domain\ShoppingCart\" />
+    <Folder Include="Domain\Payments\" />
+    <Folder Include="Domain\ShippingAndHandling\" />
+    <Folder Include="Domain\ProductSeeker\" />
+    <Folder Include="Domain\PointOfSale\" />
+  </ItemGroup>
 </Project>
