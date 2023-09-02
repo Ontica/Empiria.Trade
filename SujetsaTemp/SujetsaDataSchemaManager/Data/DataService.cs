@@ -59,6 +59,8 @@ namespace ConnectionsToFirebirdSujetsa.Data {
 
         using (var sqlCon = GetSQLConnect()) {
 
+          //productsList = productsList.Take(50).ToList();
+
           int pagesize = 10;
           int countitens = productsList.Count;
           int pagecount = countitens % pagesize <= 0 ? countitens / pagesize : (countitens / pagesize) + 1;
@@ -79,6 +81,10 @@ namespace ConnectionsToFirebirdSujetsa.Data {
               cmd.Parameters.Add("@Descripcion", SqlDbType.VarChar).Value = producto.DESCRIPCION;
               cmd.Parameters.Add("@Alta", SqlDbType.SmallDateTime).Value = producto.ALTA;
 
+              cmd.Parameters.Add("@Giro", SqlDbType.VarChar).Value = producto.GIRO;
+              cmd.Parameters.Add("@Marca", SqlDbType.VarChar).Value = producto.MARCA;
+              cmd.Parameters.Add("@Modelo", SqlDbType.VarChar).Value = producto.MODELO;
+              cmd.Parameters.Add("@Seccion", SqlDbType.VarChar).Value = producto.SECCION;
               cmd.Parameters.Add("@Linea", SqlDbType.VarChar).Value = producto.LINEA;
               cmd.Parameters.Add("@NLinea", SqlDbType.VarChar).Value = producto.NLINEA;
               cmd.Parameters.Add("@Grupo", SqlDbType.VarChar).Value = producto.GRUPO;
@@ -101,6 +107,7 @@ namespace ConnectionsToFirebirdSujetsa.Data {
               cmd.Parameters.Add("@Acabados", SqlDbType.VarChar).Value = producto.ACABADOS;
               cmd.Parameters.Add("@NAcabados", SqlDbType.VarChar).Value = producto.NACABADOS;
 
+              cmd.Parameters.Add("@FechaUltimaCompra", SqlDbType.SmallDateTime).Value = Convert.ToDateTime(producto.FECHA_ULTIMA_COMPRA);
               cmd.Parameters.Add("@CostoUltimaCompra", SqlDbType.Decimal).Value = producto.COSTO_ULTIMA_COMPRA;
 
               cmd.Parameters.Add("@PrecioMinimo", SqlDbType.Decimal).Value = producto.PMINIMO;
@@ -109,15 +116,15 @@ namespace ConnectionsToFirebirdSujetsa.Data {
               cmd.Parameters.Add("@Moneda", SqlDbType.VarChar).Value = producto.MONEDA;
 
               cmd.Parameters.Add("@Total", SqlDbType.Decimal).Value = producto.TOTAL;
-              cmd.Parameters.Add("@PrecioLista1", SqlDbType.Decimal).Value = producto.PRECIO1;
-              cmd.Parameters.Add("@PrecioLista2", SqlDbType.Decimal).Value = producto.PRECIO2;
-              cmd.Parameters.Add("@PrecioLista3", SqlDbType.Decimal).Value = producto.PRECIO3;
-              cmd.Parameters.Add("@PrecioLista4", SqlDbType.Decimal).Value = producto.PRECIO4;
+              cmd.Parameters.Add("@PrecioLista1", SqlDbType.Decimal).Value = producto.PRECIOLISTA1;
+              cmd.Parameters.Add("@PrecioLista2", SqlDbType.Decimal).Value = producto.PRECIOLISTA2;
+              cmd.Parameters.Add("@PrecioLista3", SqlDbType.Decimal).Value = producto.PRECIOLISTA3;
+              cmd.Parameters.Add("@PrecioLista4", SqlDbType.Decimal).Value = producto.PRECIOLISTA4;
               cmd.Parameters.Add("@Empaque", SqlDbType.VarChar).Value = producto.EMPAQUE;
               cmd.Parameters.Add("@MultiploReSurtido", SqlDbType.VarChar).Value = producto.MULTIPLO_RESURTIDO;
               cmd.Parameters.Add("@MinimoResurtido", SqlDbType.VarChar).Value = producto.MINIMO_RESURTIDO;
               cmd.Parameters.Add("@Proveedor", SqlDbType.VarChar).Value = producto.PROVEEDOR;
-              cmd.Parameters.Add("@NProovedor", SqlDbType.VarChar).Value = producto.NPROVEEDOR;
+              cmd.Parameters.Add("@NProveedor", SqlDbType.VarChar).Value = producto.NPROVEEDOR;
 
               cmd.Parameters.Add("@Tipo", SqlDbType.VarChar).Value = producto.TIPO;
               cmd.Parameters.Add("@Baja", SqlDbType.VarChar).Value = producto.BAJA;
@@ -150,7 +157,7 @@ namespace ConnectionsToFirebirdSujetsa.Data {
 
           sqlCon.Close();
 
-          message = $"Se actualizaron: {cont} registros!...";
+          message = $"Se insertaron: {cont} registros!...";
 
           return message;
 
@@ -158,7 +165,7 @@ namespace ConnectionsToFirebirdSujetsa.Data {
 
       } catch (Exception ex) {
 
-        throw new Exception($"{message}. Error al intentar guardar los siguientes: " +
+        throw new Exception($"{message} Error al intentar guardar los siguientes: " +
                             $"{productsList.Count - cont} registros. ERROR {ex.Message}!");
       }
 

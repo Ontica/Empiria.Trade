@@ -1,8 +1,8 @@
 ﻿using System;
 
 namespace ConnectionsToFirebirdSujetsa.Adapters {
-  
-  
+
+
   public class ProductosAdapter {
 
     public string DET {
@@ -28,6 +28,22 @@ namespace ConnectionsToFirebirdSujetsa.Adapters {
     public DateTime ALTA {
       get; set;
     } = new DateTime(2077, 01, 01);
+
+    public string GIRO {
+      get; set;
+    } = string.Empty;
+
+    public string MARCA {
+      get; set;
+    } = string.Empty;
+
+    public string MODELO {
+      get; set;
+    } = string.Empty;
+
+    public string SECCION {
+      get; set;
+    } = string.Empty;
 
     public string LINEA {
       get; set;
@@ -106,6 +122,10 @@ namespace ConnectionsToFirebirdSujetsa.Adapters {
       get; set;
     }
 
+    public DateTime FECHA_ULTIMA_COMPRA {
+      get; set;
+    } = new DateTime(2077, 01, 01);
+
     public decimal COSTO_ULTIMA_COMPRA {
       get; set;
     }
@@ -130,19 +150,19 @@ namespace ConnectionsToFirebirdSujetsa.Adapters {
       get; set;
     }
 
-    public decimal PRECIO1 {
+    public decimal PRECIOLISTA1 {
       get; set;
     }
 
-    public decimal PRECIO2 {
+    public decimal PRECIOLISTA2 {
       get; set;
     }
 
-    public decimal PRECIO3 {
+    public decimal PRECIOLISTA3 {
       get; set;
     }
 
-    public decimal PRECIO4 {
+    public decimal PRECIOLISTA4 {
       get; set;
     }
 
@@ -238,5 +258,7 @@ namespace ConnectionsToFirebirdSujetsa.Adapters {
       get;
       internal set;
     } = string.Empty;
+
   }
+
 }
