@@ -65,5 +65,11 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\core\Core\Empiria.Core.csproj">
+      <Project>{6f70f20e-6491-46c2-998d-6ad7ab4c7144}</Project>
+      <Name>Empiria.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

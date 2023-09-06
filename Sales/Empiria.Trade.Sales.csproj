@@ -60,9 +60,6 @@
   </PropertyGroup>
   <ItemGroup Condition=" '$(Configuration)' != 'Multisolutions' ">
     <PackageReference Include="Empiria.Core" Version="7.0.0" />
-    <PackageReference Include="Empiria.Services" Version="1.0.0" />
-    <PackageReference Include="Empiria.Trade.Core" Version="4.0.0" />
-    <PackageReference Include="Empiria.Trade.Products" Version="4.0.0" />
   </ItemGroup>
   <ItemGroup Condition=" '$(Configuration)' == 'Multisolutions' ">
     <ProjectReference Include="..\..\core\Core\Empiria.Core.csproj" />
@@ -80,5 +77,11 @@
     <Folder Include="Domain\ShippingAndHandling\" />
     <Folder Include="Domain\ProductSeeker\" />
     <Folder Include="Domain\PointOfSale\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\core\Core\Empiria.Core.csproj" />
+    <ProjectReference Include="..\..\extensions\Services\Empiria.Services.csproj" />
+    <ProjectReference Include="..\Core\Empiria.Trade.Core.csproj" />
+    <ProjectReference Include="..\Products\Empiria.Trade.Products.csproj" />
   </ItemGroup>
 </Project>

@@ -64,7 +64,6 @@ namespace ConnectionsToFirebirdSujetsa.Mapper {
         prod.FECHA_ULTIMA_COMPRA = fechaUltimaCompraDate;
         prod.COSTO_ULTIMA_COMPRA = row["COSTO_ULTIMA_COMPRA"].ToString() == "" ? 0 : (decimal) row["COSTO_ULTIMA_COMPRA"];
         prod.EXISTENCIA = row["EXISTENCIA"].ToString() ?? "";
-        prod.UNIDAD = row["UNIDAD"].ToString() ?? "";
         prod.MONEDA = row["MONEDA"].ToString() ?? "";
         prod.PRECIOLISTA1 = row["PRECIO1"].ToString() == "" ? 0 : (decimal) row["PRECIO1"];
         prod.PRECIOLISTA2 = row["PRECIO2"].ToString() == "" ? 0 : (decimal) row["PRECIO2"];
@@ -78,7 +77,7 @@ namespace ConnectionsToFirebirdSujetsa.Mapper {
         prod.BAJA = row["BAJA"].ToString() ?? "";
         prod.CATEGORIA = row["CATEGORIA"].ToString() ?? "";
         prod.UNIDAD_COMPRA = row["UNIDAD_COMPRA"].ToString() ?? "";
-        prod.UNIDAD_VENTA = row["UNIDAD_VENTA_MENUDEO"].ToString() ?? "";
+        prod.UNIDAD_VENTA = row["UNIDAD_VENTA"].ToString() ?? "";
 
         listaProductos.Add(prod);
       }
@@ -122,7 +121,7 @@ namespace ConnectionsToFirebirdSujetsa.Mapper {
 
           
           prod.EXISTENCIA = row["EXISTENCIA"].ToString() ?? "";
-          prod.UNIDAD = row["UNIDAD"].ToString() ?? "";
+          prod.UNIDAD_VENTA = row["UNIDAD_VENTA"].ToString() ?? "";
           prod.MONEDA = row["MONEDA"].ToString() ?? "";
           prod.COSTO_BASE = row["COSTO_BASE"].ToString() == "" ? 0 : (decimal) row["COSTO_BASE"];
 

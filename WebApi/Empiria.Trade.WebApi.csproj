@@ -60,13 +60,6 @@
   <ItemGroup>
     <Reference Include="System.Net.Http" />
   </ItemGroup>
-  <ItemGroup Condition=" '$(Configuration)' != 'Multisolutions' ">
-    <PackageReference Include="Empiria.WebApi" Version="2.0.0" />
-    <PackageReference Include="Empiria.OnePoint.Security.WebApi" Version="2.0.0" />
-    <PackageReference Include="Empiria.Trade.Core" Version="4.0.0" />
-    <PackageReference Include="Empiria.Trade.Products" Version="4.0.0" />
-    <PackageReference Include="Empiria.Trade.Sales" Version="4.0.0" />
-  </ItemGroup>
   <ItemGroup Condition=" '$(Configuration)' == 'Multisolutions' ">
     <ProjectReference Include="..\..\extensions\WebApi\Empiria.WebApi.csproj" />
     <ProjectReference Include="..\..\onepoint\Security.WebApi\Empiria.OnePoint.Security.WebApi.csproj" />
@@ -84,6 +77,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Sales\" />
-    <Folder Include="Products\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\extensions\WebApi\Empiria.WebApi.csproj" />
+    <ProjectReference Include="..\..\onepoint\Security.WebApi\Empiria.OnePoint.Security.WebApi.csproj" />
+    <ProjectReference Include="..\Core\Empiria.Trade.Core.csproj" />
+    <ProjectReference Include="..\Products\Empiria.Trade.Products.csproj" />
+    <ProjectReference Include="..\Sales\Empiria.Trade.Sales.csproj" />
   </ItemGroup>
 </Project>

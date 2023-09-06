@@ -79,13 +79,13 @@
     <PackageReference Include="MSTest.TestAdapter" Version="3.0.2" />
     <PackageReference Include="MSTest.TestFramework" Version="3.0.2" />
   </ItemGroup>
-  <ItemGroup Condition=" '$(Configuration)' != 'Multisolutions' ">
-    <PackageReference Include="Empiria.Tests" Version="1.0.0" />
-    <PackageReference Include="Empiria.Trade.Core" Version="4.0.0" />
-    <PackageReference Include="Empiria.Trade.Products" Version="4.0.0" />
-    <PackageReference Include="Empiria.Trade.Sales" Version="4.0.0" />
-  </ItemGroup>
   <ItemGroup Condition=" '$(Configuration)' == 'Multisolutions' ">
+    <ProjectReference Include="..\..\extensions\Tests\Empiria.Tests.csproj" />
+    <ProjectReference Include="..\Core\Empiria.Trade.Core.csproj" />
+    <ProjectReference Include="..\Products\Empiria.Trade.Products.csproj" />
+    <ProjectReference Include="..\Sales\Empiria.Trade.Sales.csproj" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\extensions\Tests\Empiria.Tests.csproj" />
     <ProjectReference Include="..\Core\Empiria.Trade.Core.csproj" />
     <ProjectReference Include="..\Products\Empiria.Trade.Products.csproj" />

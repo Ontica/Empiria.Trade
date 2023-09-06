@@ -20,25 +20,37 @@ namespace ConnectionsToFirebirdSujetsa.Services {
 
 
     public List<ProductosAdapter> GetDataFromDb() {
-      //var helper = new Helper();
-      //ConnectionModel conInfo = helper.GetConnectionInfo<ConnectionModel>(isTest);
+      try {
 
-      var productList = helper.GetProductsListByDB(conInfo);
+        var productList = helper.GetProductsListByDB(conInfo);
 
-      return productList;
+        return productList;
+
+      } catch (Exception ex) {
+
+        throw new Exception($"ERROR: {ex.Message}");
+      }
+      
 
     }
 
 
     public string GetDataCountFromDb() {
 
-      var productList = GetDataFromDb();
+      try {
 
-      int nkbd = productList.FindAll(x => x.ALMACEN_ID == 1).Count();
-      int nkhpbd = productList.FindAll(x => x.ALMACEN_ID == 2).Count();
+        var productList = GetDataFromDb();
 
-      return $"PRODUCTOS BD NK = {nkbd}. PRODUCTOS BD NKHidroplomex = {nkhpbd}. TOTAL = {nkbd + nkhpbd}";
+        int nkbd = productList.FindAll(x => x.ALMACEN_ID == 1).Count();
+        int nkhpbd = productList.FindAll(x => x.ALMACEN_ID == 2).Count();
 
+        return $"PRODUCTOS BD NK = {nkbd}. PRODUCTOS BD NKHidroplomex = {nkhpbd}. TOTAL = {nkbd + nkhpbd}";
+
+      } catch (Exception ex) {
+
+        throw new Exception($"ERROR: {ex.Message}");
+      }
+      
     }
 
 
@@ -48,7 +60,7 @@ namespace ConnectionsToFirebirdSujetsa.Services {
 
       try {
 
-        return data.InsertProductToSql(productsToUpdate);
+        return data.InsertProductToSql(productsToUpdate, conInfo.SqlConnectionString);
 
       } catch (Exception ex) {
 
@@ -63,7 +75,7 @@ namespace ConnectionsToFirebirdSujetsa.Services {
 
       try {
 
-        return await Task.Run(() => data.InsertProductToSql(productsToUpdate)).ConfigureAwait(false);
+        return await Task.Run(() => data.InsertProductToSql(productsToUpdate, conInfo.SqlConnectionString)).ConfigureAwait(false);
 
       } catch (Exception ex) {
 
@@ -72,10 +84,10 @@ namespace ConnectionsToFirebirdSujetsa.Services {
     }
 
 
-    public List<string> GetListFromSql() {
+    public List<ProductosAdapter> GetListFromSql() {
 
       var data = new DataService();
-      return data.GetListFromSql();
+      return data.GetListFromSql(conInfo.SqlConnectionString);
     }
   }
 }

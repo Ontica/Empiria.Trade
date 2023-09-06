@@ -73,7 +73,7 @@ namespace SujetsaOldDataWebApi.Controllers
 
     [HttpPost]
     [Route("manage-data/get-list-sql")]
-    public List<string> GetListFromSql() {
+    public List<ProductosAdapter> GetListFromSql() {
 
       var service = new Services();
       return service.GetListFromSql();

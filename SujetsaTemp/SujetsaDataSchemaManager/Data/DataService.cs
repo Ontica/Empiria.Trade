@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ConnectionsToFirebirdSujetsa.Adapters;
+using Empiria;
 using FirebirdSql.Data.FirebirdClient;
 
 namespace ConnectionsToFirebirdSujetsa.Data {
@@ -40,9 +41,9 @@ namespace ConnectionsToFirebirdSujetsa.Data {
     }
 
 
-    public SqlConnection GetSQLConnect() {
-
-      SqlConnection conn = new SqlConnection(@"Data Source=MSI\MSSQLSERVER01;Initial Catalog=SujetsaDBLocal; User Id=empiria_trade; Password=admin123;");
+    public SqlConnection GetSQLConnect(string sqlConnectionString) {
+      //@"Data Source=MSI\MSSQLSERVER01;Initial Catalog=SujetsaDBLocal; User Id=empiria_trade; Password=admin123;"
+      SqlConnection conn = new SqlConnection($@"{sqlConnectionString}");
       conn.Open();
 
       return conn;
@@ -50,14 +51,16 @@ namespace ConnectionsToFirebirdSujetsa.Data {
     }
 
 
-    public string InsertProductToSql(List<ProductosAdapter> productsList) {
+    public string InsertProductToSql(List<ProductosAdapter> productsList, string sqlConnectionString) {
 
       string message = "";
       int cont = 0;
 
       try {
 
-        using (var sqlCon = GetSQLConnect()) {
+        using (var sqlCon = GetSQLConnect(sqlConnectionString)) {
+
+          TruncateProductosTemp(sqlCon);
 
           //productsList = productsList.Take(50).ToList();
 
@@ -70,6 +73,8 @@ namespace ConnectionsToFirebirdSujetsa.Data {
             List<ProductosAdapter> list = productsList.Skip(page * pagesize).Take(pagesize).ToList();
 
             foreach (var producto in list) {
+
+              producto.KEYWORDS = EmpiriaString.BuildKeywords(producto.PRODUCTO, producto.CLAVEPRODSERV, producto.DESCRIPCION);
 
               SqlCommand cmd = new SqlCommand("spInsertProductosTemp", sqlCon);
               cmd.CommandType = CommandType.StoredProcedure;
@@ -171,23 +176,59 @@ namespace ConnectionsToFirebirdSujetsa.Data {
 
     }
 
+    private void TruncateProductosTemp(SqlConnection sqlCon) {
 
-    public List<string> GetListFromSql() {
+      try {
 
-      List<string> list = new List<string>();
-      using (var sqlCon = GetSQLConnect()) {
+        SqlCommand cmd = new SqlCommand("TRUNCATE TABLE ProductosTemp", sqlCon);
+        cmd.ExecuteNonQuery();
 
-        SqlCommand command = new SqlCommand("SELECT PRODUCTO.*, GRUPO.DESCRIPCION NGRUPO FROM PRODUCTO LEFT JOIN GRUPO ON PRODUCTO.GRUPO = GRUPO.GRUPO", sqlCon);
+      } catch (Exception ex) {
 
-        using (SqlDataReader reader = command.ExecuteReader()) {
-          if (reader.HasRows) {
-            while (reader.Read()) {
-              string desc = reader["DESCRIPCION"].ToString();
-              list.Add(desc);
+        throw new Exception($"ERROR AL EJECUTAR TRUNCATE. {ex}");
+      }
+
+    }
+
+    public List<ProductosAdapter> GetListFromSql(string sqlConnectionString) {
+
+      List<ProductosAdapter> list = new List<ProductosAdapter>();
+      using (var sqlCon = GetSQLConnect(sqlConnectionString)) {
+
+        SqlCommand command = new SqlCommand("SELECT TOP (10) * FROM ProductosTemp", sqlCon);
+
+        try {
+
+          using (SqlDataReader reader = command.ExecuteReader()) {
+            if (reader.HasRows) {
+              while (reader.Read()) {
+                string desc = reader["DESCRIPCION"].ToString();
+                ProductosAdapter prod = new ProductosAdapter();
+
+                prod.PRODUCTO = reader["PRODUCTO"].ToString() ?? "";
+                prod.DESCRIPCION = reader["DESCRIPCION"].ToString() ?? "";
+                prod.ALTA = (DateTime) reader["ALTA"];
+                prod.LINEA = reader["LINEA"].ToString() ?? "";
+                prod.NLINEA = reader["NLINEA"].ToString() ?? "";
+                prod.GRUPO = reader["GRUPO"].ToString() ?? "";
+                prod.NGRUPO = reader["NGRUPO"].ToString() ?? "";
+                prod.SUBGRUPO = reader["SUBGRUPO"].ToString() ?? "";
+                prod.NSUBGRUPO = reader["NSUBGRUPO"].ToString() ?? "";
+                prod.LARGO = reader["LARGO"].ToString();
+                prod.SECCION = reader["SECCION"].ToString();
+
+                list.Add(prod);
+              }
             }
           }
+
+          sqlCon.Close();
+
+        } catch (Exception ex) {
+
+          throw new Exception($"ERROR {ex.Message}");
         }
-        sqlCon.Close();
+
       }
       return list;
     }

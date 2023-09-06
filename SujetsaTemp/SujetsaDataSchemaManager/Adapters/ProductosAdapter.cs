@@ -138,10 +138,6 @@ namespace ConnectionsToFirebirdSujetsa.Adapters {
       get; set;
     } = string.Empty;
 
-    public string UNIDAD {
-      get; set;
-    } = string.Empty;
-
     public string MONEDA {
       get; set;
     } = string.Empty;

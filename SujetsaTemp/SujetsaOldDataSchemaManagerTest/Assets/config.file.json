@@ -1,6 +1,6 @@
 {
 
-  "ConnectionSettings": [
+  "FbConnectionSettings": [
     {
       "ConnectionId": "1",
       "ConnectionName": "productosNkConn",
@@ -17,7 +17,8 @@
     //  "ConnectionName": "articulosMicrosipConn",
     //  "ConnectionString": ""
     //}
-  ]
+  ],
 
+  "SqlConnectionString": "Data Source=MSI\\MSSQLSERVER01;Initial Catalog=SujetsaDBLocal; User Id=empiria_trade; Password=admin123;"
 
 }
