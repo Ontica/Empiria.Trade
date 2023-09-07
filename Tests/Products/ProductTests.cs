@@ -46,6 +46,16 @@ namespace Empiria.Trade.Tests.Products {
     }
 
 
+    [Fact]
+    public void GetDataCountFromDbTest() {
+
+      var service = new TradeDataSchemaManager.Services.Services(true);
+      var dt = service.GetDataCountFromDb();
+
+      Assert.NotNull(dt);
+
+    }
+
     #endregion Facts
 
 

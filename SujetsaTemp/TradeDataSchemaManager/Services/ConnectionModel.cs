@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConnectionsToFirebirdSujetsa.Services {
+namespace TradeDataSchemaManager.Services {
 
 
   internal enum ConnectionName {
@@ -110,17 +110,17 @@ namespace ConnectionsToFirebirdSujetsa.Services {
       "ON COMPRAS.PRODUCTO = PRODUCTO.PRODUCTO";
 
 
-    public string articulosMicrosipConn = "";
-      //"select claves_articulos.clave_articulo, articulos.nombre, articulos.unidad_compra, articulos.unidad_venta, articulos.contenido_unidad_compra, " +
-      //"articulos.es_almacenable, articulos.es_importado, articulos.es_siempre_importado, articulos.peso_unitario, articulos.estatus, " +
-      //"lineas_articulos.linea_articulo_id, lineas_articulos.nombre " +
-      //"from articulos articulos, claves_articulos claves_articulos, comis_ven_linea comis_ven_linea, grupos_lineas grupos_lineas, " +
-      //"lineas_articulos lineas_articulos " +
-      //"where articulos.articulo_id = claves_articulos.articulo_id and " +
-      //"articulos.linea_articulo_id = lineas_articulos.linea_articulo_id and " +
-      //"comis_ven_linea.linea_articulo_id = articulos.linea_articulo_id and " +
-      //"lineas_articulos.grupo_linea_id = grupos_lineas.grupo_linea_id " +
-      //"order by claves_articulos.clave_articulo";
+    public string articulosMicrosipConn = 
+      "select claves_articulos.clave_articulo, articulos.nombre, articulos.unidad_compra, articulos.unidad_venta, articulos.contenido_unidad_compra, " +
+      "articulos.es_almacenable, articulos.es_importado, articulos.es_siempre_importado, articulos.peso_unitario, articulos.estatus, " +
+      "lineas_articulos.linea_articulo_id, lineas_articulos.nombre " +
+      "from articulos articulos, claves_articulos claves_articulos, comis_ven_linea comis_ven_linea, grupos_lineas grupos_lineas, " +
+      "lineas_articulos lineas_articulos " +
+      "where articulos.articulo_id = claves_articulos.articulo_id and " +
+      "articulos.linea_articulo_id = lineas_articulos.linea_articulo_id and " +
+      "comis_ven_linea.linea_articulo_id = articulos.linea_articulo_id and " +
+      "lineas_articulos.grupo_linea_id = grupos_lineas.grupo_linea_id " +
+      "order by claves_articulos.clave_articulo";
 
   }
 

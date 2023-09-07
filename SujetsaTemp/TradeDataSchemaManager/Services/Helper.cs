@@ -6,12 +6,12 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ConnectionsToFirebirdSujetsa.Adapters;
-using ConnectionsToFirebirdSujetsa.Data;
-using ConnectionsToFirebirdSujetsa.Mapper;
+using TradeDataSchemaManager.Adapters;
+using TradeDataSchemaManager.Data;
+using TradeDataSchemaManager.Mapper;
 using Newtonsoft.Json;
 
-namespace ConnectionsToFirebirdSujetsa.Services {
+namespace TradeDataSchemaManager.Services {
   internal class Helper {
 
     internal Helper() {

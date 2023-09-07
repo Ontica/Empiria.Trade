@@ -15,8 +15,9 @@
     //{
     //  "ConnectionId": "3",
     //  "ConnectionName": "articulosMicrosipConn",
-    //  "ConnectionString": ""
+    //  "ConnectionString": "Server=localhost;User=SYSDBA;Password=masterkey;Database=E:\\SUJETSA\\BD\\Microsip17Ago2023.FDB"
     //}
+
   ],
 
   "SqlConnectionString": "Data Source=MSI\\MSSQLSERVER01;Initial Catalog=SujetsaDBLocal; User Id=empiria_trade; Password=admin123;"

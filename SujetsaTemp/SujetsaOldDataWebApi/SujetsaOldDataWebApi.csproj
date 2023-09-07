@@ -106,9 +106,9 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SujetsaDataSchemaManager\SujetsaOldDataSchemaManager.csproj">
-      <Project>{42ce95c5-695f-4926-bbb9-03dadf7ef566}</Project>
-      <Name>SujetsaOldDataSchemaManager</Name>
+    <ProjectReference Include="..\TradeDataSchemaManager\TradeDataSchemaManager.csproj">
+      <Project>{077163b5-1413-4ed9-bbd0-8bd3d1ea1a0f}</Project>
+      <Name>TradeDataSchemaManager</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

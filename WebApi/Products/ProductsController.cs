@@ -5,18 +5,18 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System.Web.Http;
-using Empiria.WebApi;
-
 using Empiria.Trade.Products.Adapters;
 using Empiria.Trade.Products.UseCases;
+using Empiria.WebApi;
 
-namespace Empiria.Sicofin.Banobras.WebApi.Products {
-  class ProductsController : WebApiController {
+
+namespace Empiria.Trade.WebApi.Products {
+  public class ProductsController : WebApiController {
 
 
     [HttpPost]
     [Route("trade/products/products-list")]
-    public async Task<SingleObjectModel> GetTrialBalance([FromBody] string clauses) {
+    public async Task<SingleObjectModel> GetProductsList([FromBody] string clauses) {
       
       base.RequireBody(clauses);
 

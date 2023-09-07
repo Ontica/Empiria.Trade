@@ -68,8 +68,8 @@ namespace Empiria.Trade.Products.Adapters {
       dto.SupplierName = entry.SupplierName;
       dto.ProductType = entry.ProductType;
       dto.Discontinued = entry.Discontinued;
-      dto.Status = entry.Status;
-      dto.ItemLineId = entry.ItemLineId;
+      //dto.Status = entry.Status;
+      //dto.ItemLineId = entry.ItemLineId;
       dto.Keywords = entry.Keywords;
       dto.ExtData = entry.ExtData;
 
