@@ -23,7 +23,7 @@ namespace TradeDataSchemaManager.Mapper {
         list = GetHpNkProductsList(dt, connectionId);
       }
       if (connectionId == 3) {
-
+        list = GetMicrosipProductsList(dt, connectionId);
       }
 
       return list;
@@ -81,6 +81,41 @@ namespace TradeDataSchemaManager.Mapper {
 
         listaProductos.Add(prod);
       }
+      return listaProductos;
+    }
+
+
+
+    private List<ProductosAdapter> GetMicrosipProductsList(DataTable dt, int connectionId) {
+      List<ProductosAdapter> listaProductos = new List<ProductosAdapter>();
+
+      int index = 0;
+      try {
+        foreach (DataRow row in dt.Rows) {
+
+          ProductosAdapter prod = new ProductosAdapter();
+          prod.ALMACEN_ID = connectionId;
+          prod.PRODUCTO = row["PRODUCTO"].ToString() ?? "";
+          prod.DESCRIPCION = row["DESCRIPCION"].ToString() ?? "";
+          prod.UNIDAD_COMPRA = row["unidad_compra"].ToString() ?? "";
+          prod.UNIDAD_VENTA = row["unidad_venta"].ToString() ?? "";
+          prod.CONTENIDO_UNIDAD_COMPRA = row["contenido_unidad_compra"].ToString() ?? "";
+          prod.ES_ALMACENABLE = row["es_almacenable"].ToString() ?? "";
+          prod.ES_IMPORTADO = row["es_importado"].ToString() ?? "";
+          prod.ES_SIEMPRE_IMPORTADO = row["es_siempre_importado"].ToString() ?? "";
+          prod.PESO_UNITARIO = row["peso_unitario"].ToString() == "" ? 0 : (decimal) row["peso_unitario"];
+          prod.ESTATUS = row["estatus"].ToString() ?? "";
+          prod.LINEA_ARTICULO_ID = row["linea_articulo_id"].ToString() ?? "";
+          prod.NLINEA = row["NLinea"].ToString() ?? "";
+
+          listaProductos.Add(prod);
+          index++;
+        }
+      } catch (Exception ex) {
+
+        throw new Exception($"Error in method GetNkProductsList, index: {index}. {ex.Message}");
+      }
+
       return listaProductos;
     }
 

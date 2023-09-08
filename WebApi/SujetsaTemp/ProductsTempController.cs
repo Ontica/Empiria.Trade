@@ -1,8 +1,14 @@
-﻿using System;
-using System.Collections;
+﻿/* Empiria Trade *********************************************************************************************
+*                                                                                                            *
+*  Module   : Product Management                         Component : Web Api                                 *
+*  Assembly : Empiria.Trade.Products.dll                 Pattern   : Controller                              *
+*  Type     : ProductTests                               License   : Please read LICENSE.txt file            *
+*                                                                                                            *
+*  Summary  : Query web API used to retrieve temporary data products.                                        *
+*                                                                                                            *
+************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 using System.Web.Http;
@@ -13,23 +19,10 @@ using Empiria.WebApi;
 using TradeDataSchemaManager.Adapters;
 
 namespace Empiria.Trade.WebApi.SujetsaTemp {
+
+  /// <summary>Query web API used to retrieve temporary data products.</summary>
+  [AllowAnonymous]
   public class ProductsTempController : WebApiController {
-
-
-
-    [HttpPost]
-    [Route("trade/products/products-list")]
-    public async Task<SingleObjectModel> GetProductsList([FromBody] string clauses) {
-
-      base.RequireBody(clauses);
-
-      using (var usecases = ProductsUseCases.UseCaseInteractor()) {
-
-        ProductDto productDto = await usecases.BuildProducts(clauses).ConfigureAwait(false);
-
-        return new SingleObjectModel(this.Request, productDto);
-      }
-    }
 
 
     [HttpPost]
@@ -97,5 +90,6 @@ namespace Empiria.Trade.WebApi.SujetsaTemp {
     }
 
 
-  }
-}
+  } // class ProductsTempController
+
+} // namespace Empiria.Trade.WebApi.SujetsaTemp

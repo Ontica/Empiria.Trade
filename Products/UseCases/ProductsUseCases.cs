@@ -37,14 +37,25 @@ namespace Empiria.Trade.Products.UseCases {
     #region Use cases
 
 
-    public async Task<ProductDto> BuildProducts(string clauses) {
+    public async Task<ProductDto> BuildProducts(ProductQuery keywords) {
 
       var builder = new ProductBuilder();
 
-      FixedList<ProductFields> products = await Task.Run(() => builder.Build(clauses))
+      FixedList<ProductFields> products = await Task.Run(() => builder.Build(keywords))
                                             .ConfigureAwait(false);
 
       return ProductMapper.Map(products);
+    }
+
+
+    public async Task<FixedList<IProductEntryDto>> BuildProductsList(ProductQuery keywords) {
+
+      var builder = new ProductBuilder();
+
+      FixedList<ProductFields> products = await Task.Run(() => builder.Build(keywords))
+                                            .ConfigureAwait(false);
+
+      return ProductMapper.MapTo(products);
     }
 
 

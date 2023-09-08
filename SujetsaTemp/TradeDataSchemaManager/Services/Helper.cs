@@ -59,8 +59,6 @@ namespace TradeDataSchemaManager.Services {
 
         var mapper = new ProductosMapper();
 
-        //IEnumerable<dynamic> list = mapper.GetTable(dt);
-
         var products = mapper.Map(dt, setting.ConnectionId);
 
         productList.AddRange(products);

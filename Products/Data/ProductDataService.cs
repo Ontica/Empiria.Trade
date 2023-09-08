@@ -17,11 +17,11 @@ namespace Empiria.Trade.Products.Data {
   static internal class ProductDataService {
 
 
-    static public FixedList<ProductFields> GetProducts(string clauses = "") {
+    static public FixedList<ProductFields> GetProducts(string keywords = "") {
 
-      clauses = SearchExpression.ParseAndLikeKeywords("Keywords", clauses);
-      if (clauses != string.Empty) {
-        clauses = "WHERE " + clauses;
+      keywords = SearchExpression.ParseAndLikeKeywords("Keywords", keywords);
+      if (keywords != string.Empty) {
+        keywords = "WHERE " + keywords;
       }
 
       var sql = "SELECT StoreId, ProdServCode, Product, Description, RegistrationDate, Trademark, Model, Section, LineName, " +
@@ -30,7 +30,7 @@ namespace Empiria.Trade.Products.Data {
                 "BasisCost, ListPrice1, ListPrice2, ListPrice3, ListPrice4, Total, Packing, MinimumRefills, Supplier, " +
                 "SalesUnit, SupplierName, ProductType, Discontinued, Status, ItemLineId, Keywords, ExtData " +
                 "FROM vwProductosTemp " +
-                $"{clauses}";
+                $"{keywords}";
 
       var dataOperation = DataOperation.Parse(sql);
 

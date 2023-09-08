@@ -9,6 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Collections.Generic;
+using Empiria.Trade.Products.Adapters;
 using Empiria.Trade.Products.Data;
 
 namespace Empiria.Trade.Products.Domain {
@@ -25,9 +26,9 @@ namespace Empiria.Trade.Products.Domain {
     #region Public methods
 
 
-    public FixedList<ProductFields> Build(string clauses) {
+    public FixedList<ProductFields> Build(ProductQuery query) {
       
-      var data = ProductDataService.GetProducts(clauses);
+      var data = ProductDataService.GetProducts(query.Keywords);
 
       return data;
 

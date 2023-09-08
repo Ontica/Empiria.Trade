@@ -37,24 +37,16 @@ namespace Empiria.Trade.Tests.Products {
     public async Task ShouldGetProductList() {
 
       var usecase = ProductsUseCases.UseCaseInteractor();
-      string clauses = "tornillo galvanizado";
-      ProductDto sut = await usecase.BuildProducts(clauses).ConfigureAwait(false);
+      ProductQuery query = new ProductQuery {
+        Keywords = "TORNILLO  ARADO GRADO"
+      };
+      ProductDto sut = await usecase.BuildProducts(query).ConfigureAwait(false);
         
       Assert.NotNull(sut);
       Assert.NotEmpty(sut.ProductList);
       
     }
 
-
-    [Fact]
-    public void GetDataCountFromDbTest() {
-
-      var service = new TradeDataSchemaManager.Services.Services(true);
-      var dt = service.GetDataCountFromDb();
-
-      Assert.NotNull(dt);
-
-    }
 
     #endregion Facts
 

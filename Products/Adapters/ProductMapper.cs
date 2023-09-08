@@ -9,6 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Empiria.Trade.Products.Adapters {
 
@@ -27,17 +28,31 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
+    static internal FixedList<IProductEntryDto> MapTo(FixedList<ProductFields> entries) {
+
+      return MapToEntriesDto(entries);
+
+    }
+
+
     #endregion Public methods
 
 
     #region Private methods
 
 
-    static private FixedList<ProductEntryDto> MapEntries(FixedList<ProductFields> entries) {
+    private static FixedList<IProductEntryDto> MapToEntriesDto(FixedList<ProductFields> entries) {
+      var mappedItems = entries.Select((x) => MapShortEntry((ProductFields) x));
 
-      var mappedItems = entries.Select((x) => MapEntry((ProductFields) x));
+      return new FixedList<IProductEntryDto>(mappedItems);
+    }
 
-      return new FixedList<ProductEntryDto>(mappedItems);
+
+    static private FixedList<IProductEntryDto> MapEntries(FixedList<ProductFields> entries) {
+
+      var mappedItems = entries.Select((x) => MapShortEntry((ProductFields) x));
+
+      return new FixedList<IProductEntryDto>(mappedItems);
     }
 
 
@@ -45,18 +60,13 @@ namespace Empiria.Trade.Products.Adapters {
       var dto = new ProductEntryDto();
 
 
-      dto.Product = entry.Product;
-      dto.Description = entry.Description;
       dto.StoreId = entry.StoreId;
+      dto.Product = entry.Product;
       dto.ProdServCode = entry.ProdServCode;
+      dto.Description = entry.Description;
       dto.RegistrationDate = entry.RegistrationDate;
-      dto.Characteristics = entry.Characteristics;
-      dto.ThreadsName = entry.ThreadsName;
-      dto.StepsName = entry.StepsName;
-      dto.HeadsName = entry.HeadsName;
       dto.ViewDetailsName = entry.ViewDetailsName;
-      dto.LastPurchaseDate = entry.LastPurchaseDate;
-      dto.Existence = entry.Existence;
+      dto.Existence = entry.Existence != "" ? entry.Existence :"0";
       dto.SalesUnit = entry.SalesUnit;
       dto.Currency = entry.Currency;
       dto.Total = entry.Total;
@@ -64,19 +74,52 @@ namespace Empiria.Trade.Products.Adapters {
       dto.LastPurchaseDateCost = entry.LastPurchaseDateCost;
       dto.MinimumPrice = entry.MinimumPrice;
       dto.Packing = entry.Packing;
-      dto.Supplier = entry.Supplier;
-      dto.SupplierName = entry.SupplierName;
+      dto.SupplierName = $"({entry.Supplier}) {entry.SupplierName}";
       dto.ProductType = entry.ProductType;
       dto.Discontinued = entry.Discontinued;
-      //dto.Status = entry.Status;
-      //dto.ItemLineId = entry.ItemLineId;
-      dto.Keywords = entry.Keywords;
-      dto.ExtData = entry.ExtData;
 
-      dto.Attributes = GetAttributes(entry);
       dto.PriceList = GetPriceList(entry);
       dto.MeasurementAttributes = GetMeasurementUnits(entry);
 
+      dto.Attributes = GetAttributes(entry);
+      dto.Supplier = entry.Supplier;
+      dto.StepsName = entry.StepsName;
+      dto.ThreadsName = entry.ThreadsName;
+      dto.HeadsName = entry.HeadsName;
+      dto.LastPurchaseDate = entry.LastPurchaseDate;
+      dto.Characteristics = entry.Characteristics;
+      dto.Status = entry.Status;
+      dto.ItemLineId = entry.ItemLineId;
+      dto.Keywords = entry.Keywords;
+
+      return dto;
+    }
+
+
+    private static ProductShortEntryDto MapShortEntry(ProductFields entry) {
+      var dto = new ProductShortEntryDto();
+
+
+      dto.StoreId = entry.StoreId;
+      dto.Product = entry.Product;
+      dto.ProdServCode = entry.ProdServCode;
+      dto.Description = entry.Description;
+      dto.RegistrationDate = entry.RegistrationDate;
+      dto.ViewDetailsName = entry.ViewDetailsName;
+      dto.Existence = entry.Existence != "" ? entry.Existence : "0";
+      dto.SalesUnit = entry.SalesUnit;
+      dto.Currency = entry.Currency;
+      dto.Total = entry.Total;
+      dto.BasisCost = entry.BasisCost;
+      dto.LastPurchaseDateCost = entry.LastPurchaseDateCost;
+      dto.MinimumPrice = entry.MinimumPrice;
+      dto.Packing = entry.Packing;
+      dto.SupplierName = $"({entry.Supplier}) {entry.SupplierName}";
+      dto.ProductType = entry.ProductType;
+      dto.Discontinued = entry.Discontinued;
+
+      dto.PriceList = GetPriceList(entry);
+      
       return dto;
     }
 
@@ -85,11 +128,11 @@ namespace Empiria.Trade.Products.Adapters {
       var attributes = new ProductAttributes();
 
       attributes.Trademark = entry.Trademark;
-      attributes.Model = entry.Model;
       attributes.Section = entry.Section;
       attributes.LineName = entry.LineName;
       attributes.GroupName = entry.GroupName;
-      attributes.SubgroupName= entry.SubgroupName;
+      attributes.Model = entry.Model;
+      attributes.SubgroupName = entry.SubgroupName;
 
       return attributes;
     }
@@ -106,6 +149,7 @@ namespace Empiria.Trade.Products.Adapters {
 
       return units;
     }
+
 
     private static FixedList<PriceListOfProduct> GetPriceList(ProductFields entry) {
       var prices = new List<PriceListOfProduct>();

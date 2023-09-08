@@ -11,8 +11,109 @@ using System;
 
 namespace Empiria.Trade.Products.Adapters {
 
+
+  public interface IProductEntryDto {
+  }
+
+
+  public class ProductShortEntryDto : IProductEntryDto {
+
+
+    public int StoreId {
+      get; set;
+    }
+
+
+    public string Product {
+      get; set;
+    } = string.Empty;
+
+
+    public string ProdServCode {
+      get; set;
+    } = string.Empty;
+
+
+    public string Description {
+      get; set;
+    } = string.Empty;
+
+
+    public DateTime RegistrationDate {
+      get; set;
+    } = new DateTime(2077, 01, 01);
+
+
+    public string ViewDetailsName {
+      get; set;
+    } = string.Empty;
+
+
+    public string Existence {
+      get; set;
+    } = string.Empty;
+
+
+    public string SalesUnit {
+      get; set;
+    } = string.Empty;
+
+
+    public string Currency {
+      get; set;
+    } = string.Empty;
+
+
+    public decimal Total {
+      get; set;
+    }
+
+
+    public decimal BasisCost {
+      get; set;
+    }
+
+
+    public decimal LastPurchaseDateCost {
+      get; set;
+    }
+
+
+    public decimal MinimumPrice {
+      get; set;
+    }
+
+
+    public string Packing {
+      get; set;
+    } = string.Empty;
+
+
+    public string SupplierName {
+      get; set;
+    } = string.Empty;
+
+
+    public string ProductType {
+      get; set;
+    } = string.Empty;
+
+
+    public string Discontinued {
+      get; set;
+    } = string.Empty;
+
+
+    public FixedList<PriceListOfProduct> PriceList {
+      get; internal set;
+    } = new FixedList<PriceListOfProduct>();
+
+
+  }
+
+
   /// <summary>Output DTO used to return the entries of Products.</summary>
-  public class ProductEntryDto {
+  public class ProductEntryDto : IProductEntryDto{
 
 
     public string DET {
@@ -310,11 +411,6 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
-    public string Model {
-      get; internal set;
-    }
-
-
     public string Section {
       get; internal set;
     }
@@ -325,15 +421,19 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
-    public string GroupName {
-      get; internal set;
-    }
-
-
     public string SubgroupName {
       get; internal set;
     }
 
+
+
+    public string Model {
+      get; internal set;
+    }
+
+    public string GroupName {
+      get; internal set;
+    }
 
   }
 

@@ -25,19 +25,6 @@ namespace Empiria.Trade.Tests.Products {
 
 
     [Fact]
-    public async Task ShouldGetProductList() {
-
-      var usecase = ProductsUseCases.UseCaseInteractor();
-      string clauses = "tornillo galvanizado";
-      ProductDto sut = await usecase.BuildProducts(clauses).ConfigureAwait(false);
-
-      Assert.NotNull(sut);
-      Assert.NotEmpty(sut.ProductList);
-
-    }
-
-
-    [Fact]
     public void GetDataCountFromDbTest() {
 
       var service = new TradeDataSchemaManager.Services.Services(true);

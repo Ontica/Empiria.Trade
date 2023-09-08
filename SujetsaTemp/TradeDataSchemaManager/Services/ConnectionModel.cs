@@ -77,7 +77,8 @@ namespace TradeDataSchemaManager.Services {
       " LEFT JOIN PROVEEDOR ON PROVEEDOR.PROVEEDOR = PRODUCTO.PROV1 " +
       " LEFT JOIN (SELECT PRODUCTO, MINIMO, ALMACEN.ALMACEN,ALMACEN.PRINCIPAL FROM productoalmacen " +
       "   LEFT JOIN ALMACEN ON ALMACEN.ALMACEN = PRODUCTOALMACEN.ALMACEN where almacen.principal = 'S' ) ALMACEN1" +
-      " ON ALMACEN1.PRODUCTO = PRODUCTO.PRODUCTO";
+      " ON ALMACEN1.PRODUCTO = PRODUCTO.PRODUCTO " +
+      "WHERE PRODUCTO.BAJA = 'N'";
 
 
     public string productosNKHidroplomexConn =
@@ -107,20 +108,24 @@ namespace TradeDataSchemaManager.Services {
       " GROUP BY COMPRA.FECHA, COMPRADET.PRODUCTO , COMPRADET.costo " +
       " ORDER BY compra.fecha DESC " +
       ") COMPRAS " +
-      "ON COMPRAS.PRODUCTO = PRODUCTO.PRODUCTO";
+      "ON COMPRAS.PRODUCTO = PRODUCTO.PRODUCTO " +
+      "WHERE PRODUCTO.BAJA = 'N'";
 
 
-    public string articulosMicrosipConn = 
-      "select claves_articulos.clave_articulo, articulos.nombre, articulos.unidad_compra, articulos.unidad_venta, articulos.contenido_unidad_compra, " +
+    public string articulosMicrosipConn =
+      "SELECT " +
+      "claves_articulos.clave_articulo PRODUCTO, articulos.nombre DESCRIPCION, " +
+      "articulos.unidad_compra, articulos.unidad_venta, " +
+      "articulos.contenido_unidad_compra, " +
       "articulos.es_almacenable, articulos.es_importado, articulos.es_siempre_importado, articulos.peso_unitario, articulos.estatus, " +
-      "lineas_articulos.linea_articulo_id, lineas_articulos.nombre " +
-      "from articulos articulos, claves_articulos claves_articulos, comis_ven_linea comis_ven_linea, grupos_lineas grupos_lineas, " +
+      "lineas_articulos.linea_articulo_id, lineas_articulos.nombre NLinea " +
+      "FROM articulos articulos, claves_articulos claves_articulos, comis_ven_linea comis_ven_linea, grupos_lineas grupos_lineas, " +
       "lineas_articulos lineas_articulos " +
-      "where articulos.articulo_id = claves_articulos.articulo_id and " +
+      "WHERE articulos.articulo_id = claves_articulos.articulo_id and " +
       "articulos.linea_articulo_id = lineas_articulos.linea_articulo_id and " +
       "comis_ven_linea.linea_articulo_id = articulos.linea_articulo_id and " +
       "lineas_articulos.grupo_linea_id = grupos_lineas.grupo_linea_id " +
-      "order by claves_articulos.clave_articulo";
+      "ORDER BY claves_articulos.clave_articulo";
 
   }
 

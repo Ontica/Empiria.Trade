@@ -28,7 +28,7 @@ namespace TradeDataSchemaManager.Services {
 
       } catch (Exception ex) {
 
-        throw new Exception($"ERROR: {ex.Message}");
+        throw new Exception($"TradeDataSchemaManager.Services.(GetDataFromDb())... {ex.Message}");
       }
       
 
@@ -43,8 +43,12 @@ namespace TradeDataSchemaManager.Services {
 
         int nkbd = productList.FindAll(x => x.ALMACEN_ID == 1).Count();
         int nkhpbd = productList.FindAll(x => x.ALMACEN_ID == 2).Count();
+        int microbd = productList.FindAll(x => x.ALMACEN_ID == 3).Count();
 
-        return $"PRODUCTOS BD NK = {nkbd}. PRODUCTOS BD NKHidroplomex = {nkhpbd}. TOTAL = {nkbd + nkhpbd}";
+        return $"PRODUCTOS BD NK = {nkbd}. " +
+               $"PRODUCTOS BD NKHidroplomex = {nkhpbd}. " +
+               $"ARTICULOS BD Microsip = {microbd}. " +
+               $"TOTAL = {nkbd + nkhpbd + microbd}";
 
       } catch (Exception ex) {
 
