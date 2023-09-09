@@ -50,11 +50,59 @@ namespace Empiria.Trade.Products {
     }
 
 
-
     internal string Keywords {
       get {
         return EmpiriaString.BuildKeywords(this.ProductType.DisplayName);
       }
+    }
+
+
+    [DataField("ProductCode")]
+    internal string Code {
+      get;
+      private set;
+    }
+
+
+    [DataField("ProductUPC")]
+    internal string UPC {
+      get;
+      private set;
+    }
+
+
+    [DataField("ProductName")]
+    internal string Name {
+      get;
+      private set;
+    }
+
+
+    [DataField("Description")]
+    internal string Description {
+      get;
+      private set;
+    }
+
+
+    [DataField("ProductLineId")]
+    internal ProductLine ProductLine {
+      get;
+      private set;
+    }
+
+
+    [DataField("ProductBrandId")]
+    internal Brand Brand {
+      get;
+      private set;
+    }
+
+
+    [DataField("ProductWeight")]
+    internal decimal Weight {
+      get;
+      private set;
     }
 
 

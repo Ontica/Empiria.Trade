@@ -5,7 +5,7 @@
     <Description>
       Empiria Trade core types and components.
     </Description>
-    <Copyright>(c) 2023-2024. La Vía Óntica SC, Ontica LLC y de los autores. Todos los derechos reservados.</Copyright>
+    <Copyright>(c) 2007-2024. La Vía Óntica SC, Ontica LLC y de los autores. Todos los derechos reservados.</Copyright>
     <Version>4.0.0</Version>
     <AssemblyVersion>4.0.0</AssemblyVersion>
     <FileVersion>4.0.0</FileVersion>
@@ -24,8 +24,8 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <NeutralLanguage></NeutralLanguage>
     <Configurations>Debug;Release;Multisolutions</Configurations>
-    <AssemblyName>Empiria.FinancialAccounting.BanobrasIntegration</AssemblyName>
-    <RootNamespace>Empiria.FinancialAccounting.BanobrasIntegration</RootNamespace>
+    <AssemblyName>Empiria.Trade.Core</AssemblyName>
+    <RootNamespace>Empiria.Trade.Core</RootNamespace>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' Or '$(Configuration)|$(Platform)'=='Multisolutions|AnyCPU' ">
@@ -59,10 +59,6 @@
     <WarningsAsErrors />
   </PropertyGroup>
   <ItemGroup Condition=" '$(Configuration)' == 'Multisolutions' ">
-    <ProjectReference Include="..\..\core\Core\Empiria.Core.csproj" />
-    <ProjectReference Include="..\..\extensions\Services\Empiria.Services.csproj" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\core\Core\Empiria.Core.csproj" />
     <ProjectReference Include="..\..\extensions\Services\Empiria.Services.csproj" />
   </ItemGroup>

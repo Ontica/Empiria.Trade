@@ -26,7 +26,7 @@ namespace Empiria.Trade.WebApi.Products {
     //[HttpPost]
     //[Route("trade/products/products-list")]
     //public async Task<SingleObjectModel> GetProductsList([FromBody] ProductQuery keywords) {
-      
+
     //  base.RequireBody(keywords);
 
     //  using (var usecases = ProductsUseCases.UseCaseInteractor()) {

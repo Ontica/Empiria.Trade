@@ -5,7 +5,7 @@
     <Description>
       Tests suite for Empiria Trade components.
     </Description>
-    <Copyright>(c) 2023-2024. La Vía Óntica SC, Ontica LLC y de los autores. Todos los derechos reservados.</Copyright>
+    <Copyright>(c) 2007-2024. La Vía Óntica SC, Ontica LLC y de los autores. Todos los derechos reservados.</Copyright>
     <Version>4.0.0</Version>
     <AssemblyVersion>4.0.0</AssemblyVersion>
     <FileVersion>4.0.0.0</FileVersion>
@@ -84,13 +84,6 @@
     <ProjectReference Include="..\Core\Empiria.Trade.Core.csproj" />
     <ProjectReference Include="..\Products\Empiria.Trade.Products.csproj" />
     <ProjectReference Include="..\Sales\Empiria.Trade.Sales.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\extensions\Tests\Empiria.Tests.csproj" />
-    <ProjectReference Include="..\Core\Empiria.Trade.Core.csproj" />
-    <ProjectReference Include="..\Products\Empiria.Trade.Products.csproj" />
-    <ProjectReference Include="..\Sales\Empiria.Trade.Sales.csproj" />
-    <ProjectReference Include="..\SujetsaTemp\TradeDataSchemaManager\TradeDataSchemaManager.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="empiria.config.json">

@@ -5,7 +5,7 @@
     <Description>
       Empiria Trade Sales components.
     </Description>
-    <Copyright>(c) 2023-2024. La Vía Óntica SC, Ontica LLC y de los autores. Todos los derechos reservados.</Copyright>
+    <Copyright>(c) 2007-2024. La Vía Óntica SC, Ontica LLC y de los autores. Todos los derechos reservados.</Copyright>
     <Version>4.0.0</Version>
     <AssemblyVersion>4.0.0</AssemblyVersion>
     <FileVersion>4.0.0.0</FileVersion>
@@ -74,11 +74,5 @@
     <Folder Include="Domain\ShippingAndHandling\" />
     <Folder Include="Domain\ProductSeeker\" />
     <Folder Include="Domain\PointOfSale\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\core\Core\Empiria.Core.csproj" />
-    <ProjectReference Include="..\..\extensions\Services\Empiria.Services.csproj" />
-    <ProjectReference Include="..\Core\Empiria.Trade.Core.csproj" />
-    <ProjectReference Include="..\Products\Empiria.Trade.Products.csproj" />
   </ItemGroup>
 </Project>

@@ -5,27 +5,27 @@
     <Description>
       Proporciona funcionalidades de Empiria Trade a través de llamadas Http/REST.
     </Description>
-    <Copyright>(c) 2021-2023. La Vía Óntica SC, Ontica LLC y de los autores. Todos los derechos reservados.</Copyright>
-    <Version>2.4</Version>
-    <AssemblyVersion>2.4.0</AssemblyVersion>
-    <FileVersion>2.4.0.0</FileVersion>
+    <Copyright>(c) 2007-2023. La Vía Óntica SC, Ontica LLC y de los autores. Todos los derechos reservados.</Copyright>
+    <Version>4.0</Version>
+    <AssemblyVersion>4.0.0</AssemblyVersion>
+    <FileVersion>4.0.0.0</FileVersion>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageLicenseUrl>https://github.com/Ontica/Banobras.Sicofin/tree/master/web.api/LICENSE.txt</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/Ontica/Banobras.Sicofin/tree/master/WebApi</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/Ontica/Empiria.Trade/tree/master/web.api/LICENSE.txt</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/Ontica/Empiria.Trade/tree/master/WebApi</PackageProjectUrl>
     <PackageIconUrl>http://www.ontica.org/logo.ontica.png</PackageIconUrl>
     <PackageTags>
       comercio electrónico, web services
     </PackageTags>
-    <RepositoryUrl>https://github.com/Ontica/Banobras.Sicofin</RepositoryUrl>
+    <RepositoryUrl>https://github.com/Ontica/Empiria.Trade</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <Authors>Ontica</Authors>
     <TargetFramework>net48</TargetFramework>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <NeutralLanguage></NeutralLanguage>
     <Configurations>Debug;Release;Multisolutions</Configurations>
-    <AssemblyName>Empiria.Sicofin.Banobras.WebApi</AssemblyName>
-    <RootNamespace>Empiria.Sicofin.Banobras.WebApi</RootNamespace>
+    <AssemblyName>Empiria.Trade.WebApi</AssemblyName>
+    <RootNamespace>Empiria.Trade.WebApi</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' Or '$(Configuration)|$(Platform)' == 'Multisolutions|AnyCPU' ">
     <OutputPath>bin\</OutputPath>
@@ -62,7 +62,6 @@
   </ItemGroup>
   <ItemGroup Condition=" '$(Configuration)' == 'Multisolutions' ">
     <ProjectReference Include="..\..\extensions\WebApi\Empiria.WebApi.csproj" />
-    <ProjectReference Include="..\..\onepoint\Security.WebApi\Empiria.OnePoint.Security.WebApi.csproj" />
     <ProjectReference Include="..\Core\Empiria.Trade.Core.csproj" />
     <ProjectReference Include="..\Products\Empiria.Trade.Products.csproj" />
     <ProjectReference Include="..\Sales\Empiria.Trade.Sales.csproj" />
@@ -77,13 +76,5 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Sales\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\extensions\WebApi\Empiria.WebApi.csproj" />
-    <ProjectReference Include="..\..\onepoint\Security.WebApi\Empiria.OnePoint.Security.WebApi.csproj" />
-    <ProjectReference Include="..\Core\Empiria.Trade.Core.csproj" />
-    <ProjectReference Include="..\Products\Empiria.Trade.Products.csproj" />
-    <ProjectReference Include="..\Sales\Empiria.Trade.Sales.csproj" />
-    <ProjectReference Include="..\SujetsaTemp\TradeDataSchemaManager\TradeDataSchemaManager.csproj" />
   </ItemGroup>
 </Project>
