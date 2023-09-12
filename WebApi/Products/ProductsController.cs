@@ -9,17 +9,16 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Threading.Tasks;
-
 using System.Web.Http;
-using Empiria.Trade.Products.Adapters;
-using Empiria.Trade.Products.UseCases;
+
 using Empiria.WebApi;
 
+using Empiria.Trade.Products.Adapters;
+using Empiria.Trade.Products.UseCases;
 
-namespace Empiria.Trade.WebApi.Products {
+namespace Empiria.Trade.Products.WebApi {
 
   /// <summary>Query web API used to retrieve Products.</summary>
-  [AllowAnonymous]
   public class ProductsController : WebApiController {
 
 
@@ -39,7 +38,7 @@ namespace Empiria.Trade.WebApi.Products {
 
 
     [HttpPost]
-    [Route("trade/products/products-list")]
+    [Route("v4/trade/products/products-list")]
     public async Task<CollectionModel> GetProductsDto([FromBody] ProductQuery keywords) {
 
       base.RequireBody(keywords);
@@ -56,4 +55,4 @@ namespace Empiria.Trade.WebApi.Products {
 
   } // class ProductsController
 
-} // namespace Empiria.Trade.WebApi.Products
+} // namespace Empiria.Trade.Products.WebApi

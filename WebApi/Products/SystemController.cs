@@ -12,15 +12,15 @@ using System.Web.Http;
 
 using Empiria.WebApi;
 
-namespace Empiria.Trade.WebApi {
+namespace Empiria.Trade.Products.WebApi {
 
   /// <summary> Web api methods to get and set system configuration settings.</summary>
-  public class ProductsController : WebApiController {
+  public class SysController : WebApiController {
 
     #region Public APIs
 
     /// <summary>Gets the Empiria license name.</summary>
-    [HttpGet, AllowAnonymous]
+    [HttpGet]
     [Route("v4/trade/license")]
     public SingleObjectModel GetLicense() {
       try {
@@ -34,4 +34,4 @@ namespace Empiria.Trade.WebApi {
 
   }  // class SystemController
 
-}  // namespace Empiria.WebApi.Controllers
+}  // namespace Empiria.Trade.Products.WebApi
