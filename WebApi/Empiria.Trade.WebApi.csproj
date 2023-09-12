@@ -77,4 +77,10 @@
   <ItemGroup>
     <Folder Include="Sales\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\extensions\WebApi\Empiria.WebApi.csproj" />
+    <ProjectReference Include="..\Core\Empiria.Trade.Core.csproj" />
+    <ProjectReference Include="..\Products\Empiria.Trade.Products.csproj" />
+    <ProjectReference Include="..\Sales\Empiria.Trade.Sales.csproj" />
+  </ItemGroup>
 </Project>

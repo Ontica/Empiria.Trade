@@ -39,6 +39,11 @@ namespace Empiria.Trade.Products.Adapters {
     } = string.Empty;
 
 
+    public string GroupName {
+      get; internal set;
+    }
+
+
     public DateTime RegistrationDate {
       get; set;
     } = new DateTime(2077, 01, 01);
@@ -144,6 +149,11 @@ namespace Empiria.Trade.Products.Adapters {
     public string Turn {
       get; set;
     } = string.Empty;
+
+
+    public string GroupName {
+      get; internal set;
+    }
 
 
     public ProductAttributes Attributes {
@@ -431,9 +441,6 @@ namespace Empiria.Trade.Products.Adapters {
       get; internal set;
     }
 
-    public string GroupName {
-      get; internal set;
-    }
 
   }
 

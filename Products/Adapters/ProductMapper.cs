@@ -64,6 +64,7 @@ namespace Empiria.Trade.Products.Adapters {
       dto.Product = entry.Product;
       dto.ProdServCode = entry.ProdServCode;
       dto.Description = entry.Description;
+      dto.GroupName = entry.GroupName;
       dto.RegistrationDate = entry.RegistrationDate;
       dto.ViewDetailsName = entry.ViewDetailsName;
       dto.Existence = entry.Existence != "" ? entry.Existence :"0";
@@ -117,7 +118,7 @@ namespace Empiria.Trade.Products.Adapters {
       dto.SupplierName = $"({entry.Supplier}) {entry.SupplierName}";
       dto.ProductType = entry.ProductType;
       dto.Discontinued = entry.Discontinued;
-
+      dto.GroupName = entry.GroupName;
       dto.PriceList = GetPriceList(entry);
       
       return dto;
@@ -130,7 +131,6 @@ namespace Empiria.Trade.Products.Adapters {
       attributes.Trademark = entry.Trademark;
       attributes.Section = entry.Section;
       attributes.LineName = entry.LineName;
-      attributes.GroupName = entry.GroupName;
       attributes.Model = entry.Model;
       attributes.SubgroupName = entry.SubgroupName;
 

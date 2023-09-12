@@ -75,4 +75,7 @@
     <Folder Include="Domain\ProductSeeker\" />
     <Folder Include="Domain\PointOfSale\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Empiria.Trade.Core.csproj" />
+  </ItemGroup>
 </Project>
