@@ -139,7 +139,8 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
-    private static Presentation GetPresentations(ProductFields entry) {
+    private static FixedList<Presentation> GetPresentations(ProductFields entry) {
+      var presentations = new List<Presentation>();
 
       Presentation presentation = new Presentation();
 
@@ -148,7 +149,9 @@ namespace Empiria.Trade.Products.Adapters {
       presentation.Units = entry.Stock;
       presentation.Vendors = GetVendors(entry);
 
-      return presentation;
+      presentations.Add(presentation);
+
+      return presentations.ToFixedList();
     }
 
 

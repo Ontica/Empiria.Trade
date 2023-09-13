@@ -44,9 +44,9 @@ namespace Empiria.Trade.Products.Adapters {
     } = new ProductAttributes();
 
 
-    public Presentation Presentations {
+    public FixedList<Presentation> Presentations {
       get; set;
-    } = new Presentation();
+    } = new FixedList<Presentation>();
 
 
     //public int StoreId {
