@@ -146,7 +146,7 @@ namespace Empiria.Trade.Products {
 
 
     [DataField("Existence")]
-    public string Existence {
+    public string Stock {
       get; set;
     } = string.Empty;
 

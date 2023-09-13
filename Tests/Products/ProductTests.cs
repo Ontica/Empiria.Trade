@@ -34,7 +34,7 @@ namespace Empiria.Trade.Tests.Products {
 
 
     [Fact]
-    public async Task ShouldGetProductList() {
+    public async Task ShouldGetProductDtoTest() {
 
       var usecase = ProductsUseCases.UseCaseInteractor();
       ProductQuery query = new ProductQuery {
@@ -45,6 +45,22 @@ namespace Empiria.Trade.Tests.Products {
       Assert.NotNull(sut);
       Assert.NotEmpty(sut.ProductList);
       
+    }
+
+
+    [Fact]
+    public async Task ShouldGetProductListTest() {
+
+      var usecase = ProductsUseCases.UseCaseInteractor();
+      ProductQuery query = new ProductQuery {
+        Keywords = "TA58X412"
+      };
+
+      FixedList<IProductEntryDto> sut = await usecase.BuildProductsList(query).ConfigureAwait(false);
+
+      Assert.NotNull(sut);
+      Assert.NotEmpty(sut);
+
     }
 
 

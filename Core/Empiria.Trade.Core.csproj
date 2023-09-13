@@ -62,4 +62,8 @@
     <ProjectReference Include="..\..\core\Core\Empiria.Core.csproj" />
     <ProjectReference Include="..\..\extensions\Services\Empiria.Services.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\core\Core.Services\Empiria.Core.Services.csproj" />
+    <ProjectReference Include="..\..\core\Core\Empiria.Core.csproj" />
+  </ItemGroup>
 </Project>

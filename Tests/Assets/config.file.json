@@ -20,6 +20,7 @@
 
   ],
 
-  "SqlConnectionString": "Data Source=MSI\\MSSQLSERVER01;Initial Catalog=SujetsaDBLocal; User Id=empiria_trade; Password=admin123;"
+  "SqlConnectionString": "Data Source=apps.sujetsa.com.mx, 5328;Initial Catalog=Sujetsa; User Id=sujetsa_user; Password=9qrtTqK@EyMR$!FB;"
+  //"SqlConnectionString": "Data Source=MSI\\MSSQLSERVER01;Initial Catalog=SujetsaDBLocal; User Id=empiria_trade; Password=admin123;"
 
 }

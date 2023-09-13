@@ -16,109 +16,8 @@ namespace Empiria.Trade.Products.Adapters {
   }
 
 
-  public class ProductShortEntryDto : IProductEntryDto {
-
-
-    public int StoreId {
-      get; set;
-    }
-
-
-    public string Product {
-      get; set;
-    } = string.Empty;
-
-
-    public string ProdServCode {
-      get; set;
-    } = string.Empty;
-
-
-    public string Description {
-      get; set;
-    } = string.Empty;
-
-
-    public string GroupName {
-      get; internal set;
-    }
-
-
-    public DateTime RegistrationDate {
-      get; set;
-    } = new DateTime(2077, 01, 01);
-
-
-    public string ViewDetailsName {
-      get; set;
-    } = string.Empty;
-
-
-    public string Existence {
-      get; set;
-    } = string.Empty;
-
-
-    public string SalesUnit {
-      get; set;
-    } = string.Empty;
-
-
-    public string Currency {
-      get; set;
-    } = string.Empty;
-
-
-    public decimal Total {
-      get; set;
-    }
-
-
-    public decimal BasisCost {
-      get; set;
-    }
-
-
-    public decimal LastPurchaseDateCost {
-      get; set;
-    }
-
-
-    public decimal MinimumPrice {
-      get; set;
-    }
-
-
-    public string Packing {
-      get; set;
-    } = string.Empty;
-
-
-    public string SupplierName {
-      get; set;
-    } = string.Empty;
-
-
-    public string ProductType {
-      get; set;
-    } = string.Empty;
-
-
-    public string Discontinued {
-      get; set;
-    } = string.Empty;
-
-
-    public FixedList<PriceListOfProduct> PriceList {
-      get; internal set;
-    } = new FixedList<PriceListOfProduct>();
-
-
-  }
-
-
   /// <summary>Output DTO used to return the entries of Products.</summary>
-  public class ProductEntryDto : IProductEntryDto{
+  public class ProductEntryDto : IProductEntryDto {
 
 
     public string DET {
@@ -151,7 +50,7 @@ namespace Empiria.Trade.Products.Adapters {
     } = string.Empty;
 
 
-    public string GroupName {
+    public string Group {
       get; internal set;
     }
 
@@ -162,11 +61,6 @@ namespace Empiria.Trade.Products.Adapters {
 
 
     public string Line {
-      get; set;
-    } = string.Empty;
-
-
-    public string Group {
       get; set;
     } = string.Empty;
 
@@ -226,7 +120,7 @@ namespace Empiria.Trade.Products.Adapters {
     } = new DateTime(2077, 01, 01);
 
 
-    public string Existence {
+    public string Stock {
       get; set;
     } = string.Empty;
 
@@ -346,51 +240,25 @@ namespace Empiria.Trade.Products.Adapters {
     } = string.Empty;
 
 
-    public string Keywords {
-      get; set;
-    } = string.Empty;
-
-
-    public int StoreId {
-      get; set;
-    }
-
-
-    public string ExtData {
-      get;
-      internal set;
-    } = string.Empty;
-
-
-    public FixedList<PriceListOfProduct> PriceList {
-      get; internal set;
-    } = new FixedList<PriceListOfProduct>();
-
-
-    public MeasurementUnits MeasurementAttributes {
-      get; internal set;
-    } = new MeasurementUnits();
-
-
-  }
-
-
-  public class PriceListOfProduct {
-
-
-    public string Name {
+    public string Section {
       get; internal set;
     }
 
 
-    public decimal Value {
+    public string LineName {
       get; internal set;
     }
 
-  }
+
+    public string SubgroupName {
+      get; internal set;
+    }
 
 
-  public class MeasurementUnits {
+    public string Model {
+      get; internal set;
+    }
+
 
     public string Diameter {
       get; internal set;
@@ -411,38 +279,146 @@ namespace Empiria.Trade.Products.Adapters {
       get; internal set;
     }
 
-  }
+
+    public string Keywords {
+      get; set;
+    } = string.Empty;
 
 
-  public class ProductAttributes {
+    public int StoreId {
+      get; set;
+    }
+
+
+    public string ExtData {
+      get;
+      internal set;
+    } = string.Empty;
+
 
     public string Trademark {
       get; internal set;
     }
 
 
-    public string Section {
+    public FixedList<PriceListOfProduct> PriceList {
+      get; internal set;
+    } = new FixedList<PriceListOfProduct>();
+
+
+  }
+
+
+  public class PriceListOfProduct {
+
+
+    public string Name {
       get; internal set;
     }
 
 
-    public string LineName {
+    public decimal Value {
       get; internal set;
     }
 
+  }
 
-    public string SubgroupName {
-      get; internal set;
+
+
+  public class ProductAttributes {
+
+
+    public string Terminado {
+      get; set;
+    } = string.Empty;
+
+
+    public string Cabeza {
+      get;
+      internal set;
     }
 
 
+    public string Grado {
+      get;
+      internal set;
+    }
 
-    public string Model {
-      get; internal set;
+
+    public string Tamano {
+      get;
+      internal set;
+    }
+
+
+    public string Hilos {
+      get;
+      internal set;
     }
 
 
   }
 
+
+  public class Presentation {
+
+    public string PresentationUID {
+      get; set;
+    } = string.Empty;
+
+
+    public string Description {
+      get;
+      internal set;
+    }
+
+
+    public string Units {
+      get;
+      internal set;
+    }
+
+
+    public FixedList<Vendor> Vendors {
+      get;
+      internal set;
+    } = new FixedList<Vendor>();
+
+  }
+
+
+  public class Vendor {
+
+
+    public string VendorUID {
+      get; set;
+    } = string.Empty;
+
+
+    public string VendorName {
+      get;
+      internal set;
+    }
+
+
+    public string Sku {
+      get;
+      internal set;
+    }
+
+
+    public string Stock {
+      get;
+      internal set;
+    }
+
+
+    public decimal Price {
+      get;
+      internal set;
+    }
+
+
+  }
 
 }
