@@ -55,9 +55,9 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
-    public ProductAttributes Attributes {
+    public FixedList<Attributes> Attributes {
       get; set;
-    } = new ProductAttributes();
+    } = new FixedList<Attributes>();
 
 
     public string Line {
@@ -323,102 +323,5 @@ namespace Empiria.Trade.Products.Adapters {
 
   }
 
-
-
-  public class ProductAttributes {
-
-
-    public string Terminado {
-      get; set;
-    } = string.Empty;
-
-
-    public string Cabeza {
-      get;
-      internal set;
-    }
-
-
-    public string Grado {
-      get;
-      internal set;
-    }
-
-
-    public string Tamano {
-      get;
-      internal set;
-    }
-
-
-    public string Hilos {
-      get;
-      internal set;
-    }
-
-
-  }
-
-
-  public class Presentation {
-
-    public string PresentationUID {
-      get; set;
-    } = string.Empty;
-
-
-    public string Description {
-      get;
-      internal set;
-    }
-
-
-    public string Units {
-      get;
-      internal set;
-    }
-
-
-    public FixedList<Vendor> Vendors {
-      get;
-      internal set;
-    } = new FixedList<Vendor>();
-
-  }
-
-
-  public class Vendor {
-
-
-    public string VendorUID {
-      get; set;
-    } = string.Empty;
-
-
-    public string VendorName {
-      get;
-      internal set;
-    }
-
-
-    public string Sku {
-      get;
-      internal set;
-    }
-
-
-    public string Stock {
-      get;
-      internal set;
-    }
-
-
-    public decimal Price {
-      get;
-      internal set;
-    }
-
-
-  }
 
 }

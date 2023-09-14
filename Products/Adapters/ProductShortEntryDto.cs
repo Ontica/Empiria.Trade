@@ -24,59 +24,19 @@ namespace Empiria.Trade.Products.Adapters {
     } = string.Empty;
 
 
-    public string Group {
-      get; internal set;
-    }
-
-
-    public string Subgroup {
-      get; internal set;
-    }
-
-
     public string Description {
       get; set;
     } = string.Empty;
 
 
-    public ProductAttributes Attributes {
-      get; set;
-    } = new ProductAttributes();
+    public ProductType ProductType {
+      get; internal set;
+    } = new ProductType();
 
 
     public FixedList<Presentation> Presentations {
       get; set;
     } = new FixedList<Presentation>();
-
-
-    //public int StoreId {
-    //  get; set;
-    //}
-
-
-    //public string ProdServCode {
-    //  get; set;
-    //} = string.Empty;
-
-
-    //public string Stock {
-    //  get; set;
-    //} = string.Empty;
-
-
-    //public string SalesUnit {
-    //  get; set;
-    //} = string.Empty;
-
-
-    //public string Packing {
-    //  get; set;
-    //} = string.Empty;
-
-
-    //public string SupplierName {
-    //  get; set;
-    //} = string.Empty;
 
 
     //public FixedList<PriceListOfProduct> PriceList {

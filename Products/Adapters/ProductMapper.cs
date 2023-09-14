@@ -9,6 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Reflection;
 using Empiria.DataTypes;
@@ -21,10 +22,10 @@ namespace Empiria.Trade.Products.Adapters {
 
     #region Public methods
 
-    static internal ProductDto Map(FixedList<ProductFields> entries) {
+    static internal ProductDto MapToDto(FixedList<ProductFields> entries) {
 
       return new ProductDto {
-        ProductList = MapEntries(entries)
+        ProductList = MapLongEntries(entries)
       };
 
     }
@@ -43,22 +44,22 @@ namespace Empiria.Trade.Products.Adapters {
     #region Private methods
 
 
-    private static FixedList<IProductEntryDto> MapToEntriesDto(FixedList<ProductFields> entries) {
+    static private FixedList<IProductEntryDto> MapToEntriesDto(FixedList<ProductFields> entries) {
       var mappedItems = entries.Select((x) => MapShortEntry((ProductFields) x));
 
       return new FixedList<IProductEntryDto>(mappedItems);
     }
 
 
-    static private FixedList<IProductEntryDto> MapEntries(FixedList<ProductFields> entries) {
+    private static FixedList<IProductEntryDto> MapLongEntries(FixedList<ProductFields> entries) {
 
-      var mappedItems = entries.Select((x) => MapEntry((ProductFields) x));
+      var mappedItems = entries.Select((x) => MapLongEntry((ProductFields) x));
 
       return new FixedList<IProductEntryDto>(mappedItems);
     }
 
 
-    private static ProductEntryDto MapEntry(ProductFields entry) {
+    static private ProductEntryDto MapLongEntry(ProductFields entry) {
       var dto = new ProductEntryDto();
 
 
@@ -103,48 +104,78 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
-    private static ProductShortEntryDto MapShortEntry(ProductFields entry) {
+    static private ProductShortEntryDto MapShortEntry(ProductFields entry) {
       var dto = new ProductShortEntryDto();
 
+      dto.ProductUID = "e4d915e5-dc17-49f5-b378-aa692dc21cdd";
       dto.Code = entry.Product;
       dto.Description = entry.Description;
-      dto.Group = entry.GroupName;
-      dto.Subgroup = entry.SubgroupName;
-      //dto.StoreId = entry.StoreId;
-      //dto.ProdServCode = entry.ProdServCode;
-      //dto.SalesUnit = entry.SalesUnit;
-      //dto.Packing = entry.Packing;
-      //dto.SupplierName= $"({entry.Supplier}) {entry.SupplierName}";
-
-      dto.Attributes = GetAttributes(entry);
+      dto.ProductType = GetProductType(entry);
       dto.Presentations = GetPresentations(entry);
-      //dto.PriceList = GetPriceList(entry);
 
 
       return dto;
     }
 
 
+    static private ProductType GetProductType(ProductFields entry) {
 
-    private static ProductAttributes GetAttributes(ProductFields entry) {
-      var attributes = new ProductAttributes();
+      var type = new ProductType();
 
-      attributes.Terminado = entry.ViewDetailsName;
-      attributes.Cabeza = entry.HeadsName;
-      attributes.Grado = entry.Degree;
-      attributes.Tamano = entry.Diameter;
-      attributes.Hilos = entry.ThreadsName;
+      var attributes = GetAttributes(entry);
 
-      return attributes;
+      type.ProductTypeUID = "ddddd-dc17-49f5-b378-aa692dc21cdd";
+      type.Name= entry.GroupName;
+      type.Attributes = attributes;
+
+      return type;
     }
 
 
-    private static FixedList<Presentation> GetPresentations(ProductFields entry) {
+    static private FixedList<Attributes> GetAttributes(ProductFields entry) {
+      var attrList = new List<Attributes>();
+      
+      if (entry.ViewDetailsName != "") {
+        var attr = new Attributes();
+        attr.Name = "Terminado";
+        attr.Value = entry.ViewDetailsName;
+        attrList.Add(attr);
+      }
+      if (entry.HeadsName != "") {
+        var attr = new Attributes();
+        attr.Name = "Cabeza";
+        attr.Value = entry.HeadsName;
+        attrList.Add(attr);
+      }
+      if (entry.Degree != "") {
+        var attr = new Attributes();
+        attr.Name = "Grado";
+        attr.Value = entry.Degree;
+        attrList.Add(attr);
+      }
+      if (entry.Diameter != "") {
+        var attr = new Attributes();
+        attr.Name = "Tamaño";
+        attr.Value = entry.Diameter;
+        attrList.Add(attr);
+      }
+      if (entry.ThreadsName != "") {
+        var attr = new Attributes();
+        attr.Name = "Hilos";
+        attr.Value = entry.ThreadsName;
+        attrList.Add(attr);
+      }
+
+      return attrList.ToFixedList();
+    }
+
+
+    static private FixedList<Presentation> GetPresentations(ProductFields entry) {
       var presentations = new List<Presentation>();
 
       Presentation presentation = new Presentation();
 
-      presentation.PresentationUID = "";
+      presentation.PresentationUID = "ead65e0b-90a8-4bb1-859b-53730388c385";
       presentation.Description = $"{entry.GroupName} {entry.ViewDetailsName} {entry.Stock}";
       presentation.Units = entry.Stock;
       presentation.Vendors = GetVendors(entry);
@@ -155,11 +186,11 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
-    private static FixedList<Vendor> GetVendors(ProductFields entry) {
+    static private FixedList<Vendor> GetVendors(ProductFields entry) {
       var vendors = new List<Vendor>();
 
       Vendor vendor = new Vendor() {
-        VendorUID = "",
+        VendorUID = "eed65e0b-79b8-4ab1-859a-53730388c385",
         VendorName = GetVendorName(entry.StoreId),
         Sku = "sku-000",
         Stock = entry.Stock,
@@ -172,7 +203,7 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
-    private static FixedList<PriceListOfProduct> GetPriceList(ProductFields entry) {
+    static private FixedList<PriceListOfProduct> GetPriceList(ProductFields entry) {
       var prices = new List<PriceListOfProduct>();
 
       var price1 = new PriceListOfProduct {
@@ -203,8 +234,7 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
-
-    private static string GetVendorName(int storeId) {
+    static private string GetVendorName(int storeId) {
 
       if (storeId == 1) {
         return "Productos NK";
