@@ -11,7 +11,7 @@
     <FileVersion>4.0.0.0</FileVersion>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageLicenseUrl>https://github.com/Ontica/Empiria.Trade/tree/master/web.api/LICENSE.txt</PackageLicenseUrl>
+    <PackageLicenseUrl>https://github.com/Ontica/Empiria.Trade/tree/master/WebApi/LICENSE.txt</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/Ontica/Empiria.Trade/tree/master/WebApi</PackageProjectUrl>
     <PackageIconUrl>http://www.ontica.org/logo.ontica.png</PackageIconUrl>
     <PackageTags>
@@ -80,6 +80,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\extensions\WebApi\Empiria.WebApi.csproj" />
     <ProjectReference Include="..\Core\Empiria.Trade.Core.csproj" />
+    <ProjectReference Include="..\Financial\Empiria.Trade.Financial.csproj" />
     <ProjectReference Include="..\Products\Empiria.Trade.Products.csproj" />
     <ProjectReference Include="..\Sales\Empiria.Trade.Sales.csproj" />
   </ItemGroup>

@@ -12,10 +12,10 @@
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageLicenseUrl></PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/Ontica/Empiria.Trade/tree/master/Credits</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/Ontica/Empiria.Trade/tree/master/Financial</PackageProjectUrl>
     <PackageIconUrl>http://www.ontica.org/logo.ontica.png</PackageIconUrl>
     <PackageTags>
-      administracion del credito, cuentas por cobrar
+      administracion del crédito, cuentas por cobrar, contabilidad, tesorería
     </PackageTags>
     <RepositoryUrl>https://github.com/Ontica/Empiria.Trade</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -24,8 +24,8 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <NeutralLanguage></NeutralLanguage>
     <Configurations>Debug;Release;Multisolutions</Configurations>
-    <AssemblyName>Empiria.Trade.Credits</AssemblyName>
-    <RootNamespace>Empiria.Trade.Credits</RootNamespace>
+    <AssemblyName>Empiria.Trade.Financial</AssemblyName>
+    <RootNamespace>Empiria.Trade.Financial</RootNamespace>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' Or '$(Configuration)|$(Platform)'=='Multisolutions|AnyCPU' ">

@@ -12,7 +12,7 @@
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageLicenseUrl></PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/Ontica/Empiria.Trade/tree/master/Supply</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/Ontica/Empiria.Trade/tree/master/Procurement</PackageProjectUrl>
     <PackageIconUrl>http://www.ontica.org/logo.ontica.png</PackageIconUrl>
     <PackageTags>
       Ventas, punto de venta,
