@@ -19,7 +19,7 @@ namespace Empiria.Trade.Products.Adapters {
     } = string.Empty;
 
 
-    public string Code {
+    public string ProductCode {
       get; set;
     } = string.Empty;
 

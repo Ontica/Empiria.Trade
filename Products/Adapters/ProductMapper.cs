@@ -108,7 +108,7 @@ namespace Empiria.Trade.Products.Adapters {
       var dto = new ProductShortEntryDto();
 
       dto.ProductUID = "e4d915e5-dc17-49f5-b378-aa692dc21cdd";
-      dto.Code = entry.Product;
+      dto.ProductCode = entry.Product;
       dto.Description = entry.Description;
       dto.ProductType = GetProductType(entry);
       dto.Presentations = GetPresentations(entry);
