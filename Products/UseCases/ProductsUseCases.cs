@@ -44,7 +44,7 @@ namespace Empiria.Trade.Products.UseCases {
       FixedList<ProductFields> products = await Task.Run(() => builder.Build(keywords))
                                             .ConfigureAwait(false);
 
-      return ProductMapper.Map(products);
+      return ProductMapper.MapToDto(products);
     }
 
 
