@@ -63,8 +63,8 @@
     <ProjectReference Include="..\..\extensions\Services\Empiria.Services.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Empiria.Core\Core.Services\Empiria.Core.Services.csproj" />
-    <ProjectReference Include="..\..\Empiria.Core\Core\Empiria.Core.csproj" />
-    <ProjectReference Include="..\..\sujetsa\SujetsaTemp\TradeDataSchemaManager\TradeDataSchemaManager.csproj" />
+    <ProjectReference Include="..\..\core\Core.Services\Empiria.Core.Services.csproj" />
+    <ProjectReference Include="..\..\core\Core\Empiria.Core.csproj" />
+    <ProjectReference Include="..\..\trade.sujetsa\SujetsaTemp\TradeDataSchemaManager\TradeDataSchemaManager.csproj" />
   </ItemGroup>
 </Project>
