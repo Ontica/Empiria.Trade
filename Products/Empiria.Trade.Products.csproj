@@ -67,4 +67,10 @@
     <ProjectReference Include="..\Core\Empiria.Trade.Core.csproj" />
     <ProjectReference Include="..\Sales\Empiria.Trade.Sales.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Adapters\" />
+    <Folder Include="Data\" />
+    <Folder Include="Domain\" />
+    <Folder Include="UseCases\" />
+  </ItemGroup>
 </Project>

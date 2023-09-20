@@ -13,13 +13,14 @@ using System.Web.Http;
 
 using Empiria.WebApi;
 
-using Empiria.Trade.Products.Adapters;
-using Empiria.Trade.Products.UseCases;
+using Empiria.Trade.Inventory.Products.Adapters;
+using Empiria.Trade.Inventory.Products.UseCases;
 
-namespace Empiria.Trade.Products.WebApi {
+namespace Empiria.Trade.Products.WebApi
+{
 
-  /// <summary>Query web API used to retrieve Products.</summary>
-  public class ProductsController : WebApiController {
+    /// <summary>Query web API used to retrieve Products.</summary>
+    public class ProductsController : WebApiController {
 
 
     //[HttpPost]
@@ -39,7 +40,7 @@ namespace Empiria.Trade.Products.WebApi {
 
     [HttpPost]
     [Route("v4/trade/products/products-list")]
-    public async Task<CollectionModel> GetProductsDto([FromBody] ProductQuery keywords) {
+    public async Task<CollectionModel> GetProductsDto([FromBody] Inventory.Products.Adapters.ProductQuery keywords) {
 
       base.RequireBody(keywords);
 

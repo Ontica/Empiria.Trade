@@ -9,11 +9,13 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 
-namespace Empiria.Trade.Products {
+namespace Empiria.Trade.Inventory.Products.Domain
+{
 
-  /// <summary>Represents a product's brand.</summary>
-  internal class Brand : GeneralObject {
-  
-  }  // class Brand
+    /// <summary>Represents a product's brand.</summary>
+    internal class Brand : GeneralObject
+    {
+
+    }  // class Brand
 
 }  // namespace Empiria.Trade.Products

@@ -11,44 +11,52 @@ using System;
 
 using Empiria.StateEnums;
 
-namespace Empiria.Trade.Products {
+namespace Empiria.Trade.Inventory.Products.Domain
+{
 
-  internal class ProductLine {
+    internal class ProductLine
+    {
 
-    [DataField("ProductLineName")]
-    internal string Name {
-      get;
-      private set;
-    }
-
-
-    [DataField("ProductLineDescription")]
-    internal string Description {
-      get;
-      private set;
-    }
+        [DataField("ProductLineName")]
+        internal string Name
+        {
+            get;
+            private set;
+        }
 
 
-    [DataField("ParentProductLine")]
-    internal string ParentLine {
-      get;
-      private set;
-    }
+        [DataField("ProductLineDescription")]
+        internal string Description
+        {
+            get;
+            private set;
+        }
 
 
-    internal string Keywords {
-      get {
-        return EmpiriaString.BuildKeywords(this.Name, this.Description);
-      }
-    }
+        [DataField("ParentProductLine")]
+        internal string ParentLine
+        {
+            get;
+            private set;
+        }
 
 
-    internal EntityStatus Status {
-      get;
-      private set;
-    }
+        internal string Keywords
+        {
+            get
+            {
+                return EmpiriaString.BuildKeywords(Name, Description);
+            }
+        }
 
 
-  }  // class ProductLine
+        internal EntityStatus Status
+        {
+            get;
+            private set;
+        }
+
+
+    }  // class ProductLine
 
 }  // namespace Empiria.Trade.Products

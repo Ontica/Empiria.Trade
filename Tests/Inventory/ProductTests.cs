@@ -12,8 +12,8 @@ using System;
 using Xunit;
 
 using Empiria.Tests;
-using Empiria.Trade.Products.UseCases;
-using Empiria.Trade.Products.Adapters;
+using Empiria.Trade.Inventory.Products.UseCases;
+using Empiria.Trade.Inventory.Products.Adapters;
 using System.Threading.Tasks;
 
 namespace Empiria.Trade.Tests.Products {

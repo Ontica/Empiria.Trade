@@ -9,41 +9,45 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Collections.Generic;
-using Empiria.Trade.Products.Adapters;
-using Empiria.Trade.Products.Data;
+using Empiria.Trade.Inventory.Products.Data;
+using Empiria.Trade.Inventory.Products.Adapters;
 
-namespace Empiria.Trade.Products.Domain {
+namespace Empiria.Trade.Inventory.Products.Domain
+{
 
-  /// <summary>Generate data for products.</summary>
-  internal class ProductBuilder {
-
-
-    internal ProductBuilder() {
-
-    }
+    /// <summary>Generate data for products.</summary>
+    internal class ProductBuilder
+    {
 
 
-    #region Public methods
+        internal ProductBuilder()
+        {
+
+        }
 
 
-    public FixedList<ProductFields> Build(ProductQuery query) {
-      
-      var data = ProductDataService.GetProducts(query.Keywords);
-
-      return data;
-
-    }
+        #region Public methods
 
 
-    #endregion Public methods
+        public FixedList<ProductFields> Build(ProductQuery query)
+        {
+
+            var data = ProductDataService.GetProducts(query.Keywords);
+
+            return data;
+
+        }
 
 
-    #region Private methods
+        #endregion Public methods
 
 
-    
-    #endregion Private methods
+        #region Private methods
 
-  } // class ProductBuilder
+
+
+        #endregion Private methods
+
+    } // class ProductBuilder
 
 } // namespace Empiria.Trade.Products.Domain

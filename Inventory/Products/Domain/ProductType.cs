@@ -11,35 +11,39 @@ using System;
 
 using Empiria.Ontology;
 
-namespace Empiria.Trade.Products {
+namespace Empiria.Trade.Inventory.Products.Domain
+{
 
-  /// <summary>Powertype that describes a product.</summary>
-  [Powertype(typeof(Product))]
-  public class ProductType : Powertype {
+    /// <summary>Powertype that describes a product.</summary>
+    [Powertype(typeof(Product))]
+    public class ProductType : Powertype
+    {
 
-    #region Constructors and parsers
+        #region Constructors and parsers
 
-    private ProductType() {
-      // Empiria powertype types always have this constructor.
-    }
+        private ProductType()
+        {
+            // Empiria powertype types always have this constructor.
+        }
 
-    static public new ProductType Parse(int typeId) => ObjectTypeInfo.Parse<ProductType>(typeId);
+        static public new ProductType Parse(int typeId) => Parse<ProductType>(typeId);
 
-    static internal new ProductType Parse(string typeName) => ProductType.Parse<ProductType>(typeName);
+        static internal new ProductType Parse(string typeName) => Parse<ProductType>(typeName);
 
-    static public ProductType Empty => ProductType.Parse("ObjectType.ProductType");
+        static public ProductType Empty => Parse("ObjectType.ProductType");
 
-    #endregion Constructors and parsers
+        #endregion Constructors and parsers
 
-    #region Public methods
+        #region Public methods
 
-    /// <summary>Factory method for create product instances of this product type.</summary>
-    internal Product CreateInstance() {
-      return base.CreateObject<Product>();
-    }
+        /// <summary>Factory method for create product instances of this product type.</summary>
+        internal Product CreateInstance()
+        {
+            return CreateObject<Product>();
+        }
 
-    #endregion Public methods
+        #endregion Public methods
 
-  }  // class ProductType
+    }  // class ProductType
 
 }  // namespace Empiria.Trade.Products

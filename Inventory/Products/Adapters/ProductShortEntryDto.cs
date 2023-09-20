@@ -9,42 +9,49 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 
-namespace Empiria.Trade.Products.Adapters {
+namespace Empiria.Trade.Inventory.Products.Adapters
+{
 
-  public class ProductShortEntryDto : IProductEntryDto {
-
-
-    public string ProductUID {
-      get; set;
-    } = string.Empty;
+    public class ProductShortEntryDto : IProductEntryDto
+    {
 
 
-    public string ProductCode {
-      get; set;
-    } = string.Empty;
+        public string ProductUID
+        {
+            get; set;
+        } = string.Empty;
 
 
-    public string Description {
-      get; set;
-    } = string.Empty;
+        public string ProductCode
+        {
+            get; set;
+        } = string.Empty;
 
 
-    public ProductType ProductType {
-      get; internal set;
-    } = new ProductType();
+        public string Description
+        {
+            get; set;
+        } = string.Empty;
 
 
-    public FixedList<Presentation> Presentations {
-      get; set;
-    } = new FixedList<Presentation>();
+        public ProductType ProductType
+        {
+            get; internal set;
+        } = new ProductType();
 
 
-    //public FixedList<PriceListOfProduct> PriceList {
-    //  get; internal set;
-    //} = new FixedList<PriceListOfProduct>();
+        public FixedList<Presentation> Presentations
+        {
+            get; set;
+        } = new FixedList<Presentation>();
 
 
-  } // class ProductShortEntryDto
+        //public FixedList<PriceListOfProduct> PriceList {
+        //  get; internal set;
+        //} = new FixedList<PriceListOfProduct>();
+
+
+    } // class ProductShortEntryDto
 
 
 } // namespace Empiria.Trade.Products.Adapters
