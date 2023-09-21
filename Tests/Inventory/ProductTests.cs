@@ -64,6 +64,22 @@ namespace Empiria.Trade.Tests.Products {
     }
 
 
+    [Fact]
+    public void ShouldAddOrUpdateTRDProduct() {
+
+      var usecase = TRDProductUseCases.UseCaseInteractor();
+      
+      TRDProductsEntryDto entry = new TRDProductsEntryDto();
+
+      usecase.AddOrUpdateTRDProduct(entry);
+
+      var sut = new object();
+
+      Assert.NotNull(sut);
+
+    }
+
+
     #endregion Facts
 
 

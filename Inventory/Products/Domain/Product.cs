@@ -1,7 +1,7 @@
 ﻿/* Empiria Trade *********************************************************************************************
 *                                                                                                            *
 *  Module   : Product Management                         Component : Domain Layer                            *
-*  Assembly : Empiria.Trade.Products.dll                 Pattern   : Partitioned Type / Information Holder   *
+*  Assembly : Empiria.Trade.Inventory.dll                Pattern   : Partitioned Type / Information Holder   *
 *  Type     : Product                                    License   : Please read LICENSE.txt file            *
 *                                                                                                            *
 *  Summary  : Represents a product.                                                                          *
@@ -11,127 +11,115 @@ using System;
 
 using Empiria.Ontology;
 
-namespace Empiria.Trade.Inventory.Products.Domain
-{
+namespace Empiria.Trade.Inventory.Products.Domain {
 
-    /// <summary>Represents a product.</summary>
-    [PartitionedType(typeof(ProductType))]
-    public partial class Product : BaseObject
-    {
+  /// <summary>Represents a product.</summary>
+  [PartitionedType(typeof(ProductType))]
+  public partial class Product : BaseObject {
 
-        #region Constructors and parsers
+    #region Constructors and parsers
 
-        protected Product(ProductType productType) : base(productType)
-        {
-            // Required by Empiria Framework for all partitioned types.
-        }
+    internal Product() {
 
+    }
 
-        internal Product(ProductType productType,
-                         ProductFields data) : base(productType)
-        {
-            LoadData(data);
-        }
+    protected Product(ProductType productType) : base(productType) {
+      // Required by Empiria Framework for all partitioned types.
+    }
 
 
-        static public Product Parse(int id) => ParseId<Product>(id);
-
-        static public Product Parse(int id, bool reload) => ParseId<Product>(id, reload);
-
-        static public Product Parse(string uid) => ParseKey<Product>(uid);
-
-        static public Product Empty => ParseEmpty<Product>();
+    internal Product(ProductType productType,
+                     ProductFields data) : base(productType) {
+      LoadData(data);
+    }
 
 
-        #endregion Constructors and parsers
+    static public Product Parse(int id) => ParseId<Product>(id);
 
-        #region Properties
+    static public Product Parse(int id, bool reload) => ParseId<Product>(id, reload);
 
-        public ProductType ProductType
-        {
-            get
-            {
-                return (ProductType)GetEmpiriaType();
-            }
-        }
+    static public Product Parse(string uid) => ParseKey<Product>(uid);
+
+    static public Product Empty => ParseEmpty<Product>();
 
 
-        internal string Keywords
-        {
-            get
-            {
-                return EmpiriaString.BuildKeywords(ProductType.DisplayName);
-            }
-        }
+    #endregion Constructors and parsers
+
+    #region Properties
+
+    public ProductType ProductType {
+      get {
+        return (ProductType) GetEmpiriaType();
+      }
+    }
 
 
-        [DataField("ProductCode")]
-        internal string Code
-        {
-            get;
-            private set;
-        }
+    internal string Keywords {
+      get {
+        return EmpiriaString.BuildKeywords(ProductType.DisplayName);
+      }
+    }
 
 
-        [DataField("ProductUPC")]
-        internal string UPC
-        {
-            get;
-            private set;
-        }
+    [DataField("ProductCode")]
+    internal string Code {
+      get;
+      private set;
+    }
 
 
-        [DataField("ProductName")]
-        internal string Name
-        {
-            get;
-            private set;
-        }
+    [DataField("ProductUPC")]
+    internal string UPC {
+      get;
+      private set;
+    }
 
 
-        [DataField("Description")]
-        internal string Description
-        {
-            get;
-            private set;
-        }
+    [DataField("ProductName")]
+    internal string Name {
+      get;
+      private set;
+    }
 
 
-        [DataField("ProductLineId")]
-        internal ProductLine ProductLine
-        {
-            get;
-            private set;
-        }
+    [DataField("Description")]
+    internal string Description {
+      get;
+      private set;
+    }
 
 
-        [DataField("ProductBrandId")]
-        internal Brand Brand
-        {
-            get;
-            private set;
-        }
+    [DataField("ProductLineId")]
+    internal ProductLine ProductLine {
+      get;
+      private set;
+    }
 
 
-        [DataField("ProductWeight")]
-        internal decimal Weight
-        {
-            get;
-            private set;
-        }
+    [DataField("ProductBrandId")]
+    internal Brand Brand {
+      get;
+      private set;
+    }
 
 
-        #endregion Properties
+    [DataField("ProductWeight")]
+    internal decimal Weight {
+      get;
+      private set;
+    }
 
-        #region Methods
 
-        private void LoadData(ProductFields data)
-        {
-            throw new NotImplementedException();
-        }
+    #endregion Properties
 
-        #endregion Methods
+    #region Methods
 
-    }  // class Product
+    private void LoadData(ProductFields data) {
+      throw new NotImplementedException();
+    }
+
+    #endregion Methods
+
+  }  // class Product
 
 }  // namespace Empiria.Trade.Products
