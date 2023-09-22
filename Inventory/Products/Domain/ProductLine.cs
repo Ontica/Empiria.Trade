@@ -11,10 +11,10 @@ using System;
 
 using Empiria.StateEnums;
 
-namespace Empiria.Trade.Inventory.Products.Domain
+namespace Empiria.Trade.Inventory.Products
 {
 
-    internal class ProductLine
+    public class ProductLine
     {
 
         [DataField("ProductLineName")]

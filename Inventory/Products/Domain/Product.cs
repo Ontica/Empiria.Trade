@@ -61,6 +61,13 @@ namespace Empiria.Trade.Inventory.Products.Domain {
     }
 
 
+    [DataField("ProductTypeId")]
+    public int ProductTypeId {
+      get;
+      internal set;
+    }
+
+
     [DataField("ProductCode")]
     internal string Code {
       get;
@@ -107,6 +114,19 @@ namespace Empiria.Trade.Inventory.Products.Domain {
     internal decimal Weight {
       get;
       private set;
+    }
+
+
+    [DataField("ProductLength")]
+    public decimal Length {
+      get;
+      internal set;
+    }
+
+
+    [DataField("ProductStatus")]
+    public char Status {
+      get; set;
     }
 
 

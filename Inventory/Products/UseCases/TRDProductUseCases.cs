@@ -33,7 +33,7 @@ namespace Empiria.Trade.Inventory.Products.UseCases {
     #endregion Constructors and parsers
 
 
-    #region Public methods
+    #region Use cases
 
 
     public void AddOrUpdateTRDProduct(TRDProductsEntryDto entry) {
@@ -48,7 +48,16 @@ namespace Empiria.Trade.Inventory.Products.UseCases {
     }
 
 
-    #endregion Public methods
+    public TRDProductsEntryDto GetTRDProduct(string productUID) {
+      Assertion.Require(productUID, "productUID");
+
+      var product = Product.Parse(productUID);
+
+      return TRDProductMapper.MapProduct(product);
+    }
+
+
+    #endregion Use cases
 
 
   } // class TRDProductUseCases

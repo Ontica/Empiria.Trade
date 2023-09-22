@@ -44,8 +44,8 @@ namespace Empiria.Trade.Inventory.Products.Adapters {
     }
 
 
-    public int ProductLineId {
-      get; set;
+    public ProductLine ProductLine {
+      get; internal set;
     }
 
 
