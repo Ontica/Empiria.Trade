@@ -63,7 +63,6 @@
   <ItemGroup Condition=" '$(Configuration)' == 'Multisolutions' ">
     <ProjectReference Include="..\..\extensions\WebApi\Empiria.WebApi.csproj" />
     <ProjectReference Include="..\Core\Empiria.Trade.Core.csproj" />
-    <ProjectReference Include="..\Products\Empiria.Trade.Products.csproj" />
     <ProjectReference Include="..\Sales\Empiria.Trade.Sales.csproj" />
   </ItemGroup>
   <ItemGroup>
@@ -83,7 +82,6 @@
     <ProjectReference Include="..\Financial\Empiria.Trade.Financial.csproj" />
     <ProjectReference Include="..\Inventory\Empiria.Trade.Inventory.csproj" />
     <ProjectReference Include="..\Procurement\Empiria.Trade.Procurement.csproj" />
-    <ProjectReference Include="..\Products\Empiria.Trade.Products.csproj" />
     <ProjectReference Include="..\Sales\Empiria.Trade.Sales.csproj" />
   </ItemGroup>
 </Project>
