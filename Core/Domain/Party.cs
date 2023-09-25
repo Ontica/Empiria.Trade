@@ -32,94 +32,94 @@ namespace Empiria.Trade.Core.Domain {
     #region Public properties
 
     [DataField("PartyId")]
-    public int PartyId {
+    public int Id {
       get;
       private set;
     }
 
     [DataField("PartyUID")]
-    public string PartyUID {
+    public string UID {
       get;
       private set;
     }
 
     [DataField("PartyName")]
-    public string PartyName {
+    public string Name {
       get;
       private set;
     }
 
     [DataField("PartyShortName")]
-    public string PartyShortName {
+    public string ShortName {
       get;
       private set;
     }
     
     [DataField("PartyAddressLine1")]
-    public string PartyAddressLine1 {
+    public string AddressLine1 {
       get;
       private set;
     }
 
     [DataField("PartyAddressLine2")]
-    public string PartyAddressLine2 {
+    public string AddressLine2 {
       get;
       private set;
     }
 
     [DataField("PartyLocationId")]
-    public int PartyLocationId {
+    public int LocationId {
       get;
       private set;
     }
 
     [DataField("PartyZipCode")]
-    public string PartyZipCode {
+    public string ZipCode {
       get;
       private set;
     }
 
     [DataField("PartyEMail")]
-    public string PartyEMail {
+    public string EMail {
       get;
       private set;
     }
 
     [DataField("PartyPhoneNumbers")]
-    public string PartyPhoneNumbers {
+    public string PhoneNumbers {
       get;
       private set;
     }
 
     [DataField("PartyContacts")]
-    public string PartyContacts {
+    public string Contacts {
       get;
       private set;
     }  
         
     [DataField("PartyTaxationID")]
-    public string PartyTaxationID {
+    public string TaxationID {
       get;
       private set;
     }
 
     [DataField("PartyKeywords")]
-    public string PartyKeywords {
+    public string Keywords {
       get;
       private set;
     }
 
     [DataField("PartyExtData")]
-    public string PartyExtData {
+    public string ExtData {
       get;
       private set;
     }
 
     [DataField("PartyStatus")]
-    public char PartyStatus {
+    public string Status {
       get;
       private set;
-    }
+    } 
 
 
     #endregion Public properties

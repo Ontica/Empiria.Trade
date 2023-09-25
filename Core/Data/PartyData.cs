@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Empiria.Data;
@@ -24,15 +25,24 @@ namespace Empiria.Trade.Core.Data {
     #region Internal methods 
 
     internal static Party GetParty(int id) {
-      var sql = $"SELECT * FROM TRDParties WHERE PartyId  = {id}";
-
+      var sql = "SELECT PartyId, PartyUID, PartyName, PartyShortName, PartyAddressLine1,PartyAddressLine2,PartyLocationId, " +
+                "PartyZipCode, PartyEMail, PartyPhoneNumbers,PartyContacts,PartyTaxationID,PartyKeywords,PartyExtData, " +
+                "PartyStatus " +
+                "FROM TRDParties " +
+                $"WHERE PartyId  = {id} ";
+      
       var dataOperation = DataOperation.Parse(sql);
 
       return DataReader.GetPlainObject<Party>(dataOperation);
     }
 
     internal static Party GetParty(string uid) {
-      var sql = $"SELECT * FROM TRDParties WHERE PartyUID  = {uid}";
+      var sql = "SELECT PartyId, PartyUID, PartyName, PartyShortName, PartyAddressLine1,PartyAddressLine2,PartyLocationId, " +
+                "PartyZipCode, PartyEMail, PartyPhoneNumbers,PartyContacts,PartyTaxationID,PartyKeywords,PartyExtData, " +
+                "PartyStatus " +
+                "FROM TRDParties " +
+               $"WHERE PartyUID  = '{uid}' ";
+     
 
       var dataOperation = DataOperation.Parse(sql);
 
