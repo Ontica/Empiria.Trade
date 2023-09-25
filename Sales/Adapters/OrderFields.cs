@@ -11,6 +11,9 @@
 using System;
 using Empiria;
 
+using Empiria.Trade.Core.UsesCases;
+using Empiria.Trade.Core.Adapters;
+
 namespace Empiria.Trade.Sales.Adapters {
 
   public class OrderFields {
@@ -43,24 +46,39 @@ namespace Empiria.Trade.Sales.Adapters {
 
     #endregion Constructors and parsers
 
-    internal int GetCustomer() {
-      return 30;
-    }
+    #region Internal methods
 
-    internal string GetOrderNumber() {
-      return "PR 78 9089 10";
+    internal int GetCustomer() {
+      return GetParty(this.CustomerUID).id;
+      
     }
+       
 
     internal int GetSalesAgent() {
-      return 30;
+      return GetParty(this.SalesAgentUID).id;
     }
 
     internal int GetSupplier() {
-      return 40;
+      return GetParty(this.SupplierUID).id;
+      
     }
+
+    #endregion Internal methods
+
+    #region Private methods
+
+    private ShortPartyDto GetParty(string uid) {
+      var usecase = PartyUseCases.UseCaseInteractor();
+
+      return usecase.GetParty(uid);
+    }
+
+    #endregion Private methods
 
 
   }  //  internal class OrderFields
-   
+
+
+
 
 } // namespace Empiria.Trade.Sales.Adapters

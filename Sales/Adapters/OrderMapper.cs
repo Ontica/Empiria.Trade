@@ -10,6 +10,11 @@
 using System;
 
 using Empiria.Trade.Sales.Domain;
+using Empiria.Trade.Sales.Adapters;
+
+using Empiria.Trade.Core.Adapters;
+using Empiria.Trade.Core.UsesCases;
+
 
 namespace Empiria.Trade.Sales.Adapters {
 
@@ -23,21 +28,58 @@ namespace Empiria.Trade.Sales.Adapters {
         OrderTime = order.OrderTime,
         Notes = order.Notes,
         Status = "Abierto",
-        //Customer = GetCustomer(order.CustomerId),
-        //Supplier = GetSupplier(order.SupplierId),
-        //SalesAgentD = GetSalesAgent(order.SalesAgentId),
+        Customer = GetCustomer(order.CustomerId),
+        Supplier = GetSupplier(order.SupplierId),
+        SalesAgent = GetSalesAgent(order.SalesAgentId),
         PaymentCondition = "30 dias"
       };
 
       return dto;
     }
 
-} // static internal class
+    static private ShortPartyDto GetParty(int partyId) {
+      var usecase = PartyUseCases.UseCaseInteractor();
 
-  #region Private methods
+      return usecase.GetParty(partyId);
+    }
+
+    static private CustomerDto GetCustomer(int customerId) {
+    
+      var customer = GetParty(customerId);
+      var dto = new CustomerDto {
+        UID = customer.UID,
+        Name = customer.Name
+      };
+
+      return dto;
+    }
+
+    static private SupplierDto GetSupplier(int supplierId) {
+
+      var suppplier = GetParty(supplierId);
+
+      var dto = new SupplierDto {
+        UID = suppplier.UID,
+        Name = suppplier.Name
+      };
+
+      return dto;
+    }
+
+    static private SalesAgentDto GetSalesAgent(int saleAgentId) {
+
+      var saleAgent = GetParty(saleAgentId);
+
+      var dto = new SalesAgentDto {
+        UID = saleAgent.UID,
+        Name = saleAgent.Name
+      };
+
+      return dto;
+    }
+
+  } // static internal class
 
   
-
-  #endregion
 
 } // namespace Empiria.Trade.Sales.Adapters

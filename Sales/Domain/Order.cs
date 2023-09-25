@@ -110,7 +110,7 @@ namespace Empiria.Trade.Sales.Domain {
       this.CustomerId = fields.GetCustomer();
       this.SupplierId = fields.GetSupplier();
       this.SalesAgentId = fields.GetSalesAgent();
-      this.OrderNumber = fields.GetOrderNumber();
+      this.OrderNumber = "afsaesdfsafa";
       this.OrderTime = DateTime.Today;
       this.Notes = fields.Notes;
       this.Keywords = "";
