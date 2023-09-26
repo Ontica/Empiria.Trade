@@ -8,13 +8,9 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
+
 using Empiria.Data;
+using Empiria.DataTypes;
 using Empiria.Trade.Core.Domain;
 
 namespace Empiria.Trade.Core.Data {
@@ -48,7 +44,20 @@ namespace Empiria.Trade.Core.Data {
 
       return DataReader.GetPlainObject<Party>(dataOperation);
     }
+
+    internal static FixedList<Party> GetPartyListByRole(string role) {
+      var sql = "SELECT PartyId, PartyUID, PartyName, PartyShortName, PartyAddressLine1,PartyAddressLine2,PartyLocationId, " +
+                "PartyZipCode, PartyEMail, PartyPhoneNumbers,PartyContacts,PartyTaxationID, PartyRoles, PartyKeywords,PartyExtData, " +
+                "PartyStatus " +
+                "FROM TRDParties " +
+               $"WHERE PartyRoles  like '%{role}%' AND  PartyStatus = 'A'";
+                                   
+      var dataOperation = DataOperation.Parse(sql);
+
     
+      return DataReader.GetPlainObjectFixedList<Party>(dataOperation);      
+    }
+
     #endregion Internal methods
 
 

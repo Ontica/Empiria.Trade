@@ -33,4 +33,16 @@ namespace Empiria.Trade.Core.Adapters {
 
   } // public class ShortDto 
 
+  public class MinimalPartyDto {
+    
+    public string UID {
+      get; internal set;      
+    }
+
+    public string Name {
+      get; internal set;
+    }
+
+  }
+
 } // namespace Empiria.Trade.Core.Adapters

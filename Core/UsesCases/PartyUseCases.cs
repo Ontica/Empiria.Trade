@@ -51,8 +51,36 @@ namespace Empiria.Trade.Core.UsesCases {
       return PartyMapper.MapTo(party);
     }
 
+    public FixedList<MinimalPartyDto> GetCustomers() {
+      return GetPartiesByRole("customer");
+    }
+
+    public FixedList<MinimalPartyDto> GetCustomerContacts() {
+      return GetPartiesByRole("customerContact");
+    }
+
+    public FixedList<MinimalPartyDto> GetSuppliers() {
+      return GetPartiesByRole("supplier");
+    }
+
+    public FixedList<MinimalPartyDto> GetSalesAgents() {
+      return GetPartiesByRole("salesAgent");
+    }
+
     #endregion Use cases
 
+    #region Private methods
+
+    private FixedList<MinimalPartyDto> GetPartiesByRole(string role) {
+      Assertion.Require(role, "role");
+
+      var partyList = PartyAdapter.GetPartiesByRole(role);
+
+      return PartyMapper.MapToMinimalPartyDto(partyList);
+    }
+
+
+    #endregion Private methods
 
   }
 }

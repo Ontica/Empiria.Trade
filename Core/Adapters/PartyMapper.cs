@@ -9,7 +9,8 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-
+using Empiria.Trade.Core.Data;
+using System.Collections.Generic;
 using Empiria.Trade.Core.Domain;
 
 
@@ -31,6 +32,25 @@ namespace Empiria.Trade.Core.Adapters {
 
 
       return dto;
+    }
+
+    static internal MinimalPartyDto MapToMinimalPartyDto(Party party) {
+      var dto = new MinimalPartyDto {
+        UID = party.UID,
+        Name = party.Name
+      };
+
+      return dto;
+    }
+
+    internal static FixedList<MinimalPartyDto> MapToMinimalPartyDto(FixedList<Party> partyList) {
+      var partiesDto = new List<MinimalPartyDto>();
+
+      foreach (var party in partyList) {
+        partiesDto.Add(MapToMinimalPartyDto(party));
+      }
+
+      return partiesDto.ToFixedList();
     }
 
     #endregion Public methods

@@ -22,6 +22,8 @@ namespace Empiria.Trade.Core.Domain {
     protected PartyAdapter() {
     }
 
+    
+
     #endregion Constructors and parsers
 
 
@@ -38,6 +40,10 @@ namespace Empiria.Trade.Core.Domain {
       var party = PartyData.GetParty(partyId);
 
       return party;
+    }
+
+    internal static FixedList<Party> GetPartiesByRole(string role) {
+      return PartyData.GetPartyListByRole(role);          
     }
 
 

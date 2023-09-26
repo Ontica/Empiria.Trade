@@ -51,7 +51,44 @@ namespace Empiria.Trade.Tests.Core {
       Assert.NotNull(sut);
     }
 
-    
+    [Fact]
+    public void ShouldGetCustomers() {
+      var usecase = PartyUseCases.UseCaseInteractor();
+
+      var sut = usecase.GetCustomers();
+
+      Assert.NotNull(sut);      
+    }
+
+    [Fact]
+    public void ShouldGetCustomerContacts() {
+      var usecase = PartyUseCases.UseCaseInteractor();
+
+      var sut = usecase.GetCustomerContacts();
+
+      Assert.NotNull(sut);
+    }
+
+    [Fact]
+    public void ShouldGetSalesAgent() {
+      var usecase = PartyUseCases.UseCaseInteractor();
+
+      var sut = usecase.GetSalesAgents();
+
+      Assert.NotNull(sut);
+    }
+
+    [Fact]
+    public void ShouldGetSuppliers() {
+      var usecase = PartyUseCases.UseCaseInteractor();
+
+      var sut = usecase.GetSuppliers();
+
+      Assert.NotNull(sut);
+    }
+
+
+
     #endregion Facts
 
 
