@@ -11,7 +11,7 @@ using System;
 
 using Empiria.Ontology;
 
-namespace Empiria.Trade.Inventory.Products.Domain {
+namespace Empiria.Trade.Inventory.Products {
 
   /// <summary>Represents a product.</summary>
   [PartitionedType(typeof(ProductType))]
@@ -96,15 +96,29 @@ namespace Empiria.Trade.Inventory.Products.Domain {
     }
 
 
-    [DataField("ProductLineId")]
-    internal ProductLine ProductLine {
+    [DataField("ProductGroupId")]
+    internal ProductGroup ProductGroup {
       get;
       private set;
     }
 
 
-    [DataField("ProductBrandId")]
-    internal Brand Brand {
+    [DataField("ProductSubgroupId")]
+    internal ProductSubgroup ProductSubgroup {
+      get;
+      private set;
+    }
+
+
+    [DataField("ProductKeywords")]
+    internal string ProductKeywords {
+      get;
+      private set;
+    }
+
+
+    [DataField("ProductExtData")]
+    internal string ProductExtData {
       get;
       private set;
     }

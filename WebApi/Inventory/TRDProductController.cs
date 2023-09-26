@@ -23,7 +23,7 @@ namespace Empiria.Trade.WebApi.Inventory {
 
 
     [HttpPost]
-    [Route("trade/products/products-list")]
+    [Route("trade/products/product/{productUID:guid}")]
     public SingleObjectModel GetTRDProduct([FromUri] string productUID) {
 
       base.RequireBody(productUID);

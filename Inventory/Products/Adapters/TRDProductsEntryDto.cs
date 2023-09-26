@@ -15,70 +15,74 @@ namespace Empiria.Trade.Inventory.Products.Adapters {
   public class TRDProductsEntryDto {
 
     public string ProductUID {
-      get; set;
-    }
-
-
-    public int ProductTypeId {
-      get; set;
-    }
-
-
-    public string ProductCode {
-      get; set;
-    }
-
-
-    public string ProductUPC {
-      get; set;
-    }
-
-
-    public string ProductName {
-      get; set;
-    }
-
-
-    public string Description {
-      get; set;
-    }
-
-
-    public ProductLine ProductLine {
       get; internal set;
     }
 
 
+    public int ProductTypeId {
+      get; internal set;
+    }
+
+
+    public string ProductCode {
+      get; internal set;
+    }
+
+
+    public string ProductUPC {
+      get; internal set;
+    }
+
+
+    public string ProductName {
+      get; internal set;
+    }
+
+
+    public string Description {
+      get; internal set;
+    }
+
+
+    public ProductGroup Group {
+      get; internal set;
+    }
+
+
+    internal ProductSubgroup Subgroup {
+      get;  set;
+    }
+
+
     public int ProductBrandId {
-      get; set;
+      get; internal set;
     }
 
 
     public string ProductKeywords {
-      get; set;
+      get; internal set;
     }
 
 
     public string ProductExtData {
-      get; set;
+      get; internal set;
     }
 
 
     public decimal ProductWeight {
-      get; set;
+      get; internal set;
     }
 
 
     public decimal ProductLength {
-      get; set;
+      get; internal set;
     }
 
 
     public char ProductStatus {
-      get; set;
+      get; internal set;
     }
-
-
+    
   } // class TRDProductsEntryDto
 
 } // namespace Empiria.Trade.Inventory.Products.Adapters

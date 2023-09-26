@@ -28,7 +28,8 @@ namespace Empiria.Trade.Inventory.Products.Adapters {
       dto.ProductUPC = product.UPC;
       dto.ProductName = product.Name;
       dto.Description = product.Description;
-      dto.ProductLine = product.ProductLine;
+      dto.Group = product.ProductGroup;
+      dto.Subgroup = product.ProductSubgroup;
       dto.ProductKeywords = product.Keywords;
       dto.ProductWeight = product.Weight;
       dto.ProductLength = product.Length;
