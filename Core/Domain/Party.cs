@@ -14,7 +14,7 @@ using Empiria.Trade.Core.Data;
 namespace Empiria.Trade.Core.Domain {
 
   /// <summary>Represent Party</summary>
-  internal class Party {
+  internal class Party: INamedEntity {
 
     #region Constructors and parsers
 

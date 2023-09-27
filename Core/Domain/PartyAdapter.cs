@@ -42,8 +42,8 @@ namespace Empiria.Trade.Core.Domain {
       return party;
     }
 
-    internal static FixedList<Party> GetPartiesByRole(string role) {
-      return PartyData.GetPartyListByRole(role);          
+    internal static FixedList<Party> GetPartiesByRole(string role, string keywords) {
+      return PartyData.GetPartyListByRole(role, keywords);          
     }
 
 

@@ -33,24 +33,11 @@ namespace Empiria.Trade.Core.Adapters {
 
       return dto;
     }
+    
+   
 
-    static internal MinimalPartyDto MapToMinimalPartyDto(Party party) {
-      var dto = new MinimalPartyDto {
-        UID = party.UID,
-        Name = party.Name
-      };
-
-      return dto;
-    }
-
-    internal static FixedList<MinimalPartyDto> MapToMinimalPartyDto(FixedList<Party> partyList) {
-      var partiesDto = new List<MinimalPartyDto>();
-
-      foreach (var party in partyList) {
-        partiesDto.Add(MapToMinimalPartyDto(party));
-      }
-
-      return partiesDto.ToFixedList();
+    internal static FixedList<NamedEntityDto> MapToMinimalPartyDto(FixedList<Party> partyList) {      
+      return partyList.MapToNamedEntityList();   
     }
 
     #endregion Public methods

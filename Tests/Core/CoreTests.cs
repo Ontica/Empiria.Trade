@@ -55,7 +55,7 @@ namespace Empiria.Trade.Tests.Core {
     public void ShouldGetCustomers() {
       var usecase = PartyUseCases.UseCaseInteractor();
 
-      var sut = usecase.GetCustomers();
+      var sut = usecase.GetCustomers("fer sujet");
 
       Assert.NotNull(sut);      
     }
@@ -64,7 +64,7 @@ namespace Empiria.Trade.Tests.Core {
     public void ShouldGetCustomerContacts() {
       var usecase = PartyUseCases.UseCaseInteractor();
 
-      var sut = usecase.GetCustomerContacts();
+      var sut = usecase.GetCustomerContacts("");
 
       Assert.NotNull(sut);
     }
@@ -73,7 +73,7 @@ namespace Empiria.Trade.Tests.Core {
     public void ShouldGetSalesAgent() {
       var usecase = PartyUseCases.UseCaseInteractor();
 
-      var sut = usecase.GetSalesAgents();
+      var sut = usecase.GetSalesAgents("");
 
       Assert.NotNull(sut);
     }
@@ -82,7 +82,7 @@ namespace Empiria.Trade.Tests.Core {
     public void ShouldGetSuppliers() {
       var usecase = PartyUseCases.UseCaseInteractor();
 
-      var sut = usecase.GetSuppliers();
+      var sut = usecase.GetSuppliers("");
 
       Assert.NotNull(sut);
     }

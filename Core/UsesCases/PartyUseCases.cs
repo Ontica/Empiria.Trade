@@ -51,30 +51,30 @@ namespace Empiria.Trade.Core.UsesCases {
       return PartyMapper.MapTo(party);
     }
 
-    public FixedList<MinimalPartyDto> GetCustomers() {
-      return GetPartiesByRole("customer");
+    public FixedList<NamedEntityDto> GetCustomers(string keywords) {
+      return GetPartiesByRole("customer", keywords);
     }
 
-    public FixedList<MinimalPartyDto> GetCustomerContacts() {
-      return GetPartiesByRole("customerContact");
+    public FixedList<NamedEntityDto> GetCustomerContacts(string customerUID) {
+      return GetPartiesByRole("customerContact", customerUID);
     }
 
-    public FixedList<MinimalPartyDto> GetSuppliers() {
-      return GetPartiesByRole("supplier");
+    public FixedList<NamedEntityDto> GetSuppliers(string keywords) {
+      return GetPartiesByRole("supplier", keywords);
     }
 
-    public FixedList<MinimalPartyDto> GetSalesAgents() {
-      return GetPartiesByRole("salesAgent");
+    public FixedList<NamedEntityDto> GetSalesAgents(string keywords) {
+      return GetPartiesByRole("salesAgent", keywords);
     }
 
     #endregion Use cases
 
     #region Private methods
 
-    private FixedList<MinimalPartyDto> GetPartiesByRole(string role) {
-      Assertion.Require(role, "role");
+    private FixedList<NamedEntityDto> GetPartiesByRole(string role, string keywords) {
+      Assertion.Require(keywords, "keywords");
 
-      var partyList = PartyAdapter.GetPartiesByRole(role);
+      var partyList = PartyAdapter.GetPartiesByRole(role, keywords);
 
       return PartyMapper.MapToMinimalPartyDto(partyList);
     }
