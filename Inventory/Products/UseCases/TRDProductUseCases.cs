@@ -56,6 +56,19 @@ namespace Empiria.Trade.Inventory.Products.UseCases {
       return TRDProductMapper.MapProduct(product);
     }
 
+    public ProductGroup GetTRDProductGroup(string productGroupUid) {
+      Assertion.Require(productGroupUid, "productGroupUid");
+
+      return ProductGroup.Parse(productGroupUid);
+    }
+
+
+    public ProductSubgroup GetTRDProductSubgroup(string productSubgroupUid) {
+      Assertion.Require(productSubgroupUid, "productSubgroupUid");
+
+      return ProductSubgroup.Parse(productSubgroupUid);
+    }
+
 
     #endregion Use cases
 

@@ -14,6 +14,12 @@ namespace Empiria.Trade.Inventory.Products.Adapters {
   /// <summary>Output DTO used to return the entries of TRDProducts.</summary>
   public class TRDProductsEntryDto {
 
+    public int ProductId {
+      get;
+      internal set;
+    }
+
+
     public string ProductUID {
       get; internal set;
     }
@@ -79,7 +85,7 @@ namespace Empiria.Trade.Inventory.Products.Adapters {
     }
 
 
-    public char ProductStatus {
+    public StateEnums.EntityStatus ProductStatus {
       get; internal set;
     }
     

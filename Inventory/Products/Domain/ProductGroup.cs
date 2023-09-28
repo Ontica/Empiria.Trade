@@ -9,7 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 
-namespace Empiria.Trade.Inventory.Products {
+namespace Empiria.Trade.Inventory {
 
   /// <summary>Represents a product's group.</summary>
   public class ProductGroup : BaseObject {
@@ -88,9 +88,9 @@ namespace Empiria.Trade.Inventory.Products {
     }
 
 
-    [DataField("ProductGroupStatus")]
-    public char Status {
-      get; set;
+    [DataField("ProductGroupStatus", Default = StateEnums.EntityStatus.Active)]
+    public StateEnums.EntityStatus Status {
+      get; internal set;
     }
 
 

@@ -8,14 +8,15 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using System.Threading.Tasks;
+using Empiria.DataTypes;
 
 using Xunit;
 
 using Empiria.Tests;
 using Empiria.Trade.Inventory.Products.UseCases;
 using Empiria.Trade.Inventory.Products.Adapters;
-using System.Threading.Tasks;
-using Empiria.DataTypes;
+using Empiria.Trade.Inventory;
 
 namespace Empiria.Trade.Tests {
 
@@ -39,12 +40,40 @@ namespace Empiria.Trade.Tests {
 
       var usecase = TRDProductUseCases.UseCaseInteractor();
 
-      string uid = "UID-AOME1-31161500";
+      string uid = "UID-AOME114-31161500";
 
       TRDProductsEntryDto sut = usecase.GetTRDProduct(uid);
         
       Assert.NotNull(sut);
       
+    }
+
+
+    [Fact]
+    public void ShouldGetProductGroupTest() {
+
+      var usecase = TRDProductUseCases.UseCaseInteractor();
+
+      string uid = "UID-GROUP-0000-1";
+
+      ProductGroup sut = usecase.GetTRDProductGroup(uid);
+
+      Assert.NotNull(sut);
+
+    }
+
+
+    [Fact]
+    public void ShouldGetProductSubgroupTest() {
+
+      var usecase = TRDProductUseCases.UseCaseInteractor();
+
+      string uid = "UID-SUBGROUP-0000-001";
+
+      ProductSubgroup sut = usecase.GetTRDProductSubgroup(uid);
+
+      Assert.NotNull(sut);
+
     }
 
 

@@ -72,7 +72,7 @@ namespace Empiria.Trade.Inventory.Products.Adapters
             var dto = new ProductEntryDto();
 
 
-            dto.StoreId = entry.StoreId;
+            dto.CompanyId = entry.CompanyId;
             dto.Product = entry.Product;
             dto.ProdServCode = entry.ProdServCode;
             dto.Description = entry.Description;
@@ -211,7 +211,7 @@ namespace Empiria.Trade.Inventory.Products.Adapters
             Vendor vendor = new Vendor()
             {
                 VendorUID = "eed65e0b-79b8-4ab1-859a-53730388c385",
-                VendorName = GetVendorName(entry.StoreId),
+                VendorName = GetVendorName(entry.CompanyId),
                 Sku = "sku-000",
                 Stock = entry.Stock,
                 Price = entry.MinimumPrice
@@ -259,20 +259,20 @@ namespace Empiria.Trade.Inventory.Products.Adapters
         }
 
 
-        static private string GetVendorName(int storeId)
+        static private string GetVendorName(int companyId)
         {
 
-            if (storeId == 1)
+            if (companyId == 1)
             {
                 return "Productos NK";
             }
-            if (storeId == 2)
-            {
-                return "Productos NK Hidroplomex";
-            }
-            if (storeId == 3)
+            if (companyId == 2)
             {
                 return "Productos Microsip";
+            }
+            if (companyId == 3)
+            {
+                return "Productos NK Hidroplomex";
             }
 
             return string.Empty;

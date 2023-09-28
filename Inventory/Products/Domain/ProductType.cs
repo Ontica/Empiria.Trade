@@ -11,7 +11,7 @@ using System;
 
 using Empiria.Ontology;
 
-namespace Empiria.Trade.Inventory.Products
+namespace Empiria.Trade.Inventory
 {
 
     /// <summary>Powertype that describes a product.</summary>

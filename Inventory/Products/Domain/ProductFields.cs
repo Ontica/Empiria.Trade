@@ -28,9 +28,8 @@ namespace Empiria.Trade.Inventory.Products
         #endregion Constructors and parsers
 
 
-        [DataField("StoreId")]
-        public int StoreId
-        {
+        [DataField("CompanyId")]
+        public int CompanyId {
             get; set;
         }
 

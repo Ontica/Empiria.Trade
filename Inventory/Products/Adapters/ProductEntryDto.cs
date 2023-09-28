@@ -341,7 +341,7 @@ namespace Empiria.Trade.Inventory.Products.Adapters
         } = string.Empty;
 
 
-        public int StoreId
+        public int CompanyId
         {
             get; set;
         }

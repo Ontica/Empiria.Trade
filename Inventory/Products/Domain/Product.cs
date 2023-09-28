@@ -10,11 +10,12 @@
 using System;
 
 using Empiria.Ontology;
+using Empiria.Trade.Inventory.Products;
 
-namespace Empiria.Trade.Inventory.Products {
+namespace Empiria.Trade.Inventory {
 
   /// <summary>Represents a product.</summary>
-  [PartitionedType(typeof(ProductType))]
+  //[PartitionedType(typeof(ProductType))]
   public partial class Product : BaseObject {
 
     #region Constructors and parsers
@@ -47,22 +48,29 @@ namespace Empiria.Trade.Inventory.Products {
 
     #region Properties
 
-    public ProductType ProductType {
-      get {
-        return (ProductType) GetEmpiriaType();
-      }
-    }
+    //public ProductType ProductType {
+    //  get {
+    //    return (ProductType) GetEmpiriaType();
+    //  }
+    //}
 
 
     internal string Keywords {
       get {
-        return EmpiriaString.BuildKeywords(ProductType.DisplayName);
+        return EmpiriaString.BuildKeywords(Name, Code);
       }
     }
 
 
-    [DataField("ProductTypeId")]
+    //[DataField("ProductTypeId")]
     public int ProductTypeId {
+      get;
+      internal set;
+    }
+
+
+    [DataField("ProductId")]
+    public int ProductId {
       get;
       internal set;
     }
@@ -138,9 +146,9 @@ namespace Empiria.Trade.Inventory.Products {
     }
 
 
-    [DataField("ProductStatus")]
-    public char Status {
-      get; set;
+    [DataField("ProductStatus", Default= StateEnums.EntityStatus.Active)]
+    public StateEnums.EntityStatus Status {
+      get; internal set;
     }
 
 

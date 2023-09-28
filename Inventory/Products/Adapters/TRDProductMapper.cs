@@ -22,8 +22,9 @@ namespace Empiria.Trade.Inventory.Products.Adapters {
     internal static TRDProductsEntryDto MapProduct(Product product) {
       var dto = new TRDProductsEntryDto();
 
-      dto.ProductUID = product.UID;
+      dto.ProductId = product.ProductId;
       dto.ProductTypeId = product.ProductTypeId;
+      dto.ProductUID = product.UID;
       dto.ProductCode = product.Code;
       dto.ProductUPC = product.UPC;
       dto.ProductName = product.Name;
