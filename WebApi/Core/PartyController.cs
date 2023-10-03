@@ -1,10 +1,10 @@
 ﻿/* Empiria Trade *********************************************************************************************
 *                                                                                                            *
-*  Module   : Product Management                         Component : Web Api                                 *
-*  Assembly : Empiria.Trade.WebApi.Inventory.dll         Pattern   : Controller                              *
-*  Type     : TRDProductController                       License   : Please read LICENSE.txt file            *
+*  Module   : Party Management                           Component : Web Api                                 *
+*  Assembly : Empiria.Trade.WebApi.Core.dll              Pattern   : Controller                              *
+*  Type     : PartyController                            License   : Please read LICENSE.txt file            *
 *                                                                                                            *
-*  Summary  : Query web API used to retrieve TRDProducts.                                                    *
+*  Summary  : Query web API used to managament Parties.                                                      *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
@@ -20,14 +20,19 @@ using Empiria.WebApi;
 
 
 namespace Empiria.Trade.WebApi.Core {
-  internal class PartyController: WebApiController {
+
+  // Query web API used to managament Parties.
+  public class PartyController: WebApiController {
 
 
     #region Web Apis
-        
+    
+  
     [HttpGet]
     [Route("v4/trade/contacts/customers")]
     public CollectionModel GetCustomers([FromUri] string keywords) {
+
+      base.RequireResource(keywords, "keywords");
 
       using (var usecases = PartyUseCases.UseCaseInteractor()) {
         FixedList<NamedEntityDto> customers = usecases.GetCustomers(keywords);
