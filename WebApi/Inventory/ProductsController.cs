@@ -40,7 +40,7 @@ namespace Empiria.Trade.Products.WebApi
 
     [HttpPost]
     [Route("v4/trade/products/products-list")]
-    public async Task<CollectionModel> GetProductsDto([FromBody] Inventory.Products.Adapters.ProductQuery keywords) {
+    public async Task<CollectionModel> GetProductsDto([FromBody] ProductQuery keywords) {
 
       base.RequireBody(keywords);
 

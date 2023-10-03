@@ -29,7 +29,7 @@ namespace Empiria.Trade.Inventory.Products.Data
                 keywords = "WHERE " + keywords;
             }
 
-            var sql = "SELECT CompanyId, ProdServCode, Product, Description, RegistrationDate, Trademark, Model, Section, LineName, " +
+            var sql = "SELECT CompanyId, UID, ProdServCode, Product, Description, RegistrationDate, Trademark, Model, Section, LineName, " +
                       "GroupName, SubgroupName, Diameter, Length, Degree, Weight, Characteristics, ThreadsName, StepsName, " +
                       "HeadsName, ViewDetailsName, Existence, Currency, LastPurchaseDate, LastPurchaseDateCost, MinimumPrice, " +
                       "BasisCost, ListPrice1, ListPrice2, ListPrice3, ListPrice4, Total, Packing, MinimumRefills, Supplier, " +

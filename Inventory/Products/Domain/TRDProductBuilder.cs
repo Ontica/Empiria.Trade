@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using Empiria.Json;
 using Empiria.Trade.Inventory.Products.Adapters;
 using Empiria.Trade.Inventory.Products.Data;
 
@@ -42,9 +43,18 @@ namespace Empiria.Trade.Inventory.Products.Domain {
 
     }
 
+
+    internal FixedList<Product> GetProductsList(ProductQuery query) {
+
+      FixedList<Product> data = TRDProductDataService.GetProductsList(query.Keywords);
+
+      return data;
+    }
+
+
     #endregion Public methods
 
-    
+
     #region Private methods
 
 

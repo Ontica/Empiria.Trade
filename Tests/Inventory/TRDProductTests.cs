@@ -35,6 +35,23 @@ namespace Empiria.Trade.Tests {
     #region Facts
 
 
+
+    [Fact]
+    public async Task ShouldGetProductListTest() {
+
+      var usecase = TRDProductUseCases.UseCaseInteractor();
+      ProductQuery query = new ProductQuery {
+        Keywords = "TA58X412"
+      };
+
+      FixedList<IProductEntryDto> sut = await usecase.GetProductsList(query).ConfigureAwait(false);
+
+      Assert.NotNull(sut);
+      Assert.NotEmpty(sut);
+
+    }
+
+
     [Fact]
     public void ShouldGetProductTest() {
 

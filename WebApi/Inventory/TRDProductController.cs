@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using System.Threading.Tasks;
 using System.Web.Http;
 using Empiria.Trade.Inventory.Products.Adapters;
 using Empiria.Trade.Inventory.Products.UseCases;
@@ -16,14 +17,14 @@ using Empiria.WebApi;
 namespace Empiria.Trade.WebApi.Inventory {
 
   /// <summary>Query web API used to retrieve TRDProducts.</summary>
-  internal class TRDProductController : WebApiController{
+  public class TRDProductController : WebApiController{
 
 
     #region Web Apis
 
 
-    [HttpPost]
-    [Route("trade/products/product/{productUID:guid}")]
+    [HttpGet]
+    [Route("trade/products/product/{productUID}")]
     public SingleObjectModel GetTRDProduct([FromUri] string productUID) {
 
       base.RequireBody(productUID);
@@ -33,6 +34,22 @@ namespace Empiria.Trade.WebApi.Inventory {
         TRDProductsEntryDto productDto = usecases.GetTRDProduct(productUID);
 
         return new SingleObjectModel(this.Request, productDto);
+      }
+    }
+
+
+    [HttpPost]
+    [Route("v4/trade/products/get-products-list")]
+    public async Task<CollectionModel> GetProductsDto([FromBody] ProductQuery keywords) {
+
+      base.RequireBody(keywords);
+
+      using (var usecases = TRDProductUseCases.UseCaseInteractor()) {
+
+        FixedList<IProductEntryDto> productDto = await usecases.GetProductsList(keywords)
+                                                .ConfigureAwait(false);
+
+        return new CollectionModel(this.Request, productDto);
       }
     }
 

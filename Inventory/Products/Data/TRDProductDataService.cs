@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using Empiria.Data;
 using Empiria.Trade.Inventory.Products.Domain;
 
 namespace Empiria.Trade.Inventory.Products.Data {
@@ -18,6 +19,24 @@ namespace Empiria.Trade.Inventory.Products.Data {
 
     internal void AddOrUpdateTRDProduct(Product productEntry) {
       throw new NotImplementedException();
+    }
+
+
+    internal static FixedList<Product> GetProductsList(string keywords) {
+
+      keywords = SearchExpression.ParseAndLikeKeywords("ProductKeywords", keywords);
+      if (keywords != string.Empty) {
+        keywords = "WHERE " + keywords;
+      }
+
+      var sql = "SELECT * " +
+                "FROM TRDProducts " +
+                $"{keywords}";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetPlainObjectFixedList<Product>(dataOperation);
+
     }
 
 

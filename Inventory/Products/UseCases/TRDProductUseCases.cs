@@ -9,6 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Threading.Tasks;
+using Empiria.DataTypes;
 using Empiria.Services;
 using Empiria.Trade.Inventory.Products.Adapters;
 using Empiria.Trade.Inventory.Products.Domain;
@@ -45,6 +46,16 @@ namespace Empiria.Trade.Inventory.Products.UseCases {
       //product = TRDProductMapper.MapToEntry(entry);
 
       builder.AddOrUpdateTRDProduct(product);
+    }
+
+
+    public async Task<FixedList<IProductEntryDto>> GetProductsList(ProductQuery query) {
+      var builder = new TRDProductBuilder();
+
+      FixedList<Product> products = await Task.Run(() => builder.GetProductsList(query))
+                                            .ConfigureAwait(false);
+
+      return TRDProductMapper.MapTo(products);
     }
 
 
