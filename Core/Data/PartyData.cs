@@ -45,21 +45,26 @@ namespace Empiria.Trade.Core.Data {
       return DataReader.GetPlainObject<Party>(dataOperation);
     }
 
-    internal static FixedList<Party> GetPartyListByRole(string role, string keywords) {
-     
-      keywords = SearchExpression.ParseOrLikeKeywords("PartyKeywords", keywords);
+    internal static FixedList<Party> GetPartyListByRole(string role, string keywords = "") {
 
+      if (keywords != string.Empty) {
+        keywords = SearchExpression.ParseOrLikeKeywords("PartyKeywords", keywords);
+
+        keywords = "AND " + keywords;
+      }
+          
       var sql = "SELECT PartyId, PartyUID, PartyName, PartyShortName, PartyAddressLine1,PartyAddressLine2,PartyLocationId, " +
                 "PartyZipCode, PartyEMail, PartyPhoneNumbers,PartyContacts,PartyTaxationID, PartyRoles, PartyKeywords,PartyExtData, " +
                 "PartyStatus " +
                 "FROM TRDParties " +
-               $"WHERE PartyRoles  like '%{role}%' AND PartyStatus = 'A' AND {keywords} ";
+               $"WHERE PartyRoles  like '%{role}%' AND PartyStatus = 'A' {keywords} ";
                                    
       var dataOperation = DataOperation.Parse(sql);
 
     
       return DataReader.GetPlainObjectFixedList<Party>(dataOperation);      
     }
+
 
     #endregion Internal methods
 

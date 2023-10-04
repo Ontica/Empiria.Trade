@@ -22,12 +22,12 @@ using Empiria.WebApi;
 namespace Empiria.Trade.WebApi.Core {
 
   // Query web API used to managament Parties.
-  public class PartyController: WebApiController {
+  public class PartyController : WebApiController {
 
 
     #region Web Apis
-    
-  
+
+
     [HttpGet]
     [Route("v4/trade/contacts/customers")]
     public CollectionModel GetCustomers([FromUri] string keywords) {
@@ -60,6 +60,17 @@ namespace Empiria.Trade.WebApi.Core {
         FixedList<NamedEntityDto> suppliers = usecases.GetSuppliers(keywords);
 
         return new CollectionModel(base.Request, suppliers);
+      }
+    }
+
+    [HttpGet]
+    [Route("v4/trade/contacts/internal-suppliers")]
+    public CollectionModel GetInternalSupppliers() {
+
+      using (var usecases = PartyUseCases.UseCaseInteractor()) {
+        FixedList<NamedEntityDto> internalSuppliers = usecases.GetInternalSuppliers();
+
+        return new CollectionModel(base.Request, internalSuppliers);
       }
     }
 

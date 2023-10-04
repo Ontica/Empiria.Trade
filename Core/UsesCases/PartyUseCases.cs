@@ -40,7 +40,7 @@ namespace Empiria.Trade.Core.UsesCases {
 
       var party = PartyAdapter.GetParty(partyUID);
 
-      return PartyMapper.MapTo(party);            
+      return PartyMapper.MapTo(party);
     }
 
     public ShortPartyDto GetParty(int partyId) {
@@ -67,6 +67,12 @@ namespace Empiria.Trade.Core.UsesCases {
       return GetPartiesByRole("salesAgent", keywords);
     }
 
+    public FixedList<NamedEntityDto> GetInternalSuppliers() {
+      var internalSuppliersList = PartyAdapter.GetInternalSuppliers();
+
+      return PartyMapper.MapToMinimalPartyDto(internalSuppliersList);
+    }
+
     #endregion Use cases
 
     #region Private methods
@@ -79,7 +85,7 @@ namespace Empiria.Trade.Core.UsesCases {
       return PartyMapper.MapToMinimalPartyDto(partyList);
     }
 
-
+  
     #endregion Private methods
 
   }

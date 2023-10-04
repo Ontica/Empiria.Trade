@@ -55,7 +55,7 @@ namespace Empiria.Trade.Tests.Core {
     public void ShouldGetCustomers() {
       var usecase = PartyUseCases.UseCaseInteractor();
 
-      var sut = usecase.GetCustomers("fer sujet");
+      var sut = usecase.GetCustomers("fer  su");
 
       Assert.NotNull(sut);      
     }
@@ -87,6 +87,14 @@ namespace Empiria.Trade.Tests.Core {
       Assert.NotNull(sut);
     }
 
+    [Fact]
+    public void ShouldGetInternalSuppliers() {
+      var usecase = PartyUseCases.UseCaseInteractor();
+
+      var sut = usecase.GetInternalSuppliers();
+
+      Assert.NotNull(sut);
+    }
 
 
     #endregion Facts
