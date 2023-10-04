@@ -50,6 +50,10 @@ namespace Empiria.Trade.Core.Domain {
       return PartyData.GetPartyListByRole("internalSupplier");
     }
 
+    internal static FixedList<Party> GetSalesAgents() {
+      return PartyData.GetPartyListByRole("salesAgent");
+    }
+
 
     #endregion Public methods
 

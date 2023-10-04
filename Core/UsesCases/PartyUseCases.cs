@@ -61,10 +61,12 @@ namespace Empiria.Trade.Core.UsesCases {
 
     public FixedList<NamedEntityDto> GetSuppliers(string keywords) {
       return GetPartiesByRole("supplier", keywords);
-    }
+    }  
 
-    public FixedList<NamedEntityDto> GetSalesAgents(string keywords) {
-      return GetPartiesByRole("salesAgent", keywords);
+    public FixedList<NamedEntityDto> GetSalesAgents() {
+      var salesAgentsList = PartyAdapter.GetSalesAgents();
+
+      return PartyMapper.MapToMinimalPartyDto(salesAgentsList);
     }
 
     public FixedList<NamedEntityDto> GetInternalSuppliers() {

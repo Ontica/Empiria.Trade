@@ -76,10 +76,10 @@ namespace Empiria.Trade.WebApi.Core {
 
     [HttpGet]
     [Route("v4/trade/contacts/sales-agents")]
-    public CollectionModel GetSalesAgents([FromUri] string keywords) {
+    public CollectionModel GetSalesAgents() {
 
       using (var usescase = PartyUseCases.UseCaseInteractor()) {
-        FixedList<NamedEntityDto> salesAgents = usescase.GetSalesAgents(keywords);
+        FixedList<NamedEntityDto> salesAgents = usescase.GetSalesAgents();
 
         return new CollectionModel(base.Request, salesAgents);
       }

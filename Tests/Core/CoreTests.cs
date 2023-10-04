@@ -73,7 +73,7 @@ namespace Empiria.Trade.Tests.Core {
     public void ShouldGetSalesAgent() {
       var usecase = PartyUseCases.UseCaseInteractor();
 
-      var sut = usecase.GetSalesAgents("");
+      var sut = usecase.GetSalesAgents();
 
       Assert.NotNull(sut);
     }
