@@ -45,4 +45,38 @@ namespace Empiria.Trade.Core.Adapters {
 
   }
 
+  public class PartyContactsDto {
+    public int id {
+      get; internal set;
+    }
+
+    public string Name {
+      get; internal set;
+    }
+
+    public string Email  {
+      get; internal set;
+    }
+
+    public string Phone {
+      get; internal set;
+    } = string.Empty;
+  }
+
+
+  public class ContactDto {
+    public string UID {
+      get; internal set;
+    }
+
+    public string Name {
+      get; internal set;
+    }
+
+    public FixedList<PartyContactsDto> Contacts{
+      get; internal set;
+    }
+
+  }
+
 } // namespace Empiria.Trade.Core.Adapters

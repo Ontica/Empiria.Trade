@@ -33,18 +33,58 @@ namespace Empiria.Trade.Core.Adapters {
 
       return dto;
     }
-    
-   
+
+    internal static FixedList<ContactDto> MapToContacs(FixedList<Party> partyList) {
+      List<ContactDto> contacts = new List<ContactDto>();
+      foreach (Party party in partyList) {
+        contacts.Add(MapToContact(party));
+      }
+
+      return contacts.ToFixedList();
+    }
+
+      internal static ContactDto MapToContact(Party party) {
+      var dto = new ContactDto {
+        UID = party.UID,
+        Name = party.Name,
+        Contacts = MapPartyContacts(party.Contacts)
+      };
+
+    return dto;
+    }
+
+    private static PartyContactsDto MapToPartyContact(PartyContact contact) {
+      var dto = new PartyContactsDto {
+        id = contact.Index,        
+        Name = contact.Name,
+        Phone = contact.PhoneNumber
+      };
+
+
+      return dto;
+    }
+
 
     internal static FixedList<NamedEntityDto> MapToMinimalPartyDto(FixedList<Party> partyList) {      
-      return partyList.MapToNamedEntityList();   
-    }
+      return partyList.MapToNamedEntityList();
+  }
+    
 
     #endregion Public methods
 
 
     #region Private methods
+   private static FixedList<PartyContactsDto> MapPartyContacts(FixedList<PartyContact> contacts) {
+    List<PartyContactsDto> contactsList = new List<PartyContactsDto>();
 
+    foreach (PartyContact contact in contacts) {
+        contactsList.Add(MapToPartyContact(contact));
+    }
+
+     return contactsList.ToFixedList();
+  }
+
+   
     #endregion Private methods
 
   } //static internal class PartyMapper

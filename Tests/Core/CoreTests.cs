@@ -14,7 +14,7 @@ using Xunit;
 using Empiria.Tests;
 
 using Empiria.Trade.Core.UsesCases;
-
+using Empiria.Trade.Core.Domain;
 
 namespace Empiria.Trade.Tests.Core {
 
@@ -36,7 +36,7 @@ namespace Empiria.Trade.Tests.Core {
     public void  ShouldGetPartyDtoByPartyUIDTest() {
 
       var usecase = PartyUseCases.UseCaseInteractor();
-
+                
       var sut = usecase.GetParty("20120c0a-cc8a-4e12-a73a-490f418fc99f");
           
       Assert.NotNull(sut);
@@ -64,7 +64,7 @@ namespace Empiria.Trade.Tests.Core {
     public void ShouldGetCustomerContacts() {
       var usecase = PartyUseCases.UseCaseInteractor();
 
-      var sut = usecase.GetCustomerContacts("");
+      var sut = usecase.GetCustomerContacts("rey");
 
       Assert.NotNull(sut);
     }

@@ -10,11 +10,48 @@
 using System;
 
 using Empiria.Trade.Core.Data;
+using Empiria.Json;
 
 namespace Empiria.Trade.Core.Domain {
 
+  
+  internal class PartyContact {
+
+    private PartyContact() {
+      //no-op
+    }
+
+    static public PartyContact Parse(JsonObject json) {
+      Assertion.Require(json, nameof(json));
+
+      return new PartyContact {
+        Index = json.Get<int>("Index"),
+        Name = json.Get<string>("Name"),
+        Email = json.Get<string>("Email"),
+        PhoneNumber = json.Get<string>("PhoneNumber")
+      };
+    }
+
+    public int Index {
+      get; internal set;
+    }
+    
+    public string Name {
+      get; internal set;
+    }
+    
+    public string Email {
+      get; internal set;
+    }
+    
+    public string PhoneNumber {
+      get; internal set;
+    }      
+   
+  }
+
   /// <summary>Represent Party</summary>
-  internal class Party: INamedEntity {
+  internal class Party : INamedEntity {
 
     #region Constructors and parsers
 
@@ -54,7 +91,7 @@ namespace Empiria.Trade.Core.Domain {
       get;
       private set;
     }
-    
+
     [DataField("PartyAddressLine1")]
     public string AddressLine1 {
       get;
@@ -91,12 +128,18 @@ namespace Empiria.Trade.Core.Domain {
       private set;
     }
 
-    [DataField("PartyContacts")]
-    public string Contacts {
+    [DataField("PartyContacts", IsOptional = true)]
+    private JsonObject ContactsJson {
       get;
-      private set;
-    }  
-        
+      set;
+    } = new JsonObject();
+
+    internal FixedList<PartyContact> Contacts {
+      get {
+        return this.ContactsJson.GetFixedList<PartyContact>("contacts", false);
+      }
+    }
+
     [DataField("PartyTaxationID")]
     public string TaxationID {
       get;

@@ -42,11 +42,11 @@ namespace Empiria.Trade.WebApi.Core {
     }
 
     [HttpGet]
-    [Route("v4/trade/contacts/customer-contacts/{customerUID:guid}")]
-    public CollectionModel GetCustomerContacts([FromUri] string customerUID) {
+    [Route("v4/trade/contacts/customer-contacts")]
+    public CollectionModel GetCustomerContacts([FromUri] string keywords) {
 
       using (var usecases = PartyUseCases.UseCaseInteractor()) {
-        FixedList<NamedEntityDto> customerContacts = usecases.GetCustomerContacts(customerUID);
+        FixedList<ContactDto> customerContacts = usecases.GetCustomerContacts(keywords);
 
         return new CollectionModel(base.Request, customerContacts);
       }
