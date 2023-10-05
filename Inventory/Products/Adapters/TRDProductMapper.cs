@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using Empiria.Trade.Inventory.Products.Domain;
+using Newtonsoft.Json;
 
 namespace Empiria.Trade.Inventory.Products.Adapters {
 
@@ -31,6 +32,7 @@ namespace Empiria.Trade.Inventory.Products.Adapters {
       dto.ProductName = product.Name;
       dto.Description = product.Description;
       dto.Group = product.ProductGroup;
+      //dto.Attributes = product.Attributes;
       dto.Subgroup = product.ProductSubgroup;
       dto.ProductKeywords = product.Keywords;
       dto.ProductWeight = product.Weight;
@@ -75,55 +77,22 @@ namespace Empiria.Trade.Inventory.Products.Adapters {
 
       var type = new ProductType();
 
-      //var attributes = GetAttributes(entry);
+      var attributes = GetAttributes(entry);
 
       type.ProductTypeUID = "ddddd-dc17-49f5-b378-aa692dc21cdd";
       type.Name = entry.ProductGroup.Name; //GroupName
-      type.Attributes = new FixedList<Attributes>();//attributes;
+      type.Attributes = attributes;
 
       return type;
     }
 
 
-    //static private FixedList<Attributes> GetAttributes(Product entry) {
+    static private FixedList<Attributes> GetAttributes(Product entry) {
 
-    //  var attr = entry.ProductExtData;
+      AttributesList attrs = JsonConvert.DeserializeObject<AttributesList>(entry.Attributes);
 
-    //  var attrList = new List<Attributes>();
-
-    //  if (entry.ViewDetailsName != "") {
-    //    var attr = new Attributes();
-    //    attr.Name = "Terminado";
-    //    attr.Value = entry.ViewDetailsName;
-    //    attrList.Add(attr);
-    //  }
-    //  if (entry.HeadsName != "") {
-    //    var attr = new Attributes();
-    //    attr.Name = "Cabeza";
-    //    attr.Value = entry.HeadsName;
-    //    attrList.Add(attr);
-    //  }
-    //  if (entry.Degree != "") {
-    //    var attr = new Attributes();
-    //    attr.Name = "Grado";
-    //    attr.Value = entry.Degree;
-    //    attrList.Add(attr);
-    //  }
-    //  if (entry.Diameter != "") {
-    //    var attr = new Attributes();
-    //    attr.Name = "Tamaño";
-    //    attr.Value = entry.Diameter;
-    //    attrList.Add(attr);
-    //  }
-    //  if (entry.ThreadsName != "") {
-    //    var attr = new Attributes();
-    //    attr.Name = "Hilos";
-    //    attr.Value = entry.ThreadsName;
-    //    attrList.Add(attr);
-    //  }
-
-    //  return attrList.ToFixedList();
-    //}
+      return attrs.Attributes.ToFixedList();
+    }
 
 
     static private FixedList<Presentation> GetPresentations(Product entry) {

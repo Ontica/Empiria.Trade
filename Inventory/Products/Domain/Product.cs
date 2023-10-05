@@ -8,7 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-
+using Empiria.Json;
 using Empiria.Ontology;
 using Empiria.Trade.Inventory.Products;
 
@@ -113,6 +113,13 @@ namespace Empiria.Trade.Inventory {
 
     [DataField("ProductSubgroupId")]
     internal ProductSubgroup ProductSubgroup {
+      get;
+      private set;
+    }
+
+
+    [DataField("Attributes")]
+    internal string Attributes {
       get;
       private set;
     }

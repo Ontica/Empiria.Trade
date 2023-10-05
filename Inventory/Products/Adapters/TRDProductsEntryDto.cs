@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using Empiria.Json;
 
 namespace Empiria.Trade.Inventory.Products.Adapters {
 
@@ -50,6 +51,12 @@ namespace Empiria.Trade.Inventory.Products.Adapters {
     }
 
 
+    public string Attributes {
+      get;
+      internal set;
+    }
+
+
     public ProductGroup Group {
       get; internal set;
     }
@@ -89,6 +96,7 @@ namespace Empiria.Trade.Inventory.Products.Adapters {
       get; internal set;
     }
     
+
   } // class TRDProductsEntryDto
 
 } // namespace Empiria.Trade.Inventory.Products.Adapters

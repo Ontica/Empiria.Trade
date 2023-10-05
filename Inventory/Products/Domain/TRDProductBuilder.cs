@@ -8,9 +8,13 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Empiria.Json;
+using Empiria.Storage;
 using Empiria.Trade.Inventory.Products.Adapters;
 using Empiria.Trade.Inventory.Products.Data;
+using Newtonsoft.Json;
 
 namespace Empiria.Trade.Inventory.Products.Domain {
 
@@ -51,7 +55,6 @@ namespace Empiria.Trade.Inventory.Products.Domain {
       return data;
     }
 
-
     #endregion Public methods
 
 
@@ -63,4 +66,6 @@ namespace Empiria.Trade.Inventory.Products.Domain {
 
 
   }
+
+
 }

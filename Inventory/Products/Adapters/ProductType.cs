@@ -9,125 +9,114 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 
-namespace Empiria.Trade.Inventory.Products.Adapters
-{
+namespace Empiria.Trade.Inventory.Products.Adapters {
 
-    /// <summary>Object used to return the type of Products.</summary>
-    public class ProductType
-    {
+  /// <summary>Object used to return the type of Products.</summary>
+  public class ProductType {
 
 
-        public string ProductTypeUID
-        {
-            get; set;
-        }
-
-
-        public string Name
-        {
-            get; set;
-        }
-
-
-        public FixedList<Attributes> Attributes
-        {
-            get; internal set;
-        } = new FixedList<Attributes>();
-
-
-    } // class ProductType
-
-
-    public class Attributes
-    {
-
-
-        public string Name
-        {
-            get; set;
-        } = string.Empty;
-
-
-        public string Value
-        {
-            get; internal set;
-        } = string.Empty;
-
-
+    public string ProductTypeUID {
+      get; set;
     }
 
 
-    public class Presentation
-    {
-
-        public string PresentationUID
-        {
-            get; set;
-        } = string.Empty;
+    public string Name {
+      get; set;
+    }
 
 
-        public string Description
-        {
-            get;
-            internal set;
-        }
+    public FixedList<Attributes> Attributes {
+      get; internal set;
+    } = new FixedList<Attributes>();
 
 
-        public string Units
-        {
-            get;
-            internal set;
-        }
+  } // class ProductType
 
 
-        public FixedList<Vendor> Vendors
-        {
-            get;
-            internal set;
-        } = new FixedList<Vendor>();
+  public class AttributesList {
 
-    } // class Presentation
+    public FixedList<Attributes> Attributes {
+      get; internal set;
+    } = new FixedList<Attributes>();
 
-
-    public class Vendor
-    {
+  }
 
 
-        public string VendorUID
-        {
-            get; set;
-        } = string.Empty;
+  public class Attributes {
+
+    public string Name {
+      get; set;
+    } = string.Empty;
 
 
-        public string VendorName
-        {
-            get;
-            internal set;
-        }
+    public string Value {
+      get; set;
+    } = string.Empty;
 
 
-        public string Sku
-        {
-            get;
-            internal set;
-        }
+  }
 
 
-        public string Stock
-        {
-            get;
-            internal set;
-        }
+  public class Presentation {
+
+    public string PresentationUID {
+      get; set;
+    } = string.Empty;
 
 
-        public decimal Price
-        {
-            get;
-            internal set;
-        }
+    public string Description {
+      get;
+      internal set;
+    }
 
 
-    } // class Vendor
+    public string Units {
+      get;
+      internal set;
+    }
+
+
+    public FixedList<Vendor> Vendors {
+      get;
+      internal set;
+    } = new FixedList<Vendor>();
+
+  } // class Presentation
+
+
+  public class Vendor {
+
+
+    public string VendorUID {
+      get; set;
+    } = string.Empty;
+
+
+    public string VendorName {
+      get;
+      internal set;
+    }
+
+
+    public string Sku {
+      get;
+      internal set;
+    }
+
+
+    public string Stock {
+      get;
+      internal set;
+    }
+
+
+    public decimal Price {
+      get;
+      internal set;
+    }
+
+
+  } // class Vendor
 
 
 } // namespace Empiria.Trade.Products.Adapters

@@ -32,7 +32,7 @@ namespace Empiria.Trade.WebApi.Inventory {
       using (var usecases = TRDProductUseCases.UseCaseInteractor()) {
 
         TRDProductsEntryDto productDto = usecases.GetTRDProduct(productUID);
-
+        
         return new SingleObjectModel(this.Request, productDto);
       }
     }

@@ -135,40 +135,41 @@ namespace Empiria.Trade.Inventory.Products.Adapters {
 
 
     static private FixedList<Attributes> GetAttributes(ProductFields entry) {
-      var attrList = new List<Attributes>();
-
+      
+      var attrs = new List<Attributes>();
+      
       if (entry.ViewDetailsName != "") {
         var attr = new Attributes();
         attr.Name = "Terminado";
         attr.Value = entry.ViewDetailsName;
-        attrList.Add(attr);
+        attrs.Add(attr);
       }
       if (entry.HeadsName != "") {
         var attr = new Attributes();
         attr.Name = "Cabeza";
         attr.Value = entry.HeadsName;
-        attrList.Add(attr);
+        attrs.Add(attr);
       }
       if (entry.Degree != "") {
         var attr = new Attributes();
         attr.Name = "Grado";
         attr.Value = entry.Degree;
-        attrList.Add(attr);
+        attrs.Add(attr);
       }
       if (entry.Diameter != "") {
         var attr = new Attributes();
         attr.Name = "Tamaño";
         attr.Value = entry.Diameter;
-        attrList.Add(attr);
+        attrs.Add(attr);
       }
       if (entry.ThreadsName != "") {
         var attr = new Attributes();
         attr.Name = "Hilos";
         attr.Value = entry.ThreadsName;
-        attrList.Add(attr);
+        attrs.Add(attr);
       }
 
-      return attrList.ToFixedList();
+      return attrs.ToFixedList();
     }
 
 
