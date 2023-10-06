@@ -55,7 +55,7 @@ namespace Empiria.Trade.Core.Adapters {
 
     private static PartyContactsDto MapToPartyContact(PartyContact contact) {
       var dto = new PartyContactsDto {
-        id = contact.Index,        
+        UID = contact.Index,        
         Name = contact.Name,
         Phone = contact.PhoneNumber
       };

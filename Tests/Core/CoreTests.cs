@@ -46,7 +46,7 @@ namespace Empiria.Trade.Tests.Core {
     public void ShouldGetPartyDtoByPartyIdTest() {
       var usecase = PartyUseCases.UseCaseInteractor();
 
-      var sut = usecase.GetParty(1);
+      var sut = usecase.GetParty(100);
 
       Assert.NotNull(sut);
     }

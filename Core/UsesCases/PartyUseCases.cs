@@ -38,7 +38,7 @@ namespace Empiria.Trade.Core.UsesCases {
     public ShortPartyDto GetParty(string partyUID) {
       Assertion.Require(partyUID, "PartyUID");
 
-      var party = PartyAdapter.GetParty(partyUID);
+      var party = Party.Parse(partyUID);
 
       return PartyMapper.MapTo(party);
     }
@@ -46,7 +46,7 @@ namespace Empiria.Trade.Core.UsesCases {
     public ShortPartyDto GetParty(int partyId) {
       Assertion.Require(partyId, "PartyId");
 
-      var party = PartyAdapter.GetParty(partyId);
+      var party = Party.Parse(partyId);
 
       return PartyMapper.MapTo(party);
     }
@@ -58,7 +58,7 @@ namespace Empiria.Trade.Core.UsesCases {
     public FixedList<ContactDto> GetCustomerContacts(string keywords) {
       Assertion.Require(keywords, "keywords");
 
-      var customerList = PartyAdapter.GetPartiesByRole("customer", keywords);
+      var customerList = Party.GetPartiesByRole("customer", keywords);
 
       return PartyMapper.MapToContacs(customerList);
     }
@@ -68,13 +68,13 @@ namespace Empiria.Trade.Core.UsesCases {
     }  
 
     public FixedList<NamedEntityDto> GetSalesAgents() {
-      var salesAgentsList = PartyAdapter.GetSalesAgents();
+      var salesAgentsList = Party.GetSalesAgents();
 
       return PartyMapper.MapToMinimalPartyDto(salesAgentsList);
     }
 
     public FixedList<NamedEntityDto> GetInternalSuppliers() {
-      var internalSuppliersList = PartyAdapter.GetInternalSuppliers();
+      var internalSuppliersList = Party.GetInternalSuppliers();
 
       return PartyMapper.MapToMinimalPartyDto(internalSuppliersList);
     }
@@ -86,7 +86,7 @@ namespace Empiria.Trade.Core.UsesCases {
     private FixedList<NamedEntityDto> GetPartiesByRole(string role, string keywords) {
       Assertion.Require(keywords, "keywords");
 
-      var partyList = PartyAdapter.GetPartiesByRole(role, keywords);
+      var partyList = Party.GetPartiesByRole(role, keywords);
 
       return PartyMapper.MapToMinimalPartyDto(partyList);
     }

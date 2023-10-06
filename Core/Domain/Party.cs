@@ -13,43 +13,7 @@ using Empiria.Trade.Core.Data;
 using Empiria.Json;
 
 namespace Empiria.Trade.Core.Domain {
-
-  
-  internal class PartyContact {
-
-    private PartyContact() {
-      //no-op
-    }
-
-    static public PartyContact Parse(JsonObject json) {
-      Assertion.Require(json, nameof(json));
-
-      return new PartyContact {
-        Index = json.Get<int>("Index"),
-        Name = json.Get<string>("Name"),
-        Email = json.Get<string>("Email"),
-        PhoneNumber = json.Get<string>("PhoneNumber")
-      };
-    }
-
-    public int Index {
-      get; internal set;
-    }
     
-    public string Name {
-      get; internal set;
-    }
-    
-    public string Email {
-      get; internal set;
-    }
-    
-    public string PhoneNumber {
-      get; internal set;
-    }      
-   
-  }
-
   /// <summary>Represent Party</summary>
   internal class Party : INamedEntity {
 
@@ -162,18 +126,29 @@ namespace Empiria.Trade.Core.Domain {
     public string Status {
       get;
       private set;
-    } 
+    }
 
 
     #endregion Public properties
 
     #region Public methods
 
+    internal static FixedList<Party> GetPartiesByRole(string role, string keywords) {
+      return PartyData.GetPartyListByRole(role, keywords);
+    }
+
+    internal static FixedList<Party> GetInternalSuppliers() {
+      return PartyData.GetPartyListByRole("internalSupplier");
+    }
+
+    internal static FixedList<Party> GetSalesAgents() {
+      return PartyData.GetPartyListByRole("salesAgent");
+    }
 
     #endregion Public methos
 
     #region Private methods
-      
+
 
     #endregion Private methods
 

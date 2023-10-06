@@ -46,7 +46,7 @@ namespace Empiria.Trade.Core.Adapters {
   }
 
   public class PartyContactsDto {
-    public int id {
+    public int UID {
       get; internal set;
     }
 
