@@ -42,7 +42,7 @@ namespace Empiria.Trade.WebApi.Core {
     }
 
     [HttpGet]
-    [Route("v4/trade/contacts/customer-contacts")]
+    [Route("v4/trade/contacts/customers-with-contacts")]
     public CollectionModel GetCustomerContacts([FromUri] string keywords) {
 
       using (var usecases = PartyUseCases.UseCaseInteractor()) {
