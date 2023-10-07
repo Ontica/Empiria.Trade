@@ -8,13 +8,10 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-using System.Diagnostics.Contracts;
-using System.Threading.Tasks;
 
 using Empiria.Services;
 
 using Empiria.Trade.Sales.Adapters;
-using Empiria.Trade.Sales.Domain;
 
 namespace Empiria.Trade.Sales.UseCases {
 
@@ -36,21 +33,35 @@ namespace Empiria.Trade.Sales.UseCases {
 
 
     #region Use cases
-    
-    
-    public OrderDto CreateOrder(OrderFields fields) {
+
+
+    public OrderDto ProcessSalesOrder(OrderFields fields) {
       Assertion.Require(fields, "fields");
 
-      var order = new Order(fields);
+      SalesOrder order;
+
+      if (fields.UID.Length != 0) {
+        order = SalesOrder.Parse(fields.UID);
+        order.Update(fields);
+      } else {
+        order = new SalesOrder(fields);
+      }
+
+      return OrderMapper.Map(order);
+    }
+
+
+    public OrderDto SaveSalesOrder(OrderFields fields) {
+      Assertion.Require(fields, "fields");
+
+      var order = new SalesOrder(fields);
+
       order.Save();
 
       var orderDto = OrderMapper.Map(order);
 
       return orderDto;
-
     }
-
-
 
     #endregion Use cases
 

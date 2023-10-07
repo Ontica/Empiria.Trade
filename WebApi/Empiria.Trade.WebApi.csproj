@@ -74,9 +74,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Sales\" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\extensions\WebApi\Empiria.WebApi.csproj" />
     <ProjectReference Include="..\Core\Empiria.Trade.Core.csproj" />
     <ProjectReference Include="..\Financial\Empiria.Trade.Financial.csproj" />
