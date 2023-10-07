@@ -24,14 +24,14 @@ namespace Empiria.Trade.WebApi.Inventory {
 
 
     [HttpGet]
-    [Route("trade/products/product/{productUID}")]
+    [Route("v4/trade/products/product/{productUID}")]
     public SingleObjectModel GetTRDProduct([FromUri] string productUID) {
 
       base.RequireBody(productUID);
 
       using (var usecases = TRDProductUseCases.UseCaseInteractor()) {
 
-        TRDProductsEntryDto productDto = usecases.GetTRDProduct(productUID);
+        IProductEntryDto productDto = usecases.GetTRDProduct(productUID);
         
         return new SingleObjectModel(this.Request, productDto);
       }

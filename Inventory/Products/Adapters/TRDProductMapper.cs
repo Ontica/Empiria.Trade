@@ -21,42 +21,28 @@ namespace Empiria.Trade.Inventory.Products.Adapters {
     #region Public methods
 
 
-    internal static TRDProductsEntryDto MapProduct(Product product) {
-      var dto = new TRDProductsEntryDto();
+    static internal IProductEntryDto MapToDto(Product entry) {
+      var mappedItems = MapEntry(entry);
 
-      dto.ProductId = product.ProductId;
-      dto.ProductTypeId = product.ProductTypeId;
-      dto.ProductUID = product.UID;
-      dto.ProductCode = product.Code;
-      dto.ProductUPC = product.UPC;
-      dto.ProductName = product.Name;
-      dto.Description = product.Description;
-      dto.Group = product.ProductGroup;
-      //dto.Attributes = product.Attributes;
-      dto.Subgroup = product.ProductSubgroup;
-      dto.ProductKeywords = product.Keywords;
-      dto.ProductWeight = product.Weight;
-      dto.ProductLength = product.Length;
-      dto.ProductStatus = product.Status;
-
-      return dto;
+      return mappedItems;
     }
 
 
-    internal static FixedList<IProductEntryDto> MapTo(FixedList<Product> products) {
-      return MapToEntriesDto(products);
+    //static internal FixedList<IProductEntryDto> MapToListDto(FixedList<Product> products) {
+    //  return MapToEntriesDto(products);
+    //}
+
+
+    static internal FixedList<IProductEntryDto> MapToEntriesDto(FixedList<Product> entries) {
+      var mappedItems = entries.Select((x) => MapEntry((Product) x));
+
+      return new FixedList<IProductEntryDto>(mappedItems);
     }
 
 
     #endregion Public methods
 
     #region Private methods
-
-    static private FixedList<IProductEntryDto> MapToEntriesDto(FixedList<Product> entries) {
-      var mappedItems = entries.Select((x) => MapEntry((Product) x));
-
-      return new FixedList<IProductEntryDto>(mappedItems);
-    }
 
 
     static private ProductShortEntryDto MapEntry(Product entry) {

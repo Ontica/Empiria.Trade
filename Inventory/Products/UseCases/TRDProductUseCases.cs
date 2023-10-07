@@ -49,23 +49,24 @@ namespace Empiria.Trade.Inventory.Products.UseCases {
     }
 
 
+    public IProductEntryDto GetTRDProduct(string productUID) {
+      Assertion.Require(productUID, "productUID");
+
+      var product = Product.Parse(productUID);
+
+      return TRDProductMapper.MapToDto(product);
+    }
+
+
     public async Task<FixedList<IProductEntryDto>> GetProductsList(ProductQuery query) {
       var builder = new TRDProductBuilder();
 
       FixedList<Product> products = await Task.Run(() => builder.GetProductsList(query))
                                             .ConfigureAwait(false);
 
-      return TRDProductMapper.MapTo(products);
+      return TRDProductMapper.MapToEntriesDto(products);
     }
 
-
-    public TRDProductsEntryDto GetTRDProduct(string productUID) {
-      Assertion.Require(productUID, "productUID");
-
-      var product = Product.Parse(productUID);
-
-      return TRDProductMapper.MapProduct(product);
-    }
 
     public ProductGroup GetTRDProductGroup(string productGroupUid) {
       Assertion.Require(productGroupUid, "productGroupUid");

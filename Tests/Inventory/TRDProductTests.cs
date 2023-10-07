@@ -37,6 +37,20 @@ namespace Empiria.Trade.Tests {
 
 
     [Fact]
+    public void ShouldGetProductTest() {
+
+      var usecase = TRDProductUseCases.UseCaseInteractor();
+
+      string uid = "6160446c-2a77-4db4-a053-d1bf21c273d0";
+
+      IProductEntryDto sut = usecase.GetTRDProduct(uid);
+
+      Assert.NotNull(sut);
+
+    }
+
+
+    [Fact]
     public async Task ShouldGetProductListTest() {
 
       var usecase = TRDProductUseCases.UseCaseInteractor();
@@ -49,20 +63,6 @@ namespace Empiria.Trade.Tests {
       Assert.NotNull(sut);
       Assert.NotEmpty(sut);
 
-    }
-
-
-    [Fact]
-    public void ShouldGetProductTest() {
-
-      var usecase = TRDProductUseCases.UseCaseInteractor();
-
-      string uid = "UID-AOME114-31161500";
-
-      TRDProductsEntryDto sut = usecase.GetTRDProduct(uid);
-        
-      Assert.NotNull(sut);
-      
     }
 
 
