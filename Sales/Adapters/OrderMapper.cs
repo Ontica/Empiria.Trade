@@ -14,6 +14,7 @@ using Empiria.Trade.Sales.Adapters;
 
 using Empiria.Trade.Core.Adapters;
 using Empiria.Trade.Core.UsesCases;
+using Empiria.Trade.Core.Domain;
 
 
 namespace Empiria.Trade.Sales.Adapters {
@@ -28,24 +29,20 @@ namespace Empiria.Trade.Sales.Adapters {
         OrderTime = order.OrderTime,
         Notes = order.Notes,
         Status = "Abierto",
-        Customer = GetCustomer(order.CustomerId),
-        Supplier = GetSupplier(order.SupplierId),
-        SalesAgent = GetSalesAgent(order.SalesAgentId),
-        PaymentCondition = "30 dias"
+        Customer = GetCustomer(order.Customer.Id),
+        Supplier = GetSupplier(order.Supplier.Id),
+        SalesAgent = GetSalesAgent(order.SalesAgent.Id),
+        PaymentCondition = ""
       };
 
       return dto;
     }
 
-    static private ShortPartyDto GetParty(int partyId) {
-      var usecase = PartyUseCases.UseCaseInteractor();
-
-      return usecase.GetParty(partyId);
-    }
+    
 
     static private CustomerDto GetCustomer(int customerId) {
     
-      var customer = GetParty(customerId);
+      var customer = Party.Parse(customerId);
       var dto = new CustomerDto {
         UID = customer.UID,
         Name = customer.Name
@@ -56,7 +53,7 @@ namespace Empiria.Trade.Sales.Adapters {
 
     static private SupplierDto GetSupplier(int supplierId) {
 
-      var suppplier = GetParty(supplierId);
+      var suppplier = Party.Parse(supplierId);
 
       var dto = new SupplierDto {
         UID = suppplier.UID,
@@ -68,7 +65,7 @@ namespace Empiria.Trade.Sales.Adapters {
 
     static private SalesAgentDto GetSalesAgent(int saleAgentId) {
 
-      var saleAgent = GetParty(saleAgentId);
+      var saleAgent = Party.Parse(saleAgentId);
 
       var dto = new SalesAgentDto {
         UID = saleAgent.UID,

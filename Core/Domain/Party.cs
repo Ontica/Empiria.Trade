@@ -15,7 +15,7 @@ using Empiria.Json;
 namespace Empiria.Trade.Core.Domain {
     
   /// <summary>Represent Party</summary>
-  internal class Party : INamedEntity {
+  public class Party : INamedEntity {
 
     #region Constructors and parsers
 
@@ -23,9 +23,9 @@ namespace Empiria.Trade.Core.Domain {
       //no-op
     }
 
-    internal static Party Parse(int id) => PartyData.GetParty(id);
+    public static Party Parse(int id) => PartyData.GetParty(id);
 
-    internal static Party Parse(string uid) => PartyData.GetParty(uid);
+    public static Party Parse(string uid) => PartyData.GetParty(uid);
 
 
     #endregion Constructors and parsers

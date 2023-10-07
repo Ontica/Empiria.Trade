@@ -11,8 +11,10 @@
 using System;
 using Empiria;
 
-using Empiria.Trade.Core.UsesCases;
+using Empiria.Trade.Core.Domain;
 using Empiria.Trade.Core.Adapters;
+
+
 
 namespace Empiria.Trade.Sales.Adapters {
 
@@ -24,23 +26,65 @@ namespace Empiria.Trade.Sales.Adapters {
       // Required by Empiria Framework.
     }
 
+    public string OrderUID {
+      get; set;
+    } = string.Empty;
+
+    public string OrderNumber {
+      get; set;
+    } = string.Empty;
+
+
+    public DateTime OrderTime {
+      get; set;
+    } = DateTime.Today;
+
     public string Notes {
       get; set;
     } = string.Empty;
+
+
+    public char Status {
+      get; set;
+    } = 'A';
+
+    public NamedEntity Customer {
+      get; set;
+    }
+
+    public PartyContactsDto CustomerContact {
+      get; set;
+    }
+
+    public NamedEntity Supplier {
+      get; set;
+    } 
+
+    public NamedEntity SalesAgent {
+      get; set;
+    }
         
-    public string CustomerUID {
+    public string PaymentCondition {
       get; set;
     }
 
-    public string CustomerContactUID {
+    public int Items {
       get; set;
     }
 
-    public string SupplierUID {
+    public double ItemsTotal {
       get; set;
     }
 
-    public string SalesAgentUID {
+    public double Shipment {
+      get; set;
+    }
+
+    public double Taxes {
+      get; set;
+    }
+
+    public double OrderTotal {
       get; set;
     }
 
@@ -48,18 +92,18 @@ namespace Empiria.Trade.Sales.Adapters {
 
     #region Internal methods
 
-    internal int GetCustomer() {
-      return GetParty(this.CustomerUID).id;
+    internal Party GetCustomer() {
+      return Party.Parse(this.Customer.UID);
       
     }
        
 
-    internal int GetSalesAgent() {
-      return GetParty(this.SalesAgentUID).id;
+    internal Party GetSalesAgent() {
+      return Party.Parse(this.SalesAgent.UID);
     }
 
-    internal int GetSupplier() {
-      return GetParty(this.SupplierUID).id;
+    internal Party GetSupplier() {
+      return Party.Parse(this.Supplier.UID);
       
     }
 
@@ -67,11 +111,6 @@ namespace Empiria.Trade.Sales.Adapters {
 
     #region Private methods
 
-    private ShortPartyDto GetParty(string uid) {
-      var usecase = PartyUseCases.UseCaseInteractor();
-
-      return usecase.GetParty(uid);
-    }
 
     #endregion Private methods
 

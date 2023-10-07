@@ -9,6 +9,8 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 
+using Empiria.Trade.Core.Domain;
+
 using Empiria.Trade.Sales.Data;
 using Empiria.Trade.Sales.Adapters;
 
@@ -45,18 +47,18 @@ namespace Empiria.Trade.Sales.Domain {
     }
 
     [DataField("CustomerId")]
-    public int CustomerId {
+    public Party Customer {
       get;
       private set;
     }
 
     [DataField("SupplierId")]
-    public int SupplierId {
+    public Party Supplier {
       get;
       private set;
     }
     [DataField("SalesAgentId")]
-    public int SalesAgentId {
+    public Party SalesAgent {
       get;
       private set;
     }
@@ -107,9 +109,9 @@ namespace Empiria.Trade.Sales.Domain {
     private void Create(OrderFields fields) {
       this.OrderId = 1;
       this.OrderUID = Guid.NewGuid().ToString();
-      this.CustomerId = fields.GetCustomer();
-      this.SupplierId = fields.GetSupplier();
-      this.SalesAgentId = fields.GetSalesAgent();
+      this.Customer = fields.GetCustomer();
+      this.Supplier = fields.GetSupplier();
+      this.SalesAgent = fields.GetSalesAgent();
       this.OrderNumber = "afsaesdfsafa";
       this.OrderTime = DateTime.Today;
       this.Notes = fields.Notes;
