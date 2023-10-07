@@ -7,14 +7,12 @@
 *  Summary  : Holds a order attributes list.                                                               *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
-
 using System;
-using Empiria;
+
+using Empiria.StateEnums;
 
 using Empiria.Trade.Core.Domain;
 using Empiria.Trade.Core.Adapters;
-
-
 
 namespace Empiria.Trade.Sales.Adapters {
 
@@ -26,9 +24,10 @@ namespace Empiria.Trade.Sales.Adapters {
       // Required by Empiria Framework.
     }
 
-    public string OrderUID {
+    public string UID {
       get; set;
     } = string.Empty;
+
 
     public string OrderNumber {
       get; set;
@@ -44,9 +43,10 @@ namespace Empiria.Trade.Sales.Adapters {
     } = string.Empty;
 
 
-    public char Status {
+    public EntityStatus Status {
       get; set;
-    } = 'A';
+    } = EntityStatus.Active;
+
 
     public NamedEntity Customer {
       get; set;
@@ -58,12 +58,12 @@ namespace Empiria.Trade.Sales.Adapters {
 
     public NamedEntity Supplier {
       get; set;
-    } 
+    }
 
     public NamedEntity SalesAgent {
       get; set;
     }
-        
+
     public string PaymentCondition {
       get; set;
     }
@@ -94,9 +94,8 @@ namespace Empiria.Trade.Sales.Adapters {
 
     internal Party GetCustomer() {
       return Party.Parse(this.Customer.UID);
-      
     }
-       
+
 
     internal Party GetSalesAgent() {
       return Party.Parse(this.SalesAgent.UID);
@@ -104,7 +103,7 @@ namespace Empiria.Trade.Sales.Adapters {
 
     internal Party GetSupplier() {
       return Party.Parse(this.Supplier.UID);
-      
+
     }
 
     #endregion Internal methods

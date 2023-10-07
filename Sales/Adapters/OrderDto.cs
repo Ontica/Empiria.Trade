@@ -9,13 +9,14 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
 using System;
+using Empiria.Trade.Core.Adapters;
 
 namespace Empiria.Trade.Sales.Adapters {
 
   /// <summary>Output DTO used to return orders. </summary>
   public class OrderDto {
 
-    public string OrderUID {
+    public string UID {
       get; internal set;
     }
 
@@ -35,19 +36,19 @@ namespace Empiria.Trade.Sales.Adapters {
       get; internal set;
     }
 
-    public CustomerDto Customer {
+    public NamedEntityDto Customer {
       get; internal set;
     }
 
-    public CustomerContactDto CustomerContact {
+    public PartyContactsDto CustomerContact {
       get; internal set;
     }
 
-    public SupplierDto Supplier {
+    public NamedEntityDto Supplier {
       get; internal set;
     }
 
-    public SalesAgentDto SalesAgent {
+    public NamedEntityDto SalesAgent {
        get; internal set;
     }
 
@@ -56,61 +57,6 @@ namespace Empiria.Trade.Sales.Adapters {
     }
 
   } // public class OrderDto
-
-  /// <summary>Output DTO for Customer </summary>
-  public class CustomerDto {
-
-    public string UID {
-      get; internal set;
-    }
-
-    public string Name {
-      get; internal set;
-    }
-
-  } // class CustomerDto
-
-  public class CustomerContactDto {
-
-    public string UID {
-      get; internal set;
-    }
-
-    public string Name {
-      get; internal set;
-    }
-
-    public string Phone {
-      get; internal set;
-    }
-
-  } // class SupplierDto
-
-  public class SupplierDto {
-
-    public string UID {
-      get; internal set;
-    }
-
-    public string Name {
-      get; internal set;
-    }
-
-  } // class SupplierDto
-
-  public class SalesAgentDto {
-
-    public string UID {
-      get; internal set;
-    }
-
-    public string Name {
-      get; internal set;
-    }
-
-  } // class SupplierDto
-
-
 
 } // namespace Empiria.Trade.Sales.Adapters
 
