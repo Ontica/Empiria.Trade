@@ -11,122 +11,81 @@ using System;
 
 using Empiria.Trade.Core.Domain;
 
-using Empiria.Trade.Sales.Data;
-using Empiria.Trade.Sales.Adapters;
+using Empiria.StateEnums;
 
-namespace Empiria.Trade.Sales.Domain {
+namespace Empiria.Trade {
 
   /// <summary>Represent Order</summary>
-  internal class Order {
+  abstract public class Order : BaseObject {
 
     #region Constructors and parsers
 
-    public Order() {
+    protected Order() {
       //no-op
     }
 
-    public Order(OrderFields fields) {
-      Create(fields);
+    static public Order Parse(int id) {
+      return BaseObject.ParseId<Order>(id);
+    }
+
+    static public Order Parse(string uid) {
+      return BaseObject.ParseKey<Order>(uid);
     }
 
     #endregion Constructors and parsers
 
     #region Public properties
 
-    [DataField("OrderId")]
-    public int OrderId {
-      get;
-      private set;
-    }
-
-
-    [DataField("OrderUID")]
-    public string OrderUID {
-      get;
-      private set;
-    }
-
     [DataField("CustomerId")]
     public Party Customer {
       get;
-      private set;
+      protected set;
     }
 
     [DataField("SupplierId")]
     public Party Supplier {
       get;
-      private set;
+      protected set;
     }
+
     [DataField("SalesAgentId")]
     public Party SalesAgent {
       get;
-      private set;
+      protected set;
     }
 
     [DataField("OrderNumber")]
     public string OrderNumber {
       get;
-      private set;
+      protected set;
     }
 
     [DataField("OrderTime")]
     public DateTime OrderTime {
       get;
-      private set;
+      protected set;
     }
 
     [DataField("OrderNotes")]
     public string Notes {
       get;
-      private set;
+      protected set;
     }
 
-    [DataField("OrderKeywords")]
-    public string Keywords {
-      get;
-      private set;
+    public virtual string Keywords {
+      get {
+        return EmpiriaString.BuildKeywords(OrderNumber, Customer.Name, SalesAgent.Name);
+      }
     }
 
-    [DataField("OrderStatus")]
-    public char Status {
+    [DataField("OrderStatus", Default = EntityStatus.Active)]
+    public EntityStatus Status {
       get;
-      private set;
+      protected set;
     }
 
     #endregion Public properties
 
-    #region Public methods
+  }  // class Order
 
-    public void Save() {
-      OrderData.Write(this);
-    }
-
-    #endregion Public methos
-
-    #region Private methods
-
-
-    private void Create(OrderFields fields) {
-      this.OrderId = 1;
-      this.OrderUID = Guid.NewGuid().ToString();
-      this.Customer = fields.GetCustomer();
-      this.Supplier = fields.GetSupplier();
-      this.SalesAgent = fields.GetSalesAgent();
-      this.OrderNumber = "afsaesdfsafa";
-      this.OrderTime = DateTime.Today;
-      this.Notes = fields.Notes;
-      this.Keywords = "";
-      this.Status = 'O';
-
-    }
-       
-
-   
-
-       
-
-    #endregion
-
-  }
-
-}
+}  // namespace Empiria.Trade
