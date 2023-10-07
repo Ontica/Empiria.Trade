@@ -13,7 +13,7 @@ using Empiria.Trade.Core.Data;
 using Empiria.Json;
 
 namespace Empiria.Trade.Core.Domain {
-    
+
   /// <summary>Represent Party</summary>
   public class Party : INamedEntity {
 
