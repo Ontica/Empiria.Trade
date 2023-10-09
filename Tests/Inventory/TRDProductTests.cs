@@ -14,9 +14,9 @@ using Empiria.DataTypes;
 using Xunit;
 
 using Empiria.Tests;
-using Empiria.Trade.Inventory.Products.UseCases;
-using Empiria.Trade.Inventory.Products.Adapters;
-using Empiria.Trade.Inventory;
+using Empiria.Trade.Products.UseCases;
+using Empiria.Trade.Products.Adapters;
+using Empiria.Trade.Products;
 
 namespace Empiria.Trade.Tests {
 
@@ -61,6 +61,25 @@ namespace Empiria.Trade.Tests {
       FixedList<IProductEntryDto> sut = await usecase.GetProductsList(query).ConfigureAwait(false);
 
       Assert.NotNull(sut);
+      Assert.NotEmpty(sut);
+
+    }
+
+
+    [Fact]
+    public async Task ShouldUpdateUID() {
+
+      var usecase = TRDProductUseCases.UseCaseInteractor();
+
+      var query = new TableQuery {
+        TableName = "TRDProductPrice",
+        IdName = "ProductPriceId",
+        UidName = "ProductPriceUID"
+      };
+
+
+      string sut = await usecase.UpdateGUID(query).ConfigureAwait(false);
+
       Assert.NotEmpty(sut);
 
     }

@@ -1,7 +1,7 @@
 ﻿/* Empiria Trade *********************************************************************************************
 *                                                                                                            *
 *  Module   : Product Management                         Component : Domain Layer                            *
-*  Assembly : Empiria.Trade.Inventory.dll                Pattern   : Partitioned Type / Information Holder   *
+*  Assembly : Empiria.Trade.Products.dll                 Pattern   : Partitioned Type / Information Holder   *
 *  Type     : Product                                    License   : Please read LICENSE.txt file            *
 *                                                                                                            *
 *  Summary  : Generate data for TRDProducts.                                                                 *
@@ -12,11 +12,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Empiria.Json;
 using Empiria.Storage;
-using Empiria.Trade.Inventory.Products.Adapters;
-using Empiria.Trade.Inventory.Products.Data;
+using Empiria.Trade.Products.Adapters;
+using Empiria.Trade.Products.Data;
 using Newtonsoft.Json;
 
-namespace Empiria.Trade.Inventory.Products.Domain {
+namespace Empiria.Trade.Products.Domain {
 
   /// <summary>Generate data for TRDProducts.</summary>
   internal class TRDProductBuilder {
@@ -39,15 +39,6 @@ namespace Empiria.Trade.Inventory.Products.Domain {
     }
 
 
-    public void AddOrUpdateTRDProduct(Product product) {
-
-      var data = new TRDProductDataService();
-      
-      data.AddOrUpdateTRDProduct(product);
-
-    }
-
-
     internal FixedList<Product> GetProductsList(ProductQuery query) {
 
       FixedList<Product> data = TRDProductDataService.GetProductsList(query.Keywords);
@@ -65,7 +56,7 @@ namespace Empiria.Trade.Inventory.Products.Domain {
     #endregion Private methods
 
 
-  }
+  } // class TRDProductBuilder
 
 
-}
+} // Empiria.Trade.Products.Domain

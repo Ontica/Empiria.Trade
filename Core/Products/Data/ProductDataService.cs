@@ -10,9 +10,9 @@
 using System;
 using System.Collections.Generic;
 using Empiria.Data;
-using Empiria.Trade.Inventory.Products.Domain;
+using Empiria.Trade.Products.Domain;
 
-namespace Empiria.Trade.Inventory.Products.Data
+namespace Empiria.Trade.Products.Data
 {
 
     /// <summary>Provides data read methods for Products.</summary>

@@ -9,7 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 
-namespace Empiria.Trade.Inventory.Products.Adapters {
+namespace Empiria.Trade.Products.Adapters {
 
 
   public interface IProductEntryDto {
@@ -309,7 +309,7 @@ namespace Empiria.Trade.Inventory.Products.Adapters {
     } = new FixedList<PriceListOfProduct>();
 
 
-  }
+  } // class ProductEntryDto
 
 
   public class PriceListOfProduct {
@@ -324,7 +324,7 @@ namespace Empiria.Trade.Inventory.Products.Adapters {
       get; internal set;
     }
 
-  }
+  } // class PriceListOfProduct
 
 
 }

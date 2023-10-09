@@ -9,7 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 
-namespace Empiria.Trade.Inventory.Products.Adapters {
+namespace Empiria.Trade.Products.Adapters {
 
   /// <summary>Object used to return the type of Products.</summary>
   public class ProductType {
@@ -104,7 +104,7 @@ namespace Empiria.Trade.Inventory.Products.Adapters {
     }
 
 
-    public string Stock {
+    public decimal Stock {
       get;
       internal set;
     }

@@ -64,6 +64,11 @@
     <ProjectReference Include="..\Core\Empiria.Trade.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Remove="Products\**" />
+    <EmbeddedResource Remove="Products\**" />
+    <None Remove="Products\**" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Core\Empiria.Trade.Core.csproj" />
   </ItemGroup>
 </Project>

@@ -1,7 +1,7 @@
 ﻿/* Empiria Trade *********************************************************************************************
 *                                                                                                            *
 *  Module   : Product Management                         Component : Interface adapters                      *
-*  Assembly : Empiria.Trade.Inventory.dll                Pattern   : Data Transfer Object                    *
+*  Assembly : Empiria.Trade.Products.dll                 Pattern   : Data Transfer Object                    *
 *  Type     : TRDProductsEntryDto                        License   : Please read LICENSE.txt file            *
 *                                                                                                            *
 *  Summary  : Output DTO used to return the entries of TRDProducts.                                          *
@@ -10,7 +10,7 @@
 using System;
 using Empiria.Json;
 
-namespace Empiria.Trade.Inventory.Products.Adapters {
+namespace Empiria.Trade.Products.Adapters {
 
   /// <summary>Output DTO used to return the entries of TRDProducts.</summary>
   public class TRDProductsEntryDto {
@@ -99,4 +99,4 @@ namespace Empiria.Trade.Inventory.Products.Adapters {
 
   } // class TRDProductsEntryDto
 
-} // namespace Empiria.Trade.Inventory.Products.Adapters
+} // namespace Empiria.Trade.Products.Adapters

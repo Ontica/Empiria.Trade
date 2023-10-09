@@ -10,7 +10,7 @@
 
 using System;
 
-namespace Empiria.Trade.Inventory.Products {
+namespace Empiria.Trade.Products {
 
   /// <summary>Holds a product attributes list. </summary>
   internal class ProductFields {

@@ -9,7 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 
-namespace Empiria.Trade.Inventory.Products.Adapters
+namespace Empiria.Trade.Products.Adapters
 {
 
     public class ProductShortEntryDto : IProductEntryDto

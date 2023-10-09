@@ -10,9 +10,6 @@
 using System;
 using System.Web.Http;
 
-using Empiria.Trade.Inventory.Products.Adapters;
-using Empiria.Trade.Inventory.Products.UseCases;
-
 using Empiria.Trade.Core.Adapters;
 using Empiria.Trade.Core.UsesCases;
 

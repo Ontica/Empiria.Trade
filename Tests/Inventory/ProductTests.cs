@@ -12,8 +12,8 @@ using System;
 using Xunit;
 
 using Empiria.Tests;
-using Empiria.Trade.Inventory.Products.UseCases;
-using Empiria.Trade.Inventory.Products.Adapters;
+using Empiria.Trade.Products.UseCases;
+using Empiria.Trade.Products.Adapters;
 using System.Threading.Tasks;
 
 namespace Empiria.Trade.Tests.Products {
@@ -34,48 +34,17 @@ namespace Empiria.Trade.Tests.Products {
 
 
     [Fact]
-    public async Task ShouldGetProductDtoTest() {
-
-      var usecase = ProductsUseCases.UseCaseInteractor();
-      ProductQuery query = new ProductQuery {
-        Keywords = "TORNILLO  ARADO GRADO"
-      };
-      ProductDto sut = await usecase.BuildProducts(query).ConfigureAwait(false);
-        
-      Assert.NotNull(sut);
-      Assert.NotEmpty(sut.ProductList);
-      
-    }
-
-
-    [Fact]
     public async Task ShouldGetProductListTest() {
 
       var usecase = ProductsUseCases.UseCaseInteractor();
       ProductQuery query = new ProductQuery {
-        Keywords = "TA58X412"
+        Keywords = "TORNILLO  ARADO GRADO"
       };
 
       FixedList<IProductEntryDto> sut = await usecase.BuildProductsList(query).ConfigureAwait(false);
 
       Assert.NotNull(sut);
       Assert.NotEmpty(sut);
-
-    }
-
-
-    [Fact]
-    public void ShouldAddOrUpdateTRDProduct() {
-
-      var usecase = TRDProductUseCases.UseCaseInteractor();
-      
-      TRDProductsEntryDto entry = new TRDProductsEntryDto();
-
-      usecase.AddOrUpdateTRDProduct(entry);
-
-      var sut = new object();
-
-      Assert.NotNull(sut);
 
     }
 

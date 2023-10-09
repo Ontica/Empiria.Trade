@@ -9,10 +9,10 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Collections.Generic;
-using Empiria.Trade.Inventory.Products.Data;
-using Empiria.Trade.Inventory.Products.Adapters;
+using Empiria.Trade.Products.Data;
+using Empiria.Trade.Products.Adapters;
 
-namespace Empiria.Trade.Inventory.Products.Domain
+namespace Empiria.Trade.Products.Domain
 {
 
     /// <summary>Generate data for products.</summary>

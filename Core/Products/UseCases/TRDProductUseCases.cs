@@ -1,20 +1,23 @@
 ﻿/* Empiria Trade *********************************************************************************************
 *                                                                                                            *
 *  Module   : Product Management                         Component : Use cases Layer                         *
-*  Assembly : Empiria.Trade.Inventory.dll                Pattern   : Use case interactor class               *
+*  Assembly : Empiria.Trade.Products.dll                 Pattern   : Use case interactor class               *
 *  Type     : TRDProductUseCases                         License   : Please read LICENSE.txt file            *
 *                                                                                                            *
 *  Summary  : Use cases used to build TRDProducts.                                                           *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using System.Reflection;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Empiria.DataTypes;
 using Empiria.Services;
-using Empiria.Trade.Inventory.Products.Adapters;
-using Empiria.Trade.Inventory.Products.Domain;
+using Empiria.Trade.Products.Adapters;
+using Empiria.Trade.Products.Data;
+using Empiria.Trade.Products.Domain;
 
-namespace Empiria.Trade.Inventory.Products.UseCases {
+namespace Empiria.Trade.Products.UseCases {
 
   /// <summary>Use cases used to build TRDProducts.</summary>
   public class TRDProductUseCases : UseCase {
@@ -35,18 +38,6 @@ namespace Empiria.Trade.Inventory.Products.UseCases {
 
 
     #region Use cases
-
-
-    public void AddOrUpdateTRDProduct(TRDProductsEntryDto entry) {
-
-      var builder = new TRDProductBuilder();
-
-      var product = new Product();
-
-      //product = TRDProductMapper.MapToEntry(entry);
-
-      builder.AddOrUpdateTRDProduct(product);
-    }
 
 
     public IProductEntryDto GetTRDProduct(string productUID) {
@@ -82,9 +73,26 @@ namespace Empiria.Trade.Inventory.Products.UseCases {
     }
 
 
+    public async Task<string> UpdateGUID(TableQuery query) {
+      string msj = string.Empty;
+      try {
+
+        await Task.Run(() => TRDProductDataService.UpdateTableGUID(
+                              query.TableName, query.IdName, query.UidName))
+                              .ConfigureAwait(false);
+
+        msj = "SE ACTUALIZARON CORRECTAMENTE LOS REGISTROS";
+      } catch (Exception ex) {
+        msj = ex.Message;
+        throw new Exception(ex.Message, ex);
+      }
+      return msj;
+    }
+
+
     #endregion Use cases
 
 
   } // class TRDProductUseCases
 
-} // namespace Empiria.Trade.Inventory.Products.UseCases
+} // namespace Empiria.Trade.Products.UseCases

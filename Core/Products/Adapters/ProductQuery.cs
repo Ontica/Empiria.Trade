@@ -9,14 +9,23 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 
-namespace Empiria.Trade.Inventory.Products.Adapters
-{
+namespace Empiria.Trade.Products.Adapters {
 
-    /// <summary>Query to filter Products.</summary>
-    public class ProductQuery
-    {
+  /// <summary>Query to filter Products.</summary>
+  public class ProductQuery {
 
-        public string Keywords { get; set; } = string.Empty;
+    public string Keywords { get; set; } = string.Empty;
 
-    }
-}
+  }
+
+
+  public class TableQuery {
+
+    public string TableName { get; set; } = string.Empty;
+    public string IdName { get; set; } = string.Empty;
+    public string UidName { get; set; } = string.Empty;
+
+
+  }
+
+} // namespace Empiria.Trade.Products.Adapters

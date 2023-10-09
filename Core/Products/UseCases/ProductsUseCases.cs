@@ -12,10 +12,10 @@ using System.Threading.Tasks;
 
 using Empiria.Services;
 
-using Empiria.Trade.Inventory.Products.Adapters;
-using Empiria.Trade.Inventory.Products.Domain;
+using Empiria.Trade.Products.Adapters;
+using Empiria.Trade.Products.Domain;
 
-namespace Empiria.Trade.Inventory.Products.UseCases
+namespace Empiria.Trade.Products.UseCases
 {
 
     /// <summary>Use cases used to build Products.</summary>
@@ -39,18 +39,6 @@ namespace Empiria.Trade.Inventory.Products.UseCases
 
 
         #region Use cases
-
-
-        public async Task<ProductDto> BuildProducts(ProductQuery keywords)
-        {
-
-            var builder = new ProductBuilder();
-
-            FixedList<ProductFields> products = await Task.Run(() => builder.Build(keywords))
-                                                  .ConfigureAwait(false);
-
-            return ProductMapper.MapToDto(products);
-        }
 
 
         public async Task<FixedList<IProductEntryDto>> BuildProductsList(ProductQuery keywords)

@@ -10,8 +10,10 @@
 using System;
 using System.Threading.Tasks;
 using System.Web.Http;
-using Empiria.Trade.Inventory.Products.Adapters;
-using Empiria.Trade.Inventory.Products.UseCases;
+using Empiria.Services;
+using System.Xml.Linq;
+using Empiria.Trade.Products.Adapters;
+using Empiria.Trade.Products.UseCases;
 using Empiria.WebApi;
 
 namespace Empiria.Trade.WebApi.Inventory {
@@ -50,6 +52,21 @@ namespace Empiria.Trade.WebApi.Inventory {
                                                 .ConfigureAwait(false);
 
         return new CollectionModel(this.Request, productDto);
+      }
+    }
+
+
+    [HttpPost]
+    [Route("v4/trade/products/update-uid")]
+    public async Task<SingleObjectModel> UpdateTableUID([FromBody] TableQuery query) {
+
+      base.RequireBody(query);
+
+      using (var usecases = TRDProductUseCases.UseCaseInteractor()) {
+        
+        string msj = await usecases.UpdateGUID(query).ConfigureAwait(false);
+
+        return new SingleObjectModel(this.Request, msj);
       }
     }
 

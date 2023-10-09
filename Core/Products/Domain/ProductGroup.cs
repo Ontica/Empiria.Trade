@@ -1,7 +1,7 @@
 ﻿/* Empiria Trade *********************************************************************************************
 *                                                                                                            *
 *  Module   : Product Management                         Component : Domain Layer                            *
-*  Assembly : Empiria.Trade.Inventory.dll                Pattern   : Information Holder                      *
+*  Assembly : Empiria.Trade.Products.dll                 Pattern   : Information Holder                      *
 *  Type     : ProductGroup                               License   : Please read LICENSE.txt file            *
 *                                                                                                            *
 *  Summary  : Represents a product's group.                                                                  *
@@ -9,7 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 
-namespace Empiria.Trade.Inventory {
+namespace Empiria.Trade.Products {
 
   /// <summary>Represents a product's group.</summary>
   public class ProductGroup : BaseObject {
@@ -106,4 +106,4 @@ namespace Empiria.Trade.Inventory {
 
   } // class ProductGroup
 
-} // namespace Empiria.Trade.Inventory.Products
+} // namespace Empiria.Trade.Products

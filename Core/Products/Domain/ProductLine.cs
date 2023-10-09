@@ -11,7 +11,7 @@ using System;
 
 using Empiria.StateEnums;
 
-namespace Empiria.Trade.Inventory.Products
+namespace Empiria.Trade.Products
 {
 
     public class ProductLine

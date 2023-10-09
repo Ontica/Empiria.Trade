@@ -1,7 +1,7 @@
 ﻿/* Empiria Trade *********************************************************************************************
 *                                                                                                            *
 *  Module   : Product Management                         Component : Interface adapters                      *
-*  Assembly : Empiria.Trade.Inventory.dll                Pattern   : Mapper class                            *
+*  Assembly : Empiria.Trade.Products.dll                 Pattern   : Mapper class                            *
 *  Type     : TRDProductMapper                           License   : Please read LICENSE.txt file            *
 *                                                                                                            *
 *  Summary  : Methods used to map TRDProducts.                                                               *
@@ -9,10 +9,9 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Collections.Generic;
-using Empiria.Trade.Inventory.Products.Domain;
 using Newtonsoft.Json;
 
-namespace Empiria.Trade.Inventory.Products.Adapters {
+namespace Empiria.Trade.Products.Adapters {
 
   /// <summary>Methods used to map TRDProducts.</summary>
   internal class TRDProductMapper {
@@ -112,7 +111,7 @@ namespace Empiria.Trade.Inventory.Products.Adapters {
         VendorUID = "eed65e0b-79b8-4ab1-859a-53730388c385",
         VendorName = GetVendorName(1),
         Sku = $"sku-000-{num}",
-        Stock = num.ToString(),
+        Stock = num,
         Price = num
       };
 
@@ -142,4 +141,4 @@ namespace Empiria.Trade.Inventory.Products.Adapters {
 
   } // class TRDProductMapper
 
-} // namespace Empiria.Trade.Inventory.Products.Adapters
+} // namespace Empiria.Trade.Products.Adapters

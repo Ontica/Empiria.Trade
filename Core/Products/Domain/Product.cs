@@ -1,7 +1,7 @@
 ﻿/* Empiria Trade *********************************************************************************************
 *                                                                                                            *
 *  Module   : Product Management                         Component : Domain Layer                            *
-*  Assembly : Empiria.Trade.Inventory.dll                Pattern   : Partitioned Type / Information Holder   *
+*  Assembly : Empiria.Trade.Products.dll                Pattern   : Partitioned Type / Information Holder   *
 *  Type     : Product                                    License   : Please read LICENSE.txt file            *
 *                                                                                                            *
 *  Summary  : Represents a product.                                                                          *
@@ -10,9 +10,8 @@
 using System;
 using Empiria.Json;
 using Empiria.Ontology;
-using Empiria.Trade.Inventory.Products;
 
-namespace Empiria.Trade.Inventory {
+namespace Empiria.Trade.Products {
 
   /// <summary>Represents a product.</summary>
   //[PartitionedType(typeof(ProductType))]

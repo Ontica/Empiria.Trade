@@ -13,23 +13,15 @@ using System.Data;
 using System.Diagnostics;
 using System.Reflection;
 using Empiria.DataTypes;
-using Empiria.Trade.Inventory.Products.Domain;
+using Empiria.Trade.Products.Domain;
 
-namespace Empiria.Trade.Inventory.Products.Adapters {
+namespace Empiria.Trade.Products.Adapters {
 
   /// <summary>Methods used to map Products.</summary>
   static internal class ProductMapper {
 
 
     #region Public methods
-
-    static internal ProductDto MapToDto(FixedList<ProductFields> entries) {
-
-      return new ProductDto {
-        ProductList = MapLongEntries(entries)
-      };
-
-    }
 
 
     static internal FixedList<IProductEntryDto> MapTo(FixedList<ProductFields> entries) {
@@ -49,60 +41,6 @@ namespace Empiria.Trade.Inventory.Products.Adapters {
       var mappedItems = entries.Select((x) => MapShortEntry((ProductFields) x));
 
       return new FixedList<IProductEntryDto>(mappedItems);
-    }
-
-
-    private static FixedList<IProductEntryDto> MapLongEntries(FixedList<ProductFields> entries) {
-
-      var mappedItems = entries.Select((x) => MapLongEntry((ProductFields) x));
-
-      return new FixedList<IProductEntryDto>(mappedItems);
-    }
-
-
-    static private ProductEntryDto MapLongEntry(ProductFields entry) {
-      var dto = new ProductEntryDto();
-
-
-      dto.CompanyId = entry.CompanyId;
-      dto.Product = entry.Product;
-      dto.UID = entry.UID;
-      dto.ProdServCode = entry.ProdServCode;
-      dto.Description = entry.Description;
-      dto.Group = entry.GroupName;
-      dto.RegistrationDate = entry.RegistrationDate;
-      dto.ViewDetailsName = entry.ViewDetailsName;
-      dto.Stock = entry.Stock != "" ? entry.Stock : "0";
-      dto.SalesUnit = entry.SalesUnit;
-      dto.Currency = entry.Currency;
-      dto.Total = entry.Total;
-      dto.BasisCost = entry.BasisCost;
-      dto.LastPurchaseDateCost = entry.LastPurchaseDateCost;
-      dto.MinimumPrice = entry.MinimumPrice;
-      dto.Packing = entry.Packing;
-      dto.SupplierName = $"({entry.Supplier}) {entry.SupplierName}";
-      dto.ProductType = entry.ProductType;
-      dto.Discontinued = entry.Discontinued;
-      dto.Section = entry.Section;
-      dto.LineName = entry.LineName;
-      dto.SubgroupName = entry.SubgroupName;
-      dto.Diameter = entry.Diameter;
-      dto.Length = entry.Length;
-      dto.Degree = entry.Degree;
-      dto.Weight = entry.Weight;
-
-      dto.PriceList = GetPriceList(entry);
-      dto.Attributes = GetAttributes(entry);
-      dto.Supplier = entry.Supplier;
-      dto.StepsName = entry.StepsName;
-      dto.ThreadsName = entry.ThreadsName;
-      dto.HeadsName = entry.HeadsName;
-      dto.LastPurchaseDate = entry.LastPurchaseDate;
-      dto.Characteristics = entry.Characteristics;
-      dto.Status = entry.Status;
-      dto.Keywords = entry.Keywords;
-
-      return dto;
     }
 
 
@@ -196,44 +134,13 @@ namespace Empiria.Trade.Inventory.Products.Adapters {
         VendorUID = "eed65e0b-79b8-4ab1-859a-53730388c385",
         VendorName = GetVendorName(entry.CompanyId),
         Sku = "sku-000",
-        Stock = entry.Stock,
+        Stock = entry.Stock != "" ? Convert.ToDecimal(entry.Stock) : 0,
         Price = entry.MinimumPrice
       };
 
       vendors.Add(vendor);
 
       return vendors.ToFixedList();
-    }
-
-
-    static private FixedList<PriceListOfProduct> GetPriceList(ProductFields entry) {
-      var prices = new List<PriceListOfProduct>();
-
-      var price1 = new PriceListOfProduct {
-        Name = "Price1",
-        Value = entry.ListPrice1
-      };
-      prices.Add(price1);
-
-      var price2 = new PriceListOfProduct {
-        Name = "Price2",
-        Value = entry.ListPrice2
-      };
-      prices.Add(price2);
-
-      var price3 = new PriceListOfProduct {
-        Name = "Price3",
-        Value = entry.ListPrice3
-      };
-      prices.Add(price3);
-
-      var price4 = new PriceListOfProduct {
-        Name = "Price4",
-        Value = entry.ListPrice4
-      };
-      prices.Add(price4);
-
-      return prices.ToFixedList();
     }
 
 

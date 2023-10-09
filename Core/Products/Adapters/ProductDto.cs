@@ -1,25 +1,29 @@
 ﻿/* Empiria Trade *********************************************************************************************
 *                                                                                                            *
 *  Module   : Product Management                         Component : Interface adapters                      *
-*  Assembly : Empiria.Trade.Inventory.dll                Pattern   : Data Transfer Object                    *
-*  Type     : TRDProductLineDto                          License   : Please read LICENSE.txt file            *
+*  Assembly : Empiria.Trade.Products.dll                 Pattern   : Data Transfer Object                    *
+*  Type     : ProductDto                                 License   : Please read LICENSE.txt file            *
 *                                                                                                            *
-*  Summary  : Output DTO used to return the entries of TRDProductLineDto.                                    *
+*  Summary  : Output DTO used to return Products.                                                            *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 
-namespace Empiria.Trade.Inventory.Products.Adapters {
+namespace Empiria.Trade.Products.Adapters
+{
 
-  /// <summary>Output DTO used to return the entries of TRDProductLineDto.</summary>
-  public class TRDProductLineDto {
-
-
-    internal TRDProductLineDto() {
-      //no-op
-    }
+    /// <summary>Output DTO used to return Products.</summary>
+    public class ProductDto
+    {
 
 
-  } // class TRDProductLineDto
+        public FixedList<IProductEntryDto> ProductList
+        {
+            get; internal set;
+        } = new FixedList<IProductEntryDto>();
 
-} // namespace Empiria.Trade.Inventory.Products.Adapters
+
+    } // class ProductsDto
+
+
+} // namespace Empiria.Trade.Products.Adapters
