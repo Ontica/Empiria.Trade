@@ -88,6 +88,10 @@ namespace Empiria.Trade.Sales.Adapters {
       get; set;
     }
 
+    public FixedList<OrderItemsFields> OrderItems {
+      get; set;
+    }
+
     #endregion Constructors and parsers
 
     #region Internal methods

@@ -84,6 +84,11 @@ namespace Empiria.Trade {
       protected set;
     }
 
+    public FixedList<OrderItems> OrderItems {
+      get;
+      protected set;
+    }
+
     #endregion Public properties
 
   }  // class Order
