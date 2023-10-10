@@ -13,11 +13,13 @@ using Empiria.Trade.Sales.Data;
 using Empiria.Trade.Sales.Adapters;
 using System.Collections.Generic;
 
+using Empiria.Trade.Orders;
+
 namespace Empiria.Trade.Sales {
 
   /// <summary>Represent Order</summary>
   internal class SalesOrder : Order {
-    
+
     #region Constructors and parsers
 
     public SalesOrder() {
@@ -60,27 +62,26 @@ namespace Empiria.Trade.Sales {
 
     #endregion Public methods
 
-
     #region Private methods
 
-    private FixedList<OrderItems> LoadOrderItems(int salesOrderId, FixedList<OrderItemsFields> orderItemsFields) {
+    private FixedList<OrderItem> LoadOrderItems(int salesOrderId, FixedList<OrderItemsFields> orderItemsFields) {
       List<SalesOrderItem> salesOrderItems = new List<SalesOrderItem>();
 
       foreach (OrderItemsFields itemFields in orderItemsFields) {
         salesOrderItems.Add(new SalesOrderItem(salesOrderId, itemFields));
       }
 
-      return salesOrderItems.ToFixedList<OrderItems>();
+      return salesOrderItems.ToFixedList<OrderItem>();
     }
 
     private void SaveOrderItems() {
 
-      foreach (OrderItems orderItem in this.OrderItems) {
+      foreach (OrderItem orderItem in this.OrderItems) {
         OrderItemsData.Write(orderItem);
       }
 
     }
-    
+
     #endregion
 
   }  //  class SalesOrder

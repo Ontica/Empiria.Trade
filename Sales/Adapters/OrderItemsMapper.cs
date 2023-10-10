@@ -8,7 +8,6 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-using System.Net.NetworkInformation;
 
 namespace Empiria.Trade.Sales.Adapters {
 
@@ -26,7 +25,7 @@ namespace Empiria.Trade.Sales.Adapters {
         Taxes = orderItem.TaxesIVA,
         Total = orderItem.Total,
         Notes = orderItem.Notes,
-        Status  = orderItem.Status 
+        Status  = orderItem.Status
       };
 
       return dto;

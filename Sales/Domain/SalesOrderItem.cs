@@ -7,17 +7,18 @@
 *  Summary  : Represents a Order item.                                                                       *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
-
 using System;
 
 using Empiria.Trade.Core.Domain;
 using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Sales.Data;
 
+using Empiria.Trade.Orders;
+
 namespace Empiria.Trade.Sales {
 
   /// <summary>Represents a Order item. </summary>
-  public class SalesOrderItem : OrderItems {
+  public class SalesOrderItem : OrderItem {
 
     #region Constructors and parsers
 
@@ -41,8 +42,8 @@ namespace Empiria.Trade.Sales {
 
     internal void LoadOrderItem(int orderId, OrderItemsFields fields) {
       this.OrderId = orderId;
-      this.Product = 3;
-      this.PresentationId = 10;
+      this.Product = Products.Product.Parse(fields.ProductUID);
+      this.PresentationId = -1;
       this.Vendor = Party.Parse(fields.VendorUID);
       this.Quantity = fields.Quantity;
       this.BasePrice = fields.BasePrice;
@@ -59,7 +60,7 @@ namespace Empiria.Trade.Sales {
       OrderItemsData.Write(this);
     }
 
-    
+
     #endregion Public methods
 
   }  //namespace Empiria.Trade.Sales

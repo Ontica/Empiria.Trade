@@ -10,7 +10,6 @@
 using System;
 
 using Empiria.StateEnums;
-using Empiria.Trade.Products;
 
 namespace Empiria.Trade.Sales.Adapters {
 
@@ -24,7 +23,7 @@ namespace Empiria.Trade.Sales.Adapters {
       get; set;
     } = string.Empty;
 
-    public int Quantity {
+    public decimal Quantity {
       get; set;
     }
 
@@ -55,7 +54,6 @@ namespace Empiria.Trade.Sales.Adapters {
     public string Notes {
       get; set;
     }
-        
 
     public string ProductUID {
       get; set;

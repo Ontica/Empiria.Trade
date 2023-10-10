@@ -8,15 +8,12 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-using System.Diagnostics.Contracts;
 
 using Empiria.Data;
 
-using Empiria.Trade.Sales.Domain;
-
 namespace Empiria.Trade.Sales.Data {
 
-    /// <summary>Provides data layer for Orders. </summary>
+    /// <summary>Provides data layer for Orders.</summary>
     static internal class OrderData {
 
     #region Internal methods
@@ -30,6 +27,6 @@ namespace Empiria.Trade.Sales.Data {
 
     #endregion Internal methods
 
-  } // static internal class OrderData
+  } // class OrderData
 
 } // namespace Empiria.Trade.Sales.Data

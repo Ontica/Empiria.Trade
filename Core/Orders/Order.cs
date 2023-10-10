@@ -13,7 +13,7 @@ using Empiria.Trade.Core.Domain;
 
 using Empiria.StateEnums;
 
-namespace Empiria.Trade {
+namespace Empiria.Trade.Orders {
 
   /// <summary>Represent Order</summary>
   abstract public class Order : BaseObject {
@@ -84,7 +84,7 @@ namespace Empiria.Trade {
       protected set;
     }
 
-    public FixedList<OrderItems> OrderItems {
+    public FixedList<OrderItem> OrderItems {
       get;
       protected set;
     }
@@ -93,4 +93,4 @@ namespace Empiria.Trade {
 
   }  // class Order
 
-}  // namespace Empiria.Trade
+}  // namespace Empiria.Trade.Orders

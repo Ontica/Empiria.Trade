@@ -64,13 +64,6 @@
     <ProjectReference Include="..\Core\Empiria.Trade.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Domain\ShoppingCart\" />
-    <Folder Include="Domain\ShippingAndHandling\" />
-    <Folder Include="Domain\ProductSeeker\" />
-    <Folder Include="Domain\PointOfSale\" />
-    <Folder Include="Domain\Payments\" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Core\Empiria.Trade.Core.csproj" />
     <ProjectReference Include="..\Inventory\Empiria.Trade.Inventory.csproj" />
   </ItemGroup>

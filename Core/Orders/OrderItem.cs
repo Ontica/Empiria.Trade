@@ -1,10 +1,10 @@
 ﻿/* Empiria Trade *********************************************************************************************
 *                                                                                                            *
 *  Module   : Order Management                           Component : Domain Layer                            *
-*  Assembly : Empiria.Trade.Order.dll                    Pattern   : Partitioned Type / Information Holder   *
-*  Type     : OrderItems                                 License   : Please read LICENSE.txt file            *
+*  Assembly : Empiria.Trade.Inventory.dll                Pattern   : Partitioned Type / Information Holder   *
+*  Type     : OrderItem                                  License   : Please read LICENSE.txt file            *
 *                                                                                                            *
-*  Summary  : Represents a OrderItem.                                                                        *
+*  Summary  : Represents an order item.                                                                      *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
@@ -13,23 +13,25 @@ using Empiria.StateEnums;
 
 using Empiria.Trade.Core.Domain;
 
-namespace Empiria.Trade {
+using Empiria.Trade.Products;
 
-  /// <summary> Represents a OrderItem </summary>
-  abstract public class OrderItems : BaseObject {
+namespace Empiria.Trade.Orders {
+
+  /// <summary> Represents an order item.</summary>
+  abstract public class OrderItem : BaseObject {
 
     #region Constructors and parsers
 
-    protected OrderItems() {
+    protected OrderItem() {
       // no-op
     }
 
-    static public OrderItems Parse(int id) {
-      return BaseObject.ParseId<OrderItems>(id);
+    static public OrderItem Parse(int id) {
+      return BaseObject.ParseId<OrderItem>(id);
     }
 
-    static public OrderItems Parse(string uid) {
-      return BaseObject.ParseKey<OrderItems>(uid);
+    static public OrderItem Parse(string uid) {
+      return BaseObject.ParseKey<OrderItem>(uid);
     }
 
     #endregion Constructors and parsers
@@ -44,7 +46,7 @@ namespace Empiria.Trade {
     }
 
     [DataField("ProductId")]
-    public int Product {
+    public Product Product {
       get;
       protected set;
     }
@@ -62,7 +64,7 @@ namespace Empiria.Trade {
     }
 
     [DataField("Quantity")]
-    public int Quantity {
+    public decimal Quantity {
       get;
       protected set;
     }
@@ -122,6 +124,7 @@ namespace Empiria.Trade {
     }
 
     #endregion Public properties
-  } // class OrderItems 
 
-} // namespace Empiria.Trade.Core.Orders
+  } // class OrderItems
+
+} //  namespace Empiria.Trade.Orders
