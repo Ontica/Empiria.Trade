@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using System.Linq;
 using Empiria.Data;
 using Empiria.Trade.Products.Domain;
 
@@ -44,7 +45,9 @@ namespace Empiria.Trade.Products.Data {
 
         var entries = DataReader.GetPlainObjectFixedList<ProductUpdate>(selectOperation);
 
-        foreach (var entry in entries) {
+        var filteredEntries = entries.FindAll(x => x.Uid != "");
+
+        foreach (var entry in filteredEntries) {
           
           var update = $"UPDATE {tableName} SET {uidName} = '{Guid.NewGuid().ToString()}' WHERE {idName} = {entry.Id}";
 
