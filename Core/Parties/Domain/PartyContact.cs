@@ -9,11 +9,10 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 
-using Empiria.Trade.Core.Data;
 using Empiria.Json;
 
 
-namespace Empiria.Trade.Core.Domain {
+namespace Empiria.Trade.Core {
 
   /// <summary>Represents a PartyContact.  </summary>
   internal class PartyContact {

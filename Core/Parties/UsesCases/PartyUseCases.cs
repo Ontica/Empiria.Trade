@@ -13,7 +13,7 @@ using System;
 using Empiria.Services;
 
 using Empiria.Trade.Core.Adapters;
-using Empiria.Trade.Core.Domain;
+
 
 namespace Empiria.Trade.Core.UsesCases {
 

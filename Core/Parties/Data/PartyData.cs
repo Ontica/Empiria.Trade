@@ -10,8 +10,7 @@
 using System;
 
 using Empiria.Data;
-using Empiria.DataTypes;
-using Empiria.Trade.Core.Domain;
+
 
 namespace Empiria.Trade.Core.Data {
 
