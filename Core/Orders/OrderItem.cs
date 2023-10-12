@@ -11,7 +11,7 @@ using System;
 
 using Empiria.StateEnums;
 
-using Empiria.Trade.Core.Domain;
+using Empiria.Trade.Core;
 
 using Empiria.Trade.Products;
 
@@ -45,18 +45,30 @@ namespace Empiria.Trade.Orders {
       protected set;
     }
 
-    [DataField("ProductId")]
+    [DataField("OrderItemTypeId")]
+    public int OrderItemTypeId {
+      get;
+      protected set;
+    }
+
+    [DataField("VendorProductId")]
     public Product Product {
       get;
       protected set;
     }
 
-    [DataField("PresentationId")]
-    public int PresentationId {
+    [DataField("ProductPriceId")]
+    public int ProductPriceId {
       get;
       protected set;
     }
 
+    [DataField("PriceListNumber")]
+    public int PriceListNumber {
+      get;
+      protected set;
+    }
+        
     [DataField("VendorId")]
     public Party Vendor {
       get;
@@ -117,7 +129,7 @@ namespace Empiria.Trade.Orders {
       protected set;
     }
 
-    [DataField("OrderItemStatus")]
+    [DataField("OrderItemStatus", Default = EntityStatus.Active)]
     public EntityStatus Status {
       get;
       protected set;

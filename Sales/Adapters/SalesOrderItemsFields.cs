@@ -14,7 +14,7 @@ using Empiria.Trade.Products;
 namespace Empiria.Trade.Sales.Adapters {
 
   /// <summary>Holds a OrderItems properties. </summary>
-  public class OrderItemsFields {
+  public class SalesOrderItemsFields {
 
     #region Public properties
 
@@ -24,6 +24,14 @@ namespace Empiria.Trade.Sales.Adapters {
     } = string.Empty;
         
     public int Quantity {
+      get; set;
+    }
+
+    public int ProductPriceId {
+      get; set;
+    }
+
+    public int PriceListNumber {
       get; set;
     }
 
@@ -54,12 +62,7 @@ namespace Empiria.Trade.Sales.Adapters {
     public string Notes {
       get; set;
     }
-
-    public double TaxesIVA {
-      get;
-      private set;
-    }
-
+        
     public string ProductUID {
       get; set;
     }

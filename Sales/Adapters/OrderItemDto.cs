@@ -23,7 +23,19 @@ namespace Empiria.Trade.Sales.Adapters {
       get; set;
     } = string.Empty;
 
+    public int OrderItemTypeId {
+      get; set;
+    }
+
     public decimal Quantity {
+      get; set;
+    }
+
+    public int ProductPriceId {
+      get; set;
+    }
+
+    public int PriceListNumber {
       get; set;
     }
 

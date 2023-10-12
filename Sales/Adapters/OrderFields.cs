@@ -11,7 +11,7 @@ using System;
 
 using Empiria.StateEnums;
 
-using Empiria.Trade.Core.Domain;
+using Empiria.Trade.Core;
 using Empiria.Trade.Core.Adapters;
 
 namespace Empiria.Trade.Sales.Adapters {
@@ -88,7 +88,7 @@ namespace Empiria.Trade.Sales.Adapters {
       get; set;
     }
 
-    public FixedList<OrderItemsFields> OrderItems {
+    public FixedList<SalesOrderItemsFields> OrderItems {
       get; set;
     }
 

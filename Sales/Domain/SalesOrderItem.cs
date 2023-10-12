@@ -9,9 +9,10 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 
-using Empiria.Trade.Core.Domain;
+using Empiria.Trade.Core;
 using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Sales.Data;
+
 
 using Empiria.Trade.Orders;
 
@@ -26,7 +27,7 @@ namespace Empiria.Trade.Sales {
       //no-op
     }
 
-    public SalesOrderItem(int orderId, OrderItemsFields fields) {
+    public SalesOrderItem(int orderId, SalesOrderItemsFields fields) {
       LoadOrderItem(orderId, fields);
     }
 
@@ -40,10 +41,12 @@ namespace Empiria.Trade.Sales {
 
     #region Public methods
 
-    internal void LoadOrderItem(int orderId, OrderItemsFields fields) {
-      this.OrderId = orderId;
+    internal void LoadOrderItem(int orderId, SalesOrderItemsFields fields) {
+      this.OrderId = orderId;      
+      this.OrderItemTypeId = 3; 
       this.Product = Products.Product.Parse(fields.ProductUID);
-      this.PresentationId = -1;
+      this.ProductPriceId = fields.ProductPriceId;
+      this.PriceListNumber = fields.PriceListNumber;
       this.Vendor = Party.Parse(fields.VendorUID);
       this.Quantity = fields.Quantity;
       this.BasePrice = fields.BasePrice;
@@ -57,7 +60,7 @@ namespace Empiria.Trade.Sales {
     }
 
     protected override void OnSave() {
-      OrderItemsData.Write(this);
+      SalesOrderItemsData.Write(this);
     }
 
 

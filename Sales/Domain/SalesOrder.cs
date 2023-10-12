@@ -40,6 +40,15 @@ namespace Empiria.Trade.Sales {
 
     #endregion Constructors and parsers
 
+    #region Public properties
+
+    public FixedList<SalesOrderItem> SalesOrderItems {
+      get; private set;
+    }
+
+    #endregion
+
+
     #region Public methods
 
     protected override void OnSave() {
@@ -57,27 +66,27 @@ namespace Empiria.Trade.Sales {
       this.SalesAgent = fields.GetSalesAgent();
       this.Notes = fields.Notes;
       this.Status = fields.Status;
-      this.OrderItems = LoadOrderItems(this.Id,fields.OrderItems);
+      this.SalesOrderItems = LoadSalesOrderItems(this.Id,fields.OrderItems);
     }
 
     #endregion Public methods
 
     #region Private methods
 
-    private FixedList<OrderItem> LoadOrderItems(int salesOrderId, FixedList<OrderItemsFields> orderItemsFields) {
-      List<SalesOrderItem> salesOrderItems = new List<SalesOrderItem>();
+    private FixedList<SalesOrderItem> LoadSalesOrderItems(int salesOrderId, FixedList<SalesOrderItemsFields> orderItemsFields) {
+      List<SalesOrderItem> orderItems = new List<SalesOrderItem>();
 
-      foreach (OrderItemsFields itemFields in orderItemsFields) {
-        salesOrderItems.Add(new SalesOrderItem(salesOrderId, itemFields));
+      foreach (SalesOrderItemsFields itemFields in orderItemsFields) {
+        orderItems.Add(new SalesOrderItem(salesOrderId, itemFields));
       }
 
-      return salesOrderItems.ToFixedList<OrderItem>();
+      return orderItems.ToFixedList<SalesOrderItem>();
     }
 
     private void SaveOrderItems() {
 
-      foreach (OrderItem orderItem in this.OrderItems) {
-        OrderItemsData.Write(orderItem);
+      foreach (SalesOrderItem orderItem in this.SalesOrderItems) {
+        SalesOrderItemsData.Write(orderItem);
       }
 
     }
