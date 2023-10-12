@@ -96,8 +96,8 @@ namespace Empiria.Trade.Products {
     }
 
 
-    [DataField("Description")]
-    internal string Description {
+    [DataField("ProductDescription")]
+    internal string ProductDescription {
       get;
       private set;
     }

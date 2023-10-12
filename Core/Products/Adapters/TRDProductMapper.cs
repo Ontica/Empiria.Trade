@@ -49,7 +49,7 @@ namespace Empiria.Trade.Products.Adapters {
 
       dto.ProductUID = entry.UID;
       dto.ProductCode = entry.Code;
-      dto.Description = entry.Description;
+      dto.Description = entry.ProductDescription;
       dto.ProductType = GetProductType(entry);
       dto.Presentations = GetPresentations(entry);
 
@@ -90,7 +90,7 @@ namespace Empiria.Trade.Products.Adapters {
       Presentation presentation = new Presentation();
 
       presentation.PresentationUID = "ead65e0b-90a8-4bb1-859b-53730388c385";
-      presentation.Description = entry.Description; // grupo, terminado, stock
+      presentation.Description = entry.ProductDescription; // grupo, terminado, stock
       presentation.Units = num.ToString(); //Stock;
       presentation.Vendors = GetVendors(entry);
 

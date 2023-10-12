@@ -45,8 +45,8 @@ namespace Empiria.Trade.Products.Data {
 
         var entries = DataReader.GetPlainObjectFixedList<ProductUpdate>(selectOperation);
 
-        var filteredEntries = entries.FindAll(x => x.Uid != "");
-
+        var filteredEntries = entries.FindAll(x => x.Uid == "");
+        
         foreach (var entry in filteredEntries) {
           
           var update = $"UPDATE {tableName} SET {uidName} = '{Guid.NewGuid().ToString()}' WHERE {idName} = {entry.Id}";
