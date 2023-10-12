@@ -12,10 +12,10 @@ using System;
 using Empiria.Trade.Core.Data;
 using Empiria.Json;
 
-namespace Empiria.Trade.Core.Domain {
+namespace Empiria.Trade.Core {
 
   /// <summary>Represent Party</summary>
-  public class Party : INamedEntity {
+  public class Party : BaseObject, INamedEntity {
 
     #region Constructors and parsers
 
@@ -27,23 +27,14 @@ namespace Empiria.Trade.Core.Domain {
 
     public static Party Parse(string uid) => PartyData.GetParty(uid);
 
+    public static Party Empty => BaseObject.ParseEmpty<Party>();
+
 
     #endregion Constructors and parsers
 
     #region Public properties
 
-    [DataField("PartyId")]
-    public int Id {
-      get;
-      private set;
-    }
-
-    [DataField("PartyUID")]
-    public string UID {
-      get;
-      private set;
-    }
-
+   
     [DataField("PartyName")]
     public string Name {
       get;
