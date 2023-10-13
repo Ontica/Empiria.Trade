@@ -23,13 +23,13 @@ namespace Empiria.Trade.Sales.WebApi {
 
     [HttpPost]
     [Route("v4/trade/sales/process-sales-order")]
-    public SingleObjectModel ProcessSalesOrder([FromBody] OrderFields fields) {
+    public SingleObjectModel ProcessSalesOrder([FromBody] SalesOrderFields fields) {
 
       base.RequireBody(fields);
 
-      using (var usecases = OrderUseCases.UseCaseInteractor()) {
+      using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
 
-        OrderDto orderDto = usecases.ProcessSalesOrder(fields);
+        SalesOrderDto orderDto = usecases.ProcessSalesOrder(fields);
 
         return new SingleObjectModel(this.Request, orderDto);
       }

@@ -16,11 +16,11 @@ using Empiria.Trade.Core.Adapters;
 
 namespace Empiria.Trade.Sales.Adapters {
 
-  public class OrderFields {
+  public class SalesOrderFields {
 
     #region Constructors and parsers
 
-    public OrderFields() {
+    public SalesOrderFields() {
       // Required by Empiria Framework.
     }
 

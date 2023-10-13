@@ -14,7 +14,7 @@ using Empiria.Data;
 namespace Empiria.Trade.Sales.Data {
 
     /// <summary>Provides data layer for Orders.</summary>
-    static internal class OrderData {
+    static internal class SalesOrderData {
 
     #region Internal methods
 

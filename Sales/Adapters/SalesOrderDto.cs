@@ -14,7 +14,7 @@ using Empiria.Trade.Core.Adapters;
 namespace Empiria.Trade.Sales.Adapters {
 
   /// <summary>Output DTO used to return orders. </summary>
-  public class OrderDto {
+  public class SalesOrderDto {
 
     public string UID {
       get; internal set;

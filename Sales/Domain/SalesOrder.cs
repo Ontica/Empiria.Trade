@@ -26,7 +26,7 @@ namespace Empiria.Trade.Sales {
       //no-op
     }
 
-    public SalesOrder(OrderFields fields) {
+    public SalesOrder(SalesOrderFields fields) {
       Update(fields);
     }
 
@@ -56,11 +56,11 @@ namespace Empiria.Trade.Sales {
         OrderNumber = "P-" + EmpiriaString.BuildRandomString(10);
         OrderTime = DateTime.Now;
       }
-      OrderData.Write(this);
+      SalesOrderData.Write(this);
       SaveOrderItems();
     }
 
-    internal void Update(OrderFields fields) {
+    internal void Update(SalesOrderFields fields) {
       this.Customer = fields.GetCustomer();
       this.Supplier = fields.GetSupplier();
       this.SalesAgent = fields.GetSalesAgent();

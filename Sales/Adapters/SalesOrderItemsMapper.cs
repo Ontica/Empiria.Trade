@@ -12,10 +12,10 @@ using System;
 namespace Empiria.Trade.Sales.Adapters {
 
   /// <summary>Methods used to map OrderItem.  </summary>
-  static internal class OrderItemsMapper {
+  static internal class SalesOrderItemsMapper {
 
-    static internal OrderItemDto Map(SalesOrderItem orderItem) {
-      var dto = new OrderItemDto {
+    static internal SalesOrderItemDto Map(SalesOrderItem orderItem) {
+      var dto = new SalesOrderItemDto {
         UID = orderItem.UID,
         OrderItemTypeId = orderItem.OrderItemTypeId,
         Quantity = orderItem.Quantity,

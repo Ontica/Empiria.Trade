@@ -16,16 +16,16 @@ using Empiria.Trade.Sales.Adapters;
 namespace Empiria.Trade.Sales.UseCases {
 
   /// <summary>Use cases used to management Orders.</summary>
-   public class OrderUseCases : UseCase {
+   public class SalesOrderUseCases : UseCase {
 
     #region Constructors and parsers
 
-    protected OrderUseCases() {
+    protected SalesOrderUseCases() {
       // no-op
     }
 
-    static public OrderUseCases UseCaseInteractor() {
-      return UseCase.CreateInstance<OrderUseCases>();
+    static public SalesOrderUseCases UseCaseInteractor() {
+      return UseCase.CreateInstance<SalesOrderUseCases>();
     }
 
 
@@ -35,7 +35,7 @@ namespace Empiria.Trade.Sales.UseCases {
     #region Use cases
 
 
-    public OrderDto ProcessSalesOrder(OrderFields fields) {
+    public SalesOrderDto ProcessSalesOrder(SalesOrderFields fields) {
       Assertion.Require(fields, "fields");
 
       SalesOrder order;
@@ -47,18 +47,18 @@ namespace Empiria.Trade.Sales.UseCases {
         order = new SalesOrder(fields);
       }
 
-      return OrderMapper.Map(order);
+      return SalesOrderMapper.Map(order);
     }
 
 
-    public OrderDto SaveSalesOrder(OrderFields fields) {
+    public SalesOrderDto SaveSalesOrder(SalesOrderFields fields) {
       Assertion.Require(fields, "fields");
 
       var order = new SalesOrder(fields);
 
       order.Save();
 
-      var orderDto = OrderMapper.Map(order);
+      var orderDto = SalesOrderMapper.Map(order);
 
       return orderDto;
     }

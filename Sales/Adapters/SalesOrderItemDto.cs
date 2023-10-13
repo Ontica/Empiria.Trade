@@ -14,7 +14,7 @@ using Empiria.StateEnums;
 namespace Empiria.Trade.Sales.Adapters {
 
   /// <summary>Output DTO used to return order items </summary>
-  public class OrderItemDto {
+  public class SalesOrderItemDto {
 
     #region Public properties
 
