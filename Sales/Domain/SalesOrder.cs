@@ -18,7 +18,7 @@ using Empiria.Trade.Orders;
 namespace Empiria.Trade.Sales {
 
   /// <summary>Represent Order</summary>
-  internal class SalesOrder : Order {
+  public class SalesOrder : Order {
 
     #region Constructors and parsers
 
