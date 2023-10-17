@@ -11,19 +11,17 @@ using System;
 
 using Xunit;
 
-using Empiria.Tests;
-
 using Empiria.Trade.Core.UsesCases;
-using Empiria.Trade.Core.Domain;
+
 
 namespace Empiria.Trade.Tests.Core {
 
   /// <summary>Test cases for core.</summary>
-  public class CoreTests {
+  public class PartyTests {
 
     #region Initialization
 
-    public CoreTests() {
+    public PartyTests() {
       //TestsCommonMethods.Authenticate();
     }
 
