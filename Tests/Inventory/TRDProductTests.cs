@@ -41,7 +41,7 @@ namespace Empiria.Trade.Tests {
 
       var usecase = TRDProductUseCases.UseCaseInteractor();
 
-      string uid = "6160446c-2a77-4db4-a053-d1bf21c273d0";
+      string uid = "78be58ab-75d0-4e8f-bed4-2305e70101c8";
 
       IProductEntryDto sut = usecase.GetTRDProduct(uid);
 
