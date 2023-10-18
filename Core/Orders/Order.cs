@@ -36,6 +36,12 @@ namespace Empiria.Trade.Orders {
 
     #region Public properties
 
+    [DataField("OrderTypeId")]
+    public int OrderTypeId {
+      get;
+      protected set;
+    }
+
     [DataField("CustomerId")]
     public Party Customer {
       get;

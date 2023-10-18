@@ -40,9 +40,9 @@ namespace Empiria.Trade.Sales.Adapters {
       get; internal set;
     }
 
-    public PartyContactsDto CustomerContact {
-      get; internal set;
-    }
+    //public PartyContactsDto CustomerContact {
+    //  get; internal set;
+    //}
 
     public NamedEntityDto Supplier {
       get; internal set;

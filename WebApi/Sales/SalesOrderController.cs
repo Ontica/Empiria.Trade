@@ -35,6 +35,20 @@ namespace Empiria.Trade.Sales.WebApi {
       }
     }
 
+    [HttpPost]
+    [Route("v4/trade/sales/create-sales-order")]
+    public SingleObjectModel CreateSalesOrder([FromBody] SalesOrderFields fields) {
+
+      base.RequireBody(fields);
+
+      using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
+
+        SalesOrderDto orderDto = usecases.CreateSalesOrder(fields);
+
+        return new SingleObjectModel(this.Request, orderDto);
+      }
+    }
+
   } // class SalesOrderController
 
 } // namespace Empiria.Trade.Products.WebApi

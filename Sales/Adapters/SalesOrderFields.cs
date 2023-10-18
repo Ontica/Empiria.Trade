@@ -12,7 +12,7 @@ using System;
 using Empiria.StateEnums;
 
 using Empiria.Trade.Core;
-using Empiria.Trade.Core.Adapters;
+
 
 namespace Empiria.Trade.Sales.Adapters {
 
@@ -48,19 +48,19 @@ namespace Empiria.Trade.Sales.Adapters {
     } = EntityStatus.Active;
 
 
-    public NamedEntity Customer {
+    public string CustomerUID {
       get; set;
     }
 
-    public PartyContactsDto CustomerContact {
+    public string CustomerContactUID {
       get; set;
     }
 
-    public NamedEntity Supplier {
+    public string SupplierUID {
       get; set;
     }
 
-    public NamedEntity SalesAgent {
+    public string SalesAgentUID {
       get; set;
     }
 
@@ -68,48 +68,31 @@ namespace Empiria.Trade.Sales.Adapters {
       get; set;
     }
 
-    public int Items {
-      get; set;
-    }
+   
 
-    public double ItemsTotal {
-      get; set;
-    }
-
-    public double Shipment {
-      get; set;
-    }
-
-    public double Taxes {
-      get; set;
-    }
-
-    public double OrderTotal {
-      get; set;
-    }
-
-    public FixedList<SalesOrderItemsFields> OrderItems {
-      get; set;
-    }
+    //public FixedList<SalesOrderItemsFields> OrderItems {
+    //  get; set;
+    //}
 
     #endregion Constructors and parsers
 
     #region Internal methods
 
-    internal Party GetCustomer() {
-      return Party.Parse(this.Customer.UID);
+    public Party GetCustomer() {
+      return Party.Parse(this.CustomerUID);
     }
 
 
-    internal Party GetSalesAgent() {
-      return Party.Parse(this.SalesAgent.UID);
+    public Party GetSalesAgent() {
+      return Party.Parse(this.SalesAgentUID);
     }
 
-    internal Party GetSupplier() {
-      return Party.Parse(this.Supplier.UID);
+    public Party GetSupplier() {
+      return Party.Parse(this.SupplierUID);
 
     }
 
+   
     #endregion Internal methods
 
     #region Private methods
@@ -120,7 +103,5 @@ namespace Empiria.Trade.Sales.Adapters {
 
   }  //  internal class OrderFields
 
-
-
-
+ 
 } // namespace Empiria.Trade.Sales.Adapters

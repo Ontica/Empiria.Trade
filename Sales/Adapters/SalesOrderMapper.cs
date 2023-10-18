@@ -20,7 +20,7 @@ namespace Empiria.Trade.Sales.Adapters {
         OrderNumber = order.OrderNumber,
         OrderTime = order.OrderTime,
         Notes = order.Notes,
-        Status = "Abierto",
+        Status = "Active",
         Customer = order.Customer.MapToNamedEntity(),
         Supplier = order.Supplier.MapToNamedEntity(),
         SalesAgent = order.SalesAgent.MapToNamedEntity(),

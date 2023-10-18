@@ -63,15 +63,15 @@ namespace Empiria.Trade.Sales.Adapters {
       get; set;
     }
         
-    public string ProductUID {
+    public ProductFields Product {
       get; set;
     }
 
-    public string PresentationUID {
+    public PresentationFields Presentation {
       get;  set;
     }
 
-    public string VendorUID {
+    public VendorFields Vendor {
       get; set;
     }
 
@@ -82,5 +82,63 @@ namespace Empiria.Trade.Sales.Adapters {
     #endregion
 
   }  // class OrderItemsFields
+
+  public class ProductFields {
+
+   public string ProductUID {
+      get; set;
+   }
+   
+  public string ProductCode {
+      get; set;
+  }
+
+  public string Description {
+      get; set;
+  }
+
+  } // ProductFields
+
+  public class PresentationFields {
+
+    public string PresentationUID {
+      get; set;
+    }
+
+   public string Description {
+      get; set;
+   }
+
+  public int Units {
+      get; set;
+  }
+
+  } // PresentationFields
+
+
+  public class VendorFields {
+
+    public string VendorUID {
+      get; set;
+    }
+
+    public string VendorName {
+      get; set;
+    }
+
+    public string Sku {
+      get; set;
+    }
+
+    public int Stock {
+      get; set;
+    }
+
+    public decimal Price {
+      get; set;
+    }
+
+  } // VendorFields
+
 
 } // namespace Empiria.Trade.Sales.Adapters

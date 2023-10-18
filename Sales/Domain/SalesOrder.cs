@@ -46,6 +46,32 @@ namespace Empiria.Trade.Sales {
       get; private set;
     }
 
+    public int ItemsCount {
+      get; private set;
+    }
+
+   
+  public decimal ItemsTotal {
+      get; private set;
+  }
+
+  public decimal Shipment {
+      get; private set;
+  }
+  
+  public decimal Discount {
+      get; private set;
+  }
+
+  public decimal Taxes {
+      get; private set;
+  }
+  
+  public decimal OrderTotal {
+      get; private set;
+  }
+
+
     #endregion
 
 
@@ -61,23 +87,26 @@ namespace Empiria.Trade.Sales {
     }
 
     internal void Update(SalesOrderFields fields) {
+      this.OrderTypeId = 1025;
       this.Customer = fields.GetCustomer();
       this.Supplier = fields.GetSupplier();
       this.SalesAgent = fields.GetSalesAgent();
       this.Notes = fields.Notes;
       this.Status = fields.Status;
-      this.SalesOrderItems = LoadSalesOrderItems(this.Id,fields.OrderItems);
+      //this.SalesOrderItems = LoadSalesOrderItems(this.Id,fields.OrderItems);
+     
+
     }
 
     #endregion Public methods
 
     #region Private methods
 
-    private FixedList<SalesOrderItem> LoadSalesOrderItems(int salesOrderId, FixedList<SalesOrderItemsFields> orderItemsFields) {
+    private FixedList<SalesOrderItem> LoadSalesOrderItems(FixedList<SalesOrderItemsFields> orderItemsFields) {
       List<SalesOrderItem> orderItems = new List<SalesOrderItem>();
 
       foreach (SalesOrderItemsFields itemFields in orderItemsFields) {
-        orderItems.Add(new SalesOrderItem(salesOrderId, itemFields));
+        orderItems.Add(new SalesOrderItem(itemFields));
       }
 
       return orderItems.ToFixedList<SalesOrderItem>();

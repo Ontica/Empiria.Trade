@@ -29,7 +29,9 @@ namespace Empiria.Trade.Tests.Sales {
       var item = new SalesOrderItemsFields {
         UID = "afasfa",
         Quantity = 3,
-        ProductUID = "4ffcb71f-5554-446c-8678-56cc10759fa8",
+        Product = new ProductFields {
+          ProductUID = "4ffcb71f-5554-446c-8678-56cc10759fa8"
+        },
         ProductPriceId = 200,
         PriceListNumber = 3,
         BasePrice = 100,
@@ -39,11 +41,13 @@ namespace Empiria.Trade.Tests.Sales {
         Taxes = 19,
         Total = 800,
         Notes = "",
-        VendorUID = "85af02f9-964d-4f35-9a00-710fcf04d925",
+        Vendor = new VendorFields {
+          VendorUID = "85af02f9-964d-4f35-9a00-710fcf04d925"
+        },
         Status = EntityStatus.Active
       };
 
-      var salesOrderItem = new SalesOrderItem(30, item);
+      var salesOrderItem = new SalesOrderItem(item);
       
       
 
@@ -53,22 +57,19 @@ namespace Empiria.Trade.Tests.Sales {
     [Fact]
     public void ShouldCrateNewOrder() {
       var x = new Trade.Core.Adapters.PartyContactsDto();
-      x.UID = 1; 
+      x.UID = 1;
       var order = new SalesOrderFields {
         UID = "",
         OrderNumber = "",
         OrderTime = DateTime.Now,
         Status = EntityStatus.Active,
-        Customer = new NamedEntity("7ed4164a-24b0-4728-910b-eb26f0684a12", ""),
-        CustomerContact = x,
-        Supplier = new NamedEntity("211e9e92-c56e-4ed3-b42f-e916211b92ce", ""),
-        SalesAgent = new NamedEntity("a517e788-8ddf-4772-b6d2-adc3907e3905", ""),
+        CustomerUID = "",
+         
+        CustomerContactUID = "",
+        SupplierUID = "211e9e92-c56e-4ed3-b42f-e916211b92ce",
+        SalesAgentUID =  "a517e788-8ddf-4772-b6d2-adc3907e3905",
         PaymentCondition = "1 Mes",
-        Items = 3,
-        ItemsTotal = 5,
-        Shipment = 650,
-        Taxes = 5.50,
-        OrderTotal = 5500
+       
       };
 
       var salesOrder = new SalesOrder(order);

@@ -27,8 +27,8 @@ namespace Empiria.Trade.Sales {
       //no-op
     }
 
-    public SalesOrderItem(int orderId, SalesOrderItemsFields fields) {
-      LoadOrderItem(orderId, fields);
+    public SalesOrderItem(SalesOrderItemsFields fields) {
+      LoadOrderItem(fields);
     }
 
 
@@ -41,13 +41,13 @@ namespace Empiria.Trade.Sales {
 
     #region Public methods
 
-    internal void LoadOrderItem(int orderId, SalesOrderItemsFields fields) {
-      this.OrderId = orderId;      
+    internal void LoadOrderItem(SalesOrderItemsFields fields) {
+          
       this.OrderItemTypeId = 3; 
-      this.Product = Products.Product.Parse(fields.ProductUID);
+      this.Product = Products.Product.Parse(fields.Product.ProductUID);
       this.ProductPriceId = fields.ProductPriceId;
       this.PriceListNumber = fields.PriceListNumber;
-      this.Vendor = Party.Parse(fields.VendorUID);
+      this.Vendor = Party.Parse(fields.Vendor.VendorUID);
       this.Quantity = fields.Quantity;
       this.BasePrice = fields.BasePrice;
       this.SalesPrice = fields.SalesPrice;

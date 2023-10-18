@@ -27,7 +27,7 @@ namespace Empiria.Trade.Sales.UseCases {
     static public SalesOrderUseCases UseCaseInteractor() {
       return UseCase.CreateInstance<SalesOrderUseCases>();
     }
-
+        
 
     #endregion Constructors and parsers
 
@@ -51,7 +51,7 @@ namespace Empiria.Trade.Sales.UseCases {
     }
 
 
-    public SalesOrderDto SaveSalesOrder(SalesOrderFields fields) {
+    public SalesOrderDto CreateSalesOrder(SalesOrderFields fields) {
       Assertion.Require(fields, "fields");
 
       var order = new SalesOrder(fields);
