@@ -90,9 +90,9 @@ namespace Empiria.Trade.Products.Adapters {
       Presentation presentation = new Presentation();
 
       presentation.PresentationUID = "ead65e0b-90a8-4bb1-859b-53730388c385";
-      presentation.Description = entry.ProductDescription; // grupo, terminado, stock
-      presentation.Units = num.ToString(); //Stock;
-      presentation.Vendors = GetVendors(entry);
+      presentation.Description = entry.ProductDescription;
+      presentation.Units = num.ToString(); //CANTIDAD QUE CONTIENE LA PRESENTACION;
+      presentation.Vendors = GetVendors();
 
       presentations.Add(presentation);
 
@@ -100,7 +100,7 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
-    static private FixedList<Vendor> GetVendors(Product entry) {
+    static private FixedList<Vendor> GetVendors() {
 
       Random rnd = new Random(1000);
       decimal num = rnd.Next();

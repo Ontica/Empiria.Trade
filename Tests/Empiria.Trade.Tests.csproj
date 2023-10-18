@@ -87,6 +87,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\extensions\Tests\Empiria.Tests.csproj" />
     <ProjectReference Include="..\Inventory\Empiria.Trade.Inventory.csproj" />
+    <ProjectReference Include="..\Sales\Empiria.Trade.Sales.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="empiria.config.json">

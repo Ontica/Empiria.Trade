@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using Empiria.Trade.Orders;
 
 namespace Empiria.Trade.Products.Adapters {
 
@@ -21,11 +22,15 @@ namespace Empiria.Trade.Products.Adapters {
 
   public class TableQuery {
 
+
     public string TableName { get; set; } = string.Empty;
+
     public string IdName { get; set; } = string.Empty;
+
     public string UidName { get; set; } = string.Empty;
 
 
   }
+
 
 } // namespace Empiria.Trade.Products.Adapters

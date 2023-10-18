@@ -74,19 +74,16 @@ namespace Empiria.Trade.Products.UseCases {
 
 
     public async Task<string> UpdateGUID(TableQuery query) {
-      string msj = string.Empty;
+      
       try {
 
-        await Task.Run(() => TRDProductDataService.UpdateTableGUID(
+        return await Task.Run(() => TRDProductDataService.UpdateTableGUID(
                               query.TableName, query.IdName, query.UidName))
                               .ConfigureAwait(false);
 
-        msj = "SE ACTUALIZARON CORRECTAMENTE LOS REGISTROS";
       } catch (Exception ex) {
-        msj = ex.Message;
         throw new Exception(ex.Message, ex);
       }
-      return msj;
     }
 
 
