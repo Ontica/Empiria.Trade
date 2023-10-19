@@ -10,15 +10,29 @@
 using System;
 
 using Empiria.Data;
+using Empiria.DataTypes;
+using Empiria.Trade.Core;
+using Empiria.Trade.Sales.Adapters;
 
 namespace Empiria.Trade.Sales.Data {
 
     /// <summary>Provides data layer for Orders.</summary>
     static internal class SalesOrderData {
 
+
     #region Internal methods
 
-      internal static void Write(SalesOrder o) {
+    internal static FixedList<SalesOrder> GetSalesOrders(SearchOrderFields fields) {
+      var sql = "SELECT * " +
+      "FROM TRDOrders " +
+      $"WHERE OrderStatus = 'A'";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetFixedList<SalesOrder>(dataOperation);      
+    }
+
+    internal static void Write(SalesOrder o) {
         var op = DataOperation.Parse("writeOrder", o.Id, o.UID, o.OrderTypeId, o.Customer.Id, o.Supplier.Id,
                                     o.SalesAgent.Id, o.OrderNumber, o.OrderTime, o.Notes,
                                     o.Keywords, o.Status);

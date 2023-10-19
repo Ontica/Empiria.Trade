@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+
 using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Sales.Data;
@@ -91,6 +92,10 @@ namespace Empiria.Trade.Sales {
      
     }
 
+    internal static FixedList<SalesOrder> GetOrders(SearchOrderFields fields) {
+      return SalesOrderData.GetSalesOrders(fields);
+    }
+
     internal void Update(SalesOrderFields fields) {
       this.OrderTypeId = 1025;
       this.Customer = fields.GetCustomer();
@@ -101,12 +106,13 @@ namespace Empiria.Trade.Sales {
       this.ShippingMethod = fields.ShippingMethod;
       this.PaymentCondition = fields.PaymentCondition;
     }
+      
 
     #endregion Public methods
 
     #region Private methods
 
-    
+
     #endregion
 
   }  //  class SalesOrder

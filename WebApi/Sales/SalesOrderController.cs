@@ -49,6 +49,19 @@ namespace Empiria.Trade.Sales.WebApi {
       }
     }
 
+    [HttpPost]
+    [Route("v4/trade/sales/search-sales-order")]
+    public CollectionModel GetOrders([FromBody] SearchOrderFields fields) {
+
+      base.RequireBody(fields);
+      using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
+        FixedList<SalesOrderDto> salesOrders = usecases.GetOrders(fields);
+
+        return new CollectionModel(base.Request, salesOrders);
+      }
+        
+    }
+
   } // class SalesOrderController
 
 } // namespace Empiria.Trade.Products.WebApi

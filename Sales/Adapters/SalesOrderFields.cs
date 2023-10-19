@@ -24,6 +24,10 @@ namespace Empiria.Trade.Sales.Adapters {
       // Required by Empiria Framework.
     }
 
+    #endregion Constructors and parsers
+
+    #region Properties
+
     public string UID {
       get; set;
     } = string.Empty;
@@ -80,7 +84,7 @@ namespace Empiria.Trade.Sales.Adapters {
     //  get; set;
     //}
 
-    #endregion Constructors and parsers
+    #endregion Properties
 
     #region Internal methods
 
@@ -97,8 +101,7 @@ namespace Empiria.Trade.Sales.Adapters {
       return Party.Parse(this.SupplierUID);
 
     }
-
-   
+       
     #endregion Internal methods
 
     #region Private methods
@@ -109,5 +112,22 @@ namespace Empiria.Trade.Sales.Adapters {
 
   }  //  internal class OrderFields
 
- 
+  public class SearchOrderFields {
+
+    public DateTime FromDate {
+      get; set;
+    }
+
+    public DateTime ToDate {
+      get; set;
+    }
+
+    public EntityStatus Status {
+      get; set;
+    }
+
+  } // class SearchOrderFields
+
+
+
 } // namespace Empiria.Trade.Sales.Adapters

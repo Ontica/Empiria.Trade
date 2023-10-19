@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using System.Collections.Generic;
 
 namespace Empiria.Trade.Sales.Adapters {
 
@@ -29,6 +30,16 @@ namespace Empiria.Trade.Sales.Adapters {
       };
 
       return dto;
+    }
+
+    static public FixedList<SalesOrderDto> Map(FixedList<SalesOrder> salesOrders) {
+      List<SalesOrderDto> salesOrderDtoList = new List<SalesOrderDto>();
+
+      foreach (var salesOrder in salesOrders) {
+        salesOrderDtoList.Add(Map(salesOrder));
+      }
+
+      return salesOrderDtoList.ToFixedList();
     }
 
   } // static internal class
