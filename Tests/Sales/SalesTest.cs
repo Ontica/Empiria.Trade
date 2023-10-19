@@ -27,13 +27,13 @@ namespace Empiria.Trade.Tests.Sales {
     public void ShouldCreateOrderTest() {
 
       var item = new SalesOrderItemsFields {
-        UID = "afasfa",
+        OrderItemUID = "afasfa",
         Quantity = 3,
         Product = new ProductFields {
           ProductUID = "4ffcb71f-5554-446c-8678-56cc10759fa8"
         },
-        ProductPriceId = 200,
-        PriceListNumber = 3,
+        //ProductPriceId = 200,
+        //PriceListNumber = 3,
         BasePrice = 100,
         SalesPrice = 393.30m,
         AdditionalDiscount = 0,
@@ -62,7 +62,7 @@ namespace Empiria.Trade.Tests.Sales {
         UID = "",
         OrderNumber = "",
         OrderTime = DateTime.Now,
-        Status = EntityStatus.Active,
+        Status = Orders.OrderStatus.Captured,
         CustomerUID = "7ed4164a-24b0-4728-910b-eb26f0684a12",
 
         CustomerContactUID = "",

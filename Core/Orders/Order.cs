@@ -84,8 +84,8 @@ namespace Empiria.Trade.Orders {
       }
     }
 
-    [DataField("OrderStatus", Default = EntityStatus.Active)]
-    public EntityStatus Status {
+    [DataField("OrderStatus", Default = OrderStatus.Captured)]
+    public OrderStatus Status {
       get;
       protected set;
     }
@@ -98,5 +98,12 @@ namespace Empiria.Trade.Orders {
     #endregion Public properties
 
   }  // class Order
+
+  public enum OrderStatus {
+    Captured = 'C',
+    Applied = 'A',
+    Closed  = 'F',
+    Cancelled = 'X'
+  }
 
 }  // namespace Empiria.Trade.Orders

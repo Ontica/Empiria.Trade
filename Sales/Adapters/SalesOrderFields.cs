@@ -12,7 +12,7 @@ using System;
 using Empiria.StateEnums;
 
 using Empiria.Trade.Core;
-
+using Empiria.Trade.Orders;
 
 namespace Empiria.Trade.Sales.Adapters {
 
@@ -46,11 +46,9 @@ namespace Empiria.Trade.Sales.Adapters {
       get; set;
     } = string.Empty;
 
-
-    public EntityStatus Status {
+    public OrderStatus Status {
       get; set;
-    } = EntityStatus.Active;
-
+    } = OrderStatus.Captured;
 
     public string CustomerUID {
       get; set;

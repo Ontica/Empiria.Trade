@@ -10,7 +10,7 @@
 
 using System;
 
-using Empiria.StateEnums;
+using Empiria.Trade.Orders;
 
 namespace Empiria.Trade.Sales.Adapters {
 
@@ -33,7 +33,7 @@ namespace Empiria.Trade.Sales.Adapters {
       get; internal set;
     }
 
-    public EntityStatus Status {
+    public OrderStatus Status {
       get; internal set;
     }
 
