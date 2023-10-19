@@ -57,7 +57,7 @@ namespace Empiria.Trade.Sales.Adapters {
       get; internal set;
     }
 
-    public string Shipment {
+    public string ShippingMethod {
       get; internal set;
     }
 

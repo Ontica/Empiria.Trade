@@ -63,13 +63,14 @@ namespace Empiria.Trade.Tests.Sales {
         OrderNumber = "",
         OrderTime = DateTime.Now,
         Status = EntityStatus.Active,
-        CustomerUID = "",
-         
+        CustomerUID = "7ed4164a-24b0-4728-910b-eb26f0684a12",
+
         CustomerContactUID = "",
         SupplierUID = "211e9e92-c56e-4ed3-b42f-e916211b92ce",
-        SalesAgentUID =  "a517e788-8ddf-4772-b6d2-adc3907e3905",
+        SalesAgentUID = "8b1d6d37-8d6c-4983-a3a0-42ed6b867bbe",
         PaymentCondition = "1 Mes",
-       
+        ShippingMethod = "Red Paq"
+
       };
 
       var salesOrder = new SalesOrder(order);

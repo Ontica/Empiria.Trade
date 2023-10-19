@@ -8,12 +8,9 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-
-using Empiria.Trade.Sales.Data;
-using Empiria.Trade.Sales.Adapters;
-using System.Collections.Generic;
-
 using Empiria.Trade.Orders;
+using Empiria.Trade.Sales.Adapters;
+using Empiria.Trade.Sales.Data;
 
 namespace Empiria.Trade.Sales {
 
@@ -51,29 +48,33 @@ namespace Empiria.Trade.Sales {
     }
 
    
-  public decimal ItemsTotal {
+    public decimal ItemsTotal {
       get; private set;
-  }
+    }
 
-  public string Shipment {
+    public decimal Shipment {
       get; private set;
-  }
+    }
   
-  public decimal Discount {
+    public decimal Discount {
       get; private set;
-  }
+    }
 
-  public decimal Taxes {
+    public decimal Taxes {
       get; private set;
-  }
+    }
   
-  public decimal OrderTotal {
+    public decimal OrderTotal {
       get; private set;
-  }
+    }
 
-  public string PaymentCondition {
+    public string PaymentCondition {
       get; private set;
-   }
+    }
+
+    public string ShippingMethod {
+      get; private set;
+    }
 
 
     #endregion
@@ -97,7 +98,7 @@ namespace Empiria.Trade.Sales {
       this.SalesAgent = fields.GetSalesAgent();
       this.Notes = fields.Notes;
       this.Status = fields.Status;
-      this.Shipment = fields.Shipment;
+      this.ShippingMethod = fields.ShippingMethod;
       this.PaymentCondition = fields.PaymentCondition;
     }
 

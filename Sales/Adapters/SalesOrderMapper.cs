@@ -24,7 +24,7 @@ namespace Empiria.Trade.Sales.Adapters {
         Customer = order.Customer.MapToNamedEntity(),
         Supplier = order.Supplier.MapToNamedEntity(),
         SalesAgent = order.SalesAgent.MapToNamedEntity(),
-        Shipment = order.Shipment,
+        ShippingMethod = order.ShippingMethod,
         PaymentCondition = order.PaymentCondition,
       };
 
