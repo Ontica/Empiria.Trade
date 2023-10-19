@@ -46,8 +46,24 @@ namespace Empiria.Trade.Products.Data {
         keywords = "WHERE " + keywords;
       }
 
-      var sql = "SELECT * " +
-                "FROM TRDProducts " +
+      //var sql = "SELECT * " +
+      //          "FROM TRDProducts " +
+      //          $"{keywords}";
+
+      var sql = "SELECT " +
+                "P.ProductId, P.ProductUID, PRESENT.PresentationId, VENDOR.PartyId VendorId, I.InventoryEntryId, GROUPS.ProductGroupId, " +
+                "SUBGROUPS.ProductSubgroupId, P.ProductCode, P.ProductUPC, P.ProductName, P.ProductDescription, P.Attributes, VP.SKU, " +
+                "PRICES.PriceList1, PRICES.PriceList2, PRICES.PriceList3, PRICES.PriceList4, PRICES.PriceList5, " +
+                "PRICES.PriceList6, PRICES.PriceList7, PRICES.PriceList8, PRICES.PriceList9, PRICES.PriceList10, " +
+                "P.ProductWeight, P.ProductLength, P.ProductStatus " +
+                "FROM TRDProducts P " +
+                "LEFT JOIN TRDProductGroups GROUPS ON P.ProductGroupId = GROUPS.ProductGroupId " +
+                "LEFT JOIN TRDProductSubgroups SUBGROUPS ON P.ProductSubgroupId = SUBGROUPS.ProductSubgroupId " +
+                "LEFT JOIN TRDVendorProducts VP ON P.ProductId = VP.ProductId " +
+                "LEFT JOIN TRDProductPresentations PRESENT ON VP.PresentationId = PRESENT.PresentationId " +
+                "LEFT JOIN TRDParties VENDOR ON VP.VendorId = VENDOR.PartyId " +
+                "LEFT JOIN TRDProductPrices PRICES ON VP.VendorProductId = PRICES.VendorProductId " +
+                "LEFT JOIN TRDInventory I ON VP.VendorProductId = I.VendorProductId " +
                 $"{keywords}";
 
       var dataOperation = DataOperation.Parse(sql);

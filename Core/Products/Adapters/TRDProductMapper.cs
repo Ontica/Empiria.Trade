@@ -47,9 +47,9 @@ namespace Empiria.Trade.Products.Adapters {
     static private ProductShortEntryDto MapEntry(Product entry) {
       var dto = new ProductShortEntryDto();
 
-      dto.ProductUID = entry.UID;
+      dto.ProductUID = entry.ProductUID;
       dto.ProductCode = entry.Code;
-      dto.Description = entry.ProductDescription;
+      dto.Description = entry.ProductName;
       dto.ProductType = GetProductType(entry);
       dto.Presentations = GetPresentations(entry);
 
@@ -82,17 +82,14 @@ namespace Empiria.Trade.Products.Adapters {
 
     static private FixedList<Presentation> GetPresentations(Product entry) {
       
-      Random rnd = new Random();
-      int num = rnd.Next();
-
       var presentations = new List<Presentation>();
 
       Presentation presentation = new Presentation();
 
-      presentation.PresentationUID = "ead65e0b-90a8-4bb1-859b-53730388c385";
-      presentation.Description = entry.ProductDescription;
-      presentation.Units = num.ToString(); //CANTIDAD QUE CONTIENE LA PRESENTACION;
-      presentation.Vendors = GetVendors();
+      presentation.PresentationUID = entry.ProductPresentation.PresentationUID;
+      presentation.Description = entry.ProductPresentation.PresentationDescription;
+      presentation.Units = Convert.ToString(entry.ProductPresentation.QuantityAmount); //CANTIDAD QUE CONTIENE LA PRESENTACION;
+      presentation.Vendors = GetVendors(entry);
 
       presentations.Add(presentation);
 
@@ -100,19 +97,16 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
-    static private FixedList<Vendor> GetVendors() {
-
-      Random rnd = new Random(1000);
-      decimal num = rnd.Next();
+    static private FixedList<Vendor> GetVendors(Product entry) {
 
       var vendors = new List<Vendor>();
 
       Vendor vendor = new Vendor() {
-        VendorUID = "eed65e0b-79b8-4ab1-859a-53730388c385",
-        VendorName = GetVendorName(1),
-        Sku = $"sku-000-{num}",
-        Stock = num,
-        Price = num
+        VendorUID = entry.Vendor.UID,
+        VendorName = entry.Vendor.Name,
+        Sku = entry.SKU, 
+        Stock = entry.InventoryEntry.InputQuantity,
+        Price = entry.Vendor.Id == 1 ? entry.PriceList1 : entry.PriceList7 // TODO VALIDAR PRECIOS EN DOMINIO
       };
 
       vendors.Add(vendor);
@@ -120,21 +114,6 @@ namespace Empiria.Trade.Products.Adapters {
       return vendors.ToFixedList();
     }
 
-
-    static private string GetVendorName(int companyId) {
-
-      if (companyId == 1) {
-        return "Productos NK";
-      }
-      if (companyId == 2) {
-        return "Productos Microsip";
-      }
-      if (companyId == 3) {
-        return "Productos NK Hidroplomex";
-      }
-
-      return string.Empty;
-    }
 
     #endregion Private methods
 

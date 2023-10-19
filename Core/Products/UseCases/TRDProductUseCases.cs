@@ -69,10 +69,10 @@ namespace Empiria.Trade.Products.UseCases {
     }
 
 
-    internal Inventory GetInventoryEntry(string inventoryEntryUid) {
+    internal InventoryEntry GetInventoryEntry(string inventoryEntryUid) {
       Assertion.Require(inventoryEntryUid, "inventoryEntryUid");
 
-      return Inventory.Parse(inventoryEntryUid);
+      return InventoryEntry.Parse(inventoryEntryUid);
     }
 
 

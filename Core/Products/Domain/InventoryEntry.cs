@@ -12,22 +12,22 @@ using System;
 namespace Empiria.Trade.Products {
 
   /// <summary>Represents an inventory entry.</summary>
-  public class Inventory : BaseObject {
+  public class InventoryEntry : BaseObject {
 
 
     #region Constructors and parsers
 
-    internal Inventory() {
+    internal InventoryEntry() {
 
     }
 
-    static public Inventory Parse(int id) => ParseId<Inventory>(id);
+    static public InventoryEntry Parse(int id) => ParseId<InventoryEntry>(id);
 
-    static public Inventory Parse(int id, bool reload) => ParseId<Inventory>(id, reload);
+    static public InventoryEntry Parse(int id, bool reload) => ParseId<InventoryEntry>(id, reload);
 
-    static public Inventory Parse(string uid) => ParseKey<Inventory>(uid);
+    static public InventoryEntry Parse(string uid) => ParseKey<InventoryEntry>(uid);
 
-    static public Inventory Empty => ParseEmpty<Inventory>();
+    static public InventoryEntry Empty => ParseEmpty<InventoryEntry>();
 
 
     #endregion Constructors and parsers
