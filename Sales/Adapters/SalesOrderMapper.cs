@@ -27,6 +27,7 @@ namespace Empiria.Trade.Sales.Adapters {
         SalesAgent = order.SalesAgent.MapToNamedEntity(),
         ShippingMethod = order.ShippingMethod,
         PaymentCondition = order.PaymentCondition,
+        Items = order.SalesOrderItems
       };
 
       return dto;
