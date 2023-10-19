@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Empiria.Services;
 using Empiria.Trade.Products.Adapters;
 using Empiria.Trade.Products.UseCases;
+using Empiria.Trade.Sales.Adapters;
 
 namespace Empiria.Trade.Sales.UseCases {
 
@@ -36,11 +37,13 @@ namespace Empiria.Trade.Sales.UseCases {
     #region Use cases
 
 
-    public async Task<FixedList<IProductEntryDto>> GetProductsForOrder(ProductQuery keywords) {
+    public async Task<FixedList<IProductEntryDto>> GetProductsForOrder(ProductOrderQuery OrderQuery) {
 
       using (var usecases = TRDProductUseCases.UseCaseInteractor()) {
 
-        FixedList<IProductEntryDto> productDto = await usecases.GetProductsList(keywords)
+        ProductQuery query = MapToProductQuery(OrderQuery);
+
+        FixedList<IProductEntryDto> productDto = await usecases.GetProductsForOrder(query)
                                                 .ConfigureAwait(false);
 
         return productDto;
@@ -49,6 +52,25 @@ namespace Empiria.Trade.Sales.UseCases {
 
 
     #endregion Use cases
+
+
+    #region Private methods
+
+
+    private ProductQuery MapToProductQuery(ProductOrderQuery orderQuery) {
+      var query = new ProductQuery();
+
+      query.Keywords= orderQuery.Keywords;
+      query.CustomerUID = orderQuery.Order.CustomerUID;
+      query.SalesAgentUID = orderQuery.Order.SalesAgentUID;
+      query.SuplierUID = orderQuery.Order.SupplierUID;
+
+      return query;
+    }
+
+
+    #endregion Private methods
+
 
   } // class ProductForOrderUseCases
 

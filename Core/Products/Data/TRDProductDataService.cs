@@ -10,12 +10,33 @@
 using System;
 using System.Linq;
 using Empiria.Data;
+using Empiria.Trade.Products.Adapters;
 using Empiria.Trade.Products.Domain;
 
 namespace Empiria.Trade.Products.Data {
 
   /// <summary>Provides data read methods for TRDProducts.</summary>
   internal class TRDProductDataService {
+
+
+    internal static FixedList<Product> GetProductsForOrder(ProductQuery query) {
+
+      string keywords = query.Keywords;
+
+      keywords = SearchExpression.ParseAndLikeKeywords("ProductKeywords", keywords);
+      if (keywords != string.Empty) {
+        keywords = "WHERE " + keywords;
+      }
+
+      var sql = "SELECT * " +
+                "FROM TRDProducts " +
+                $"{keywords}";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetPlainObjectFixedList<Product>(dataOperation);
+
+    }
 
 
     internal static FixedList<Product> GetProductsList(string keywords) {

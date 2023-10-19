@@ -39,6 +39,14 @@ namespace Empiria.Trade.Products.Domain {
     }
 
 
+    internal FixedList<Product> GetProductsForOrder(ProductQuery query) {
+      
+      FixedList<Product> data = TRDProductDataService.GetProductsForOrder(query);
+
+      return data;
+    }
+
+
     internal FixedList<Product> GetProductsList(ProductQuery query) {
 
       FixedList<Product> data = TRDProductDataService.GetProductsList(query.Keywords);

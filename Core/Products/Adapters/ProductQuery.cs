@@ -15,7 +15,26 @@ namespace Empiria.Trade.Products.Adapters {
   /// <summary>Query to filter Products.</summary>
   public class ProductQuery {
 
-    public string Keywords { get; set; } = string.Empty;
+
+    public string Keywords {
+      get; set;
+    } = string.Empty;
+
+
+    public string CustomerUID {
+      get; set;
+    } = string.Empty;
+
+
+    public string SalesAgentUID {
+      get; set;
+    } = string.Empty;
+
+
+    public string SuplierUID {
+      get; set;
+    } = string.Empty;
+
 
   }
 

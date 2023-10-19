@@ -21,7 +21,7 @@ namespace Empiria.Trade.Sales.Adapters {
     } = string.Empty;
 
 
-    public SalesOrderDto Order {
+    public SalesOrderFields Order {
       get; set;
     }
 

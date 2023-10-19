@@ -16,6 +16,7 @@ using Empiria.Trade.Products.Adapters;
 using Empiria.Trade.Products.UseCases;
 using Empiria.WebApi;
 using Empiria.Trade.Sales.UseCases;
+using Empiria.Trade.Sales.Adapters;
 
 namespace Empiria.Trade.WebApi.Inventory {
 
@@ -59,13 +60,13 @@ namespace Empiria.Trade.WebApi.Inventory {
 
     [HttpPost]
     [Route("v4/trade/products/search-products-for-order")]
-    public async Task<CollectionModel> GetProductsByCustomer([FromBody] ProductQuery keywords) {
+    public async Task<CollectionModel> GetProductsByCustomer([FromBody] ProductOrderQuery query) {
 
-      base.RequireBody(keywords);
+      base.RequireBody(query);
 
       using (var usecases = ProductForOrderUseCases.UseCaseInteractor()) {
 
-        FixedList<IProductEntryDto> productDto = await usecases.GetProductsForOrder(keywords)
+        FixedList<IProductEntryDto> productDto = await usecases.GetProductsForOrder(query)
                                                 .ConfigureAwait(false);
 
         return new CollectionModel(this.Request, productDto);

@@ -17,6 +17,8 @@ using Empiria.Tests;
 using Empiria.Trade.Products.UseCases;
 using Empiria.Trade.Products.Adapters;
 using Empiria.Trade.Products;
+using Empiria.Trade.Sales.Adapters;
+using Empiria.Trade.Sales.UseCases;
 
 namespace Empiria.Trade.Tests {
 
@@ -64,6 +66,24 @@ namespace Empiria.Trade.Tests {
       Assert.NotEmpty(sut);
 
     }
+
+
+    [Fact]
+    public async Task ShouldGetProductsForOrderTest() {
+
+      var usecase = ProductForOrderUseCases.UseCaseInteractor();
+
+      ProductOrderQuery query = new ProductOrderQuery {
+        Keywords = "TA58X412"
+      };
+
+      FixedList<IProductEntryDto> sut = await usecase.GetProductsForOrder(query).ConfigureAwait(false);
+
+      Assert.NotNull(sut);
+      Assert.NotEmpty(sut);
+
+    }
+
 
 
     [Fact]

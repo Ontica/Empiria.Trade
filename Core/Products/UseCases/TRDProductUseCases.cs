@@ -59,6 +59,16 @@ namespace Empiria.Trade.Products.UseCases {
     }
 
 
+    public async Task<FixedList<IProductEntryDto>> GetProductsForOrder(ProductQuery query) {
+      var builder = new TRDProductBuilder();
+
+      FixedList<Product> products = await Task.Run(() => builder.GetProductsForOrder(query))
+                                            .ConfigureAwait(false);
+
+      return TRDProductMapper.MapToEntriesDto(products);
+    }
+
+
     public ProductGroup GetTRDProductGroup(string productGroupUid) {
       Assertion.Require(productGroupUid, "productGroupUid");
 

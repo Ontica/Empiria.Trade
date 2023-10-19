@@ -61,7 +61,7 @@ namespace Empiria.Trade.Products {
     }
 
 
-    //[DataField("ProductTypeId")]
+    [DataField("ProductTypeId")]
     public int ProductTypeId {
       get;
       internal set;
