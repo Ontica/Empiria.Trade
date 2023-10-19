@@ -23,9 +23,9 @@ namespace Empiria.Trade.Core {
       //no-op
     }
 
-    public static Party Parse(int id) => PartyData.GetParty(id);
+    public static Party Parse(int id) => BaseObject.ParseId<Party>(id);
 
-    public static Party Parse(string uid) => PartyData.GetParty(uid);
+    public static Party Parse(string uid) => BaseObject.ParseKey<Party>(uid);
 
     public static Party Empty => BaseObject.ParseEmpty<Party>();
 

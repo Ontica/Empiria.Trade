@@ -19,30 +19,7 @@ namespace Empiria.Trade.Core.Data {
 
     #region Internal methods 
 
-    internal static Party GetParty(int id) {
-      var sql = "SELECT PartyId, PartyUID, PartyName, PartyShortName, PartyAddressLine1,PartyAddressLine2,PartyLocationId, " +
-                "PartyZipCode, PartyEMail, PartyPhoneNumbers,PartyContacts,PartyTaxationID,PartyKeywords,PartyExtData, " +
-                "PartyStatus " +
-                "FROM TRDParties " +
-                $"WHERE PartyId  = {id} ";
-      
-      var dataOperation = DataOperation.Parse(sql);
-
-      return DataReader.GetPlainObject<Party>(dataOperation);
-    }
-
-    internal static Party GetParty(string uid) {
-      var sql = "SELECT PartyId, PartyUID, PartyName, PartyShortName, PartyAddressLine1,PartyAddressLine2,PartyLocationId, " +
-                "PartyZipCode, PartyEMail, PartyPhoneNumbers,PartyContacts,PartyTaxationID,PartyKeywords,PartyExtData, " +
-                "PartyStatus " +
-                "FROM TRDParties " +
-               $"WHERE PartyUID  = '{uid}' ";
-     
-
-      var dataOperation = DataOperation.Parse(sql);
-
-      return DataReader.GetPlainObject<Party>(dataOperation);
-    }
+   
 
     internal static FixedList<Party> GetPartyListByRole(string role, string keywords = "") {
 
@@ -52,16 +29,14 @@ namespace Empiria.Trade.Core.Data {
         keywords = "AND " + keywords;
       }
           
-      var sql = "SELECT PartyId, PartyUID, PartyName, PartyShortName, PartyAddressLine1,PartyAddressLine2,PartyLocationId, " +
-                "PartyZipCode, PartyEMail, PartyPhoneNumbers,PartyContacts,PartyTaxationID, PartyRoles, PartyKeywords,PartyExtData, " +
-                "PartyStatus " +
+      var sql = "SELECT * " +
                 "FROM TRDParties " +
                $"WHERE PartyRoles  like '%{role}%' AND PartyStatus = 'A' {keywords} ";
                                    
       var dataOperation = DataOperation.Parse(sql);
 
     
-      return DataReader.GetPlainObjectFixedList<Party>(dataOperation);      
+      return DataReader.GetFixedList<Party>(dataOperation);      
     }
 
 
