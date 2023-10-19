@@ -57,7 +57,7 @@ namespace Empiria.Trade.Products {
 
     internal string Keywords {
       get {
-        return EmpiriaString.BuildKeywords(Name, Code);
+        return EmpiriaString.BuildKeywords(ProductName, Code);
       }
     }
 
@@ -69,6 +69,13 @@ namespace Empiria.Trade.Products {
     }
 
 
+    [DataField("ProductUID")]
+    internal string ProductUID {
+      get;
+      private set;
+    }
+
+
     //[DataField("ProductTypeId")]
     public int ProductTypeId {
       get;
@@ -77,12 +84,19 @@ namespace Empiria.Trade.Products {
 
     
     [DataField("PresentationId")]
-    internal ProductPresentation PresentationId {
+    internal ProductPresentation ProductPresentation {
       get;
       private set;
     }
 
-    
+
+    [DataField("InventoryEntryId")]
+    internal InventoryEntry InventoryEntry {
+      get;
+      private set;
+    }
+
+
     [DataField("VendorId")]
     internal Party Vendor {
       get;
@@ -118,8 +132,15 @@ namespace Empiria.Trade.Products {
     }
 
 
+    [DataField("SKU")]
+    internal string SKU {
+      get;
+      private set;
+    }
+
+
     [DataField("ProductName")]
-    internal string Name {
+    internal string ProductName {
       get;
       private set;
     }

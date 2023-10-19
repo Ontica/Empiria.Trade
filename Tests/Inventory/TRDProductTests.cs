@@ -112,7 +112,7 @@ namespace Empiria.Trade.Tests {
 
       string uid = "2fab4f8e-24f6-4708-ae01-708f89639846";
 
-      Inventory sut = usecase.GetInventoryEntry(uid);
+      InventoryEntry sut = usecase.GetInventoryEntry(uid);
 
       Assert.NotNull(sut);
 
