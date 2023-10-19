@@ -69,6 +69,13 @@ namespace Empiria.Trade.Products.UseCases {
     }
 
 
+    internal Inventory GetInventoryEntry(string inventoryEntryUid) {
+      Assertion.Require(inventoryEntryUid, "inventoryEntryUid");
+
+      return Inventory.Parse(inventoryEntryUid);
+    }
+
+
     public ProductGroup GetTRDProductGroup(string productGroupUid) {
       Assertion.Require(productGroupUid, "productGroupUid");
 
@@ -80,6 +87,13 @@ namespace Empiria.Trade.Products.UseCases {
       Assertion.Require(productSubgroupUid, "productSubgroupUid");
 
       return ProductSubgroup.Parse(productSubgroupUid);
+    }
+
+
+    internal ProductPresentation GetProductPresentations(string presentationUid) {
+      Assertion.Require(presentationUid, "presentationUid");
+
+      return ProductPresentation.Parse(presentationUid);
     }
 
 
@@ -96,7 +110,7 @@ namespace Empiria.Trade.Products.UseCases {
       }
     }
 
-
+    
     #endregion Use cases
 
 

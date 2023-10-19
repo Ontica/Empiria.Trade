@@ -2,91 +2,81 @@
 *                                                                                                            *
 *  Module   : Product Management                         Component : Domain Layer                            *
 *  Assembly : Empiria.Trade.Products.dll                 Pattern   : Information Holder                      *
-*  Type     : ProductGroup                               License   : Please read LICENSE.txt file            *
+*  Type     : ProductPresentation                        License   : Please read LICENSE.txt file            *
 *                                                                                                            *
-*  Summary  : Represents a product's group.                                                                  *
+*  Summary  : Represents a product presentation.                                                             *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 
 namespace Empiria.Trade.Products {
 
-  /// <summary>Represents a product's group.</summary>
-  public class ProductGroup : BaseObject {
+  /// <summary>Represents a product presentation.</summary>
+  public class ProductPresentation : BaseObject {
 
     #region Constructors and parsers
 
-    internal ProductGroup() {
+    internal ProductPresentation() {
 
     }
 
-    
-    static public ProductGroup Parse(int id) => ParseId<ProductGroup>(id);
+    static public ProductPresentation Parse(int id) => ParseId<ProductPresentation>(id);
 
-    static public ProductGroup Parse(int id, bool reload) => ParseId<ProductGroup>(id, reload);
+    static public ProductPresentation Parse(int id, bool reload) => ParseId<ProductPresentation>(id, reload);
 
-    static public ProductGroup Parse(string uid) => ParseKey<ProductGroup>(uid);
+    static public ProductPresentation Parse(string uid) => ParseKey<ProductPresentation>(uid);
 
-    static public ProductGroup Empty => ParseEmpty<ProductGroup>();
+    static public ProductPresentation Empty => ParseEmpty<ProductPresentation>();
 
 
     #endregion Constructors and parsers
 
-
     #region Properties
 
 
-    [DataField("GroupCode")]
-    internal string GroupCode {
+    [DataField("PresentationUID")]
+    internal string PresentationUID {
       get;
       private set;
     }
 
 
-    [DataField("ProductGroupName")]
-    internal string Name {
+    [DataField("PresentationName")]
+    internal string PresentationName {
       get;
       private set;
     }
 
 
-    [DataField("ProductGroupDescription")]
-    internal string Description {
+    [DataField("PresentationDescription")]
+    internal string PresentationDescription {
       get;
       private set;
     }
 
 
-    [DataField("ProductGroupKeywords")]
-    internal string GroupKeywords {
+    [DataField("QuantityAmount")]
+    internal decimal QuantityAmount {
       get;
       private set;
     }
 
 
-    [DataField("ProductGroupExtData")]
-    internal string ExtData {
+    [DataField("QuantityUnitId")]
+    internal int QuantityUnitId {
       get;
       private set;
     }
 
 
-    [DataField("ProductGroupStatus", Default = StateEnums.EntityStatus.Active)]
+    [DataField("PresentationStatus", Default = StateEnums.EntityStatus.Active)]
     public StateEnums.EntityStatus Status {
       get; internal set;
     }
 
-
-    internal string Keywords {
-      get {
-        return EmpiriaString.BuildKeywords(Name, Description);
-      }
-    }
-
-
     #endregion Properties
 
 
-  } // class ProductGroup
+  } // class ProductPresentation
 
 } // namespace Empiria.Trade.Products

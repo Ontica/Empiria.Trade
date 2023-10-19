@@ -10,6 +10,7 @@
 using System;
 using Empiria.Json;
 using Empiria.Ontology;
+using Empiria.Trade.Core;
 
 namespace Empiria.Trade.Products {
 
@@ -61,17 +62,45 @@ namespace Empiria.Trade.Products {
     }
 
 
-    [DataField("ProductTypeId")]
-    public int ProductTypeId {
+    [DataField("ProductId")]
+    public int ProductId {
       get;
       internal set;
     }
 
 
-    [DataField("ProductId")]
-    public int ProductId {
+    //[DataField("ProductTypeId")]
+    public int ProductTypeId {
       get;
       internal set;
+    }
+
+    
+    [DataField("PresentationId")]
+    internal ProductPresentation PresentationId {
+      get;
+      private set;
+    }
+
+    
+    [DataField("VendorId")]
+    internal Party Vendor {
+      get;
+      private set;
+    }
+
+
+    [DataField("ProductGroupId")]
+    internal ProductGroup ProductGroup {
+      get;
+      private set;
+    }
+
+
+    [DataField("ProductSubgroupId")]
+    internal ProductSubgroup ProductSubgroup {
+      get;
+      private set;
     }
 
 
@@ -103,20 +132,6 @@ namespace Empiria.Trade.Products {
     }
 
 
-    [DataField("ProductGroupId")]
-    internal ProductGroup ProductGroup {
-      get;
-      private set;
-    }
-
-
-    [DataField("ProductSubgroupId")]
-    internal ProductSubgroup ProductSubgroup {
-      get;
-      private set;
-    }
-
-
     [DataField("Attributes")]
     internal string Attributes {
       get;
@@ -124,15 +139,85 @@ namespace Empiria.Trade.Products {
     }
 
 
-    [DataField("ProductKeywords")]
+    //[DataField("ProductKeywords")]
     internal string ProductKeywords {
       get;
       private set;
     }
 
 
-    [DataField("ProductExtData")]
+    //[DataField("ProductExtData")]
     internal string ProductExtData {
+      get;
+      private set;
+    }
+
+
+    [DataField("PriceList1")]
+    internal decimal PriceList1 {
+      get;
+      private set;
+    }
+
+
+    [DataField("PriceList2")]
+    internal decimal PriceList2 {
+      get;
+      private set;
+    }
+
+
+    [DataField("PriceList3")]
+    internal decimal PriceList3 {
+      get;
+      private set;
+    }
+
+
+    [DataField("PriceList4")]
+    internal decimal PriceList4 {
+      get;
+      private set;
+    }
+
+
+    [DataField("PriceList5")]
+    internal decimal PriceList5 {
+      get;
+      private set;
+    }
+
+
+    [DataField("PriceList6")]
+    internal decimal PriceList6 {
+      get;
+      private set;
+    }
+
+
+    [DataField("PriceList7")]
+    internal decimal PriceList7 {
+      get;
+      private set;
+    }
+
+
+    [DataField("PriceList8")]
+    internal decimal PriceList8 {
+      get;
+      private set;
+    }
+
+
+    [DataField("PriceList9")]
+    internal decimal PriceList9 {
+      get;
+      private set;
+    }
+
+
+    [DataField("PriceList10")]
+    internal decimal PriceList10 {
       get;
       private set;
     }

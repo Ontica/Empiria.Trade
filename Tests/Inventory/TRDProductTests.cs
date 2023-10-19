@@ -106,11 +106,39 @@ namespace Empiria.Trade.Tests {
 
 
     [Fact]
+    public void ShouldGetInventoryEntryTest() {
+
+      var usecase = TRDProductUseCases.UseCaseInteractor();
+
+      string uid = "2fab4f8e-24f6-4708-ae01-708f89639846";
+
+      Inventory sut = usecase.GetInventoryEntry(uid);
+
+      Assert.NotNull(sut);
+
+    }
+
+
+    [Fact]
+    public void ShouldGetProductPresentationsTest() {
+
+      var usecase = TRDProductUseCases.UseCaseInteractor();
+
+      string uid = "6012ea18-82d2-4e0e-9fe2-f81a1d076b94";
+
+      ProductPresentation sut = usecase.GetProductPresentations(uid);
+
+      Assert.NotNull(sut);
+
+    }
+
+
+    [Fact]
     public void ShouldGetProductGroupTest() {
 
       var usecase = TRDProductUseCases.UseCaseInteractor();
 
-      string uid = "UID-GROUP-0000-1";
+      string uid = "382dd00c-5be5-43b3-aeca-5d5addb72fb2";
 
       ProductGroup sut = usecase.GetTRDProductGroup(uid);
 
