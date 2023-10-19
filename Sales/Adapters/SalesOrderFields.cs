@@ -68,6 +68,10 @@ namespace Empiria.Trade.Sales.Adapters {
       get; set;
     }
 
+    public string Shipment {
+      get; set;
+    }
+
    
 
     //public FixedList<SalesOrderItemsFields> OrderItems {

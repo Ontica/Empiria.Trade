@@ -9,7 +9,8 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
 using System;
-using Empiria.Trade.Core.Adapters;
+
+using Empiria.StateEnums;
 
 namespace Empiria.Trade.Sales.Adapters {
 
@@ -32,7 +33,7 @@ namespace Empiria.Trade.Sales.Adapters {
       get; internal set;
     }
 
-    public string Status {
+    public EntityStatus Status {
       get; internal set;
     }
 
@@ -40,19 +41,23 @@ namespace Empiria.Trade.Sales.Adapters {
       get; internal set;
     }
 
-    //public PartyContactsDto CustomerContact {
-    //  get; internal set;
-    //}
+    ////public PartyContactsDto CustomerContact {
+    ////  get; internal set;
+    ////}
 
     public NamedEntityDto Supplier {
       get; internal set;
     }
 
     public NamedEntityDto SalesAgent {
-       get; internal set;
+      get; internal set;
     }
 
     public string PaymentCondition {
+      get; internal set;
+    }
+
+    public string Shipment {
       get; internal set;
     }
 

@@ -12,19 +12,20 @@ using System;
 namespace Empiria.Trade.Sales.Adapters {
 
   /// <summary> Methods used to map Order. </summary>
-  static internal class SalesOrderMapper {
+  static public class SalesOrderMapper {
 
-    static internal SalesOrderDto Map(SalesOrder order) {
+    static public SalesOrderDto Map(SalesOrder order) {
       var dto = new SalesOrderDto {
         UID = order.UID,
         OrderNumber = order.OrderNumber,
         OrderTime = order.OrderTime,
         Notes = order.Notes,
-        Status = "Active",
+        Status = order.Status,
         Customer = order.Customer.MapToNamedEntity(),
         Supplier = order.Supplier.MapToNamedEntity(),
         SalesAgent = order.SalesAgent.MapToNamedEntity(),
-        PaymentCondition = ""
+        Shipment = order.Shipment,
+        PaymentCondition = order.PaymentCondition,
       };
 
       return dto;

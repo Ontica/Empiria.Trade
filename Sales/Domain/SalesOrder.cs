@@ -55,7 +55,7 @@ namespace Empiria.Trade.Sales {
       get; private set;
   }
 
-  public decimal Shipment {
+  public string Shipment {
       get; private set;
   }
   
@@ -71,6 +71,10 @@ namespace Empiria.Trade.Sales {
       get; private set;
   }
 
+  public string PaymentCondition {
+      get; private set;
+   }
+
 
     #endregion
 
@@ -83,7 +87,7 @@ namespace Empiria.Trade.Sales {
         OrderTime = DateTime.Now;
       }
       SalesOrderData.Write(this);
-      SaveOrderItems();
+     
     }
 
     internal void Update(SalesOrderFields fields) {
@@ -93,33 +97,15 @@ namespace Empiria.Trade.Sales {
       this.SalesAgent = fields.GetSalesAgent();
       this.Notes = fields.Notes;
       this.Status = fields.Status;
-      //this.SalesOrderItems = LoadSalesOrderItems(this.Id,fields.OrderItems);
-     
-
+      this.Shipment = fields.Shipment;
+      this.PaymentCondition = fields.PaymentCondition;
     }
 
     #endregion Public methods
 
     #region Private methods
 
-    private FixedList<SalesOrderItem> LoadSalesOrderItems(FixedList<SalesOrderItemsFields> orderItemsFields) {
-      List<SalesOrderItem> orderItems = new List<SalesOrderItem>();
-
-      foreach (SalesOrderItemsFields itemFields in orderItemsFields) {
-        orderItems.Add(new SalesOrderItem(itemFields));
-      }
-
-      return orderItems.ToFixedList<SalesOrderItem>();
-    }
-
-    private void SaveOrderItems() {
-
-      foreach (SalesOrderItem orderItem in this.SalesOrderItems) {
-        SalesOrderItemsData.Write(orderItem);
-      }
-
-    }
-
+    
     #endregion
 
   }  //  class SalesOrder
