@@ -74,7 +74,12 @@ namespace Empiria.Trade.Tests {
       var usecase = ProductForOrderUseCases.UseCaseInteractor();
 
       ProductOrderQuery query = new ProductOrderQuery {
-        Keywords = "TA58X412"
+        Keywords = "TA58X412",
+        Order = { 
+          CustomerUID = "7ed4164a-24b0-4728-910b-eb26f0684a12",
+          SalesAgentUID = "",
+          SupplierUID = ""
+        }
       };
 
       FixedList<IProductEntryDto> sut = await usecase.GetProductsForOrder(query).ConfigureAwait(false);

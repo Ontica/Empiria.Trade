@@ -21,23 +21,15 @@ namespace Empiria.Trade.Products.Data {
 
     internal static FixedList<Product> GetProductsForOrder(ProductQuery query) {
 
-      string keywords = query.Keywords;
+      //var whereClauses = GetQueryClauses(query);
 
-      keywords = SearchExpression.ParseAndLikeKeywords("ProductKeywords", keywords);
-      if (keywords != string.Empty) {
-        keywords = "WHERE " + keywords;
-      }
-
-      var sql = "SELECT * " +
-                "FROM TRDProducts " +
-                $"{keywords}";
-
-      var dataOperation = DataOperation.Parse(sql);
-
-      return DataReader.GetPlainObjectFixedList<Product>(dataOperation);
+      return GetProductsList(query.Keywords);
 
     }
 
+    private static object GetQueryClauses(ProductQuery query) {
+      throw new NotImplementedException();
+    }
 
     internal static FixedList<Product> GetProductsList(string keywords) {
 

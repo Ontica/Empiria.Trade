@@ -23,7 +23,7 @@ namespace Empiria.Trade.Sales.Adapters {
 
     public SalesOrderFields Order {
       get; set;
-    }
+    } = new SalesOrderFields();
 
 
   } // class ProductOrderQuery
