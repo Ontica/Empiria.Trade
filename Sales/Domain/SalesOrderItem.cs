@@ -43,11 +43,11 @@ namespace Empiria.Trade.Sales {
 
     internal void LoadOrderItem(SalesOrderItemsFields fields) {
           
-      this.OrderItemTypeId = 3; 
-      this.Product = Products.Product.Parse(fields.Product.ProductUID);
-      this.ProductPriceId = fields.ProductPriceId;
-      this.PriceListNumber = fields.PriceListNumber;
-      this.Vendor = Party.Parse(fields.Vendor.VendorUID);
+      this.OrderItemTypeId = 3;
+      this.ProductId = 4;
+      this.ProductPriceId = 3;
+      this.PriceListNumber = 5;
+      this.VendorId = 3;// Party.Parse(fields.Vendor.VendorUID);
       this.Quantity = fields.Quantity;
       this.BasePrice = fields.BasePrice;
       this.SalesPrice = fields.SalesPrice;
@@ -56,7 +56,7 @@ namespace Empiria.Trade.Sales {
       this.TaxesIVA = fields.Taxes;
       this.Total = fields.Total;
       this.Notes = fields.Notes;
-      this.Status = fields.Status;
+      
     }
 
     protected override void OnSave() {

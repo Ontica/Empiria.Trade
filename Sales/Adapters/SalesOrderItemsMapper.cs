@@ -16,11 +16,8 @@ namespace Empiria.Trade.Sales.Adapters {
 
     static internal SalesOrderItemDto Map(SalesOrderItem orderItem) {
       var dto = new SalesOrderItemDto {
-        UID = orderItem.UID,
-        OrderItemTypeId = orderItem.OrderItemTypeId,
-        Quantity = orderItem.Quantity,
-        ProductPriceId = orderItem.ProductPriceId,
-        PriceListNumber = orderItem.PriceListNumber,
+        OrderItemUID = orderItem.UID,
+        Quantity = orderItem.Quantity,        
         BasePrice = orderItem.BasePrice,
         SalesPrice = orderItem.SalesPrice,
         AdditionalDiscount = orderItem.Discount,
@@ -28,7 +25,6 @@ namespace Empiria.Trade.Sales.Adapters {
         Taxes = orderItem.TaxesIVA,
         Total = orderItem.Total,
         Notes = orderItem.Notes,
-        Status  = orderItem.Status
       };
 
       return dto;

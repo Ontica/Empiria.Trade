@@ -19,27 +19,19 @@ namespace Empiria.Trade.Sales.Adapters {
     #region Public properties
 
 
-    public string UID {
+    public string OrderItemUID {
       get; set;
     } = string.Empty;
-
-    public int OrderItemTypeId {
-      get; set;
-    }
 
     public decimal Quantity {
       get; set;
     }
-
-    public int ProductPriceId {
-      get; set;
-    }
-
-    public int PriceListNumber {
-      get; set;
-    }
-
+       
     public decimal BasePrice {
+      get; set;
+    }
+
+    public decimal SpecialPrice {
       get; set;
     }
 
@@ -50,6 +42,10 @@ namespace Empiria.Trade.Sales.Adapters {
     public decimal AdditionalDiscount {
       get; set;
     }
+
+    public decimal AdditionalDiscountToApply {
+      get; set;
+    } 
 
     public decimal Shipment {
       get; set;
@@ -66,22 +62,7 @@ namespace Empiria.Trade.Sales.Adapters {
     public string Notes {
       get; set;
     }
-
-    public string ProductUID {
-      get; set;
-    }
-
-    public string PresentationUID {
-      get; set;
-    }
-
-    public string VendorUID {
-      get; set;
-    }
-
-    public EntityStatus Status {
-      get; set;
-    }
+    
 
     #endregion
 

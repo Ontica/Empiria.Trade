@@ -19,23 +19,23 @@ namespace Empiria.Trade.Sales.Adapters {
     #region Public properties
 
 
-    public string UID {
+    public string OrderItemUID {
       get; set;
     } = string.Empty;
-        
+
+    public string VendorProductUID {
+      get; set;
+    }
+
     public int Quantity {
       get; set;
     }
 
-    public int ProductPriceId {
-      get; set;
-    }
-
-    public int PriceListNumber {
-      get; set;
-    }
-
     public decimal BasePrice {
+      get; set;
+    }
+
+    public decimal SpecialPrice {
       get; set;
     }
 
@@ -45,7 +45,11 @@ namespace Empiria.Trade.Sales.Adapters {
 
     public decimal AdditionalDiscount {
       get; set;
-    }
+    } = 0;
+
+    public decimal AdditionalDiscountToApply {
+      get; set;
+    } = 0;
         
     public decimal Shipment {
       get; set;
@@ -63,82 +67,8 @@ namespace Empiria.Trade.Sales.Adapters {
       get; set;
     }
         
-    public ProductFields Product {
-      get; set;
-    }
-
-    public PresentationFields Presentation {
-      get;  set;
-    }
-
-    public VendorFields Vendor {
-      get; set;
-    }
-
-    public EntityStatus Status {
-      get; set;
-    }
-
     #endregion
 
   }  // class OrderItemsFields
-
-  public class ProductFields {
-
-   public string ProductUID {
-      get; set;
-   }
-   
-  public string ProductCode {
-      get; set;
-  }
-
-  public string Description {
-      get; set;
-  }
-
-  } // ProductFields
-
-  public class PresentationFields {
-
-    public string PresentationUID {
-      get; set;
-    }
-
-   public string Description {
-      get; set;
-   }
-
-  public int Units {
-      get; set;
-  }
-
-  } // PresentationFields
-
-
-  public class VendorFields {
-
-    public string VendorUID {
-      get; set;
-    }
-
-    public string VendorName {
-      get; set;
-    }
-
-    public string Sku {
-      get; set;
-    }
-
-    public int Stock {
-      get; set;
-    }
-
-    public decimal Price {
-      get; set;
-    }
-
-  } // VendorFields
-
-
+ 
 } // namespace Empiria.Trade.Sales.Adapters

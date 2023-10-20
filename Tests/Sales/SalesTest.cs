@@ -27,24 +27,18 @@ namespace Empiria.Trade.Tests.Sales {
     public void ShouldCreateOrderTest() {
 
       var item = new SalesOrderItemsFields {
-        OrderItemUID = "afasfa",
+        OrderItemUID = "",
+        VendorProductUID = "",
         Quantity = 3,
-        Product = new ProductFields {
-          ProductUID = "4ffcb71f-5554-446c-8678-56cc10759fa8"
-        },
-        //ProductPriceId = 200,
-        //PriceListNumber = 3,
         BasePrice = 100,
+        SpecialPrice = 96,
         SalesPrice = 393.30m,
         AdditionalDiscount = 0,
+        AdditionalDiscountToApply = 0,
         Shipment = 339,
         Taxes = 19,
         Total = 800,
         Notes = "",
-        Vendor = new VendorFields {
-          VendorUID = "85af02f9-964d-4f35-9a00-710fcf04d925"
-        },
-        Status = EntityStatus.Active
       };
 
       var salesOrderItem = new SalesOrderItem(item);

@@ -19,7 +19,7 @@ namespace Empiria.Trade.Sales.Data {
   static internal class SalesOrderItemsData {
 
     static internal void Write(SalesOrderItem o) {
-      var op = DataOperation.Parse("writeOrderItems", o.Id, o.UID, o.OrderId, o.OrderItemTypeId,o.Vendor.Id,
+      var op = DataOperation.Parse("writeOrderItems", o.Id, o.UID, o.OrderId, o.OrderItemTypeId,o.VendorId,
                                    o.Quantity, o.ProductPriceId, o.PriceListNumber, o.BasePrice,
                                   o.SalesPrice, o.Discount, o.Shipment, o.TaxesIVA,
                                   o.TaxesIEPS, o.Total, o.Notes, o.Status);

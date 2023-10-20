@@ -52,7 +52,7 @@ namespace Empiria.Trade.Orders {
     }
 
     [DataField("VendorProductId")]
-    public Product Product {
+    public int ProductId {
       get;
       protected set;
     }
@@ -70,7 +70,7 @@ namespace Empiria.Trade.Orders {
     }
         
     [DataField("VendorId")]
-    public Party Vendor {
+    public int VendorId {
       get;
       protected set;
     }
