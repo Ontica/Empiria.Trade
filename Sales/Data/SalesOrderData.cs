@@ -24,8 +24,8 @@ namespace Empiria.Trade.Sales.Data {
 
     internal static FixedList<SalesOrder> GetSalesOrders(SearchOrderFields fields) {
       var sql = "SELECT * " +
-      "FROM TRDOrders " +
-      $"WHERE OrderStatus = 'A'";
+      "FROM TRDOrders ";
+      
 
       var dataOperation = DataOperation.Parse(sql);
 
