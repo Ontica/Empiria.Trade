@@ -63,15 +63,116 @@ namespace Empiria.Trade.Sales.Adapters {
 
     public string Notes {
       get; set;
-    }
+    } 
 
-    public Vendor vendor {
+    public VendorDto Vendor {
       get; set;
     }
-    
+
+    public PresentationDto Presentation {
+      get; set;
+    }
+
+    public ProductShortEntryDto Product {
+      get; set;
+    }
+
 
     #endregion
 
   } //  public class OrderItemDto
+
+
+  public class VendorDto {
+
+
+    public string VendorProductUID {
+      get; set;
+    } = string.Empty;
+
+
+    public string VendorUID {
+      get; set;
+    } = string.Empty;
+
+
+    public string VendorName {
+      get; set;
+    } = string.Empty;
+
+
+    public string Sku {
+      get; set;
+    }
+
+
+    public decimal Stock {
+      get; set;
+    }
+
+
+    public decimal Price {
+      get; set;
+    }
+
+
+  } // class VendorDto
+
+  public class PresentationDto {
+
+    public string PresentationUID {
+      get; set;
+    } = string.Empty;
+
+
+    public string Description {
+      get; set;
+    } 
+
+    public decimal Units {
+      get; set;
+    } 
+
+  } // class PresentationDto
+
+  public class ProductDto {
+    public string ProductUID {
+      get; set;
+    }
+
+    public string ProductCode {
+      get; set;
+    }
+
+    public string Description {
+      get; set;
+    }
+
+    public ProductShortEntryDto ProductType {
+      get; set;
+    }
+
+  } // class ProductDto
+
+  public class ProductTypeDto {
+
+
+    public string ProductTypeUID {
+      get; set;
+    }
+
+
+    public string Name {
+      get; set;
+    }
+
+
+    public FixedList<Attributes> Attributes {
+      get; internal set;
+    } = new FixedList<Attributes>();
+
+
+  } // class ProductType
+
 
 } // namespace Empiria.Trade.Sales.Adapters

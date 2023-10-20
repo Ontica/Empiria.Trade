@@ -114,7 +114,7 @@ namespace Empiria.Trade.Sales {
       this.Status = fields.Status;
       this.ShippingMethod = fields.ShippingMethod;
       this.PaymentCondition = fields.PaymentCondition;
-      this.SalesOrderItems = new FixedList<SalesOrderItem>(); //LoadSalesOrderItems(fields.Items);
+      this.SalesOrderItems =  LoadSalesOrderItems(fields.Items); //new FixedList<SalesOrderItem>();
 
     }
 

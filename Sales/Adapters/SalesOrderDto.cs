@@ -61,7 +61,7 @@ namespace Empiria.Trade.Sales.Adapters {
       get; internal set;
     }
 
-    public FixedList<SalesOrderItem> Items {
+    public FixedList<SalesOrderItemDto> Items {
       get; internal set;
     }
 
