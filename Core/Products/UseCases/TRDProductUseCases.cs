@@ -43,7 +43,7 @@ namespace Empiria.Trade.Products.UseCases {
     public IProductEntryDto GetTRDProduct(string productUID) {
       Assertion.Require(productUID, "productUID");
 
-      var product = Product.Parse(productUID);
+      var product = ProductFields.Parse(productUID);
 
       return TRDProductMapper.MapToDto(product);
     }

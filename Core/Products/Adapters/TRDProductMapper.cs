@@ -20,10 +20,10 @@ namespace Empiria.Trade.Products.Adapters {
     #region Public methods
 
 
-    static internal IProductEntryDto MapToDto(Product entry) {
-      var mappedItems = MapEntry(entry);
+    static internal IProductEntryDto MapToDto(ProductFields entry) {
 
-      return mappedItems;
+      return MapProductFields(entry);
+
     }
 
 
@@ -33,6 +33,7 @@ namespace Empiria.Trade.Products.Adapters {
 
 
     static internal FixedList<IProductEntryDto> MapToEntriesDto(FixedList<Product> entries) {
+
       var mappedItems = entries.Select((x) => MapEntry((Product) x));
 
       return new FixedList<IProductEntryDto>(mappedItems);
@@ -42,6 +43,25 @@ namespace Empiria.Trade.Products.Adapters {
     #endregion Public methods
 
     #region Private methods
+
+
+    static private IProductEntryDto MapProductFields(ProductFields entry) {
+      var dto = new ProductEntryDto();
+
+      dto.ProductUID = entry.ProductUID;
+      dto.ProductGroupUID = entry.ProductGroup.UID;
+      dto.ProductSubgroupUID = entry.ProductSubgroup.UID;
+      dto.ProductCode = entry.ProductCode;
+      dto.ProductUPC = entry.ProductUPC;
+      dto.ProductName = entry.ProductName;
+      dto.ProductDescription = entry.ProductDescription;
+      dto.Category = entry.Category;
+      dto.ProductWeight = entry.ProductWeight;
+      dto.ProductLength = entry.ProductLength;
+      dto.ProductStatus = entry.Status;
+
+      return dto;
+    }
 
 
     static private ProductShortEntryDto MapEntry(Product entry) {
@@ -74,14 +94,19 @@ namespace Empiria.Trade.Products.Adapters {
 
     static private FixedList<Attributes> GetAttributes(Product entry) {
 
-      AttributesList attrs = JsonConvert.DeserializeObject<AttributesList>(entry.Attributes);
+      AttributesList attrs = new AttributesList();
+
+      if (entry.Attributes != "") {
+        attrs = JsonConvert.DeserializeObject<AttributesList>(entry.Attributes);
+      }
 
       return attrs.Attributes.ToFixedList();
+
     }
 
 
     static private FixedList<Presentation> GetPresentations(Product entry) {
-      
+
       var presentations = new List<Presentation>();
 
       Presentation presentation = new Presentation();
@@ -104,7 +129,7 @@ namespace Empiria.Trade.Products.Adapters {
       Vendor vendor = new Vendor() {
         VendorUID = entry.Vendor.UID,
         VendorName = entry.Vendor.Name,
-        Sku = entry.SKU, 
+        Sku = entry.SKU,
         Stock = entry.InventoryEntry.InputQuantity,
         Price = entry.Vendor.Id == 1 ? entry.PriceList1 : entry.PriceList7 // TODO VALIDAR PRECIOS EN DOMINIO
       };
