@@ -39,7 +39,7 @@ namespace Empiria.Trade.Tests {
 
 
     [Fact]
-    public void ShouldGetProductTest() {
+    public void GetProductTest() {
 
       var usecase = TRDProductUseCases.UseCaseInteractor();
 
@@ -53,7 +53,7 @@ namespace Empiria.Trade.Tests {
 
 
     [Fact]
-    public async Task ShouldGetProductListTest() {
+    public async Task GetProductListTest() {
 
       var usecase = TRDProductUseCases.UseCaseInteractor();
       ProductQuery query = new ProductQuery {
@@ -69,7 +69,7 @@ namespace Empiria.Trade.Tests {
 
 
     [Fact]
-    public async Task ShouldGetProductsForOrderTest() {
+    public async Task GetProductsForOrderTest() {
 
       var usecase = ProductForOrderUseCases.UseCaseInteractor();
 
@@ -91,26 +91,7 @@ namespace Empiria.Trade.Tests {
 
 
     [Fact]
-    public async Task ShouldUpdateUID() {
-
-      var usecase = TRDProductUseCases.UseCaseInteractor();
-
-      var query = new TableQuery {
-        TableName = "TRDProductPrice",
-        IdName = "ProductPriceId",
-        UidName = "ProductPriceUID"
-      };
-
-
-      string sut = await usecase.UpdateGUID(query).ConfigureAwait(false);
-
-      Assert.NotEmpty(sut);
-
-    }
-
-
-    [Fact]
-    public void ShouldGetInventoryEntryTest() {
+    public void GetInventoryEntryTest() {
 
       var usecase = TRDProductUseCases.UseCaseInteractor();
 
@@ -124,13 +105,13 @@ namespace Empiria.Trade.Tests {
 
 
     [Fact]
-    public void ShouldGetProductPresentationsTest() {
+    public void GetProductPresentationTest() {
 
       var usecase = TRDProductUseCases.UseCaseInteractor();
 
       string uid = "6012ea18-82d2-4e0e-9fe2-f81a1d076b94";
 
-      ProductPresentation sut = usecase.GetProductPresentations(uid);
+      ProductPresentation sut = usecase.GetProductPresentation(uid);
 
       Assert.NotNull(sut);
 
@@ -138,7 +119,21 @@ namespace Empiria.Trade.Tests {
 
 
     [Fact]
-    public void ShouldGetProductGroupTest() {
+    public void GetVendorProductTest() {
+
+      var usecase = TRDProductUseCases.UseCaseInteractor();
+
+      string uid = "aa816817-5319-45dc-9716-3f09f9450d63";
+
+      VendorProduct sut = usecase.GetVendorProduct(uid);
+
+      Assert.NotNull(sut);
+
+    }
+
+
+    [Fact]
+    public void GetProductGroupTest() {
 
       var usecase = TRDProductUseCases.UseCaseInteractor();
 
@@ -152,7 +147,7 @@ namespace Empiria.Trade.Tests {
 
 
     [Fact]
-    public void ShouldGetProductSubgroupTest() {
+    public void GetProductSubgroupTest() {
 
       var usecase = TRDProductUseCases.UseCaseInteractor();
 
@@ -161,6 +156,24 @@ namespace Empiria.Trade.Tests {
       ProductSubgroup sut = usecase.GetTRDProductSubgroup(uid);
 
       Assert.NotNull(sut);
+
+    }
+
+
+    [Fact]
+    public async Task ShouldUpdateUID() {
+
+      var usecase = TRDProductUseCases.UseCaseInteractor();
+
+      var query = new TableQuery {
+        TableName = "TRDProductPrice",
+        IdName = "ProductPriceId",
+        UidName = "ProductPriceUID"
+      };
+
+      string sut = await usecase.UpdateGUID(query).ConfigureAwait(false);
+
+      Assert.NotEmpty(sut);
 
     }
 

@@ -13,7 +13,7 @@ using System;
 namespace Empiria.Trade.Products {
 
   /// <summary>Holds a product attributes list. </summary>
-  internal class ProductFields : BaseObject {
+  public class ProductFields : BaseObject {
 
     #region Constructors and parsers
 

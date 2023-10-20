@@ -127,6 +127,7 @@ namespace Empiria.Trade.Products.Adapters {
       var vendors = new List<Vendor>();
 
       Vendor vendor = new Vendor() {
+        VendorProductUID = entry.VendorProductUID,
         VendorUID = entry.Vendor.UID,
         VendorName = entry.Vendor.Name,
         Sku = entry.SKU,

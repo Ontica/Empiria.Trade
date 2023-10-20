@@ -90,10 +90,17 @@ namespace Empiria.Trade.Products.UseCases {
     }
 
 
-    internal ProductPresentation GetProductPresentations(string presentationUid) {
+    internal ProductPresentation GetProductPresentation(string presentationUid) {
       Assertion.Require(presentationUid, "presentationUid");
 
       return ProductPresentation.Parse(presentationUid);
+    }
+
+
+    internal VendorProduct GetVendorProduct(string vendorProductUid) {
+      Assertion.Require(vendorProductUid, "vendorProductUid");
+
+      return VendorProduct.Parse(vendorProductUid);
     }
 
 

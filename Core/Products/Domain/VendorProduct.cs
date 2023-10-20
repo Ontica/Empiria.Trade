@@ -13,17 +13,13 @@ using Empiria.Trade.Core;
 namespace Empiria.Trade.Products {
 
   /// <summary>Represents a product presentation.</summary>
-  internal class VendorProduct : BaseObject {
+  public class VendorProduct : BaseObject {
 
 
     #region Constructors and parsers
 
     internal VendorProduct() {
 
-    }
-
-    protected VendorProduct(ProductType productType) : base(productType) {
-      // Required by Empiria Framework for all partitioned types.
     }
 
 
@@ -42,38 +38,45 @@ namespace Empiria.Trade.Products {
     #region Properties
 
 
-    //[DataField("ProductTypeId")]
-    public int ProductTypeId {
+    
+      [DataField("VendorProductUID")]
+    public string VendorProductUID {
       get;
       internal set;
     }
 
 
     [DataField("ProductId")]
-    public Product ProductId {
+    public ProductFields ProductFields {
       get;
       internal set;
     }
 
 
-    [DataField("ProductPresentationId")]
-    internal VendorProduct Presentation{
+    [DataField("PresentationId")]
+    internal ProductPresentation ProductPresentation {
       get;
       private set;
     }
 
 
     [DataField("VendorId")]
-    internal string VendorName {
+    internal Party Vendor {
       get;
       private set;
     }
 
 
-    [DataField("Stock")]
-    internal int Stock {
+    [DataField("SKU")]
+    internal string SKU {
       get;
       private set;
+    }
+
+
+    [DataField("VendorProductStatus", Default = StateEnums.EntityStatus.Active)]
+    public StateEnums.EntityStatus Status {
+      get; internal set;
     }
 
 

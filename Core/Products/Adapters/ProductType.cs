@@ -87,6 +87,11 @@ namespace Empiria.Trade.Products.Adapters {
   public class Vendor {
 
 
+    public string VendorProductUID {
+      get; set;
+    } = string.Empty;
+
+
     public string VendorUID {
       get; set;
     } = string.Empty;

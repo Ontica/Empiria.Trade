@@ -76,6 +76,13 @@ namespace Empiria.Trade.Products {
     }
 
 
+    [DataField("VendorProductUID")]
+    internal string VendorProductUID {
+      get;
+      private set;
+    }
+
+
     //[DataField("ProductTypeId")]
     public int ProductTypeId {
       get;
