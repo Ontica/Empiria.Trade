@@ -58,6 +58,18 @@ namespace Empiria.Trade.Products.Domain {
       return data;
     }
 
+
+    internal VendorProduct GetStockAndAddToVendorProduct(VendorProduct vendorProduct) {
+
+      var inventoryEntry = TRDProductDataService.GetInventoryEntry(vendorProduct.Id);
+
+      if (inventoryEntry != null) {
+        vendorProduct.InputQuantity = inventoryEntry.InputQuantity;
+      }
+
+      return vendorProduct;
+    }
+
     #endregion Public methods
 
 

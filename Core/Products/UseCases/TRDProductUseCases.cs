@@ -100,7 +100,11 @@ namespace Empiria.Trade.Products.UseCases {
     internal VendorProduct GetVendorProduct(string vendorProductUid) {
       Assertion.Require(vendorProductUid, "vendorProductUid");
 
-      return VendorProduct.Parse(vendorProductUid);
+      var vendorProduct = VendorProduct.Parse(vendorProductUid);
+
+      var builder = new TRDProductBuilder();
+
+      return builder.GetStockAndAddToVendorProduct(vendorProduct);
     }
 
 

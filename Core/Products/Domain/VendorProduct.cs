@@ -74,6 +74,12 @@ namespace Empiria.Trade.Products {
     }
 
 
+    internal decimal InputQuantity {
+      get;
+      set;
+    }
+
+
     [DataField("VendorProductStatus", Default = StateEnums.EntityStatus.Active)]
     public StateEnums.EntityStatus Status {
       get; internal set;

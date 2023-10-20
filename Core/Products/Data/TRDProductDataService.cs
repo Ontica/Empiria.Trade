@@ -31,6 +31,7 @@ namespace Empiria.Trade.Products.Data {
       throw new NotImplementedException();
     }
 
+
     internal static FixedList<Product> GetProductsList(string keywords) {
 
       keywords = SearchExpression.ParseAndLikeKeywords("ProductKeywords", keywords);
@@ -61,6 +62,17 @@ namespace Empiria.Trade.Products.Data {
       var dataOperation = DataOperation.Parse(sql);
 
       return DataReader.GetPlainObjectFixedList<Product>(dataOperation);
+
+    }
+
+
+    internal static InventoryEntry GetInventoryEntry(int vendorProductId) {
+
+      var sql = $"SELECT * FROM TRDInventory WHERE VendorProductId = {vendorProductId}";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetPlainObject<InventoryEntry>(dataOperation);
 
     }
 
