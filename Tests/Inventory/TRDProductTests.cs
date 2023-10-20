@@ -90,7 +90,6 @@ namespace Empiria.Trade.Tests {
     }
 
 
-
     [Fact]
     public async Task ShouldUpdateUID() {
 

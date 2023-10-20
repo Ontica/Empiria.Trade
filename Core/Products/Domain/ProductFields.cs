@@ -13,7 +13,7 @@ using System;
 namespace Empiria.Trade.Products {
 
   /// <summary>Holds a product attributes list. </summary>
-  internal class ProductFields {
+  internal class ProductFields : BaseObject {
 
     #region Constructors and parsers
 
@@ -22,267 +22,138 @@ namespace Empiria.Trade.Products {
     }
 
 
+    protected ProductFields(ProductType productType) : base(productType) {
+      // Required by Empiria Framework for all partitioned types.
+    }
+
+
+    internal ProductFields(ProductType productType,
+                     ProductFields data) : base(productType) {
+      LoadData(data);
+    }
+
+
+    static public ProductFields Parse(int id) => ParseId<ProductFields>(id);
+
+    static public ProductFields Parse(int id, bool reload) => ParseId<ProductFields>(id, reload);
+
+    static public ProductFields Parse(string uid) => ParseKey<ProductFields>(uid);
+
+    static public ProductFields Empty => ParseEmpty<ProductFields>();
+
+
     #endregion Constructors and parsers
 
 
-    [DataField("CompanyId")]
-    public int CompanyId {
+    #region Properties
+
+
+    [DataField("ProductId")]
+    public int ProductId {
       get; set;
     }
 
 
-    [DataField("UID")]
-    public string UID {
-      get; set;
-    } = string.Empty;
-
-
-    [DataField("ProdServCode")]
-    public string ProdServCode {
-      get; set;
-    } = string.Empty;
-
-
-    [DataField("Product")]
-    public string Product {
-      get; set;
-    } = string.Empty;
-
-
-    [DataField("Description")]
-    public string Description {
-      get; set;
-    } = string.Empty;
-
-
-    [DataField("RegistrationDate")]
-    public DateTime RegistrationDate {
-      get; set;
-    } = new DateTime(2077, 01, 01);
-
-
-    [DataField("Trademark")]
-    public string Trademark {
-      get; set;
-    } = string.Empty;
-
-
-    [DataField("Model")]
-    public string Model {
-      get; set;
-    } = string.Empty;
-
-
-    [DataField("Section")]
-    public string Section {
-      get; set;
-    } = string.Empty;
-
-
-    [DataField("LineName")]
-    public string LineName {
-      get; set;
-    } = string.Empty;
-
-
-    [DataField("GroupName")]
-    public string GroupName {
-      get; set;
-    } = string.Empty;
-
-
-    [DataField("SubgroupName")]
-    public string SubgroupName {
-      get; set;
-    } = string.Empty;
-
-
-    [DataField("Diameter")]
-    public string Diameter {
-      get; set;
-    } = string.Empty;
-
-
-    [DataField("Length")]
-    public string Length {
-      get; set;
-    } = string.Empty;
-
-
-    [DataField("Degree")]
-    public string Degree {
-      get; set;
-    } = string.Empty;
-
-
-    [DataField("Weight")]
-    public decimal Weight {
+    [DataField("ProductTypeId")]
+    public int ProductTypeId {
       get; set;
     }
 
 
-    [DataField("Characteristics")]
-    public string Characteristics {
-      get; set;
-    } = string.Empty;
-
-
-    [DataField("ThreadsName")]
-    public string ThreadsName {
-      get; set;
-    } = string.Empty;
-
-
-    [DataField("StepsName")]
-    public string StepsName {
-      get; set;
-    } = string.Empty;
-
-
-    [DataField("HeadsName")]
-    public string HeadsName {
-      get; set;
-    } = string.Empty;
-
-
-    [DataField("ViewDetailsName")]
-    public string ViewDetailsName {
-      get; set;
-    } = string.Empty;
-
-
-    [DataField("Existence")]
-    public string Stock {
-      get; set;
-    } = string.Empty;
-
-
-    [DataField("SalesUnit")]
-    public string SalesUnit {
-      get; set;
-    } = string.Empty;
-
-
-    [DataField("Currency")]
-    public string Currency {
-      get; set;
-    } = string.Empty;
-
-
-    [DataField("LastPurchaseDate")]
-    public DateTime LastPurchaseDate {
-      get; set;
-    } = new DateTime(2077, 01, 01);
-
-
-    [DataField("LastPurchaseDateCost")]
-    public decimal LastPurchaseDateCost {
+    [DataField("ProductGroupId")]
+    public ProductGroup ProductGroup {
       get; set;
     }
 
 
-    [DataField("MinimumPrice")]
-    public decimal MinimumPrice {
+    [DataField("ProductSubgroupId")]
+    public ProductSubgroup ProductSubgroup {
       get; set;
     }
 
 
-    [DataField("BasisCost")]
-    public decimal BasisCost {
+    [DataField("ProductUID")]
+    public string ProductUID {
+      get; set;
+    } = string.Empty;
+
+
+    [DataField("ProductCode")]
+    public string ProductCode {
+      get; set;
+    } = string.Empty;
+
+
+    [DataField("ProductUPC")]
+    public string ProductUPC {
+      get; set;
+    } = string.Empty;
+
+
+    [DataField("ProductName")]
+    public string ProductName {
+      get; set;
+    } = string.Empty;
+
+
+    [DataField("ProductDescription")]
+    public string ProductDescription {
+      get; set;
+    } = string.Empty;
+
+
+    [DataField("Attributes")]
+    public string Attributes {
+      get; set;
+    } = string.Empty;
+
+
+    [DataField("Category")]
+    public string Category {
+      get; set;
+    } = string.Empty;
+
+
+    [DataField("ProductExtData")]
+    public string ProductExtData {
+      get; set;
+    } = string.Empty;
+
+
+    [DataField("ProductKeywords")]
+    public string ProductKeywords {
+      get; set;
+    } = string.Empty;
+
+
+    [DataField("ProductWeight")]
+    public decimal ProductWeight {
       get; set;
     }
 
 
-    [DataField("ListPrice1")]
-    public decimal ListPrice1 {
+    [DataField("ProductLength")]
+    public decimal ProductLength {
       get; set;
     }
 
 
-    [DataField("ListPrice2")]
-    public decimal ListPrice2 {
-      get; set;
+    [DataField("ProductStatus", Default = StateEnums.EntityStatus.Active)]
+    public StateEnums.EntityStatus Status {
+      get; internal set;
     }
 
 
-    [DataField("ListPrice3")]
-    public decimal ListPrice3 {
-      get; set;
+    #endregion Properties
+
+
+    #region Methods
+
+    private void LoadData(ProductFields data) {
+      throw new NotImplementedException();
     }
 
-
-    [DataField("ListPrice4")]
-    public decimal ListPrice4 {
-      get; set;
-    }
-
-
-    [DataField("Total")]
-    public decimal Total {
-      get; set;
-    }
-
-
-    [DataField("Packing")]
-    public string Packing {
-      get; set;
-    } = string.Empty;
-
-
-    [DataField("MinimumRefills")]
-    public string MinimumRefills {
-      get; set;
-    } = string.Empty;
-
-
-    [DataField("Supplier")]
-    public string Supplier {
-      get; set;
-    } = string.Empty;
-
-
-    [DataField("SupplierName")]
-    public string SupplierName {
-      get; set;
-    } = string.Empty;
-
-
-    [DataField("ProductType")]
-    public string ProductType {
-      get; set;
-    } = string.Empty;
-
-
-    [DataField("Discontinued")]
-    public string Discontinued {
-      get; set;
-    } = string.Empty;
-
-
-    [DataField("Status")]
-    public string Status {
-      get; set;
-    } = string.Empty;
-
-
-    [DataField("ItemLineId")]
-    public string ItemLineId {
-      get; set;
-    } = string.Empty;
-
-
-    [DataField("Keywords")]
-    public string Keywords {
-      get; set;
-    } = string.Empty;
-
-
-    [DataField("ExtData")]
-    public string ExtData {
-      get;
-      internal set;
-    } = string.Empty;
-
+    #endregion Methods
 
   }  // class ProductFields
 
