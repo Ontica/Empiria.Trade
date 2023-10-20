@@ -35,35 +35,35 @@ namespace Empiria.Trade.Products {
 
 
     [DataField("PresentationUID")]
-    internal string PresentationUID {
+    public string PresentationUID {
       get;
       private set;
     }
 
 
     [DataField("PresentationName")]
-    internal string PresentationName {
+    public string PresentationName {
       get;
       private set;
     }
 
 
     [DataField("PresentationDescription")]
-    internal string PresentationDescription {
+    public string PresentationDescription {
       get;
       private set;
     }
 
 
     [DataField("QuantityAmount")]
-    internal decimal QuantityAmount {
+    public decimal QuantityAmount {
       get;
       private set;
     }
 
 
     [DataField("QuantityUnitId")]
-    internal int QuantityUnitId {
+    public int QuantityUnitId {
       get;
       private set;
     }
