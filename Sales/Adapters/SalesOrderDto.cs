@@ -65,6 +65,26 @@ namespace Empiria.Trade.Sales.Adapters {
       get; internal set;
     }
 
+    public int ItemsCount {
+      get; internal set;
+    }
+
+    public decimal ItemsTotal {
+      get; internal set;
+    }
+
+    public decimal Shipment {
+      get; internal set;
+    }
+
+    public decimal Taxes {
+      get; internal set;
+    }
+
+    public decimal OrderTotal {
+      get; internal set;
+    }
+
   } // public class OrderDto
 
 } // namespace Empiria.Trade.Sales.Adapters

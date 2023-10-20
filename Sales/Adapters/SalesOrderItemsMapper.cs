@@ -9,12 +9,16 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 
+
+
 namespace Empiria.Trade.Sales.Adapters {
 
   /// <summary>Methods used to map OrderItem.  </summary>
-  static internal class SalesOrderItemsMapper {
+  static public class SalesOrderItemsMapper {
 
-    static internal SalesOrderItemDto Map(SalesOrderItem orderItem) {
+    #region Public methods
+
+    static public SalesOrderItemDto Map(SalesOrderItem orderItem) {
       var dto = new SalesOrderItemDto {
         OrderItemUID = orderItem.UID,
         Quantity = orderItem.Quantity,        
@@ -25,10 +29,20 @@ namespace Empiria.Trade.Sales.Adapters {
         Taxes = orderItem.TaxesIVA,
         Total = orderItem.Total,
         Notes = orderItem.Notes,
+       
       };
 
       return dto;
     }
 
-  }
-}
+    #endregion Public methods
+
+    #region Private methods
+
+
+
+    #endregion Private methods
+
+  } // class SalesOrderItemsMapper
+
+} // namespace Empiria.Trade.Sales.Adapters

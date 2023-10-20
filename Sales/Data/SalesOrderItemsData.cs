@@ -8,7 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-
+using System.Data;
 using Empiria.Data;
 
 using Empiria.Trade.Orders;
@@ -18,8 +18,17 @@ namespace Empiria.Trade.Sales.Data {
   /// <summary>Provides data layer for OrderItems. </summary>
   static internal class SalesOrderItemsData {
 
+    internal static DataRow GetProductPrice(int vendorProductId, int customerPriceListNumber) {
+
+      string pricelistNumber = "PriceList" + customerPriceListNumber.ToString();
+      var sql = $"Select ProductPriceId, {pricelistNumber} From TRDProductPrices where VendorProductId = {vendorProductId}";
+
+      var op = DataOperation.Parse(sql);
+      return Empiria.Data.DataReader.GetDataRow(op);
+    }
+
     static internal void Write(SalesOrderItem o) {
-      var op = DataOperation.Parse("writeOrderItems", o.Id, o.UID, o.OrderId, o.OrderItemTypeId,o.VendorId,
+      var op = DataOperation.Parse("writeOrderItems", o.Id, o.UID, o.OrderId, o.OrderItemTypeId,o.VendorProduct.Id,
                                    o.Quantity, o.ProductPriceId, o.PriceListNumber, o.BasePrice,
                                   o.SalesPrice, o.Discount, o.Shipment, o.TaxesIVA,
                                   o.TaxesIEPS, o.Total, o.Notes, o.Status);

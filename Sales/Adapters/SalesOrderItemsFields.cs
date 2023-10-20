@@ -66,9 +66,18 @@ namespace Empiria.Trade.Sales.Adapters {
     public string Notes {
       get; set;
     }
-        
+
+
     #endregion
 
+    #region Public methods
+
+    internal VendorProduct GetVendorProduct() {
+      return VendorProduct.Parse(this.VendorProductUID);
+    }
+
+    #endregion Public methods
+
   }  // class OrderItemsFields
- 
+
 } // namespace Empiria.Trade.Sales.Adapters

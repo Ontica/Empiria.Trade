@@ -27,7 +27,12 @@ namespace Empiria.Trade.Sales.Adapters {
         SalesAgent = order.SalesAgent.MapToNamedEntity(),
         ShippingMethod = order.ShippingMethod,
         PaymentCondition = order.PaymentCondition,
-        Items = new FixedList<SalesOrderItem>(),
+        Items = order.SalesOrderItems, //MapSalesOrderItems(order.SalesOrderItems),
+        ItemsCount = order.ItemsCount,
+        ItemsTotal = order.ItemsTotal,
+        Shipment = order.Shipment,
+        Taxes = order.Taxes,
+        OrderTotal = order.OrderTotal
       };
 
       return dto;
@@ -42,6 +47,21 @@ namespace Empiria.Trade.Sales.Adapters {
 
       return salesOrderDtoList.ToFixedList();
     }
+
+    #region Private methods
+
+    static private FixedList<SalesOrderItemDto> MapSalesOrderItems(FixedList<SalesOrderItem> salesOrderItems) {
+      List<SalesOrderItemDto> salesOrderItemsList = new List<SalesOrderItemDto>();
+
+      foreach (var saleOrderItem in salesOrderItems) {
+        salesOrderItemsList.Add(SalesOrderItemsMapper.Map(saleOrderItem));
+      }
+
+      return salesOrderItemsList.ToFixedList();
+    }
+
+    #endregion Private methods
+
 
   } // static internal class
 

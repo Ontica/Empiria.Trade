@@ -52,7 +52,13 @@ namespace Empiria.Trade.Orders {
     }
 
     [DataField("VendorProductId")]
-    public int ProductId {
+    public VendorProduct VendorProduct {
+      get;
+      protected set;
+    }
+
+    [DataField("Quantity")]
+    public decimal Quantity {
       get;
       protected set;
     }
@@ -67,19 +73,7 @@ namespace Empiria.Trade.Orders {
     public int PriceListNumber {
       get;
       protected set;
-    }
-        
-    [DataField("VendorId")]
-    public int VendorId {
-      get;
-      protected set;
-    }
-
-    [DataField("Quantity")]
-    public decimal Quantity {
-      get;
-      protected set;
-    }
+    }   
 
     [DataField("BasePrice")]
     public decimal BasePrice {

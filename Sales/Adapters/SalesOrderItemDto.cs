@@ -11,6 +11,8 @@ using System;
 
 using Empiria.StateEnums;
 
+using Empiria.Trade.Products.Adapters;
+
 namespace Empiria.Trade.Sales.Adapters {
 
   /// <summary>Output DTO used to return order items </summary>
@@ -60,6 +62,10 @@ namespace Empiria.Trade.Sales.Adapters {
     }
 
     public string Notes {
+      get; set;
+    }
+
+    public Vendor vendor {
       get; set;
     }
     

@@ -15,6 +15,7 @@ using Empiria.Trade.Sales.Data;
 
 
 using Empiria.Trade.Orders;
+using Empiria.DataTypes;
 
 namespace Empiria.Trade.Sales {
 
@@ -27,10 +28,9 @@ namespace Empiria.Trade.Sales {
       //no-op
     }
 
-    public SalesOrderItem(SalesOrderItemsFields fields) {
-      LoadOrderItem(fields);
+    public SalesOrderItem(SalesOrderItemsFields fields, int customerListPriceNumber) {
+      LoadOrderItem(fields, customerListPriceNumber);
     }
-
 
     #endregion
 
@@ -41,20 +41,19 @@ namespace Empiria.Trade.Sales {
 
     #region Public methods
 
-    internal void LoadOrderItem(SalesOrderItemsFields fields) {
+    internal void LoadOrderItem(SalesOrderItemsFields fields, int priceListNumber) {
           
       this.OrderItemTypeId = 3;
-      this.ProductId = 4;
-      this.ProductPriceId = 3;
-      this.PriceListNumber = 5;
-      this.VendorId = 3;// Party.Parse(fields.Vendor.VendorUID);
-      this.Quantity = fields.Quantity;
-      this.BasePrice = fields.BasePrice;
-      this.SalesPrice = fields.SalesPrice;
+      this.VendorProduct = fields.GetVendorProduct();
+      this.ProductPriceId = GetProductPriceId(VendorProduct.Id, priceListNumber);
+      this.PriceListNumber = priceListNumber;
+      this.Quantity = fields.Quantity; //mandan 
+      this.BasePrice = GetProductPrice(VendorProduct.Id, priceListNumber);
+      this.SalesPrice = (this.Quantity * this.BasePrice); //mandan
       this.Discount = fields.AdditionalDiscount;
       this.Shipment = fields.Shipment;
-      this.TaxesIVA = fields.Taxes;
-      this.Total = fields.Total;
+      this.TaxesIVA = GetTaxesIva(); //calcular
+      this.Total = (this.Quantity * this.BasePrice) + TaxesIVA ; //calcular
       this.Notes = fields.Notes;
       
     }
@@ -63,9 +62,36 @@ namespace Empiria.Trade.Sales {
       SalesOrderItemsData.Write(this);
     }
 
+    private int GetProductPriceId(int vendorProductId, int customerPriceListNumber) {
+     var productPriceRow =  SalesOrderItemsData.GetProductPrice(vendorProductId, customerPriceListNumber);
+
+      return Convert.ToInt32(productPriceRow[0]);
+    }
+
+    private decimal GetProductPrice(int vendorProductId, int customerPriceListNumber) {
+      var productPriceRow = SalesOrderItemsData.GetProductPrice(vendorProductId, customerPriceListNumber);
+
+      return Convert.ToDecimal(productPriceRow[1]);
+    }
+
+    private decimal GetTaxesIva() {
+      var subtotal = this.Quantity * this.BasePrice;
+      return subtotal * 0.16m;
+    }
 
     #endregion Public methods
 
   }  //namespace Empiria.Trade.Sales
+
+  public class ProductPrice {
+
+    public int ProductPriceId {
+      get; set;
+    }
+
+    public decimal PriceList {
+      get; set;
+    }
+  }
 
 } // public class OrderItem

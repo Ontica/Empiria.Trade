@@ -48,7 +48,7 @@ namespace Empiria.Trade.Sales.Adapters {
 
     public OrderStatus Status {
       get; set;
-    } = OrderStatus.Captured;
+    }
 
     public string CustomerUID {
       get; set;
@@ -78,9 +78,9 @@ namespace Empiria.Trade.Sales.Adapters {
       get; set;
     }
 
-    //public FixedList<SalesOrderItemsFields> OrderItems {
-    //  get; set;
-    //}
+    public FixedList<SalesOrderItemsFields> Items {
+      get; set;
+    }
 
     #endregion Properties
 
@@ -120,7 +120,7 @@ namespace Empiria.Trade.Sales.Adapters {
       get; set;
     }
 
-    public EntityStatus Status {
+    public OrderStatus Status {
       get; set;
     }
 
