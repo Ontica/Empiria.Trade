@@ -132,7 +132,7 @@ namespace Empiria.Trade.Products.Adapters {
         VendorName = entry.Vendor.Name,
         Sku = entry.SKU,
         Stock = entry.InventoryEntry.InputQuantity,
-        Price = entry.Vendor.Id == 1 ? entry.PriceList1 : entry.PriceList7 // TODO VALIDAR PRECIOS EN DOMINIO
+        Price = entry.PriceList
       };
 
       vendors.Add(vendor);

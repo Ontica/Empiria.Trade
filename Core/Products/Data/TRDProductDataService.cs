@@ -39,10 +39,6 @@ namespace Empiria.Trade.Products.Data {
         keywords = "WHERE " + keywords;
       }
 
-      //var sql = "SELECT * " +
-      //          "FROM TRDProducts " +
-      //          $"{keywords}";
-
       var sql = "SELECT " +
                 "P.ProductId, P.ProductUID, VP.VendorProductUID, PRESENT.PresentationId, VENDOR.PartyId VendorId, I.InventoryEntryId, GROUPS.ProductGroupId, " +
                 "SUBGROUPS.ProductSubgroupId, P.ProductCode, P.ProductUPC, P.ProductName, P.ProductDescription, P.Attributes, VP.SKU, " +
@@ -71,7 +67,7 @@ namespace Empiria.Trade.Products.Data {
       var sql = $"SELECT * FROM TRDInventory WHERE VendorProductId = {vendorProductId}";
 
       var dataOperation = DataOperation.Parse(sql);
-
+      
       return DataReader.GetPlainObject<InventoryEntry>(dataOperation);
 
     }

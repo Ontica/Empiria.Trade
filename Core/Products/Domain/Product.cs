@@ -181,6 +181,12 @@ namespace Empiria.Trade.Products {
     }
 
 
+    internal decimal PriceList {
+      get;
+      set;
+    }
+
+
     [DataField("PriceList1")]
     internal decimal PriceList1 {
       get;

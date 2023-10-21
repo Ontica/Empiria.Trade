@@ -44,13 +44,13 @@ namespace Empiria.Trade.WebApi.Inventory {
 
     [HttpPost]
     [Route("v4/trade/products/search-products")]
-    public async Task<CollectionModel> GetProductsDto([FromBody] ProductQuery keywords) {
+    public async Task<CollectionModel> GetProductsDto([FromBody] ProductQuery query) {
 
-      base.RequireBody(keywords);
+      base.RequireBody(query);
 
       using (var usecases = TRDProductUseCases.UseCaseInteractor()) {
 
-        FixedList<IProductEntryDto> productDto = await usecases.GetProductsList(keywords)
+        FixedList<IProductEntryDto> productDto = await usecases.GetProductsList(query)
                                                 .ConfigureAwait(false);
 
         return new CollectionModel(this.Request, productDto);

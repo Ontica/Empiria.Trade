@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Empiria.Json;
@@ -24,7 +25,7 @@ namespace Empiria.Trade.Products.Domain {
     #region Constructor
 
     public TRDProductBuilder() {
-    
+      
     }
 
 
@@ -34,7 +35,7 @@ namespace Empiria.Trade.Products.Domain {
     #region Public methods
 
     public object BuildProduct(Product product) {
-    
+
       return product;
     }
 
@@ -43,9 +44,7 @@ namespace Empiria.Trade.Products.Domain {
 
       FixedList<Product> products = TRDProductDataService.GetProductsForOrder(query);
 
-      var helper = new TRDProductHelper(query);
-
-      FixedList<Product> productPricesForCustomer = helper.GetPriceByCustomer(products);
+      ValidateToGetPriceList(products, query);
 
       return products;
     }
@@ -53,9 +52,11 @@ namespace Empiria.Trade.Products.Domain {
 
     internal FixedList<Product> GetProductsList(ProductQuery query) {
 
-      FixedList<Product> data = TRDProductDataService.GetProductsList(query.Keywords);
+      FixedList<Product> products = TRDProductDataService.GetProductsList(query.Keywords);
 
-      return data;
+      ValidateToGetPriceList(products, query);
+
+      return products;
     }
 
 
@@ -76,6 +77,21 @@ namespace Empiria.Trade.Products.Domain {
     #region Private methods
 
 
+    private void ValidateToGetPriceList(FixedList<Product> products, ProductQuery query) {
+
+      var helper = new TRDProductHelper(query);
+
+      if (query.CustomerUID != "") {
+
+        helper.GetProductsWithCustomerPrice(products);
+
+      } else {
+
+        helper.GetDefaultProductBasePrices(products);
+
+      }
+
+    }
 
     #endregion Private methods
 
