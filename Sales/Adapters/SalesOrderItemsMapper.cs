@@ -30,13 +30,25 @@ namespace Empiria.Trade.Sales.Adapters {
         Taxes = orderItem.TaxesIVA,
         Total = orderItem.Total,
         Notes = orderItem.Notes,
-        //Product = MapProductShortDto(orderItem),
+        Product = MapBaseProductDto(orderItem),
         Presentation = MapPresentation(orderItem),
         Vendor = MapVendor(orderItem)
       };
 
       return dto;
     }
+
+    private static BaseProductDto MapBaseProductDto(SalesOrderItem orderItem) {
+      var dto = new BaseProductDto {
+        ProductUID = orderItem.VendorProduct.ProductFields.ProductUID,
+        ProductCode = orderItem.VendorProduct.ProductFields.ProductCode, 
+        Description = orderItem.VendorProduct.ProductFields.ProductDescription
+      };
+
+      return dto;
+    }
+
+   
 
     #endregion Public methods
 

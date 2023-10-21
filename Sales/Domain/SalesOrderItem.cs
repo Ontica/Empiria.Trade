@@ -58,6 +58,7 @@ namespace Empiria.Trade.Sales {
       
     }
 
+    
     protected override void OnSave() {
       SalesOrderItemsData.Write(this);
     }

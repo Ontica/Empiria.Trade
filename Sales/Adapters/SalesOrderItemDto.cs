@@ -73,7 +73,7 @@ namespace Empiria.Trade.Sales.Adapters {
       get; set;
     }
 
-    public ProductShortEntryDto Product {
+    public BaseProductDto Product {
       get; set;
     }
 
@@ -135,7 +135,7 @@ namespace Empiria.Trade.Sales.Adapters {
 
   } // class PresentationDto
 
-  public class ProductDto {
+  public class BaseProductDto {
     public string ProductUID {
       get; set;
     }
@@ -148,13 +148,13 @@ namespace Empiria.Trade.Sales.Adapters {
       get; set;
     }
 
-    public ProductShortEntryDto ProductType {
+   /* public BaseProductTypeDto ProductType {
       get; set;
-    }
+    }*/
 
   } // class ProductDto
 
-  public class ProductTypeDto {
+  public class BaseProductTypeDto {
 
 
     public string ProductTypeUID {
@@ -167,12 +167,26 @@ namespace Empiria.Trade.Sales.Adapters {
     }
 
 
-    public FixedList<Attributes> Attributes {
+    public FixedList<AttributesDto> Attributes {
       get; internal set;
-    } = new FixedList<Attributes>();
+    } = new FixedList<AttributesDto>();
 
 
   } // class ProductType
+
+  public class AttributesDto {
+
+    public string Name {
+      get; set;
+    } = string.Empty;
+
+
+    public string Value {
+      get; set;
+    } = string.Empty;
+
+
+  } // class AttributesDto
 
 
 } // namespace Empiria.Trade.Sales.Adapters
