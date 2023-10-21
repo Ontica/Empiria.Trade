@@ -65,12 +65,7 @@ namespace Empiria.Trade.Sales.Adapters {
       return dto;
     }
 
-    static private ProductShortEntryDto MapProductShortDto(SalesOrderItem orderItem) {
-      Product product = Product.Parse(orderItem.VendorProduct.ProductFields.ProductId);
-
-      return  TRDProductMapper.MapEntry(product);
-    }
-
+    
     
 
     #endregion Private methods
