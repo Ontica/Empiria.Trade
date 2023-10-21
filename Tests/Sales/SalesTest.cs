@@ -25,6 +25,22 @@ namespace Empiria.Trade.Tests.Sales {
   public class SalesTest {
 
     [Fact]
+    public void ShouldGetOrderTest() {
+
+      var fields = new SearchOrderFields {
+        ToDate = Convert.ToDateTime("01-01-2001"),
+        FromDate = DateTime.Now,
+        Status = Orders.OrderStatus.Captured
+      };
+
+
+      var salesOrders = SalesOrder.GetOrders(fields);
+     
+
+      Assert.NotNull(salesOrders);
+    }
+
+    [Fact]
     public void ShouldCreateOrderTest() {
 
       var item = new SalesOrderItemsFields {
@@ -113,6 +129,8 @@ namespace Empiria.Trade.Tests.Sales {
 
       Assert.NotNull(y);
     }
+
+
 
   } // public class SalesTest
 

@@ -45,7 +45,7 @@ namespace Empiria.Trade.Sales {
 
     public FixedList<SalesOrderItem> SalesOrderItems {
       get; private set;
-    }
+    } = new FixedList<SalesOrderItem>();
 
     public int ItemsCount {
       get; private set;
@@ -95,7 +95,7 @@ namespace Empiria.Trade.Sales {
      
     }
 
-    internal static FixedList<SalesOrder> GetOrders(SearchOrderFields fields) {
+    public static FixedList<SalesOrder> GetOrders(SearchOrderFields fields) {
       return SalesOrderData.GetSalesOrders(fields);
     }
 
