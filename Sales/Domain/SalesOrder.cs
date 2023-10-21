@@ -128,6 +128,8 @@ namespace Empiria.Trade.Sales {
       List<SalesOrderItem> orderItems = new List<SalesOrderItem>();
 
       int priceListNumber = GetCustomerPriceListNumber();
+      
+      InitializeValues();
 
       foreach (SalesOrderItemsFields itemFields in orderItemsFields) {
         var saleOrderItem = new SalesOrderItem(itemFields, priceListNumber);
@@ -143,6 +145,15 @@ namespace Empiria.Trade.Sales {
    
 
       return orderItems.ToFixedList<SalesOrderItem>();
+    }
+
+    private void InitializeValues() {
+      this.ItemsCount = 0;
+      this.ItemsTotal = 0;
+      this.Shipment = 0;
+      this.Discount = 0;
+      this.Taxes = 0;
+      this.OrderTotal = 0;
     }
 
     #endregion
