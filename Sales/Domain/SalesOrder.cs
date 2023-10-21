@@ -107,6 +107,7 @@ namespace Empiria.Trade.Sales {
 
     internal void Update(SalesOrderFields fields) {
       this.OrderTypeId = 1025;
+      this.OrderTime = fields.OrderTime;
       this.Customer = fields.GetCustomer();
       this.Supplier = fields.GetSupplier();
       this.SalesAgent = fields.GetSalesAgent();
