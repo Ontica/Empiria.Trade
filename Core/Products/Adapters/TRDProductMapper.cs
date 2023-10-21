@@ -9,6 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 
 namespace Empiria.Trade.Products.Adapters {
@@ -109,36 +110,75 @@ namespace Empiria.Trade.Products.Adapters {
 
       var presentations = new List<Presentation>();
 
-      Presentation presentation = new Presentation();
+      foreach (var item in entry.Presentations) {
+        Presentation presentation = new Presentation();
 
-      presentation.PresentationUID = entry.ProductPresentation.PresentationUID;
-      presentation.Description = entry.ProductPresentation.PresentationDescription;
-      presentation.Units = Convert.ToString(entry.ProductPresentation.QuantityAmount); //CANTIDAD QUE CONTIENE LA PRESENTACION;
-      presentation.Vendors = GetVendors(entry);
+        presentation.PresentationUID = item.PresentationUID;
+        presentation.Description = item.Description;
+        presentation.Units = item.Units;
+        presentation.Vendors = GetVendors(item);
 
-      presentations.Add(presentation);
+        presentations.Add(presentation);
+
+      }
 
       return presentations.ToFixedList();
     }
 
 
-    static private FixedList<Vendor> GetVendors(Product entry) {
+    static private FixedList<Vendor> GetVendors(Presentation presentation) {
 
       var vendors = new List<Vendor>();
 
       Vendor vendor = new Vendor() {
-        VendorProductUID = entry.VendorProductUID,
-        VendorUID = entry.Vendor.UID,
-        VendorName = entry.Vendor.Name,
-        Sku = entry.SKU,
-        Stock = entry.InventoryEntry.InputQuantity,
-        Price = entry.PriceList
+        VendorProductUID = presentation.Vendors.First().VendorProductUID,
+        VendorUID = presentation.Vendors.First().VendorUID,
+        VendorName = presentation.Vendors.First().VendorName,
+        Sku = presentation.Vendors.First().Sku,
+        Stock = presentation.Vendors.First().Stock,
+        Price = presentation.Vendors.First().Price
       };
 
       vendors.Add(vendor);
 
       return vendors.ToFixedList();
     }
+
+
+    //static private FixedList<Presentation> GetPresentations(Product entry) {
+
+    //  var presentations = new List<Presentation>();
+
+    //  Presentation presentation = new Presentation();
+
+    //  presentation.PresentationUID = entry.ProductPresentation.PresentationUID;
+    //  presentation.Description = entry.ProductPresentation.PresentationDescription;
+    //  presentation.Units = entry.ProductPresentation.QuantityAmount;
+    //  presentation.Vendors = GetVendors(entry);
+
+    //  presentations.Add(presentation);
+
+    //  return presentations.ToFixedList();
+    //}
+
+
+    //static private FixedList<Vendor> GetVendors(Product entry) {
+
+    //  var vendors = new List<Vendor>();
+
+    //  Vendor vendor = new Vendor() {
+    //    VendorProductUID = entry.VendorProductUID,
+    //    VendorUID = entry.Vendor.UID,
+    //    VendorName = entry.Vendor.Name,
+    //    Sku = entry.SKU,
+    //    Stock = entry.InventoryEntry.InputQuantity,
+    //    Price = entry.PriceList
+    //  };
+
+    //  vendors.Add(vendor);
+
+    //  return vendors.ToFixedList();
+    //}
 
 
     #endregion Private methods
