@@ -153,11 +153,11 @@ namespace Empiria.Trade.Core {
 
     public string FromDatabase {
       get; set;
-    }
+    } = string.Empty;
 
     public int PriceListId {
       get; set;
-    }
+    } 
 
   } // class ExtData
 
