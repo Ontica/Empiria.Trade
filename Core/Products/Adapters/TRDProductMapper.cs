@@ -14,7 +14,7 @@ using Newtonsoft.Json;
 namespace Empiria.Trade.Products.Adapters {
 
   /// <summary>Methods used to map TRDProducts.</summary>
-  internal class TRDProductMapper {
+  public class TRDProductMapper {
 
 
     #region Public methods
@@ -64,7 +64,7 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
-    static private ProductShortEntryDto MapEntry(Product entry) {
+    static public ProductShortEntryDto MapEntry(Product entry) {
       var dto = new ProductShortEntryDto();
 
       dto.ProductUID = entry.ProductUID;
