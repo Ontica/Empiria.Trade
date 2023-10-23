@@ -15,6 +15,8 @@ using Empiria.Trade.Core;
 using Newtonsoft.Json;
 using System.Xml.Linq;
 using System.Diagnostics;
+using Empiria.Collections;
+using System.Collections.Generic;
 
 namespace Empiria.Trade.Products.Domain {
 
@@ -32,7 +34,7 @@ namespace Empiria.Trade.Products.Domain {
     #region public methods
 
 
-    public void GetDefaultProductBasePrices(FixedList<Product> products) {
+    internal void GetDefaultProductBasePrices(FixedList<Product> products) {
 
       foreach (var product in products) {
 
@@ -42,7 +44,71 @@ namespace Empiria.Trade.Products.Domain {
     }
 
 
-    public void GetProductsWithCustomerPrice(FixedList<Product> products) {
+
+    internal FixedList<Product> GetProductsByCode(FixedList<Product> products) {
+
+      var hashProducts = new EmpiriaHashTable<Product>();
+
+      foreach (var product in products) {
+
+        AssingProductPresentations(hashProducts, product);
+
+      }
+
+      return hashProducts.ToFixedList();
+    }
+
+    private void AssingProductPresentations(EmpiriaHashTable<Product> hashProducts, Product product) {
+
+      string hash = $"{product.Code}";
+
+      Product productEntry;
+
+      hashProducts.TryGetValue(hash, out productEntry);
+
+      
+      if (productEntry == null) {
+
+        productEntry = product;
+        productEntry.Presentations.Add(GetPresentation(product));
+
+        hashProducts.Insert(hash, productEntry);
+
+      } else {
+
+        productEntry.Presentations.Add(GetPresentation(product));
+
+      }
+
+    }
+
+    private Presentation GetPresentation(Product product) {
+      
+      var presentation = new Presentation();
+      presentation.PresentationUID = product.ProductPresentation.UID;
+      presentation.Description = product.ProductPresentation.PresentationDescription;
+      presentation.Units = product.ProductPresentation.QuantityAmount;
+
+      Vendor vendor = new Vendor();
+
+      var vendorProduct = VendorProduct.Parse(product.VendorProductUID);
+
+      vendor.VendorProductUID = product.VendorProductUID;
+      vendor.VendorUID = product.Vendor.UID;
+      vendor.VendorName = product.Vendor.Name;
+      vendor.Sku = vendorProduct.SKU;
+      vendor.Stock = product.InventoryEntry.InputQuantity;
+      vendor.Price = product.PriceList;
+
+      List<Vendor> vendorList = new List<Vendor>();
+      vendorList.Add(vendor);
+
+      presentation.Vendors = vendorList.ToFixedList();
+
+      return presentation;
+    }
+
+    internal void GetProductsWithCustomerPrice(FixedList<Product> products) {
 
       var customerExtData = GetCustomerAssignedPriceNumber();
 

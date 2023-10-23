@@ -66,19 +66,19 @@ namespace Empiria.Trade.Products.Adapters {
 
     public string Description {
       get;
-      internal set;
+      set;
     }
 
 
-    public string Units {
+    public decimal Units {
       get;
-      internal set;
+      set;
     }
 
 
     public FixedList<Vendor> Vendors {
       get;
-      internal set;
+      set;
     } = new FixedList<Vendor>();
 
   } // class Presentation
