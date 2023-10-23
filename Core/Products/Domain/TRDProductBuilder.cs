@@ -60,7 +60,11 @@ namespace Empiria.Trade.Products.Domain {
 
       ValidateToGetPriceList(products, query);
 
-      return products;
+      var helper = new TRDProductHelper(query);
+
+      FixedList<Product> productsByCode = helper.GetProductsByCode(products);
+
+      return productsByCode;
     }
 
 
