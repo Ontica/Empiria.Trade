@@ -92,7 +92,8 @@ namespace Empiria.Trade.Sales {
         OrderTime = DateTime.Now;
       }
       SalesOrderData.Write(this);
-     
+      SalesOrderItem.SaveSalesOrderItems(this.SalesOrderItems, this.Id);
+      
     }
 
     public static FixedList<SalesOrder> GetOrders(SearchOrderFields fields) {
@@ -155,11 +156,12 @@ namespace Empiria.Trade.Sales {
       this.Taxes = 0;
       this.OrderTotal = 0;
     }
+      
 
-    #endregion
+      #endregion
 
-  }  //  class SalesOrder
+    }  //  class SalesOrder
 
- 
 
-}  // namespace Empiria.Trade.Sales
+
+  }  // namespace Empiria.Trade.Sales

@@ -33,8 +33,7 @@ namespace Empiria.Trade.Sales.WebApi {
 
         return new SingleObjectModel(this.Request, orderDto);
       }
-
-      // throw new NotImplementedException();
+            
     }
 
     [HttpPost]

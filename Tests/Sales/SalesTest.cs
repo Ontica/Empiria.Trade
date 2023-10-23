@@ -58,11 +58,14 @@ namespace Empiria.Trade.Tests.Sales {
         Notes = "",
       };
 
-      var salesOrderItem = new SalesOrderItem(item,5);
+      var salesOrderItem = new SalesOrderItem(item, 5);
 
-      var vendorProduct = salesOrderItem.VendorProduct;
+      salesOrderItem.Save();
 
-      Assert.NotNull(vendorProduct);
+      //var vendorProduct = salesOrderItem.VendorProduct;
+
+      var x = SalesOrderItemsMapper.Map(salesOrderItem);
+      Assert.NotNull(x);
     }
 
     [Fact]
@@ -123,8 +126,10 @@ namespace Empiria.Trade.Tests.Sales {
 
      var x = salesOrder.GetCustomerPriceListNumber();
 
+
       Assert.NotEqual(100, x);
 
+      salesOrder.Save();
       var y = SalesOrderMapper.Map(salesOrder);
 
       Assert.NotNull(y);

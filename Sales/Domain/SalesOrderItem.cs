@@ -58,8 +58,17 @@ namespace Empiria.Trade.Sales {
       
     }
 
-    
+
+    public static void SaveSalesOrderItems(FixedList<SalesOrderItem> orderItems, int orderId) {
+      foreach (SalesOrderItem orderItem in orderItems) {
+        orderItem.OrderId = orderId;
+        orderItem.Save();
+      }
+
+    }
+
     protected override void OnSave() {
+      OrderId = this.OrderId;
       SalesOrderItemsData.Write(this);
     }
 
@@ -83,16 +92,5 @@ namespace Empiria.Trade.Sales {
     #endregion Public methods
 
   }  //namespace Empiria.Trade.Sales
-
-  public class ProductPrice {
-
-    public int ProductPriceId {
-      get; set;
-    }
-
-    public decimal PriceList {
-      get; set;
-    }
-  }
 
 } // public class OrderItem

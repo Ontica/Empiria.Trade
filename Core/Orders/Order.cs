@@ -11,7 +11,6 @@ using System;
 
 using Empiria.Trade.Core;
 
-using Empiria.StateEnums;
 
 namespace Empiria.Trade.Orders {
 
@@ -98,12 +97,13 @@ namespace Empiria.Trade.Orders {
     #endregion Public properties
 
   }  // class Order
+  
 
   public enum OrderStatus {
     Captured = 'C',
     Applied = 'A',
     Closed  = 'F',
     Cancelled = 'X'
-  }
+  } // enum OrderStatus
 
 }  // namespace Empiria.Trade.Orders
