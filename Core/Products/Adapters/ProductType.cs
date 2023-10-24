@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using System.Collections.Generic;
 
 namespace Empiria.Trade.Products.Adapters {
 
@@ -76,10 +77,10 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
-    public FixedList<Vendor> Vendors {
-      get;
-      set;
-    } = new FixedList<Vendor>();
+    public List<Vendor> Vendors {
+      get; set;
+    } = new List<Vendor>();
+
 
   } // class Presentation
 

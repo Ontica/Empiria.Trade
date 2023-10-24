@@ -54,21 +54,21 @@ namespace Empiria.Trade.Products {
 
 
     [DataField("SubgroupCode")]
-    internal string SubgroupCode {
+    public string SubgroupCode {
       get;
       private set;
     }
 
 
     [DataField("ProductSubgroupName")]
-    internal string Name {
+    public string Name {
       get;
       private set;
     }
 
 
     [DataField("ProductSubgroupDescription")]
-    internal string Description {
+    public string Description {
       get;
       private set;
     }

@@ -17,6 +17,7 @@ using System.Xml.Linq;
 using System.Diagnostics;
 using Empiria.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Empiria.Trade.Products.Domain {
 
@@ -58,6 +59,7 @@ namespace Empiria.Trade.Products.Domain {
       return hashProducts.ToFixedList();
     }
 
+
     private void AssingProductPresentations(EmpiriaHashTable<Product> hashProducts, Product product) {
 
       string hash = $"{product.Code}";
@@ -70,43 +72,84 @@ namespace Empiria.Trade.Products.Domain {
       if (productEntry == null) {
 
         productEntry = product;
-        productEntry.Presentations.Add(GetPresentation(product));
+
+        //productEntry.Presentations.Add(GetPresentation(product));
+
+        GetProductPresentations(productEntry, product);
 
         hashProducts.Insert(hash, productEntry);
 
       } else {
 
-        productEntry.Presentations.Add(GetPresentation(product));
+        GetProductPresentations(productEntry, product);
+        //productEntry.Presentations.Add(GetPresentation(product));
 
       }
 
     }
 
-    private Presentation GetPresentation(Product product) {
+
+    private void GetProductPresentations(Product productEntry, Product product) {
+
+      var existPresentation = productEntry.Presentations.Find(
+                          x => x.PresentationUID == product.ProductPresentation.UID);
+
+      if (existPresentation != null) {
+
+        GetVendorsByPresentation(existPresentation, product);
+
+      } else {
+
+        var presentation = new Presentation();
+        presentation.PresentationUID = product.ProductPresentation.UID;
+        presentation.Description = product.ProductPresentation.PresentationDescription;
+        presentation.Units = product.ProductPresentation.QuantityAmount;
+
+        GetVendorsByPresentation(presentation, product);
+
+        productEntry.Presentations.Add(presentation);
+
+      }
+
+      //return productEntry.Presentations;
+    }
+
+
+    //private Presentation GetPresentation(Product product) {
       
-      var presentation = new Presentation();
-      presentation.PresentationUID = product.ProductPresentation.UID;
-      presentation.Description = product.ProductPresentation.PresentationDescription;
-      presentation.Units = product.ProductPresentation.QuantityAmount;
+    //  var presentation = new Presentation();
+    //  presentation.PresentationUID = product.ProductPresentation.UID;
+    //  presentation.Description = product.ProductPresentation.PresentationDescription;
+    //  presentation.Units = product.ProductPresentation.QuantityAmount;
 
-      Vendor vendor = new Vendor();
+    //  GetVendorsByPresentation(presentation, product);
 
+    //  return presentation;
+    //}
+
+
+    private void GetVendorsByPresentation(Presentation presentation, Product product) {
+      
       var vendorProduct = VendorProduct.Parse(product.VendorProductUID);
 
-      vendor.VendorProductUID = product.VendorProductUID;
-      vendor.VendorUID = product.Vendor.UID;
-      vendor.VendorName = product.Vendor.Name;
-      vendor.Sku = vendorProduct.SKU;
-      vendor.Stock = product.InventoryEntry.InputQuantity;
-      vendor.Price = product.PriceList;
+      var existVendor = presentation.Vendors.Find(x => x.VendorUID == product.Vendor.UID);
 
-      List<Vendor> vendorList = new List<Vendor>();
-      vendorList.Add(vendor);
+      if (existVendor == null) {
 
-      presentation.Vendors = vendorList.ToFixedList();
+        Vendor vendor = new Vendor();
+        vendor.VendorProductUID = product.VendorProductUID;
+        vendor.VendorUID = product.Vendor.UID;
+        vendor.VendorName = product.Vendor.Name;
+        vendor.Sku = vendorProduct.SKU;
+        vendor.Stock = product.InventoryEntry.InputQuantity;
+        vendor.Price = product.PriceList;
 
-      return presentation;
+        presentation.Vendors.Add(vendor);
+      }
+
+      //return presentation.Vendors;
     }
+
 
     internal void GetProductsWithCustomerPrice(FixedList<Product> products) {
 

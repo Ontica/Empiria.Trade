@@ -110,13 +110,13 @@ namespace Empiria.Trade.Products.Adapters {
 
       var presentations = new List<Presentation>();
 
-      foreach (var item in entry.Presentations) {
+      foreach (var present in entry.Presentations) {
         Presentation presentation = new Presentation();
 
-        presentation.PresentationUID = item.PresentationUID;
-        presentation.Description = item.Description;
-        presentation.Units = item.Units;
-        presentation.Vendors = GetVendors(item);
+        presentation.PresentationUID = present.PresentationUID;
+        presentation.Description = present.Description;
+        presentation.Units = present.Units;
+        presentation.Vendors = GetVendors(present).ToList();
 
         presentations.Add(presentation);
 
@@ -127,20 +127,23 @@ namespace Empiria.Trade.Products.Adapters {
 
 
     static private FixedList<Vendor> GetVendors(Presentation presentation) {
-
       var vendors = new List<Vendor>();
 
-      Vendor vendor = new Vendor() {
-        VendorProductUID = presentation.Vendors.First().VendorProductUID,
-        VendorUID = presentation.Vendors.First().VendorUID,
-        VendorName = presentation.Vendors.First().VendorName,
-        Sku = presentation.Vendors.First().Sku,
-        Stock = presentation.Vendors.First().Stock,
-        Price = presentation.Vendors.First().Price
-      };
+      foreach (var _vendor in presentation.Vendors) {
 
-      vendors.Add(vendor);
+        Vendor vendor = new Vendor() {
+          VendorProductUID = _vendor.VendorProductUID,
+          VendorUID = _vendor.VendorUID,
+          VendorName = _vendor.VendorName,
+          Sku = _vendor.Sku,
+          Stock = _vendor.Stock,
+          Price = _vendor.Price
+        };
 
+        vendors.Add(vendor);
+
+      }
+      
       return vendors.ToFixedList();
     }
 
