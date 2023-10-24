@@ -11,6 +11,7 @@ using System;
 
 using Empiria.Trade.Products.Adapters;
 using Empiria.Trade.Products;
+using Newtonsoft.Json;
 
 namespace Empiria.Trade.Sales.Adapters {
 
@@ -41,14 +42,36 @@ namespace Empiria.Trade.Sales.Adapters {
     private static BaseProductDto MapBaseProductDto(SalesOrderItem orderItem) {
       var dto = new BaseProductDto {
         ProductUID = orderItem.VendorProduct.ProductFields.ProductUID,
-        ProductCode = orderItem.VendorProduct.ProductFields.ProductCode, 
-        Description = orderItem.VendorProduct.ProductFields.ProductDescription
+        ProductCode = orderItem.VendorProduct.ProductFields.ProductCode,
+        Description = orderItem.VendorProduct.ProductFields.ProductName,
+        ProductType = MapProductType(orderItem)
       };
 
       return dto;
     }
 
-   
+    private static BaseProductTypeDto MapProductType(SalesOrderItem orderItem) {
+      var dto = new BaseProductTypeDto {
+        ProductTypeUID = "ddddd-dc17-49f5-b378-aa692dc21cdd",
+        Name = orderItem.VendorProduct.ProductFields.ProductGroup.Name,
+        Attributes = GetAttributes(orderItem.VendorProduct.ProductFields.Attributes)
+      };
+
+      return dto;
+    }
+
+    static private FixedList<AttributesDto> GetAttributes(string attributes) {
+
+      AttributesListDto attrs = new AttributesListDto();
+
+      if (attributes != "") {
+        attrs = JsonConvert.DeserializeObject<AttributesListDto>(attributes);
+      }
+
+      return attrs.Attributes.ToFixedList<AttributesDto>();
+
+    }
+
 
     #endregion Public methods
 

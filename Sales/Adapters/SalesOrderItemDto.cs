@@ -148,9 +148,9 @@ namespace Empiria.Trade.Sales.Adapters {
       get; set;
     }
 
-   /* public BaseProductTypeDto ProductType {
+    public BaseProductTypeDto ProductType {
       get; set;
-    }*/
+    }
 
   } // class ProductDto
 
@@ -173,6 +173,14 @@ namespace Empiria.Trade.Sales.Adapters {
 
 
   } // class ProductType
+
+  public class AttributesListDto {
+
+    public FixedList<AttributesDto> Attributes {
+      get; internal set;
+    } = new FixedList<AttributesDto>();
+
+  } // AttributesListDto
 
   public class AttributesDto {
 
