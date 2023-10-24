@@ -117,11 +117,11 @@ namespace Empiria.Trade.Orders {
       protected set;
     }
 
-    [DataField("OrderItemNotes")]
+    [DataField("OrderItemNotes", Default ="")]
     public string Notes {
       get;
       protected set;
-    }
+    } = String.Empty;
 
     [DataField("OrderItemStatus", Default = EntityStatus.Active)]
     public EntityStatus Status {

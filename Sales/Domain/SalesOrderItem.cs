@@ -47,15 +47,15 @@ namespace Empiria.Trade.Sales {
       this.VendorProduct = fields.GetVendorProduct();
       this.ProductPriceId = GetProductPriceId(VendorProduct.Id, priceListNumber);
       this.PriceListNumber = priceListNumber;
-      this.Quantity = fields.Quantity; //mandan 
+      this.Quantity = fields.Quantity;
       this.BasePrice = GetProductPrice(VendorProduct.Id, priceListNumber);
-      this.SalesPrice = (this.Quantity * this.BasePrice); //mandan
+      this.SalesPrice = (this.Quantity * this.BasePrice); 
       this.Discount = fields.AdditionalDiscount;
       this.Shipment = fields.Shipment;
       this.TaxesIVA = GetTaxesIva(); //calcular
       this.Total = (this.Quantity * this.BasePrice) + TaxesIVA ; //calcular
-      this.Notes = fields.Notes;
-      
+      this.Notes = String.IsNullOrEmpty(fields.Notes) ? String.Empty : fields.Notes;
+
     }
 
 
