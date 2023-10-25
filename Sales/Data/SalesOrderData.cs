@@ -23,8 +23,12 @@ namespace Empiria.Trade.Sales.Data {
     #region Internal methods
 
     internal static FixedList<SalesOrder> GetSalesOrders(SearchOrderFields fields) {
-      var sql = "SELECT * " +
-      "FROM TRDOrders ";
+      var toDate = fields.ToDate.ToString("yyyy-dd-MM");
+      var fromDate = fields.FromDate.ToString("yyyy-dd-MM");
+      
+       var sql = "SELECT * FROM TRDOrders " +
+                 $"WHERE (orderTime >= CONVERT(SMALLDATETIME, '{fromDate}') AND " +
+                 $"orderTime <= CONVERT(SMALLDATETIME,'{toDate}') )";
       
 
       var dataOperation = DataOperation.Parse(sql);

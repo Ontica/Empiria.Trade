@@ -114,15 +114,15 @@ namespace Empiria.Trade.Sales.Adapters {
 
     public DateTime FromDate {
       get; set;
-    }
+    } = Convert.ToDateTime("01-01-2020");
 
     public DateTime ToDate {
       get; set;
-    }
+    } = Convert.ToDateTime("01-01-2049");
 
     public OrderStatus Status {
       get; set;
-    }
+    } = OrderStatus.Captured;
 
   } // class SearchOrderFields
 
