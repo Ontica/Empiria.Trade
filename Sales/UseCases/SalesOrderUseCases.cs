@@ -82,6 +82,17 @@ namespace Empiria.Trade.Sales.UseCases {
       return orderDto;
     }
 
+    public SalesOrderDto ApplySalesOrder(string orderUID) {
+      Assertion.Require(orderUID, "orderUID");
+
+      var order = SalesOrder.Parse(orderUID);
+      order.Apply();
+
+      var orderDto = SalesOrderMapper.Map(order);
+
+      return orderDto;
+    }
+
     #endregion Use cases
 
   } // class OrderUseCases

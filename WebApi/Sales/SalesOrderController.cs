@@ -60,11 +60,26 @@ namespace Empiria.Trade.Sales.WebApi {
       using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
 
         SalesOrderDto orderDto = usecases.CancelSalesOrder(orderUID);
-               return new SingleObjectModel(this.Request, orderDto);
+
+        return new SingleObjectModel(this.Request, orderDto);
         }
         
     }
 
+    [HttpPut]
+    [Route("v4/trade/sales/apply-sales-order")]
+    public SingleObjectModel ApplySalesOrder([FromUri] string orderUID) {
+
+      base.RequireResource(orderUID, "orderUID");
+
+      using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
+
+        SalesOrderDto orderDto = usecases.ApplySalesOrder(orderUID);
+
+        return new SingleObjectModel(this.Request, orderDto);
+      }
+
+    }
 
     [HttpPost]
     [Route("v4/trade/sales/search-sales-order")]

@@ -96,7 +96,14 @@ namespace Empiria.Trade.Sales {
       
     }
 
-   
+    public void Apply() {
+      Status = OrderStatus.Applied;
+
+      SalesOrderData.Write(this);
+      this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id);
+    }
+
+
 
     public static FixedList<SalesOrder> GetOrders(SearchOrderFields fields) {
       return SalesOrderData.GetSalesOrders(fields);
@@ -165,9 +172,7 @@ namespace Empiria.Trade.Sales {
       this.OrderTotal = 0;
     }
 
-   
-
-
+    
     #endregion
 
   }  //  class SalesOrder
