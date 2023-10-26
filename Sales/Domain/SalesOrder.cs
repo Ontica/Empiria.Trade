@@ -116,6 +116,7 @@ namespace Empiria.Trade.Sales {
     }
 
     internal void Update(SalesOrderFields fields) {
+      
       this.OrderTypeId = 1025;
       this.OrderTime = fields.OrderTime;
       this.Customer = fields.GetCustomer();
@@ -134,6 +135,7 @@ namespace Empiria.Trade.Sales {
       SalesOrderData.Write(this);
       this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id);
     }
+      
 
 
     #endregion Public methods
@@ -173,6 +175,7 @@ namespace Empiria.Trade.Sales {
     }
 
     
+
     #endregion
 
   }  //  class SalesOrder

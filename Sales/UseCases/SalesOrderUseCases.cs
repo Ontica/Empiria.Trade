@@ -93,6 +93,17 @@ namespace Empiria.Trade.Sales.UseCases {
       return orderDto;
     }
 
+    public SalesOrderDto UpdateSalesOrder(SalesOrderFields fields) {
+      Assertion.Require(fields, "fields");
+
+      var order = new SalesOrder(fields);
+
+     
+      var orderDto = SalesOrderMapper.Map(order);
+
+      return orderDto;
+    }
+
     #endregion Use cases
 
   } // class OrderUseCases

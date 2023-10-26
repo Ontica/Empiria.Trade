@@ -81,6 +81,21 @@ namespace Empiria.Trade.Sales.WebApi {
 
     }
 
+    [HttpPut]
+    [Route("v4/trade/sales/update-sales-order")]
+    public SingleObjectModel UpdateSalesOrder([FromBody] SalesOrderFields fields) {
+
+      base.RequireBody(fields);
+
+      using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
+
+        SalesOrderDto orderDto = usecases.UpdateSalesOrder(fields);
+
+        return new SingleObjectModel(this.Request, orderDto);
+      }
+      
+    }
+
     [HttpPost]
     [Route("v4/trade/sales/search-sales-order")]
     public CollectionModel GetOrders([FromBody] SearchOrderFields fields) {
