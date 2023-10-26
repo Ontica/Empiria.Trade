@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using Empiria.DataTypes;
 using Empiria.Services;
 
 using Empiria.Trade.Sales.Adapters;
@@ -60,7 +61,7 @@ namespace Empiria.Trade.Sales.UseCases {
       var orderDto = SalesOrderMapper.Map(order);
 
       return orderDto;
-    }
+    } 
 
     public FixedList<SalesOrderDto> GetOrders(SearchOrderFields fields) {
       Assertion.Require(fields, "fields");
@@ -68,6 +69,17 @@ namespace Empiria.Trade.Sales.UseCases {
       FixedList<SalesOrder> salesOrdersList = SalesOrder.GetOrders(fields);
      
      return SalesOrderMapper.Map(salesOrdersList);     
+    }
+
+    public SalesOrderDto CancelSalesOrder(string orderUID) {
+      Assertion.Require(orderUID, "orderUID");
+
+      var order = SalesOrder.Parse(orderUID);
+      order.Cancel();
+
+      var orderDto = SalesOrderMapper.Map(order);
+
+      return orderDto;
     }
 
     #endregion Use cases

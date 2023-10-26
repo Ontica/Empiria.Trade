@@ -18,6 +18,13 @@ namespace Empiria.Trade.Sales.Data {
   /// <summary>Provides data layer for OrderItems. </summary>
   static internal class SalesOrderItemsData {
 
+    internal static FixedList<SalesOrderItem> GetOrderItems(int orderId) {
+      string sql = $"SELECT * FROM TRDOrderItems WHERE orderId = {orderId} ";
+      var op = DataOperation.Parse(sql);
+
+      return DataReader.GetFixedList<SalesOrderItem>(op);
+    }
+
     internal static DataRow GetProductPrice(int vendorProductId, int customerPriceListNumber) {
 
       string pricelistNumber = "PriceList" + customerPriceListNumber.ToString();

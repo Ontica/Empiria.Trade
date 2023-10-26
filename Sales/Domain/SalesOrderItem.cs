@@ -58,7 +58,6 @@ namespace Empiria.Trade.Sales {
 
     }
 
-
     public static void SaveSalesOrderItems(FixedList<SalesOrderItem> orderItems, int orderId) {
       foreach (SalesOrderItem orderItem in orderItems) {
         orderItem.OrderId = orderId;
@@ -70,6 +69,10 @@ namespace Empiria.Trade.Sales {
     protected override void OnSave() {
       OrderId = this.OrderId;
       SalesOrderItemsData.Write(this);
+    }
+
+    public static FixedList<SalesOrderItem> GetOrderItems(int orderId) {
+      return SalesOrderItemsData.GetOrderItems(orderId);
     }
 
     private int GetProductPriceId(int vendorProductId, int customerPriceListNumber) {

@@ -15,6 +15,7 @@ using Empiria.WebApi;
 
 using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Sales.UseCases;
+using Empiria.DataTypes;
 
 namespace Empiria.Trade.Sales.WebApi {
 
@@ -49,6 +50,21 @@ namespace Empiria.Trade.Sales.WebApi {
         return new SingleObjectModel(this.Request, orderDto);
       }
     }
+
+    [HttpPut]
+    [Route("v4/trade/sales/cancel-sales-order")]
+    public SingleObjectModel CancelSalesOrder([FromUri] string orderUID) {
+
+      base.RequireResource(orderUID, "orderUID");
+      
+      using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
+
+        SalesOrderDto orderDto = usecases.CancelSalesOrder(orderUID);
+               return new SingleObjectModel(this.Request, orderDto);
+        }
+        
+    }
+
 
     [HttpPost]
     [Route("v4/trade/sales/search-sales-order")]

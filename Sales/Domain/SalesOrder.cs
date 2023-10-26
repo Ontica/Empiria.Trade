@@ -96,6 +96,8 @@ namespace Empiria.Trade.Sales {
       
     }
 
+   
+
     public static FixedList<SalesOrder> GetOrders(SearchOrderFields fields) {
       return SalesOrderData.GetSalesOrders(fields);
     }
@@ -116,8 +118,14 @@ namespace Empiria.Trade.Sales {
       this.Status = fields.Status;
       this.ShippingMethod = fields.ShippingMethod;
       this.PaymentCondition = fields.PaymentCondition;
-      this.SalesOrderItems =  LoadSalesOrderItems(fields.Items); //new FixedList<SalesOrderItem>();
+      this.SalesOrderItems =  LoadSalesOrderItems(fields.Items);
 
+    }
+
+    public void Cancel() {
+      Status = OrderStatus.Cancelled;
+      SalesOrderData.Write(this);
+      this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id);
     }
 
 
@@ -156,11 +164,13 @@ namespace Empiria.Trade.Sales {
       this.Taxes = 0;
       this.OrderTotal = 0;
     }
-      
 
-      #endregion
+   
 
-    }  //  class SalesOrder
+
+    #endregion
+
+  }  //  class SalesOrder
 
 
 
