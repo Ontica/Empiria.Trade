@@ -43,7 +43,7 @@ namespace Empiria.Trade.Sales {
 
     internal void LoadOrderItem(SalesOrderItemsFields fields, int priceListNumber) {
           
-      this.OrderItemTypeId = 3;
+      this.OrderItemTypeId = 1045;
       this.VendorProduct = fields.GetVendorProduct();
       this.ProductPriceId = GetProductPriceId(VendorProduct.Id, priceListNumber);
       this.PriceListNumber = priceListNumber;
