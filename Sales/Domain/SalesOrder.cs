@@ -90,6 +90,7 @@ namespace Empiria.Trade.Sales {
       if (IsNew) {
         OrderNumber = "P-" + EmpiriaString.BuildRandomString(10);
         OrderTime = DateTime.Now;
+        Status = OrderStatus.Captured;
       }
       SalesOrderData.Write(this);
       SalesOrderItem.SaveSalesOrderItems(this.SalesOrderItems, this.Id);
@@ -101,6 +102,8 @@ namespace Empiria.Trade.Sales {
 
       SalesOrderData.Write(this);
       this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id);
+
+      GetOrderTotals();
     }
 
 
@@ -127,13 +130,18 @@ namespace Empiria.Trade.Sales {
       this.ShippingMethod = fields.ShippingMethod;
       this.PaymentCondition = fields.PaymentCondition;
       this.SalesOrderItems =  LoadSalesOrderItems(fields.Items);
+      GetOrderTotals();
 
     }
 
     public void Cancel() {
+
       Status = OrderStatus.Cancelled;
+      
       SalesOrderData.Write(this);
       this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id);
+
+      GetOrderTotals();
     }
       
 
@@ -147,22 +155,27 @@ namespace Empiria.Trade.Sales {
 
       int priceListNumber = GetCustomerPriceListNumber();
       
-      InitializeValues();
-
       foreach (SalesOrderItemsFields itemFields in orderItemsFields) {
         var saleOrderItem = new SalesOrderItem(itemFields, priceListNumber);
         orderItems.Add(saleOrderItem);
-        this.ItemsCount++;
-        this.ItemsTotal += saleOrderItem.SalesPrice;
-        this.Shipment += saleOrderItem.Shipment;
-        this.Discount += saleOrderItem.Discount;
-        this.Taxes += saleOrderItem.TaxesIVA;
-        this.OrderTotal += saleOrderItem.Total;
-
       }
-   
-
+     
       return orderItems.ToFixedList<SalesOrderItem>();
+    }
+
+    private void GetOrderTotals() {
+
+      InitializeValues();
+
+      foreach (SalesOrderItem item in this.SalesOrderItems) {
+        this.ItemsCount++;
+        this.ItemsTotal += item.SalesPrice;
+        this.Shipment += item.Shipment;
+        this.Discount += item.Discount;
+        this.Taxes += item.TaxesIVA;
+        this.OrderTotal += item.Total;
+      }
+
     }
 
     private void InitializeValues() {
