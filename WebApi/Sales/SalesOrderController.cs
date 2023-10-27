@@ -51,6 +51,7 @@ namespace Empiria.Trade.Sales.WebApi {
       }
     }
 
+    
     [HttpPut]
     [Route("v4/trade/sales/cancel-sales-order")]
     public SingleObjectModel CancelSalesOrder([FromUri] string orderUID) {
@@ -66,12 +67,14 @@ namespace Empiria.Trade.Sales.WebApi {
         
     }
 
-    [HttpPut]
-    [Route("v4/trade/sales/apply-sales-order")]
-    public SingleObjectModel ApplySalesOrder([FromUri] string orderUID) {
+    [HttpPost]
+    [Route("v4/trade/sales/orders/{orderUID:guid}/apply")]
+    public SingleObjectModel ApplySalesOrder([FromUri] string orderUID, [FromBody] OrderField fields) {
 
-      base.RequireResource(orderUID, "orderUID");
+      RequireBody(fields);
 
+      Assertion.Require(orderUID == fields.OrderUID, "Unrecognized Order UID.");
+           
       using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
 
         SalesOrderDto orderDto = usecases.ApplySalesOrder(orderUID);
