@@ -139,6 +139,7 @@ namespace Empiria.Trade.Sales {
       Status = OrderStatus.Cancelled;
       
       SalesOrderData.Write(this);
+      SalesOrderItemsData.CancelOrderItems(this.Id);
       this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id);
 
       GetOrderTotals();
