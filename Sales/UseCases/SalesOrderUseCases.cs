@@ -8,7 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-using Empiria.DataTypes;
+
 using Empiria.Services;
 
 using Empiria.Trade.Sales.Adapters;
@@ -96,12 +96,15 @@ namespace Empiria.Trade.Sales.UseCases {
     public SalesOrderDto UpdateSalesOrder(SalesOrderFields fields) {
       Assertion.Require(fields, "fields");
 
-      var order = SalesOrder.Parse(fields.UID);
-      order.Modify(fields);
+      if (fields.Status != Orders.OrderStatus.Captured) {
+        Assertion.RequireFail($"It is only possible to update orders in the Captured status your order status is:{fields.Status}");
+      }
+        var order = SalesOrder.Parse(fields.UID);
+        order.Modify(fields);
 
-      var orderDto = SalesOrderMapper.Map(order);
+        var orderDto = SalesOrderMapper.Map(order);
 
-      return orderDto;
+        return orderDto;
     }
 
     #endregion Use cases
