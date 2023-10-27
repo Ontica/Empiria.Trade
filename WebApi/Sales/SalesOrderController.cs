@@ -87,8 +87,8 @@ namespace Empiria.Trade.Sales.WebApi {
     }
 
     [HttpPut]
-    [Route("v4/trade/sales/update-sales-order")]
-    public SingleObjectModel UpdateSalesOrder([FromBody] SalesOrderFields fields) {
+    [Route("v4/trade/sales/orders/{orderUID:guid}")]
+    public SingleObjectModel UpdateSalesOrder([FromUri] string orderUID, [FromBody] SalesOrderFields fields) {
 
       base.RequireBody(fields);
 

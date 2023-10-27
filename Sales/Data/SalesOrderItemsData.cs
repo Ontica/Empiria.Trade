@@ -19,7 +19,7 @@ namespace Empiria.Trade.Sales.Data {
   static internal class SalesOrderItemsData {
 
     internal static FixedList<SalesOrderItem> GetOrderItems(int orderId) {
-      string sql = $"SELECT * FROM TRDOrderItems WHERE orderId = {orderId} ";
+      string sql = $"SELECT * FROM TRDOrderItems WHERE orderId = {orderId} and OrderItemStatus <> 'X'";
       var op = DataOperation.Parse(sql);
 
       return DataReader.GetFixedList<SalesOrderItem>(op);
@@ -39,6 +39,14 @@ namespace Empiria.Trade.Sales.Data {
                                    o.Quantity, o.ProductPriceId, o.PriceListNumber, o.BasePrice,
                                   o.SalesPrice, o.Discount, o.Shipment, o.TaxesIVA,
                                   o.TaxesIEPS, o.Total, o.Notes, o.Status);
+      DataWriter.Execute(op);
+    }
+
+    static internal void CancelOrderItems(int orderId) {
+      var sql = $"UPDATE TRDOrderItems SET OrderItemStatus  = 'X' WHERE orderId = {orderId}";
+
+      var op = DataOperation.Parse(sql);
+
       DataWriter.Execute(op);
     }
 

@@ -96,9 +96,9 @@ namespace Empiria.Trade.Sales.UseCases {
     public SalesOrderDto UpdateSalesOrder(SalesOrderFields fields) {
       Assertion.Require(fields, "fields");
 
-      var order = new SalesOrder(fields);
+      var order = SalesOrder.Parse(fields.UID);
+      order.Modify(fields);
 
-     
       var orderDto = SalesOrderMapper.Map(order);
 
       return orderDto;

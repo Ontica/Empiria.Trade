@@ -143,8 +143,13 @@ namespace Empiria.Trade.Sales {
 
       GetOrderTotals();
     }
-      
 
+    public void Modify(SalesOrderFields fields) {      
+      SalesOrderItemsData.CancelOrderItems(this.Id);
+      Update(fields);
+
+      Save();
+    }
 
     #endregion Public methods
 
@@ -186,8 +191,6 @@ namespace Empiria.Trade.Sales {
       this.Taxes = 0;
       this.OrderTotal = 0;
     }
-
-    
 
     #endregion
 
