@@ -28,7 +28,7 @@ namespace Empiria.Trade.Sales.Data {
       
        var sql = "SELECT * FROM TRDOrders " +
                  $"WHERE (orderTime >= CONVERT(SMALLDATETIME, '{fromDate}') AND " +
-                 $"orderTime <= CONVERT(SMALLDATETIME,'{toDate}') )";
+                 $"orderTime <= CONVERT(SMALLDATETIME,'{toDate}') AND (OrderStatus = '{(char)fields.Status}') )";
       
 
       var dataOperation = DataOperation.Parse(sql);
