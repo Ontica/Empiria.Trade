@@ -87,7 +87,7 @@ namespace Empiria.Trade.Orders {
     public OrderStatus Status {
       get;
       protected set;
-    }
+    } = OrderStatus.Captured;
 
     public FixedList<OrderItem> OrderItems {
       get;
@@ -103,7 +103,8 @@ namespace Empiria.Trade.Orders {
     Captured = 'C',
     Applied = 'A',
     Closed  = 'F',
-    Cancelled = 'X'
+    Cancelled = 'X',
+    Empty = 'E'
   } // enum OrderStatus
 
 }  // namespace Empiria.Trade.Orders

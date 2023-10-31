@@ -12,6 +12,7 @@ using System;
 using Empiria.Data;
 using Empiria.DataTypes;
 using Empiria.Trade.Core;
+using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.Adapters;
 
 namespace Empiria.Trade.Sales.Data {
@@ -25,10 +26,21 @@ namespace Empiria.Trade.Sales.Data {
     internal static FixedList<SalesOrder> GetSalesOrders(SearchOrderFields fields) {
       var toDate = fields.ToDate.ToString("yyyy-dd-MM");
       var fromDate = fields.FromDate.ToString("yyyy-dd-MM");
-      
+
+      string keywords = string.Empty;
+      string status = string.Empty;
+
+      if (fields.Keywords != string.Empty) {
+        keywords = $" {SearchExpression.ParseAndLikeKeywords("OrderKeywords", fields.Keywords)} AND ";
+      }
+
+      if (fields.Status != Orders.OrderStatus.Empty) {
+       status = $" AND (OrderStatus = '{(char)fields.Status}')";
+      }      
+            
        var sql = "SELECT * FROM TRDOrders " +
-                 $"WHERE (orderTime >= CONVERT(SMALLDATETIME, '{fromDate}') AND " +
-                 $"orderTime <= CONVERT(SMALLDATETIME,'{toDate}') AND (OrderStatus = '{(char)fields.Status}') )";
+                 $"WHERE {keywords}  (orderTime >= CONVERT(SMALLDATETIME, '{fromDate}') AND " +
+                 $"orderTime <= CONVERT(SMALLDATETIME,'{toDate}')) {status} ";
       
 
       var dataOperation = DataOperation.Parse(sql);

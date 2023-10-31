@@ -112,6 +112,10 @@ namespace Empiria.Trade.Sales.Adapters {
 
   public class SearchOrderFields {
 
+    public string Keywords {
+      get; set;
+    } = string.Empty;
+
     public DateTime FromDate {
       get; set;
     } = Convert.ToDateTime("01-01-2020");
@@ -122,7 +126,7 @@ namespace Empiria.Trade.Sales.Adapters {
 
     public OrderStatus Status {
       get; set;
-    } = OrderStatus.Captured;
+    } = OrderStatus.Empty;
 
   } // class SearchOrderFields
 
