@@ -23,7 +23,7 @@ namespace Empiria.Trade.Sales.WebApi {
   public class SalesOrderController : WebApiController {
 
     [HttpPost]
-    [Route("v4/trade/sales/process-sales-order")]
+    [Route("v4/trade/sales/orders/process")]
     public SingleObjectModel ProcessSalesOrder([FromBody] SalesOrderFields fields) {
 
       base.RequireBody(fields);
@@ -38,7 +38,7 @@ namespace Empiria.Trade.Sales.WebApi {
     }
 
     [HttpPost]
-    [Route("v4/trade/sales/create-sales-order")]
+    [Route("v4/trade/sales/orders")]
     public SingleObjectModel CreateSalesOrder([FromBody] SalesOrderFields fields) {
 
       base.RequireBody(fields);
@@ -102,7 +102,7 @@ namespace Empiria.Trade.Sales.WebApi {
     }
 
     [HttpPost]
-    [Route("v4/trade/sales/search-sales-order")]
+    [Route("v4/trade/sales/orders/search")]
     public CollectionModel GetOrders([FromBody] SearchOrderFields fields) {
 
       base.RequireBody(fields);
