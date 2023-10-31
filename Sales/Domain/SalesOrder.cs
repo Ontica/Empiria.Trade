@@ -109,7 +109,16 @@ namespace Empiria.Trade.Sales {
 
 
     public static FixedList<SalesOrder> GetOrders(SearchOrderFields fields) {
-      return SalesOrderData.GetSalesOrders(fields);
+      var orders = SalesOrderData.GetSalesOrders(fields);
+      List<SalesOrder> salesOrders = new List<SalesOrder>();
+
+      foreach (var order in orders) {
+        order.SalesOrderItems = SalesOrderItem.GetOrderItems(order.Id);
+        GetOrderTotals(order);
+        salesOrders.Add(order);
+      }
+
+      return salesOrders.ToFixedList<SalesOrder>();
     }
 
     public int GetCustomerPriceListNumber() {
@@ -184,7 +193,20 @@ namespace Empiria.Trade.Sales {
 
     }
 
-    private void InitializeValues() {
+    private static void GetOrderTotals(SalesOrder  order) {
+
+      foreach (SalesOrderItem item in order.SalesOrderItems) {
+        order.ItemsCount++;
+        order.ItemsTotal += item.SalesPrice;
+        order.Shipment += item.Shipment;
+        order.Discount += item.Discount;
+        order.Taxes += item.TaxesIVA;
+        order.OrderTotal += item.Total;
+      }
+
+    }
+
+    private  void InitializeValues() {
       this.ItemsCount = 0;
       this.ItemsTotal = 0;
       this.Shipment = 0;
