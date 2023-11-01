@@ -8,7 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-
+using Empiria.Json;
 using Empiria.Trade.Core;
 
 
@@ -80,6 +80,30 @@ namespace Empiria.Trade.Orders {
     public virtual string Keywords {
       get {
         return EmpiriaString.BuildKeywords(OrderNumber, Customer.Name, SalesAgent.Name);
+      }
+    }
+
+    [DataField("OrderExtData", IsOptional = true)]
+    public JsonObject ExtData {
+      get;
+      protected set;
+    } = new JsonObject();
+
+    public string PaymentCondition {
+      get {
+        return this.ExtData.Get("PaymentCondition", string.Empty);
+      }
+      protected set {
+        this.ExtData.SetIfValue("PaymentCondition", value);
+      }
+    } 
+
+    public string ShippingMethod {
+      get {
+        return this.ExtData.Get("ShippingMethod", string.Empty);
+      }
+      protected set {
+        this.ExtData.SetIfValue("ShippingMethod", value);
       }
     }
 

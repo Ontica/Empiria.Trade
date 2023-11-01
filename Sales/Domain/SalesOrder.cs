@@ -71,15 +71,7 @@ namespace Empiria.Trade.Sales {
     public decimal OrderTotal {
       get; private set;
     } = 0m;
-
-    public string PaymentCondition {
-      get; private set;
-    }
-
-    public string ShippingMethod {
-      get; private set;
-    }
-
+       
 
     #endregion
 
