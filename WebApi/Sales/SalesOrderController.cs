@@ -16,6 +16,7 @@ using Empiria.WebApi;
 using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Sales.UseCases;
 using Empiria.DataTypes;
+using System.Security.Cryptography;
 
 namespace Empiria.Trade.Sales.WebApi {
 
@@ -54,11 +55,9 @@ namespace Empiria.Trade.Sales.WebApi {
     
     [HttpDelete]
     [Route("v4/trade/sales/orders/{orderUID:guid}/cancel")]
-    public SingleObjectModel CancelSalesOrder([FromUri] string orderUID, [FromBody] OrderField fields) {
+    public SingleObjectModel CancelSalesOrder([FromUri] string orderUID) {
 
-      RequireBody(fields);
-
-      Assertion.Require(orderUID == fields.OrderUID, "Unrecognized Order UID.");
+      base.RequireResource(orderUID, "orderUID");
 
       using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
 
@@ -71,12 +70,10 @@ namespace Empiria.Trade.Sales.WebApi {
 
     [HttpPost]
     [Route("v4/trade/sales/orders/{orderUID:guid}/apply")]
-    public SingleObjectModel ApplySalesOrder([FromUri] string orderUID, [FromBody] OrderField fields) {
+    public SingleObjectModel ApplySalesOrder([FromUri] string orderUID) {
 
-      RequireBody(fields);
+      base.RequireResource(orderUID, "orderUID");
 
-      Assertion.Require(orderUID == fields.OrderUID, "Unrecognized Order UID.");
-           
       using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
 
         SalesOrderDto orderDto = usecases.ApplySalesOrder(orderUID);

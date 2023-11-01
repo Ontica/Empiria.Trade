@@ -130,13 +130,5 @@ namespace Empiria.Trade.Sales.Adapters {
 
   } // class SearchOrderFields
 
-  public class OrderField {
-
-    public string OrderUID {
-      get; set;
-    } = string.Empty;
-
-
-  } //OrderField
-
+  
 } // namespace Empiria.Trade.Sales.Adapters
