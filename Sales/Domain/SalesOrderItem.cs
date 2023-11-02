@@ -28,8 +28,8 @@ namespace Empiria.Trade.Sales {
       //no-op
     }
 
-    public SalesOrderItem(SalesOrderItemsFields fields, int customerListPriceNumber) {
-      LoadOrderItem(fields, customerListPriceNumber);
+    public SalesOrderItem(SalesOrderItemsFields fields, FixedList<VendorPrices> pricesList) {
+      LoadOrderItem(fields, pricesList);
     }
 
     #endregion
@@ -41,14 +41,14 @@ namespace Empiria.Trade.Sales {
 
     #region Public methods
 
-    internal void LoadOrderItem(SalesOrderItemsFields fields, int priceListNumber) {
-          
+    internal void LoadOrderItem(SalesOrderItemsFields fields, FixedList<VendorPrices> prices) {
+      
       this.OrderItemTypeId = 1045;
       this.VendorProduct = fields.GetVendorProduct();
-      this.ProductPriceId = GetProductPriceId(VendorProduct.Id, priceListNumber);
-      this.PriceListNumber = priceListNumber;
+      this.PriceListNumber = GetPriceListNumber(prices);
+      this.ProductPriceId = GetProductPriceId(VendorProduct.Id);      
       this.Quantity = fields.Quantity;
-      this.BasePrice = GetProductPrice(VendorProduct.Id, priceListNumber);
+      this.BasePrice = GetProductPrice(VendorProduct.Id);
       this.SalesPrice = (this.Quantity * this.BasePrice); 
       this.Discount = fields.AdditionalDiscount;
       this.Shipment = fields.Shipment;
@@ -56,6 +56,12 @@ namespace Empiria.Trade.Sales {
       this.Total = (this.Quantity * this.BasePrice) + TaxesIVA ; //calcular
       this.Notes = String.IsNullOrEmpty(fields.Notes) ? String.Empty : fields.Notes;
 
+    }
+
+    private int GetPriceListNumber(FixedList<VendorPrices> vendorPrices) {
+      var vendorPrice = vendorPrices.Find(r => r.VendorId == this.VendorProduct.Vendor.Id);
+
+      return vendorPrice.PriceListId;
     }
 
     public static void SaveSalesOrderItems(FixedList<SalesOrderItem> orderItems, int orderId) {
@@ -75,14 +81,14 @@ namespace Empiria.Trade.Sales {
       return SalesOrderItemsData.GetOrderItems(orderId);
     }
 
-    private int GetProductPriceId(int vendorProductId, int customerPriceListNumber) {
-     var productPriceRow =  SalesOrderItemsData.GetProductPrice(vendorProductId, customerPriceListNumber);
+    private int GetProductPriceId(int vendorProductId) {
+     var productPriceRow =  SalesOrderItemsData.GetProductPrice(vendorProductId, this.PriceListNumber);
 
       return Convert.ToInt32(productPriceRow[0]);
     }
 
-    private decimal GetProductPrice(int vendorProductId, int customerPriceListNumber) {
-      var productPriceRow = SalesOrderItemsData.GetProductPrice(vendorProductId, customerPriceListNumber);
+    private decimal GetProductPrice(int vendorProductId) {
+      var productPriceRow = SalesOrderItemsData.GetProductPrice(vendorProductId, this.PriceListNumber);
 
       return Convert.ToDecimal(productPriceRow[1]);
     }
@@ -91,6 +97,8 @@ namespace Empiria.Trade.Sales {
       var subtotal = this.Quantity * this.BasePrice;
       return subtotal * 0.16m;
     }
+
+   
 
     #endregion Public methods
 

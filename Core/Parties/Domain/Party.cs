@@ -145,20 +145,6 @@ namespace Empiria.Trade.Core {
 
   } // internal class Party
 
-  public class PartyExtData {
-
-    public int InternalStatus {
-      get; set;
-    }
-
-    public string FromDatabase {
-      get; set;
-    } = string.Empty;
-
-    public int PriceListId {
-      get; set;
-    } 
-
-  } // class ExtData
+ 
 
 } // namespace Empiria.Trade.Core.Domain

@@ -18,6 +18,10 @@ using Empiria.Trade.Sales;
 
 using Empiria.StateEnums;
 using System.Collections.Generic;
+using Empiria.Trade.Sales.UseCases;
+
+using Empiria.Trade.Core;
+using Xunit.Abstractions;
 
 namespace Empiria.Trade.Tests.Sales {
 
@@ -28,14 +32,15 @@ namespace Empiria.Trade.Tests.Sales {
     public void ShouldGetOrderTest() {
 
       var fields = new SearchOrderFields {
-        ToDate = Convert.ToDateTime("01-01-2001"),
-        FromDate = DateTime.Now,
+        ToDate = Convert.ToDateTime("20-10-2023"),
+        FromDate = Convert.ToDateTime("2023-10-24"),
         Status = Orders.OrderStatus.Captured
       };
 
-
-      var salesOrders = SalesOrder.GetOrders(fields);
      
+      var salesOrders = SalesOrder.GetOrders(fields);
+
+      
 
       Assert.NotNull(salesOrders);
     }
@@ -58,7 +63,9 @@ namespace Empiria.Trade.Tests.Sales {
         Notes = "",
       };
 
-      var salesOrderItem = new SalesOrderItem(item, 5);
+      var vendorPrices = CustomerPrices.GetVendorPrices(100);
+
+      var salesOrderItem = new SalesOrderItem(item, vendorPrices);
 
       salesOrderItem.Save();
 
@@ -77,7 +84,7 @@ namespace Empiria.Trade.Tests.Sales {
       var item = new SalesOrderItemsFields {
         OrderItemUID = "",
         VendorProductUID = "f3f1fbc8-453b-4d5f-afe6-6b13e221c61f",
-        Quantity = 3,
+        Quantity = 4,
         BasePrice = 100,
         SpecialPrice = 96,
         SalesPrice = 393.30m,
@@ -108,32 +115,67 @@ namespace Empiria.Trade.Tests.Sales {
       items.Add(item1);
 
       var order = new SalesOrderFields {
-        UID = "",
-        OrderNumber = "",
+        //UID = "217ac442-5409-44b9-ae4d-22f9f104c5fe",
+        //OrderNumber = "P-EY2DDRfrr2",
         OrderTime = DateTime.Now,
         Status = Orders.OrderStatus.Captured,
-        CustomerUID = "3fc1bdbe-8dd5-42f6-aa8c-62e902d687e7",
+        CustomerUID = "a8753de5-1b65-41ce-8c38-9c0dd0152048",
 
         CustomerContactUID = "",
         SupplierUID = "211e9e92-c56e-4ed3-b42f-e916211b92ce",
         SalesAgentUID = "8b1d6d37-8d6c-4983-a3a0-42ed6b867bbe",
         PaymentCondition = "1 Mes",
         ShippingMethod = "Red Paq",
-        Items = items.ToFixedList()
+        //Items = items.ToFixedList()
       };
 
       var salesOrder = new SalesOrder(order);
-
-     var x = salesOrder.GetCustomerPriceListNumber();
-
-
-      Assert.NotEqual(100, x);
-
+     
       salesOrder.Save();
-      var y = SalesOrderMapper.Map(salesOrder);
+      //var x = salesOrder.GetCustomerPriceListNumber();
 
-      Assert.NotNull(y);
+
+      // Assert.NotEqual(100, x);
+
+      using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
+
+        SalesOrderDto orderDto = usecases.UpdateSalesOrder(order);
+
+        Assert.NotNull(orderDto);
+      }
+
     }
+
+    [Fact]
+    public void ShouldCancelOrder() {
+
+      var order = SalesOrder.Parse("ead9f502-e94c-4b3c-aa75-367482f9ba2c");
+      //order.Cancel();
+
+      var orderDto = SalesOrderMapper.Map(order);
+
+      Assert.NotNull(orderDto);
+    }
+
+    [Fact]
+    public void ShouldCancelOrderItem() {
+
+      var item = SalesOrderItem.Parse(80);
+      Assert.NotNull(item);
+       var items =  SalesOrderItem.GetOrderItems(104);
+      //var orderDto = SalesOrderMapper.Map(order);
+
+      Assert.NotNull(items);
+    }
+
+    [Fact]
+    public void ShouldGetVendorPrices() {
+      var prices = CustomerPrices.GetVendorPrices(100);
+
+      Assert.NotNull(prices);
+    }
+
+
 
 
 

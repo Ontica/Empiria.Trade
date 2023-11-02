@@ -113,11 +113,13 @@ namespace Empiria.Trade.Sales {
       return salesOrders.ToFixedList<SalesOrder>();
     }
 
-    public int GetCustomerPriceListNumber() {
+    public FixedList<VendorPrices> GetCustomerPriceList() {
+     var pricesList = CustomerPrices.GetVendorPrices(this.Customer.Id);
 
-      var ExtData = JsonConvert.DeserializeObject<PartyExtData>(this.Customer.ExtData);
-      return ExtData.PriceListId;
+      return pricesList;
     }
+
+   
 
     internal void Update(SalesOrderFields fields) {
       
@@ -160,10 +162,10 @@ namespace Empiria.Trade.Sales {
     private FixedList<SalesOrderItem> LoadSalesOrderItems(FixedList<SalesOrderItemsFields> orderItemsFields) {
       List<SalesOrderItem> orderItems = new List<SalesOrderItem>();
 
-      int priceListNumber = GetCustomerPriceListNumber();
+     var priceLists = GetCustomerPriceList();
       
       foreach (SalesOrderItemsFields itemFields in orderItemsFields) {
-        var saleOrderItem = new SalesOrderItem(itemFields, priceListNumber);
+        var saleOrderItem = new SalesOrderItem(itemFields, priceLists);
         orderItems.Add(saleOrderItem);
       }
      
