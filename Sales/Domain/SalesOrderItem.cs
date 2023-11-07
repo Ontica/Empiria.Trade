@@ -13,9 +13,7 @@ using Empiria.Trade.Core;
 using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Sales.Data;
 
-
 using Empiria.Trade.Orders;
-using Empiria.DataTypes;
 
 namespace Empiria.Trade.Sales {
 
@@ -28,8 +26,9 @@ namespace Empiria.Trade.Sales {
       //no-op
     }
 
-    public SalesOrderItem(SalesOrderItemsFields fields, FixedList<VendorPrices> pricesList) {
-      LoadOrderItem(fields, pricesList);
+    public SalesOrderItem(SalesOrder salesOrder, SalesOrderItemsFields fields) {
+      this.Order = salesOrder;
+      LoadOrderItem(fields);
     }
 
     #endregion
@@ -41,21 +40,23 @@ namespace Empiria.Trade.Sales {
 
     #region Public methods
 
-    internal void LoadOrderItem(SalesOrderItemsFields fields, FixedList<VendorPrices> prices) {
-      
+    internal void LoadOrderItem(SalesOrderItemsFields fields) {
+
+      FixedList<VendorPrices> prices = GetCustomerPriceList();
+
       this.OrderItemTypeId = 1045;
       this.VendorProduct = fields.GetVendorProduct();
       this.PriceListNumber = GetPriceListNumber(prices);
-      this.ProductPriceId = GetProductPriceId(VendorProduct.Id);      
+      this.ProductPriceId = GetProductPriceId(VendorProduct.Id);
       this.Quantity = fields.Quantity;
       this.BasePrice = GetProductPrice(VendorProduct.Id);
-      this.SalesPrice = (this.Quantity * this.BasePrice); 
-      this.Discount = fields.AdditionalDiscount;
+      this.SalesPrice = (this.Quantity * this.BasePrice);
+      this.Discount = SalesDiscount.Apply(VendorProduct, Order);
+      this.AdditionalDiscount = fields.AdditionalDiscount;
       this.Shipment = fields.Shipment;
-      this.TaxesIVA = GetTaxesIva(); //calcular
-      this.Total = (this.Quantity * this.BasePrice) + TaxesIVA ; //calcular
+      this.TaxesIVA = GetTaxesIva();
+      this.Total = (this.Quantity * this.BasePrice) + TaxesIVA;
       this.Notes = String.IsNullOrEmpty(fields.Notes) ? String.Empty : fields.Notes;
-
     }
 
     private int GetPriceListNumber(FixedList<VendorPrices> vendorPrices) {
@@ -66,14 +67,13 @@ namespace Empiria.Trade.Sales {
 
     public static void SaveSalesOrderItems(FixedList<SalesOrderItem> orderItems, int orderId) {
       foreach (SalesOrderItem orderItem in orderItems) {
-        orderItem.OrderId = orderId;
+        orderItem.Order = Order.Parse(orderId);
         orderItem.Save();
       }
 
     }
 
     protected override void OnSave() {
-      OrderId = this.OrderId;
       SalesOrderItemsData.Write(this);
     }
 
@@ -98,7 +98,12 @@ namespace Empiria.Trade.Sales {
       return subtotal * 0.16m;
     }
 
-   
+
+    public FixedList<VendorPrices> GetCustomerPriceList() {
+      var pricesList = CustomerPrices.GetVendorPrices(this.Order.Customer.Id);
+
+      return pricesList;
+    }
 
     #endregion Public methods
 

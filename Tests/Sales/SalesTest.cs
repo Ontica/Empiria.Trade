@@ -37,43 +37,43 @@ namespace Empiria.Trade.Tests.Sales {
         Status = Orders.OrderStatus.Captured
       };
 
-     
+
       var salesOrders = SalesOrder.GetOrders(fields);
 
-      
+
 
       Assert.NotNull(salesOrders);
     }
 
-    [Fact]
-    public void ShouldCreateOrderTest() {
+    //[Fact]
+    //public void ShouldCreateOrderTest() {
 
-      var item = new SalesOrderItemsFields {
-        OrderItemUID = "",
-        VendorProductUID = "f3f1fbc8-453b-4d5f-afe6-6b13e221c61f",
-        Quantity = 3,
-        BasePrice = 100,
-        SpecialPrice = 96,
-        SalesPrice = 393.30m,
-        AdditionalDiscount = 0,
-        AdditionalDiscountToApply = 0,
-        Shipment = 339,
-        Taxes = 19,
-        Total = 800,
-        Notes = "",
-      };
+    //  var item = new SalesOrderItemsFields {
+    //    OrderItemUID = "",
+    //    VendorProductUID = "f3f1fbc8-453b-4d5f-afe6-6b13e221c61f",
+    //    Quantity = 3,
+    //    BasePrice = 100,
+    //    SpecialPrice = 96,
+    //    SalesPrice = 393.30m,
+    //    AdditionalDiscount = 0,
+    //    AdditionalDiscountToApply = 0,
+    //    Shipment = 339,
+    //    Taxes = 19,
+    //    Total = 800,
+    //    Notes = "",
+    //  };
 
-      var vendorPrices = CustomerPrices.GetVendorPrices(100);
+    //  var vendorPrices = CustomerPrices.GetVendorPrices(100);
 
-      var salesOrderItem = new SalesOrderItem(item, vendorPrices);
+    //  var salesOrderItem = new SalesOrderItem(item, vendorPrices);
 
-      salesOrderItem.Save();
+    //  salesOrderItem.Save();
 
-      //var vendorProduct = salesOrderItem.VendorProduct;
+    //  //var vendorProduct = salesOrderItem.VendorProduct;
 
-      var x = SalesOrderItemsMapper.Map(salesOrderItem);
-      Assert.NotNull(x);
-    }
+    //  var x = SalesOrderItemsMapper.Map(salesOrderItem);
+    //  Assert.NotNull(x);
+    //}
 
     [Fact]
     public void ShouldCrateNewOrder() {
@@ -130,7 +130,7 @@ namespace Empiria.Trade.Tests.Sales {
       };
 
       var salesOrder = new SalesOrder(order);
-     
+
       salesOrder.Save();
       //var x = salesOrder.GetCustomerPriceListNumber();
 

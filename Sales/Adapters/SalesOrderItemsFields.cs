@@ -8,7 +8,9 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-using Empiria.StateEnums;
+
+using Empiria.Trade.Orders;
+
 using Empiria.Trade.Products;
 
 namespace Empiria.Trade.Sales.Adapters {
@@ -17,7 +19,6 @@ namespace Empiria.Trade.Sales.Adapters {
   public class SalesOrderItemsFields {
 
     #region Public properties
-
 
     public string OrderItemUID {
       get; set;
@@ -50,11 +51,11 @@ namespace Empiria.Trade.Sales.Adapters {
     public decimal AdditionalDiscountToApply {
       get; set;
     } = 0;
-        
+
     public decimal Shipment {
       get; set;
     }
-        
+
     public decimal Taxes {
       get; set;
     }

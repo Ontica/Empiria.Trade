@@ -1,8 +1,8 @@
 ﻿/* Empiria Trade *********************************************************************************************
 *                                                                                                            *
-*  Module   : Product Management                         Component : Use cases Layer                         *
+*  Module   : Sales Order Management                     Component : Use cases Layer                         *
 *  Assembly : Empiria.Trade.Orders.dll                   Pattern   : Use case interactor class               *
-*  Type     : ProductsUseCases                           License   : Please read LICENSE.txt file            *
+*  Type     : SalesOrderUseCases                         License   : Please read LICENSE.txt file            *
 *                                                                                                            *
 *  Summary  : Use cases used to management Products.                                                         *
 *                                                                                                            *
@@ -27,13 +27,10 @@ namespace Empiria.Trade.Sales.UseCases {
     static public SalesOrderUseCases UseCaseInteractor() {
       return UseCase.CreateInstance<SalesOrderUseCases>();
     }
-        
 
     #endregion Constructors and parsers
 
-
     #region Use cases
-
 
     public SalesOrderDto ProcessSalesOrder(SalesOrderFields fields) {
       Assertion.Require(fields, "fields");
@@ -61,14 +58,14 @@ namespace Empiria.Trade.Sales.UseCases {
       var orderDto = SalesOrderMapper.Map(order);
 
       return orderDto;
-    } 
+    }
 
     public FixedList<SalesOrderDto> GetOrders(SearchOrderFields fields) {
       Assertion.Require(fields, "fields");
 
       FixedList<SalesOrder> salesOrdersList = SalesOrder.GetOrders(fields);
-     
-     return SalesOrderMapper.Map(salesOrdersList);     
+
+     return SalesOrderMapper.Map(salesOrdersList);
     }
 
     public SalesOrderDto CancelSalesOrder(string orderUID) {
@@ -109,7 +106,6 @@ namespace Empiria.Trade.Sales.UseCases {
 
     #endregion Use cases
 
-  } // class OrderUseCases
+  } // class SalesOrderUseCases
 
 } //namespace Empiria.Trade.Sales.UseCases
-

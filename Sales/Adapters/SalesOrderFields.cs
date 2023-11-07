@@ -1,21 +1,20 @@
 ﻿/* Empiria Trade *********************************************************************************************
 *                                                                                                            *
-*  Module   : Product Management                         Component : Interface adapters                      *
-*  Assembly : Empiria.Trade.Products.dll                 Pattern   : Information Holder                      *
-*  Type     : OrderFields                                License   : Please read LICENSE.txt file            *
+*  Module   : Sales Order Management                     Component : Interface adapters                      *
+*  Assembly : Empiria.Trade.Sales.dll                    Pattern   : Information Holder                      *
+*  Type     : SalesOrderFields                           License   : Please read LICENSE.txt file            *
 *                                                                                                            *
-*  Summary  : Holds a order attributes list.                                                               *
+*  Summary  : Input DTO for sales orders.                                                                    *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-
-using Empiria.StateEnums;
 
 using Empiria.Trade.Core;
 using Empiria.Trade.Orders;
 
 namespace Empiria.Trade.Sales.Adapters {
 
+  /// <summary>Input DTO for sales orders.</summary>
   public class SalesOrderFields {
 
     #region Constructors and parsers
@@ -86,29 +85,22 @@ namespace Empiria.Trade.Sales.Adapters {
 
     #region Internal methods
 
-    public Party GetCustomer() {
+    internal Party GetCustomer() {
       return Party.Parse(this.CustomerUID);
     }
 
-
-    public Party GetSalesAgent() {
+    internal Party GetSalesAgent() {
       return Party.Parse(this.SalesAgentUID);
     }
 
-    public Party GetSupplier() {
+    internal  Party GetSupplier() {
       return Party.Parse(this.SupplierUID);
-
     }
-       
+
     #endregion Internal methods
 
-    #region Private methods
+  }  // class SalesOrderFields
 
-
-    #endregion Private methods
-
-
-  }  //  internal class OrderFields
 
   public class SearchOrderFields {
 
@@ -118,11 +110,11 @@ namespace Empiria.Trade.Sales.Adapters {
 
     public DateTime FromDate {
       get; set;
-    } = Convert.ToDateTime("01-01-2020");
+    } = new DateTime(2020, 1, 1);
 
     public DateTime ToDate {
       get; set;
-    } = Convert.ToDateTime("01-01-2049");
+    } = new DateTime(2049, 12, 31);
 
     public OrderStatus Status {
       get; set;
@@ -130,5 +122,4 @@ namespace Empiria.Trade.Sales.Adapters {
 
   } // class SearchOrderFields
 
-  
 } // namespace Empiria.Trade.Sales.Adapters

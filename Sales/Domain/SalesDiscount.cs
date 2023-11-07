@@ -9,6 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Collections.Generic;
+using Empiria.Trade.Orders;
 using Empiria.Trade.Products;
 
 using Empiria.Trade.Sales.Data;
@@ -48,7 +49,7 @@ namespace Empiria.Trade.Sales {
     }
 
     [DataField("DiscountAppliedListId")]
-    public string ApplyedId {
+    public string AppliedId {
       get; private set;
     } = String.Empty;
 
@@ -68,7 +69,7 @@ namespace Empiria.Trade.Sales {
     }
 
     [DataField("AuthorizedById")]
-    public int AuthorizadById {
+    public int AuthorizedById {
       get; private set;
     }
 
@@ -76,6 +77,7 @@ namespace Empiria.Trade.Sales {
     public string ExtData {
       get; private set;
     } = string.Empty;
+
 
     [DataField("DiscountStatus", Default ='A')]
     public char Status {
@@ -98,7 +100,7 @@ namespace Empiria.Trade.Sales {
       return GetDiscount(2, subGroupId, orderDate);
     }
 
-    static public FixedList<SalesDiscount> GetDiscountByPolitics(int customerId, DateTime orderDate) {
+    static public FixedList<SalesDiscount> GetDiscountByCustomer(int customerId, DateTime orderDate) {
       return GetDiscount(1, customerId, orderDate);
     }
 
@@ -106,20 +108,21 @@ namespace Empiria.Trade.Sales {
       var discountsList = new List<SalesDiscount>();
 
       var discountsByGroup = GetDiscountByGroup(vendor.ProductFields.ProductGroup.Id, orderDate);
-      var discountsBySubGrop = GetDiscountBySubGroup(vendor.ProductFields.ProductSubgroup.Id, orderDate);
+      var discountsBySubGroup = GetDiscountBySubGroup(vendor.ProductFields.ProductSubgroup.Id, orderDate);
       var discountsByProduct = GetDiscountByProduct(vendor.ProductFields.ProductId, orderDate);
 
       discountsList.AddRange(discountsByGroup);
-      discountsList.AddRange(discountsBySubGrop);
+      discountsList.AddRange(discountsBySubGroup);
       discountsList.AddRange(discountsByProduct);
 
       return discountsList.ToFixedList();
-      
+
     }
 
     #endregion Public methods
 
     #region Private methods
+
     static private FixedList<SalesDiscount> GetDiscount(int DiscountTypeId, int targetId, DateTime orderDate) {
 
       FixedList<SalesDiscount> discounts = SalesDiscountData.GetSalesDiscounts(DiscountTypeId, targetId, orderDate);
@@ -127,9 +130,11 @@ namespace Empiria.Trade.Sales {
       return discounts;
     }
 
-
+    internal static decimal Apply(VendorProduct vendorProduct, Order order) {
+      throw new NotImplementedException();
+    }
 
     #endregion Privare methods
-  } // class SalesDiscount 
+  } // class SalesDiscount
 
 } // namespace Empiria.Trade.Sales

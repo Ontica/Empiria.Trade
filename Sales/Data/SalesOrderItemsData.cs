@@ -11,15 +11,15 @@ using System;
 using System.Data;
 using Empiria.Data;
 
-using Empiria.Trade.Orders;
-
 namespace Empiria.Trade.Sales.Data {
 
   /// <summary>Provides data layer for OrderItems. </summary>
   static internal class SalesOrderItemsData {
 
     internal static FixedList<SalesOrderItem> GetOrderItems(int orderId) {
-      string sql = $"SELECT * FROM TRDOrderItems WHERE orderId = {orderId} and OrderItemStatus <> 'X'";
+      string sql = $"SELECT * FROM TRDOrderItems " +
+                   $"WHERE OrderId = {orderId} and OrderItemStatus <> 'X'";
+
       var op = DataOperation.Parse(sql);
 
       return DataReader.GetFixedList<SalesOrderItem>(op);
@@ -28,14 +28,18 @@ namespace Empiria.Trade.Sales.Data {
     internal static DataRow GetProductPrice(int vendorProductId, int customerPriceListNumber) {
 
       string pricelistNumber = "PriceList" + customerPriceListNumber.ToString();
-      var sql = $"Select ProductPriceId, {pricelistNumber} From TRDProductPrices where VendorProductId = {vendorProductId}";
+
+      var sql = $"SELECT ProductPriceId, {pricelistNumber} " +
+                $"FROM TRDProductPrices " +
+                $"WHERE VendorProductId = {vendorProductId}";
 
       var op = DataOperation.Parse(sql);
-      return Empiria.Data.DataReader.GetDataRow(op);
+
+      return DataReader.GetDataRow(op);
     }
 
     static internal void Write(SalesOrderItem o) {
-      var op = DataOperation.Parse("writeOrderItems", o.Id, o.UID, o.OrderId, o.OrderItemTypeId,o.VendorProduct.Id,
+      var op = DataOperation.Parse("writeOrderItems", o.Id, o.UID, o.Order.Id, o.OrderItemTypeId,o.VendorProduct.Id,
                                    o.Quantity, o.ProductPriceId, o.PriceListNumber, o.BasePrice,
                                   o.SalesPrice, o.Discount, o.Shipment, o.TaxesIVA,
                                   o.TaxesIEPS, o.Total, o.Notes, o.Status);
@@ -43,7 +47,7 @@ namespace Empiria.Trade.Sales.Data {
     }
 
     static internal void CancelOrderItems(int orderId) {
-      var sql = $"UPDATE TRDOrderItems SET OrderItemStatus  = 'X' WHERE orderId = {orderId}";
+      var sql = $"UPDATE TRDOrderItems SET OrderItemStatus = 'X' WHERE orderId = {orderId}";
 
       var op = DataOperation.Parse(sql);
 

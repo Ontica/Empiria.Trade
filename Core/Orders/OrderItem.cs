@@ -11,8 +11,6 @@ using System;
 
 using Empiria.StateEnums;
 
-using Empiria.Trade.Core;
-
 using Empiria.Trade.Products;
 
 namespace Empiria.Trade.Orders {
@@ -40,7 +38,7 @@ namespace Empiria.Trade.Orders {
 
 
     [DataField("OrderId")]
-    public int OrderId {
+    public Order Order {
       get;
       protected set;
     }
@@ -73,7 +71,7 @@ namespace Empiria.Trade.Orders {
     public int PriceListNumber {
       get;
       protected set;
-    }   
+    }
 
     [DataField("BasePrice")]
     public decimal BasePrice {
@@ -89,6 +87,12 @@ namespace Empiria.Trade.Orders {
 
     [DataField("Discount")]
     public decimal Discount {
+      get;
+      protected set;
+    }
+
+    [DataField("AdditionalDiscount")]
+    public decimal AdditionalDiscount {
       get;
       protected set;
     }

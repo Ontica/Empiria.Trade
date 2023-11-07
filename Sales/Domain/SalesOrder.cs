@@ -1,24 +1,22 @@
 ﻿/* Empiria Trade *********************************************************************************************
 *                                                                                                            *
-*  Module   : Order Management                           Component : Domain Layer                            *
-*  Assembly : Empiria.Trade.Order.dll                    Pattern   : Partitioned Type / Information Holder   *
-*  Type     : Order                                      License   : Please read LICENSE.txt file            *
+*  Module   : Sales Order Management                     Component : Domain Layer                            *
+*  Assembly : Empiria.Trade.Sales.dll                    Pattern   : Partitioned Type / Information Holder   *
+*  Type     : SalesOrder                                 License   : Please read LICENSE.txt file            *
 *                                                                                                            *
-*  Summary  : Represents a Order.                                                                            *
+*  Summary  : Represents a sales order.                                                                      *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Collections.Generic;
+
 using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Sales.Data;
 
-using Newtonsoft.Json;
-using Empiria.Trade.Core;
-
 namespace Empiria.Trade.Sales {
 
-  /// <summary>Represent Order</summary>
+  /// <summary>Represents a sales order.</summary>
   public class SalesOrder : Order {
 
     #region Constructors and parsers
@@ -37,6 +35,19 @@ namespace Empiria.Trade.Sales {
 
     static public new SalesOrder Parse(string uid) {
       return BaseObject.ParseKey<SalesOrder>(uid);
+    }
+
+    static public FixedList<SalesOrder> GetOrders(SearchOrderFields fields) {
+      var orders = SalesOrderData.GetSalesOrders(fields);
+      List<SalesOrder> salesOrders = new List<SalesOrder>();
+
+      foreach (var order in orders) {
+        order.SalesOrderItems = SalesOrderItem.GetOrderItems(order.Id);
+        SetOrderTotals(order);
+        salesOrders.Add(order);
+      }
+
+      return salesOrders.ToFixedList<SalesOrder>();
     }
 
     #endregion Constructors and parsers
@@ -71,22 +82,20 @@ namespace Empiria.Trade.Sales {
     public decimal OrderTotal {
       get; private set;
     } = 0m;
-       
+
 
     #endregion
-
 
     #region Public methods
 
     protected override void OnSave() {
       if (IsNew) {
-        OrderNumber = "P-" + EmpiriaString.BuildRandomString(10);
+        OrderNumber = "P-" + EmpiriaString.BuildRandomString(10).ToUpperInvariant();
         OrderTime = DateTime.Now;
         Status = OrderStatus.Captured;
       }
       SalesOrderData.Write(this);
       SalesOrderItem.SaveSalesOrderItems(this.SalesOrderItems, this.Id);
-      
     }
 
     public void Apply() {
@@ -95,34 +104,11 @@ namespace Empiria.Trade.Sales {
       SalesOrderData.Write(this);
       this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id);
 
-      GetOrderTotals();
+      SetOrderTotals();
     }
-
-
-
-    public static FixedList<SalesOrder> GetOrders(SearchOrderFields fields) {
-      var orders = SalesOrderData.GetSalesOrders(fields);
-      List<SalesOrder> salesOrders = new List<SalesOrder>();
-
-      foreach (var order in orders) {
-        order.SalesOrderItems = SalesOrderItem.GetOrderItems(order.Id);
-        GetOrderTotals(order);
-        salesOrders.Add(order);
-      }
-
-      return salesOrders.ToFixedList<SalesOrder>();
-    }
-
-    public FixedList<VendorPrices> GetCustomerPriceList() {
-     var pricesList = CustomerPrices.GetVendorPrices(this.Customer.Id);
-
-      return pricesList;
-    }
-
-   
 
     internal void Update(SalesOrderFields fields) {
-      
+
       this.OrderTypeId = 1025;
       this.OrderTime = fields.OrderTime;
       this.Customer = fields.GetCustomer();
@@ -132,23 +118,23 @@ namespace Empiria.Trade.Sales {
       this.Status = fields.Status;
       this.ShippingMethod = fields.ShippingMethod;
       this.PaymentCondition = fields.PaymentCondition;
-      this.SalesOrderItems =  LoadSalesOrderItems(fields.Items);
-      GetOrderTotals();
+      this.SalesOrderItems = LoadSalesOrderItems(fields.Items);
 
+      SetOrderTotals();
     }
 
     public void Cancel() {
 
       Status = OrderStatus.Cancelled;
-      
+
       SalesOrderData.Write(this);
       SalesOrderItemsData.CancelOrderItems(this.Id);
       this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id);
 
-      GetOrderTotals();
+      SetOrderTotals();
     }
 
-    public void Modify(SalesOrderFields fields) {      
+    public void Modify(SalesOrderFields fields) {
       SalesOrderItemsData.CancelOrderItems(this.Id);
       Update(fields);
 
@@ -157,24 +143,22 @@ namespace Empiria.Trade.Sales {
 
     #endregion Public methods
 
-    #region Private methods
+    #region Helpers
 
     private FixedList<SalesOrderItem> LoadSalesOrderItems(FixedList<SalesOrderItemsFields> orderItemsFields) {
       List<SalesOrderItem> orderItems = new List<SalesOrderItem>();
 
-     var priceLists = GetCustomerPriceList();
-      
       foreach (SalesOrderItemsFields itemFields in orderItemsFields) {
-        var saleOrderItem = new SalesOrderItem(itemFields, priceLists);
+        var saleOrderItem = new SalesOrderItem(this, itemFields);
+
         orderItems.Add(saleOrderItem);
       }
-     
-      return orderItems.ToFixedList<SalesOrderItem>();
+
+      return orderItems.ToFixedList();
     }
 
-    private void GetOrderTotals() {
 
-      InitializeValues();
+    private void SetOrderTotals() {
 
       foreach (SalesOrderItem item in this.SalesOrderItems) {
         this.ItemsCount++;
@@ -187,7 +171,7 @@ namespace Empiria.Trade.Sales {
 
     }
 
-    private static void GetOrderTotals(SalesOrder  order) {
+    private static void SetOrderTotals(SalesOrder order) {
 
       foreach (SalesOrderItem item in order.SalesOrderItems) {
         order.ItemsCount++;
@@ -200,19 +184,8 @@ namespace Empiria.Trade.Sales {
 
     }
 
-    private  void InitializeValues() {
-      this.ItemsCount = 0;
-      this.ItemsTotal = 0;
-      this.Shipment = 0;
-      this.Discount = 0;
-      this.Taxes = 0;
-      this.OrderTotal = 0;
-    }
-
-    #endregion
+    #endregion Helpers
 
   }  //  class SalesOrder
 
-
-
-  }  // namespace Empiria.Trade.Sales
+}  // namespace Empiria.Trade.Sales
