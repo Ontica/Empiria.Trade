@@ -23,6 +23,8 @@ namespace Empiria.Trade.Orders {
       //no-op
     }
 
+    static public Order Empty => BaseObject.ParseEmpty<Order>();
+
     static public Order Parse(int id) {
       return BaseObject.ParseId<Order>(id);
     }

@@ -33,8 +33,11 @@ namespace Empiria.Trade.Sales {
 
     #endregion
 
-    #region Public properties
+    #region Private properties
 
+    private decimal SubTotal {
+      get; set;
+    } = 0;
 
     #endregion
 
@@ -50,19 +53,26 @@ namespace Empiria.Trade.Sales {
       this.ProductPriceId = GetProductPriceId(VendorProduct.Id);
       this.Quantity = fields.Quantity;
       this.BasePrice = GetProductPrice(VendorProduct.Id);
-      this.SalesPrice = (this.Quantity * this.BasePrice);
-      this.Discount = SalesDiscount.Apply(VendorProduct, Order);
-      this.AdditionalDiscount = fields.AdditionalDiscount;
+      this.SalesPrice = GetSalesPrice();
+      this.Discount = GetDiscount(fields.AdditionalDiscount);
+      this.SubTotal = this.SalesPrice - Discount;
+      this.AdditionalDiscount = GetAdditionalDiscount();
       this.Shipment = fields.Shipment;
       this.TaxesIVA = GetTaxesIva();
-      this.Total = (this.Quantity * this.BasePrice) + TaxesIVA;
+      this.Total = GetTotal();
       this.Notes = String.IsNullOrEmpty(fields.Notes) ? String.Empty : fields.Notes;
     }
+
+   
 
     private int GetPriceListNumber(FixedList<VendorPrices> vendorPrices) {
       var vendorPrice = vendorPrices.Find(r => r.VendorId == this.VendorProduct.Vendor.Id);
 
       return vendorPrice.PriceListId;
+    }
+
+    private decimal GetSalesPrice() {
+      return (this.Quantity * this.BasePrice); 
     }
 
     public static void SaveSalesOrderItems(FixedList<SalesOrderItem> orderItems, int orderId) {
@@ -94,17 +104,39 @@ namespace Empiria.Trade.Sales {
     }
 
     private decimal GetTaxesIva() {
-      var subtotal = this.Quantity * this.BasePrice;
-      return subtotal * 0.16m;
+      return this.SubTotal * 0.16m;
+    }
+
+    private decimal GetTotal() {
+      return this.SubTotal + this.TaxesIVA;
     }
 
 
-    public FixedList<VendorPrices> GetCustomerPriceList() {
+    private FixedList<VendorPrices> GetCustomerPriceList() {
       var pricesList = CustomerPrices.GetVendorPrices(this.Order.Customer.Id);
 
       return pricesList;
     }
 
+    private decimal GetDiscount(decimal discount) {
+      return (this.SalesPrice * discount) / 100;
+    }
+
+    private decimal GetAdditionalDiscount() {
+      
+      decimal additionalDiscount = 0;
+
+      var discounts = SalesDiscount.GetDiscountByVendor(this.VendorProduct, this.Order.OrderTime);
+
+      foreach (SalesDiscount discount in discounts) {
+        additionalDiscount += (this.SubTotal * discount.Discount) / 100;
+        this.SubTotal = SubTotal - ((this.SubTotal * discount.Discount) / 100);
+
+      }
+
+      return additionalDiscount;
+    
+    }
     #endregion Public methods
 
   }  //namespace Empiria.Trade.Sales

@@ -41,7 +41,7 @@ namespace Empiria.Trade.Orders {
     public Order Order {
       get;
       protected set;
-    }
+    } 
 
     [DataField("OrderItemTypeId")]
     public int OrderItemTypeId {
