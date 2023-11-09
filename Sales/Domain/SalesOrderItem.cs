@@ -63,18 +63,6 @@ namespace Empiria.Trade.Sales {
       this.Total = GetTotal();
     }
 
-   
-
-    private int GetPriceListNumber(FixedList<VendorPrices> vendorPrices) {
-      var vendorPrice = vendorPrices.Find(r => r.VendorId == this.VendorProduct.Vendor.Id);
-
-      return vendorPrice.PriceListId;
-    }
-
-    private decimal GetSalesPrice() {
-      return (this.Quantity * this.BasePrice); 
-    }
-
     public static void SaveSalesOrderItems(FixedList<SalesOrderItem> orderItems, int orderId) {
       foreach (SalesOrderItem orderItem in orderItems) {
         orderItem.Order = Order.Parse(orderId);
@@ -90,6 +78,10 @@ namespace Empiria.Trade.Sales {
     public static FixedList<SalesOrderItem> GetOrderItems(int orderId) {
       return SalesOrderItemsData.GetOrderItems(orderId);
     }
+
+    #endregion Public methods
+
+    #region Private methods
 
     private int GetProductPriceId(int vendorProductId) {
      var productPriceRow =  SalesOrderItemsData.GetProductPrice(vendorProductId, this.PriceListNumber);
@@ -137,7 +129,18 @@ namespace Empiria.Trade.Sales {
       return additionalDiscount;
     
     }
-    #endregion Public methods
+
+    private int GetPriceListNumber(FixedList<VendorPrices> vendorPrices) {
+      var vendorPrice = vendorPrices.Find(r => r.VendorId == this.VendorProduct.Vendor.Id);
+
+      return vendorPrice.PriceListId;
+    }
+
+    private decimal GetSalesPrice() {
+      return (this.Quantity * this.BasePrice);
+    }
+
+    #endregion Private methods
 
   }  //namespace Empiria.Trade.Sales
 
