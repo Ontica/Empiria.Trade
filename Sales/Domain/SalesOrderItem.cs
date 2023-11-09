@@ -48,6 +48,7 @@ namespace Empiria.Trade.Sales {
       FixedList<VendorPrices> prices = GetCustomerPriceList();
 
       this.OrderItemTypeId = 1045;
+      this.Notes = String.IsNullOrEmpty(fields.Notes) ? String.Empty : fields.Notes;
       this.VendorProduct = fields.GetVendorProduct();
       this.PriceListNumber = GetPriceListNumber(prices);
       this.ProductPriceId = GetProductPriceId(VendorProduct.Id);
@@ -60,7 +61,6 @@ namespace Empiria.Trade.Sales {
       this.Shipment = fields.Shipment;
       this.TaxesIVA = GetTaxesIva();
       this.Total = GetTotal();
-      this.Notes = String.IsNullOrEmpty(fields.Notes) ? String.Empty : fields.Notes;
     }
 
    
@@ -131,7 +131,7 @@ namespace Empiria.Trade.Sales {
       foreach (SalesDiscount discount in discounts) {
         additionalDiscount += (this.SubTotal * discount.Discount) / 100;
         this.SubTotal = SubTotal - ((this.SubTotal * discount.Discount) / 100);
-
+        this.Notes += $"Tiene un descuento de: {discount.Discount} % por {discount.Description}";
       }
 
       return additionalDiscount;
