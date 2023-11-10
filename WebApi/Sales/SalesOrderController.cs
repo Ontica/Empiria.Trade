@@ -111,6 +111,18 @@ namespace Empiria.Trade.Sales.WebApi {
         
     }
 
+    [HttpGet]
+    [Route("v4/trade/sales/orders/status")]
+    public CollectionModel GetOrderStatus() {
+
+      using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
+        FixedList<String> orderStatusList = usecases.GetStatusList();
+
+        return new CollectionModel(base.Request, orderStatusList);
+      }
+
+    }
+
   } // class SalesOrderController
 
 } // namespace Empiria.Trade.Products.WebApi

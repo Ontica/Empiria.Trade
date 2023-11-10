@@ -9,7 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Collections.Generic;
-
+using System.Linq;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Sales.Data;
@@ -182,6 +182,12 @@ namespace Empiria.Trade.Sales {
         order.OrderTotal += item.Total;
       }
 
+    }
+
+    internal static FixedList<string> GetStatusList() {
+      var orderStatusList = Enum.GetNames(typeof(OrderStatus)).ToList();
+
+      return orderStatusList.ToFixedList();
     }
 
     #endregion Helpers
