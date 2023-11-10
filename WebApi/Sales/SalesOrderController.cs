@@ -123,6 +123,21 @@ namespace Empiria.Trade.Sales.WebApi {
 
     }
 
+    [HttpPost]
+    [Route("v4/trade/sales/orders/{orderUID:guid}/authorize")]
+    public SingleObjectModel AuthorizeSalesOrder([FromUri] string orderUID) {
+
+      base.RequireResource(orderUID, "orderUID");
+
+      using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
+        SalesOrderDto orderDto = usecases.AuthorizeSalesOrder(orderUID);
+
+        return new SingleObjectModel(this.Request, orderDto);
+      }
+
+    }
+
+    
   } // class SalesOrderController
 
 } // namespace Empiria.Trade.Products.WebApi

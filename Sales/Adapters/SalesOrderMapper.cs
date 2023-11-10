@@ -32,7 +32,10 @@ namespace Empiria.Trade.Sales.Adapters {
         ItemsTotal = order.ItemsTotal,
         Shipment = order.Shipment,
         Taxes = order.Taxes,
-        OrderTotal = order.OrderTotal
+        OrderTotal = order.OrderTotal,
+        AuthorizationStatus = order.AuthorizationStatus,
+        AuthorizationTime = order.AuthorizationTime,
+        AuthorizatedById = order.AuthorizatedById
       };
 
       return dto;

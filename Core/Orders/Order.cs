@@ -120,6 +120,24 @@ namespace Empiria.Trade.Orders {
       protected set;
     }
 
+    [DataField("OrderAuthorizationStatus", Default = 'E')]
+    public char AuthorizationStatus {
+      get;
+      protected set;
+    } = 'E';
+
+    [DataField("OrderAuthorizationTime")]
+    public DateTime AuthorizationTime {
+      get;
+      protected set;
+    } = DateTime.MaxValue;
+
+    [DataField("OrderAuthorizatedById")]
+    public int AuthorizatedById {
+      get;
+      protected set;
+    }
+
     #endregion Public properties
 
   }  // class Order

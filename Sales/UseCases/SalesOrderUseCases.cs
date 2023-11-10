@@ -108,6 +108,22 @@ namespace Empiria.Trade.Sales.UseCases {
       return SalesOrder.GetStatusList();
     }
 
+    public SalesOrderDto AuthorizeSalesOrder(string orderUID) {
+
+      Assertion.Require(orderUID, "orderUID");
+
+      var order = SalesOrder.Parse(orderUID);
+
+      if (order.Status != Orders.OrderStatus.Applied) {
+        Assertion.RequireFail($"It is only possible to Authorize orders in the Applied status, your order status is: {order.Status}");
+      }
+      order.Authorize();
+
+      var orderDto = SalesOrderMapper.Map(order);
+
+      return orderDto;
+    }
+
     #endregion Use cases
 
   } // class SalesOrderUseCases

@@ -85,6 +85,18 @@ namespace Empiria.Trade.Sales.Adapters {
       get; internal set;
     }
 
+    public char AuthorizationStatus {
+      get; internal set;
+    }
+
+    public DateTime AuthorizationTime {
+      get; internal set;
+    }
+        
+    public int AuthorizatedById {
+      get; internal set;
+    }
+
   } // public class OrderDto
 
 } // namespace Empiria.Trade.Sales.Adapters

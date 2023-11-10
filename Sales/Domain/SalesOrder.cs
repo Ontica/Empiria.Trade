@@ -190,6 +190,17 @@ namespace Empiria.Trade.Sales {
       return orderStatusList.ToFixedList();
     }
 
+    public void Authorize() {
+     AuthorizationStatus = 'A';
+     this.AuthorizationTime = DateTime.Now;
+     this.AuthorizatedById = 2;
+
+     SalesOrderData.Write(this);
+     this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id);
+
+     SetOrderTotals();
+    }
+
     #endregion Helpers
 
   }  //  class SalesOrder
