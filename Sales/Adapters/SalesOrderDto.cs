@@ -85,7 +85,7 @@ namespace Empiria.Trade.Sales.Adapters {
       get; internal set;
     }
 
-    public char AuthorizationStatus {
+    public AutorizationStatus AuthorizationStatus {
       get; internal set;
     }
 

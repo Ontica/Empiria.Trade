@@ -120,11 +120,11 @@ namespace Empiria.Trade.Orders {
       protected set;
     }
 
-    [DataField("OrderAuthorizationStatus", Default = 'E')]
-    public char AuthorizationStatus {
+    [DataField("OrderAuthorizationStatus", Default = AutorizationStatus.Empty)]
+    public AutorizationStatus AuthorizationStatus {
       get;
       protected set;
-    } = 'E';
+    } = AutorizationStatus.Empty;
 
     [DataField("OrderAuthorizationTime")]
     public DateTime AuthorizationTime {
@@ -150,5 +150,11 @@ namespace Empiria.Trade.Orders {
     Cancelled = 'X',
     Empty = 'E'
   } // enum OrderStatus
+
+  public enum AutorizationStatus {
+    Authorized = 'A',
+    NotAuthoried = 'F',
+    Empty = 'E'
+  } // enum AutorizationStatus
 
 }  // namespace Empiria.Trade.Orders

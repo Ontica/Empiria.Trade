@@ -191,7 +191,7 @@ namespace Empiria.Trade.Sales {
     }
 
     public void Authorize() {
-     AuthorizationStatus = 'A';
+     AuthorizationStatus = AutorizationStatus.Authorized;
      this.AuthorizationTime = DateTime.Now;
      this.AuthorizatedById = 2;
 

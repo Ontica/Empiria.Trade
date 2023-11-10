@@ -51,7 +51,7 @@ namespace Empiria.Trade.Sales.Data {
     internal static void Write(SalesOrder o) {
         var op = DataOperation.Parse("writeOrder", o.Id, o.UID, o.OrderTypeId, o.Customer.Id, o.Supplier.Id,
                                     o.SalesAgent.Id, o.OrderNumber, o.OrderTime, o.Notes,
-                                    o.Keywords, o.ExtData.ToString(), (char)o.Status, o.AuthorizationStatus, 
+                                    o.Keywords, o.ExtData.ToString(), (char)o.Status, (char)o.AuthorizationStatus, 
                                     o.AuthorizationTime, o.AuthorizatedById);
         DataWriter.Execute(op);
       }
