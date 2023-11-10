@@ -193,7 +193,7 @@ namespace Empiria.Trade.Sales {
     public void Authorize() {
      AuthorizationStatus = AutorizationStatus.Authorized;
      this.AuthorizationTime = DateTime.Now;
-     this.AuthorizatedById = 2;
+     this.AuthorizatedById = ExecutionServer.CurrentUserId;
 
      SalesOrderData.Write(this);
      this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id);
