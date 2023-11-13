@@ -104,7 +104,7 @@ namespace Empiria.Trade.Sales.UseCases {
         return orderDto;
     }
 
-    public FixedList<string> GetStatusList() {
+    public FixedList<NamedEntityDto> GetStatusList() {
       return SalesOrder.GetStatusList();
     }
 

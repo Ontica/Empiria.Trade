@@ -116,7 +116,7 @@ namespace Empiria.Trade.Sales.WebApi {
     public CollectionModel GetOrderStatus() {
 
       using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
-        FixedList<String> orderStatusList = usecases.GetStatusList();
+        FixedList<NamedEntityDto> orderStatusList = usecases.GetStatusList();
 
         return new CollectionModel(base.Request, orderStatusList);
       }

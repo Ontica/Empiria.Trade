@@ -10,9 +10,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Sales.Data;
+using Newtonsoft.Json.Linq;
 
 namespace Empiria.Trade.Sales {
 
@@ -184,10 +186,20 @@ namespace Empiria.Trade.Sales {
 
     }
 
-    internal static FixedList<string> GetStatusList() {
-      var orderStatusList = Enum.GetNames(typeof(OrderStatus)).ToList();
+    internal static FixedList<NamedEntityDto> GetStatusList() {
+     
+     var captured = new NamedEntityDto("Captured", "Capturada");
+     var applied = new NamedEntityDto("Applied", "Aplicada");
+     var closed = new NamedEntityDto("Closed", "Cerrada");
+     var cancelled = new NamedEntityDto("Cancelled", "Cancelada");
 
-      return orderStatusList.ToFixedList();
+      List<NamedEntityDto> orderSalesStatus = new List<NamedEntityDto>();
+      orderSalesStatus.Add(captured);
+      orderSalesStatus.Add(applied);
+      orderSalesStatus.Add(closed);
+      orderSalesStatus.Add(cancelled);
+
+      return orderSalesStatus.ToFixedList<NamedEntityDto>();
     }
 
     public void Authorize() {
