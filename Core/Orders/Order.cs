@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using System.ComponentModel;
 using Empiria.Json;
 using Empiria.Trade.Core;
 
@@ -145,8 +146,12 @@ namespace Empiria.Trade.Orders {
 
   public enum OrderStatus {
     Captured = 'C',
-    Applied = 'A',
-    Closed  = 'F',
+    Applied = 'A',   
+    Authorized = 'C',
+    Packed = 'P',
+    Shipping = 'S',
+    Carried = 'C',
+    Closed = 'F',
     Cancelled = 'X',
     Empty = 'E'
   } // enum OrderStatus
