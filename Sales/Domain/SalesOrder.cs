@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Sales.Data;
@@ -190,12 +191,21 @@ namespace Empiria.Trade.Sales {
      
      var captured = new NamedEntityDto("Captured", "Capturada");
      var applied = new NamedEntityDto("Applied", "Aplicada");
+     var authorized = new NamedEntityDto("Authorized", "Autorizada");
+     var Packed = new NamedEntityDto("Packed", "Surtiendose");
+     var shipping = new NamedEntityDto("Shipping", "Envio");
+     var carried = new NamedEntityDto("Carried", "Transporte");
+    
      var closed = new NamedEntityDto("Closed", "Cerrada");
      var cancelled = new NamedEntityDto("Cancelled", "Cancelada");
 
       List<NamedEntityDto> orderSalesStatus = new List<NamedEntityDto>();
       orderSalesStatus.Add(captured);
       orderSalesStatus.Add(applied);
+      orderSalesStatus.Add(authorized);
+      orderSalesStatus.Add(Packed);
+      orderSalesStatus.Add(shipping);
+      orderSalesStatus.Add(carried);
       orderSalesStatus.Add(closed);
       orderSalesStatus.Add(cancelled);
 
@@ -211,6 +221,19 @@ namespace Empiria.Trade.Sales {
      this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id);
 
      SetOrderTotals();
+    }
+
+    internal static FixedList<NamedEntityDto> GetAuthorizationStatusList() {
+      var authorized = new NamedEntityDto("authorized", "Autorizado");
+      var pending = new NamedEntityDto("pending", "Por Autorizar");   
+
+      List<NamedEntityDto> orderSalesStatus = new List<NamedEntityDto>();
+
+      orderSalesStatus.Add(authorized);
+      orderSalesStatus.Add(pending);
+      
+
+      return orderSalesStatus.ToFixedList<NamedEntityDto>();
     }
 
     #endregion Helpers

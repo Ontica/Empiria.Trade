@@ -104,6 +104,10 @@ namespace Empiria.Trade.Sales.Adapters {
 
   public class SearchOrderFields {
 
+    public string QueryType {
+      get; set;
+    } = string.Empty;
+
     public string Keywords {
       get; set;
     } = string.Empty;

@@ -64,8 +64,16 @@ namespace Empiria.Trade.Sales.UseCases {
       Assertion.Require(fields, "fields");
 
       FixedList<SalesOrder> salesOrdersList = SalesOrder.GetOrders(fields);
-
+     
      return SalesOrderMapper.Map(salesOrdersList);
+    }
+
+    public FixedList<SalesOrdersAuthorizationDto> GetOrdersAuthorization(SearchOrderFields fields) {
+      Assertion.Require(fields, "fields");
+
+      FixedList<SalesOrder> salesOrdersList = SalesOrder.GetOrders(fields);
+
+      return SalesOrderMapper.MapSalesOrderAuthorizationList(salesOrdersList);
     }
 
     public SalesOrderDto CancelSalesOrder(string orderUID) {
@@ -122,6 +130,10 @@ namespace Empiria.Trade.Sales.UseCases {
       var orderDto = SalesOrderMapper.Map(order);
 
       return orderDto;
+    }
+
+    public FixedList<NamedEntityDto> GetAuthorizationStatusList() {
+      return SalesOrder.GetAuthorizationStatusList();
     }
 
     #endregion Use cases

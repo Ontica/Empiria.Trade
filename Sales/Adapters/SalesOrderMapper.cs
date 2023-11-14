@@ -26,7 +26,7 @@ namespace Empiria.Trade.Sales.Adapters {
         Supplier = order.Supplier.MapToNamedEntity(),
         SalesAgent = order.SalesAgent.MapToNamedEntity(),
         ShippingMethod = order.ShippingMethod,
-        PaymentCondition = order.PaymentCondition, 
+        PaymentCondition = order.PaymentCondition,
         Items = MapSalesOrderItems(order.SalesOrderItems), // new FixedList<SalesOrderItem>(),
         ItemsCount = order.ItemsCount,
         ItemsTotal = order.ItemsTotal,
@@ -35,10 +35,50 @@ namespace Empiria.Trade.Sales.Adapters {
         OrderTotal = order.OrderTotal,
         AuthorizationStatus = order.AuthorizationStatus,
         AuthorizationTime = order.AuthorizationTime,
-        AuthorizatedById = order.AuthorizatedById
+        AuthorizatedById = order.AuthorizatedById,
+        Actions = MapOrderActions(order.Status)
       };
 
       return dto;
+    }
+
+    static public SalesOrdersAuthorizationDto MapSalesOrderAuthorization(SalesOrder order) {
+
+      var dto = new SalesOrdersAuthorizationDto {
+        UID = order.UID,
+        OrderNumber = order.OrderNumber,
+        OrderTime = order.OrderTime,
+        Notes = order.Notes,
+        Status = order.Status,
+        Customer = order.Customer.MapToNamedEntity(),
+        Supplier = order.Supplier.MapToNamedEntity(),
+        SalesAgent = order.SalesAgent.MapToNamedEntity(),
+        ShippingMethod = order.ShippingMethod,
+        PaymentCondition = order.PaymentCondition,
+        Items = MapSalesOrderItems(order.SalesOrderItems), // new FixedList<SalesOrderItem>(),
+        ItemsCount = order.ItemsCount,
+        ItemsTotal = order.ItemsTotal,
+        Shipment = order.Shipment,
+        Taxes = order.Taxes,
+        OrderTotal = order.OrderTotal,
+        AuthorizationStatus = order.AuthorizationStatus,
+        AuthorizationTime = order.AuthorizationTime,
+        AuthorizatedById = order.AuthorizatedById,
+        Actions = MapOrderActions(order.Status),
+        TotalDebt = 100.00m
+      };
+
+      return dto;
+    }
+
+    static public FixedList<SalesOrdersAuthorizationDto> MapSalesOrderAuthorizationList(FixedList<SalesOrder> salesOrders) {
+      List<SalesOrdersAuthorizationDto> salesOrderDtoList = new List<SalesOrdersAuthorizationDto>();
+
+      foreach (var salesOrder in salesOrders) {
+        salesOrderDtoList.Add(MapSalesOrderAuthorization(salesOrder));
+      }
+
+      return salesOrderDtoList.ToFixedList();
     }
 
     static public FixedList<SalesOrderDto> Map(FixedList<SalesOrder> salesOrders) {
@@ -52,6 +92,30 @@ namespace Empiria.Trade.Sales.Adapters {
     }
 
     #region Private methods
+
+    private static OrderActionsDto MapOrderActions(Orders.OrderStatus status) {
+
+      var dto = new OrderActionsDto {
+        canEdit = false,
+        canApply = false,
+        canAuthorize = false,
+        transportPackaging = false,
+        canSelectCarrier = false,
+        canShipping = false,
+        canClose = false
+      };
+
+      if (status == Orders.OrderStatus.Captured) {
+        dto.canEdit = true;
+      }
+
+      if (status == Orders.OrderStatus.Applied) {
+        dto.canAuthorize = true;
+      }
+
+      return dto;
+    }
+
 
     static private FixedList<SalesOrderItemDto> MapSalesOrderItems(FixedList<SalesOrderItem> salesOrderItems) {
       List<SalesOrderItemDto> salesOrderItemsList = new List<SalesOrderItemDto>();
