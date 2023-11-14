@@ -92,12 +92,58 @@ namespace Empiria.Trade.Sales.Adapters {
     public DateTime AuthorizationTime {
       get; internal set;
     }
-        
+
     public int AuthorizatedById {
       get; internal set;
     }
 
+    public OrderActionsDto Actions {
+      get; internal set;
+    }
+
   } // public class OrderDto
+
+
+  public class OrderActionsDto {
+
+    public Boolean canEdit {
+      get; internal set;
+    } = true;
+
+    public Boolean canApply {
+      get; internal set;
+    } = true;
+
+    public Boolean canAuthorize {
+      get; internal set;
+    } = true;
+
+    public Boolean transportPackaging {
+      get; internal set;
+    } = true;
+
+    public Boolean canSelectCarrier {
+      get; internal set;
+    } = true;
+
+    public Boolean canShipping {
+      get; internal set;
+    } = true;
+
+    public Boolean canClose {
+      get; internal set;
+    } = true;
+
+  }  //  class OrderActionsDto
+  
+  public class SalesOrdersAuthorizationDto : SalesOrderDto {
+    
+    public decimal TotalDebt {
+      get; internal set;
+    }
+
+  }
+
 
 } // namespace Empiria.Trade.Sales.Adapters
 
