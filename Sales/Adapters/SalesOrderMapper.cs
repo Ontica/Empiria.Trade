@@ -10,6 +10,9 @@
 using System;
 using System.Collections.Generic;
 
+using Empiria.Trade.Core;
+using Empiria.Trade.Orders;
+
 namespace Empiria.Trade.Sales.Adapters {
 
   /// <summary> Methods used to map Order. </summary>
@@ -36,7 +39,7 @@ namespace Empiria.Trade.Sales.Adapters {
         AuthorizationStatus = order.AuthorizationStatus,
         AuthorizationTime = order.AuthorizationTime,
         AuthorizatedById = order.AuthorizatedById,
-        Actions = MapOrderActions(order.Status)
+        Actions = MapOrderActions(order.Actions)
       };
 
       return dto;
@@ -64,7 +67,7 @@ namespace Empiria.Trade.Sales.Adapters {
         AuthorizationStatus = order.AuthorizationStatus,
         AuthorizationTime = order.AuthorizationTime,
         AuthorizatedById = order.AuthorizatedById,
-        Actions = MapOrderActions(order.Status),
+        Actions = MapOrderActions(order.Actions),
         TotalDebt = 100.00m
       };
 
@@ -93,26 +96,18 @@ namespace Empiria.Trade.Sales.Adapters {
 
     #region Private methods
 
-    private static OrderActionsDto MapOrderActions(Orders.OrderStatus status) {
+    private static OrderActionsDto MapOrderActions(OrderActions actions) {
 
       var dto = new OrderActionsDto {
-        canEdit = false,
-        canApply = false,
-        canAuthorize = false,
-        transportPackaging = false,
-        canSelectCarrier = false,
-        canShipping = false,
-        canClose = false
+        CanEdit = actions.CanEdit,
+        CanApply = actions.CanApply,
+        CanAuthorize = actions.CanAuthorize,
+        TransportPackaging = actions.TransportPackaging,
+        CanSelectCarrier = actions.CanSelectCarrier,
+        CanShipping = actions.CanShipping,
+        CanClose = actions.CanClose
       };
-
-      if (status == Orders.OrderStatus.Captured) {
-        dto.canEdit = true;
-      }
-
-      if (status == Orders.OrderStatus.Applied) {
-        dto.canAuthorize = true;
-      }
-
+            
       return dto;
     }
 

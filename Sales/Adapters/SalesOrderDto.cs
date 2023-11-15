@@ -85,7 +85,7 @@ namespace Empiria.Trade.Sales.Adapters {
       get; internal set;
     }
 
-    public AutorizationStatus AuthorizationStatus {
+    public OrderAuthorizationStatus AuthorizationStatus {
       get; internal set;
     }
 
@@ -106,31 +106,31 @@ namespace Empiria.Trade.Sales.Adapters {
 
   public class OrderActionsDto {
 
-    public Boolean canEdit {
+    public Boolean CanEdit {
       get; internal set;
     } = true;
 
-    public Boolean canApply {
+    public Boolean CanApply {
       get; internal set;
     } = true;
 
-    public Boolean canAuthorize {
+    public Boolean CanAuthorize {
       get; internal set;
     } = true;
 
-    public Boolean transportPackaging {
+    public Boolean TransportPackaging {
       get; internal set;
     } = true;
 
-    public Boolean canSelectCarrier {
+    public Boolean CanSelectCarrier {
       get; internal set;
     } = true;
 
-    public Boolean canShipping {
+    public Boolean CanShipping {
       get; internal set;
     } = true;
 
-    public Boolean canClose {
+    public Boolean CanClose {
       get; internal set;
     } = true;
 

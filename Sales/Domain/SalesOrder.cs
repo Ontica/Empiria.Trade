@@ -40,18 +40,7 @@ namespace Empiria.Trade.Sales {
       return BaseObject.ParseKey<SalesOrder>(uid);
     }
 
-    static public FixedList<SalesOrder> GetOrders(SearchOrderFields fields) {
-      var orders = SalesOrderData.GetSalesOrders(fields);
-      List<SalesOrder> salesOrders = new List<SalesOrder>();
-
-      foreach (var order in orders) {
-        order.SalesOrderItems = SalesOrderItem.GetOrderItems(order.Id);
-        SetOrderTotals(order);
-        salesOrders.Add(order);
-      }
-
-      return salesOrders.ToFixedList<SalesOrder>();
-    }
+    
 
     #endregion Constructors and parsers
 
@@ -97,8 +86,10 @@ namespace Empiria.Trade.Sales {
         OrderTime = DateTime.Now;
         Status = OrderStatus.Captured;
       }
+
       SalesOrderData.Write(this);
       SalesOrderItem.SaveSalesOrderItems(this.SalesOrderItems, this.Id);
+
     }
 
     public void Apply() {
@@ -106,7 +97,8 @@ namespace Empiria.Trade.Sales {
 
       SalesOrderData.Write(this);
       this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id);
-
+      this.Actions = GetApplyActions();
+      
       SetOrderTotals();
     }
 
@@ -124,6 +116,8 @@ namespace Empiria.Trade.Sales {
       this.SalesOrderItems = LoadSalesOrderItems(fields.Items);
 
       SetOrderTotals();
+
+      this.Actions = GetCaptureActions();
     }
 
     public void Cancel() {
@@ -142,6 +136,34 @@ namespace Empiria.Trade.Sales {
       Update(fields);
 
       Save();
+    }
+
+    static public FixedList<SalesOrder> GetOrders(SearchOrderFields fields) {
+      var orders = SalesOrderData.GetSalesOrders(fields);
+      List<SalesOrder> salesOrders = new List<SalesOrder>();
+
+      foreach (var order in orders) {
+        order.SalesOrderItems = SalesOrderItem.GetOrderItems(order.Id);
+        SetOrderTotals(order);
+        salesOrders.Add(order);
+        SetAuthorizedActions(order);
+      }
+
+      return salesOrders.ToFixedList<SalesOrder>();
+    }
+
+    static public FixedList<SalesOrder> GetOrdersToAuthorize(SearchOrderFields fields) {
+      var orders = SalesOrderData.GetSalesOrdersToAuthorize(fields);
+      List<SalesOrder> salesOrders = new List<SalesOrder>();
+
+      foreach (var order in orders) {
+        order.SalesOrderItems = SalesOrderItem.GetOrderItems(order.Id);
+        SetOrderTotals(order);
+        salesOrders.Add(order);
+        SetAuthorizedActions(order);
+      }
+
+      return salesOrders.ToFixedList<SalesOrder>();
     }
 
     #endregion Public methods
@@ -188,14 +210,14 @@ namespace Empiria.Trade.Sales {
     }
 
     internal static FixedList<NamedEntityDto> GetStatusList() {
-     
+
      var captured = new NamedEntityDto("Captured", "Capturada");
      var applied = new NamedEntityDto("Applied", "Aplicada");
      var authorized = new NamedEntityDto("Authorized", "Autorizada");
-     var Packed = new NamedEntityDto("Packed", "Surtiendose");
+     var packing = new NamedEntityDto("Packing", "Surtiendose");
+     var carrierSelector = new NamedEntityDto("CarrierSelector", "Seleccion de paqueteria");
      var shipping = new NamedEntityDto("Shipping", "Envio");
-     var carried = new NamedEntityDto("Carried", "Transporte");
-    
+     var delivery = new NamedEntityDto("Delivery", "Entrega");
      var closed = new NamedEntityDto("Closed", "Cerrada");
      var cancelled = new NamedEntityDto("Cancelled", "Cancelada");
 
@@ -203,9 +225,10 @@ namespace Empiria.Trade.Sales {
       orderSalesStatus.Add(captured);
       orderSalesStatus.Add(applied);
       orderSalesStatus.Add(authorized);
-      orderSalesStatus.Add(Packed);
+      orderSalesStatus.Add(packing);
+      orderSalesStatus.Add(carrierSelector);
       orderSalesStatus.Add(shipping);
-      orderSalesStatus.Add(carried);
+      orderSalesStatus.Add(delivery);
       orderSalesStatus.Add(closed);
       orderSalesStatus.Add(cancelled);
 
@@ -213,10 +236,13 @@ namespace Empiria.Trade.Sales {
     }
 
     public void Authorize() {
-     AuthorizationStatus = AutorizationStatus.Authorized;
+     AuthorizationStatus = OrderAuthorizationStatus.Authorized;
      this.AuthorizationTime = DateTime.Now;
      this.AuthorizatedById = ExecutionServer.CurrentUserId;
 
+     this.Status = OrderStatus.Packing;
+     this.Actions = GetAuthorizedActions();
+      
      SalesOrderData.Write(this);
      this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id);
 
@@ -234,6 +260,77 @@ namespace Empiria.Trade.Sales {
       
 
       return orderSalesStatus.ToFixedList<NamedEntityDto>();
+    }
+
+    private static OrderActions GetCaptureActions() {
+      OrderActions actions = new OrderActions();
+      actions.CanApply = true;
+      actions.CanAuthorize = false;
+      actions.CanEdit = true;
+      actions.CanSelectCarrier = false;
+      actions.TransportPackaging = false;
+      actions.CanShipping = false;
+      actions.CanClose = false;
+
+      return actions;
+    }
+
+    private static OrderActions GetApplyActions() {
+      OrderActions actions = new OrderActions();
+
+      actions.CanApply = false;
+      actions.CanAuthorize = true;
+      actions.CanEdit = false;
+      actions.CanSelectCarrier = false;
+      actions.TransportPackaging = false;
+      actions.CanShipping = false;
+      actions.CanClose = false;
+
+      return actions;
+    }
+
+    private static  OrderActions GetAuthorizedActions() {
+      OrderActions actions = new OrderActions();
+
+      actions.CanApply = false;
+      actions.CanAuthorize = false;
+      actions.CanEdit = false;
+      actions.TransportPackaging = true;
+      actions.CanSelectCarrier = false;
+      actions.CanShipping = false;
+      actions.CanClose = false;
+
+      return actions;
+    }
+
+    private static OrderActions GetPackingActions() {
+      OrderActions actions = new OrderActions();
+
+      actions.CanApply = false;
+      actions.CanAuthorize = false;
+      actions.CanEdit = false;
+      actions.TransportPackaging = false;
+      actions.CanSelectCarrier = true;
+      actions.CanShipping = false;
+      actions.CanClose = false;
+
+      return actions;
+    }
+
+    private static OrderActions GetCancellActions() {
+      OrderActions actions = new OrderActions();
+      return actions;
+    }
+
+      private static void SetAuthorizedActions(SalesOrder order) {
+      switch (order.Status) {
+        case OrderStatus.Captured: order.Actions = GetCaptureActions(); break;
+        case OrderStatus.Applied:  order.Actions = GetApplyActions(); break;
+        case OrderStatus.Authorized: order.Actions = GetAuthorizedActions(); break;
+        case OrderStatus.Packing: order.Actions = GetPackingActions(); break;
+        case OrderStatus.Cancelled: order.Actions = GetCancellActions(); break;
+      }
+
     }
 
     #endregion Helpers

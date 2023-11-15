@@ -121,11 +121,11 @@ namespace Empiria.Trade.Orders {
       protected set;
     }
 
-    [DataField("OrderAuthorizationStatus", Default = AutorizationStatus.Empty)]
-    public AutorizationStatus AuthorizationStatus {
+    [DataField("OrderAuthorizationStatus", Default = OrderAuthorizationStatus.Empty)]
+    public OrderAuthorizationStatus AuthorizationStatus {
       get;
       protected set;
-    } = AutorizationStatus.Empty;
+    } = OrderAuthorizationStatus.Empty;
 
     [DataField("OrderAuthorizationTime")]
     public DateTime AuthorizationTime {
@@ -139,6 +139,11 @@ namespace Empiria.Trade.Orders {
       protected set;
     }
 
+    public OrderActions Actions {
+      get;
+      protected set;
+    }
+    
     #endregion Public properties
 
   }  // class Order
@@ -147,19 +152,57 @@ namespace Empiria.Trade.Orders {
   public enum OrderStatus {
     Captured = 'C',
     Applied = 'A',   
-    Authorized = 'C',
-    Packed = 'P',
-    Shipping = 'S',
-    Carried = 'C',
+    Authorized = 'O',
+    Packing = 'P',
+    CarrierSelector = 'S',
+    Shipping = 'G',
+    Delivery = 'D',
     Closed = 'F',
     Cancelled = 'X',
-    Empty = 'E'
+    Empty = 'E',
+    Pending = 'W'
   } // enum OrderStatus
 
-  public enum AutorizationStatus {
+  public enum OrderAuthorizationStatus {
     Authorized = 'A',
-    NotAuthoried = 'F',
+    Pending = 'P',
     Empty = 'E'
   } // enum AutorizationStatus
+
+  public class OrderActions {
+
+    public OrderActions () {
+    }
+
+    public Boolean CanEdit {
+      get; set;
+    } = false;
+
+    public Boolean CanApply {
+      get; set;
+    } = false;
+
+    public Boolean CanAuthorize {
+      get; set;
+    } = false;
+
+    public Boolean TransportPackaging {
+      get; set;
+    } = false;
+
+    public Boolean CanSelectCarrier {
+      get; set;
+    } = false;
+
+    public Boolean CanShipping {
+      get; set;
+    } = false;
+
+    public Boolean CanClose {
+      get; set;
+    } = false;
+
+
+  }  //  class OrderActionsDto
 
 }  // namespace Empiria.Trade.Orders
