@@ -106,8 +106,7 @@ namespace Empiria.Trade.Sales.WebApi {
       using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
         if (fields.QueryType == "SalesOrdersAuthorization") {
 
-          fields.Status = Orders.OrderStatus.Applied;
-          FixedList<SalesOrdersAuthorizationDto> salesOrdersAuthorization = usecases.GetOrdersAuthorization(fields);
+         FixedList<SalesOrdersAuthorizationDto> salesOrdersAuthorization = usecases.GetOrdersAuthorization(fields);
 
           return new CollectionModel(base.Request, salesOrdersAuthorization);
 

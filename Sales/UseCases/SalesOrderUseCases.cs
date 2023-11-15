@@ -71,7 +71,7 @@ namespace Empiria.Trade.Sales.UseCases {
     public FixedList<SalesOrdersAuthorizationDto> GetOrdersAuthorization(SearchOrderFields fields) {
       Assertion.Require(fields, "fields");
 
-      FixedList<SalesOrder> salesOrdersList = SalesOrder.GetOrders(fields);
+      FixedList<SalesOrder> salesOrdersList = SalesOrder.GetOrdersToAuthorize(fields);
 
       return SalesOrderMapper.MapSalesOrderAuthorizationList(salesOrdersList);
     }
