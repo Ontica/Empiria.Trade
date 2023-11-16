@@ -57,7 +57,7 @@ namespace Empiria.Trade.Tests {
 
       var usecase = TRDProductUseCases.UseCaseInteractor();
       ProductQuery query = new ProductQuery {
-        Keywords = "TA58X412"
+        Keywords = "BAVCG12"
       };
 
       FixedList<IProductEntryDto> sut = await usecase.GetProductsList(query).ConfigureAwait(false);
