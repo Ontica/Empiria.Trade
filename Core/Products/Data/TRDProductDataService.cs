@@ -37,12 +37,9 @@ namespace Empiria.Trade.Products.Data {
       string whereClauses = string.Empty;
 
       if (keywords != string.Empty) {
-        whereClauses = $" {SearchExpression.ParseAndLikeKeywords("ProductKeywords", keywords)}";
+        whereClauses = $"WHERE {SearchExpression.ParseAndLikeKeywords("ProductKeywords", keywords)}";
       }
 
-      //if (whereClauses != string.Empty) {
-      //  whereClauses += $" ";
-      //}
 
       var sql = "SELECT " +
                 "P.ProductId, P.ProductUID, VP.VendorProductUID, PRESENT.PresentationId, VENDOR.PartyId VendorId, I.InventoryEntryId, GROUPS.ProductGroupId, " +
@@ -58,8 +55,8 @@ namespace Empiria.Trade.Products.Data {
                 "LEFT JOIN TRDParties VENDOR ON VP.VendorId = VENDOR.PartyId " +
                 "LEFT JOIN TRDProductPrices PRICES ON VP.VendorProductId = PRICES.VendorProductId " +
                 "LEFT JOIN TRDInventory I ON VP.VendorProductId = I.VendorProductId " +
-                $"WHERE  " + //I.InputQuantity > 0
                 $"{whereClauses}";
+
 
       var dataOperation = DataOperation.Parse(sql);
 

@@ -96,12 +96,18 @@ namespace Empiria.Trade.Products.Adapters {
     static private FixedList<Attributes> GetAttributes(Product entry) {
 
       AttributesList attrs = new AttributesList();
+      try {
+        if (entry.Attributes != "") {
+          attrs = JsonConvert.DeserializeObject<AttributesList>(entry.Attributes);
+        }
 
-      if (entry.Attributes != "") {
-        attrs = JsonConvert.DeserializeObject<AttributesList>(entry.Attributes);
+        return attrs.Attributes.ToFixedList();
+
+      } catch (Exception e) {
+
+        throw new Exception($"{entry.Code}. {e.Message}", e);
       }
-
-      return attrs.Attributes.ToFixedList();
+      
 
     }
 

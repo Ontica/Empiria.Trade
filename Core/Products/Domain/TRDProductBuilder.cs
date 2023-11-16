@@ -50,7 +50,9 @@ namespace Empiria.Trade.Products.Domain {
 
       FixedList<Product> productsByCode = helper.GetProductsByCode(products);
 
-      return productsByCode;
+      FixedList<Product> productsOrderBy = helper.GetProductsOrderBy(productsByCode);
+
+      return productsOrderBy;
     }
 
 

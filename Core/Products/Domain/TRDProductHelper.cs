@@ -279,6 +279,18 @@ namespace Empiria.Trade.Products.Domain {
     }
 
 
+    internal FixedList<Product> GetProductsOrderBy(FixedList<Product> productsByCode) {
+
+      foreach (var product in productsByCode) {
+        product.Presentations = product.Presentations.OrderBy(x => x.Units).ToList();
+      }
+
+      return productsByCode.OrderBy(p => p.Code)
+                                          .ThenBy(p => p.ProductName)
+                                          .ToList().ToFixedList();
+    }
+
+
     #endregion Private methods
 
   } // class TRDProductHelper
