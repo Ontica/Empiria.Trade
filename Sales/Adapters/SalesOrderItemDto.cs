@@ -29,11 +29,7 @@ namespace Empiria.Trade.Sales.Adapters {
       get; set;
     }
        
-    public decimal BasePrice {
-      get; set;
-    }
-
-    public decimal SpecialPrice {
+    public decimal UnitPrice {
       get; set;
     }
 
@@ -41,23 +37,19 @@ namespace Empiria.Trade.Sales.Adapters {
       get; set;
     }
 
-    public decimal AdditionalDiscount {
+    public string DiscountPolicy {
       get; set;
     }
 
-    public decimal AdditionalDiscountToApply {
-      get; set;
-    } 
-
-    public decimal Shipment {
+    public decimal Discount1 {
       get; set;
     }
 
-    public decimal Taxes {
+    public decimal Discount2 {
       get; set;
     }
-
-    public decimal Total {
+       
+    public decimal Subtotal {
       get; set;
     }
 
