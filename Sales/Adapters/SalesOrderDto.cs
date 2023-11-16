@@ -41,6 +41,10 @@ namespace Empiria.Trade.Sales.Adapters {
       get; internal set;
     }
 
+    public string PriceList {
+      get; internal set;
+    }
+
     ////public PartyContactsDto CustomerContact {
     ////  get; internal set;
     ////}

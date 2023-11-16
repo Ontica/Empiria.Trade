@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
+using Empiria.Trade.Core;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Sales.Data;
@@ -75,6 +76,9 @@ namespace Empiria.Trade.Sales {
       get; private set;
     } = 0m;
 
+    public string PriceList {
+      get; private set;
+    }
 
     #endregion
 
@@ -113,6 +117,7 @@ namespace Empiria.Trade.Sales {
       this.Status = fields.Status;
       this.ShippingMethod = fields.ShippingMethod;
       this.PaymentCondition = fields.PaymentCondition;
+      this.PriceList = GetPriceList();
       this.SalesOrderItems = LoadSalesOrderItems(fields.Items);
 
       SetOrderTotals();
@@ -197,6 +202,8 @@ namespace Empiria.Trade.Sales {
     }
 
     private static void SetOrderTotals(SalesOrder order) {
+
+      order.OrderTotal = 0;
 
       foreach (SalesOrderItem item in order.SalesOrderItems) {
         order.ItemsCount++;
@@ -331,6 +338,17 @@ namespace Empiria.Trade.Sales {
         case OrderStatus.Cancelled: order.Actions = GetCancellActions(); break;
       }
 
+    }
+
+    private string GetPriceList() {
+      var pricesList = CustomerPrices.GetVendorPrices(this.Customer.Id);
+      string prices = string.Empty;
+      prices = pricesList[0].PriceListId.ToString() + ", " + pricesList[1].PriceListId.ToString();
+      //foreach (VendorPrices price in pricesList) {
+      //  prices += price.PriceListId.ToString();
+      //}
+
+      return prices;
     }
 
     #endregion Helpers

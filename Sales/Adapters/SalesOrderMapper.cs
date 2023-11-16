@@ -30,6 +30,7 @@ namespace Empiria.Trade.Sales.Adapters {
         SalesAgent = order.SalesAgent.MapToNamedEntity(),
         ShippingMethod = order.ShippingMethod,
         PaymentCondition = order.PaymentCondition,
+        PriceList = order.PriceList,
         Items = MapSalesOrderItems(order.SalesOrderItems), // new FixedList<SalesOrderItem>(),
         ItemsCount = order.ItemsCount,
         ItemsTotal = order.ItemsTotal,
