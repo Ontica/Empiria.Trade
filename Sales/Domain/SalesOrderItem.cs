@@ -81,7 +81,12 @@ namespace Empiria.Trade.Sales {
     }
 
     public static FixedList<SalesOrderItem> GetOrderItems(int orderId) {
-      return SalesOrderItemsData.GetOrderItems(orderId);
+      var orderItems = SalesOrderItemsData.GetOrderItems(orderId);
+      foreach (SalesOrderItem orderItem in orderItems) {
+        orderItem.DiscountPolicy = "10";
+        orderItem.SubTotal = CalculeSubtotal(orderItem);
+      }
+      return orderItems;
     }
 
     #endregion Public methods
@@ -148,6 +153,13 @@ namespace Empiria.Trade.Sales {
     private decimal GetSubtotal() {
       var subTotal = this.SalesPrice - ((this.SalesPrice * this.Discount) / 100);
       subTotal = subTotal - ((subTotal * AdditionalDiscount) / 100);
+
+      return subTotal;
+    }
+
+    static private decimal CalculeSubtotal(OrderItem orderItem) {
+      var subTotal = orderItem.SalesPrice - ((orderItem.SalesPrice * orderItem.Discount) / 100);
+      subTotal = subTotal - ((subTotal * orderItem.AdditionalDiscount) / 100);
 
       return subTotal;
     }
