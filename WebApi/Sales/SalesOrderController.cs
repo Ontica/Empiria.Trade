@@ -104,17 +104,24 @@ namespace Empiria.Trade.Sales.WebApi {
 
       base.RequireBody(fields);
       using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
-        if (fields.QueryType == "SalesOrdersAuthorization") {
 
-         FixedList<SalesOrdersAuthorizationDto> salesOrdersAuthorization = usecases.GetOrdersAuthorization(fields);
+        switch (fields.QueryType) {
+          case "SalesOrdersAuthorization": {
+            FixedList<SalesOrdersAuthorizationDto> salesOrdersAuthorization = usecases.GetOrdersAuthorization(fields);
+            return new CollectionModel(base.Request, salesOrdersAuthorization);
+          }
 
-          return new CollectionModel(base.Request, salesOrdersAuthorization);
-
-        }
-
-        FixedList<SalesOrderDto> salesOrders = usecases.GetOrders(fields);
-        return new CollectionModel(base.Request, salesOrders);
-      }
+          case "SalesOrdersPacking": {
+            FixedList<SalesOrderPackingDto> salesOrdersPacking = usecases.GetOrdersPacking(fields);
+            return new CollectionModel(base.Request, salesOrdersPacking);
+          }
+          default: {
+            FixedList<SalesOrderDto> salesOrders = usecases.GetOrders(fields);
+            return new CollectionModel(base.Request, salesOrders);
+          }
+        } 
+              
+      } // using 
 
     }
 

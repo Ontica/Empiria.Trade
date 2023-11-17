@@ -148,6 +148,19 @@ namespace Empiria.Trade.Sales.Adapters {
 
   }
 
+  public class SalesOrderPackingDto : SalesOrderDto {
+
+    public decimal weight {
+      get; internal set;
+    }
+
+    public int TotalBoxes {
+      get; internal set;
+    }
+
+  } //  class SalesOrdersPackingDto
+
+
 
 } // namespace Empiria.Trade.Sales.Adapters
 

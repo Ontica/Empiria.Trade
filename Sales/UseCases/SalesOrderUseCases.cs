@@ -76,6 +76,15 @@ namespace Empiria.Trade.Sales.UseCases {
       return SalesOrderMapper.MapSalesOrderAuthorizationList(salesOrdersList);
     }
 
+    public FixedList<SalesOrderPackingDto> GetOrdersPacking(SearchOrderFields fields) {
+
+      Assertion.Require(fields, "fields");
+
+      FixedList<SalesOrder> salesOrdersList = SalesOrder.GetOrdersToPacking(fields);
+
+      return SalesOrderMapper.MapSalesOrderPackingList(salesOrdersList);
+    }
+
     public SalesOrderDto CancelSalesOrder(string orderUID) {
       Assertion.Require(orderUID, "orderUID");
 

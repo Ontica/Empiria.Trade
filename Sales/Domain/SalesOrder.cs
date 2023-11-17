@@ -173,6 +173,20 @@ namespace Empiria.Trade.Sales {
       return salesOrders.ToFixedList<SalesOrder>();
     }
 
+    internal static FixedList<SalesOrder> GetOrdersToPacking(SearchOrderFields fields) {
+      var orders = SalesOrderData.GetSalesOrdersToPacking(fields);
+      List<SalesOrder> salesOrders = new List<SalesOrder>();
+
+      foreach (var order in orders) {
+        order.SalesOrderItems = SalesOrderItem.GetOrderItems(order.Id);
+        SetOrderTotals(order);
+        salesOrders.Add(order);
+        SetAuthorizedActions(order);
+      }
+
+      return salesOrders.ToFixedList<SalesOrder>();
+    }
+
     #endregion Public methods
 
     #region Helpers
@@ -272,9 +286,9 @@ namespace Empiria.Trade.Sales {
     }
 
     internal static FixedList<NamedEntityDto> GetPackingStatusList() {
-      var toSupply = new NamedEntityDto("toSupply", "Por surtir");
-      var inprogress = new NamedEntityDto("inProgress", "En proceso");
-      var supplied = new NamedEntityDto("supplid", "Surtido");
+      var toSupply = new NamedEntityDto("ToSupply", "Por surtir");
+      var inprogress = new NamedEntityDto("InProgress", "En proceso");
+      var supplied = new NamedEntityDto("Suppled", "Surtido");
       List<NamedEntityDto> orderPackcingStatusList = new List<NamedEntityDto>();
 
       orderPackcingStatusList.Add(toSupply);
@@ -362,6 +376,8 @@ namespace Empiria.Trade.Sales {
 
       return vendorPrice.PriceListId.ToString();
     }
+
+   
 
     #endregion Helpers
 

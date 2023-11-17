@@ -160,7 +160,11 @@ namespace Empiria.Trade.Orders {
     Closed = 'F',
     Cancelled = 'X',
     Empty = 'E',
-    Pending = 'W'
+    Pending = 'W',
+    ToSupply = 'I',
+    InProgress = 'U',
+    Supplied = 'Y'
+
   } // enum OrderStatus
 
   public enum OrderAuthorizationStatus {

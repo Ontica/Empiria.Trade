@@ -69,7 +69,39 @@ namespace Empiria.Trade.Sales.Adapters {
         AuthorizationTime = order.AuthorizationTime,
         AuthorizatedById = order.AuthorizatedById,
         Actions = MapOrderActions(order.Actions),
-        TotalDebt = 100.00m
+        TotalDebt = 100.00m,
+        PriceList = order.PriceList
+      };
+
+      return dto;
+    }
+
+    static public SalesOrderPackingDto MapSalesOrderPacking(SalesOrder order) {
+
+      var dto = new SalesOrderPackingDto {
+        UID = order.UID,
+        OrderNumber = order.OrderNumber,
+        OrderTime = order.OrderTime,
+        Notes = order.Notes,
+        Status = order.Status,
+        Customer = order.Customer.MapToNamedEntity(),
+        Supplier = order.Supplier.MapToNamedEntity(),
+        SalesAgent = order.SalesAgent.MapToNamedEntity(),
+        ShippingMethod = order.ShippingMethod,
+        PaymentCondition = order.PaymentCondition,
+        Items = MapSalesOrderItems(order.SalesOrderItems), // new FixedList<SalesOrderItem>(),
+        ItemsCount = order.ItemsCount,
+        ItemsTotal = order.ItemsTotal,
+        Shipment = order.Shipment,
+        Taxes = order.Taxes,
+        OrderTotal = order.OrderTotal,
+        AuthorizationStatus = order.AuthorizationStatus,
+        AuthorizationTime = order.AuthorizationTime,
+        AuthorizatedById = order.AuthorizatedById,
+        Actions = MapOrderActions(order.Actions),
+        PriceList = order.PriceList,
+        weight = 0m,
+        TotalBoxes = 0
       };
 
       return dto;
@@ -80,6 +112,16 @@ namespace Empiria.Trade.Sales.Adapters {
 
       foreach (var salesOrder in salesOrders) {
         salesOrderDtoList.Add(MapSalesOrderAuthorization(salesOrder));
+      }
+
+      return salesOrderDtoList.ToFixedList();
+    }
+
+    static public FixedList<SalesOrderPackingDto> MapSalesOrderPackingList(FixedList<SalesOrder> salesOrders) {
+      List<SalesOrderPackingDto> salesOrderDtoList = new List<SalesOrderPackingDto>();
+
+      foreach (var salesOrder in salesOrders) {
+        salesOrderDtoList.Add(MapSalesOrderPacking(salesOrder));
       }
 
       return salesOrderDtoList.ToFixedList();
