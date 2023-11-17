@@ -136,6 +136,10 @@ namespace Empiria.Trade.Sales.UseCases {
       return SalesOrder.GetAuthorizationStatusList();
     }
 
+    public FixedList<NamedEntityDto> GetPackingStatusList() {
+      return Sales.SalesOrder.GetPackingStatusList();
+    }
+
     #endregion Use cases
 
   } // class SalesOrderUseCases

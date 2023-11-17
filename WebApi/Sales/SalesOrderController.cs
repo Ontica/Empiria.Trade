@@ -141,6 +141,17 @@ namespace Empiria.Trade.Sales.WebApi {
       }
     }
 
+    [HttpGet]
+    [Route("v4/trade/sales/orders/status/packing")]
+    public CollectionModel GetOrderPackingStatus() {
+
+      using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
+        FixedList<NamedEntityDto> orderAutorizationStatusList = usecases.GetPackingStatusList();
+
+        return new CollectionModel(base.Request, orderAutorizationStatusList);
+      }
+    }
+
     [HttpPost]
     [Route("v4/trade/sales/orders/{orderUID:guid}/authorize")]
     public SingleObjectModel AuthorizeSalesOrder([FromUri] string orderUID) {

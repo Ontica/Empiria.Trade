@@ -89,6 +89,7 @@ namespace Empiria.Trade.Sales {
         OrderNumber = "P-" + EmpiriaString.BuildRandomString(10).ToUpperInvariant();
         OrderTime = DateTime.Now;
         Status = OrderStatus.Captured;
+ 
       }
 
       SalesOrderData.Write(this);
@@ -98,6 +99,7 @@ namespace Empiria.Trade.Sales {
 
     public void Apply() {
       Status = OrderStatus.Applied;
+      AuthorizationStatus = OrderAuthorizationStatus.Pending;
 
       SalesOrderData.Write(this);
       this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id);
@@ -192,7 +194,7 @@ namespace Empiria.Trade.Sales {
 
       foreach (SalesOrderItem item in this.SalesOrderItems) {
         this.ItemsCount++;
-        this.ItemsTotal += item.SalesPrice;
+        this.ItemsTotal += item.SubTotal;
         this.Shipment += item.Shipment;
         this.Discount += item.Discount;
         this.Taxes += item.TaxesIVA;
@@ -207,7 +209,7 @@ namespace Empiria.Trade.Sales {
 
       foreach (SalesOrderItem item in order.SalesOrderItems) {
         order.ItemsCount++;
-        order.ItemsTotal += item.SalesPrice;
+        order.ItemsTotal += item.SubTotal;
         order.Shipment += item.Shipment;
         order.Discount += item.Discount;
         order.Taxes += item.TaxesIVA;
@@ -267,6 +269,19 @@ namespace Empiria.Trade.Sales {
       
 
       return orderSalesStatus.ToFixedList<NamedEntityDto>();
+    }
+
+    internal static FixedList<NamedEntityDto> GetPackingStatusList() {
+      var toSupply = new NamedEntityDto("toSupply", "Por surtir");
+      var inprogress = new NamedEntityDto("inProgress", "En proceso");
+      var supplied = new NamedEntityDto("supplid", "Surtido");
+      List<NamedEntityDto> orderPackcingStatusList = new List<NamedEntityDto>();
+
+      orderPackcingStatusList.Add(toSupply);
+      orderPackcingStatusList.Add(inprogress);
+      orderPackcingStatusList.Add(supplied);
+
+      return orderPackcingStatusList.ToFixedList<NamedEntityDto>();
     }
 
     private static OrderActions GetCaptureActions() {
@@ -342,13 +357,10 @@ namespace Empiria.Trade.Sales {
 
     private string GetPriceList() {
       var pricesList = CustomerPrices.GetVendorPrices(this.Customer.Id);
-      string prices = string.Empty;
-      prices = pricesList[0].PriceListId.ToString() + ", " + pricesList[1].PriceListId.ToString();
-      //foreach (VendorPrices price in pricesList) {
-      //  prices += price.PriceListId.ToString();
-      //}
 
-      return prices;
+      var vendorPrice = pricesList.Find(r => r.VendorId == this.Supplier.Id);
+
+      return vendorPrice.PriceListId.ToString();
     }
 
     #endregion Helpers
