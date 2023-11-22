@@ -80,6 +80,11 @@ namespace Empiria.Trade.Sales {
       get; private set;
     }
 
+    public OrderActions Actions {
+      get;
+      protected set;
+    }
+
     #endregion
 
     #region Public methods
@@ -103,7 +108,7 @@ namespace Empiria.Trade.Sales {
 
       SalesOrderData.Write(this);
       this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id);
-      this.Actions = GetApplyActions();
+      this.Actions = OrderActions.GetApplyActions();
       
       SetOrderTotals();
     }
@@ -124,7 +129,7 @@ namespace Empiria.Trade.Sales {
 
       SetOrderTotals();
 
-      this.Actions = GetCaptureActions();
+      this.Actions = OrderActions.GetCaptureActions();
     }
 
     public void Cancel() {
@@ -151,7 +156,7 @@ namespace Empiria.Trade.Sales {
       this.AuthorizatedById = ExecutionServer.CurrentUserId;
 
       this.Status = OrderStatus.Packing;
-      this.Actions = GetAuthorizedActions();
+      this.Actions = OrderActions.GetAuthorizedActions();
 
       SalesOrderData.Write(this);
       this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id);
@@ -289,74 +294,15 @@ namespace Empiria.Trade.Sales {
 
       return orderPackcingStatusList.ToFixedList<NamedEntityDto>();
     }
+       
 
-    private static OrderActions GetCaptureActions() {
-      OrderActions actions = new OrderActions();
-      actions.CanApply = true;
-      actions.CanAuthorize = false;
-      actions.CanEdit = true;
-      actions.CanSelectCarrier = false;
-      actions.TransportPackaging = false;
-      actions.CanShipping = false;
-      actions.CanClose = false;
-
-      return actions;
-    }
-
-    private static OrderActions GetApplyActions() {
-      OrderActions actions = new OrderActions();
-
-      actions.CanApply = false;
-      actions.CanAuthorize = true;
-      actions.CanEdit = false;
-      actions.CanSelectCarrier = false;
-      actions.TransportPackaging = false;
-      actions.CanShipping = false;
-      actions.CanClose = false;
-
-      return actions;
-    }
-
-    private static  OrderActions GetAuthorizedActions() {
-      OrderActions actions = new OrderActions();
-
-      actions.CanApply = false;
-      actions.CanAuthorize = false;
-      actions.CanEdit = false;
-      actions.TransportPackaging = true;
-      actions.CanSelectCarrier = false;
-      actions.CanShipping = false;
-      actions.CanClose = false;
-
-      return actions;
-    }
-
-    private static OrderActions GetPackingActions() {
-      OrderActions actions = new OrderActions();
-
-      actions.CanApply = false;
-      actions.CanAuthorize = false;
-      actions.CanEdit = false;
-      actions.TransportPackaging = false;
-      actions.CanSelectCarrier = true;
-      actions.CanShipping = false;
-      actions.CanClose = false;
-
-      return actions;
-    }
-
-    private static OrderActions GetCancellActions() {
-      OrderActions actions = new OrderActions();
-      return actions;
-    }
-
-      private static void SetAuthorizedActions(SalesOrder order) {
+    private static void SetAuthorizedActions(SalesOrder order) {
       switch (order.Status) {
-        case OrderStatus.Captured: order.Actions = GetCaptureActions(); break;
-        case OrderStatus.Applied:  order.Actions = GetApplyActions(); break;
-        case OrderStatus.Authorized: order.Actions = GetAuthorizedActions(); break;
-        case OrderStatus.Packing: order.Actions = GetPackingActions(); break;
-        case OrderStatus.Cancelled: order.Actions = GetCancellActions(); break;
+        case OrderStatus.Captured: order.Actions = OrderActions.GetCaptureActions(); break;
+        case OrderStatus.Applied:  order.Actions = OrderActions.GetApplyActions(); break;
+        case OrderStatus.Authorized: order.Actions = OrderActions.GetAuthorizedActions(); break;
+        case OrderStatus.Packing: order.Actions = OrderActions.GetPackingActions(); break;
+        case OrderStatus.Cancelled: order.Actions = OrderActions.GetCancellActions(); break;
       }
 
     }

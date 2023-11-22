@@ -138,11 +138,7 @@ namespace Empiria.Trade.Orders {
       get;
       protected set;
     }
-
-    public OrderActions Actions {
-      get;
-      protected set;
-    }
+      
     
     #endregion Public properties
 
@@ -173,40 +169,6 @@ namespace Empiria.Trade.Orders {
     Empty = 'E'
   } // enum AutorizationStatus
 
-  public class OrderActions {
-
-    public OrderActions () {
-    }
-
-    public Boolean CanEdit {
-      get; set;
-    } = false;
-
-    public Boolean CanApply {
-      get; set;
-    } = false;
-
-    public Boolean CanAuthorize {
-      get; set;
-    } = false;
-
-    public Boolean TransportPackaging {
-      get; set;
-    } = false;
-
-    public Boolean CanSelectCarrier {
-      get; set;
-    } = false;
-
-    public Boolean CanShipping {
-      get; set;
-    } = false;
-
-    public Boolean CanClose {
-      get; set;
-    } = false;
-
-
-  }  //  class OrderActionsDto
+  
 
 }  // namespace Empiria.Trade.Orders
