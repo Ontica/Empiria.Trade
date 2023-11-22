@@ -169,32 +169,12 @@ namespace Empiria.Trade.Sales {
       var orders = SalesOrderData.GetSalesOrdersToAuthorize(fields);
 
       return GetOrderItems(orders);
-      //List<SalesOrder> salesOrders = new List<SalesOrder>();
-
-      //foreach (var order in orders) {
-      //  order.SalesOrderItems = SalesOrderItem.GetOrderItems(order.Id);
-      //  SetOrderTotals(order);
-      //  salesOrders.Add(order);
-      //  SetAuthorizedActions(order);
-      //}
-
-      //return salesOrders.ToFixedList<SalesOrder>();
     }
 
     internal static FixedList<SalesOrder> GetOrdersToPacking(SearchOrderFields fields) {
       var orders = SalesOrderData.GetSalesOrdersToPacking(fields);
 
       return GetOrderItems(orders);
-      //List<SalesOrder> salesOrders = new List<SalesOrder>();
-
-      //foreach (var order in orders) {
-      //  order.SalesOrderItems = SalesOrderItem.GetOrderItems(order.Id);
-      //  SetOrderTotals(order);
-      //  salesOrders.Add(order);
-      //  SetAuthorizedActions(order);
-      //}
-
-      //return salesOrders.ToFixedList<SalesOrder>();
     }
 
     #endregion Public methods
