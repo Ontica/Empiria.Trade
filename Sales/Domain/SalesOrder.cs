@@ -145,46 +145,56 @@ namespace Empiria.Trade.Sales {
       Save();
     }
 
-    static public FixedList<SalesOrder> GetOrders(SearchOrderFields fields) {
+    public void Authorize() {
+      AuthorizationStatus = OrderAuthorizationStatus.Authorized;
+      this.AuthorizationTime = DateTime.Now;
+      this.AuthorizatedById = ExecutionServer.CurrentUserId;
+
+      this.Status = OrderStatus.Packing;
+      this.Actions = GetAuthorizedActions();
+
+      SalesOrderData.Write(this);
+      this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id);
+
+      SetOrderTotals();
+    }
+
+    static public FixedList<SalesOrder> GetOrders(SearchOrderFields fields) {          
       var orders = SalesOrderData.GetSalesOrders(fields);
-      List<SalesOrder> salesOrders = new List<SalesOrder>();
 
-      foreach (var order in orders) {
-        order.SalesOrderItems = SalesOrderItem.GetOrderItems(order.Id);
-        SetOrderTotals(order);
-        salesOrders.Add(order);
-        SetAuthorizedActions(order);
-      }
-
-      return salesOrders.ToFixedList<SalesOrder>();
+      return GetOrderItems(orders);
     }
 
     static public FixedList<SalesOrder> GetOrdersToAuthorize(SearchOrderFields fields) {
       var orders = SalesOrderData.GetSalesOrdersToAuthorize(fields);
-      List<SalesOrder> salesOrders = new List<SalesOrder>();
 
-      foreach (var order in orders) {
-        order.SalesOrderItems = SalesOrderItem.GetOrderItems(order.Id);
-        SetOrderTotals(order);
-        salesOrders.Add(order);
-        SetAuthorizedActions(order);
-      }
+      return GetOrderItems(orders);
+      //List<SalesOrder> salesOrders = new List<SalesOrder>();
 
-      return salesOrders.ToFixedList<SalesOrder>();
+      //foreach (var order in orders) {
+      //  order.SalesOrderItems = SalesOrderItem.GetOrderItems(order.Id);
+      //  SetOrderTotals(order);
+      //  salesOrders.Add(order);
+      //  SetAuthorizedActions(order);
+      //}
+
+      //return salesOrders.ToFixedList<SalesOrder>();
     }
 
     internal static FixedList<SalesOrder> GetOrdersToPacking(SearchOrderFields fields) {
       var orders = SalesOrderData.GetSalesOrdersToPacking(fields);
-      List<SalesOrder> salesOrders = new List<SalesOrder>();
 
-      foreach (var order in orders) {
-        order.SalesOrderItems = SalesOrderItem.GetOrderItems(order.Id);
-        SetOrderTotals(order);
-        salesOrders.Add(order);
-        SetAuthorizedActions(order);
-      }
+      return GetOrderItems(orders);
+      //List<SalesOrder> salesOrders = new List<SalesOrder>();
 
-      return salesOrders.ToFixedList<SalesOrder>();
+      //foreach (var order in orders) {
+      //  order.SalesOrderItems = SalesOrderItem.GetOrderItems(order.Id);
+      //  SetOrderTotals(order);
+      //  salesOrders.Add(order);
+      //  SetAuthorizedActions(order);
+      //}
+
+      //return salesOrders.ToFixedList<SalesOrder>();
     }
 
     #endregion Public methods
@@ -258,19 +268,21 @@ namespace Empiria.Trade.Sales {
       return orderSalesStatus.ToFixedList<NamedEntityDto>();
     }
 
-    public void Authorize() {
-     AuthorizationStatus = OrderAuthorizationStatus.Authorized;
-     this.AuthorizationTime = DateTime.Now;
-     this.AuthorizatedById = ExecutionServer.CurrentUserId;
 
-     this.Status = OrderStatus.Packing;
-     this.Actions = GetAuthorizedActions();
-      
-     SalesOrderData.Write(this);
-     this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id);
+    static private FixedList<SalesOrder> GetOrderItems(FixedList<SalesOrder> orders) {
+      List<SalesOrder> salesOrders = new List<SalesOrder>();
 
-     SetOrderTotals();
+      foreach (var order in orders) {
+        order.SalesOrderItems = SalesOrderItem.GetOrderItems(order.Id);
+        SetOrderTotals(order);
+        salesOrders.Add(order);
+        SetAuthorizedActions(order);
+      }
+
+      return salesOrders.ToFixedList<SalesOrder>();
     }
+
+    
 
     internal static FixedList<NamedEntityDto> GetAuthorizationStatusList() {
       var authorized = new NamedEntityDto("authorized", "Autorizado");

@@ -32,7 +32,7 @@ namespace Empiria.Trade.Sales.UseCases {
 
     #region Use cases
 
-    public SalesOrderDto ProcessSalesOrder(SalesOrderFields fields) {
+    public ISalesOrderDto ProcessSalesOrder(SalesOrderFields fields) {
       Assertion.Require(fields, "fields");
 
       SalesOrder order;
@@ -48,7 +48,7 @@ namespace Empiria.Trade.Sales.UseCases {
     }
 
 
-    public SalesOrderDto CreateSalesOrder(SalesOrderFields fields) {
+    public ISalesOrderDto CreateSalesOrder(SalesOrderFields fields) {
       Assertion.Require(fields, "fields");
 
       var order = new SalesOrder(fields);
@@ -60,32 +60,28 @@ namespace Empiria.Trade.Sales.UseCases {
       return orderDto;
     }
 
-    public FixedList<SalesOrderDto> GetOrders(SearchOrderFields fields) {
+    public FixedList<ISalesOrderDto> GetOrders(SearchOrderFields fields) {
       Assertion.Require(fields, "fields");
 
-      FixedList<SalesOrder> salesOrdersList = SalesOrder.GetOrders(fields);
+      switch (fields.QueryType) {
+        case "SalesOrdersAuthorization": {
+          FixedList<SalesOrder> salesOrders = SalesOrder.GetOrdersToAuthorize(fields);
+          return SalesOrderMapper.MapSalesOrderAuthorizationList(salesOrders);
+        }
+        case "SalesOrdersPacking": {
+          FixedList<SalesOrder> salesOrdersPacking = SalesOrder.GetOrdersToPacking(fields);
+          return SalesOrderMapper.MapSalesOrderPackingList(salesOrdersPacking);
+        }
+
+        default: {
+          var salesOrdersList = SalesOrder.GetOrders(fields);
+          return SalesOrderMapper.Map(salesOrdersList);
+        }
+      } 
      
-     return SalesOrderMapper.Map(salesOrdersList);
     }
-
-    public FixedList<SalesOrdersAuthorizationDto> GetOrdersAuthorization(SearchOrderFields fields) {
-      Assertion.Require(fields, "fields");
-
-      FixedList<SalesOrder> salesOrdersList = SalesOrder.GetOrdersToAuthorize(fields);
-
-      return SalesOrderMapper.MapSalesOrderAuthorizationList(salesOrdersList);
-    }
-
-    public FixedList<SalesOrderPackingDto> GetOrdersPacking(SearchOrderFields fields) {
-
-      Assertion.Require(fields, "fields");
-
-      FixedList<SalesOrder> salesOrdersList = SalesOrder.GetOrdersToPacking(fields);
-
-      return SalesOrderMapper.MapSalesOrderPackingList(salesOrdersList);
-    }
-
-    public SalesOrderDto CancelSalesOrder(string orderUID) {
+    
+    public ISalesOrderDto CancelSalesOrder(string orderUID) {
       Assertion.Require(orderUID, "orderUID");
 
       var order = SalesOrder.Parse(orderUID);
@@ -96,7 +92,7 @@ namespace Empiria.Trade.Sales.UseCases {
       return orderDto;
     }
 
-    public SalesOrderDto ApplySalesOrder(string orderUID) {
+    public ISalesOrderDto ApplySalesOrder(string orderUID) {
       Assertion.Require(orderUID, "orderUID");
 
       var order = SalesOrder.Parse(orderUID);
@@ -107,7 +103,7 @@ namespace Empiria.Trade.Sales.UseCases {
       return orderDto;
     }
 
-    public SalesOrderDto UpdateSalesOrder(SalesOrderFields fields) {
+    public ISalesOrderDto UpdateSalesOrder(SalesOrderFields fields) {
       Assertion.Require(fields, "fields");
 
       if (fields.Status != Orders.OrderStatus.Captured) {
@@ -125,7 +121,7 @@ namespace Empiria.Trade.Sales.UseCases {
       return SalesOrder.GetStatusList();
     }
 
-    public SalesOrderDto AuthorizeSalesOrder(string orderUID) {
+    public ISalesOrderDto AuthorizeSalesOrder(string orderUID) {
 
       Assertion.Require(orderUID, "orderUID");
 

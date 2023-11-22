@@ -80,6 +80,33 @@ namespace Empiria.Trade.Sales.Data {
       return DataReader.GetFixedList<SalesOrder>(dataOperation);
     }
 
+    internal static FixedList<SalesOrder> GetSalesOrdersToPacking(SearchOrderFields fields) {
+      var toDate = fields.ToDate.ToString("yyyy-dd-MM");
+      var fromDate = fields.FromDate.ToString("yyyy-dd-MM");
+
+      string keywords = string.Empty;
+      string status = string.Empty;
+
+      if (fields.Keywords != string.Empty) {
+        keywords = $" {SearchExpression.ParseAndLikeKeywords("OrderKeywords", fields.Keywords)} AND ";
+      }
+
+      if (fields.Status != Orders.OrderStatus.Empty) {
+        status = $" AND (OrderAuthorizationStatus = '{(char) fields.Status}')";
+      } else {
+        status = " AND ((OrderAuthorizationStatus = 'I') or (OrderAuthorizationStatus = 'U') or (OrderAuthorizationStatus = 'Y'))";
+      }
+
+      var sql = "SELECT * FROM TRDOrders " +
+               $"WHERE {keywords}  (orderTime >= CONVERT(SMALLDATETIME, '{fromDate}') AND " +
+               $"orderTime <= CONVERT(SMALLDATETIME,'{toDate}'))  {status} ";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetFixedList<SalesOrder>(dataOperation);
+
+    }
+
     internal static void Write(SalesOrder o) {
         var op = DataOperation.Parse("writeOrder", o.Id, o.UID, o.OrderTypeId, o.Customer.Id, o.Supplier.Id,
                                     o.SalesAgent.Id, o.OrderNumber, o.OrderTime, o.Notes,

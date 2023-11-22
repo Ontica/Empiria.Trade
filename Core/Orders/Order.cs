@@ -163,7 +163,7 @@ namespace Empiria.Trade.Orders {
     Pending = 'W',
     ToSupply = 'I',
     InProgress = 'U',
-    Supplied = 'Y'
+    Suppled = 'Y'
 
   } // enum OrderStatus
 

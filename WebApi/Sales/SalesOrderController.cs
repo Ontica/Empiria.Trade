@@ -31,7 +31,7 @@ namespace Empiria.Trade.Sales.WebApi {
 
       using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
 
-        SalesOrderDto orderDto = usecases.ProcessSalesOrder(fields);
+        ISalesOrderDto orderDto = usecases.ProcessSalesOrder(fields);
 
         return new SingleObjectModel(this.Request, orderDto);
       }
@@ -46,7 +46,7 @@ namespace Empiria.Trade.Sales.WebApi {
 
       using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
 
-        SalesOrderDto orderDto = usecases.CreateSalesOrder(fields);
+        ISalesOrderDto orderDto = usecases.CreateSalesOrder(fields);
 
         return new SingleObjectModel(this.Request, orderDto);
       }
@@ -61,7 +61,7 @@ namespace Empiria.Trade.Sales.WebApi {
 
       using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
 
-        SalesOrderDto orderDto = usecases.CancelSalesOrder(orderUID);
+        ISalesOrderDto orderDto = usecases.CancelSalesOrder(orderUID);
 
         return new SingleObjectModel(this.Request, orderDto);
         }
@@ -76,7 +76,7 @@ namespace Empiria.Trade.Sales.WebApi {
 
       using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
 
-        SalesOrderDto orderDto = usecases.ApplySalesOrder(orderUID);
+        ISalesOrderDto orderDto = usecases.ApplySalesOrder(orderUID);
 
         return new SingleObjectModel(this.Request, orderDto);
       }
@@ -91,7 +91,7 @@ namespace Empiria.Trade.Sales.WebApi {
 
       using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
 
-        SalesOrderDto orderDto = usecases.UpdateSalesOrder(fields);
+        ISalesOrderDto orderDto = usecases.UpdateSalesOrder(fields);
 
         return new SingleObjectModel(this.Request, orderDto);
       }
@@ -105,23 +105,11 @@ namespace Empiria.Trade.Sales.WebApi {
       base.RequireBody(fields);
       using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
 
-        switch (fields.QueryType) {
-          case "SalesOrdersAuthorization": {
-            FixedList<SalesOrdersAuthorizationDto> salesOrdersAuthorization = usecases.GetOrdersAuthorization(fields);
-            return new CollectionModel(base.Request, salesOrdersAuthorization);
-          }
+        FixedList<ISalesOrderDto> salesOrders = usecases.GetOrders(fields);
+        return new CollectionModel(base.Request, salesOrders);  
 
-          case "SalesOrdersPacking": {
-            FixedList<SalesOrderPackingDto> salesOrdersPacking = usecases.GetOrdersPacking(fields);
-            return new CollectionModel(base.Request, salesOrdersPacking);
-          }
-          default: {
-            FixedList<SalesOrderDto> salesOrders = usecases.GetOrders(fields);
-            return new CollectionModel(base.Request, salesOrders);
-          }
-        } 
-              
-      } // using 
+
+    } // using 
 
     }
 
@@ -166,7 +154,7 @@ namespace Empiria.Trade.Sales.WebApi {
       base.RequireResource(orderUID, "orderUID");
 
       using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
-        SalesOrderDto orderDto = usecases.AuthorizeSalesOrder(orderUID);
+        ISalesOrderDto orderDto = usecases.AuthorizeSalesOrder(orderUID);
 
         return new SingleObjectModel(this.Request, orderDto);
       }

@@ -18,7 +18,7 @@ namespace Empiria.Trade.Sales.Adapters {
   /// <summary> Methods used to map Order. </summary>
   static public class SalesOrderMapper {
 
-    static public SalesOrderDto Map(SalesOrder order) {
+    static public ISalesOrderDto Map(SalesOrder order) {
       var dto = new SalesOrderDto {
         UID = order.UID,
         OrderNumber = order.OrderNumber,
@@ -46,7 +46,7 @@ namespace Empiria.Trade.Sales.Adapters {
       return dto;
     }
 
-    static public SalesOrdersAuthorizationDto MapSalesOrderAuthorization(SalesOrder order) {
+    static public ISalesOrderDto MapSalesOrderAuthorization(SalesOrder order) {
 
       var dto = new SalesOrdersAuthorizationDto {
         UID = order.UID,
@@ -76,7 +76,7 @@ namespace Empiria.Trade.Sales.Adapters {
       return dto;
     }
 
-    static public SalesOrderPackingDto MapSalesOrderPacking(SalesOrder order) {
+    static public ISalesOrderDto MapSalesOrderPacking(SalesOrder order) {
 
       var dto = new SalesOrderPackingDto {
         UID = order.UID,
@@ -107,8 +107,8 @@ namespace Empiria.Trade.Sales.Adapters {
       return dto;
     }
 
-    static public FixedList<SalesOrdersAuthorizationDto> MapSalesOrderAuthorizationList(FixedList<SalesOrder> salesOrders) {
-      List<SalesOrdersAuthorizationDto> salesOrderDtoList = new List<SalesOrdersAuthorizationDto>();
+    static public FixedList<ISalesOrderDto> MapSalesOrderAuthorizationList(FixedList<SalesOrder> salesOrders) {
+      List<ISalesOrderDto> salesOrderDtoList = new List<ISalesOrderDto>();
 
       foreach (var salesOrder in salesOrders) {
         salesOrderDtoList.Add(MapSalesOrderAuthorization(salesOrder));
@@ -117,8 +117,8 @@ namespace Empiria.Trade.Sales.Adapters {
       return salesOrderDtoList.ToFixedList();
     }
 
-    static public FixedList<SalesOrderPackingDto> MapSalesOrderPackingList(FixedList<SalesOrder> salesOrders) {
-      List<SalesOrderPackingDto> salesOrderDtoList = new List<SalesOrderPackingDto>();
+    static public FixedList<ISalesOrderDto> MapSalesOrderPackingList(FixedList<SalesOrder> salesOrders) {
+      List<ISalesOrderDto> salesOrderDtoList = new List<ISalesOrderDto>();
 
       foreach (var salesOrder in salesOrders) {
         salesOrderDtoList.Add(MapSalesOrderPacking(salesOrder));
@@ -127,8 +127,8 @@ namespace Empiria.Trade.Sales.Adapters {
       return salesOrderDtoList.ToFixedList();
     }
 
-    static public FixedList<SalesOrderDto> Map(FixedList<SalesOrder> salesOrders) {
-      List<SalesOrderDto> salesOrderDtoList = new List<SalesOrderDto>();
+    static public FixedList<ISalesOrderDto> Map(FixedList<SalesOrder> salesOrders) {
+      List<ISalesOrderDto> salesOrderDtoList = new List<ISalesOrderDto>();
 
       foreach (var salesOrder in salesOrders) {
         salesOrderDtoList.Add(Map(salesOrder));
