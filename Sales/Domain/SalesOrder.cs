@@ -9,14 +9,11 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading;
 using Empiria.Trade.Core;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Sales.Data;
-using Newtonsoft.Json.Linq;
+
 
 namespace Empiria.Trade.Sales {
 
@@ -227,32 +224,6 @@ namespace Empiria.Trade.Sales {
 
     }
 
-    internal static FixedList<NamedEntityDto> GetStatusList() {
-
-     var captured = new NamedEntityDto("Captured", "Capturada");
-     var applied = new NamedEntityDto("Applied", "Aplicada");
-     var authorized = new NamedEntityDto("Authorized", "Autorizada");
-     var packing = new NamedEntityDto("Packing", "Surtiendose");
-     var carrierSelector = new NamedEntityDto("CarrierSelector", "Seleccion de paqueteria");
-     var shipping = new NamedEntityDto("Shipping", "Envio");
-     var delivery = new NamedEntityDto("Delivery", "Entrega");
-     var closed = new NamedEntityDto("Closed", "Cerrada");
-     var cancelled = new NamedEntityDto("Cancelled", "Cancelada");
-
-      List<NamedEntityDto> orderSalesStatus = new List<NamedEntityDto>();
-      orderSalesStatus.Add(captured);
-      orderSalesStatus.Add(applied);
-      orderSalesStatus.Add(authorized);
-      orderSalesStatus.Add(packing);
-      orderSalesStatus.Add(carrierSelector);
-      orderSalesStatus.Add(shipping);
-      orderSalesStatus.Add(delivery);
-      orderSalesStatus.Add(closed);
-      orderSalesStatus.Add(cancelled);
-
-      return orderSalesStatus.ToFixedList<NamedEntityDto>();
-    }
-
 
     static private FixedList<SalesOrder> GetOrderItems(FixedList<SalesOrder> orders) {
       List<SalesOrder> salesOrders = new List<SalesOrder>();
@@ -266,35 +237,6 @@ namespace Empiria.Trade.Sales {
 
       return salesOrders.ToFixedList<SalesOrder>();
     }
-
-    
-
-    internal static FixedList<NamedEntityDto> GetAuthorizationStatusList() {
-      var authorized = new NamedEntityDto("authorized", "Autorizado");
-      var pending = new NamedEntityDto("pending", "Por Autorizar");   
-
-      List<NamedEntityDto> orderSalesStatus = new List<NamedEntityDto>();
-
-      orderSalesStatus.Add(authorized);
-      orderSalesStatus.Add(pending);
-      
-
-      return orderSalesStatus.ToFixedList<NamedEntityDto>();
-    }
-
-    internal static FixedList<NamedEntityDto> GetPackingStatusList() {
-      var toSupply = new NamedEntityDto("ToSupply", "Por surtir");
-      var inprogress = new NamedEntityDto("InProgress", "En proceso");
-      var supplied = new NamedEntityDto("Suppled", "Surtido");
-      List<NamedEntityDto> orderPackcingStatusList = new List<NamedEntityDto>();
-
-      orderPackcingStatusList.Add(toSupply);
-      orderPackcingStatusList.Add(inprogress);
-      orderPackcingStatusList.Add(supplied);
-
-      return orderPackcingStatusList.ToFixedList<NamedEntityDto>();
-    }
-       
 
     private static void SetAuthorizedActions(SalesOrder order) {
       switch (order.Status) {

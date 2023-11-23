@@ -118,7 +118,7 @@ namespace Empiria.Trade.Sales.UseCases {
     }
 
     public FixedList<NamedEntityDto> GetStatusList() {
-      return SalesOrder.GetStatusList();
+      return SalesOrderStatusService.GetStatusList();
     }
 
     public ISalesOrderDto AuthorizeSalesOrder(string orderUID) {
@@ -138,11 +138,11 @@ namespace Empiria.Trade.Sales.UseCases {
     }
 
     public FixedList<NamedEntityDto> GetAuthorizationStatusList() {
-      return SalesOrder.GetAuthorizationStatusList();
+      return SalesOrderStatusService.GetAuthorizationStatusList();
     }
 
     public FixedList<NamedEntityDto> GetPackingStatusList() {
-      return Sales.SalesOrder.GetPackingStatusList();
+      return SalesOrderStatusService.GetPackingStatusList();
     }
 
     #endregion Use cases
@@ -150,3 +150,6 @@ namespace Empiria.Trade.Sales.UseCases {
   } // class SalesOrderUseCases
 
 } //namespace Empiria.Trade.Sales.UseCases
+
+
+

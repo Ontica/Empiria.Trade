@@ -1,13 +1,29 @@
-﻿using System;
+﻿/* Empiria Trade *********************************************************************************************
+*                                                                                                            *
+*  Module   : Sales Order Actions Management             Component : Domain Layer                            *
+*  Assembly : Empiria.Trade.Sales.dll                    Pattern   : Partitioned Type / Information Holder   *
+*  Type     : SalesOrderActions                          License   : Please read LICENSE.txt file            *
+*                                                                                                            *
+*  Summary  : Represents a sales order actions.                                                                      *
+*                                                                                                            *
+************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
+using System;
 
 
 namespace Empiria.Trade.Sales {
 
-
+  /// <summary>Represents a sales order actions. </summary>
   public class OrderActions {
+
+    #region Constructors and parsers
 
     public OrderActions() {
     }
+
+    #endregion Constructors and parsers
+
+
+    #region Public properties
 
     public Boolean CanEdit {
       get; set;
@@ -37,6 +53,9 @@ namespace Empiria.Trade.Sales {
       get; set;
     } = false;
 
+    #endregion Public properties
+
+    #region Internal methods
 
     internal static OrderActions GetApplyActions() {
       OrderActions actions = new OrderActions();
@@ -98,5 +117,9 @@ namespace Empiria.Trade.Sales {
       return actions;
     }
 
+    #endregion Internal methods
+
   }  //  class OrderActionsDto
-}
+
+} // namespace Empiria.Trade.Sales
+
