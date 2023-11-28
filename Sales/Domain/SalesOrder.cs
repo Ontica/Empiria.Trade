@@ -164,19 +164,19 @@ namespace Empiria.Trade.Sales {
     static public FixedList<SalesOrder> GetOrders(SearchOrderFields fields) {          
       var orders = SalesOrderData.GetSalesOrders(fields);
 
-      return GetOrderItems(orders);
+      return GetOrderItems(orders, "Pedidos");
     }
 
     static public FixedList<SalesOrder> GetOrdersToAuthorize(SearchOrderFields fields) {
       var orders = SalesOrderData.GetSalesOrdersToAuthorize(fields);
 
-      return GetOrderItems(orders);
+      return GetOrderItems(orders ,"Autorizacion");
     }
 
     internal static FixedList<SalesOrder> GetOrdersToPacking(SearchOrderFields fields) {
       var orders = SalesOrderData.GetSalesOrdersToPacking(fields);
 
-      return GetOrderItems(orders);
+      return GetOrderItems(orders,"Surtido");
     }
 
     #endregion Public methods
@@ -225,23 +225,29 @@ namespace Empiria.Trade.Sales {
     }
 
 
-    static private FixedList<SalesOrder> GetOrderItems(FixedList<SalesOrder> orders) {
+    static private FixedList<SalesOrder> GetOrderItems(FixedList<SalesOrder> orders, string queryType) {
       List<SalesOrder> salesOrders = new List<SalesOrder>();
 
       foreach (var order in orders) {
         order.SalesOrderItems = SalesOrderItem.GetOrderItems(order.Id);
         SetOrderTotals(order);
         salesOrders.Add(order);
-        SetAuthorizedActions(order);
+        SetAuthorizedActions(order, queryType);
       }
 
       return salesOrders.ToFixedList<SalesOrder>();
     }
 
-    private static void SetAuthorizedActions(SalesOrder order) {
+    private static void SetAuthorizedActions(SalesOrder order, string queryType) {
       switch (order.Status) {
         case OrderStatus.Captured: order.Actions = OrderActions.GetCaptureActions(); break;
-        case OrderStatus.Applied:  order.Actions = OrderActions.GetApplyActions(); break;
+        case OrderStatus.Applied: {
+          order.Actions = OrderActions.GetApplyActions();
+          if (queryType == "Pedidos") {
+            order.Actions.CanAuthorize = false;
+          }
+        }
+        break;
         case OrderStatus.Authorized: order.Actions = OrderActions.GetAuthorizedActions(); break;
         case OrderStatus.Packing: order.Actions = OrderActions.GetPackingActions(); break;
         case OrderStatus.Cancelled: order.Actions = OrderActions.GetCancellActions(); break;
