@@ -30,14 +30,14 @@ namespace Empiria.Trade.ShippingAndHandling {
 
     static public PackagingOrder Parse(int id, bool reload) => ParseId<PackagingOrder>(id, reload);
 
-    //static public PackagingOrder Parse(string uid) => ParseKey<PackagingOrder>(uid);
+    static public PackagingOrder Parse(string uid) => ParseKey<PackagingOrder>(uid);
 
     static public PackagingOrder Empty => ParseEmpty<PackagingOrder>();
 
 
-    public PackagingOrder(PackingFields fields) {
+    public PackagingOrder(string orderUID, PackingOrderFields fields) {
 
-      MapToPackagingOrder(fields);
+      MapToPackagingOrder(orderUID, fields);
 
     }
 
@@ -55,22 +55,15 @@ namespace Empiria.Trade.ShippingAndHandling {
     }
 
 
+    [DataField("OrderPackingUID")]
+    public string OrderPackingUID {
+      get;
+      internal set;
+    }
+
+
     [DataField("OrderId")]
     public int OrderId {
-      get;
-      internal set;
-    }
-
-
-    [DataField("OrderItemId")]
-    public int OrderItemId {
-      get;
-      internal set;
-    }
-
-
-    [DataField("PackageQuantity")]
-    public decimal PackageQuantity {
       get;
       internal set;
     }
@@ -83,16 +76,18 @@ namespace Empiria.Trade.ShippingAndHandling {
     }
 
 
+    [DataField("Size")]
+    public string Size {
+      get;
+      internal set;
+    }
+
+
     public Order Order {
       get;
       internal set;
     }
 
-
-    public OrderItem OrderItem {
-      get;
-      internal set;
-    }
 
     #endregion Properties
 
@@ -107,14 +102,13 @@ namespace Empiria.Trade.ShippingAndHandling {
     }
 
 
-    private void MapToPackagingOrder(PackingFields fields) {
+    private void MapToPackagingOrder(string orderUID, PackingOrderFields fields) {
 
-      this.Order = Order.Parse(fields.OrderUID);
-      this.OrderItem = OrderItem.Parse(fields.OrderItemUID);
-      this.PackageQuantity = fields.PackageQuantity;
-      this.PackageID = fields.PackageID;
+      this.Order = Order.Parse(orderUID); 
+      this.OrderPackingUID = Guid.NewGuid().ToString();
       this.OrderId = Order.Id;
-      this.OrderItemId = OrderItem.Id;
+      this.PackageID = fields.PackageID;
+      this.Size = fields.Size;
 
     }
 

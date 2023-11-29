@@ -18,6 +18,9 @@ using Empiria.Tests;
 using Empiria.Trade.ShippingAndHandling.UseCases;
 using Empiria.Trade.ShippingAndHandling.Adapters;
 using System.Collections.Generic;
+using Empiria.Trade.Sales;
+using Empiria.Trade.Orders;
+using Empiria.Trade.ShippingAndHandling;
 
 namespace Empiria.Trade.Tests {
 
@@ -39,52 +42,47 @@ namespace Empiria.Trade.Tests {
 
 
     [Fact]
-    public void CreatePackingOrderTest() {
+    public void GetPackingByOrderTest() {
 
       var usecase = ShippingAndHandlingUseCases.UseCaseInteractor();
+      string uid = "a769e40f-3fbd-45af-9022-11d482024a8f";
 
-      PackingOrderFields packingOrder = GetFields();
-
-      FixedList<IShippingAndHandling> sut = usecase.CreatePackingOrder(packingOrder);
+      IShippingAndHandling sut = usecase.GetPackingByOrder(uid);
 
       Assert.NotNull(sut);
 
     }
 
 
-    private PackingOrderFields GetFields() {
+    [Fact]
+    public void CreatePackingOrderTest() {
 
-      var packagingOrder = new PackingOrderFields();
-      var fieldsList = new List<PackingFields>();
-      var orderUid = "57335a81-56cf-477d-84e2-3193849210e1";
+      var usecase = ShippingAndHandlingUseCases.UseCaseInteractor();
+      
+      string orderUID = "57335a81-56cf-477d-84e2-3193849210e1";
 
-      var field1 = new PackingFields {
-        OrderUID = orderUid,
-        OrderItemUID = "85836afb-b4ee-4552-803e-0ee40bd096f9",
-        PackageQuantity = 3,
-        PackageID = "CAJA 1"
+      var packing = new PackingOrderFields {
+        OrderUID = "57335a81-56cf-477d-84e2-3193849210e1",
+        PackageID = "CAJA 1",
+        Size = "GRANDE"
       };
-      fieldsList.Add(field1);
+      
+      IShippingAndHandling sut = usecase.CreatePackingOrder(orderUID, packing);
 
-      var field2 = new PackingFields {
-        OrderUID = orderUid,
-        OrderItemUID = "93bd32f9-feb2-46bb-9b49-c2587f9fe995",
-        PackageQuantity = 3,
-        PackageID = "CAJA 2"
-      };
-      fieldsList.Add(field2);
+      Assert.NotNull(sut);
 
-      var field3 = new PackingFields {
-        OrderUID = orderUid,
-        OrderItemUID = "bc1fba5d-4a05-47bd-b185-3104ddafa9a2",
-        PackageQuantity = 3,
-        PackageID = "CAJA 3"
-      };
-      fieldsList.Add(field3);
+    }
 
-      packagingOrder.PackingFields = fieldsList.ToFixedList();
 
-      return packagingOrder;
+    [Fact]
+    public void GetPackageTypesTest() {
+
+      var usecase = ShippingAndHandlingUseCases.UseCaseInteractor();
+
+      FixedList<INamedEntity> sut = usecase.GetPackageTypeList();
+
+      Assert.NotNull(sut);
+
     }
 
 

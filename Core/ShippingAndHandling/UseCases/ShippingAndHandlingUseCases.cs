@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using Empiria.Services;
 using Empiria.Trade.ShippingAndHandling.Adapters;
+using Empiria.Trade.ShippingAndHandling.Data;
+using Empiria.Trade.ShippingAndHandling.Domain;
 
 namespace Empiria.Trade.ShippingAndHandling.UseCases {
 
@@ -36,21 +38,46 @@ namespace Empiria.Trade.ShippingAndHandling.UseCases {
     #region Use cases
 
 
-    public FixedList<IShippingAndHandling> CreatePackingOrder(PackingOrderFields fields) {
+    public FixedList<INamedEntity> GetPackageTypeList() {
 
-      var packaging = new List<PackagingOrder>();
+      var builder = new ShippingAndHandlingBuilder();
 
-      foreach (var field in fields.PackingFields) {
+      FixedList<INamedEntity> packageTypes = builder.GetPackageTypeList();
 
-        var orderShipping = new PackagingOrder(field);
+      return packageTypes;
+    }
 
-        orderShipping.Save();
 
-        packaging.Add(orderShipping);
+    public IShippingAndHandling GetPackingByOrder(string orderUid) {
 
-      }
+      var builder = new ShippingAndHandlingBuilder();
 
-      return ShippingAndHandlingMapper.MapPackagingOrder(packaging.ToFixedList());
+      FixedList<Packing> packaging = builder.GetPackingByOrder(orderUid);
+
+      return ShippingAndHandlingMapper.MapPackingDto(packaging.ToFixedList());
+
+    }
+
+
+    public IShippingAndHandling CreatePackingOrder(string orderUID, PackingOrderFields packing) {
+
+      var packagingOrder = new PackagingOrder(orderUID, packing);
+
+      packagingOrder.Save();
+
+      return ShippingAndHandlingMapper.MapPackagingOrder(packagingOrder);
+    }
+
+
+    public IShippingAndHandling UpdatePackingOrder(string packingItemUID, PackingOrderFields order) {
+
+      return new PackingOrderDto();
+    }
+
+
+    public IShippingAndHandling DeletePackingOrder(string packingItemUID) {
+      
+      return new PackingOrderDto();
     }
 
 

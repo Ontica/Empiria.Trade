@@ -16,6 +16,22 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
   public class PackingOrderFields {
 
 
+    public string OrderUID {
+      get; set;
+    }
+
+
+    public string PackageID {
+      get; set;
+    }
+
+
+    public string Size {
+      get;
+      internal set;
+    }
+
+
     public FixedList<PackingFields> PackingFields {
       get; set;
     } = new FixedList<PackingFields>();
@@ -28,21 +44,6 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
 
 
     public string OrderUID {
-      get; set;
-    }
-
-
-    public string OrderItemUID {
-      get; set;
-    }
-
-
-    public decimal PackageQuantity {
-      get; set;
-    }
-
-
-    public string PackageID {
       get; set;
     }
 

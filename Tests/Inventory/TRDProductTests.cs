@@ -57,7 +57,7 @@ namespace Empiria.Trade.Tests {
 
       var usecase = TRDProductUseCases.UseCaseInteractor();
       ProductQuery query = new ProductQuery {
-        Keywords = "BAVCG12"
+        Keywords = "TA58X412"
       };
 
       FixedList<IProductEntryDto> sut = await usecase.GetProductsList(query).ConfigureAwait(false);
@@ -139,7 +139,7 @@ namespace Empiria.Trade.Tests {
 
       string uid = "382dd00c-5be5-43b3-aeca-5d5addb72fb2";
 
-      ProductGroup sut = usecase.GetTRDProductGroup(uid);
+      ProductGroup sut = usecase.GetProductGroup(uid);
 
       Assert.NotNull(sut);
 
@@ -153,7 +153,35 @@ namespace Empiria.Trade.Tests {
 
       string uid = "UID-SUBGROUP-0000-001";
 
-      ProductSubgroup sut = usecase.GetTRDProductSubgroup(uid);
+      ProductSubgroup sut = usecase.GetProductSubgroup(uid);
+
+      Assert.NotNull(sut);
+
+    }
+
+
+    [Fact]
+    public void GetWarehouseTest() {
+
+      var usecase = TRDProductUseCases.UseCaseInteractor();
+
+      string uid = "2f6dfb0d-137b-4309-94ac-c5f7b8fbc9df";
+
+      Warehouse sut = usecase.GetWarehouse(uid);
+
+      Assert.NotNull(sut);
+
+    }
+
+
+    [Fact]
+    public void GetWarehouseBinTest() {
+
+      var usecase = TRDProductUseCases.UseCaseInteractor();
+
+      string uid = "22d33c45-c41f-426c-92f4-453fdc0ccc8a";
+
+      WarehouseBin sut = usecase.GetWarehouseBin(uid);
 
       Assert.NotNull(sut);
 

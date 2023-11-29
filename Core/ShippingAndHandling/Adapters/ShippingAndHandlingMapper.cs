@@ -8,6 +8,11 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection.Emit;
+using Empiria.Trade.Orders;
+using Empiria.Trade.Products;
 
 namespace Empiria.Trade.ShippingAndHandling.Adapters {
 
@@ -19,35 +24,103 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
     #region Public methods
 
 
-    static internal FixedList<IShippingAndHandling> MapPackagingOrder(FixedList<PackagingOrder> packagings) {
+    static internal IShippingAndHandling MapPackagingOrder(PackagingOrder packagings) {
 
-      return MapPackaging(packagings);
+      return MapEntry(packagings);
     }
 
 
+    internal static IShippingAndHandling MapPackingDto(FixedList<Packing> packings) {
+
+      return new PackingDto {
+        PackingData = MapPackingData(packings),
+        PackingItem = MapToPacking(packings),
+        MissingItems = MapToMissingItems(packings)
+      };
+
+      //return MapToPacking(packings);
+    }
+
+    
     #endregion Public methods
 
 
     #region Private methods
 
 
-    static private FixedList<IShippingAndHandling> MapPackaging(FixedList<PackagingOrder> packagings) {
+    static private PackingData MapPackingData(FixedList<Packing> packings) {
+      var data = new PackingData();
 
-      var mappedItems = packagings.Select((x) => MapEntry(x));
+      data.Size++; //TODO AGREGAR VOLUMEN A CARACTERISTICAS DE CAJA
+      data.Count = packings.Select(x => x.OrderPackingId).Count();
 
-      return new FixedList<IShippingAndHandling>(mappedItems);
+      return data;
+    }
+
+
+    private static FixedList<PackingItem> MapToPacking(FixedList<Packing> packings) {
+
+      var items = new List<PackingItem>();
+
+      foreach (var entry in packings) {
+        var item = new PackingItem();
+        item.UID= entry.OrderPackingUID;
+        item.OrderUID = entry.Order.UID;
+        item.Name = entry.PackageID;
+        item.PackageTypeUID = entry.Size; // TODO SE TOMARA DEL OBJETO PackageType
+        item.OrderItems = GetOrderItems(entry.OrderPackingUID, packings);
+
+        items.Add(item);
+      }
+
+      return items.ToFixedList();
+    }
+
+
+    static private FixedList<PackingOrderItem> GetOrderItems(string orderPackingUID,
+                                                             FixedList<Packing> packings) {
+      var packingOrderItems = new List<PackingOrderItem>();
+
+      var items = packings.FindAll(x=>x.OrderPackingUID==orderPackingUID);
+
+      foreach (var item in items) {
+        
+        var packingOrderItem = new PackingOrderItem();
+
+        packingOrderItem.WarehouseBin = WarehouseBin.Parse(item.InventoryEntry.WarehouseBinId);
+
+        packingOrderItem.MergeFieldsData(item.OrderItemId);
+
+        packingOrderItems.Add(packingOrderItem);
+      }
+
+      return packingOrderItems.ToFixedList();
+    }
+
+
+    static private FixedList<MissingItem> MapToMissingItems(FixedList<Packing> packings) {
+
+      var missingItems = new List<MissingItem>();
+
+      //foreach (var item in packings) {
+      //  var items = packings.FindAll(x => x.OrderPackingUID == item.OrderPackingUID);
+      //}
+
+      return missingItems.ToFixedList();
     }
 
 
     static private PackingOrderDto MapEntry(PackagingOrder packaging) {
 
       var dto = new PackingOrderDto();
-      dto.Item = packaging.OrderItem;
-      dto.PackageQuantity = packaging.PackageQuantity;
-      dto.PackageID= packaging.PackageID;
+      dto.Order = packaging.Order;
+      dto.PackageID = packaging.PackageID;
+      dto.Size = packaging.Size;
 
       return dto;
     }
+
+
 
 
     #endregion Private methods

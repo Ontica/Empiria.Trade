@@ -15,6 +15,7 @@ using System.Xml.Linq;
 using Empiria.WebApi;
 using Empiria.Trade.ShippingAndHandling.Adapters;
 using Empiria.Trade.ShippingAndHandling.UseCases;
+using Empiria.Trade.Orders;
 //using Empiria.Trade.Shipping.UseCases;
 
 namespace Empiria.Trade.WebApi.ShippingAndHandling {
@@ -26,17 +27,90 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
     #region Web Apis
 
 
+    //[HttpPost]
+    //[Route("v4/trade/shipping-and-handling/packing/get-detail")]
+    //public SingleObjectModel GetPackingDetail([FromBody] PackingOrderFields order) {
+
+    //  base.RequireBody(order);
+
+    //  using (var usecases = ShippingAndHandlingUseCases.UseCaseInteractor()) {
+
+    //    IShippingAndHandling packingDetail = usecases.GetPackingDetail();
+
+    //    return new SingleObjectModel(this.Request, packingDetail);
+    //  }
+    //}
+
+
+    [HttpGet]
+    [Route("v4/trade/shipping-and-handling/packing/package-type")]
+    public CollectionModel GetPackageTypeList() {
+
+      using (var usecases = ShippingAndHandlingUseCases.UseCaseInteractor()) {
+
+        FixedList<INamedEntity> packingDetail = usecases.GetPackageTypeList();
+
+        return new CollectionModel(this.Request, packingDetail);
+      }
+    }
+
+
+    [HttpGet]
+    [Route("v4/trade/shipping-and-handling/packing/{orderUID:guid}")]
+    public SingleObjectModel GetPackingDetail([FromUri] string orderUID) {
+
+      using (var usecases = ShippingAndHandlingUseCases.UseCaseInteractor()) {
+
+        IShippingAndHandling packingDetail = usecases.GetPackingByOrder(orderUID);
+
+        return new SingleObjectModel(this.Request, packingDetail);
+      }
+    }
+
+
+
     [HttpPost]
-    [Route("v4/trade/shipping-and-handling/generate-packing")]
-    public CollectionModel CreatePackingOrder([FromBody] PackingOrderFields order) {
+    [Route("v4/trade/shipping-and-handling/packing/{orderUID:guid}/packing-item")]
+    public SingleObjectModel CreatePackingOrder([FromUri] string orderUID,
+                                                [FromBody] PackingOrderFields order) {
 
       base.RequireBody(order);
 
       using (var usecases = ShippingAndHandlingUseCases.UseCaseInteractor()) {
 
-        FixedList<IShippingAndHandling> orderShippingDto = usecases.CreatePackingOrder(order);
+        IShippingAndHandling orderShippingDto = usecases.CreatePackingOrder(orderUID, order);
 
-        return new CollectionModel(this.Request, orderShippingDto);
+        return new SingleObjectModel(this.Request, orderShippingDto);
+      }
+    }
+
+
+    [HttpPut]
+    [Route("v4/trade/shipping-and-handling/packing/{orderUID:guid}/packing-item/${packingItemUID}")]
+    public SingleObjectModel UpdatePackingOrder([FromUri] string packingItemUID,
+                                                [FromBody] PackingOrderFields order) {
+      //TODO UPDATE
+      base.RequireBody(order);
+
+      using (var usecases = ShippingAndHandlingUseCases.UseCaseInteractor()) {
+
+        IShippingAndHandling orderShippingDto = usecases.UpdatePackingOrder(packingItemUID, order);
+
+        return new SingleObjectModel(this.Request, orderShippingDto);
+      }
+    }
+
+
+    [HttpDelete]
+    [Route("v4/trade/shipping-and-handling/packing/${orderUID}/packing-item/{packingItemUID:guid}")]
+    public SingleObjectModel DeletePackingOrder([FromUri] string packingItemUID) {
+      //TODO DELETE - REGRESAR EL PACKING
+      
+      using (var usecases = ShippingAndHandlingUseCases.UseCaseInteractor()) {
+
+        IShippingAndHandling orderShippingDto = usecases.DeletePackingOrder(packingItemUID);
+
+        return new SingleObjectModel(this.Request, orderShippingDto);
       }
     }
 

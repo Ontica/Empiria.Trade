@@ -23,13 +23,12 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
   /// <summary>DTO used to manage order packing output.</summary>
   public class PackingOrderDto : IShippingAndHandling {
 
-
-    public OrderItem Item {
+    public string UID {
       get; set;
     }
 
 
-    public decimal PackageQuantity {
+    public Order Order {
       get; set;
     }
 
@@ -37,6 +36,12 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
     public string PackageID {
       get; set;
     }
+
+
+    public string Size {
+      get; set;
+    }
+
 
 
   } // class PackingOrderDto

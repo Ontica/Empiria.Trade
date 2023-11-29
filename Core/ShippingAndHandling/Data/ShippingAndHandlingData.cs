@@ -9,6 +9,11 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using Empiria.Data;
+using Empiria.Trade.Core;
+using Empiria.Trade.Orders;
+using Empiria.Trade.Products;
+using Empiria.Trade.Products.Adapters;
+using Newtonsoft.Json;
 
 namespace Empiria.Trade.ShippingAndHandling.Data {
 
@@ -17,15 +22,29 @@ namespace Empiria.Trade.ShippingAndHandling.Data {
   internal class ShippingAndHandlingData {
 
 
+    internal FixedList<Packing> GetPackingByOrder(int orderId) {
+
+      string sql = "SELECT PACK.OrderPackingId, PACK.OrderPackingUID, ITEM.PackingItemId, PACK.OrderId, " +
+                   "ITEM.OrderItemId, ITEM.InventoryEntryId, PACK.PackageID, PACK.Size, ITEM.PackageQuantity " +
+                   "FROM TRDPackaging PACK " +
+                   "INNER JOIN TRDPackagingItems ITEM ON PACK.OrderPackingId = ITEM.OrderPackingId " +
+                   $"WHERE PACK.OrderId IN ({orderId})";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetPlainObjectFixedList<Packing>(dataOperation);
+
+    }
+
 
     internal static void Write(PackagingOrder order) {
 
 
       var op = DataOperation.Parse("writePackaging", order.Id,
+                                                     order.OrderPackingUID,
                                                      order.OrderId,
-                                                     order.OrderItemId,
-                                                     order.PackageQuantity,
-                                                     order.PackageID);
+                                                     order.PackageID,
+                                                     order.Size);
       DataWriter.Execute(op);
 
 
@@ -33,6 +52,20 @@ namespace Empiria.Trade.ShippingAndHandling.Data {
     }
 
 
+    internal FixedList<PackageType> GetPackageTypeList() {
+      
+      string sql = "SELECT * FROM SimpleObjects WHERE ObjectStatus = 'A' AND ObjectTypeId = 1061";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetPlainObjectFixedList<PackageType>(dataOperation);
+    }
+
+
+    #region Private methods
+
+
+    #endregion Private methods
 
   } // class ShippingAndHandlingData
 
