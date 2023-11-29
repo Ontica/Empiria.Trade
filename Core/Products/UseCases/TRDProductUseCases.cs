@@ -76,14 +76,14 @@ namespace Empiria.Trade.Products.UseCases {
     }
 
 
-    public ProductGroup GetTRDProductGroup(string productGroupUid) {
+    public ProductGroup GetProductGroup(string productGroupUid) {
       Assertion.Require(productGroupUid, "productGroupUid");
 
       return ProductGroup.Parse(productGroupUid);
     }
 
 
-    public ProductSubgroup GetTRDProductSubgroup(string productSubgroupUid) {
+    public ProductSubgroup GetProductSubgroup(string productSubgroupUid) {
       Assertion.Require(productSubgroupUid, "productSubgroupUid");
 
       return ProductSubgroup.Parse(productSubgroupUid);
@@ -105,6 +105,20 @@ namespace Empiria.Trade.Products.UseCases {
       var builder = new TRDProductBuilder();
 
       return builder.GetStockAndAddToVendorProduct(vendorProduct);
+    }
+
+
+    public Warehouse GetWarehouse(string warehouseUid) {
+      Assertion.Require(warehouseUid, "warehouseUid");
+
+      return Warehouse.Parse(warehouseUid);
+    }
+
+
+    public WarehouseBin GetWarehouseBin(string warehouseBinUid) {
+      Assertion.Require(warehouseBinUid, "warehouseBinUid");
+
+      return WarehouseBin.Parse(warehouseBinUid);
     }
 
 

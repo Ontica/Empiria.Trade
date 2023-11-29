@@ -170,9 +170,9 @@ namespace Empiria.Trade.Products.Domain {
 
       foreach (var product in products) {
         
-        var customerVendorId = GetVendorId(product, customerExtData.FromDatabase);
         var vendorId = product.Vendor.Id;
-
+        var customerVendorId = GetVendorId(product, customerExtData.FromDatabase);
+        
         if (customerVendorId == vendorId) {
           product.PriceList = GetPrice(product, customerExtData.PriceListId);
         }
@@ -192,8 +192,8 @@ namespace Empiria.Trade.Products.Domain {
       if (fromDatabase == "NK SUJETSA") {
         return 1;
       }
-
-      return 2;
+      
+      return 3;
     }
 
     private PartyExtData GetCustomerAssignedPriceNumber() {
