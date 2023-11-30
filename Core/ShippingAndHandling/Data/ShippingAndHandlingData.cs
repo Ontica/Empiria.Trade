@@ -23,7 +23,7 @@ namespace Empiria.Trade.ShippingAndHandling.Data {
 
 
     internal FixedList<Packing> GetPackingByOrder(string orderUid) {
-      
+
       int orderId = Order.Parse(orderUid).Id;
 
       string sql = "SELECT PACK.OrderPackingId, PACK.OrderPackingUID, ITEM.PackingItemId, " +
@@ -40,12 +40,16 @@ namespace Empiria.Trade.ShippingAndHandling.Data {
     }
 
 
-    internal FixedList<InventoryEntry> GetInventoryByVendorProduct(string vendorProductUid) {
+    internal FixedList<InventoryEntry> GetInventoryByVendorProduct(
+                                        string vendorProductUid, string warehouseBinUid) {
 
       int vendorProductId = VendorProduct.Parse(vendorProductUid).Id;
-
+      var warehouseBin = string.Empty;
+      if (warehouseBinUid != string.Empty) {
+        warehouseBin = $" AND WarehouseBinId = {WarehouseBin.Parse(warehouseBinUid).Id}";
+      }
       string sql = $"SELECT * FROM TRDInventory " +
-                   $"WHERE EntryStatus = 'A' AND VendorProductId = {vendorProductId}";
+                   $"WHERE EntryStatus = 'A' AND VendorProductId = {vendorProductId} {warehouseBin}";
 
       var dataOperation = DataOperation.Parse(sql);
 
@@ -81,28 +85,42 @@ namespace Empiria.Trade.ShippingAndHandling.Data {
     }
 
 
-    internal static void Write(PackingItem order) {
+    internal static void WritePacking(PackingItem order) {
 
+      var op = DataOperation.Parse("writePackaging",
+        order.Id, order.OrderPackingUID, order.OrderId, order.PackageTypeId, order.PackageID);
 
-      var op = DataOperation.Parse("writePackaging", order.Id,
-                                                     order.OrderPackingUID,
-                                                     order.OrderId,
-                                                     order.PackageTypeId,
-                                                     order.PackageID);
       DataWriter.Execute(op);
+    }
 
 
+    internal static void WritePackingOrderItem(PackingOrderItem orderItem) {
 
+      var op = DataOperation.Parse("writePackagingItem",
+        orderItem.Id, orderItem.PackingItemUID, orderItem.OrderPackingId, orderItem.OrderId,
+        orderItem.OrderItemId, orderItem.InventoryEntryId, orderItem.Quantity);
+
+      DataWriter.Execute(op);
     }
 
 
     internal FixedList<PackageType> GetPackageTypeList() {
-      
+
       string sql = "SELECT * FROM SimpleObjects WHERE ObjectStatus = 'A' AND ObjectTypeId = 1061";
 
       var dataOperation = DataOperation.Parse(sql);
 
       return DataReader.GetPlainObjectFixedList<PackageType>(dataOperation);
+    }
+
+
+    internal void DeletePackingOrderItem(string packingItemEntryUID) {
+      
+      string sql = $"DELETE FROM TRDPackagingItems WHERE PackingItemUID = '{packingItemEntryUID}'";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      DataWriter.Execute(dataOperation);
     }
 
 

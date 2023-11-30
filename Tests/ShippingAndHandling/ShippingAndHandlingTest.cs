@@ -76,6 +76,46 @@ namespace Empiria.Trade.Tests {
 
 
     [Fact]
+    public void CreatePackingOrderItemFieldsTest() {
+
+      var usecase = ShippingAndHandlingUseCases.UseCaseInteractor();
+
+      string orderUID = "c75a25fc-92e6-493e-aefb-fc24a312898a";
+      string packingOrderUID = "789bc9f2-1304-488e-b573-d2da58f04515";
+      
+      var missingItemFields = new MissingItemField {
+        orderItemUID = "5adf0776-0528-4ccb-b89f-7618c3266674",
+        WarehouseUID = "f0061eb4-833c-44bf-8893-adcb88281d06",
+        WarehouseBinUID = "22d33c45-c41f-426c-92f4-453fdc0abc1b",
+        Quantity = 1000
+      };
+
+      IShippingAndHandling sut = usecase.CreatePackingOrderItemFields(
+                                  orderUID, packingOrderUID, missingItemFields);
+
+      Assert.NotNull(sut);
+
+    }
+
+
+    [Fact]
+    public void DeletePackingOrderItemFieldsTest() {
+
+      var usecase = ShippingAndHandlingUseCases.UseCaseInteractor();
+
+      string orderUID = "c75a25fc-92e6-493e-aefb-fc24a312898a";
+      string packingItemUID = "789bc9f2-1304-488e-b573-d2da58f04515";
+      string packingItemEntryUID = "f67be6b1-2a47-46c5-9d68-a49b8382165f";
+
+      IShippingAndHandling sut = usecase.DeletePackingOrderItem(
+                                  orderUID, packingItemUID, packingItemEntryUID);
+
+      Assert.NotNull(sut);
+
+    }
+
+
+    [Fact]
     public void GetPackageTypesTest() {
 
       var usecase = ShippingAndHandlingUseCases.UseCaseInteractor();

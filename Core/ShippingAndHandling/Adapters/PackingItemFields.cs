@@ -35,7 +35,30 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
   } // class PackingItemFields
 
 
+  public class MissingItemField {
 
+
+    public string orderItemUID {
+      get; set;
+    }
+
+
+    public string WarehouseUID {
+      get; set;
+    }
+
+
+    public string WarehouseBinUID {
+      get; set;
+    }
+
+
+    public decimal Quantity {
+      get; set;
+    }
+
+
+  } // class MissingItemField
 
 
 } // namespace Empiria.Trade.ShippingAndHandling.Adapters

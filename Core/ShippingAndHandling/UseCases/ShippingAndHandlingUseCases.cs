@@ -94,9 +94,20 @@ namespace Empiria.Trade.ShippingAndHandling.UseCases {
     }
 
 
-    public IShippingAndHandling CreatePackingOrderItemFields(string orderUID, string packingItemUID) {
-      //TODO CREAR FUNCIONES DE GUARDADO
+    public IShippingAndHandling CreatePackingOrderItemFields(
+              string orderUID, string packingItemUID, MissingItemField missingItemFields) {
+
+
       var builder = new ShippingAndHandlingBuilder();
+      
+      var inventory = builder.GetInventoryEntries(missingItemFields.orderItemUID,
+                                                  missingItemFields.WarehouseBinUID);
+
+      var packagingOrder = new PackingOrderItem(orderUID, packingItemUID,
+                                inventory.InventoryEntryId, missingItemFields);
+
+      packagingOrder.Save();
+
       PackingDto packaging = builder.GetPackingByOrder(orderUID);
 
       return packaging;
@@ -104,8 +115,13 @@ namespace Empiria.Trade.ShippingAndHandling.UseCases {
     }
 
 
-    public IShippingAndHandling DeletePackingOrderItem(string orderUID, string packingItemUID, string packingItemEntryUID) {
-      //TODO CREAR FUNCIONES DE GUARDADO
+    public IShippingAndHandling DeletePackingOrderItem(string orderUID,
+                                 string packingItemUID, string packingItemEntryUID) {
+      
+      var data = new ShippingAndHandlingData();
+
+      data.DeletePackingOrderItem(packingItemEntryUID);
+
       var builder = new ShippingAndHandlingBuilder();
       PackingDto packaging = builder.GetPackingByOrder(orderUID);
 

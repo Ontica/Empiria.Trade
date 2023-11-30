@@ -117,17 +117,18 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
 
 
     [HttpPost]
-    [Route("v4/trade/shipping-and-handling/packing/{orderUID:guid}/packing-item/{packingItemUID:guid}")]
+    [Route("v4/trade/shipping-and-handling/packing/{orderUID:guid}/packing-item/" +
+           "{packingItemUID:guid}")]
     public SingleObjectModel CreatePackingOrderItemFields([FromUri] string orderUID,
                                                 [FromUri] string packingItemUID,
-                                                [FromBody] PackingItemFields packingItemFields) {
-      //TODO CREAR OBJETO PACKINGORDERITEMFIEDLS
-      base.RequireBody(packingItemFields);
+                                                [FromBody] MissingItemField missingItemFields) {
+      
+      base.RequireBody(missingItemFields);
 
       using (var usecases = ShippingAndHandlingUseCases.UseCaseInteractor()) {
 
         IShippingAndHandling packingOrderItemFields = usecases.CreatePackingOrderItemFields(
-                                                        orderUID, packingItemUID);
+                                                        orderUID, packingItemUID, missingItemFields);
 
         return new SingleObjectModel(this.Request, packingOrderItemFields);
       }
@@ -140,8 +141,7 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
     public SingleObjectModel DeletePackingOrderItemFields([FromUri] string orderUID,
                                                           [FromUri] string packingItemUID,
                                                           [FromUri] string packingItemEntryUID) {
-      //TODO DELETE - REGRESAR EL PACKING
-
+      
       using (var usecases = ShippingAndHandlingUseCases.UseCaseInteractor()) {
 
         IShippingAndHandling packingOrderItemFields = usecases.DeletePackingOrderItem(

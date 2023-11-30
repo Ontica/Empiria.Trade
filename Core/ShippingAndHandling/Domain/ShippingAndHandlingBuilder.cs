@@ -9,6 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Products;
 using Empiria.Trade.Products.Adapters;
@@ -69,12 +70,16 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
     }
 
 
-    internal FixedList<InventoryEntry> GetInventoryByVendorProduct(string vendorProductUid) {
-      
-      var data = new ShippingAndHandlingData();
-      return data.GetInventoryByVendorProduct(vendorProductUid);
-    }
+    internal InventoryEntry GetInventoryEntries(string orderItemUID, string warehouseBinUID) {
 
+      var data = new ShippingAndHandlingData();
+
+      var orderItem = OrderItem.Parse(orderItemUID);
+      FixedList<InventoryEntry> inventories = data.GetInventoryByVendorProduct(
+                                              orderItem.VendorProduct.UID, warehouseBinUID);
+      var inventory = inventories.Last();
+      return inventory;
+    }
 
     #endregion Public methods
 

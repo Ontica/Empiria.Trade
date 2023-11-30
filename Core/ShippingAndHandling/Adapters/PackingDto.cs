@@ -86,15 +86,15 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
     }
 
 
-    public FixedList<PackingOrderItem> OrderItems {
+    public FixedList<PackingItemDetail> OrderItems {
       get; set;
-    } = new FixedList<PackingOrderItem>();
+    } = new FixedList<PackingItemDetail>();
 
 
   } // class PackingItem
 
 
-  public class PackingOrderItem : OrderItemCommonFields {
+  public class PackingItemDetail : OrderItemCommonFields {
 
     public string UID {
       get; set;

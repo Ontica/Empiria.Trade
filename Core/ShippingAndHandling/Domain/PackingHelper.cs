@@ -102,7 +102,8 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
 
       var data = new ShippingAndHandlingData();
 
-      FixedList<InventoryEntry> inventory = data.GetInventoryByVendorProduct(vendorProductUid);
+      FixedList<InventoryEntry> inventory = data.GetInventoryByVendorProduct(vendorProductUid, "");
+
       var whBinDto = new List<WarehouseBinDto>();
 
       foreach (var item in inventory) {
@@ -183,15 +184,15 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
     #region Private methods
 
 
-    static private FixedList<PackingOrderItem> GetOrderItems(string orderPackingUID,
+    static private FixedList<PackingItemDetail> GetOrderItems(string orderPackingUID,
                                                              FixedList<Packing> packings) {
-      var packingOrderItems = new List<PackingOrderItem>();
+      var packingOrderItems = new List<PackingItemDetail>();
 
       var items = packings.FindAll(x => x.OrderPackingUID == orderPackingUID);
 
       foreach (var item in items) {
 
-        var packingOrderItem = new PackingOrderItem();
+        var packingOrderItem = new PackingItemDetail();
         packingOrderItem.UID = item.PackingItemUID;
         packingOrderItem.MergeFieldsData(item.OrderItemId);
         packingOrderItem.Quantity = item.Quantity;
@@ -203,7 +204,7 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
     }
 
 
-    static private void GetWarehouses(PackingOrderItem packingOrderItem, Packing item) {
+    static private void GetWarehouses(PackingItemDetail packingOrderItem, Packing item) {
 
       if (item.InventoryEntry?.WarehouseId > 0) {
         var warehouse = Warehouse.Parse(item.InventoryEntry.WarehouseId);
@@ -220,6 +221,7 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
         var warehouseBin = WarehouseBin.Parse(item.InventoryEntry.WarehouseBinId);
         var whBinDto = new WarehouseBinDto();
         whBinDto.UID = warehouseBin.WarehouseBinUID;
+        whBinDto.OrderItemUID = packingOrderItem.OrderItemUID;
         whBinDto.Name = warehouseBin.BinCode;
         whBinDto.WarehouseName = $"Almacen {warehouseBin.Warehouse.Code}";
         //whBinDto.Stock = //TODO SACAR STOCK DE INVENTARIO-WAREHOUSE

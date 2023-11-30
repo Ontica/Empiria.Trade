@@ -103,7 +103,7 @@ namespace Empiria.Trade.ShippingAndHandling {
 
     protected override void OnSave() {
 
-      ShippingAndHandlingData.Write(this);
+      ShippingAndHandlingData.WritePacking(this);
 
     }
 

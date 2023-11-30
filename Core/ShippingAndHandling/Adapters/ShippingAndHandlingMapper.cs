@@ -52,7 +52,7 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
     #region Private methods
 
 
-    static private void GetWarehouses(PackingOrderItem packingOrderItem, Packing item) {
+    static private void GetWarehouses(PackingItemDetail packingOrderItem, Packing item) {
 
       if (item.InventoryEntry?.WarehouseId > 0) {
         var warehouse = Warehouse.Parse(item.InventoryEntry.WarehouseId);
@@ -77,15 +77,15 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
     }
 
 
-    static private FixedList<PackingOrderItem> GetOrderItems(string orderPackingUID,
+    static private FixedList<PackingItemDetail> GetOrderItems(string orderPackingUID,
                                                              FixedList<Packing> packings) {
-      var packingOrderItems = new List<PackingOrderItem>();
+      var packingOrderItems = new List<PackingItemDetail>();
 
       var items = packings.FindAll(x => x.OrderPackingUID == orderPackingUID);
 
       foreach (var item in items) {
 
-        var packingOrderItem = new PackingOrderItem();
+        var packingOrderItem = new PackingItemDetail();
         packingOrderItem.UID = item.PackingItemUID;
         packingOrderItem.MergeFieldsData(item.OrderItemId);
         packingOrderItem.Quantity = item.Quantity;
