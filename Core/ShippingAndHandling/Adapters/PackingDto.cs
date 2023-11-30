@@ -45,7 +45,7 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
     }
 
 
-    public int Size {
+    public decimal Size {
       get; set;
     }
 
@@ -106,9 +106,9 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
     } = new Warehouse();
 
 
-    public WarehouseBin WarehouseBin {
+    public WarehouseBinDto WarehouseBin {
       get; set;
-    } = new WarehouseBin();
+    } = new WarehouseBinDto();
 
 
     public decimal Quantity {
@@ -122,23 +122,41 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
   public class MissingItem : OrderItemCommonFields {
 
 
-    public FixedList<WarehouseBin> WarehouseBin {
+    public FixedList<WarehouseBinDto> WarehouseBin {
       get; set;
-    } = new FixedList<WarehouseBin>();
+    } = new FixedList<WarehouseBinDto>();
 
 
-    public int RemainingQuantity {
-      get; set;
-    }
-
-
-    public decimal Price {
+    public int Quantity {
       get; set;
     }
 
 
   } // class MissingItem
 
+  public class WarehouseBinDto {
+
+
+    public string UID {
+      get; set;
+    }
+
+
+    public string Name {
+      get; set;
+    }
+
+
+    public string WarehouseName {
+      get; set;
+    }
+
+
+    public decimal Stock {
+      get; set;
+    }
+
+  }
 
   public class OrderItemCommonFields {
 

@@ -40,6 +40,12 @@ namespace Empiria.Trade.ShippingAndHandling {
     #region Properties
 
 
+    [DataField("ObjectId")]
+    public int PackageTypeId {
+      get; set;
+    }
+
+
     [DataField("ObjectKey")]
     public string ObjectKey {
       get; set;
@@ -61,7 +67,7 @@ namespace Empiria.Trade.ShippingAndHandling {
       get; set;
     } = new FixedList<Attributes>();
 
-    
+
     public decimal Length {
       get; set;
     }
@@ -89,10 +95,32 @@ namespace Empiria.Trade.ShippingAndHandling {
     }
 
 
-    public void GetTotalVolume() {
+    public void GetVolumeAttributes() {
+
+      this.Attributes = this.GetExtData();
+
+      foreach (var attr in this.Attributes) {
+
+        decimal value = Convert.ToDecimal(attr.Value);
+
+        if (attr.Name == "length") {
+          this.Length = value;
+        }
+
+        if (attr.Name == "width") {
+          this.Width = value;
+        }
+
+        if (attr.Name == "height") {
+          this.Height = value;
+        }
+
+      }
+
       this.TotalVolume = Length * Width * Height;
     }
 
   } // class PackageType
+
 
 } // namespace Empiria.Trade.ShippingAndHandling

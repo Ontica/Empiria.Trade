@@ -22,10 +22,13 @@ namespace Empiria.Trade.ShippingAndHandling.Data {
   internal class ShippingAndHandlingData {
 
 
-    internal FixedList<Packing> GetPackingByOrder(int orderId) {
+    internal FixedList<Packing> GetPackingByOrder(string orderUid) {
+      
+      int orderId = Order.Parse(orderUid).Id;
 
-      string sql = "SELECT PACK.OrderPackingId, PACK.OrderPackingUID, ITEM.PackingItemId, PACK.OrderId, " +
-                   "ITEM.OrderItemId, ITEM.InventoryEntryId, PACK.PackageID, PACK.Size, ITEM.PackageQuantity " +
+      string sql = "SELECT PACK.OrderPackingId, PACK.OrderPackingUID, ITEM.PackingItemId, " +
+                   "ITEM.PackingItemUID, PACK.OrderId, ITEM.OrderItemId, PACK.PackageTypeId, " +
+                   "ITEM.InventoryEntryId, PACK.PackageID, PACK.Size, ITEM.PackageQuantity " +
                    "FROM TRDPackaging PACK " +
                    "INNER JOIN TRDPackagingItems ITEM ON PACK.OrderPackingId = ITEM.OrderPackingId " +
                    $"WHERE PACK.OrderId IN ({orderId})";
@@ -37,7 +40,7 @@ namespace Empiria.Trade.ShippingAndHandling.Data {
     }
 
 
-    internal static void Write(PackagingOrder order) {
+    internal static void Write(PackingItem order) {
 
 
       var op = DataOperation.Parse("writePackaging", order.Id,

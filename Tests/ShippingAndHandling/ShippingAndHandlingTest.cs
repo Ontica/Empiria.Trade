@@ -42,7 +42,7 @@ namespace Empiria.Trade.Tests {
 
 
     [Fact]
-    public void GetPackingByOrderTest() {
+    public void GetPackingItemsByOrderTest() {
 
       var usecase = ShippingAndHandlingUseCases.UseCaseInteractor();
       string uid = "a769e40f-3fbd-45af-9022-11d482024a8f";

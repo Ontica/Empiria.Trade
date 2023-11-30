@@ -72,13 +72,13 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
     [HttpPost]
     [Route("v4/trade/shipping-and-handling/packing/{orderUID:guid}/packing-item")]
     public SingleObjectModel CreatePackingOrder([FromUri] string orderUID,
-                                                [FromBody] PackingOrderFields order) {
+                                                [FromBody] PackingOrderFields orderFields) {
 
-      base.RequireBody(order);
+      base.RequireBody(orderFields);
 
       using (var usecases = ShippingAndHandlingUseCases.UseCaseInteractor()) {
 
-        IShippingAndHandling orderShippingDto = usecases.CreatePackingOrder(orderUID, order);
+        IShippingAndHandling orderShippingDto = usecases.CreatePackingOrder(orderUID, orderFields);
 
         return new SingleObjectModel(this.Request, orderShippingDto);
       }

@@ -59,9 +59,9 @@ namespace Empiria.Trade.ShippingAndHandling.UseCases {
     }
 
 
-    public IShippingAndHandling CreatePackingOrder(string orderUID, PackingOrderFields packing) {
+    public IShippingAndHandling CreatePackingOrder(string orderUID, PackingOrderFields orderFields) {
 
-      var packagingOrder = new PackagingOrder(orderUID, packing);
+      var packagingOrder = new PackingItem(orderUID, orderFields);
 
       packagingOrder.Save();
 

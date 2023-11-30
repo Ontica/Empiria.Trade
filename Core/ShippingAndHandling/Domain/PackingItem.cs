@@ -16,28 +16,28 @@ namespace Empiria.Trade.ShippingAndHandling {
 
 
   /// <summary>Represents a Packaging order.</summary>
-  public class PackagingOrder : BaseObject {
+  public class PackingItem : BaseObject {
 
 
     #region Constructor and parsers
 
 
-    public PackagingOrder() {
+    public PackingItem() {
       //no-op
     }
 
-    static public PackagingOrder Parse(int id) => ParseId<PackagingOrder>(id);
+    static public PackingItem Parse(int id) => ParseId<PackingItem>(id);
 
-    static public PackagingOrder Parse(int id, bool reload) => ParseId<PackagingOrder>(id, reload);
+    static public PackingItem Parse(int id, bool reload) => ParseId<PackingItem>(id, reload);
 
-    static public PackagingOrder Parse(string uid) => ParseKey<PackagingOrder>(uid);
+    static public PackingItem Parse(string uid) => ParseKey<PackingItem>(uid);
 
-    static public PackagingOrder Empty => ParseEmpty<PackagingOrder>();
+    static public PackingItem Empty => ParseEmpty<PackingItem>();
 
 
-    public PackagingOrder(string orderUID, PackingOrderFields fields) {
+    public PackingItem(string orderUID, PackingOrderFields orderFields) {
 
-      MapToPackagingOrder(orderUID, fields);
+      MapToPackagingOrder(orderUID, orderFields);
 
     }
 
@@ -102,13 +102,13 @@ namespace Empiria.Trade.ShippingAndHandling {
     }
 
 
-    private void MapToPackagingOrder(string orderUID, PackingOrderFields fields) {
+    private void MapToPackagingOrder(string orderUID, PackingOrderFields orderFields) {
 
       this.Order = Order.Parse(orderUID); 
       this.OrderPackingUID = Guid.NewGuid().ToString();
       this.OrderId = Order.Id;
-      this.PackageID = fields.PackageID;
-      this.Size = fields.Size;
+      this.PackageID = orderFields.PackageID;
+      this.Size = orderFields.Size;
 
     }
 

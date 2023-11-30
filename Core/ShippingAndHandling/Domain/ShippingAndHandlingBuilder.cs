@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Products.Adapters;
+using Empiria.Trade.ShippingAndHandling.Adapters;
 using Empiria.Trade.ShippingAndHandling.Data;
 using Newtonsoft.Json;
 
@@ -41,8 +42,6 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
 
       GetVolumeAttributes(packageTypes);
 
-      GetTotalVolume(packageTypes);
-
       FixedList<INamedEntity> namedDto = MergePackageTypeToNamedDto(packageTypes);
 
       return namedDto;
@@ -51,11 +50,8 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
 
     internal FixedList<Packing> GetPackingByOrder(string orderUid) {
 
-      int orderId = Order.Parse(orderUid).Id;
-
       var data = new ShippingAndHandlingData();
-
-      var packingList = data.GetPackingByOrder(orderId);
+      var packingList = data.GetPackingByOrder(orderUid);
 
       return packingList;
     }
@@ -67,38 +63,12 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
     #region Private methods
 
 
-    private void GetTotalVolume(FixedList<PackageType> packageTypes) {
-
-      foreach (var package in packageTypes) {
-        package.GetTotalVolume();
-      }
-
-    }
-
-
     internal void GetVolumeAttributes(FixedList<PackageType> packageTypes) {
 
       foreach (var packageType in packageTypes) {
 
-        packageType.Attributes = packageType.GetExtData();
-
-        foreach (var attr in packageType.Attributes) {
-
-          decimal value = Convert.ToDecimal(attr.Value);
-
-          if (attr.Name == "length") {
-            packageType.Length = value;
-          }
-
-          if (attr.Name == "width") {
-            packageType.Width = value;
-          }
-
-          if (attr.Name == "height") {
-            packageType.Height = value;
-          }
-
-        }
+        packageType.GetVolumeAttributes();
+        //packageType.GetTotalVolume();
       }
     }
 

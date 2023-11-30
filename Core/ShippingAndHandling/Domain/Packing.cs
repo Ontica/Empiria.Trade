@@ -1,10 +1,10 @@
 ﻿/* Empiria Trade *********************************************************************************************
 *                                                                                                            *
 *  Module   : Packaging Management                       Component : Domain Layer                            *
-*  Assembly : Empiria.Trade.Products.dll                 Pattern   : Information Holder                      *
+*  Assembly : Empiria.Trade.ShippingAndHandling.dll      Pattern   : Information Holder                      *
 *  Type     : Packing                                    License   : Please read LICENSE.txt file            *
 *                                                                                                            *
-*  Summary  : Holds a product attributes list.                                                               *
+*  Summary  : Represent a packing.                                                                           *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
@@ -32,6 +32,18 @@ namespace Empiria.Trade.ShippingAndHandling {
 
     [DataField("PackingItemId")]
     public int PackingItemId {
+      get; private set;
+    }
+
+
+    [DataField("PackingItemUID")]
+    public string PackingItemUID {
+      get; private set;
+    }
+
+
+    [DataField("PackageTypeId")]
+    public PackageType PackageType {
       get; private set;
     }
 
@@ -67,7 +79,7 @@ namespace Empiria.Trade.ShippingAndHandling {
 
 
     [DataField("PackageQuantity")]
-    public decimal PackageQuantity {
+    public decimal Quantity {
       get; private set;
     }
 
