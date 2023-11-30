@@ -45,7 +45,8 @@ namespace Empiria.Trade.Tests {
     public void GetPackingItemsByOrderTest() {
 
       var usecase = ShippingAndHandlingUseCases.UseCaseInteractor();
-      string uid = "a769e40f-3fbd-45af-9022-11d482024a8f";
+      string uid = //"f3bcb4ad-faaa-4afa-8a0c-8e2986c80065";
+      "a769e40f-3fbd-45af-9022-11d482024a8f";
 
       IShippingAndHandling sut = usecase.GetPackingByOrder(uid);
 
@@ -61,13 +62,13 @@ namespace Empiria.Trade.Tests {
       
       string orderUID = "57335a81-56cf-477d-84e2-3193849210e1";
 
-      var packing = new PackingOrderFields {
+      var packingItemFields = new PackingItemFields {
         OrderUID = "57335a81-56cf-477d-84e2-3193849210e1",
         PackageID = "CAJA 1",
-        Size = "GRANDE"
+        PackageTypeUID = "0452a10b-0607-4d45-8614-385dda701b54"
       };
       
-      IShippingAndHandling sut = usecase.CreatePackingOrder(orderUID, packing);
+      IShippingAndHandling sut = usecase.CreatePackingItem(orderUID, packingItemFields);
 
       Assert.NotNull(sut);
 

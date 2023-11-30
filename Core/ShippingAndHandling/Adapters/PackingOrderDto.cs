@@ -38,12 +38,6 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
     }
 
 
-    public string Size {
-      get; set;
-    }
-
-
-
   } // class PackingOrderDto
 
 

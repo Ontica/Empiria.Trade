@@ -1,5 +1,4 @@
-﻿using System;
-/* Empiria Trade *********************************************************************************************
+﻿/* Empiria Trade *********************************************************************************************
 *                                                                                                            *
 *  Module   : Product Management                         Component : Domain Layer                            *
 *  Assembly : Empiria.Trade.Products.dll                 Pattern   : Partitioned Type / Information Holder   *
@@ -8,7 +7,7 @@
 *  Summary  : Helper methods to build product structure.                                                     *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
-
+using System;
 
 using Empiria.Trade.Products.Adapters;
 using Empiria.Trade.Core;

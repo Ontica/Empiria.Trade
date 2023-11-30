@@ -19,14 +19,14 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
   public class PackingDto : IShippingAndHandling {
 
 
-    public PackingData PackingData {
+    public PackingData Data {
       get; set;
     } = new PackingData();
 
 
-    public FixedList<PackingItem> PackingItem {
+    public FixedList<PackageItem> PackagedItems {
       get; set;
-    } = new FixedList<PackingItem>();
+    } = new FixedList<PackageItem>();
 
 
     public FixedList<MissingItem> MissingItems {
@@ -58,7 +58,7 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
   } // class PackingData
 
 
-  public class PackingItem {
+  public class PackageItem {
 
 
     public string UID {
@@ -71,7 +71,7 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
     }
 
 
-    public string Name {
+    public string PackageID {
       get; set;
     }
 
@@ -101,9 +101,9 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
     }
 
 
-    public Warehouse Warehouse {
+    public WarehouseDto Warehouse {
       get; set;
-    } = new Warehouse();
+    } = new WarehouseDto();
 
 
     public WarehouseBinDto WarehouseBin {
@@ -122,22 +122,53 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
   public class MissingItem : OrderItemCommonFields {
 
 
-    public FixedList<WarehouseBinDto> WarehouseBin {
+    public FixedList<WarehouseBinDto> WarehouseBins {
       get; set;
     } = new FixedList<WarehouseBinDto>();
 
 
-    public int Quantity {
+    public decimal Quantity {
       get; set;
     }
 
 
   } // class MissingItem
 
+
+  public class WarehouseDto {
+
+
+    public string UID {
+      get; set;
+    }
+
+
+    public string Code {
+      get; set;
+    }
+
+
+    public string Name {
+      get; set;
+    }
+
+
+    public decimal Stock {
+      get; set;
+    }
+
+  }
+
+
   public class WarehouseBinDto {
 
 
     public string UID {
+      get; set;
+    }
+
+
+    public string OrderItemUID {
       get; set;
     }
 

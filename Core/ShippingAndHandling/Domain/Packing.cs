@@ -72,12 +72,6 @@ namespace Empiria.Trade.ShippingAndHandling {
     }
 
 
-    [DataField("Size")]
-    public string Size {
-      get; private set;
-    }
-
-
     [DataField("PackageQuantity")]
     public decimal Quantity {
       get; private set;

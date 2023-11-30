@@ -35,7 +35,7 @@ namespace Empiria.Trade.ShippingAndHandling {
     static public PackingItem Empty => ParseEmpty<PackingItem>();
 
 
-    public PackingItem(string orderUID, PackingOrderFields orderFields) {
+    public PackingItem(string orderUID, PackingItemFields orderFields) {
 
       MapToPackagingOrder(orderUID, orderFields);
 
@@ -48,8 +48,8 @@ namespace Empiria.Trade.ShippingAndHandling {
     #region Properties
 
 
-    [DataField("OrderPackagingId")]
-    public string OrderPackagingId {
+    [DataField("OrderPackingId")]
+    public int OrderPackingId {
       get;
       internal set;
     }
@@ -69,6 +69,13 @@ namespace Empiria.Trade.ShippingAndHandling {
     }
 
 
+    [DataField("PackageTypeId")]
+    public int PackageTypeId {
+      get;
+      internal set;
+    }
+
+
     [DataField("PackageID")]
     public string PackageID {
       get;
@@ -76,14 +83,13 @@ namespace Empiria.Trade.ShippingAndHandling {
     }
 
 
-    [DataField("Size")]
-    public string Size {
+    public Order Order {
       get;
       internal set;
     }
 
 
-    public Order Order {
+    public PackageType PackageType {
       get;
       internal set;
     }
@@ -102,13 +108,14 @@ namespace Empiria.Trade.ShippingAndHandling {
     }
 
 
-    private void MapToPackagingOrder(string orderUID, PackingOrderFields orderFields) {
+    private void MapToPackagingOrder(string orderUID, PackingItemFields orderFields) {
 
-      this.Order = Order.Parse(orderUID); 
+      this.Order = Order.Parse(orderUID);
+      this.PackageType = PackageType.Parse(orderFields.PackageTypeUID);
       this.OrderPackingUID = Guid.NewGuid().ToString();
       this.OrderId = Order.Id;
+      this.PackageTypeId = PackageType.PackageTypeId;
       this.PackageID = orderFields.PackageID;
-      this.Size = orderFields.Size;
 
     }
 

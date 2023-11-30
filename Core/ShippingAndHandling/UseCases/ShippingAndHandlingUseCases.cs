@@ -9,7 +9,9 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Empiria.Services;
+using Empiria.Trade.Products;
 using Empiria.Trade.ShippingAndHandling.Adapters;
 using Empiria.Trade.ShippingAndHandling.Data;
 using Empiria.Trade.ShippingAndHandling.Domain;
@@ -52,32 +54,62 @@ namespace Empiria.Trade.ShippingAndHandling.UseCases {
 
       var builder = new ShippingAndHandlingBuilder();
 
-      FixedList<Packing> packaging = builder.GetPackingByOrder(orderUid);
-
-      return ShippingAndHandlingMapper.MapPackingDto(packaging.ToFixedList());
-
+      PackingDto packaging = builder.GetPackingByOrder(orderUid);
+      
+      //return ShippingAndHandlingMapper.MapPackingDto(packaging.ToFixedList());
+      return packaging;
     }
 
 
-    public IShippingAndHandling CreatePackingOrder(string orderUID, PackingOrderFields orderFields) {
+    public IShippingAndHandling CreatePackingItem(string orderUID, PackingItemFields orderFields) {
 
       var packagingOrder = new PackingItem(orderUID, orderFields);
 
       packagingOrder.Save();
 
-      return ShippingAndHandlingMapper.MapPackagingOrder(packagingOrder);
+      var builder = new ShippingAndHandlingBuilder();
+      PackingDto packaging = builder.GetPackingByOrder(orderUID);
+
+      //return ShippingAndHandlingMapper.MapPackagingOrder(packagingOrder);
+
+      return packaging;
     }
 
 
-    public IShippingAndHandling UpdatePackingOrder(string packingItemUID, PackingOrderFields order) {
+    public IShippingAndHandling UpdatePackingItem(string orderUID, string packingItemUID, PackingItemFields orderFields) {
 
-      return new PackingOrderDto();
+      var builder = new ShippingAndHandlingBuilder();
+      PackingDto packaging = builder.GetPackingByOrder(orderUID);
+
+      return packaging;
     }
 
 
-    public IShippingAndHandling DeletePackingOrder(string packingItemUID) {
-      
-      return new PackingOrderDto();
+    public IShippingAndHandling DeletePackingItem(string orderUID, string packingItemUID) {
+
+      var builder = new ShippingAndHandlingBuilder();
+      PackingDto packaging = builder.GetPackingByOrder(orderUID);
+
+      return packaging;
+    }
+
+
+    public IShippingAndHandling CreatePackingOrderItemFields(string orderUID, string packingItemUID) {
+      //TODO CREAR FUNCIONES DE GUARDADO
+      var builder = new ShippingAndHandlingBuilder();
+      PackingDto packaging = builder.GetPackingByOrder(orderUID);
+
+      return packaging;
+
+    }
+
+
+    public IShippingAndHandling DeletePackingOrderItem(string orderUID, string packingItemUID, string packingItemEntryUID) {
+      //TODO CREAR FUNCIONES DE GUARDADO
+      var builder = new ShippingAndHandlingBuilder();
+      PackingDto packaging = builder.GetPackingByOrder(orderUID);
+
+      return packaging;
     }
 
 

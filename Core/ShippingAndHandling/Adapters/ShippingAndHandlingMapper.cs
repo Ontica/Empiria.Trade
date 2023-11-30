@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
@@ -24,7 +25,7 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
     #region Public methods
 
 
-    static internal IShippingAndHandling MapPackagingOrder(ShippingAndHandling.PackingItem packagings) {
+    static internal IShippingAndHandling MapPackagingOrder(PackingItem packagings) {
 
       return MapEntry(packagings);
     }
@@ -33,11 +34,13 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
     internal static IShippingAndHandling MapPackingDto(FixedList<Packing> packings) {
 
       var packingItems = MapToPackingItems(packings);
+      var packingData = MapPackingData(packingItems);
+      var missingItems = MapToMissingItems(packings);
 
       return new PackingDto {
-        PackingData = MapPackingData(packingItems),
-        PackingItem = packingItems,
-        MissingItems = MapToMissingItems(packings)
+        Data = packingData,
+        PackagedItems = packingItems,
+        MissingItems = missingItems
       };
 
     }
@@ -48,20 +51,27 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
 
     #region Private methods
 
-    
+
     static private void GetWarehouses(PackingOrderItem packingOrderItem, Packing item) {
 
       if (item.InventoryEntry?.WarehouseId > 0) {
-        packingOrderItem.Warehouse = Warehouse.Parse(item.InventoryEntry.WarehouseId);
+        var warehouse = Warehouse.Parse(item.InventoryEntry.WarehouseId);
+        var whDto = new WarehouseDto();
+        whDto.UID = warehouse.UID;
+        whDto.Code = warehouse.Code;
+        whDto.Name = warehouse.Name;
+        //whDto.Stock = //TODO SACAR STOCK DE INVENTARIO-WAREHOUSE
+        packingOrderItem.Warehouse = whDto;
       }
 
       if (item.InventoryEntry?.WarehouseBinId > 0) {
-        
+
         var warehouseBin = WarehouseBin.Parse(item.InventoryEntry.WarehouseBinId);
         var whBinDto = new WarehouseBinDto();
         whBinDto.UID = warehouseBin.WarehouseBinUID;
         whBinDto.Name = warehouseBin.BinCode;
         whBinDto.WarehouseName = $"Almacen {warehouseBin.Warehouse.Code}";
+        //whBinDto.Stock = //TODO SACAR STOCK DE INVENTARIO-WAREHOUSE
         packingOrderItem.WarehouseBin = whBinDto;
       }
     }
@@ -87,18 +97,18 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
     }
 
 
-    static private PackingData MapPackingData(FixedList<PackingItem> packingItems) {
+    static private PackingData MapPackingData(FixedList<PackageItem> packingItems) {
       var data = new PackingData();
 
       decimal _vol = 0;
       foreach (var item in packingItems) {
         var type = PackageType.Parse(item.PackageTypeUID);
-        
+
         if (type != null) {
           type.GetVolumeAttributes();
           _vol += type.TotalVolume;
         }
-        
+
       }
 
       data.OrderUID = packingItems.Select(x => x.OrderUID).First();
@@ -109,27 +119,27 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
     }
 
 
-    private static FixedList<PackingItem> MapToPackingItems(FixedList<Packing> packings) {
+    private static FixedList<PackageItem> MapToPackingItems(FixedList<Packing> packings) {
 
-      var packingItems = new List<PackingItem>();
+      var packingItems = new List<PackageItem>();
 
       foreach (var entry in packings) {
-        var item = new PackingItem();
+        var item = new PackageItem();
 
-        item.UID= entry.OrderPackingUID;
+        item.UID = entry.OrderPackingUID;
         item.OrderUID = entry.Order.UID;
-        item.Name = entry.PackageID;
+        item.PackageID = entry.PackageID;
         item.PackageTypeUID = entry.PackageType.ObjectKey;
         item.PackageTypeName = entry.PackageType.Name;
 
-        var exist = packingItems.Find(x=>x.UID == item.UID);
-        
+        var exist = packingItems.Find(x => x.UID == item.UID);
+
         if (exist == null) {
           item.OrderItems = GetOrderItems(entry.OrderPackingUID, packings);
           packingItems.Add(item);
-          
+
         }
-        
+
       }
 
       return packingItems.ToFixedList();
@@ -140,20 +150,36 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
 
       var missingItems = new List<MissingItem>();
 
-      //foreach (var item in packings) {
-      //  var items = packings.FindAll(x => x.OrderPackingUID == item.OrderPackingUID);
-      //}
+      foreach (var pack in packings) {
+        var orderItem = OrderItem.Parse(pack.OrderItemId);
+
+        var exist = missingItems.Find(x => x.OrderItemUID == orderItem.UID);
+
+        if (exist == null) {
+          var quantityOrderItems = packings.Where(x => x.OrderItemId == orderItem.Id).Sum(x => x.Quantity);
+
+          if (orderItem.Quantity > quantityOrderItems) {
+            var missing = new MissingItem();
+            missing.OrderItemUID = orderItem.UID;
+            missing.Quantity = orderItem.Quantity - quantityOrderItems;
+            missing.MergeFieldsData(pack.OrderItemId);
+
+            missingItems.Add(missing);
+          }
+
+        }
+
+      }
 
       return missingItems.ToFixedList();
     }
 
 
-    static private PackingOrderDto MapEntry(ShippingAndHandling.PackingItem packaging) {
+    static private PackingOrderDto MapEntry(PackingItem packaging) {
 
       var dto = new PackingOrderDto();
       dto.Order = packaging.Order;
       dto.PackageID = packaging.PackageID;
-      dto.Size = packaging.Size;
 
       return dto;
     }

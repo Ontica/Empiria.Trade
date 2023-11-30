@@ -35,6 +35,14 @@ namespace Empiria.Trade.Products {
     #region Properties
 
 
+
+    [DataField("InventoryEntryId")]
+    internal int InventoryEntryId {
+      get;
+      private set;
+    }
+
+
     [DataField("InventoryEntryUID")]
     internal string InventoryEntryUID {
       get;

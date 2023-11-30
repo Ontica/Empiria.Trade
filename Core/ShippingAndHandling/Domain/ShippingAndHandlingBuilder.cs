@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using Empiria.Trade.Orders;
+using Empiria.Trade.Products;
 using Empiria.Trade.Products.Adapters;
 using Empiria.Trade.ShippingAndHandling.Adapters;
 using Empiria.Trade.ShippingAndHandling.Data;
@@ -48,12 +49,30 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
     }
 
 
-    internal FixedList<Packing> GetPackingByOrder(string orderUid) {
+    internal PackingDto GetPackingByOrder(string orderUid) {
 
       var data = new ShippingAndHandlingData();
-      var packingList = data.GetPackingByOrder(orderUid);
+      FixedList<Packing> packingList = data.GetPackingByOrder(orderUid);
 
-      return packingList;
+      var helper = new PackingHelper();
+
+      var packingItems = helper.MapToPackingItems(orderUid, packingList);
+      var packingData = helper.MapPackingData(orderUid, packingItems);
+      var missingItems = helper.MapToMissingItems(orderUid, packingList);
+
+      var packingDto = new PackingDto();
+      packingDto.Data = packingData;
+      packingDto.PackagedItems = packingItems;
+      packingDto.MissingItems = missingItems;
+
+      return packingDto;
+    }
+
+
+    internal FixedList<InventoryEntry> GetInventoryByVendorProduct(string vendorProductUid) {
+      
+      var data = new ShippingAndHandlingData();
+      return data.GetInventoryByVendorProduct(vendorProductUid);
     }
 
 
@@ -96,5 +115,8 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
     #endregion Private methods
 
   } // class ShippingAndHandlingBuilder
+
+  internal class OrderItemTemp {
+  }
 
 } // namespace Empiria.Trade.ShippingAndHandling.Domain
