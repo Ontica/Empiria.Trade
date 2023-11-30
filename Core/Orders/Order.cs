@@ -166,7 +166,11 @@ namespace Empiria.Trade.Orders {
   public enum OrderAuthorizationStatus {
     Authorized = 'A',
     Pending = 'P',
-    Empty = 'E'
+    Empty = 'E',
+    Pendings = 'W',
+    ToSupply = 'I',
+    InProgress = 'U',
+    Suppled = 'Y'
   } // enum AutorizationStatus
 
   

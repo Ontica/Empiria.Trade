@@ -82,6 +82,10 @@ namespace Empiria.Trade.Sales {
       protected set;
     }
 
+    public decimal TotalDebt {
+      get; private set;
+    }
+
     #endregion
 
     #region Public methods
@@ -106,7 +110,7 @@ namespace Empiria.Trade.Sales {
       SalesOrderData.Write(this);
       this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id);
       this.Actions = OrderActions.GetApplyActions();
-      
+      this.Actions.CanAuthorize = false;
       SetOrderTotals();
     }
 
@@ -153,6 +157,8 @@ namespace Empiria.Trade.Sales {
       this.AuthorizatedById = ExecutionServer.CurrentUserId;
 
       this.Status = OrderStatus.Packing;
+      AuthorizationStatus = OrderAuthorizationStatus.ToSupply;
+
       this.Actions = OrderActions.GetAuthorizedActions();
 
       SalesOrderData.Write(this);
@@ -169,7 +175,8 @@ namespace Empiria.Trade.Sales {
 
     static public FixedList<SalesOrder> GetOrdersToAuthorize(SearchOrderFields fields) {
       var orders = SalesOrderData.GetSalesOrdersToAuthorize(fields);
-
+      SetCustomerTotalDebt(orders);
+     
       return GetOrderItems(orders ,"Autorizacion");
     }
 
@@ -197,6 +204,9 @@ namespace Empiria.Trade.Sales {
 
 
     private void SetOrderTotals() {
+      this.OrderTotal = 0;
+      this.ItemsTotal = 0;
+      this.Taxes = 0;
 
       foreach (SalesOrderItem item in this.SalesOrderItems) {
         this.ItemsCount++;
@@ -212,6 +222,8 @@ namespace Empiria.Trade.Sales {
     private static void SetOrderTotals(SalesOrder order) {
 
       order.OrderTotal = 0;
+      order.ItemsTotal = 0;
+      order.Taxes = 0;
 
       foreach (SalesOrderItem item in order.SalesOrderItems) {
         order.ItemsCount++;
@@ -246,6 +258,10 @@ namespace Empiria.Trade.Sales {
           if (queryType == "Pedidos") {
             order.Actions.CanAuthorize = false;
           }
+          if (queryType == "Autorizacion") {
+            order.Actions.CanAuthorize = true;
+          }
+
         }
         break;
         case OrderStatus.Authorized: order.Actions = OrderActions.GetAuthorizedActions(); break;
@@ -263,6 +279,12 @@ namespace Empiria.Trade.Sales {
       return vendorPrice.PriceListId.ToString();
     }
 
+    static private void SetCustomerTotalDebt(FixedList<SalesOrder> orders) {
+      foreach (SalesOrder order in orders) {
+        order.TotalDebt = CrediLineData.GetCreditDebt(order.Customer.Id);
+      }
+
+    }
    
 
     #endregion Helpers

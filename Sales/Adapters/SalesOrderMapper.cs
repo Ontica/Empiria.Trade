@@ -69,7 +69,7 @@ namespace Empiria.Trade.Sales.Adapters {
         AuthorizationTime = order.AuthorizationTime,
         AuthorizatedById = order.AuthorizatedById,
         Actions = MapOrderActions(order.Actions),
-        TotalDebt = 100.00m,
+        TotalDebt = order.TotalDebt,
         PriceList = order.PriceList
       };
 
