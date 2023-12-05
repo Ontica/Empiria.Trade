@@ -101,6 +101,7 @@ namespace Empiria.Trade.ShippingAndHandling {
 
     #endregion Properties
 
+
     #region Private methods
 
     protected override void OnSave() {
@@ -114,7 +115,7 @@ namespace Empiria.Trade.ShippingAndHandling {
                   int inventoryId, MissingItemField missingItemFields) {
 
       this.PackingItemUID = Guid.NewGuid().ToString();
-      this.OrderPackingId = PackingItem.Parse(packingItemUID).Id;
+      this.OrderPackingId = PackageForItem.Parse(packingItemUID).Id;
       this.OrderId = Order.Parse(orderUID).Id;
       this.OrderItemId = OrderItem.Parse(missingItemFields.orderItemUID).Id;
       this.InventoryEntryId = inventoryId;

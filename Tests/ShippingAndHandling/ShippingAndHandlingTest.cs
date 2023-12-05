@@ -42,13 +42,13 @@ namespace Empiria.Trade.Tests {
 
 
     [Fact]
-    public void GetPackingItemsByOrderTest() {
+    public void GetPackagingForOrderTest() {
 
       var usecase = ShippingAndHandlingUseCases.UseCaseInteractor();
       string uid = //"f3bcb4ad-faaa-4afa-8a0c-8e2986c80065";
       "a769e40f-3fbd-45af-9022-11d482024a8f";
 
-      IShippingAndHandling sut = usecase.GetPackingByOrder(uid);
+      IShippingAndHandling sut = usecase.GetPackagingForOrder(uid);
 
       Assert.NotNull(sut);
 
@@ -56,7 +56,7 @@ namespace Empiria.Trade.Tests {
 
 
     [Fact]
-    public void CreatePackingOrderTest() {
+    public void CreatePackageForItemTest() {
 
       var usecase = ShippingAndHandlingUseCases.UseCaseInteractor();
       
@@ -64,15 +64,18 @@ namespace Empiria.Trade.Tests {
 
       var packingItemFields = new PackingItemFields {
         OrderUID = "57335a81-56cf-477d-84e2-3193849210e1",
-        PackageID = "CAJA 1",
+        PackageID = "CAJA 100",
         PackageTypeUID = "0452a10b-0607-4d45-8614-385dda701b54"
       };
       
-      IShippingAndHandling sut = usecase.CreatePackingItem(orderUID, packingItemFields);
+      IShippingAndHandling sut = usecase.CreatePackageForItem(orderUID, packingItemFields);
 
       Assert.NotNull(sut);
 
     }
+
+
+
 
 
     [Fact]
@@ -80,11 +83,11 @@ namespace Empiria.Trade.Tests {
 
       var usecase = ShippingAndHandlingUseCases.UseCaseInteractor();
 
-      string orderUID = "c75a25fc-92e6-493e-aefb-fc24a312898a";
-      string packingOrderUID = "789bc9f2-1304-488e-b573-d2da58f04515";
+      string orderUID = "57335a81-56cf-477d-84e2-3193849210e1";
+      string packingOrderUID = "ef7799bb-bc77-45ac-a33b-224914945585";
       
       var missingItemFields = new MissingItemField {
-        orderItemUID = "5adf0776-0528-4ccb-b89f-7618c3266674",
+        orderItemUID = "85836afb-b4ee-4552-803e-0ee40bd096f9",
         WarehouseUID = "f0061eb4-833c-44bf-8893-adcb88281d06",
         WarehouseBinUID = "22d33c45-c41f-426c-92f4-453fdc0abc1b",
         Quantity = 1000

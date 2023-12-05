@@ -19,25 +19,25 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
   public class PackingDto : IShippingAndHandling {
 
 
-    public PackingData Data {
+    public PackagedData Data {
       get; set;
-    } = new PackingData();
+    } = new PackagedData();
 
 
-    public FixedList<PackageItem> PackagedItems {
+    public FixedList<PackageForItemDto> PackageForItems {
       get; set;
-    } = new FixedList<PackageItem>();
+    } = new FixedList<PackageForItemDto>();
 
 
-    public FixedList<MissingItem> MissingItems {
+    public FixedList<MissingItemDto> MissingItems {
       get; set;
-    } = new FixedList<MissingItem>();
+    } = new FixedList<MissingItemDto>();
 
 
   } // class PackingDto
 
 
-  public class PackingData {
+  public class PackagedData {
 
 
     public string OrderUID {
@@ -58,7 +58,7 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
   } // class PackingData
 
 
-  public class PackageItem {
+  public class PackageForItemDto {
 
 
     public string UID {
@@ -86,15 +86,15 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
     }
 
 
-    public FixedList<PackingItemDetail> OrderItems {
+    public FixedList<PackingItemDto> OrderItems {
       get; set;
-    } = new FixedList<PackingItemDetail>();
+    } = new FixedList<PackingItemDto>();
 
 
   } // class PackingItem
 
 
-  public class PackingItemDetail : OrderItemCommonFields {
+  public class PackingItemDto : CommonPackingItemFields {
 
     public string UID {
       get; set;
@@ -119,7 +119,7 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
   } // class PackingOrderItem
 
 
-  public class MissingItem : OrderItemCommonFields {
+  public class MissingItemDto : CommonPackingItemFields {
 
 
     public FixedList<WarehouseBinDto> WarehouseBins {
@@ -189,7 +189,8 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
 
   }
 
-  public class OrderItemCommonFields {
+
+  public class CommonPackingItemFields {
 
     
     public string OrderItemUID {
@@ -212,7 +213,7 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
     }
 
 
-    public void MergeFieldsData(int orderItemId) {
+    public void MergeCommonFieldsData(int orderItemId) {
       
       var orderItem = OrderItem.Parse(orderItemId);
       var vendorProduct = VendorProduct.Parse(orderItem.VendorProduct.Id);

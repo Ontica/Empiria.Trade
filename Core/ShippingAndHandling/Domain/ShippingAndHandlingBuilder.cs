@@ -50,10 +50,10 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
     }
 
 
-    internal PackingDto GetPackingByOrder(string orderUid) {
+    internal PackingDto GetPackagingForOrder(string orderUid) {
 
       var data = new ShippingAndHandlingData();
-      FixedList<Packing> packingList = data.GetPackingByOrder(orderUid);
+      FixedList<Packing> packingList = data.GetPackagingForOrder(orderUid);
 
       var helper = new PackingHelper();
 
@@ -63,7 +63,7 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
 
       var packingDto = new PackingDto();
       packingDto.Data = packingData;
-      packingDto.PackagedItems = packingItems;
+      packingDto.PackageForItems = packingItems;
       packingDto.MissingItems = missingItems;
 
       return packingDto;

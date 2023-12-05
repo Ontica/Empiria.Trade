@@ -2,7 +2,7 @@
 *                                                                                                            *
 *  Module   : Packaging Management                       Component : Domain Layer                            *
 *  Assembly : Empiria.Trade.ShippingAndHandling.dll      Pattern   : Partitioned Type / Information Holder   *
-*  Type     : PackagingOrder                             License   : Please read LICENSE.txt file            *
+*  Type     : PackageForItem                             License   : Please read LICENSE.txt file            *
 *                                                                                                            *
 *  Summary  : Represents a Packaging order.                                                                  *
 *                                                                                                            *
@@ -16,26 +16,26 @@ namespace Empiria.Trade.ShippingAndHandling {
 
 
   /// <summary>Represents a Packaging order.</summary>
-  public class PackingItem : BaseObject {
+  public class PackageForItem : BaseObject {
 
 
     #region Constructor and parsers
 
 
-    public PackingItem() {
+    public PackageForItem() {
       //no-op
     }
 
-    static public PackingItem Parse(int id) => ParseId<PackingItem>(id);
+    static public PackageForItem Parse(int id) => ParseId<PackageForItem>(id);
 
-    static public PackingItem Parse(int id, bool reload) => ParseId<PackingItem>(id, reload);
+    static public PackageForItem Parse(int id, bool reload) => ParseId<PackageForItem>(id, reload);
 
-    static public PackingItem Parse(string uid) => ParseKey<PackingItem>(uid);
+    static public PackageForItem Parse(string uid) => ParseKey<PackageForItem>(uid);
 
-    static public PackingItem Empty => ParseEmpty<PackingItem>();
+    static public PackageForItem Empty => ParseEmpty<PackageForItem>();
 
 
-    public PackingItem(string orderUID, PackingItemFields orderFields) {
+    public PackageForItem(string orderUID, PackingItemFields orderFields) {
 
       MapToPackagingOrder(orderUID, orderFields);
 
@@ -123,6 +123,6 @@ namespace Empiria.Trade.ShippingAndHandling {
     #endregion Private methods
 
 
-  } // class PackagingOrder
+  } // class PackageForItem
 
 } // namespace Empiria.Trade.ShippingAndHandling.Domain

@@ -22,7 +22,7 @@ namespace Empiria.Trade.ShippingAndHandling.Data {
   internal class ShippingAndHandlingData {
 
 
-    internal FixedList<Packing> GetPackingByOrder(string orderUid) {
+    internal FixedList<Packing> GetPackagingForOrder(string orderUid) {
 
       int orderId = Order.Parse(orderUid).Id;
 
@@ -58,7 +58,7 @@ namespace Empiria.Trade.ShippingAndHandling.Data {
     }
 
 
-    internal FixedList<PackingItem> GetPackingItems(string orderUid) {
+    internal FixedList<PackageForItem> GetPackingItems(string orderUid) {
 
       int orderId = Order.Parse(orderUid).Id;
 
@@ -66,7 +66,7 @@ namespace Empiria.Trade.ShippingAndHandling.Data {
 
       var dataOperation = DataOperation.Parse(sql);
 
-      return DataReader.GetPlainObjectFixedList<PackingItem>(dataOperation);
+      return DataReader.GetPlainObjectFixedList<PackageForItem>(dataOperation);
 
     }
 
@@ -85,7 +85,7 @@ namespace Empiria.Trade.ShippingAndHandling.Data {
     }
 
 
-    internal static void WritePacking(PackingItem order) {
+    internal static void WritePacking(PackageForItem order) {
 
       var op = DataOperation.Parse("writePackaging",
         order.Id, order.OrderPackingUID, order.OrderId, order.PackageTypeId, order.PackageID);

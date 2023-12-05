@@ -50,25 +50,25 @@ namespace Empiria.Trade.ShippingAndHandling.UseCases {
     }
 
 
-    public IShippingAndHandling GetPackingByOrder(string orderUid) {
+    public IShippingAndHandling GetPackagingForOrder(string orderUid) {
 
       var builder = new ShippingAndHandlingBuilder();
 
-      PackingDto packaging = builder.GetPackingByOrder(orderUid);
+      PackingDto packaging = builder.GetPackagingForOrder(orderUid);
       
       //return ShippingAndHandlingMapper.MapPackingDto(packaging.ToFixedList());
       return packaging;
     }
 
 
-    public IShippingAndHandling CreatePackingItem(string orderUID, PackingItemFields orderFields) {
+    public IShippingAndHandling CreatePackageForItem(string orderUID, PackingItemFields orderFields) {
 
-      var packagingOrder = new PackingItem(orderUID, orderFields);
+      var packagingOrder = new PackageForItem(orderUID, orderFields);
 
       packagingOrder.Save();
 
       var builder = new ShippingAndHandlingBuilder();
-      PackingDto packaging = builder.GetPackingByOrder(orderUID);
+      PackingDto packaging = builder.GetPackagingForOrder(orderUID);
 
       //return ShippingAndHandlingMapper.MapPackagingOrder(packagingOrder);
 
@@ -79,7 +79,7 @@ namespace Empiria.Trade.ShippingAndHandling.UseCases {
     public IShippingAndHandling UpdatePackingItem(string orderUID, string packingItemUID, PackingItemFields orderFields) {
 
       var builder = new ShippingAndHandlingBuilder();
-      PackingDto packaging = builder.GetPackingByOrder(orderUID);
+      PackingDto packaging = builder.GetPackagingForOrder(orderUID);
 
       return packaging;
     }
@@ -88,7 +88,7 @@ namespace Empiria.Trade.ShippingAndHandling.UseCases {
     public IShippingAndHandling DeletePackingItem(string orderUID, string packingItemUID) {
 
       var builder = new ShippingAndHandlingBuilder();
-      PackingDto packaging = builder.GetPackingByOrder(orderUID);
+      PackingDto packaging = builder.GetPackagingForOrder(orderUID);
 
       return packaging;
     }
@@ -108,7 +108,7 @@ namespace Empiria.Trade.ShippingAndHandling.UseCases {
 
       packagingOrder.Save();
 
-      PackingDto packaging = builder.GetPackingByOrder(orderUID);
+      PackingDto packaging = builder.GetPackagingForOrder(orderUID);
 
       return packaging;
 
@@ -123,7 +123,7 @@ namespace Empiria.Trade.ShippingAndHandling.UseCases {
       data.DeletePackingOrderItem(packingItemEntryUID);
 
       var builder = new ShippingAndHandlingBuilder();
-      PackingDto packaging = builder.GetPackingByOrder(orderUID);
+      PackingDto packaging = builder.GetPackagingForOrder(orderUID);
 
       return packaging;
     }

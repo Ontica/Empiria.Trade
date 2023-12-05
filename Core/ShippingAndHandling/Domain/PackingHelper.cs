@@ -23,9 +23,9 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
     #region Public methods
 
 
-    public PackingData MapPackingData(string orderUid, FixedList<PackageItem> packingItems) {
+    public PackagedData MapPackingData(string orderUid, FixedList<PackageForItemDto> packingItems) {
       
-      var data = new PackingData();
+      var data = new PackagedData();
 
       decimal _vol = 0;
 
@@ -50,9 +50,9 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
     }
 
 
-    public FixedList<MissingItem> MapToMissingItems(string orderUid, FixedList<Packing> packings) {
+    public FixedList<MissingItemDto> MapToMissingItems(string orderUid, FixedList<Packing> packings) {
       
-      var missingItems = new List<MissingItem>();
+      var missingItems = new List<MissingItemDto>();
 
       if (packings.Count == 0) {
         var data = new ShippingAndHandlingData();
@@ -60,12 +60,12 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
         var orderItems = data.GetOrderItems(orderUid);
         foreach (var item in orderItems) {
 
-          var missing = new MissingItem();
+          var missing = new MissingItemDto();
           missing.OrderItemUID = item.OrderItemUID;
           missing.Quantity = item.Quantity;
 
           var vendorProduct = VendorProduct.Parse(item.VendorProduct);
-          missing.MergeFieldsData(item.OrderItemId);
+          missing.MergeCommonFieldsData(item.OrderItemId);
           GetWarehousesByItem(missing, vendorProduct.UID);
           missingItems.Add(missing);
 
@@ -82,10 +82,10 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
             var quantityOrderItems = packings.Where(x => x.OrderItemId == orderItem.Id).Sum(x => x.Quantity);
 
             if (orderItem.Quantity > quantityOrderItems) {
-              var missing = new MissingItem();
+              var missing = new MissingItemDto();
               missing.OrderItemUID = orderItem.UID;
               missing.Quantity = orderItem.Quantity - quantityOrderItems;
-              missing.MergeFieldsData(pack.OrderItemId);
+              missing.MergeCommonFieldsData(pack.OrderItemId);
               
               GetWarehousesByItem(missing, orderItem.VendorProduct.UID);
 
@@ -98,7 +98,7 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
     }
 
 
-    private void GetWarehousesByItem(MissingItem missing, string vendorProductUid) {
+    private void GetWarehousesByItem(MissingItemDto missing, string vendorProductUid) {
 
       var data = new ShippingAndHandlingData();
 
@@ -129,9 +129,9 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
       missing.WarehouseBins = whBinDto.ToFixedList();
     }
 
-    public FixedList<PackageItem> MapToPackingItems(string orderUid, FixedList<Packing> packings) {
+    public FixedList<PackageForItemDto> MapToPackingItems(string orderUid, FixedList<Packing> packings) {
       
-      var packingItems = new List<PackageItem>();
+      var packingItems = new List<PackageForItemDto>();
 
       if (packings.Count == 0) {
 
@@ -139,7 +139,7 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
         var packItems = data.GetPackingItems(orderUid);
 
         foreach (var entry in packItems) {
-          var item = new PackageItem();
+          var item = new PackageForItemDto();
           var packageType = PackageType.Parse(entry.PackageTypeId);
 
           item.UID = entry.OrderPackingUID;
@@ -154,7 +154,7 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
 
 
         foreach (var entry in packings) {
-          var item = new PackageItem();
+          var item = new PackageForItemDto();
 
           item.UID = entry.OrderPackingUID;
           item.OrderUID = entry.Order.UID;
@@ -184,17 +184,17 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
     #region Private methods
 
 
-    static private FixedList<PackingItemDetail> GetOrderItems(string orderPackingUID,
+    static private FixedList<PackingItemDto> GetOrderItems(string orderPackingUID,
                                                              FixedList<Packing> packings) {
-      var packingOrderItems = new List<PackingItemDetail>();
+      var packingOrderItems = new List<PackingItemDto>();
 
       var items = packings.FindAll(x => x.OrderPackingUID == orderPackingUID);
 
       foreach (var item in items) {
 
-        var packingOrderItem = new PackingItemDetail();
+        var packingOrderItem = new PackingItemDto();
         packingOrderItem.UID = item.PackingItemUID;
-        packingOrderItem.MergeFieldsData(item.OrderItemId);
+        packingOrderItem.MergeCommonFieldsData(item.OrderItemId);
         packingOrderItem.Quantity = item.Quantity;
         GetWarehouses(packingOrderItem, item);
         packingOrderItems.Add(packingOrderItem);
@@ -204,7 +204,7 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
     }
 
 
-    static private void GetWarehouses(PackingItemDetail packingOrderItem, Packing item) {
+    static private void GetWarehouses(PackingItemDto packingOrderItem, Packing item) {
 
       if (item.InventoryEntry?.WarehouseId > 0) {
         var warehouse = Warehouse.Parse(item.InventoryEntry.WarehouseId);
