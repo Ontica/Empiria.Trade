@@ -50,47 +50,44 @@ namespace Empiria.Trade.ShippingAndHandling.UseCases {
     }
 
 
-    public IShippingAndHandling GetPackagingForOrder(string orderUid) {
+    public PackageForItem GetPackagingByUID(string Uid) {
 
-      var builder = new ShippingAndHandlingBuilder();
-
-      PackingDto packaging = builder.GetPackagingForOrder(orderUid);
-      
-      //return ShippingAndHandlingMapper.MapPackingDto(packaging.ToFixedList());
-      return packaging;
+      return PackageForItem.Parse(Uid);
     }
 
 
+    public IShippingAndHandling GetPackagingForOrder(string orderUid) {
+
+      return GetPackaging(orderUid);
+    }
+
+    
     public IShippingAndHandling CreatePackageForItem(string orderUID, PackingItemFields orderFields) {
 
-      var packagingOrder = new PackageForItem(orderUID, orderFields);
+      var packagingOrder = new PackageForItem(orderUID, orderFields, string.Empty);
 
       packagingOrder.Save();
 
-      var builder = new ShippingAndHandlingBuilder();
-      PackingDto packaging = builder.GetPackagingForOrder(orderUID);
-
-      //return ShippingAndHandlingMapper.MapPackagingOrder(packagingOrder);
-
-      return packaging;
+      return GetPackaging(orderUID);
     }
 
 
-    public IShippingAndHandling UpdatePackingItem(string orderUID, string packingItemUID, PackingItemFields orderFields) {
+    public IShippingAndHandling UpdatePackageForItem(string orderUID, string packageForItemUID,
+                                                  PackingItemFields orderFields) {
 
-      var builder = new ShippingAndHandlingBuilder();
-      PackingDto packaging = builder.GetPackagingForOrder(orderUID);
+      var packagingOrder = new PackageForItem(orderUID, orderFields, packageForItemUID);
 
-      return packaging;
+      ShippingAndHandlingData.WritePacking(packagingOrder);
+
+      return GetPackaging(orderUID);
     }
 
 
-    public IShippingAndHandling DeletePackingItem(string orderUID, string packingItemUID) {
+    public IShippingAndHandling DeletePackageForItem(string orderUID, string packingItemUID) {
 
-      var builder = new ShippingAndHandlingBuilder();
-      PackingDto packaging = builder.GetPackagingForOrder(orderUID);
+      var data = new ShippingAndHandlingData();
 
-      return packaging;
+      return GetPackaging(orderUID);
     }
 
 
@@ -108,9 +105,7 @@ namespace Empiria.Trade.ShippingAndHandling.UseCases {
 
       packagingOrder.Save();
 
-      PackingDto packaging = builder.GetPackagingForOrder(orderUID);
-
-      return packaging;
+      return GetPackaging(orderUID);
 
     }
 
@@ -122,15 +117,24 @@ namespace Empiria.Trade.ShippingAndHandling.UseCases {
 
       data.DeletePackingOrderItem(packingItemEntryUID);
 
-      var builder = new ShippingAndHandlingBuilder();
-      PackingDto packaging = builder.GetPackagingForOrder(orderUID);
-
-      return packaging;
+      return GetPackaging(orderUID);
     }
 
 
     #endregion Use cases
 
+
+    #region Private methods
+
+
+    private PackingDto GetPackaging(string orderUid) {
+      var builder = new ShippingAndHandlingBuilder();
+
+      return builder.GetPackagesAndItemsForOrder(orderUid);
+    }
+
+
+    #endregion Private methods
 
   } // class ShippingAndHandlingUseCases
 

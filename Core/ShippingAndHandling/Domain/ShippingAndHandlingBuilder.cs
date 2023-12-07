@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Products;
 using Empiria.Trade.Products.Adapters;
@@ -50,20 +51,21 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
     }
 
 
-    internal PackingDto GetPackagingForOrder(string orderUid) {
+    internal PackingDto GetPackagesAndItemsForOrder(string orderUid) {
 
       var data = new ShippingAndHandlingData();
-      FixedList<Packing> packingList = data.GetPackagingForOrder(orderUid);
-
+      var packsForItems = data.GetPackagesForItems(orderUid);
       var helper = new PackingHelper();
 
-      var packingItems = helper.MapToPackingItems(orderUid, packingList);
-      var packingData = helper.MapPackingData(orderUid, packingItems);
-      var missingItems = helper.MapToMissingItems(orderUid, packingList);
+      FixedList<PackageForItemDto> packagesForItems = helper.GetPackagesByOrder(orderUid, packsForItems);
+
+      PackagedData packingData = helper.GetPackingData(orderUid, packagesForItems);
+
+      FixedList<MissingItemDto> missingItems = helper.GetMissingItems(orderUid, packagesForItems);
 
       var packingDto = new PackingDto();
+      packingDto.PackagedItems = packagesForItems;
       packingDto.Data = packingData;
-      packingDto.PackageForItems = packingItems;
       packingDto.MissingItems = missingItems;
 
       return packingDto;
@@ -76,7 +78,7 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
 
       var orderItem = OrderItem.Parse(orderItemUID);
       FixedList<InventoryEntry> inventories = data.GetInventoryByVendorProduct(
-                                              orderItem.VendorProduct.UID, warehouseBinUID);
+                                              orderItem.VendorProduct.Id, warehouseBinUID);
       var inventory = inventories.Last();
       return inventory;
     }
@@ -116,12 +118,10 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
       return returnedNamed.ToFixedList();
     }
 
-    
+
     #endregion Private methods
 
   } // class ShippingAndHandlingBuilder
 
-  internal class OrderItemTemp {
-  }
 
 } // namespace Empiria.Trade.ShippingAndHandling.Domain

@@ -39,7 +39,7 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
 
       return new PackingDto {
         Data = packingData,
-        PackageForItems = packingItems,
+        PackagedItems = packingItems,
         MissingItems = missingItems
       };
 

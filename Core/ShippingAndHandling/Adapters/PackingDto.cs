@@ -24,7 +24,7 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
     } = new PackagedData();
 
 
-    public FixedList<PackageForItemDto> PackageForItems {
+    public FixedList<PackageForItemDto> PackagedItems {
       get; set;
     } = new FixedList<PackageForItemDto>();
 

@@ -40,14 +40,25 @@ namespace Empiria.Trade.Tests {
 
     #region Facts
 
+    
+    [Fact]
+    public void GetPackagingTest() {
+
+      var usecase = ShippingAndHandlingUseCases.UseCaseInteractor();
+      string uid = "72e920b8-60cd-4d26-be2f-4a91a540d1f1";
+      PackageForItem sut = usecase.GetPackagingByUID(uid);
+
+      Assert.NotNull(sut);
+
+    }
+
 
     [Fact]
     public void GetPackagingForOrderTest() {
 
       var usecase = ShippingAndHandlingUseCases.UseCaseInteractor();
-      string uid = //"f3bcb4ad-faaa-4afa-8a0c-8e2986c80065";
-      "a769e40f-3fbd-45af-9022-11d482024a8f";
-
+      string uid = "e1513326-ffa6-4a3d-af32-6e9d41316606";
+        
       IShippingAndHandling sut = usecase.GetPackagingForOrder(uid);
 
       Assert.NotNull(sut);
@@ -60,15 +71,35 @@ namespace Empiria.Trade.Tests {
 
       var usecase = ShippingAndHandlingUseCases.UseCaseInteractor();
       
-      string orderUID = "57335a81-56cf-477d-84e2-3193849210e1";
+      string orderUID = "e1513326-ffa6-4a3d-af32-6e9d41316606";
 
       var packingItemFields = new PackingItemFields {
-        OrderUID = "57335a81-56cf-477d-84e2-3193849210e1",
-        PackageID = "CAJA 100",
+        OrderUID = "e1513326-ffa6-4a3d-af32-6e9d41316606",
+      PackageID = "CAJA 009",
         PackageTypeUID = "0452a10b-0607-4d45-8614-385dda701b54"
       };
       
       IShippingAndHandling sut = usecase.CreatePackageForItem(orderUID, packingItemFields);
+
+      Assert.NotNull(sut);
+
+    }
+
+
+    [Fact]
+    public void UpdatePackageForItemTest() {
+
+      var usecase = ShippingAndHandlingUseCases.UseCaseInteractor();
+
+      string orderUID = "e1513326-ffa6-4a3d-af32-6e9d41316606";
+      string packageForItemUID = "44d2a801-697e-4ce1-b7b1-d98d8a2b5734";
+      var packingItemFields = new PackingItemFields {
+        OrderUID = "e1513326-ffa6-4a3d-af32-6e9d41316606",
+        PackageID = "CAJA 004",
+        PackageTypeUID = "0452a10b-0607-4d45-8614-385dda701b54"
+      };
+
+      IShippingAndHandling sut = usecase.UpdatePackageForItem(orderUID, packageForItemUID, packingItemFields);
 
       Assert.NotNull(sut);
 

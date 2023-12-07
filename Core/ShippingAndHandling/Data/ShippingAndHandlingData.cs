@@ -13,6 +13,7 @@ using Empiria.Trade.Core;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Products;
 using Empiria.Trade.Products.Adapters;
+using Empiria.Trade.ShippingAndHandling.Adapters;
 using Newtonsoft.Json;
 
 namespace Empiria.Trade.ShippingAndHandling.Data {
@@ -41,9 +42,8 @@ namespace Empiria.Trade.ShippingAndHandling.Data {
 
 
     internal FixedList<InventoryEntry> GetInventoryByVendorProduct(
-                                        string vendorProductUid, string warehouseBinUid) {
+                                        int vendorProductId, string warehouseBinUid) {
 
-      int vendorProductId = VendorProduct.Parse(vendorProductUid).Id;
       var warehouseBin = string.Empty;
       if (warehouseBinUid != string.Empty) {
         warehouseBin = $" AND WarehouseBinId = {WarehouseBin.Parse(warehouseBinUid).Id}";
@@ -58,7 +58,7 @@ namespace Empiria.Trade.ShippingAndHandling.Data {
     }
 
 
-    internal FixedList<PackageForItem> GetPackingItems(string orderUid) {
+    internal FixedList<PackageForItem> GetPackagesForItems(string orderUid) {
 
       int orderId = Order.Parse(orderUid).Id;
 
@@ -67,6 +67,18 @@ namespace Empiria.Trade.ShippingAndHandling.Data {
       var dataOperation = DataOperation.Parse(sql);
 
       return DataReader.GetPlainObjectFixedList<PackageForItem>(dataOperation);
+
+    }
+
+
+    internal FixedList<PackingOrderItem> GetPackingOrderItems(int OrderPackingId) {
+
+      string sql = $"SELECT * " +
+                   $"FROM TRDPackagingItems WHERE OrderPackingId = {OrderPackingId}";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetPlainObjectFixedList<PackingOrderItem>(dataOperation);
 
     }
 
@@ -88,7 +100,7 @@ namespace Empiria.Trade.ShippingAndHandling.Data {
     internal static void WritePacking(PackageForItem order) {
 
       var op = DataOperation.Parse("writePackaging",
-        order.Id, order.OrderPackingUID, order.OrderId, order.PackageTypeId, order.PackageID);
+        order.OrderPackingId, order.UID, order.OrderId, order.PackageTypeId, order.PackageID);
 
       DataWriter.Execute(op);
     }
@@ -154,7 +166,7 @@ namespace Empiria.Trade.ShippingAndHandling.Data {
 
 
     [DataField("VendorProductId")]
-    public int VendorProduct {
+    public int VendorProductId {
       get; set;
     }
 

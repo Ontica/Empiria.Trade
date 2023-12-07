@@ -16,7 +16,7 @@ using Empiria.Trade.ShippingAndHandling.Data;
 namespace Empiria.Trade.ShippingAndHandling {
 
   /// <summary>Represents a Packaging order item.</summary>
-  public class PackingOrderItem :BaseObject {
+  public class PackingOrderItem : BaseObject {
 
 
 
@@ -95,6 +95,11 @@ namespace Empiria.Trade.ShippingAndHandling {
     public decimal Quantity {
       get;
       internal set;
+    }
+
+
+    public InventoryEntry InventoryEntry {
+      get; internal set;
     }
 
 

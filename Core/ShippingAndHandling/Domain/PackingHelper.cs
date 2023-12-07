@@ -23,159 +23,79 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
     #region Public methods
 
 
-    public PackagedData MapPackingData(string orderUid, FixedList<PackageForItemDto> packingItems) {
-      
-      var data = new PackagedData();
+    public FixedList<MissingItemDto> GetMissingItems(string orderUid,
+                                        FixedList<PackageForItemDto> packagesForItems) {
 
-      decimal _vol = 0;
-
-      if (packingItems.Count > 0) {
-
-        foreach (var item in packingItems) {
-          var type = PackageType.Parse(item.PackageTypeUID);
-
-          if (type != null) {
-            type.GetVolumeAttributes();
-            _vol += type.TotalVolume;
-          }
-        }
-
-      }
-
-      data.OrderUID = orderUid;
-      data.Size = _vol;
-      data.Count = packingItems.Count();
-
-      return data;
-    }
-
-
-    public FixedList<MissingItemDto> MapToMissingItems(string orderUid, FixedList<Packing> packings) {
-      
       var missingItems = new List<MissingItemDto>();
 
-      if (packings.Count == 0) {
-        var data = new ShippingAndHandlingData();
+      var data = new ShippingAndHandlingData();
+      var orderItems = data.GetOrderItems(orderUid);
+      var packingOrderItems = packagesForItems.SelectMany(x => x.OrderItems).ToList();
 
-        var orderItems = data.GetOrderItems(orderUid);
-        foreach (var item in orderItems) {
+      foreach (var item in orderItems) {
+        var quantityOrderItems = packingOrderItems
+                                  .Where(x => x.OrderItemUID == item.OrderItemUID)
+                                  .Sum(x => x.Quantity);
 
+        if (item.Quantity > quantityOrderItems) {
           var missing = new MissingItemDto();
           missing.OrderItemUID = item.OrderItemUID;
-          missing.Quantity = item.Quantity;
-
-          var vendorProduct = VendorProduct.Parse(item.VendorProduct);
+          missing.Quantity = item.Quantity - quantityOrderItems;
           missing.MergeCommonFieldsData(item.OrderItemId);
-          GetWarehousesByItem(missing, vendorProduct.UID);
+
+          GetWarehousesByItem(missing, item.VendorProductId);
+
           missingItems.Add(missing);
-
-        }
-        
-      } else {
-
-        foreach (var pack in packings) {
-          var orderItem = OrderItem.Parse(pack.OrderItemId);
-
-          var exist = missingItems.Find(x => x.OrderItemUID == orderItem.UID);
-
-          if (exist == null) {
-            var quantityOrderItems = packings.Where(x => x.OrderItemId == orderItem.Id).Sum(x => x.Quantity);
-
-            if (orderItem.Quantity > quantityOrderItems) {
-              var missing = new MissingItemDto();
-              missing.OrderItemUID = orderItem.UID;
-              missing.Quantity = orderItem.Quantity - quantityOrderItems;
-              missing.MergeCommonFieldsData(pack.OrderItemId);
-              
-              GetWarehousesByItem(missing, orderItem.VendorProduct.UID);
-
-              missingItems.Add(missing);
-            }
-          }
         }
       }
       return missingItems.ToFixedList();
     }
 
 
-    private void GetWarehousesByItem(MissingItemDto missing, string vendorProductUid) {
 
-      var data = new ShippingAndHandlingData();
+    public FixedList<PackageForItemDto> GetPackagesByOrder(string orderUid, FixedList<PackageForItem> packItems) {
+      var packagesList = new List<PackageForItemDto>();
 
-      FixedList<InventoryEntry> inventory = data.GetInventoryByVendorProduct(vendorProductUid, "");
+      foreach (var entry in packItems) {
+        var packageType = PackageType.Parse(entry.PackageTypeId);
 
-      var whBinDto = new List<WarehouseBinDto>();
+        var package = new PackageForItemDto();
+        package.UID = entry.OrderPackingUID;
+        package.OrderUID = orderUid;
+        package.PackageID = entry.PackageID;
+        package.PackageTypeUID = packageType.ObjectKey;
+        package.PackageTypeName = packageType.Name;
 
-      foreach (var item in inventory) {
-        var _whBin = WarehouseBin.Parse(item.WarehouseBinId);
-        
-        var exist = whBinDto.Find(x => x.UID == _whBin.UID && x.OrderItemUID == missing.OrderItemUID);
+        package.OrderItems = GetPackingItems(orderUid, entry.OrderPackingId);
 
-        if (exist == null) {
-          var input = inventory.Where(x => x.WarehouseBinId == _whBin.Id).Sum(x => x.InputQuantity);
-          var output = inventory.Where(x => x.WarehouseBinId == _whBin.Id).Sum(x => x.OutputQuantity);
+        packagesList.Add(package);
 
-          var bin = new WarehouseBinDto();
-          bin.UID = _whBin.UID;
-          bin.OrderItemUID = missing.OrderItemUID;
-          bin.Name = _whBin.BinCode;
-          bin.WarehouseName = _whBin.Warehouse.Code;
-          bin.Stock = input - output;
-
-          whBinDto.Add(bin);
-        } 
-        
       }
-      missing.WarehouseBins = whBinDto.ToFixedList();
+
+      return packagesList.ToFixedList();
     }
 
-    public FixedList<PackageForItemDto> MapToPackingItems(string orderUid, FixedList<Packing> packings) {
-      
-      var packingItems = new List<PackageForItemDto>();
 
-      if (packings.Count == 0) {
+    public PackagedData GetPackingData(string orderUid, FixedList<PackageForItemDto> packageForItemsList) {
 
-        var data = new ShippingAndHandlingData();
-        var packItems = data.GetPackingItems(orderUid);
+      var data = new PackagedData();
 
-        foreach (var entry in packItems) {
-          var item = new PackageForItemDto();
-          var packageType = PackageType.Parse(entry.PackageTypeId);
+      decimal _vol = 0;
 
-          item.UID = entry.OrderPackingUID;
-          item.OrderUID = orderUid;
-          item.PackageID = entry.PackageID;
-          item.PackageTypeUID = packageType.ObjectKey;
-          item.PackageTypeName = packageType.Name;
-          packingItems.Add(item);
+      foreach (var item in packageForItemsList) {
+        var type = PackageType.Parse(item.PackageTypeUID);
+
+        if (type != null) {
+          type.GetVolumeAttributes();
+          _vol += type.TotalVolume;
         }
-
-      } else {
-
-
-        foreach (var entry in packings) {
-          var item = new PackageForItemDto();
-
-          item.UID = entry.OrderPackingUID;
-          item.OrderUID = entry.Order.UID;
-          item.PackageID = entry.PackageID;
-          item.PackageTypeUID = entry.PackageType.ObjectKey;
-          item.PackageTypeName = entry.PackageType.Name;
-
-          var exist = packingItems.Find(x => x.UID == item.UID);
-
-          if (exist == null) {
-            item.OrderItems = GetOrderItems(entry.OrderPackingUID, packings);
-            packingItems.Add(item);
-
-          }
-
-        }
-
-
       }
 
-      return packingItems.ToFixedList();
+      data.OrderUID = orderUid;
+      data.Size = _vol;
+      data.Count = packageForItemsList.Count();
+
+      return data;
     }
 
 
@@ -184,14 +104,14 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
     #region Private methods
 
 
-    static private FixedList<PackingItemDto> GetOrderItems(string orderPackingUID,
-                                                             FixedList<Packing> packings) {
+    private FixedList<PackingItemDto> GetPackingItems(string orderUid, int orderPackingId) {
+
+      var data = new ShippingAndHandlingData();
+      var packingItems = data.GetPackingOrderItems(orderPackingId);
+
       var packingOrderItems = new List<PackingItemDto>();
 
-      var items = packings.FindAll(x => x.OrderPackingUID == orderPackingUID);
-
-      foreach (var item in items) {
-
+      foreach (var item in packingItems) {
         var packingOrderItem = new PackingItemDto();
         packingOrderItem.UID = item.PackingItemUID;
         packingOrderItem.MergeCommonFieldsData(item.OrderItemId);
@@ -204,10 +124,13 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
     }
 
 
-    static private void GetWarehouses(PackingItemDto packingOrderItem, Packing item) {
+    static public void GetWarehouses(PackingItemDto packingOrderItem, PackingOrderItem item) {
 
-      if (item.InventoryEntry?.WarehouseId > 0) {
-        var warehouse = Warehouse.Parse(item.InventoryEntry.WarehouseId);
+      var inventory = InventoryEntry.Parse(item.InventoryEntryId);
+      if (inventory?.WarehouseId > 0) {
+
+        var warehouse = Warehouse.Parse(inventory.WarehouseId);
+
         var whDto = new WarehouseDto();
         whDto.UID = warehouse.UID;
         whDto.Code = warehouse.Code;
@@ -216,9 +139,9 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
         packingOrderItem.Warehouse = whDto;
       }
 
-      if (item.InventoryEntry?.WarehouseBinId > 0) {
+      if (inventory?.WarehouseBinId > 0) {
 
-        var warehouseBin = WarehouseBin.Parse(item.InventoryEntry.WarehouseBinId);
+        var warehouseBin = WarehouseBin.Parse(inventory.WarehouseBinId);
         var whBinDto = new WarehouseBinDto();
         whBinDto.UID = warehouseBin.WarehouseBinUID;
         whBinDto.OrderItemUID = packingOrderItem.OrderItemUID;
@@ -227,6 +150,38 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
         //whBinDto.Stock = //TODO SACAR STOCK DE INVENTARIO-WAREHOUSE
         packingOrderItem.WarehouseBin = whBinDto;
       }
+    }
+
+
+    public void GetWarehousesByItem(MissingItemDto missing, int vendorProductId) {
+
+      var data = new ShippingAndHandlingData();
+
+      FixedList<InventoryEntry> inventory = data.GetInventoryByVendorProduct(vendorProductId, "");
+
+      var whBinDto = new List<WarehouseBinDto>();
+
+      foreach (var item in inventory) {
+        var _whBin = WarehouseBin.Parse(item.WarehouseBinId);
+
+        var exist = whBinDto.Find(x => x.UID == _whBin.UID && x.OrderItemUID == missing.OrderItemUID);
+
+        if (exist == null) {
+          var input = inventory.Where(x => x.WarehouseBinId == _whBin.Id).Sum(x => x.InputQuantity);
+          var output = inventory.Where(x => x.WarehouseBinId == _whBin.Id).Sum(x => x.OutputQuantity);
+
+          var bin = new WarehouseBinDto();
+          bin.UID = _whBin.UID;
+          bin.OrderItemUID = missing.OrderItemUID;
+          bin.Name = _whBin.BinCode;
+          bin.WarehouseName = $"Almacen {_whBin.Warehouse.Code}";
+          bin.Stock = input > output ? input - output : 0;
+
+          whBinDto.Add(bin);
+        }
+
+      }
+      missing.WarehouseBins = whBinDto.ToFixedList();
     }
 
 

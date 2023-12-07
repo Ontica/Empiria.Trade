@@ -35,13 +35,13 @@ namespace Empiria.Trade.ShippingAndHandling {
     static public PackageForItem Empty => ParseEmpty<PackageForItem>();
 
 
-    public PackageForItem(string orderUID, PackingItemFields orderFields) {
+    public PackageForItem(string orderUID, PackingItemFields orderFields, string packageForItemUID) {
 
-      MapToPackagingOrder(orderUID, orderFields);
+      MapToPackagingOrder(orderUID, orderFields, packageForItemUID);
 
     }
 
-    
+
     #endregion Constructor and parsers
 
 
@@ -103,20 +103,32 @@ namespace Empiria.Trade.ShippingAndHandling {
 
     protected override void OnSave() {
 
+      if (this.OrderPackingId == 0) {
+
+        this.OrderPackingId = this.Id;
+      }
       ShippingAndHandlingData.WritePacking(this);
 
     }
 
 
-    private void MapToPackagingOrder(string orderUID, PackingItemFields orderFields) {
+    private void MapToPackagingOrder(string orderUID, PackingItemFields orderFields, string packageForItemUID) {
+
+      var packaging = Parse(packageForItemUID);
+
+      if (packaging.Id > 0) {
+        this.OrderPackingId = packaging.OrderPackingId;
+        this.OrderPackingUID = packageForItemUID;
+      } 
 
       this.Order = Order.Parse(orderUID);
       this.PackageType = PackageType.Parse(orderFields.PackageTypeUID);
-      this.OrderPackingUID = Guid.NewGuid().ToString();
+
       this.OrderId = Order.Id;
       this.PackageTypeId = PackageType.PackageTypeId;
       this.PackageID = orderFields.PackageID;
 
+      
     }
 
 
