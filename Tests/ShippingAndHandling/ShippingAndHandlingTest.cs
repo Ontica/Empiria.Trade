@@ -106,7 +106,19 @@ namespace Empiria.Trade.Tests {
     }
 
 
+    [Fact]
+    public void DeletePackageForItemTest() {
 
+      var usecase = ShippingAndHandlingUseCases.UseCaseInteractor();
+
+      string orderUID = "e1513326-ffa6-4a3d-af32-6e9d41316606";
+      string packageForItemUID = "41c4cfe0-18d4-4242-ad4e-b7ca3dc9c287";
+      
+      IShippingAndHandling sut = usecase.DeletePackageForItem(orderUID, packageForItemUID);
+
+      Assert.NotNull(sut);
+
+    }
 
 
     [Fact]

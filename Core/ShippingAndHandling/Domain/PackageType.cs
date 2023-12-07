@@ -63,9 +63,9 @@ namespace Empiria.Trade.ShippingAndHandling {
     }
 
 
-    public FixedList<Attributes> Attributes {
+    public FixedList<AttributesDto> Attributes {
       get; set;
-    } = new FixedList<Attributes>();
+    } = new FixedList<AttributesDto>();
 
 
     public decimal Length {
@@ -86,10 +86,10 @@ namespace Empiria.Trade.ShippingAndHandling {
     #endregion Properties
 
 
-    public FixedList<Attributes> GetExtData() {
+    public FixedList<AttributesDto> GetExtData() {
 
-      AttributesList attrs = new AttributesList();
-      attrs = JsonConvert.DeserializeObject<AttributesList>(ObjectExtData);
+      AttributesListDto attrs = new AttributesListDto();
+      attrs = JsonConvert.DeserializeObject<AttributesListDto>(ObjectExtData);
       return attrs.Attributes;
 
     }

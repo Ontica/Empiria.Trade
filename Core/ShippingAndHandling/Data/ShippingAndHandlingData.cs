@@ -136,6 +136,28 @@ namespace Empiria.Trade.ShippingAndHandling.Data {
     }
 
 
+    internal void DeletePackageForItem(string packageForItemUID) {
+      
+      var package = PackageForItem.Parse(packageForItemUID);
+
+      if (package?.OrderPackingId > 0) {
+
+        string sql = $"DELETE FROM TRDPackagingItems WHERE OrderPackingId = {package.OrderPackingId}";
+
+        var dataOpItem = DataOperation.Parse(sql);
+
+        DataWriter.Execute(dataOpItem);
+
+        string sqlPackage = $"DELETE FROM TRDPackaging WHERE OrderPackingId = {package.OrderPackingId}";
+
+        var dataOpPackage = DataOperation.Parse(sqlPackage);
+
+        DataWriter.Execute(dataOpPackage);
+      }
+      
+    }
+
+
     #region Private methods
 
 

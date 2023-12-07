@@ -83,9 +83,11 @@ namespace Empiria.Trade.ShippingAndHandling.UseCases {
     }
 
 
-    public IShippingAndHandling DeletePackageForItem(string orderUID, string packingItemUID) {
+    public IShippingAndHandling DeletePackageForItem(string orderUID, string packageForItemUID) {
 
       var data = new ShippingAndHandlingData();
+
+      data.DeletePackageForItem(packageForItemUID);
 
       return GetPackaging(orderUID);
     }
