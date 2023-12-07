@@ -34,16 +34,17 @@ namespace Empiria.Trade.Products.Adapters
         } = string.Empty;
 
 
-        public ProductType ProductType
+        public ProductTypeDto ProductType
         {
             get; internal set;
-        } = new ProductType();
+
+        } = new ProductTypeDto();
 
 
-        public FixedList<Presentation> Presentations
+        public FixedList<PresentationDto> Presentations
         {
             get; set;
-        } = new FixedList<Presentation>();
+        } = new FixedList<PresentationDto>();
 
 
         //public FixedList<PriceListOfProduct> PriceList {

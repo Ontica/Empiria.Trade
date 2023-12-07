@@ -65,8 +65,8 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
-    static public ProductShortEntryDto MapEntry(Product entry) {
-      var dto = new ProductShortEntryDto();
+    static public ProductDto MapEntry(Product entry) {
+      var dto = new ProductDto();
 
       dto.ProductUID = entry.ProductUID;
       dto.ProductCode = entry.Code;
@@ -74,14 +74,13 @@ namespace Empiria.Trade.Products.Adapters {
       dto.ProductType = GetProductType(entry);
       dto.Presentations = GetPresentations(entry);
 
-
       return dto;
     }
 
 
-    static private ProductType GetProductType(Product entry) {
+    static private ProductTypeDto GetProductType(Product entry) {
 
-      var type = new ProductType();
+      var type = new ProductTypeDto();
 
       var attributes = GetAttributes(entry);
 
@@ -93,12 +92,12 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
-    static private FixedList<Attributes> GetAttributes(Product entry) {
+    static private FixedList<AttributesDto> GetAttributes(Product entry) {
 
-      AttributesList attrs = new AttributesList();
+      AttributesListDto attrs = new AttributesListDto();
       try {
         if (entry.Attributes != "") {
-          attrs = JsonConvert.DeserializeObject<AttributesList>(entry.Attributes);
+          attrs = JsonConvert.DeserializeObject<AttributesListDto>(entry.Attributes);
         }
 
         return attrs.Attributes.ToFixedList();
@@ -112,12 +111,12 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
-    static private FixedList<Presentation> GetPresentations(Product entry) {
+    static private FixedList<PresentationDto> GetPresentations(Product entry) {
 
-      var presentations = new List<Presentation>();
+      var presentations = new List<PresentationDto>();
 
       foreach (var present in entry.Presentations) {
-        Presentation presentation = new Presentation();
+        PresentationDto presentation = new PresentationDto();
 
         presentation.PresentationUID = present.PresentationUID;
         presentation.Description = present.Description;
@@ -132,12 +131,12 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
-    static private FixedList<Vendor> GetVendors(Presentation presentation) {
-      var vendors = new List<Vendor>();
+    static private FixedList<VendorDto> GetVendors(PresentationDto presentation) {
+      var vendors = new List<VendorDto>();
 
       foreach (var _vendor in presentation.Vendors) {
 
-        Vendor vendor = new Vendor() {
+        VendorDto vendor = new VendorDto() {
           VendorProductUID = _vendor.VendorProductUID,
           VendorUID = _vendor.VendorUID,
           VendorName = _vendor.VendorName,

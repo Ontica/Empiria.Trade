@@ -84,7 +84,7 @@ namespace Empiria.Trade.Products.Data {
         
         var selectOperation = DataOperation.Parse(select);
 
-        var entries = DataReader.GetPlainObjectFixedList<ProductUpdate>(selectOperation);
+        var entries = DataReader.GetPlainObjectFixedList<DbTableUpdate>(selectOperation);
 
         int count = 0;
         foreach (var entry in entries) {
@@ -108,7 +108,7 @@ namespace Empiria.Trade.Products.Data {
   } // class TRDProductDataService
 
 
-  internal class ProductUpdate {
+  internal class DbTableUpdate {
 
     [DataField("ID")]
     public int Id {

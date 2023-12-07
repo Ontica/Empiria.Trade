@@ -99,7 +99,7 @@ namespace Empiria.Trade.Products.Domain {
 
       } else {
 
-        var presentation = new Presentation();
+        var presentation = new PresentationDto();
         presentation.PresentationUID = product.ProductPresentation.UID;
         presentation.Description = product.ProductPresentation.PresentationDescription;
         presentation.Units = product.ProductPresentation.QuantityAmount;
@@ -127,7 +127,7 @@ namespace Empiria.Trade.Products.Domain {
     //}
 
 
-    private void GetVendorsByPresentation(Presentation presentation, Product product) {
+    private void GetVendorsByPresentation(PresentationDto presentation, Product product) {
       
       var vendorProduct = VendorProduct.Parse(product.VendorProductUID);
 
@@ -135,7 +135,7 @@ namespace Empiria.Trade.Products.Domain {
 
       if (existVendor == null) {
 
-        Vendor vendor = new Vendor();
+        VendorDto vendor = new VendorDto();
         vendor.VendorProductUID = product.VendorProductUID;
         vendor.VendorUID = product.Vendor.UID;
         vendor.VendorName = product.Vendor.Name;

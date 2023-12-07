@@ -42,8 +42,8 @@ namespace Empiria.Trade.Sales.Adapters {
       return dto;
     }
 
-    private static BaseProductDto MapBaseProductDto(SalesOrderItem orderItem) {
-      var dto = new BaseProductDto {
+    private static ProductDto MapBaseProductDto(SalesOrderItem orderItem) {
+      var dto = new ProductDto {
         ProductUID = orderItem.VendorProduct.ProductFields.ProductUID,
         ProductCode = orderItem.VendorProduct.ProductFields.ProductCode,
         Description = orderItem.VendorProduct.ProductFields.ProductName,
@@ -53,8 +53,8 @@ namespace Empiria.Trade.Sales.Adapters {
       return dto;
     }
 
-    private static BaseProductTypeDto MapProductType(SalesOrderItem orderItem) {
-      var dto = new BaseProductTypeDto {
+    private static ProductTypeDto MapProductType(SalesOrderItem orderItem) {
+      var dto = new ProductTypeDto {
         ProductTypeUID = "ddddd-dc17-49f5-b378-aa692dc21cdd",
         Name = orderItem.VendorProduct.ProductFields.ProductGroup.Name,
         Attributes = GetAttributes(orderItem.VendorProduct.ProductFields.Attributes)

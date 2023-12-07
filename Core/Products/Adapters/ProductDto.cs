@@ -1,29 +1,47 @@
-﻿using System;
+﻿/* Empiria Trade *********************************************************************************************
+*                                                                                                            *
+*  Module   : Product Management                         Component : Interface adapters                      *
+*  Assembly : Empiria.Trade.Products.dll                 Pattern   : Data Transfer Object                    *
+*  Type     : ProductDto                                 License   : Please read LICENSE.txt file            *
+*                                                                                                            *
+*  Summary  : Output DTO used to return the entries of Products.                                             *
+*                                                                                                            *
+************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Empiria.Trade.Products.Adapters {
 
-  public class BaseProductDto {
+  /// <summary>Output DTO used to return the entries of Products.</summary>
+  public class ProductDto : IProductEntryDto {
+    
+    
     public string ProductUID {
       get; set;
     }
+
 
     public string ProductCode {
       get; set;
     }
 
+
     public string Description {
       get; set;
     }
 
-    public BaseProductTypeDto ProductType {
+
+    public ProductTypeDto ProductType {
       get; set;
     }
 
-  } // class BaseProductDto
+    //TODO PROBAR QUE NO GENERE PROBLEMA EN SALES
+    public FixedList<PresentationDto> Presentations {
+      get; set;
+    } = new FixedList<PresentationDto>();
+
+  } // class ProductDto
+
 
   public class VendorDto {
 
@@ -60,6 +78,7 @@ namespace Empiria.Trade.Products.Adapters {
 
   } // class VendorDto
 
+
   public class PresentationDto {
 
     public string PresentationUID {
@@ -75,11 +94,15 @@ namespace Empiria.Trade.Products.Adapters {
       get; set;
     }
 
+    //TODO PROBAR QUE NO GENERE PROBLEMA EN SALES
+    public List<VendorDto> Vendors {
+      get; set;
+    } = new List<VendorDto>();
+
   } // class PresentationDto
 
 
-
-  public class BaseProductTypeDto {
+  public class ProductTypeDto {
 
 
     public string ProductTypeUID {
@@ -99,13 +122,15 @@ namespace Empiria.Trade.Products.Adapters {
 
   } // class ProductType
 
+
   public class AttributesListDto {
 
     public FixedList<AttributesDto> Attributes {
-      get; internal set;
+      get; set;
     } = new FixedList<AttributesDto>();
 
   } // AttributesListDto
+
 
   public class AttributesDto {
 
@@ -121,4 +146,5 @@ namespace Empiria.Trade.Products.Adapters {
 
   } // class AttributesDto
 
-}
+
+} // namespace Empiria.Trade.Products.Adapters
