@@ -65,8 +65,8 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
-    static public ProductDto MapEntry(Product entry) {
-      var dto = new ProductDto();
+    static public ProductForSearchingDto MapEntry(Product entry) {
+      var dto = new ProductForSearchingDto();
 
       dto.ProductUID = entry.ProductUID;
       dto.ProductCode = entry.Code;
@@ -111,12 +111,12 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
-    static private FixedList<PresentationDto> GetPresentations(Product entry) {
+    static private FixedList<ProductPresentationForSeach> GetPresentations(Product entry) {
 
-      var presentations = new List<PresentationDto>();
+      var presentations = new List<ProductPresentationForSeach>();
 
       foreach (var present in entry.Presentations) {
-        PresentationDto presentation = new PresentationDto();
+        ProductPresentationForSeach presentation = new ProductPresentationForSeach();
 
         presentation.PresentationUID = present.PresentationUID;
         presentation.Description = present.Description;
@@ -131,7 +131,7 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
-    static private FixedList<VendorDto> GetVendors(PresentationDto presentation) {
+    static private FixedList<VendorDto> GetVendors(ProductPresentationForSeach presentation) {
       var vendors = new List<VendorDto>();
 
       foreach (var _vendor in presentation.Vendors) {

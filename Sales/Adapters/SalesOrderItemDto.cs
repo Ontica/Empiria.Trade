@@ -61,7 +61,7 @@ namespace Empiria.Trade.Sales.Adapters {
       get; set;
     }
 
-    public PresentationDto Presentation {
+    public ProductPresentationDto Presentation {
       get; set;
     }
 

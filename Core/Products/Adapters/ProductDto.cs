@@ -13,7 +13,7 @@ using System.Collections.Generic;
 namespace Empiria.Trade.Products.Adapters {
 
   /// <summary>Output DTO used to return the entries of Products.</summary>
-  public class ProductDto : IProductEntryDto {
+  public class ProductDto {
     
     
     public string ProductUID {
@@ -35,11 +35,7 @@ namespace Empiria.Trade.Products.Adapters {
       get; set;
     }
 
-    //TODO PROBAR QUE NO GENERE PROBLEMA EN SALES
-    public FixedList<PresentationDto> Presentations {
-      get; set;
-    } = new FixedList<PresentationDto>();
-
+    
   } // class ProductDto
 
 
@@ -79,7 +75,7 @@ namespace Empiria.Trade.Products.Adapters {
   } // class VendorDto
 
 
-  public class PresentationDto {
+  public class ProductPresentationDto {
 
     public string PresentationUID {
       get; set;
@@ -88,18 +84,15 @@ namespace Empiria.Trade.Products.Adapters {
 
     public string Description {
       get; set;
-    }
+    } = string.Empty;
+
 
     public decimal Units {
       get; set;
     }
 
-    //TODO PROBAR QUE NO GENERE PROBLEMA EN SALES
-    public List<VendorDto> Vendors {
-      get; set;
-    } = new List<VendorDto>();
 
-  } // class PresentationDto
+  } // class ProductPresentationDto
 
 
   public class ProductTypeDto {
@@ -120,7 +113,7 @@ namespace Empiria.Trade.Products.Adapters {
     } = new FixedList<AttributesDto>();
 
 
-  } // class ProductType
+  } // class ProductTypeDto
 
 
   public class AttributesListDto {

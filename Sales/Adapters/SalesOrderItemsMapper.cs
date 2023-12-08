@@ -93,8 +93,8 @@ namespace Empiria.Trade.Sales.Adapters {
       return dto;
     }
 
-    static private PresentationDto MapPresentation(SalesOrderItem orderItem) {
-      var dto = new PresentationDto {
+    static private ProductPresentationDto MapPresentation(SalesOrderItem orderItem) {
+      var dto = new ProductPresentationDto {
         PresentationUID = orderItem.VendorProduct.ProductPresentation.UID,
         Description = orderItem.VendorProduct.ProductPresentation.PresentationDescription,
         Units = orderItem.VendorProduct.ProductPresentation.QuantityAmount

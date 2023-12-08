@@ -279,9 +279,9 @@ namespace Empiria.Trade.Products {
     }
 
 
-    public List<PresentationDto> Presentations {
+    public List<ProductPresentationForSeach> Presentations {
       get; set;
-    } = new List<PresentationDto>();
+    } = new List<ProductPresentationForSeach>();
 
 
     #endregion Properties
