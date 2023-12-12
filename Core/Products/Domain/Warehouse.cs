@@ -39,45 +39,43 @@ namespace Empiria.Trade.Products {
 
     [DataField("WarehouseUID")]
     public string WarehouseUID {
-      get;
-      internal set;
+      get; set;
     }
 
 
     [DataField("WarehouseCode")]
     public string Code {
-      get;
-      internal set;
+      get; set;
     }
 
 
     [DataField("WarehouseName")]
     public string Name {
-      get;
-      internal set;
+      get; set;
     }
 
 
     [DataField("Description")]
     public string Description {
-      get;
-      internal set;
+      get; set;
     }
 
 
     [DataField("OwnerId")]
     public int OwnerId {
-      get;
-      internal set;
+      get; set;
     }
 
 
     [DataField("CompanyId")]
     public int CompanyId {
-      get;
-      internal set;
+      get; set;
     }
 
+
+    public decimal Stock {
+      get; set;
+    }
 
     #endregion Properties
 

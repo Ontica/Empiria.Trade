@@ -11,6 +11,7 @@ using System;
 using Empiria.Trade.Core;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Products;
+using Empiria.Trade.Products.Adapters;
 using Empiria.Trade.ShippingAndHandling.Adapters;
 
 namespace Empiria.Trade.ShippingAndHandling.Adapters {
@@ -19,9 +20,9 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
   public class PackingDto : IShippingAndHandling {
 
 
-    public PackagedData Data {
+    public PackagedDataDto Data {
       get; set;
-    } = new PackagedData();
+    } = new PackagedDataDto();
 
 
     public FixedList<PackageForItemDto> PackagedItems {
@@ -37,7 +38,7 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
   } // class PackingDto
 
 
-  public class PackagedData {
+  public class PackagedDataDto {
 
 
     public string OrderUID {
@@ -94,7 +95,7 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
   } // class PackingItem
 
 
-  public class PackingItemDto : CommonPackingItemFields {
+  public class PackingItemDto : CommonPackingItemFieldsDto {
 
     public string UID {
       get; set;
@@ -119,7 +120,7 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
   } // class PackingOrderItem
 
 
-  public class MissingItemDto : CommonPackingItemFields {
+  public class MissingItemDto : CommonPackingItemFieldsDto {
 
 
     public FixedList<WarehouseBinDto> WarehouseBins {
@@ -190,7 +191,7 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
   }
 
 
-  public class CommonPackingItemFields {
+  public class CommonPackingItemFieldsDto {
 
     
     public string OrderItemUID {
@@ -198,17 +199,27 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
     }
 
 
-    public ProductFields Product {
+    //public ProductFields Product {
+    //  get; set;
+    //}
+
+
+    //public ProductPresentation Presentation {
+    //  get; set;
+    //}
+
+
+    public ProductDto Product {
       get; set;
     }
 
 
-    public ProductPresentation Presentation {
+    public ProductPresentationDto Presentation {
       get; set;
     }
 
 
-    public Party Vendor {
+    public VendorDto Vendor {
       get; set;
     }
 
@@ -217,11 +228,25 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
       
       var orderItem = OrderItem.Parse(orderItemId);
       var vendorProduct = VendorProduct.Parse(orderItem.VendorProduct.Id);
-
+      
       this.OrderItemUID = orderItem.UID;
-      this.Product = vendorProduct.ProductFields;
-      this.Presentation = vendorProduct.ProductPresentation;
-      this.Vendor = vendorProduct.Vendor;
+      this.Product = MergeToProductDto(vendorProduct.ProductFields);
+      //this.Presentation = vendorProduct.ProductPresentation;
+      //this.Vendor = vendorProduct.Vendor;
+    }
+
+
+    private ProductDto MergeToProductDto(ProductFields fields) {
+
+      ProductDto product = new ProductDto();
+      product.ProductUID= fields.UID;
+      product.ProductCode = fields.ProductCode;
+      product.Description = fields.ProductDescription;
+      //product.ProductType = fields.GetEmpiriaType
+
+
+      return product;
+
     }
 
   } // class OrderItemProduct

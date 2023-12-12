@@ -38,6 +38,39 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
     #region Public methods
 
 
+    internal InventoryEntry GetInventoryEntries(string orderItemUID, string warehouseBinUID) {
+
+      var data = new ShippingAndHandlingData();
+
+      var orderItem = OrderItem.Parse(orderItemUID);
+      FixedList<InventoryEntry> inventories = data.GetInventoryByVendorProduct(
+                                              orderItem.VendorProduct.Id, warehouseBinUID);
+      var inventory = inventories.Last();
+      return inventory;
+    }
+
+
+    internal PackingEntry GetPackagesAndItemsForOrder(string orderUid) {
+
+      var data = new ShippingAndHandlingData();
+      var packsForItems = data.GetPackagesForItems(orderUid);
+      var helper = new PackingHelper();
+
+      FixedList<PackagedForItem> packagesForItems = helper.GetPackagesByOrder(orderUid, packsForItems);
+
+      PackagedData packingData = helper.GetPackingData(orderUid, packagesForItems);
+
+      FixedList<MissingItem> missingItems = helper.GetMissingItems(orderUid, packagesForItems);
+
+      var packingEntry = new PackingEntry();
+      packingEntry.PackagedItems = packagesForItems;
+      packingEntry.Data = packingData;
+      packingEntry.MissingItems = missingItems;
+
+      return packingEntry;
+    }
+
+
     internal FixedList<INamedEntity> GetPackageTypeList() {
       var data = new ShippingAndHandlingData();
 
@@ -51,45 +84,13 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
     }
 
 
-    internal PackingDto GetPackagesAndItemsForOrder(string orderUid) {
-
-      var data = new ShippingAndHandlingData();
-      var packsForItems = data.GetPackagesForItems(orderUid);
-      var helper = new PackingHelper();
-
-      FixedList<PackageForItemDto> packagesForItems = helper.GetPackagesByOrder(orderUid, packsForItems);
-
-      PackagedData packingData = helper.GetPackingData(orderUid, packagesForItems);
-
-      FixedList<MissingItemDto> missingItems = helper.GetMissingItems(orderUid, packagesForItems);
-
-      var packingDto = new PackingDto();
-      packingDto.PackagedItems = packagesForItems;
-      packingDto.Data = packingData;
-      packingDto.MissingItems = missingItems;
-
-      return packingDto;
-    }
-
-
-    internal InventoryEntry GetInventoryEntries(string orderItemUID, string warehouseBinUID) {
-
-      var data = new ShippingAndHandlingData();
-
-      var orderItem = OrderItem.Parse(orderItemUID);
-      FixedList<InventoryEntry> inventories = data.GetInventoryByVendorProduct(
-                                              orderItem.VendorProduct.Id, warehouseBinUID);
-      var inventory = inventories.Last();
-      return inventory;
-    }
-
     #endregion Public methods
 
 
     #region Private methods
 
 
-    internal void GetVolumeAttributes(FixedList<PackageType> packageTypes) {
+    private void GetVolumeAttributes(FixedList<PackageType> packageTypes) {
 
       foreach (var packageType in packageTypes) {
 

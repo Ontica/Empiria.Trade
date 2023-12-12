@@ -61,7 +61,7 @@ namespace Empiria.Trade.ShippingAndHandling.UseCases {
       return GetPackaging(orderUid);
     }
 
-    
+
     public IShippingAndHandling CreatePackageForItem(string orderUID, PackingItemFields orderFields) {
 
       var packagingOrder = new PackageForItem(orderUID, orderFields, string.Empty);
@@ -98,7 +98,7 @@ namespace Empiria.Trade.ShippingAndHandling.UseCases {
 
 
       var builder = new ShippingAndHandlingBuilder();
-      
+
       var inventory = builder.GetInventoryEntries(missingItemFields.orderItemUID,
                                                   missingItemFields.WarehouseBinUID);
 
@@ -114,7 +114,7 @@ namespace Empiria.Trade.ShippingAndHandling.UseCases {
 
     public IShippingAndHandling DeletePackingOrderItem(string orderUID,
                                  string packingItemUID, string packingItemEntryUID) {
-      
+
       var data = new ShippingAndHandlingData();
 
       data.DeletePackingOrderItem(packingItemEntryUID);
@@ -129,10 +129,13 @@ namespace Empiria.Trade.ShippingAndHandling.UseCases {
     #region Private methods
 
 
-    private PackingDto GetPackaging(string orderUid) {
+    private IShippingAndHandling GetPackaging(string orderUid) {
       var builder = new ShippingAndHandlingBuilder();
 
-      return builder.GetPackagesAndItemsForOrder(orderUid);
+      var packaging = builder.GetPackagesAndItemsForOrder(orderUid);
+
+      return ShippingAndHandlingMapper.MapPackingDto(packaging);
+
     }
 
 

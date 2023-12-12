@@ -9,6 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Empiria.Trade.Products.Adapters {
 
@@ -136,6 +137,18 @@ namespace Empiria.Trade.Products.Adapters {
       get; set;
     } = string.Empty;
 
+
+    public FixedList<AttributesDto> GetAttributes(string attributes) {
+
+      AttributesListDto attrs = new AttributesListDto();
+
+      if (attributes != "") {
+        attrs = JsonConvert.DeserializeObject<AttributesListDto>(attributes);
+      }
+
+      return attrs.Attributes.ToFixedList<AttributesDto>();
+
+    }
 
   } // class AttributesDto
 

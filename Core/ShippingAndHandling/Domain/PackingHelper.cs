@@ -23,10 +23,10 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
     #region Public methods
 
 
-    public FixedList<MissingItemDto> GetMissingItems(string orderUid,
-                                        FixedList<PackageForItemDto> packagesForItems) {
+    public FixedList<MissingItem> GetMissingItems(string orderUid,
+                                        FixedList<PackagedForItem> packagesForItems) {
 
-      var missingItems = new List<MissingItemDto>();
+      var missingItems = new List<MissingItem>();
 
       var data = new ShippingAndHandlingData();
       var orderItems = data.GetOrderItems(orderUid);
@@ -38,7 +38,7 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
                                   .Sum(x => x.Quantity);
 
         if (item.Quantity > quantityOrderItems) {
-          var missing = new MissingItemDto();
+          var missing = new MissingItem();
           missing.OrderItemUID = item.OrderItemUID;
           missing.Quantity = item.Quantity - quantityOrderItems;
           missing.MergeCommonFieldsData(item.OrderItemId);
@@ -52,21 +52,21 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
     }
 
 
-
-    public FixedList<PackageForItemDto> GetPackagesByOrder(string orderUid, FixedList<PackageForItem> packItems) {
-      var packagesList = new List<PackageForItemDto>();
+    public FixedList<PackagedForItem> GetPackagesByOrder(string orderUid,
+                                          FixedList<PackageForItem> packItems) {
+      var packagesList = new List<PackagedForItem>();
 
       foreach (var entry in packItems) {
         var packageType = PackageType.Parse(entry.PackageTypeId);
 
-        var package = new PackageForItemDto();
+        var package = new PackagedForItem();
         package.UID = entry.OrderPackingUID;
         package.OrderUID = orderUid;
         package.PackageID = entry.PackageID;
         package.PackageTypeUID = packageType.ObjectKey;
         package.PackageTypeName = packageType.Name;
 
-        package.OrderItems = GetPackingItems(orderUid, entry.OrderPackingId);
+        package.OrderItems = GetPackingItems(entry.OrderPackingId, entry.OrderPackingUID);
 
         packagesList.Add(package);
 
@@ -76,7 +76,7 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
     }
 
 
-    public PackagedData GetPackingData(string orderUid, FixedList<PackageForItemDto> packageForItemsList) {
+    public PackagedData GetPackingData(string orderUid, FixedList<PackagedForItem> packageForItemsList) {
 
       var data = new PackagedData();
 
@@ -101,19 +101,22 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
 
     #endregion Public methods
 
+
     #region Private methods
 
 
-    private FixedList<PackingItemDto> GetPackingItems(string orderUid, int orderPackingId) {
+    private FixedList<PackingItem> GetPackingItems(int orderPackingId,
+                                                    string orderPackingUID) {
 
       var data = new ShippingAndHandlingData();
       var packingItems = data.GetPackingOrderItems(orderPackingId);
 
-      var packingOrderItems = new List<PackingItemDto>();
+      var packingOrderItems = new List<PackingItem>();
 
       foreach (var item in packingItems) {
-        var packingOrderItem = new PackingItemDto();
+        var packingOrderItem = new PackingItem();
         packingOrderItem.UID = item.PackingItemUID;
+        packingOrderItem.OrderPackingUID = orderPackingUID;
         packingOrderItem.MergeCommonFieldsData(item.OrderItemId);
         packingOrderItem.Quantity = item.Quantity;
         GetWarehouses(packingOrderItem, item);
@@ -124,42 +127,42 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
     }
 
 
-    static public void GetWarehouses(PackingItemDto packingOrderItem, PackingOrderItem item) {
+    static private void GetWarehouses(PackingItem packingOrderItem, PackingOrderItem item) {
 
       var inventory = InventoryEntry.Parse(item.InventoryEntryId);
       if (inventory?.WarehouseId > 0) {
 
         var warehouse = Warehouse.Parse(inventory.WarehouseId);
 
-        var whDto = new WarehouseDto();
+        var whDto = new WarehouseForPacking();
         whDto.UID = warehouse.UID;
         whDto.Code = warehouse.Code;
         whDto.Name = warehouse.Name;
         //whDto.Stock = //TODO SACAR STOCK DE INVENTARIO-WAREHOUSE
-        packingOrderItem.Warehouse = whDto;
+        packingOrderItem.WarehouseForPacking = whDto;
       }
 
       if (inventory?.WarehouseBinId > 0) {
 
         var warehouseBin = WarehouseBin.Parse(inventory.WarehouseBinId);
-        var whBinDto = new WarehouseBinDto();
+        var whBinDto = new WarehouseBinForPacking();
         whBinDto.UID = warehouseBin.WarehouseBinUID;
         whBinDto.OrderItemUID = packingOrderItem.OrderItemUID;
         whBinDto.Name = warehouseBin.BinCode;
         whBinDto.WarehouseName = $"Almacen {warehouseBin.Warehouse.Code}";
         //whBinDto.Stock = //TODO SACAR STOCK DE INVENTARIO-WAREHOUSE
-        packingOrderItem.WarehouseBin = whBinDto;
+        packingOrderItem.WarehouseBinForPacking = whBinDto;
       }
     }
 
 
-    public void GetWarehousesByItem(MissingItemDto missing, int vendorProductId) {
+    private void GetWarehousesByItem(MissingItem missing, int vendorProductId) {
 
       var data = new ShippingAndHandlingData();
 
       FixedList<InventoryEntry> inventory = data.GetInventoryByVendorProduct(vendorProductId, "");
 
-      var whBinDto = new List<WarehouseBinDto>();
+      var whBinDto = new List<WarehouseBinForPacking>();
 
       foreach (var item in inventory) {
         var _whBin = WarehouseBin.Parse(item.WarehouseBinId);
@@ -170,7 +173,7 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
           var input = inventory.Where(x => x.WarehouseBinId == _whBin.Id).Sum(x => x.InputQuantity);
           var output = inventory.Where(x => x.WarehouseBinId == _whBin.Id).Sum(x => x.OutputQuantity);
 
-          var bin = new WarehouseBinDto();
+          var bin = new WarehouseBinForPacking();
           bin.UID = _whBin.UID;
           bin.OrderItemUID = missing.OrderItemUID;
           bin.Name = _whBin.BinCode;

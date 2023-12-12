@@ -133,7 +133,7 @@ namespace Empiria.Trade.Tests {
         orderItemUID = "85836afb-b4ee-4552-803e-0ee40bd096f9",
         WarehouseUID = "f0061eb4-833c-44bf-8893-adcb88281d06",
         WarehouseBinUID = "22d33c45-c41f-426c-92f4-453fdc0abc1b",
-        Quantity = 1000
+        Quantity = 50
       };
 
       IShippingAndHandling sut = usecase.CreatePackingOrderItemFields(

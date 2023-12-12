@@ -12,8 +12,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
+using Empiria.Trade.Core;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Products;
+using Empiria.Trade.Products.Adapters;
 
 namespace Empiria.Trade.ShippingAndHandling.Adapters {
 
@@ -25,21 +27,15 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
     #region Public methods
 
 
-    static internal IShippingAndHandling MapPackagingOrder(PackageForItem packagings) {
+    internal static IShippingAndHandling MapPackingDto(PackingEntry packaging) {
 
-      return MapEntry(packagings);
-    }
+      var packagedItems = MapToPackagedItems(packaging);
+      var packingData = MapPackingData(packagedItems);
+      var missingItems = MapToMissingItems_(packaging.MissingItems);
 
-
-    internal static IShippingAndHandling MapPackingDto(FixedList<Packing> packings) {
-
-      var packingItems = MapToPackingItems(packings);
-      var packingData = MapPackingData(packingItems);
-      var missingItems = MapToMissingItems(packings);
-
-      return new PackingDto {
+      return new PackingDto() {
         Data = packingData,
-        PackagedItems = packingItems,
+        PackagedItems = packagedItems,
         MissingItems = missingItems
       };
 
@@ -52,44 +48,28 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
     #region Private methods
 
 
-    static private void GetWarehouses(PackingItemDto packingOrderItem, Packing item) {
-
-      if (item.InventoryEntry?.WarehouseId > 0) {
-        var warehouse = Warehouse.Parse(item.InventoryEntry.WarehouseId);
-        var whDto = new WarehouseDto();
-        whDto.UID = warehouse.UID;
-        whDto.Code = warehouse.Code;
-        whDto.Name = warehouse.Name;
-        //whDto.Stock = //TODO SACAR STOCK DE INVENTARIO-WAREHOUSE
-        packingOrderItem.Warehouse = whDto;
-      }
-
-      if (item.InventoryEntry?.WarehouseBinId > 0) {
-
-        var warehouseBin = WarehouseBin.Parse(item.InventoryEntry.WarehouseBinId);
-        var whBinDto = new WarehouseBinDto();
-        whBinDto.UID = warehouseBin.WarehouseBinUID;
-        whBinDto.Name = warehouseBin.BinCode;
-        whBinDto.WarehouseName = $"Almacen {warehouseBin.Warehouse.Code}";
-        //whBinDto.Stock = //TODO SACAR STOCK DE INVENTARIO-WAREHOUSE
-        packingOrderItem.WarehouseBin = whBinDto;
-      }
-    }
-
-
-    static private FixedList<PackingItemDto> GetOrderItems(string orderPackingUID,
-                                                             FixedList<Packing> packings) {
+    static private FixedList<PackingItemDto> GetOrderItems(PackagedForItem entry) {
       var packingOrderItems = new List<PackingItemDto>();
 
-      var items = packings.FindAll(x => x.OrderPackingUID == orderPackingUID);
+      List<PackingItem> items = new List<PackingItem>();
+
+      foreach (var _item in entry.OrderItems) {
+        items.Add(_item);
+      }
 
       foreach (var item in items) {
 
         var packingOrderItem = new PackingItemDto();
-        packingOrderItem.UID = item.PackingItemUID;
-        packingOrderItem.MergeCommonFieldsData(item.OrderItemId);
+        packingOrderItem.UID = item.UID;
         packingOrderItem.Quantity = item.Quantity;
-        GetWarehouses(packingOrderItem, item);
+        
+        packingOrderItem.OrderItemUID= item.OrderItemUID;
+        packingOrderItem.Product = GetProductDto(item.Product);
+        packingOrderItem.Presentation = GetPresentationDto(item.Presentation);
+        packingOrderItem.Vendor = GetVendorDto(item.VendorProductId);
+
+        MergeWarehousesDto(packingOrderItem, item);
+
         packingOrderItems.Add(packingOrderItem);
       }
 
@@ -97,8 +77,73 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
     }
 
 
-    static private PackagedData MapPackingData(FixedList<PackageForItemDto> packingItems) {
-      var data = new PackagedData();
+    static private ProductPresentationDto GetPresentationDto(ProductPresentation presentation) {
+      var presentationDto = new ProductPresentationDto();
+      
+      presentationDto.PresentationUID = presentation.UID;
+      presentationDto.Description = presentation.PresentationDescription;
+      presentationDto.Units = presentation.QuantityAmount;
+
+      return presentationDto;
+    }
+
+
+    static private ProductDto GetProductDto(ProductFields product) {
+
+      //TODO VERIFICAR QUE ATRIBUTOS SEAN CORRECTOS
+      ProductTypeDto type = new ProductTypeDto {
+        ProductTypeUID = product.UID,
+        Name = product.ProductGroup.Name,
+        Attributes = new AttributesDto().GetAttributes(product.Attributes)
+      };
+
+      var productDto = new ProductDto();
+
+      productDto.ProductUID = product.UID;
+      productDto.ProductCode = product.ProductCode;
+      productDto.Description = product.ProductName;
+      productDto.ProductType = type;
+
+      return productDto;
+    }
+
+
+    static private VendorDto GetVendorDto(int vendorProductId) {
+      var vendorDto = new VendorDto();
+
+      var vendorProduct = VendorProduct.Parse(vendorProductId);
+      vendorDto.VendorProductUID = vendorProduct.VendorProductUID;
+      vendorDto.VendorUID = vendorProduct.Vendor.UID;
+      vendorDto.VendorName = vendorProduct.Vendor.Name;
+      vendorDto.Sku = vendorProduct.SKU;
+      vendorDto.Stock = 0; // TODO SACAR STOCK
+      vendorDto.Price = 0; // TODO SACAR PRICE
+
+      return vendorDto;
+    }
+
+
+    static private FixedList<WarehouseBinDto> GetWarehouseBinList(
+                      FixedList<WarehouseBinForPacking> warehouseBins) {
+
+      var whBinDto = new List<WarehouseBinDto>();
+
+      foreach (var bin in warehouseBins) {
+        var whBin = new WarehouseBinDto();
+        whBin.UID = bin.UID;
+        whBin.OrderItemUID = bin.OrderItemUID;
+        whBin.Name = bin.Name;
+        whBin.WarehouseName = bin.WarehouseName;
+        whBin.Stock = bin.Stock;
+        whBinDto.Add(whBin);
+      }
+
+      return whBinDto.ToFixedList();
+    }
+
+
+    static private PackagedDataDto MapPackingData(FixedList<PackageForItemDto> packingItems) {
+      var data = new PackagedDataDto();
 
       decimal _vol = 0;
       foreach (var item in packingItems) {
@@ -119,72 +164,69 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
     }
 
 
-    private static FixedList<PackageForItemDto> MapToPackingItems(FixedList<Packing> packings) {
-
-      var packingItems = new List<PackageForItemDto>();
-
-      foreach (var entry in packings) {
-        var item = new PackageForItemDto();
-
-        item.UID = entry.OrderPackingUID;
-        item.OrderUID = entry.Order.UID;
-        item.PackageID = entry.PackageID;
-        item.PackageTypeUID = entry.PackageType.ObjectKey;
-        item.PackageTypeName = entry.PackageType.Name;
-
-        var exist = packingItems.Find(x => x.UID == item.UID);
-
-        if (exist == null) {
-          item.OrderItems = GetOrderItems(entry.OrderPackingUID, packings);
-          packingItems.Add(item);
-
-        }
-
-      }
-
-      return packingItems.ToFixedList();
-    }
-
-
-    static private FixedList<MissingItemDto> MapToMissingItems(FixedList<Packing> packings) {
+    static private FixedList<MissingItemDto> MapToMissingItems_(FixedList<MissingItem> missing) {
 
       var missingItems = new List<MissingItemDto>();
 
-      foreach (var pack in packings) {
-        var orderItem = OrderItem.Parse(pack.OrderItemId);
-
-        var exist = missingItems.Find(x => x.OrderItemUID == orderItem.UID);
-
-        if (exist == null) {
-          var quantityOrderItems = packings.Where(x => x.OrderItemId == orderItem.Id).Sum(x => x.Quantity);
-
-          if (orderItem.Quantity > quantityOrderItems) {
-            var missing = new MissingItemDto();
-            missing.OrderItemUID = orderItem.UID;
-            missing.Quantity = orderItem.Quantity - quantityOrderItems;
-            missing.MergeCommonFieldsData(pack.OrderItemId);
-
-            missingItems.Add(missing);
-          }
-
-        }
-
+      foreach (var miss in missing) {
+        var missingItem = new MissingItemDto();
+        missingItem.OrderItemUID = miss.OrderItemUID;
+        missingItem.Quantity = miss.Quantity;
+        missingItem.Product = GetProductDto(miss.Product);
+        missingItem.Presentation = GetPresentationDto(miss.Presentation);
+        missingItem.Vendor = GetVendorDto(miss.VendorProductId);
+        missingItem.WarehouseBins = GetWarehouseBinList(miss.WarehouseBins);
+        missingItems.Add(missingItem);
       }
 
       return missingItems.ToFixedList();
     }
 
 
-    static private PackingOrderDto MapEntry(PackageForItem packaging) {
+    private static FixedList<PackageForItemDto> MapToPackagedItems(PackingEntry packaging) {
 
-      var dto = new PackingOrderDto();
-      dto.Order = packaging.Order;
-      dto.PackageID = packaging.PackageID;
+      var packingItems = new List<PackageForItemDto>();
 
-      return dto;
+      foreach (var entry in packaging.PackagedItems) {
+        var item = new PackageForItemDto();
+
+        item.UID = entry.UID;
+        item.OrderUID = entry.OrderUID;
+        item.PackageID = entry.PackageID;
+        item.PackageTypeUID = entry.PackageTypeUID;
+        item.PackageTypeName = entry.PackageTypeName;
+
+        var exist = packingItems.Find(x => x.UID == item.UID);
+
+        if (exist == null) {
+          item.OrderItems = GetOrderItems(entry);
+          packingItems.Add(item);
+        }
+      }
+
+      return packingItems.ToFixedList();
     }
 
 
+    static private void MergeWarehousesDto(PackingItemDto packingOrderItem, PackingItem item) {
+
+      var warehouse = new WarehouseDto();
+      warehouse.UID = item.WarehouseForPacking.UID;
+      warehouse.Code = item.WarehouseForPacking.Code;
+      warehouse.Name = item.WarehouseForPacking.Name;
+      warehouse.Stock = item.WarehouseForPacking.Stock;
+
+      var warehouseBin = new WarehouseBinDto();
+      warehouseBin.UID = item.WarehouseBinForPacking.UID;
+      warehouseBin.OrderItemUID = item.WarehouseBinForPacking.OrderItemUID;
+      warehouseBin.Name = item.WarehouseBinForPacking.Name;
+      warehouseBin.WarehouseName = item.WarehouseBinForPacking.WarehouseName;
+      warehouseBin.Stock = item.WarehouseBinForPacking.Stock;
+
+      packingOrderItem.Warehouse = warehouse;
+      packingOrderItem.WarehouseBin = warehouseBin;
+
+    }
 
 
     #endregion Private methods
