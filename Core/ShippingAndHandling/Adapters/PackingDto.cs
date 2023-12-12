@@ -199,16 +199,6 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
     }
 
 
-    //public ProductFields Product {
-    //  get; set;
-    //}
-
-
-    //public ProductPresentation Presentation {
-    //  get; set;
-    //}
-
-
     public ProductDto Product {
       get; set;
     }
@@ -223,31 +213,6 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
       get; set;
     }
 
-
-    public void MergeCommonFieldsData(int orderItemId) {
-      
-      var orderItem = OrderItem.Parse(orderItemId);
-      var vendorProduct = VendorProduct.Parse(orderItem.VendorProduct.Id);
-      
-      this.OrderItemUID = orderItem.UID;
-      this.Product = MergeToProductDto(vendorProduct.ProductFields);
-      //this.Presentation = vendorProduct.ProductPresentation;
-      //this.Vendor = vendorProduct.Vendor;
-    }
-
-
-    private ProductDto MergeToProductDto(ProductFields fields) {
-
-      ProductDto product = new ProductDto();
-      product.ProductUID= fields.UID;
-      product.ProductCode = fields.ProductCode;
-      product.Description = fields.ProductDescription;
-      //product.ProductType = fields.GetEmpiriaType
-
-
-      return product;
-
-    }
 
   } // class OrderItemProduct
 
