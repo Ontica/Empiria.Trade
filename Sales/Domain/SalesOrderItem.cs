@@ -122,6 +122,7 @@ namespace Empiria.Trade.Sales {
 
     private decimal GetDiscount() {
       return 10m;
+      //return SalesDiscountData.GetCustomerDiscount(this.Order.Customer.Id);
     }
 
     private decimal GetAdditionalDiscount() {

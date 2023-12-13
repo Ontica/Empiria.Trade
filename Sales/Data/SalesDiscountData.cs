@@ -32,6 +32,30 @@ namespace Empiria.Trade.Sales.Data {
       return DataReader.GetFixedList<SalesDiscount>(dataOperation);
     }
 
+    internal static FixedList<SalesDiscount> GetSalesDiscountsByDiscountTypeAndCustomerId(int DiscountTypeId, int targetId,  int customerID, DateTime orderDate) {
+      var date = orderDate.ToString("yyyy-dd-MM");
+
+      var sql = "SELECT * FROM TRDDiscounts " +
+            $"WHERE (DiscountTypeId = {DiscountTypeId}) AND (DiscountAppliedListId like '%{targetId}%' AND (DiscountConditions = '%{customerID}%') ) AND " +
+            $"((DiscountFromDate <= '{date}') AND (DiscountToDate>= '{date}'))and DiscountStatus = 'A' " +
+            "ORDER BY DiscountId";
+
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetFixedList<SalesDiscount>(dataOperation);
+    }
+
+    static internal decimal GetCustomerDiscount(int customerId) {   
+      var sql = "SELECT DISCOUNT FROM TRDDiscounts " +
+            $"WHERE (DiscountTypeId = 1) AND (DiscountAppliedListId like '%{customerId}%')  " +
+            $"AND DiscountStatus = 'A' ";
+
+      var dataOperation = DataOperation.Parse(sql);
+      return Empiria.Data.DataReader.GetScalar<decimal>(dataOperation);
+
+    }
+
     #endregion Internal methods
 
   } //  class SalesDiscountData
