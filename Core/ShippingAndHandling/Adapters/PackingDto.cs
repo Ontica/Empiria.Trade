@@ -43,7 +43,7 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
 
     public string OrderUID {
       get; set;
-    }
+    } = string.Empty;
 
 
     public decimal Size {

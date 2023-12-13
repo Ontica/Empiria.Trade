@@ -25,7 +25,7 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
 
     public FixedList<MissingItem> GetMissingItems(string orderUid,
                                         FixedList<PackagedForItem> packagesForItems) {
-
+      
       var missingItems = new List<MissingItem>();
 
       var data = new ShippingAndHandlingData();
@@ -42,7 +42,7 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
           missing.OrderItemUID = item.OrderItemUID;
           missing.Quantity = item.Quantity - quantityOrderItems;
           missing.MergeCommonFieldsData(item.OrderItemId);
-
+          missing.ItemWeight = missing.Quantity * missing.Product.ProductWeight;
           GetWarehousesByItem(missing, item.VendorProductId);
 
           missingItems.Add(missing);
@@ -54,6 +54,11 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
 
     public FixedList<PackagedForItem> GetPackagesByOrder(string orderUid,
                                           FixedList<PackageForItem> packItems) {
+
+      if (packItems.Count==0) {
+        return new FixedList<PackagedForItem>();
+      }
+
       var packagesList = new List<PackagedForItem>();
 
       foreach (var entry in packItems) {
@@ -65,9 +70,8 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
         package.PackageID = entry.PackageID;
         package.PackageTypeUID = packageType.ObjectKey;
         package.PackageTypeName = packageType.Name;
-
         package.OrderItems = GetPackingItems(entry.OrderPackingId, entry.OrderPackingUID);
-
+        package.PackageWeight = package.OrderItems.Sum(x=>x.ItemWeight);
         packagesList.Add(package);
 
       }
@@ -78,9 +82,13 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
 
     public PackagedData GetPackingData(string orderUid, FixedList<PackagedForItem> packageForItemsList) {
 
+      if (packageForItemsList.Count == 0) {
+        return new PackagedData();
+      }
+
       var data = new PackagedData();
 
-      decimal _vol = 0;
+      decimal _vol = 0, weight = 0;
 
       foreach (var item in packageForItemsList) {
         var type = PackageType.Parse(item.PackageTypeUID);
@@ -89,10 +97,12 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
           type.GetVolumeAttributes();
           _vol += type.TotalVolume;
         }
+        weight += item.PackageWeight;
       }
 
       data.OrderUID = orderUid;
       data.Size = _vol;
+      data.Weight = weight;
       data.Count = packageForItemsList.Count();
 
       return data;
@@ -119,6 +129,7 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
         packingOrderItem.OrderPackingUID = orderPackingUID;
         packingOrderItem.MergeCommonFieldsData(item.OrderItemId);
         packingOrderItem.Quantity = item.Quantity;
+        packingOrderItem.ItemWeight = item.Quantity * packingOrderItem.Product.ProductWeight;
         GetWarehouses(packingOrderItem, item);
         packingOrderItems.Add(packingOrderItem);
       }

@@ -90,7 +90,6 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
 
     static private ProductDto GetProductDto(ProductFields product) {
 
-      //TODO VERIFICAR QUE ATRIBUTOS SEAN CORRECTOS
       ProductTypeDto type = new ProductTypeDto {
         ProductTypeUID = product.UID,
         Name = product.ProductGroup.Name,
@@ -155,8 +154,10 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
         }
 
       }
-
-      data.OrderUID = packingItems.Select(x => x.OrderUID).First();
+      if (packingItems.Count>0) {
+        data.OrderUID = packingItems.Select(x => x.OrderUID).First();
+      }
+      
       data.Size = _vol;
       data.Count = packingItems.Count();
 

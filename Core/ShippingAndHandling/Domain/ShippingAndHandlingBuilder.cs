@@ -52,22 +52,29 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
 
     internal PackingEntry GetPackagesAndItemsForOrder(string orderUid) {
 
-      var data = new ShippingAndHandlingData();
-      var packsForItems = data.GetPackagesForItems(orderUid);
+      FixedList<PackageForItem> packsForItems = GetPackagesForItemsData(orderUid);
+
+      if (packsForItems.Count == 0) {
+        return new PackingEntry();
+      }
+
+      PackingEntry packingEntry = MergePackagesIntoPackingEntry(orderUid, packsForItems);
+
+      return packingEntry;
+    }
+
+
+    public PackagedData GetPackagedData(string orderUid) {
+
+      FixedList<PackageForItem> packsForItems = GetPackagesForItemsData(orderUid);
+      
       var helper = new PackingHelper();
 
       FixedList<PackagedForItem> packagesForItems = helper.GetPackagesByOrder(orderUid, packsForItems);
 
       PackagedData packingData = helper.GetPackingData(orderUid, packagesForItems);
 
-      FixedList<MissingItem> missingItems = helper.GetMissingItems(orderUid, packagesForItems);
-
-      var packingEntry = new PackingEntry();
-      packingEntry.PackagedItems = packagesForItems;
-      packingEntry.Data = packingData;
-      packingEntry.MissingItems = missingItems;
-
-      return packingEntry;
+      return packingData;
     }
 
 
@@ -88,6 +95,12 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
 
 
     #region Private methods
+
+    private FixedList<PackageForItem> GetPackagesForItemsData(string orderUid) {
+
+      var data = new ShippingAndHandlingData();
+      return data.GetPackagesForItems(orderUid);
+    }
 
 
     private void GetVolumeAttributes(FixedList<PackageType> packageTypes) {
@@ -117,6 +130,26 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
       }
 
       return returnedNamed.ToFixedList();
+    }
+
+
+    private PackingEntry MergePackagesIntoPackingEntry(string orderUid,
+                                FixedList<PackageForItem> packsForItems) {
+
+      var helper = new PackingHelper();
+
+      FixedList<PackagedForItem> packagesForItems = helper.GetPackagesByOrder(orderUid, packsForItems);
+
+      PackagedData packingData = helper.GetPackingData(orderUid, packagesForItems);
+
+      FixedList<MissingItem> missingItems = helper.GetMissingItems(orderUid, packagesForItems);
+
+      var packingEntry = new PackingEntry();
+      packingEntry.PackagedItems = packagesForItems;
+      packingEntry.Data = packingData;
+      packingEntry.MissingItems = missingItems;
+
+      return packingEntry;
     }
 
 

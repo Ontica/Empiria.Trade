@@ -54,11 +54,25 @@ namespace Empiria.Trade.Tests {
 
 
     [Fact]
-    public void GetPackagingForOrderTest() {
+    public void GetGetPackagedDataTest() {
 
       var usecase = ShippingAndHandlingUseCases.UseCaseInteractor();
       string uid = "e1513326-ffa6-4a3d-af32-6e9d41316606";
-        
+
+      PackagedData sut = usecase.GetPackagedData(uid);
+
+      Assert.NotNull(sut);
+
+    }
+
+
+
+    [Fact]
+    public void GetPackagingForOrderTest() {
+
+      var usecase = ShippingAndHandlingUseCases.UseCaseInteractor();
+      string uid = "7d035bba-e4c9-40e3-92f4-772389806fb2";//"e1513326-ffa6-4a3d-af32-6e9d41316606";
+
       IShippingAndHandling sut = usecase.GetPackagingForOrder(uid);
 
       Assert.NotNull(sut);

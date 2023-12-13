@@ -51,6 +51,11 @@ namespace Empiria.Trade.ShippingAndHandling {
     }
 
 
+    public decimal Weight {
+      get; set;
+    }
+
+
     public int Count {
       get; set;
     }
@@ -83,6 +88,11 @@ namespace Empiria.Trade.ShippingAndHandling {
 
 
     public string PackageTypeName {
+      get; set;
+    }
+
+
+    public decimal PackageWeight {
       get; set;
     }
 
@@ -224,11 +234,16 @@ namespace Empiria.Trade.ShippingAndHandling {
     }
 
 
+    public decimal ItemWeight {
+      get; set;
+    }
+
+
     public void MergeCommonFieldsData(int orderItemId) {
 
       var orderItem = OrderItem.Parse(orderItemId);
       var vendorProduct = VendorProduct.Parse(orderItem.VendorProduct.Id);
-
+      
       this.OrderItemUID = orderItem.UID;
       this.VendorProductId = orderItem.VendorProduct.Id;
       this.Product = vendorProduct.ProductFields;
