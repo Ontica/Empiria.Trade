@@ -17,7 +17,7 @@ using Empiria.Trade.Sales.Adapters;
 
 namespace Empiria.Trade.Sales.Data {
   /// <summary>Provides data for Customer Credit Lines.  </summary>
-  internal class CrediLineData {
+  static internal class CrediLineData {
 
     static internal decimal GetCreditDebt(int customerId) {
       var sql = "SELECT InitialDebt FROM TRDCreditLines " +
@@ -31,7 +31,31 @@ namespace Empiria.Trade.Sales.Data {
       return debt;
     }
 
-  } // class CrediLineData}
+    static internal decimal GetCreditLimit(int customerId) {
+      var sql = "SELECT CreditLimit FROM TRDCreditLines " +
+               $"WHERE customerId = {customerId}";
+
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      var debt = Empiria.Data.DataReader.GetScalar<decimal>(dataOperation);
+
+      return debt;
+    }
+
+    static internal int GetCreditLineId(int customerId) {
+      var sql = "SELECT * FROM TRDCreditLines " +
+               $"WHERE customerId = {customerId}";
+
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      var debt = Empiria.Data.DataReader.GetScalar < int>(dataOperation);
+
+      return debt;
+    }
+
+  } // class CrediLineData
 
 } // namespace Empiria.Trade.Sales.Data
 

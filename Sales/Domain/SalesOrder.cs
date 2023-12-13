@@ -9,11 +9,14 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Collections.Generic;
+using Empiria.Services;
+using System.Security.Cryptography;
 using Empiria.Trade.Core;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Sales.Data;
-
+using Empiria.Trade.ShippingAndHandling.UseCases;
+using Empiria.Trade.ShippingAndHandling;
 
 namespace Empiria.Trade.Sales {
 
@@ -84,7 +87,24 @@ namespace Empiria.Trade.Sales {
 
     public decimal TotalDebt {
       get; private set;
+    } = 0;
+
+    public decimal CreditLimit {
+      get; private set;
+    } = 0;
+
+    public FixedList<CreditTransaction> CreditTransactions {
+      get; private set;
     }
+    
+    public decimal Weight {
+      get; set;
+    }
+
+    public int TotalPackages {
+      get; set;
+    }
+
 
     #endregion
 
@@ -175,15 +195,24 @@ namespace Empiria.Trade.Sales {
 
     static public FixedList<SalesOrder> GetOrdersToAuthorize(SearchOrderFields fields) {
       var orders = SalesOrderData.GetSalesOrdersToAuthorize(fields);
-      SetCustomerTotalDebt(orders);
+      SetCustomerCreditInfo(orders);
      
       return GetOrderItems(orders ,"Autorizacion");
     }
 
     internal static FixedList<SalesOrder> GetOrdersToPacking(SearchOrderFields fields) {
       var orders = SalesOrderData.GetSalesOrdersToPacking(fields);
-
+      GetWeightTotalPackageByOrder(orders);
       return GetOrderItems(orders,"Surtido");
+    }
+
+    private static void GetWeightTotalPackageByOrder(FixedList<SalesOrder> orders) {
+      foreach (var order in orders) {
+        var usecasePackage = ShippingAndHandlingUseCases.UseCaseInteractor();
+        PackagedData packageInfo = usecasePackage.GetPackagedData(order.UID);
+        order.Weight = packageInfo.Weight;
+        order.TotalPackages = packageInfo.Count;
+      }
     }
 
     #endregion Public methods
@@ -245,6 +274,7 @@ namespace Empiria.Trade.Sales {
         SetOrderTotals(order);
         salesOrders.Add(order);
         SetAuthorizedActions(order, queryType);
+        order.CreditTransactions = GetCreditTransactions(order.Customer.Id);
       }
 
       return salesOrders.ToFixedList<SalesOrder>();
@@ -279,13 +309,18 @@ namespace Empiria.Trade.Sales {
       return vendorPrice.PriceListId.ToString();
     }
 
-    static private void SetCustomerTotalDebt(FixedList<SalesOrder> orders) {
+    static private void SetCustomerCreditInfo(FixedList<SalesOrder> orders) {
       foreach (SalesOrder order in orders) {
         order.TotalDebt = CrediLineData.GetCreditDebt(order.Customer.Id);
+        order.CreditLimit = CrediLineData.GetCreditLimit(order.Customer.Id);
       }
 
     }
-   
+
+    static public FixedList<CreditTransaction> GetCreditTransactions(int customerId) {
+      var creditLineId = Empiria.Trade.Sales.Data.CrediLineData.GetCreditLineId(customerId);
+      return CreditTransaction.GetCreditTransactions(creditLineId);
+    }
 
     #endregion Helpers
 

@@ -126,7 +126,7 @@ namespace Empiria.Trade.Sales.Adapters {
       get; internal set;
     } = true;
 
-    public Boolean TransportPackaging {
+    public Boolean CanPackaging {
       get; internal set;
     } = true;
 
@@ -150,15 +150,23 @@ namespace Empiria.Trade.Sales.Adapters {
       get; internal set;
     }
 
+    public decimal CreditLimit {
+      get; internal set;
+    }
+
+    public FixedList<CreditTransactionDto> CreditTransactions {
+      get; internal set;
+    }
+
   }
 
   public class SalesOrderPackingDto : SalesOrderDto {
 
-    public decimal weight {
+    public decimal Weight {
       get; internal set;
     }
 
-    public int TotalBoxes {
+    public int TotalPackages {
       get; internal set;
     }
 

@@ -70,7 +70,9 @@ namespace Empiria.Trade.Sales.Adapters {
         AuthorizatedById = order.AuthorizatedById,
         Actions = MapOrderActions(order.Actions),
         TotalDebt = order.TotalDebt,
-        PriceList = order.PriceList
+        CreditLimit = order.CreditLimit,
+        PriceList = order.PriceList,
+        CreditTransactions = MapCreditTransactions(order.CreditTransactions)
       };
 
       return dto;
@@ -100,8 +102,8 @@ namespace Empiria.Trade.Sales.Adapters {
         AuthorizatedById = order.AuthorizatedById,
         Actions = MapOrderActions(order.Actions),
         PriceList = order.PriceList,
-        weight = 0m,
-        TotalBoxes = 0
+        Weight = order.Weight,
+        TotalPackages = order.TotalPackages
       };
 
       return dto;
@@ -145,7 +147,7 @@ namespace Empiria.Trade.Sales.Adapters {
         CanEdit = actions.CanEdit,
         CanApply = actions.CanApply,
         CanAuthorize = actions.CanAuthorize,
-        TransportPackaging = actions.TransportPackaging,
+        CanPackaging = actions.CanPackaging,
         CanSelectCarrier = actions.CanSelectCarrier,
         CanShipping = actions.CanShipping,
         CanClose = actions.CanClose
@@ -163,6 +165,16 @@ namespace Empiria.Trade.Sales.Adapters {
       }
 
       return salesOrderItemsList.ToFixedList();
+    }
+
+    static private FixedList<CreditTransactionDto> MapCreditTransactions(FixedList<CreditTransaction> creditTransactions) {
+      List<CreditTransactionDto> creditTransactionList = new List<CreditTransactionDto>();
+
+      foreach (var creditTransaction in creditTransactions) {
+        creditTransactionList.Add(CreditTransactionMapper.Map(creditTransaction));
+      }
+
+      return creditTransactionList.ToFixedList();
     }
 
     #endregion Private methods

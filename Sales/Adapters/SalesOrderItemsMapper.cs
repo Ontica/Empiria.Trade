@@ -57,23 +57,13 @@ namespace Empiria.Trade.Sales.Adapters {
       var dto = new ProductTypeDto {
         ProductTypeUID = "ddddd-dc17-49f5-b378-aa692dc21cdd",
         Name = orderItem.VendorProduct.ProductFields.ProductGroup.Name,
-        Attributes = GetAttributes(orderItem.VendorProduct.ProductFields.Attributes)
+        Attributes = new AttributesDto().GetAttributes(orderItem.VendorProduct.ProductFields.Attributes) 
       };
 
       return dto;
     }
 
-    static private FixedList<AttributesDto> GetAttributes(string attributes) {
-
-      AttributesListDto attrs = new AttributesListDto();
-
-      if (attributes != "") {
-        attrs = JsonConvert.DeserializeObject<AttributesListDto>(attributes);
-      }
-
-      return attrs.Attributes.ToFixedList<AttributesDto>();
-
-    }
+    
 
 
     #endregion Public methods
