@@ -309,6 +309,7 @@ namespace Empiria.Trade.Sales {
         case OrderStatus.Authorized: order.Actions = OrderActions.GetAuthorizedActions(); break;
         case OrderStatus.Packing: order.Actions = OrderActions.GetPackingActions(); break;
         case OrderStatus.Cancelled: order.Actions = OrderActions.GetCancellActions(); break;
+        case OrderStatus.CarrierSelector:order.Actions = OrderActions.GetSelectCarrierActions();break;
       }
 
     }

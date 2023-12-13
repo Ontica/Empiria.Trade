@@ -117,6 +117,20 @@ namespace Empiria.Trade.Sales {
       return actions;
     }
 
+    internal static OrderActions GetSelectCarrierActions() {
+      OrderActions actions = new OrderActions();
+
+      actions.CanApply = false;
+      actions.CanAuthorize = false;
+      actions.CanEdit = false;
+      actions.CanPackaging = false;
+      actions.CanSelectCarrier = false;
+      actions.CanShipping = true;
+      actions.CanClose = false;
+
+      return actions;
+    }
+
     #endregion Internal methods
 
   }  //  class OrderActionsDto
