@@ -170,7 +170,8 @@ namespace Empiria.Trade.Orders {
     Pendings = 'W',
     ToSupply = 'I',
     InProgress = 'U',
-    Suppled = 'Y'
+    Suppled = 'Y',
+    CarrierSelctor = 'S'
   } // enum AutorizationStatus
 
   

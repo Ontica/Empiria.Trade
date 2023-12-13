@@ -190,7 +190,7 @@ namespace Empiria.Trade.Sales {
     public void Supply() {
       this.Status = OrderStatus.CarrierSelector;
       
-      AuthorizationStatus = OrderAuthorizationStatus.Suppled;
+      AuthorizationStatus = OrderAuthorizationStatus.CarrierSelctor;
 
       SalesOrderData.Write(this);
       this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id);

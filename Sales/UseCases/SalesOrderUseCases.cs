@@ -143,6 +143,10 @@ namespace Empiria.Trade.Sales.UseCases {
 
       var order = SalesOrder.Parse(orderUID);
 
+      if (order.Status != Orders.OrderStatus.Packing) {
+        Assertion.RequireFail($"It is only possible to Supply orders in the Packing status, your order status is: {order.Status}");
+      }
+
       order.Supply();
 
       var orderDto = SalesOrderMapper.Map(order);
