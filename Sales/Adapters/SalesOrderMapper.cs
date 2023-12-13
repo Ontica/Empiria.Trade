@@ -68,11 +68,9 @@ namespace Empiria.Trade.Sales.Adapters {
         AuthorizationStatus = order.AuthorizationStatus,
         AuthorizationTime = order.AuthorizationTime,
         AuthorizatedById = order.AuthorizatedById,
-        Actions = MapOrderActions(order.Actions),
-        TotalDebt = order.TotalDebt,
-        CreditLimit = order.CreditLimit,
+        Actions = MapOrderActions(order.Actions),             
         PriceList = order.PriceList,
-        CreditTransactions = MapCreditTransactions(order.CreditTransactions)
+        CustomerCredit = MapCustomerCredit(order)
       };
 
       return dto;
@@ -153,6 +151,16 @@ namespace Empiria.Trade.Sales.Adapters {
         CanClose = actions.CanClose
       };
             
+      return dto;
+    }
+
+    private static CustomerCreditDto MapCustomerCredit(SalesOrder order) {
+      var dto = new CustomerCreditDto {
+        TotalDebt = order.TotalDebt,
+        CreditLimit = order.CreditLimit,
+        CreditTransactions = MapCreditTransactions(order.CreditTransactions)
+      };
+
       return dto;
     }
 

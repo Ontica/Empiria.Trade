@@ -11,6 +11,22 @@ using System;
 
 namespace Empiria.Trade.Sales.Adapters {
   /// <summary>Output DTO used to return creditTransaction.</summary>
+  public class CustomerCreditDto {
+
+    public decimal TotalDebt {
+      get; internal set;
+    }
+
+    public decimal CreditLimit {
+      get; internal set;
+    }
+
+    public FixedList<CreditTransactionDto> CreditTransactions {
+      get; internal set;
+    }
+
+  } //  class CustomerCreditDto
+
   public class CreditTransactionDto {
 
     public string TicketNumber {

@@ -143,20 +143,24 @@ namespace Empiria.Trade.Sales.Adapters {
     } = true;
 
   }  //  class OrderActionsDto
-  
+
   public class SalesOrdersAuthorizationDto : SalesOrderDto {
-    
-    public decimal TotalDebt {
+
+    public CustomerCreditDto CustomerCredit {
       get; internal set;
     }
 
-    public decimal CreditLimit {
-      get; internal set;
-    }
+    //public decimal TotalDebt {
+    //  get; internal set;
+    //}
 
-    public FixedList<CreditTransactionDto> CreditTransactions {
-      get; internal set;
-    }
+    //public decimal CreditLimit {
+    //  get; internal set;
+    //}
+
+    //public FixedList<CreditTransactionDto> CreditTransactions {
+    //  get; internal set;
+    //}
 
   }
 
