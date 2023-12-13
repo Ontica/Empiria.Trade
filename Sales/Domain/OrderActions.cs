@@ -37,7 +37,7 @@ namespace Empiria.Trade.Sales {
       get; set;
     } = false;
 
-    public Boolean TransportPackaging {
+    public Boolean CanPackaging {
       get; set;
     } = false;
 
@@ -64,7 +64,7 @@ namespace Empiria.Trade.Sales {
       actions.CanAuthorize = true;
       actions.CanEdit = false;
       actions.CanSelectCarrier = false;
-      actions.TransportPackaging = false;
+      actions.CanPackaging = false;
       actions.CanShipping = false;
       actions.CanClose = false;
 
@@ -77,7 +77,7 @@ namespace Empiria.Trade.Sales {
       actions.CanApply = false;
       actions.CanAuthorize = false;
       actions.CanEdit = false;
-      actions.TransportPackaging = true;
+      actions.CanPackaging = true;
       actions.CanSelectCarrier = false;
       actions.CanShipping = false;
       actions.CanClose = false;
@@ -96,7 +96,7 @@ namespace Empiria.Trade.Sales {
       actions.CanAuthorize = false;
       actions.CanEdit = true;
       actions.CanSelectCarrier = false;
-      actions.TransportPackaging = false;
+      actions.CanPackaging = false;
       actions.CanShipping = false;
       actions.CanClose = false;
 
@@ -109,7 +109,7 @@ namespace Empiria.Trade.Sales {
       actions.CanApply = false;
       actions.CanAuthorize = false;
       actions.CanEdit = false;
-      actions.TransportPackaging = false;
+      actions.CanPackaging = false;
       actions.CanSelectCarrier = true;
       actions.CanShipping = false;
       actions.CanClose = false;
