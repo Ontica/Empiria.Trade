@@ -187,6 +187,18 @@ namespace Empiria.Trade.Sales {
       SetOrderTotals();
     }
 
+    public void Supply() {
+      this.Status = OrderStatus.CarrierSelector;
+      
+      AuthorizationStatus = OrderAuthorizationStatus.Suppled;
+
+      SalesOrderData.Write(this);
+      this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id);
+      this.Actions = OrderActions.GetPackingActions();
+      SetOrderTotals();
+
+    }
+
     static public FixedList<SalesOrder> GetOrders(SearchOrderFields fields) {          
       var orders = SalesOrderData.GetSalesOrders(fields);
 
@@ -321,6 +333,8 @@ namespace Empiria.Trade.Sales {
       var creditLineId = Empiria.Trade.Sales.Data.CrediLineData.GetCreditLineId(customerId);
       return CreditTransaction.GetCreditTransactions(creditLineId);
     }
+
+    
 
     #endregion Helpers
 

@@ -137,6 +137,20 @@ namespace Empiria.Trade.Sales.UseCases {
       return orderDto;
     }
 
+
+    public ISalesOrderDto SupplySalesOrder(string orderUID) {
+      Assertion.Require(orderUID, "orderUID");
+
+      var order = SalesOrder.Parse(orderUID);
+
+      order.Supply();
+
+      var orderDto = SalesOrderMapper.Map(order);
+
+      return orderDto;
+    }
+
+
     public FixedList<NamedEntityDto> GetAuthorizationStatusList() {
       return SalesOrderStatusService.GetAuthorizationStatusList();
     }
