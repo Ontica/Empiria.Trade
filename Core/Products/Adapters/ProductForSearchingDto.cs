@@ -20,6 +20,12 @@ namespace Empiria.Trade.Products.Adapters {
     } = new FixedList<ProductPresentationForSeach>();
 
 
+    public string ProductImageUrl {
+      get;
+      internal set;
+    }
+
+
   } // class ProductShortEntryDto
 
 

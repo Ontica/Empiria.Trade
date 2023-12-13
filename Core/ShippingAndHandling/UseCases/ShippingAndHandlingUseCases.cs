@@ -54,7 +54,6 @@ namespace Empiria.Trade.ShippingAndHandling.UseCases {
 
       var builder = new ShippingAndHandlingBuilder();
       return builder.GetPackagedData(orderUid);
-
     }
 
 

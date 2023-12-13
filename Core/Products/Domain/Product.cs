@@ -66,216 +66,179 @@ namespace Empiria.Trade.Products {
 
     [DataField("ProductId")]
     public int ProductId {
-      get;
-      internal set;
+      get; internal set;
     }
 
 
     [DataField("ProductUID")]
     internal string ProductUID {
-      get;
-      private set;
+      get; private set;
     }
 
 
     [DataField("VendorProductUID")]
     internal string VendorProductUID {
-      get;
-      private set;
+      get; private set;
     }
 
 
     //[DataField("ProductTypeId")]
     public int ProductTypeId {
-      get;
-      internal set;
+      get; internal set;
     }
 
     
     [DataField("PresentationId")]
     internal ProductPresentation ProductPresentation {
-      get;
-      private set;
+      get; private set;
     }
 
 
     [DataField("InventoryEntryId")]
     internal InventoryEntry InventoryEntry {
-      get;
-      private set;
+      get; private set;
     }
 
 
     [DataField("VendorId")]
     internal Party Vendor {
-      get;
-      private set;
+      get; private set;
     }
 
 
     [DataField("ProductGroupId")]
     internal ProductGroup ProductGroup {
-      get;
-      private set;
+      get; private set;
     }
 
 
     [DataField("ProductSubgroupId")]
     internal ProductSubgroup ProductSubgroup {
-      get;
-      private set;
+      get; private set;
     }
 
 
     [DataField("ProductCode")]
     internal string Code {
-      get;
-      private set;
+      get; private set;
     }
 
 
     [DataField("ProductUPC")]
     internal string UPC {
-      get;
-      private set;
+      get; private set;
     }
 
 
     [DataField("SKU")]
     internal string SKU {
-      get;
-      private set;
+      get; private set;
     }
 
 
     [DataField("ProductName")]
     internal string ProductName {
-      get;
-      private set;
+      get; private set;
     }
 
 
     [DataField("ProductDescription")]
     internal string ProductDescription {
-      get;
-      private set;
+      get; private set;
     }
 
 
     [DataField("Attributes")]
     internal string Attributes {
-      get;
-      private set;
-    }
-
-
-    //[DataField("ProductKeywords")]
-    internal string ProductKeywords {
-      get;
-      private set;
-    }
-
-
-    //[DataField("ProductExtData")]
-    internal string ProductExtData {
-      get;
-      private set;
+      get; private set;
     }
 
 
     internal decimal PriceList {
-      get;
-      set;
+      get; set;
     }
 
 
     [DataField("PriceList1")]
     internal decimal PriceList1 {
-      get;
-      private set;
+      get; private set;
     }
 
 
     [DataField("PriceList2")]
     internal decimal PriceList2 {
-      get;
-      private set;
+      get; private set;
     }
 
 
     [DataField("PriceList3")]
     internal decimal PriceList3 {
-      get;
-      private set;
+      get; private set;
     }
 
 
     [DataField("PriceList4")]
     internal decimal PriceList4 {
-      get;
-      private set;
+      get; private set;
     }
 
 
     [DataField("PriceList5")]
     internal decimal PriceList5 {
-      get;
-      private set;
+      get; private set;
     }
 
 
     [DataField("PriceList6")]
     internal decimal PriceList6 {
-      get;
-      private set;
+      get; private set;
     }
 
 
     [DataField("PriceList7")]
     internal decimal PriceList7 {
-      get;
-      private set;
+      get; private set;
     }
 
 
     [DataField("PriceList8")]
     internal decimal PriceList8 {
-      get;
-      private set;
+      get; private set;
     }
 
 
     [DataField("PriceList9")]
     internal decimal PriceList9 {
-      get;
-      private set;
+      get; private set;
     }
 
 
     [DataField("PriceList10")]
     internal decimal PriceList10 {
-      get;
-      private set;
+      get; private set;
     }
 
 
     [DataField("ProductWeight")]
     internal decimal Weight {
-      get;
-      private set;
+      get; private set;
     }
 
 
     [DataField("ProductLength")]
     public decimal Length {
-      get;
-      internal set;
+      get; internal set;
     }
 
 
     [DataField("ProductStatus", Default= StateEnums.EntityStatus.Active)]
     public StateEnums.EntityStatus Status {
       get; internal set;
+    }
+
+
+    public string ProductImageUrl {
+      get; set;
     }
 
 

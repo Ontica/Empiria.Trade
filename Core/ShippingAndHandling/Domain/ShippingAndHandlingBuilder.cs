@@ -54,9 +54,9 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
 
       FixedList<PackageForItem> packsForItems = GetPackagesForItemsData(orderUid);
 
-      if (packsForItems.Count == 0) {
-        return new PackingEntry();
-      }
+      //if (packsForItems.Count == 0) {
+      //  return new PackingEntry();
+      //}
 
       PackingEntry packingEntry = MergePackagesIntoPackingEntry(orderUid, packsForItems);
 

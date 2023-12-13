@@ -71,6 +71,7 @@ namespace Empiria.Trade.Products.Adapters {
       dto.ProductUID = entry.ProductUID;
       dto.ProductCode = entry.Code;
       dto.Description = entry.ProductName;
+      dto.ProductImageUrl = entry.ProductImageUrl;
       dto.ProductType = GetProductType(entry);
       dto.Presentations = GetPresentations(entry);
 
