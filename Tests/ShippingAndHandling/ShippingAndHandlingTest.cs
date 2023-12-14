@@ -140,14 +140,14 @@ namespace Empiria.Trade.Tests {
 
       var usecase = ShippingAndHandlingUseCases.UseCaseInteractor();
 
-      string orderUID = "57335a81-56cf-477d-84e2-3193849210e1";
-      string packingOrderUID = "ef7799bb-bc77-45ac-a33b-224914945585";
+      string orderUID = "c75a25fc-92e6-493e-aefb-fc24a312898a";
+      string packingOrderUID = "fbade95a-3b01-468b-b524-7283248c20ee";
       
       var missingItemFields = new MissingItemField {
-        orderItemUID = "85836afb-b4ee-4552-803e-0ee40bd096f9",
+        orderItemUID = "5adf0776-0528-4ccb-b89f-7618c3266674",
         WarehouseUID = "f0061eb4-833c-44bf-8893-adcb88281d06",
         WarehouseBinUID = "22d33c45-c41f-426c-92f4-453fdc0abc1b",
-        Quantity = 50
+        Quantity = 10
       };
 
       IShippingAndHandling sut = usecase.CreatePackingOrderItemFields(

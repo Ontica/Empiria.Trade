@@ -83,6 +83,22 @@ namespace Empiria.Trade.ShippingAndHandling.Data {
     }
 
 
+    static internal FixedList<PackingOrderItem> GetPackingOrderItem(string packingItemUID, string orderItemUID) {
+
+      var orderPackingId = PackageForItem.Parse(packingItemUID).OrderPackingId;
+      var orderItemId = OrderItem.Parse(orderItemUID).Id;
+
+      string sql = $"SELECT * " +
+                   $"FROM TRDPackagingItems " +
+                   $"WHERE OrderPackingId = {orderPackingId} AND OrderItemId = {orderItemId}";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetPlainObjectFixedList<PackingOrderItem>(dataOperation);
+
+    }
+
+
     internal FixedList<OrderItemTemp> GetOrderItems(string orderUid) {
 
       int orderId = Order.Parse(orderUid).Id;
@@ -109,7 +125,7 @@ namespace Empiria.Trade.ShippingAndHandling.Data {
     internal static void WritePackingOrderItem(PackingOrderItem orderItem) {
 
       var op = DataOperation.Parse("writePackagingItem",
-        orderItem.Id, orderItem.PackingItemUID, orderItem.OrderPackingId, orderItem.OrderId,
+        orderItem.PackingItemId, orderItem.UID, orderItem.OrderPackingId, orderItem.OrderId,
         orderItem.OrderItemId, orderItem.InventoryEntryId, orderItem.Quantity);
 
       DataWriter.Execute(op);

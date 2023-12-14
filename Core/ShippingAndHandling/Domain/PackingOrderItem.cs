@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using System.Linq;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Products;
 using Empiria.Trade.ShippingAndHandling.Adapters;
@@ -111,6 +112,9 @@ namespace Empiria.Trade.ShippingAndHandling {
 
     protected override void OnSave() {
 
+      if (this.PackingItemId == 0) {
+        this.PackingItemId = this.Id;
+      }
       ShippingAndHandlingData.WritePackingOrderItem(this);
 
     }
@@ -119,12 +123,24 @@ namespace Empiria.Trade.ShippingAndHandling {
     private void MapToPackagingOrderItem(string orderUID, string packingItemUID,
                   int inventoryId, MissingItemField missingItemFields) {
 
-      this.PackingItemUID = Guid.NewGuid().ToString();
+      var orderItem = OrderItem.Parse(missingItemFields.orderItemUID);
+      var existPackingItem = ShippingAndHandlingData.GetPackingOrderItem(
+                              packingItemUID, missingItemFields.orderItemUID);
+      
+      if (existPackingItem.Count > 0) {
+        this.PackingItemId = existPackingItem.First().PackingItemId;
+        this.Quantity = existPackingItem.First().Quantity + missingItemFields.Quantity;
+
+      } else {
+
+        this.Quantity = missingItemFields.Quantity;
+      }
+      
+      //this.PackingItemUID = Guid.NewGuid().ToString();
       this.OrderPackingId = PackageForItem.Parse(packingItemUID).Id;
       this.OrderId = Order.Parse(orderUID).Id;
-      this.OrderItemId = OrderItem.Parse(missingItemFields.orderItemUID).Id;
+      this.OrderItemId = orderItem.Id;
       this.InventoryEntryId = inventoryId;
-      this.Quantity = missingItemFields.Quantity;
     }
 
 

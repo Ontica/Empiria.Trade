@@ -103,7 +103,6 @@ namespace Empiria.Trade.ShippingAndHandling.UseCases {
     public IShippingAndHandling CreatePackingOrderItemFields(
               string orderUID, string packingItemUID, MissingItemField missingItemFields) {
 
-
       var builder = new ShippingAndHandlingBuilder();
 
       var inventory = builder.GetInventoryEntries(missingItemFields.orderItemUID,
