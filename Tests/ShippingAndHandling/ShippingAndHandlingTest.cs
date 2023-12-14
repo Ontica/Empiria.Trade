@@ -40,7 +40,7 @@ namespace Empiria.Trade.Tests {
 
     #region Facts
 
-    
+
     [Fact]
     public void GetPackagingTest() {
 
@@ -84,15 +84,15 @@ namespace Empiria.Trade.Tests {
     public void CreatePackageForItemTest() {
 
       var usecase = ShippingAndHandlingUseCases.UseCaseInteractor();
-      
-      string orderUID = "e1513326-ffa6-4a3d-af32-6e9d41316606";
+
+      string orderUID = "c75a25fc-92e6-493e-aefb-fc24a312898a";
 
       var packingItemFields = new PackingItemFields {
-        OrderUID = "e1513326-ffa6-4a3d-af32-6e9d41316606",
-      PackageID = "CAJA 009",
+        OrderUID = "c75a25fc-92e6-493e-aefb-fc24a312898a",
+        PackageID = "Caja 1",
         PackageTypeUID = "0452a10b-0607-4d45-8614-385dda701b54"
       };
-      
+
       IShippingAndHandling sut = usecase.CreatePackageForItem(orderUID, packingItemFields);
 
       Assert.NotNull(sut);
@@ -105,11 +105,11 @@ namespace Empiria.Trade.Tests {
 
       var usecase = ShippingAndHandlingUseCases.UseCaseInteractor();
 
-      string orderUID = "e1513326-ffa6-4a3d-af32-6e9d41316606";
-      string packageForItemUID = "44d2a801-697e-4ce1-b7b1-d98d8a2b5734";
+      string orderUID = "c75a25fc-92e6-493e-aefb-fc24a312898a";
+      string packageForItemUID = "789bc9f2-1304-488e-b573-d2da58f04515";
       var packingItemFields = new PackingItemFields {
-        OrderUID = "e1513326-ffa6-4a3d-af32-6e9d41316606",
-        PackageID = "CAJA 004",
+        OrderUID = "c75a25fc-92e6-493e-aefb-fc24a312898a",
+        PackageID = "Caja 1",
         PackageTypeUID = "0452a10b-0607-4d45-8614-385dda701b54"
       };
 
@@ -127,7 +127,7 @@ namespace Empiria.Trade.Tests {
 
       string orderUID = "e1513326-ffa6-4a3d-af32-6e9d41316606";
       string packageForItemUID = "41c4cfe0-18d4-4242-ad4e-b7ca3dc9c287";
-      
+
       IShippingAndHandling sut = usecase.DeletePackageForItem(orderUID, packageForItemUID);
 
       Assert.NotNull(sut);
@@ -142,7 +142,7 @@ namespace Empiria.Trade.Tests {
 
       string orderUID = "c75a25fc-92e6-493e-aefb-fc24a312898a";
       string packingOrderUID = "fbade95a-3b01-468b-b524-7283248c20ee";
-      
+
       var missingItemFields = new MissingItemField {
         orderItemUID = "5adf0776-0528-4ccb-b89f-7618c3266674",
         WarehouseUID = "f0061eb4-833c-44bf-8893-adcb88281d06",

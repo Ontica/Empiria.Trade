@@ -36,7 +36,13 @@ namespace Empiria.Trade.Products.Adapters {
       get; set;
     }
 
-    
+
+    public string ProductImageUrl {
+      get;
+      internal set;
+    }
+
+
   } // class ProductDto
 
 

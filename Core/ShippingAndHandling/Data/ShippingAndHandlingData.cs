@@ -58,7 +58,7 @@ namespace Empiria.Trade.ShippingAndHandling.Data {
     }
 
 
-    internal FixedList<PackageForItem> GetPackagesForItems(string orderUid) {
+    static internal FixedList<PackageForItem> GetPackagesForItemsByOrder(string orderUid) {
 
       int orderId = Order.Parse(orderUid).Id;
 

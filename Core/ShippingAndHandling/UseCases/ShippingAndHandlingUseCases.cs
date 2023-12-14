@@ -71,6 +71,9 @@ namespace Empiria.Trade.ShippingAndHandling.UseCases {
 
     public IShippingAndHandling CreatePackageForItem(string orderUID, PackingItemFields orderFields) {
 
+      ShippingAndHandlingBuilder.ValidateIfExistPackagesForItems(
+                                  orderUID, orderFields.PackageID, string.Empty);
+
       var packagingOrder = new PackageForItem(orderUID, orderFields, string.Empty);
 
       packagingOrder.Save();
@@ -81,6 +84,9 @@ namespace Empiria.Trade.ShippingAndHandling.UseCases {
 
     public IShippingAndHandling UpdatePackageForItem(string orderUID, string packageForItemUID,
                                                   PackingItemFields orderFields) {
+
+      ShippingAndHandlingBuilder.ValidateIfExistPackagesForItems(
+                                  orderUID, orderFields.PackageID, packageForItemUID);
 
       var packagingOrder = new PackageForItem(orderUID, orderFields, packageForItemUID);
 

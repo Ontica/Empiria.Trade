@@ -50,6 +50,7 @@ namespace Empiria.Trade.Products.Domain {
       var hashProducts = new EmpiriaHashTable<Product>();
 
       foreach (var product in products) {
+        //TODO QUITAR URL Y HACER VALIDACION DE IMAGEN EN SERVER
         string url = "http://apps.sujetsa.com.mx:8080/imagenes-productos/";
         product.ProductImageUrl = $"{url}{product.Code}.jpg";
         AssingProductPresentations(hashProducts, product);

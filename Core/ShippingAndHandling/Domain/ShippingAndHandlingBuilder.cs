@@ -54,27 +54,39 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
 
       FixedList<PackageForItem> packsForItems = GetPackagesForItemsData(orderUid);
 
-      //if (packsForItems.Count == 0) {
-      //  return new PackingEntry();
-      //}
-
       PackingEntry packingEntry = MergePackagesIntoPackingEntry(orderUid, packsForItems);
 
       return packingEntry;
     }
 
 
-    public PackagedData GetPackagedData(string orderUid) {
+    public PackagedData GetPackagedData(string orderUID) {
 
-      FixedList<PackageForItem> packsForItems = GetPackagesForItemsData(orderUid);
-      
+      FixedList<PackageForItem> packsForItems = GetPackagesForItemsData(orderUID);
+
       var helper = new PackingHelper();
 
-      FixedList<PackagedForItem> packagesForItems = helper.GetPackagesByOrder(orderUid, packsForItems);
+      FixedList<PackagedForItem> packagesForItems = helper.GetPackagesByOrder(orderUID, packsForItems);
 
-      PackagedData packingData = helper.GetPackingData(orderUid, packagesForItems);
+      PackagedData packingData = helper.GetPackingData(orderUID, packagesForItems);
 
       return packingData;
+    }
+
+
+    static public void ValidateIfExistPackagesForItems(
+                        string orderUID, string packageID, string packageForItemUID) {
+
+      FixedList<PackageForItem> packages = GetPackagesForItemsData(orderUID);
+
+      var existPackage = packages.FirstOrDefault(x => x.PackageID.ToUpper() == packageID.ToUpper());
+      
+      if (packageForItemUID != string.Empty) {
+        existPackage = packages.FirstOrDefault(x => x.PackageID.ToUpper() == packageID.ToUpper() &&
+                                               x.OrderPackingUID != packageForItemUID);
+      }
+      Assertion.Require(existPackage == null,
+                        $"Ya existe otra caja con el nombre proporcionado: '{packageID}'");
     }
 
 
@@ -96,10 +108,9 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
 
     #region Private methods
 
-    private FixedList<PackageForItem> GetPackagesForItemsData(string orderUid) {
+    static private FixedList<PackageForItem> GetPackagesForItemsData(string orderUID) {
 
-      var data = new ShippingAndHandlingData();
-      return data.GetPackagesForItems(orderUid);
+      return ShippingAndHandlingData.GetPackagesForItemsByOrder(orderUID);
     }
 
 
@@ -133,16 +144,16 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
     }
 
 
-    private PackingEntry MergePackagesIntoPackingEntry(string orderUid,
+    private PackingEntry MergePackagesIntoPackingEntry(string orderUID,
                                 FixedList<PackageForItem> packsForItems) {
 
       var helper = new PackingHelper();
 
-      FixedList<PackagedForItem> packagesForItems = helper.GetPackagesByOrder(orderUid, packsForItems);
+      FixedList<PackagedForItem> packagesForItems = helper.GetPackagesByOrder(orderUID, packsForItems);
 
-      PackagedData packingData = helper.GetPackingData(orderUid, packagesForItems);
+      PackagedData packingData = helper.GetPackingData(orderUID, packagesForItems);
 
-      FixedList<MissingItem> missingItems = helper.GetMissingItems(orderUid, packagesForItems);
+      FixedList<MissingItem> missingItems = helper.GetMissingItems(orderUID, packagesForItems);
 
       var packingEntry = new PackingEntry();
       packingEntry.PackagedItems = packagesForItems;

@@ -64,7 +64,7 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
         packingOrderItem.Quantity = item.Quantity;
         
         packingOrderItem.OrderItemUID= item.OrderItemUID;
-        packingOrderItem.Product = GetProductDto(item.Product);
+        packingOrderItem.Product = GetProductDto(item.Product, item.ProductImageUrl);
         packingOrderItem.Presentation = GetPresentationDto(item.Presentation);
         packingOrderItem.Vendor = GetVendorDto(item.VendorProductId);
 
@@ -88,7 +88,7 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
     }
 
 
-    static private ProductDto GetProductDto(ProductFields product) {
+    static private ProductDto GetProductDto(ProductFields product, string productImageUrl) {
 
       ProductTypeDto type = new ProductTypeDto {
         ProductTypeUID = product.UID,
@@ -101,6 +101,7 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
       productDto.ProductUID = product.UID;
       productDto.ProductCode = product.ProductCode;
       productDto.Description = product.ProductName;
+      productDto.ProductImageUrl = productImageUrl;
       productDto.ProductType = type;
 
       return productDto;
@@ -173,7 +174,7 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
         var missingItem = new MissingItemDto();
         missingItem.OrderItemUID = miss.OrderItemUID;
         missingItem.Quantity = miss.Quantity;
-        missingItem.Product = GetProductDto(miss.Product);
+        missingItem.Product = GetProductDto(miss.Product, miss.ProductImageUrl);
         missingItem.Presentation = GetPresentationDto(miss.Presentation);
         missingItem.Vendor = GetVendorDto(miss.VendorProductId);
         missingItem.WarehouseBins = GetWarehouseBinList(miss.WarehouseBins);
