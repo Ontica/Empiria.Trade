@@ -38,6 +38,8 @@ namespace Empiria.Trade.Sales.WebApi {
             
     }
 
+
+
     [HttpPost]
     [Route("v4/trade/sales/orders")]
     public SingleObjectModel CreateSalesOrder([FromBody] SalesOrderFields fields) {
@@ -96,6 +98,21 @@ namespace Empiria.Trade.Sales.WebApi {
         return new SingleObjectModel(this.Request, orderDto);
       }
       
+    }
+
+    [HttpGet]
+    [Route("v4/trade/sales/orders/{orderUID:guid}")]
+    public SingleObjectModel GetSalesOrder([FromUri] string orderUID) {
+
+       base.RequireResource(orderUID, "orderUID");
+
+      using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
+
+        ISalesOrderDto orderDto = usecases.GetSalesOrder(orderUID);
+
+        return new SingleObjectModel(this.Request, orderDto);
+      }
+
     }
 
     [HttpPost]

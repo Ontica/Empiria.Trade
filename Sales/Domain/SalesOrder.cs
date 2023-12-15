@@ -335,7 +335,18 @@ namespace Empiria.Trade.Sales {
       return CreditTransaction.GetCreditTransactions(creditLineId);
     }
 
-    
+    internal static SalesOrder GetSalesOrder(string orderUID) {
+      var order = Parse(orderUID);
+      order.SalesOrderItems = SalesOrderItem.GetOrderItems(order.Id);
+      SetOrderTotals(order);
+      
+      SetAuthorizedActions(order, "");
+      order.CreditTransactions = GetCreditTransactions(order.Customer.Id);
+
+      return order;
+    }
+
+
 
     #endregion Helpers
 
