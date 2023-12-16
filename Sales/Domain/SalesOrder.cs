@@ -335,13 +335,19 @@ namespace Empiria.Trade.Sales {
       return CreditTransaction.GetCreditTransactions(creditLineId);
     }
 
-    internal static SalesOrder GetSalesOrder(string orderUID) {
+    static public SalesOrder GetSalesOrder(string orderUID) {
       var order = Parse(orderUID);
       order.SalesOrderItems = SalesOrderItem.GetOrderItems(order.Id);
       SetOrderTotals(order);
       
       SetAuthorizedActions(order, "");
       order.CreditTransactions = GetCreditTransactions(order.Customer.Id);
+      order.TotalDebt = CrediLineData.GetCreditDebt(order.Customer.Id);
+      order.CreditLimit = CrediLineData.GetCreditLimit(order.Customer.Id);
+      var usecasePackage = ShippingAndHandlingUseCases.UseCaseInteractor();
+      PackagedData packageInfo = usecasePackage.GetPackagedData(order.UID);
+      order.Weight = packageInfo.Weight;
+      order.TotalPackages = packageInfo.Count;
 
       return order;
     }
