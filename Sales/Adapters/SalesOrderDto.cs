@@ -12,6 +12,7 @@ using System;
 
 using Empiria.Trade.Orders;
 
+
 namespace Empiria.Trade.Sales.Adapters {
 
   ///<summary>Sales order dto interface</summary>
@@ -19,7 +20,75 @@ namespace Empiria.Trade.Sales.Adapters {
   }
 
   /// <summary>Output DTO used to return orders. </summary>
-  public class SalesOrderDto : ISalesOrderDto {
+  public class BaseSalesOrderDto : ISalesOrderDto {
+    public string UID {
+      get; internal set;
+    }
+
+    public string OrderNumber {
+      get; internal set;
+    }
+
+    public DateTime OrderTime {
+      get; internal set;
+    }  
+
+    public string CustomerName {
+      get; internal set;
+    }      
+
+    public string SupplierName {
+      get; internal set;
+    }
+
+    public string SalesAgentName {
+      get; internal set;
+    }
+
+    public decimal OrderTotal {
+      get; internal set;
+    }
+
+    public OrderStatus Status {
+      get; internal set;
+    }
+
+    public string StatusName {
+      get; internal set;
+    }
+
+    //public OrderAuthorizationStatus AuthorizationStatus {
+    //  get; internal set;
+    //}
+
+
+  } // Output DTO used to return  basic orders.
+
+  /// Output DTO used to return base autorization orders.
+  public class BaseSalesOrdersAuthorizationDto : BaseSalesOrderDto {
+
+    public decimal TotalDebt {
+      get; internal set;
+    }
+
+  } //  Output DTO used to return basico autorization orders.
+
+  /// Output DTO used to return base packing orders.
+  public class BaseSalesOrderPackingDto : BaseSalesOrderDto {
+
+    public decimal Weight {
+      get; internal set;
+    }
+
+    public int TotalPackages {
+      get; internal set;
+    }
+
+  } //  class SalesOrdersPackingDto
+
+
+    /// <summary>Output DTO used to return orders. </summary>
+    public class SalesOrderDto : ISalesOrderDto {
 
     public string UID {
       get; internal set;
@@ -105,6 +174,18 @@ namespace Empiria.Trade.Sales.Adapters {
       get; internal set;
     }
 
+    public CustomerCreditDto CustomerCredit {
+      get; internal set;
+    }
+
+    public decimal Weight {
+      get; internal set;
+    }
+
+    public int TotalPackages {
+      get; internal set;
+    }
+
     public OrderActionsDto Actions {
       get; internal set;
     }
@@ -143,39 +224,6 @@ namespace Empiria.Trade.Sales.Adapters {
     } = true;
 
   }  //  class OrderActionsDto
-
-  public class SalesOrdersAuthorizationDto : SalesOrderDto {
-
-    public CustomerCreditDto CustomerCredit {
-      get; internal set;
-    }
-
-    //public decimal TotalDebt {
-    //  get; internal set;
-    //}
-
-    //public decimal CreditLimit {
-    //  get; internal set;
-    //}
-
-    //public FixedList<CreditTransactionDto> CreditTransactions {
-    //  get; internal set;
-    //}
-
-  }
-
-  public class SalesOrderPackingDto : SalesOrderDto {
-
-    public decimal Weight {
-      get; internal set;
-    }
-
-    public int TotalPackages {
-      get; internal set;
-    }
-
-  } //  class SalesOrdersPackingDto
-
 
 
 } // namespace Empiria.Trade.Sales.Adapters

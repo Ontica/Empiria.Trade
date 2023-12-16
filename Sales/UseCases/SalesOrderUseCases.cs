@@ -66,16 +66,16 @@ namespace Empiria.Trade.Sales.UseCases {
       switch (fields.QueryType) {
         case "SalesOrdersAuthorization": {
           FixedList<SalesOrder> salesOrders = SalesOrder.GetOrdersToAuthorize(fields);
-          return SalesOrderMapper.MapSalesOrderAuthorizationList(salesOrders);
+          return SalesOrderMapper.MapBaseSalesOrderAuthorizationList(salesOrders);         
         }
         case "SalesOrdersPacking": {
           FixedList<SalesOrder> salesOrdersPacking = SalesOrder.GetOrdersToPacking(fields);
-          return SalesOrderMapper.MapSalesOrderPackingList(salesOrdersPacking);
+          return SalesOrderMapper.MapBaseSalesOrderPackingList(salesOrdersPacking);
         }
 
         default: {
           var salesOrdersList = SalesOrder.GetOrders(fields);
-          return SalesOrderMapper.Map(salesOrdersList);
+          return SalesOrderMapper.MapBaseSalesOrders(salesOrdersList);
         }
       } 
      

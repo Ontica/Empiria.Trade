@@ -31,7 +31,7 @@ namespace Empiria.Trade.Sales.Adapters {
         ShippingMethod = order.ShippingMethod,
         PaymentCondition = order.PaymentCondition,
         PriceList = order.PriceList,
-        Items = MapSalesOrderItems(order.SalesOrderItems), // new FixedList<SalesOrderItem>(),
+        Items = MapSalesOrderItems(order.SalesOrderItems), 
         ItemsCount = order.ItemsCount,
         ItemsTotal = order.ItemsTotal,
         Shipment = order.Shipment,
@@ -39,92 +39,14 @@ namespace Empiria.Trade.Sales.Adapters {
         OrderTotal = order.OrderTotal,
         AuthorizationStatus = order.AuthorizationStatus,
         AuthorizationTime = order.AuthorizationTime,
-        AuthorizatedById = order.AuthorizatedById,
+        AuthorizatedById = order.AuthorizatedById,       
+        CustomerCredit = MapCustomerCredit(order),
+        Weight = order.Weight,
+        TotalPackages = order.TotalPackages,
         Actions = MapOrderActions(order.Actions)
       };
 
       return dto;
-    }
-
-    static public ISalesOrderDto MapSalesOrderAuthorization(SalesOrder order) {
-
-      var dto = new SalesOrdersAuthorizationDto {
-        UID = order.UID,
-        OrderNumber = order.OrderNumber,
-        OrderTime = order.OrderTime,
-        Notes = order.Notes,
-        Status = order.Status,
-        Customer = order.Customer.MapToNamedEntity(),
-        Supplier = order.Supplier.MapToNamedEntity(),
-        SalesAgent = order.SalesAgent.MapToNamedEntity(),
-        ShippingMethod = order.ShippingMethod,
-        PaymentCondition = order.PaymentCondition,
-        Items = MapSalesOrderItems(order.SalesOrderItems), // new FixedList<SalesOrderItem>(),
-        ItemsCount = order.ItemsCount,
-        ItemsTotal = order.ItemsTotal,
-        Shipment = order.Shipment,
-        Taxes = order.Taxes,
-        OrderTotal = order.OrderTotal,
-        AuthorizationStatus = order.AuthorizationStatus,
-        AuthorizationTime = order.AuthorizationTime,
-        AuthorizatedById = order.AuthorizatedById,
-        Actions = MapOrderActions(order.Actions),             
-        PriceList = order.PriceList,
-        CustomerCredit = MapCustomerCredit(order)
-      };
-
-      return dto;
-    }
-
-    static public ISalesOrderDto MapSalesOrderPacking(SalesOrder order) {
-
-      var dto = new SalesOrderPackingDto {
-        UID = order.UID,
-        OrderNumber = order.OrderNumber,
-        OrderTime = order.OrderTime,
-        Notes = order.Notes,
-        Status = order.Status,
-        Customer = order.Customer.MapToNamedEntity(),
-        Supplier = order.Supplier.MapToNamedEntity(),
-        SalesAgent = order.SalesAgent.MapToNamedEntity(),
-        ShippingMethod = order.ShippingMethod,
-        PaymentCondition = order.PaymentCondition,
-        Items = MapSalesOrderItems(order.SalesOrderItems), // new FixedList<SalesOrderItem>(),
-        ItemsCount = order.ItemsCount,
-        ItemsTotal = order.ItemsTotal,
-        Shipment = order.Shipment,
-        Taxes = order.Taxes,
-        OrderTotal = order.OrderTotal,
-        AuthorizationStatus = order.AuthorizationStatus,
-        AuthorizationTime = order.AuthorizationTime,
-        AuthorizatedById = order.AuthorizatedById,
-        Actions = MapOrderActions(order.Actions),
-        PriceList = order.PriceList,
-        Weight = order.Weight,
-        TotalPackages = order.TotalPackages
-      };
-
-      return dto;
-    }
-
-    static public FixedList<ISalesOrderDto> MapSalesOrderAuthorizationList(FixedList<SalesOrder> salesOrders) {
-      List<ISalesOrderDto> salesOrderDtoList = new List<ISalesOrderDto>();
-
-      foreach (var salesOrder in salesOrders) {
-        salesOrderDtoList.Add(MapSalesOrderAuthorization(salesOrder));
-      }
-
-      return salesOrderDtoList.ToFixedList();
-    }
-
-    static public FixedList<ISalesOrderDto> MapSalesOrderPackingList(FixedList<SalesOrder> salesOrders) {
-      List<ISalesOrderDto> salesOrderDtoList = new List<ISalesOrderDto>();
-
-      foreach (var salesOrder in salesOrders) {
-        salesOrderDtoList.Add(MapSalesOrderPacking(salesOrder));
-      }
-
-      return salesOrderDtoList.ToFixedList();
     }
 
     static public FixedList<ISalesOrderDto> Map(FixedList<SalesOrder> salesOrders) {
@@ -132,6 +54,87 @@ namespace Empiria.Trade.Sales.Adapters {
 
       foreach (var salesOrder in salesOrders) {
         salesOrderDtoList.Add(Map(salesOrder));
+      }
+
+      return salesOrderDtoList.ToFixedList();
+    }
+
+    static public ISalesOrderDto MapBaseSalesOrder(SalesOrder order) {
+      var dto = new BaseSalesOrderDto {
+        UID = order.UID,
+        OrderNumber = order.OrderNumber,
+        OrderTime = order.OrderTime,
+        CustomerName = order.Customer.Name,
+        SupplierName = order.Supplier.Name,
+        SalesAgentName = order.SalesAgent.Name,
+        OrderTotal = order.OrderTotal,
+        Status = order.Status,
+        StatusName = MapOrderStatus(order.Status.ToString())
+      };
+
+      return dto;
+    }
+
+    static public ISalesOrderDto MapBaseSalesOrderAuthorization(SalesOrder order) {
+      var dto = new BaseSalesOrdersAuthorizationDto {
+        UID = order.UID,
+        OrderNumber = order.OrderNumber,
+        OrderTime = order.OrderTime,
+        CustomerName = order.Customer.Name,
+        SupplierName = order.Supplier.Name,
+        SalesAgentName = order.SalesAgent.Name,
+        OrderTotal = order.OrderTotal,
+        TotalDebt = order.TotalDebt,
+        Status = order.Status,
+        StatusName = MapOrderAuthorizationStatus(order.AuthorizationStatus.ToString())
+      };
+
+      return dto;
+    }
+
+    static public ISalesOrderDto MapBaseSalesOrderPacking(SalesOrder order) {
+      var dto = new BaseSalesOrderPackingDto {
+        UID = order.UID,
+        OrderNumber = order.OrderNumber,
+        OrderTime = order.OrderTime,
+        CustomerName = order.Customer.Name,
+        SupplierName = order.Supplier.Name,
+        SalesAgentName = order.SalesAgent.Name,
+        OrderTotal = order.OrderTotal,
+        Weight = order.Weight,
+        TotalPackages = order.TotalPackages,
+        Status = order.Status,
+        StatusName = MapOrderPackingStatus(order.AuthorizationStatus.ToString())
+      };
+
+      return dto;
+    }
+
+    static public FixedList<ISalesOrderDto> MapBaseSalesOrders(FixedList<SalesOrder> salesOrders) {
+      List<ISalesOrderDto> baseSalesOrderDtoList = new List<ISalesOrderDto>();
+
+      foreach (var salesOrder in salesOrders) {
+        baseSalesOrderDtoList.Add(MapBaseSalesOrder(salesOrder));
+      }
+
+      return baseSalesOrderDtoList.ToFixedList();
+    }
+
+    static public FixedList<ISalesOrderDto> MapBaseSalesOrderAuthorizationList(FixedList<SalesOrder> salesOrders) {
+      List<ISalesOrderDto> salesOrderDtoList = new List<ISalesOrderDto>();
+
+      foreach (var salesOrder in salesOrders) {
+          salesOrderDtoList.Add(MapBaseSalesOrderAuthorization(salesOrder));
+      }
+
+      return salesOrderDtoList.ToFixedList();
+    }
+
+    static public FixedList<ISalesOrderDto> MapBaseSalesOrderPackingList(FixedList<SalesOrder> salesOrders) {
+      List<ISalesOrderDto> salesOrderDtoList = new List<ISalesOrderDto>();
+
+      foreach (var salesOrder in salesOrders) {
+        salesOrderDtoList.Add(MapBaseSalesOrderPacking(salesOrder));
       }
 
       return salesOrderDtoList.ToFixedList();
@@ -185,6 +188,41 @@ namespace Empiria.Trade.Sales.Adapters {
       return creditTransactionList.ToFixedList();
     }
 
+    static private string MapOrderStatus(string status) {
+      switch (status) {
+        case "Captured": return "Capturada";
+        case "Applied":  return "Aplicada";
+        case "Authorized": return "Autorizada";
+        case "Packing":    return "Surtiendose";
+        case "CarrierSelector": return "Selección de paqueteria";
+        case "Shipping": return "Envio";
+        case "Delivery": return "Entrega";
+        case "Closed": return "Cerrada";
+        case "Cancelled": return "Cancelada";
+        default:  return "Capturada";
+      }
+
+    }
+
+    static private string MapOrderAuthorizationStatus(string status) {
+      switch (status) {
+        case "Authorized": return "Autorizado";
+        case "Pending":    return "Por Autorizar";
+        default:  return "Por Autorizar";
+      }
+      
+    }
+
+    static private string MapOrderPackingStatus(string status) {
+      switch (status) {
+        case "ToSupply": return "Por surtir";
+        case "InProgress": return "En proceso";
+        case "Suppled":    return "Surtido";
+        default:
+          return "Por surtir";
+      }
+
+    }
     #endregion Private methods
 
 
