@@ -151,10 +151,15 @@ namespace Empiria.Trade.Sales {
       this.CreditTransactions = GetCreditTransactions(this.Customer.Id);
       this.TotalDebt = CrediLineData.GetCreditDebt(this.Customer.Id);
       this.CreditLimit = CrediLineData.GetCreditLimit(this.Customer.Id);
-      var usecasePackage = ShippingAndHandlingUseCases.UseCaseInteractor();
-      PackagedData packageInfo = usecasePackage.GetPackagedData(this.UID);
-      this.Weight = packageInfo.Weight;
-      this.TotalPackages = packageInfo.Count;
+      if (this.UID != "") {
+        var usecasePackage = PackagingUseCases.UseCaseInteractor();
+        PackagedData packageInfo = usecasePackage.GetPackagedData(this.UID);
+        this.Weight = packageInfo.Weight;
+        this.TotalPackages = packageInfo.Count;
+      } else {
+        this.Weight = 0;
+        this.TotalPackages = 0;
+      }
 
       SetOrderTotals();
 
@@ -207,32 +212,39 @@ namespace Empiria.Trade.Sales {
 
     }
 
-    static public FixedList<SalesOrder> GetOrders(SearchOrderFields fields) {          
-      var orders = SalesOrderData.GetSalesOrders(fields);
-
-      return GetOrderItems(orders, "Pedidos");
+    public void SetCustomerCreditInfos() {
+      this.TotalDebt = CrediLineData.GetCreditDebt(this.Customer.Id);
+      this.CreditLimit = CrediLineData.GetCreditLimit(this.Customer.Id);
     }
-
-    static public FixedList<SalesOrder> GetOrdersToAuthorize(SearchOrderFields fields) {
-      var orders = SalesOrderData.GetSalesOrdersToAuthorize(fields);
-      SetCustomerCreditInfo(orders);
      
-      return GetOrderItems(orders ,"Autorizacion");
+
+      public void GetWeightTotalPackageByOrder() {
+      var usecasePackage = PackagingUseCases.UseCaseInteractor();
+      PackagedData packageInfo = usecasePackage.GetPackagedData(this.UID);
+
+      this.Weight = packageInfo.Weight;
+      this.TotalPackages = packageInfo.Count;
     }
 
-    internal static FixedList<SalesOrder> GetOrdersToPacking(SearchOrderFields fields) {
-      var orders = SalesOrderData.GetSalesOrdersToPacking(fields);
-      GetWeightTotalPackageByOrder(orders);
-      return GetOrderItems(orders,"Surtido");
+    public void CalculateSalesOrder(string queryType) {
+
+      this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id);
+      SetOrderTotals();
+
+      this.SetAuthorizedActions(queryType);
+      this.CreditTransactions = this.GetCustomerCreditTransactions();
+      this.TotalDebt = CrediLineData.GetCreditDebt(this.Customer.Id);
+      this.CreditLimit = CrediLineData.GetCreditLimit(this.Customer.Id);
+
+      var usecasePackage = PackagingUseCases.UseCaseInteractor();
+      PackagedData packageInfo = usecasePackage.GetPackagedData(this.UID);
+      this.Weight = packageInfo.Weight;
+      this.TotalPackages = packageInfo.Count;
     }
 
-    private static void GetWeightTotalPackageByOrder(FixedList<SalesOrder> orders) {
-      foreach (var order in orders) {
-        var usecasePackage = PackagingUseCases.UseCaseInteractor();
-        PackagedData packageInfo = usecasePackage.GetPackagedData(order.UID);
-        order.Weight = packageInfo.Weight;
-        order.TotalPackages = packageInfo.Count;
-      }
+    public FixedList<CreditTransaction> GetCustomerCreditTransactions() {
+      var creditLineId = Empiria.Trade.Sales.Data.CrediLineData.GetCreditLineId(this.Customer.Id);
+      return CreditTransaction.GetCreditTransactions(creditLineId);
     }
 
     #endregion Public methods
@@ -268,59 +280,7 @@ namespace Empiria.Trade.Sales {
 
     }
 
-    private static void SetOrderTotals(SalesOrder order) {
-
-      order.OrderTotal = 0;
-      order.ItemsTotal = 0;
-      order.Taxes = 0;
-
-      foreach (SalesOrderItem item in order.SalesOrderItems) {
-        order.ItemsCount++;
-        order.ItemsTotal += item.SubTotal;
-        order.Shipment += item.Shipment;
-        order.Discount += item.Discount;
-        order.Taxes += item.TaxesIVA;
-        order.OrderTotal += item.Total;
-      }
-
-    }
-
-
-    static private FixedList<SalesOrder> GetOrderItems(FixedList<SalesOrder> orders, string queryType) {
-      List<SalesOrder> salesOrders = new List<SalesOrder>();
-
-      foreach (var order in orders) {
-        order.SalesOrderItems = SalesOrderItem.GetOrderItems(order.Id);
-        SetOrderTotals(order);
-        salesOrders.Add(order);
-        SetAuthorizedActions(order, queryType);
-        order.CreditTransactions = GetCreditTransactions(order.Customer.Id);
-      }
-
-      return salesOrders.ToFixedList<SalesOrder>();
-    }
-
-    private static void SetAuthorizedActions(SalesOrder order, string queryType) {
-      switch (order.Status) {
-        case OrderStatus.Captured: order.Actions = OrderActions.GetCaptureActions(); break;
-        case OrderStatus.Applied: {
-          order.Actions = OrderActions.GetApplyActions();
-          if (queryType == "Pedidos") {
-            order.Actions.CanAuthorize = false;
-          }
-          if (queryType == "Autorizacion") {
-            order.Actions.CanAuthorize = true;
-          }
-
-        }
-        break;
-        case OrderStatus.Authorized: order.Actions = OrderActions.GetAuthorizedActions(); break;
-        case OrderStatus.Packing: order.Actions = OrderActions.GetPackingActions(); break;
-        case OrderStatus.Cancelled: order.Actions = OrderActions.GetCancellActions(); break;
-        case OrderStatus.CarrierSelector:order.Actions = OrderActions.GetSelectCarrierActions();break;
-      }
-
-    }
+  
 
     private string GetPriceList() {
       var pricesList = CustomerPrices.GetVendorPrices(this.Customer.Id);
@@ -330,34 +290,42 @@ namespace Empiria.Trade.Sales {
       return vendorPrice.PriceListId.ToString();
     }
 
-    static private void SetCustomerCreditInfo(FixedList<SalesOrder> orders) {
-      foreach (SalesOrder order in orders) {
-        order.TotalDebt = CrediLineData.GetCreditDebt(order.Customer.Id);
-        order.CreditLimit = CrediLineData.GetCreditLimit(order.Customer.Id);
-      }
-
-    }
+   
 
     static public FixedList<CreditTransaction> GetCreditTransactions(int customerId) {
       var creditLineId = Empiria.Trade.Sales.Data.CrediLineData.GetCreditLineId(customerId);
       return CreditTransaction.GetCreditTransactions(creditLineId);
     }
 
-    static public SalesOrder GetSalesOrder(string orderUID) {
-      var order = Parse(orderUID);
-      order.SalesOrderItems = SalesOrderItem.GetOrderItems(order.Id);
-      SetOrderTotals(order);
-      
-      SetAuthorizedActions(order, "");
-      order.CreditTransactions = GetCreditTransactions(order.Customer.Id);
-      order.TotalDebt = CrediLineData.GetCreditDebt(order.Customer.Id);
-      order.CreditLimit = CrediLineData.GetCreditLimit(order.Customer.Id);
-      var usecasePackage = PackagingUseCases.UseCaseInteractor();
-      PackagedData packageInfo = usecasePackage.GetPackagedData(order.UID);
-      order.Weight = packageInfo.Weight;
-      order.TotalPackages = packageInfo.Count;
+    internal void SetAuthorizedActions(string queryType) {
+      switch (this.Status) {
+        case OrderStatus.Captured:
+          this.Actions = OrderActions.GetCaptureActions();
+          break;
+        case OrderStatus.Applied: {
+          this.Actions = OrderActions.GetApplyActions();
+          if (queryType == "SalesOrdersAuthorization") {
+            this.Actions.CanAuthorize = true;
+          } else {
+            this.Actions.CanAuthorize = false;
+          }
 
-      return order;
+        }
+        break;
+        case OrderStatus.Authorized:
+          this.Actions = OrderActions.GetAuthorizedActions();
+          break;
+        case OrderStatus.Packing:
+          this.Actions = OrderActions.GetPackingActions();
+          break;
+        case OrderStatus.Cancelled:
+          this.Actions = OrderActions.GetCancellActions();
+          break;
+        case OrderStatus.CarrierSelector:
+          this.Actions = OrderActions.GetSelectCarrierActions();
+          break;
+      }
+
     }
 
 

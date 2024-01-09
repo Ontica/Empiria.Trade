@@ -8,7 +8,6 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-
 using Empiria.Services;
 
 using Empiria.Trade.Sales.Adapters;
@@ -63,18 +62,20 @@ namespace Empiria.Trade.Sales.UseCases {
     public FixedList<ISalesOrderDto> GetOrders(SearchOrderFields fields) {
       Assertion.Require(fields, "fields");
 
+      var helper = new SalesOrderHelper();
+
       switch (fields.QueryType) {
         case "SalesOrdersAuthorization": {
-          FixedList<SalesOrder> salesOrders = SalesOrder.GetOrdersToAuthorize(fields);
+          FixedList<SalesOrder> salesOrders = helper.GetOrdersToAuthorize(fields);
           return SalesOrderMapper.MapBaseSalesOrderAuthorizationList(salesOrders);         
         }
         case "SalesOrdersPacking": {
-          FixedList<SalesOrder> salesOrdersPacking = SalesOrder.GetOrdersToPacking(fields);
+          FixedList<SalesOrder> salesOrdersPacking = helper.GetOrdersToPacking(fields);
           return SalesOrderMapper.MapBaseSalesOrderPackingList(salesOrdersPacking);
         }
 
         default: {
-          var salesOrdersList = SalesOrder.GetOrders(fields);
+          var salesOrdersList = helper.GetOrders(fields);
           return SalesOrderMapper.MapBaseSalesOrders(salesOrdersList);
         }
       } 
@@ -103,13 +104,13 @@ namespace Empiria.Trade.Sales.UseCases {
       return orderDto;
     }
 
-    public ISalesOrderDto GetSalesOrder(string orderUID) {
-      var order = SalesOrder.GetSalesOrder(orderUID);
+    public ISalesOrderDto GetSalesOrder(string orderUID, SearchOrderFields fields) {
+      var order = SalesOrder.Parse(orderUID);
+      order.CalculateSalesOrder(fields.QueryType);
 
       var orderDto = SalesOrderMapper.Map(order);
 
       return orderDto;
-
     }
 
     public ISalesOrderDto UpdateSalesOrder(SalesOrderFields fields) {

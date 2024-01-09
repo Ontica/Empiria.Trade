@@ -30,24 +30,24 @@ namespace Empiria.Trade.Tests.Sales {
   /// <summary>Test cases for sales.   </summary>
   public class SalesTest {
 
-    [Fact]
-    public void ShouldGetOrderTest() {
+  //  [Fact]
+    //public void ShouldGetOrderTest() {
 
-      var fields = new SearchOrderFields {
+    //  var fields = new SearchOrderFields {
+    //    Status = OrderStatus.CarrierSelector, 
+    //    FromDate = Convert.ToDateTime("2023/01/10"),
+    //    ToDate = Convert.ToDateTime("2023/12/28"),
        
-        FromDate = Convert.ToDateTime("2023/01/10"),
-        ToDate = Convert.ToDateTime("2023/11/28"),
-       
-      };
+    //  };
 
 
-      var salesOrders = SalesOrder.GetOrders(fields);
+    //  var salesOrders = SalesOrder.GetOrders(fields);
+      
+    //  var x = SalesOrderMapper.Map(salesOrders);
 
-      //var x = SalesOrderMapper.Map(salesOrders);
 
-
-      Assert.NotNull(salesOrders);
-    }
+    //  Assert.NotNull(x);
+    //}
 
     [Fact]
     public void ShouldCreateOrderTest() {
@@ -77,23 +77,21 @@ namespace Empiria.Trade.Tests.Sales {
       Assert.NotNull(y);
     }
 
-    //[Fact]
-    //public void ShouldCrateNewOrder() {
-
-    //  var item = new SalesOrderItemsFields {
-    //    OrderItemUID = "",
-    //    VendorProductUID = "023de292-90e6-47ab-91a2-331f551885df",
-    //    Quantity = 10,
-    //    BasePrice = 100,
-    //    SpecialPrice = 96,
-    //    SalesPrice = 393.30m,
-    //    AdditionalDiscount = 10,
-    //    AdditionalDiscountToApply = 0,
-    //    Shipment = 339,
-    //    Taxes = 19,
-    //    Total = 800,
-    //    Notes = "",
-    //  };
+    [Fact]
+    public void ShouldCrateNewOrder() {
+    
+      var item = new SalesOrderItemsFields {
+      OrderItemUID = "",
+      VendorProductUID = "56214e92-2cb0-49fd-943e-0a1c5df51a10",
+      Quantity = 1,
+      UnitPrice = 100,
+      SalesPrice = 0,
+      DiscountPolicy = "",
+      Discount1 = 0,
+      Discount2 = 0,
+      Subtotal = 800,
+      Notes = ""
+    };
 
     //  var item1 = new SalesOrderItemsFields {
     //    OrderItemUID = "",
@@ -109,33 +107,33 @@ namespace Empiria.Trade.Tests.Sales {
     //    Total = 800,
     //    Notes = "",
     //  };
-    //  List<SalesOrderItemsFields> items = new List<SalesOrderItemsFields>();
-    //  items.Add(item);
-    //  items.Add(item1);
+      List<SalesOrderItemsFields> items = new List<SalesOrderItemsFields>();
+     items.Add(item);
+      //  items.Add(item1);
 
-    //  var order = new SalesOrderFields {
-    //    //UID = "217ac442-5409-44b9-ae4d-22f9f104c5fe",
-    //    //OrderNumber = "P-EY2DDRfrr2",
-    //    OrderTime = DateTime.Now,
-    //    Status = Orders.OrderStatus.Captured,
-    //    CustomerUID = "a8753de5-1b65-41ce-8c38-9c0dd0152048",
+      var order = new SalesOrderFields {
+        //UID = "217ac442-5409-44b9-ae4d-22f9f104c5fe",
+        //OrderNumber = "P-EY2DDRfrr2",
+        OrderTime = DateTime.Now,
+        Status = Orders.OrderStatus.Captured,
+        CustomerUID = "97c3b0b7-6f7d-4700-a329-9825a60440c1",
 
-    //    CustomerContactUID = "",
-    //    SupplierUID = "211e9e92-c56e-4ed3-b42f-e916211b92ce",
-    //    SalesAgentUID = "8b1d6d37-8d6c-4983-a3a0-42ed6b867bbe",
-    //    PaymentCondition = "1 Mes",
-    //    ShippingMethod = "Red Paq",
-    //    Items = items.ToFixedList()
-    //  };
+        CustomerContactUID = "",
+        SupplierUID = "211e9e92-c56e-4ed3-b42f-e916211b92ce",
+        SalesAgentUID = "8b1d6d37-8d6c-4983-a3a0-42ed6b867bbe",
+        PaymentCondition = "1 Mes",
+        ShippingMethod = "Red Paq",
+        Items = items.ToFixedList()
+      };
 
-    //  var salesOrder = new SalesOrder(order);
+        var salesOrder = new SalesOrder(order);
+      
+      var map = SalesOrderMapper.Map(salesOrder);
+        Assert.NotNull(map);
 
+      }
 
-    //  Assert.NotNull(salesOrder);
-
-    //}
-
-    [Fact]
+      [Fact]
     public void ShouldCancelOrder() {
 
       var order = SalesOrder.Parse("ead9f502-e94c-4b3c-aa75-367482f9ba2c");
@@ -145,6 +143,13 @@ namespace Empiria.Trade.Tests.Sales {
 
       Assert.NotNull(orderDto);
     }
+
+    //[Fact]
+    //public void ShouldGetOrder() {
+    //  var order = SalesOrder.GetSalesOrder("1eea9729-0def-4227-8f27-e29e05b1da27");
+
+    //  Assert.NotNull(order);
+    //}
 
     [Fact]
     public void ShouldCancelOrderItem() {
@@ -176,6 +181,16 @@ namespace Empiria.Trade.Tests.Sales {
 
       Assert.NotNull(order);
     }
+
+    [Fact]
+    public void ShouldGetCreditTransactions() {
+     
+      var creditTransactions = SalesOrder.GetCreditTransactions(1200);
+
+      Assert.NotNull(creditTransactions);
+    }
+
+    
 
 
   } // public class SalesTest
