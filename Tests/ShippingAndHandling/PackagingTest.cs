@@ -2,9 +2,9 @@
 *                                                                                                            *
 *  Module   : Shipping and handling Management           Component : Test cases                              *
 *  Assembly : Empiria.Trade.Shipping.dll                 Pattern   : Use cases tests                         *
-*  Type     : ShippingAndHandlingTest                    License   : Please read LICENSE.txt file            *
+*  Type     : PackagingTest                              License   : Please read LICENSE.txt file            *
 *                                                                                                            *
-*  Summary  : Test cases for packaging.                                                          *
+*  Summary  : Test cases for packaging.                                                                      *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
@@ -17,21 +17,18 @@ using Xunit;
 using Empiria.Tests;
 using Empiria.Trade.ShippingAndHandling.UseCases;
 using Empiria.Trade.ShippingAndHandling.Adapters;
-using System.Collections.Generic;
-using Empiria.Trade.Sales;
-using Empiria.Trade.Orders;
 using Empiria.Trade.ShippingAndHandling;
 
 namespace Empiria.Trade.Tests {
 
 
   /// <summary>Test cases for packaging.</summary>
-  public class ShippingAndHandlingTest {
+  public class PackagingTest {
 
 
     #region Initialization
 
-    public ShippingAndHandlingTest() {
+    public PackagingTest() {
       //TestsCommonMethods.Authenticate();
     }
 
@@ -191,6 +188,6 @@ namespace Empiria.Trade.Tests {
 
 
 
-  } // class ShippingAndHandlingTest
+  } // class PackagingTest
 
 } // namespace Empiria.Trade.Tests
