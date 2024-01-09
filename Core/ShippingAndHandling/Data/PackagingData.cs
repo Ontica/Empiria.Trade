@@ -2,7 +2,7 @@
 *                                                                                                            *
 *  Module   : ShippingAndHandlingData Management         Component : Data Layer                              *
 *  Assembly : Empiria.Trade.ShippingAndHandlingData.dll  Pattern   : Data Service                            *
-*  Type     : ShippingAndHandlingData                    License   : Please read LICENSE.txt file            *
+*  Type     : PackagingData                              License   : Please read LICENSE.txt file            *
 *                                                                                                            *
 *  Summary  : Provides data read  and write methods for shipping and handling.                               *
 *                                                                                                            *
@@ -19,8 +19,8 @@ using Newtonsoft.Json;
 namespace Empiria.Trade.ShippingAndHandling.Data {
 
 
-  /// <summary>Provides data read  and write methods for shipping and handling.</summary>
-  internal class ShippingAndHandlingData {
+  /// <summary>Provides data read  and write methods for packaging.</summary>
+  internal class PackagingData {
 
 
     internal FixedList<Packing> GetPackagingForOrder(string orderUid) {
@@ -179,7 +179,7 @@ namespace Empiria.Trade.ShippingAndHandling.Data {
 
     #endregion Private methods
 
-  } // class ShippingAndHandlingData
+  } // class PackagingData
 
 
   internal class OrderItemTemp {

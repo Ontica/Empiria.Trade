@@ -115,7 +115,7 @@ namespace Empiria.Trade.ShippingAndHandling {
       if (this.PackingItemId == 0) {
         this.PackingItemId = this.Id;
       }
-      ShippingAndHandlingData.WritePackingOrderItem(this);
+      PackagingData.WritePackingOrderItem(this);
 
     }
 
@@ -124,7 +124,7 @@ namespace Empiria.Trade.ShippingAndHandling {
                   int inventoryId, MissingItemField missingItemFields) {
 
       var orderItem = OrderItem.Parse(missingItemFields.orderItemUID);
-      var existPackingItem = ShippingAndHandlingData.GetPackingOrderItem(
+      var existPackingItem = PackagingData.GetPackingOrderItem(
                               packingItemUID, missingItemFields.orderItemUID);
       
       if (existPackingItem.Count > 0) {

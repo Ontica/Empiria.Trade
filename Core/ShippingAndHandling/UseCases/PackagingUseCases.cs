@@ -2,9 +2,9 @@
 *                                                                                                            *
 *  Module   : Packing Management                         Component : Use cases Layer                         *
 *  Assembly : Empiria.Trade.ShippingAndHandling.dll      Pattern   : Use case interactor class               *
-*  Type     : PackingUseCases                            License   : Please read LICENSE.txt file            *
+*  Type     : PackagingUseCases                          License   : Please read LICENSE.txt file            *
 *                                                                                                            *
-*  Summary  : Use cases used to build shipping and handling orders.                                          *
+*  Summary  : Use cases used to build packaging orders.                                                      *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
@@ -19,18 +19,18 @@ using Empiria.Trade.ShippingAndHandling.Domain;
 namespace Empiria.Trade.ShippingAndHandling.UseCases {
 
 
-  /// <summary>Use cases used to build shipping and handling orders.</summary>
-  public class ShippingAndHandlingUseCases : UseCase {
+  /// <summary>Use cases used to build packaging orders.</summary>
+  public class PackagingUseCases : UseCase {
 
 
     #region Constructors and parsers
 
-    protected ShippingAndHandlingUseCases() {
+    protected PackagingUseCases() {
       // no-op
     }
 
-    static public ShippingAndHandlingUseCases UseCaseInteractor() {
-      return CreateInstance<ShippingAndHandlingUseCases>();
+    static public PackagingUseCases UseCaseInteractor() {
+      return CreateInstance<PackagingUseCases>();
     }
 
 
@@ -42,7 +42,7 @@ namespace Empiria.Trade.ShippingAndHandling.UseCases {
 
     public FixedList<INamedEntity> GetPackageTypeList() {
 
-      var builder = new ShippingAndHandlingBuilder();
+      var builder = new PackagingBuilder();
 
       FixedList<INamedEntity> packageTypes = builder.GetPackageTypeList();
 
@@ -52,7 +52,7 @@ namespace Empiria.Trade.ShippingAndHandling.UseCases {
 
     public PackagedData GetPackagedData(string orderUid) {
 
-      var builder = new ShippingAndHandlingBuilder();
+      var builder = new PackagingBuilder();
       return builder.GetPackagedData(orderUid);
     }
 
@@ -71,7 +71,7 @@ namespace Empiria.Trade.ShippingAndHandling.UseCases {
 
     public IShippingAndHandling CreatePackageForItem(string orderUID, PackingItemFields orderFields) {
 
-      ShippingAndHandlingBuilder.ValidateIfExistPackagesForItems(
+      PackagingBuilder.ValidateIfExistPackagesForItems(
                                   orderUID, orderFields.PackageID, string.Empty);
 
       var packagingOrder = new PackageForItem(orderUID, orderFields, string.Empty);
@@ -85,12 +85,12 @@ namespace Empiria.Trade.ShippingAndHandling.UseCases {
     public IShippingAndHandling UpdatePackageForItem(string orderUID, string packageForItemUID,
                                                   PackingItemFields orderFields) {
 
-      ShippingAndHandlingBuilder.ValidateIfExistPackagesForItems(
+      PackagingBuilder.ValidateIfExistPackagesForItems(
                                   orderUID, orderFields.PackageID, packageForItemUID);
 
       var packagingOrder = new PackageForItem(orderUID, orderFields, packageForItemUID);
 
-      ShippingAndHandlingData.WritePacking(packagingOrder);
+      PackagingData.WritePacking(packagingOrder);
 
       return GetPackaging(orderUID);
     }
@@ -98,7 +98,7 @@ namespace Empiria.Trade.ShippingAndHandling.UseCases {
 
     public IShippingAndHandling DeletePackageForItem(string orderUID, string packageForItemUID) {
 
-      var data = new ShippingAndHandlingData();
+      var data = new PackagingData();
 
       data.DeletePackageForItem(packageForItemUID);
 
@@ -109,7 +109,7 @@ namespace Empiria.Trade.ShippingAndHandling.UseCases {
     public IShippingAndHandling CreatePackingOrderItemFields(
               string orderUID, string packingItemUID, MissingItemField missingItemFields) {
 
-      var builder = new ShippingAndHandlingBuilder();
+      var builder = new PackagingBuilder();
 
       var inventory = builder.GetInventoryEntries(missingItemFields.orderItemUID,
                                                   missingItemFields.WarehouseBinUID);
@@ -127,7 +127,7 @@ namespace Empiria.Trade.ShippingAndHandling.UseCases {
     public IShippingAndHandling DeletePackingOrderItem(string orderUID,
                                  string packingItemUID, string packingItemEntryUID) {
 
-      var data = new ShippingAndHandlingData();
+      var data = new PackagingData();
 
       data.DeletePackingOrderItem(packingItemEntryUID);
 
@@ -142,17 +142,17 @@ namespace Empiria.Trade.ShippingAndHandling.UseCases {
 
 
     private IShippingAndHandling GetPackaging(string orderUid) {
-      var builder = new ShippingAndHandlingBuilder();
+      var builder = new PackagingBuilder();
 
       var packaging = builder.GetPackagesAndItemsForOrder(orderUid);
 
-      return ShippingAndHandlingMapper.MapPackingDto(packaging);
+      return PackagingMapper.MapPackingDto(packaging);
 
     }
 
 
     #endregion Private methods
 
-  } // class ShippingAndHandlingUseCases
+  } // class PackagingUseCases
 
 } // namespace Empiria.Trade.ShippingAndHandling.UseCases

@@ -46,7 +46,7 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
     [Route("v4/trade/shipping-and-handling/packing/package-type")]
     public CollectionModel GetPackageTypeList() {
 
-      using (var usecases = ShippingAndHandlingUseCases.UseCaseInteractor()) {
+      using (var usecases = PackagingUseCases.UseCaseInteractor()) {
 
         FixedList<INamedEntity> packingDetail = usecases.GetPackageTypeList();
 
@@ -59,7 +59,7 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
     [Route("v4/trade/shipping-and-handling/packing/{orderUID:guid}")]
     public SingleObjectModel GetPackagingForOrder([FromUri] string orderUID) {
 
-      using (var usecases = ShippingAndHandlingUseCases.UseCaseInteractor()) {
+      using (var usecases = PackagingUseCases.UseCaseInteractor()) {
 
         IShippingAndHandling packageForItems = usecases.GetPackagingForOrder(orderUID);
 
@@ -76,7 +76,7 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
 
       base.RequireBody(packingItemFields);
 
-      using (var usecases = ShippingAndHandlingUseCases.UseCaseInteractor()) {
+      using (var usecases = PackagingUseCases.UseCaseInteractor()) {
 
         IShippingAndHandling packingItem = usecases.CreatePackageForItem(orderUID, packingItemFields);
 
@@ -93,7 +93,7 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
       
       base.RequireBody(packingItemFields);
 
-      using (var usecases = ShippingAndHandlingUseCases.UseCaseInteractor()) {
+      using (var usecases = PackagingUseCases.UseCaseInteractor()) {
 
         IShippingAndHandling packingItem = usecases.UpdatePackageForItem(orderUID, packingItemUID, packingItemFields);
 
@@ -106,7 +106,7 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
     [Route("v4/trade/shipping-and-handling/packing/{orderUID:guid}/packing-item/{packingItemUID:guid}")]
     public SingleObjectModel DeletePackageForItem([FromUri] string orderUID, [FromUri] string packingItemUID) {
       
-      using (var usecases = ShippingAndHandlingUseCases.UseCaseInteractor()) {
+      using (var usecases = PackagingUseCases.UseCaseInteractor()) {
 
         IShippingAndHandling packingItem = usecases.DeletePackageForItem(orderUID, packingItemUID);
 
@@ -124,7 +124,7 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
       
       base.RequireBody(missingItemFields);
 
-      using (var usecases = ShippingAndHandlingUseCases.UseCaseInteractor()) {
+      using (var usecases = PackagingUseCases.UseCaseInteractor()) {
 
         IShippingAndHandling packingOrderItemFields = usecases.CreatePackingOrderItemFields(
                                                         orderUID, packingItemUID, missingItemFields);
@@ -141,7 +141,7 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
                                                           [FromUri] string packingItemUID,
                                                           [FromUri] string packingItemEntryUID) {
       
-      using (var usecases = ShippingAndHandlingUseCases.UseCaseInteractor()) {
+      using (var usecases = PackagingUseCases.UseCaseInteractor()) {
 
         IShippingAndHandling packingOrderItemFields = usecases.DeletePackingOrderItem(
                                                   orderUID, packingItemUID, packingItemEntryUID);

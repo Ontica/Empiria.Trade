@@ -4,7 +4,7 @@
 *  Assembly : Empiria.Trade.Shipping.dll                 Pattern   : Use cases tests                         *
 *  Type     : ShippingAndHandlingTest                    License   : Please read LICENSE.txt file            *
 *                                                                                                            *
-*  Summary  : Test cases for Shipping and handling.                                                          *
+*  Summary  : Test cases for packaging.                                                          *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
@@ -25,7 +25,7 @@ using Empiria.Trade.ShippingAndHandling;
 namespace Empiria.Trade.Tests {
 
 
-  /// <summary>Test cases for Shipping and handling.</summary>
+  /// <summary>Test cases for packaging.</summary>
   public class ShippingAndHandlingTest {
 
 
@@ -44,7 +44,7 @@ namespace Empiria.Trade.Tests {
     [Fact]
     public void GetPackagingTest() {
 
-      var usecase = ShippingAndHandlingUseCases.UseCaseInteractor();
+      var usecase = PackagingUseCases.UseCaseInteractor();
       string uid = "72e920b8-60cd-4d26-be2f-4a91a540d1f1";
       PackageForItem sut = usecase.GetPackagingByUID(uid);
 
@@ -56,7 +56,7 @@ namespace Empiria.Trade.Tests {
     [Fact]
     public void GetGetPackagedDataTest() {
 
-      var usecase = ShippingAndHandlingUseCases.UseCaseInteractor();
+      var usecase = PackagingUseCases.UseCaseInteractor();
       string uid = "e1513326-ffa6-4a3d-af32-6e9d41316606";
 
       PackagedData sut = usecase.GetPackagedData(uid);
@@ -70,7 +70,7 @@ namespace Empiria.Trade.Tests {
     [Fact]
     public void GetPackagingForOrderTest() {
 
-      var usecase = ShippingAndHandlingUseCases.UseCaseInteractor();
+      var usecase = PackagingUseCases.UseCaseInteractor();
       string uid = "7d035bba-e4c9-40e3-92f4-772389806fb2";//"e1513326-ffa6-4a3d-af32-6e9d41316606";
 
       IShippingAndHandling sut = usecase.GetPackagingForOrder(uid);
@@ -83,7 +83,7 @@ namespace Empiria.Trade.Tests {
     [Fact]
     public void CreatePackageForItemTest() {
 
-      var usecase = ShippingAndHandlingUseCases.UseCaseInteractor();
+      var usecase = PackagingUseCases.UseCaseInteractor();
 
       string orderUID = "c75a25fc-92e6-493e-aefb-fc24a312898a";
 
@@ -103,7 +103,7 @@ namespace Empiria.Trade.Tests {
     [Fact]
     public void UpdatePackageForItemTest() {
 
-      var usecase = ShippingAndHandlingUseCases.UseCaseInteractor();
+      var usecase = PackagingUseCases.UseCaseInteractor();
 
       string orderUID = "c75a25fc-92e6-493e-aefb-fc24a312898a";
       string packageForItemUID = "789bc9f2-1304-488e-b573-d2da58f04515";
@@ -123,7 +123,7 @@ namespace Empiria.Trade.Tests {
     [Fact]
     public void DeletePackageForItemTest() {
 
-      var usecase = ShippingAndHandlingUseCases.UseCaseInteractor();
+      var usecase = PackagingUseCases.UseCaseInteractor();
 
       string orderUID = "e1513326-ffa6-4a3d-af32-6e9d41316606";
       string packageForItemUID = "41c4cfe0-18d4-4242-ad4e-b7ca3dc9c287";
@@ -138,7 +138,7 @@ namespace Empiria.Trade.Tests {
     [Fact]
     public void CreatePackingOrderItemFieldsTest() {
 
-      var usecase = ShippingAndHandlingUseCases.UseCaseInteractor();
+      var usecase = PackagingUseCases.UseCaseInteractor();
 
       string orderUID = "c75a25fc-92e6-493e-aefb-fc24a312898a";
       string packingOrderUID = "fbade95a-3b01-468b-b524-7283248c20ee";
@@ -161,7 +161,7 @@ namespace Empiria.Trade.Tests {
     [Fact]
     public void DeletePackingOrderItemFieldsTest() {
 
-      var usecase = ShippingAndHandlingUseCases.UseCaseInteractor();
+      var usecase = PackagingUseCases.UseCaseInteractor();
 
       string orderUID = "c75a25fc-92e6-493e-aefb-fc24a312898a";
       string packingItemUID = "789bc9f2-1304-488e-b573-d2da58f04515";
@@ -178,7 +178,7 @@ namespace Empiria.Trade.Tests {
     [Fact]
     public void GetPackageTypesTest() {
 
-      var usecase = ShippingAndHandlingUseCases.UseCaseInteractor();
+      var usecase = PackagingUseCases.UseCaseInteractor();
 
       FixedList<INamedEntity> sut = usecase.GetPackageTypeList();
 
