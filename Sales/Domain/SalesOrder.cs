@@ -228,7 +228,7 @@ namespace Empiria.Trade.Sales {
 
     private static void GetWeightTotalPackageByOrder(FixedList<SalesOrder> orders) {
       foreach (var order in orders) {
-        var usecasePackage = ShippingAndHandlingUseCases.UseCaseInteractor();
+        var usecasePackage = PackagingUseCases.UseCaseInteractor();
         PackagedData packageInfo = usecasePackage.GetPackagedData(order.UID);
         order.Weight = packageInfo.Weight;
         order.TotalPackages = packageInfo.Count;
@@ -352,7 +352,7 @@ namespace Empiria.Trade.Sales {
       order.CreditTransactions = GetCreditTransactions(order.Customer.Id);
       order.TotalDebt = CrediLineData.GetCreditDebt(order.Customer.Id);
       order.CreditLimit = CrediLineData.GetCreditLimit(order.Customer.Id);
-      var usecasePackage = ShippingAndHandlingUseCases.UseCaseInteractor();
+      var usecasePackage = PackagingUseCases.UseCaseInteractor();
       PackagedData packageInfo = usecasePackage.GetPackagedData(order.UID);
       order.Weight = packageInfo.Weight;
       order.TotalPackages = packageInfo.Count;

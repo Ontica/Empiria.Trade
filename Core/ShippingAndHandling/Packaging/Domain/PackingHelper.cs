@@ -28,7 +28,7 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
       
       var missingItems = new List<MissingItem>();
 
-      var data = new ShippingAndHandlingData();
+      var data = new PackagingData();
       var orderItems = data.GetOrderItems(orderUid);
       var packingOrderItems = packagesForItems.SelectMany(x => x.OrderItems).ToList();
 
@@ -118,7 +118,7 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
     private FixedList<PackingItem> GetPackingItems(int orderPackingId,
                                                     string orderPackingUID) {
 
-      var data = new ShippingAndHandlingData();
+      var data = new PackagingData();
       var packingItems = data.GetPackingOrderItems(orderPackingId);
 
       var packingOrderItems = new List<PackingItem>();
@@ -169,7 +169,7 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
 
     private void GetWarehousesByItem(MissingItem missing, int vendorProductId) {
 
-      var data = new ShippingAndHandlingData();
+      var data = new PackagingData();
 
       FixedList<InventoryEntry> inventory = data.GetInventoryByVendorProduct(vendorProductId, "");
 

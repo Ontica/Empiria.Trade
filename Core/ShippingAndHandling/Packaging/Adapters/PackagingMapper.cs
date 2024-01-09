@@ -1,10 +1,10 @@
 ﻿/* Empiria Trade *********************************************************************************************
 *                                                                                                            *
-*  Module   : Shipping And Handling Management           Component : Interface adapters                      *
+*  Module   : Packaging Management                       Component : Interface adapters                      *
 *  Assembly : Empiria.Trade.ShippingAndHandling.dll      Pattern   : Mapper class                            *
-*  Type     : ShippingAndHandlingMapper                  License   : Please read LICENSE.txt file            *
+*  Type     : PackagingMapper                            License   : Please read LICENSE.txt file            *
 *                                                                                                            *
-*  Summary  : Methods used to map Shipping And Handling.                                                     *
+*  Summary  : Methods used to map packaging.                                                                 *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
@@ -20,8 +20,8 @@ using Empiria.Trade.Products.Adapters;
 namespace Empiria.Trade.ShippingAndHandling.Adapters {
 
 
-  /// <summary>Methods used to map Shipping And Handling.</summary>
-  static internal class ShippingAndHandlingMapper {
+  /// <summary>Methods used to map packaging.</summary>
+  static internal class PackagingMapper {
 
 
     #region Public methods
@@ -234,6 +234,6 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
     #endregion Private methods
 
 
-  } // class ShippingAndHandlingMapper
+  } // class PackagingMapper
 
 } // namespace Empiria.Trade.ShippingAndHandling.Adapters

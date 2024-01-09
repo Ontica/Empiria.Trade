@@ -107,7 +107,7 @@ namespace Empiria.Trade.ShippingAndHandling {
 
         this.OrderPackingId = this.Id;
       }
-      ShippingAndHandlingData.WritePacking(this);
+      PackagingData.WritePacking(this);
 
     }
 

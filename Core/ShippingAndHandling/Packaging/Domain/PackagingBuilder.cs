@@ -2,9 +2,9 @@
 *                                                                                                            *
 *  Module   : Packaging Management                       Component : Domain Layer                            *
 *  Assembly : Empiria.Trade.ShippingAndHandling.dll      Pattern   : Partitioned Type / Information Holder   *
-*  Type     : OrderShippingBuilder                       License   : Please read LICENSE.txt file            *
+*  Type     : PackagingBuilder                           License   : Please read LICENSE.txt file            *
 *                                                                                                            *
-*  Summary  : Generate data for shipping and handling.                                                       *
+*  Summary  : Generate data for packaging.                                                                   *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
@@ -21,13 +21,13 @@ using Newtonsoft.Json;
 namespace Empiria.Trade.ShippingAndHandling.Domain {
 
 
-  /// <summary>Generate data for shipping and handling.</summary>
-  internal class ShippingAndHandlingBuilder {
+  /// <summary>Generate data for packaging.</summary>
+  internal class PackagingBuilder {
 
 
     #region Constructor
 
-    public ShippingAndHandlingBuilder() {
+    public PackagingBuilder() {
 
     }
 
@@ -40,7 +40,7 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
 
     internal InventoryEntry GetInventoryEntries(string orderItemUID, string warehouseBinUID) {
 
-      var data = new ShippingAndHandlingData();
+      var data = new PackagingData();
 
       var orderItem = OrderItem.Parse(orderItemUID);
       FixedList<InventoryEntry> inventories = data.GetInventoryByVendorProduct(
@@ -91,7 +91,7 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
 
 
     internal FixedList<INamedEntity> GetPackageTypeList() {
-      var data = new ShippingAndHandlingData();
+      var data = new PackagingData();
 
       FixedList<PackageType> packageTypes = data.GetPackageTypeList();
 
@@ -110,7 +110,7 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
 
     static private FixedList<PackageForItem> GetPackagesForItemsData(string orderUID) {
 
-      return ShippingAndHandlingData.GetPackagesForItemsByOrder(orderUID);
+      return PackagingData.GetPackagesForItemsByOrder(orderUID);
     }
 
 
@@ -166,7 +166,7 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
 
     #endregion Private methods
 
-  } // class ShippingAndHandlingBuilder
+  } // class PackagingBuilder
 
 
 } // namespace Empiria.Trade.ShippingAndHandling.Domain
