@@ -27,21 +27,6 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
     #region Web Apis
 
 
-    //[HttpPost]
-    //[Route("v4/trade/shipping-and-handling/packing/get-detail")]
-    //public SingleObjectModel GetPackingDetail([FromBody] PackingOrderFields order) {
-
-    //  base.RequireBody(order);
-
-    //  using (var usecases = ShippingAndHandlingUseCases.UseCaseInteractor()) {
-
-    //    IShippingAndHandling packingDetail = usecases.GetPackingDetail();
-
-    //    return new SingleObjectModel(this.Request, packingDetail);
-    //  }
-    //}
-
-
     [HttpGet]
     [Route("v4/trade/shipping-and-handling/packing/package-type")]
     public CollectionModel GetPackageTypeList() {
