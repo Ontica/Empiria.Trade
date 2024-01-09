@@ -148,6 +148,14 @@ namespace Empiria.Trade.Sales {
       this.PriceList = GetPriceList();
       this.SalesOrderItems = LoadSalesOrderItems(fields.Items);
 
+      this.CreditTransactions = GetCreditTransactions(this.Customer.Id);
+      this.TotalDebt = CrediLineData.GetCreditDebt(this.Customer.Id);
+      this.CreditLimit = CrediLineData.GetCreditLimit(this.Customer.Id);
+      var usecasePackage = ShippingAndHandlingUseCases.UseCaseInteractor();
+      PackagedData packageInfo = usecasePackage.GetPackagedData(this.UID);
+      this.Weight = packageInfo.Weight;
+      this.TotalPackages = packageInfo.Count;
+
       SetOrderTotals();
 
       this.Actions = OrderActions.GetCaptureActions();
