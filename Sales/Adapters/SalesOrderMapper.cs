@@ -43,6 +43,7 @@ namespace Empiria.Trade.Sales.Adapters {
         CustomerCredit = MapCustomerCredit(order),
         Weight = order.Weight,
         TotalPackages = order.TotalPackages,
+        StatusName = MapOrderStatus(order.Status.ToString()),
         Actions = MapOrderActions(order.Actions)
       };
 
@@ -199,6 +200,10 @@ namespace Empiria.Trade.Sales.Adapters {
         case "Delivery": return "Entrega";
         case "Closed": return "Cerrada";
         case "Cancelled": return "Cancelada";
+        case "Pending": return "Por Autorizar";
+        case "ToSupply": return "Por surtir";
+        case "InProgress": return "En proceso";
+        case "Suppled": return "Surtido";
         default:  return "Capturada";
       }
 

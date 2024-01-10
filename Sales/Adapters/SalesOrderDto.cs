@@ -186,6 +186,10 @@ namespace Empiria.Trade.Sales.Adapters {
       get; internal set;
     }
 
+    public string StatusName {
+      get; internal set;
+    }
+
     public OrderActionsDto Actions {
       get; internal set;
     }
