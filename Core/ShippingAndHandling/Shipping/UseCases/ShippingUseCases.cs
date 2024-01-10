@@ -9,6 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using Empiria.Services;
+using Empiria.Trade.ShippingAndHandling.Adapters;
 using Empiria.Trade.ShippingAndHandling.Domain;
 
 namespace Empiria.Trade.ShippingAndHandling.UseCases {
@@ -41,7 +42,38 @@ namespace Empiria.Trade.ShippingAndHandling.UseCases {
     }
 
 
+    public ShippingEntryDto CreateShippingForOrder(string orderUID) {
+
+      //TODO CREATE STRUCTURE IN OBJECT
+
+      return GetShipping(orderUID);
+    }
+
+
+    public ShippingEntryDto GetShippingForOrder(string orderUID) {
+
+      return GetShipping(orderUID);
+    }
+
+
     #endregion Use cases
+
+
+    #region Private methods
+
+
+    private ShippingEntryDto GetShipping(string orderUID) {
+
+      var builder = new ShippingBuilder();
+
+      ShippingEntry entry = builder.GetShippingForOrder(orderUID);
+
+      return ShippingMapper.Map(entry);
+
+    }
+
+
+    #endregion Private methods
 
   } // class ShippingUseCases
 

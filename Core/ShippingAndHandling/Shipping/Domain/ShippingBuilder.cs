@@ -32,12 +32,27 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
     #region Public methods
 
 
+    internal ShippingEntry CreateShippingForOrder() {
+
+      var data = new ShippingData();
+
+      throw new NotImplementedException();
+    }
+
+
     internal FixedList<INamedEntity> GetParcelSupplierList() {
       var data = new ShippingData();
 
       var parcelSupplierList = data.GetParcelSupplierList();
 
       return MergeParcelToNamedDto(parcelSupplierList);
+    }
+
+
+    internal ShippingEntry GetShippingForOrder(string orderUID) {
+      var data = new ShippingData();
+
+      return data.GetShippingForOrder(orderUID);
     }
 
 

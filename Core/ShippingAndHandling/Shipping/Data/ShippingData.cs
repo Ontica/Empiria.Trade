@@ -11,6 +11,7 @@ using System;
 using Empiria.Data;
 using Empiria.Trade.Core.Common;
 using Empiria.Trade.Core.ShippingAndHandling.Shipping.Domain;
+using Empiria.Trade.Orders;
 
 namespace Empiria.Trade.ShippingAndHandling.Data {
 
@@ -27,6 +28,18 @@ namespace Empiria.Trade.ShippingAndHandling.Data {
       return DataReader.GetPlainObjectFixedList<SimpleDataObject>(dataOperation);
     }
 
+
+    internal ShippingEntry GetShippingForOrder(string orderUID) {
+      
+      int orderId = Order.Parse(orderUID).Id;
+
+      string sql = $"SELECT * FROM TRDShipping WHERE OrderId = {orderId}";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetPlainObject<ShippingEntry>(dataOperation);
+
+    }
 
   } // class ShippingData
 

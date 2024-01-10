@@ -39,11 +39,25 @@ namespace Empiria.Trade.Tests {
 
 
     [Fact]
-    public void GetPackageTypesTest() {
+    public void GetParcelSupplierListTest() {
 
       var usecase = ShippingUseCases.UseCaseInteractor();
 
       FixedList<INamedEntity> sut = usecase.GetParcelSupplierList();
+
+      Assert.NotNull(sut);
+
+    }
+
+
+    [Fact]
+    public void GetShippingForOrderTest() {
+
+      var usecase = ShippingUseCases.UseCaseInteractor();
+      
+      string orderUID = "f3bcb4ad-faaa-4afa-8a0c-8e2986c80065";
+
+      ShippingEntryDto sut = usecase.GetShippingForOrder(orderUID);
 
       Assert.NotNull(sut);
 
