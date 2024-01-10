@@ -66,4 +66,7 @@
     <ProjectReference Include="..\..\core\Core\Empiria.Core.csproj" />
     <ProjectReference Include="..\..\trade.sujetsa\SujetsaTemp\TradeDataSchemaManager\TradeDataSchemaManager.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Catalogues\" />
+  </ItemGroup>
 </Project>

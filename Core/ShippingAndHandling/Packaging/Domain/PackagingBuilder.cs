@@ -135,7 +135,7 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
                           $"{package.Width.ToString()}x" +
                           $"{package.Height.ToString()})";
 
-        var namedDto = new NamedEntityDto(package.ObjectKey, packageName);
+        var namedDto = new NamedEntity(package.ObjectKey, packageName);
 
         returnedNamed.Add(namedDto);
       }

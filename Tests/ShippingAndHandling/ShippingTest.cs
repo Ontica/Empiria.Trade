@@ -38,6 +38,18 @@ namespace Empiria.Trade.Tests {
     #region Facts
 
 
+    [Fact]
+    public void GetPackageTypesTest() {
+
+      var usecase = ShippingUseCases.UseCaseInteractor();
+
+      FixedList<INamedEntity> sut = usecase.GetParcelSupplierList();
+
+      Assert.NotNull(sut);
+
+    }
+
+
     #endregion Facts
 
 

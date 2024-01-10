@@ -28,7 +28,7 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
 
 
     [HttpGet]
-    [Route("v4/trade/shipping-and-handling/packing/package-type")]
+    [Route("v4/trade/shipping-and-handling/packing/package-types")]
     public CollectionModel GetPackageTypeList() {
 
       using (var usecases = PackagingUseCases.UseCaseInteractor()) {
