@@ -25,6 +25,10 @@ namespace Empiria.Trade.Sales {
     public FixedList<SalesOrder> GetOrders(SearchOrderFields fields) {
       var orders = SalesOrderData.GetSalesOrders(fields);
 
+      foreach (var order in orders) {
+       
+        order.GetOrderTotal();
+      }
       return orders;
     }
 
@@ -33,6 +37,7 @@ namespace Empiria.Trade.Sales {
 
       foreach (var order in orders) {
         order.SetCustomerCreditInfos();
+        order.GetOrderTotal();
       }
 
       return orders;
@@ -42,6 +47,7 @@ namespace Empiria.Trade.Sales {
       var orders = SalesOrderData.GetSalesOrdersToPacking(fields);
       foreach (var order in orders) {
         order.GetWeightTotalPackageByOrder();
+        order.GetOrderTotal();
       }
 
       return orders;
@@ -50,7 +56,7 @@ namespace Empiria.Trade.Sales {
     #endregion Public methods
 
     #region Private methods
-
+  
 
     #endregion Private methods
 

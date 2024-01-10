@@ -247,6 +247,11 @@ namespace Empiria.Trade.Sales {
       return CreditTransaction.GetCreditTransactions(creditLineId);
     }
 
+    public void GetOrderTotal() {
+      this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id);
+      SetOrderTotals();
+    }
+
     #endregion Public methods
 
     #region Helpers
