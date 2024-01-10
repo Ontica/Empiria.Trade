@@ -101,14 +101,14 @@ namespace Empiria.Trade.Sales.WebApi {
     }
 
     [HttpGet]
-    [Route("v4/trade/sales/orders/{orderUID:guid}")]
-    public SingleObjectModel GetSalesOrder([FromUri] string orderUID, [FromBody] SearchOrderFields fields) {
+    [Route("v4/trade/sales/orders/{orderUID:guid}/{queryType}")]
+    public SingleObjectModel GetSalesOrder([FromUri] string orderUID, [FromUri] string queryType) {
 
        base.RequireResource(orderUID, "orderUID");
 
       using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
 
-        ISalesOrderDto orderDto = usecases.GetSalesOrder(orderUID, fields);
+        ISalesOrderDto orderDto = usecases.GetSalesOrder(orderUID, queryType);
 
         return new SingleObjectModel(this.Request, orderDto);
       }

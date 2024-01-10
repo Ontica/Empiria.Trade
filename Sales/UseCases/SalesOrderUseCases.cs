@@ -104,9 +104,9 @@ namespace Empiria.Trade.Sales.UseCases {
       return orderDto;
     }
 
-    public ISalesOrderDto GetSalesOrder(string orderUID, SearchOrderFields fields) {
+    public ISalesOrderDto GetSalesOrder(string orderUID, string queryType) {
       var order = SalesOrder.Parse(orderUID);
-      order.CalculateSalesOrder(fields.QueryType);
+      order.CalculateSalesOrder(queryType);
 
       var orderDto = SalesOrderMapper.Map(order);
 
