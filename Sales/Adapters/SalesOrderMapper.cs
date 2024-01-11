@@ -12,6 +12,8 @@ using System.Collections.Generic;
 
 using Empiria.Trade.Core;
 using Empiria.Trade.Orders;
+using Empiria.Trade.ShippingAndHandling.Adapters;
+using Empiria.Trade.ShippingAndHandling.UseCases;
 
 namespace Empiria.Trade.Sales.Adapters {
 
@@ -31,7 +33,7 @@ namespace Empiria.Trade.Sales.Adapters {
         ShippingMethod = order.ShippingMethod,
         PaymentCondition = order.PaymentCondition,
         PriceList = order.PriceList,
-        Items = MapSalesOrderItems(order.SalesOrderItems), 
+        Items = MapSalesOrderItems(order.SalesOrderItems),
         ItemsCount = order.ItemsCount,
         ItemsTotal = order.ItemsTotal,
         Shipment = order.Shipment,
@@ -39,11 +41,12 @@ namespace Empiria.Trade.Sales.Adapters {
         OrderTotal = order.OrderTotal,
         AuthorizationStatus = order.AuthorizationStatus,
         AuthorizationTime = order.AuthorizationTime,
-        AuthorizatedById = order.AuthorizatedById,       
+        AuthorizatedById = order.AuthorizatedById,
         CustomerCredit = MapCustomerCredit(order),
         Weight = order.Weight,
         TotalPackages = order.TotalPackages,
         StatusName = MapOrderStatus(order.Status.ToString()),
+        Shipping = GetShipping(order.UID),
         Actions = MapOrderActions(order.Actions)
       };
 
@@ -142,6 +145,12 @@ namespace Empiria.Trade.Sales.Adapters {
     }
 
     #region Private methods
+
+    private static ShippingEntryDto GetShipping(string orderUID) {
+     
+      var shippingUseCase = ShippingUseCases.UseCaseInteractor();
+      return shippingUseCase.GetShippingOrder(orderUID);     
+    }
 
     private static OrderActionsDto MapOrderActions(OrderActions actions) {
 

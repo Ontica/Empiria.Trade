@@ -11,7 +11,7 @@
 using System;
 
 using Empiria.Trade.Orders;
-
+using Empiria.Trade.ShippingAndHandling.Adapters;
 
 namespace Empiria.Trade.Sales.Adapters {
 
@@ -57,11 +57,7 @@ namespace Empiria.Trade.Sales.Adapters {
       get; internal set;
     }
 
-    //public OrderAuthorizationStatus AuthorizationStatus {
-    //  get; internal set;
-    //}
-
-
+   
   } // Output DTO used to return  basic orders.
 
   /// Output DTO used to return base autorization orders.
@@ -191,6 +187,10 @@ namespace Empiria.Trade.Sales.Adapters {
     }
 
     public OrderActionsDto Actions {
+      get; internal set;
+    }
+
+    public ShippingEntryDto Shipping {
       get; internal set;
     }
 
