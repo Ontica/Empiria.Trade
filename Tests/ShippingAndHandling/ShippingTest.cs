@@ -51,10 +51,32 @@ namespace Empiria.Trade.Tests {
 
 
     [Fact]
-    public void GetShippingOrderTest() {
+    public void CreateShippingOrderTest() {
 
       var usecase = ShippingUseCases.UseCaseInteractor();
       
+      string orderUID = "f3bcb4ad-faaa-4afa-8a0c-8e2986c80065";
+
+      ShippingFields fields = new ShippingFields() {
+        OrderUID = orderUID,
+        ParcelSupplierUID = "8521a10b-0607-4d45-8614-385aba701b1r",
+        ShippingGuide ="123456789",
+        ParcelAmount = 1000,
+        CustomerAmount= 500
+      };
+
+      ShippingEntryDto sut = usecase.CreateShippingOrder(orderUID, fields);
+
+      Assert.NotNull(sut);
+
+    }
+
+
+    [Fact]
+    public void GetShippingOrderTest() {
+
+      var usecase = ShippingUseCases.UseCaseInteractor();
+
       string orderUID = "f3bcb4ad-faaa-4afa-8a0c-8e2986c80065";
 
       ShippingEntryDto sut = usecase.GetShippingOrder(orderUID);

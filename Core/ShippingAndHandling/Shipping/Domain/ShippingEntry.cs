@@ -12,11 +12,13 @@ using System;
 using Empiria.Trade.Core.Common;
 using Empiria.Trade.Orders;
 using Empiria.Trade.ShippingAndHandling.Adapters;
+using Empiria.Trade.ShippingAndHandling.Data;
+using Empiria.Trade.ShippingAndHandling.Domain;
 
 namespace Empiria.Trade.ShippingAndHandling {
 
   /// <summary>Represents a shipping entry.</summary>
-  internal class ShippingEntry {
+  internal class ShippingEntry : BaseObject {
 
 
     #region Constructor and parser
@@ -26,17 +28,17 @@ namespace Empiria.Trade.ShippingAndHandling {
     }
 
 
-    //static public ShippingEntry Parse(int id) => ParseId<ShippingEntry>(id);
+    static public ShippingEntry Parse(int id) => ParseId<ShippingEntry>(id);
 
-    //static public ShippingEntry Parse(int id, bool reload) => ParseId<ShippingEntry>(id, reload);
+    static public ShippingEntry Parse(int id, bool reload) => ParseId<ShippingEntry>(id, reload);
 
-    //static public ShippingEntry Parse(string uid) => ParseKey<ShippingEntry>(uid);
+    static public ShippingEntry Parse(string uid) => ParseKey<ShippingEntry>(uid);
 
-    //static public ShippingEntry Empty => ParseEmpty<ShippingEntry>();
+    static public ShippingEntry Empty => ParseEmpty<ShippingEntry>();
 
 
-    public ShippingEntry(string orderUID, ShippingFields fields, string shippingUID) {
-      MapToShippingEntry(orderUID, fields, shippingUID);
+    public ShippingEntry(string orderUID, ShippingFields fields) {
+      MapToShippingEntry(orderUID, fields);
     }
 
 
@@ -105,19 +107,29 @@ namespace Empiria.Trade.ShippingAndHandling {
 
     #region Private methods
 
+    protected override void OnSave() {
 
-    private void MapToShippingEntry(string orderUID, ShippingFields fields, string shippingUID) {
+      if (this.ShippingId == 0) {
 
-      //var shipping = Parse(shippingUID);
+        this.ShippingId = this.Id;
+        this.ShippingUID = this.UID;
+      }
+      ShippingData.WriteShipping(this);
+    }
 
-      //if (shipping.ShippingId > 0) {
-      //  this.ShippingId= shipping.ShippingId;
-      //  this.ShippingUID= shippingUID;
-      //}
+
+    private void MapToShippingEntry(string orderUID, ShippingFields fields) {
+
+      var builder = new ShippingBuilder();
+      var shipping = builder.GetShippingForOrder(orderUID);
+
+      if (shipping.ShippingId > 0) {
+        this.ShippingId = shipping.ShippingId;
+        this.ShippingUID = shipping.ShippingUID;
+      }
 
       this.OrderId = Order.Parse(orderUID).Id;
       this.ParcelSupplierId = SimpleDataObject.Parse(fields.ParcelSupplierUID).Id;
-      this.ShippingUID = Guid.NewGuid().ToString();
       this.ShippingGuide = fields.ShippingGuide;
       this.ParcelAmount = fields.ParcelAmount;
       this.CustomerAmount = fields.CustomerAmount;

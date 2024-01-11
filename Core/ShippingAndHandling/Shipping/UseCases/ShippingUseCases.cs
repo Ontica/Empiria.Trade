@@ -44,7 +44,9 @@ namespace Empiria.Trade.ShippingAndHandling.UseCases {
 
     public ShippingEntryDto CreateShippingOrder(string orderUID, ShippingFields fields) {
 
-      var shippingOrder = new ShippingEntry(orderUID, fields, "");
+      var shippingOrder = new ShippingEntry(orderUID, fields);
+
+      shippingOrder.Save();
 
       return GetShipping(orderUID);
     }

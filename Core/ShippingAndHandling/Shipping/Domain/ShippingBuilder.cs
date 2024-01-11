@@ -52,9 +52,7 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
 
     internal ShippingEntry GetShippingForOrder(string orderUID) {
       
-      var data = new ShippingData();
-
-      var shippingList = data.GetShippingForOrder(orderUID);
+      var shippingList = ShippingData.GetShippingForOrder(orderUID);
 
       if (shippingList.Count>0) {
         return shippingList.FirstOrDefault();

@@ -11,6 +11,7 @@ using System;
 using Empiria.Trade.ShippingAndHandling.UseCases;
 using Empiria.WebApi;
 using System.Web.Http;
+using Empiria.Trade.ShippingAndHandling.Adapters;
 
 namespace Empiria.Trade.WebApi.ShippingAndHandling {
   
@@ -30,6 +31,19 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
         FixedList<INamedEntity> packingDetail = usecases.GetParcelSupplierList();
 
         return new CollectionModel(this.Request, packingDetail);
+      }
+    }
+
+
+    [HttpPost]
+    [Route("v4/trade/shipping-and-handling/shipping/{orderUID:guid}")]
+    public SingleObjectModel CreateShippingOrder([FromUri] string orderUID, [FromBody] ShippingFields fields) {
+
+      using (var usecases = ShippingUseCases.UseCaseInteractor()) {
+
+        ShippingEntryDto shippingOrder = usecases.CreateShippingOrder(orderUID, fields);
+
+        return new SingleObjectModel(this.Request, shippingOrder);
       }
     }
 

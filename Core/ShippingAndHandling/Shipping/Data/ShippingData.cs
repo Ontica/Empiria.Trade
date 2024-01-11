@@ -29,7 +29,7 @@ namespace Empiria.Trade.ShippingAndHandling.Data {
     }
 
 
-    internal FixedList<ShippingEntry> GetShippingForOrder(string orderUID) {
+    internal static FixedList<ShippingEntry> GetShippingForOrder(string orderUID) {
       
       int orderId = Order.Parse(orderUID).Id;
 
@@ -39,6 +39,17 @@ namespace Empiria.Trade.ShippingAndHandling.Data {
 
       return DataReader.GetPlainObjectFixedList<ShippingEntry>(dataOperation);
       
+    }
+
+
+    internal static void WriteShipping(ShippingEntry shipping) {
+
+      var op = DataOperation.Parse("writeShipping",
+        shipping.ShippingId, shipping.OrderId, shipping.ParcelSupplierId,
+        shipping.ShippingUID, shipping.ShippingGuide, shipping.ParcelAmount,
+        shipping.CustomerAmount, shipping.ShippingDate, shipping.DeliveryDate);
+
+      DataWriter.Execute(op);
     }
 
   } // class ShippingData
