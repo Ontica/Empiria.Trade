@@ -147,7 +147,11 @@ namespace Empiria.Trade.Sales.Adapters {
     #region Private methods
 
     private static ShippingEntryDto GetShipping(string orderUID) {
-     
+
+      if (orderUID == "") {
+        return new ShippingEntryDto();
+      }
+
       var shippingUseCase = ShippingUseCases.UseCaseInteractor();
       return shippingUseCase.GetShippingOrder(orderUID);     
     }
