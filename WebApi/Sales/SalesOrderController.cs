@@ -192,7 +192,21 @@ namespace Empiria.Trade.Sales.WebApi {
 
     }
 
+    [HttpPost]
+    [Route("v4/trade/sales/orders/{orderUID:guid}/delivery")]
+    public SingleObjectModel DeliverySalesOrder([FromUri] string orderUID) {
+      
+      base.RequireResource(orderUID, "orderUID");
 
-  } // class SalesOrderController
+     using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
+        ISalesOrderDto orderDto = usecases.DeliverySalesOrder(orderUID);
+
+        return new SingleObjectModel(this.Request, orderDto);
+     }
+
+    }
+
+
+    } // class SalesOrderController
 
 } // namespace Empiria.Trade.Products.WebApi

@@ -144,12 +144,15 @@ namespace Empiria.Trade.Tests.Sales {
       Assert.NotNull(orderDto);
     }
 
-    //[Fact]
-    //public void ShouldGetOrder() {
-    //  var order = SalesOrder.GetSalesOrder("1eea9729-0def-4227-8f27-e29e05b1da27");
+    [Fact]
+    public void ShouldGetOrder() {
 
-    //  Assert.NotNull(order);
-    //}
+     var order = SalesOrder.Parse("044cbcfa-ebbe-4745-a27b-7783c4cff64b");
+      order.CalculateSalesOrder("");
+
+      var orderDto = SalesOrderMapper.Map(order);
+      Assert.NotNull(orderDto);
+    }
 
     [Fact]
     public void ShouldCancelOrderItem() {
@@ -176,7 +179,7 @@ namespace Empiria.Trade.Tests.Sales {
 
     [Fact]
     public void ShouldAuthroizeOrderSales() {
-      var order = SalesOrder.Parse("97eb241a-6bb8-4306-a4dd-5efc210058b7");
+      var order = SalesOrder.Parse("f43c43e4-20e8-41b2-a2fd-a2f6d012b813");
       order.Authorize();
 
       Assert.NotNull(order);
@@ -190,6 +193,15 @@ namespace Empiria.Trade.Tests.Sales {
       Assert.NotNull(creditTransactions);
     }
 
+    [Fact]
+    public void ShouldDeliverSalesOrder() {
+      var order = SalesOrder.Parse("f3bcb4ad-faaa-4afa-8a0c-8e2986c80065");
+      order.Deliver();
+
+      var orderDto = SalesOrderMapper.Map(order);
+
+      Assert.NotNull(orderDto);
+    }
     
 
 

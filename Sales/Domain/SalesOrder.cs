@@ -95,8 +95,8 @@ namespace Empiria.Trade.Sales {
 
     public FixedList<CreditTransaction> CreditTransactions {
       get; private set;
-    }
-    
+    } = new FixedList<CreditTransaction>();
+     
     public decimal Weight {
       get; set;
     }
@@ -128,10 +128,11 @@ namespace Empiria.Trade.Sales {
       AuthorizationStatus = OrderAuthorizationStatus.Pending;
 
       SalesOrderData.Write(this);
-      this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id);
+           
       this.Actions = OrderActions.GetApplyActions();
       this.Actions.CanAuthorize = false;
-      SetOrderTotals();
+           
+      SetOrderValues();
     }
 
     internal void Update(SalesOrderFields fields) {
@@ -173,6 +174,7 @@ namespace Empiria.Trade.Sales {
       SalesOrderData.Write(this);
       SalesOrderItemsData.CancelOrderItems(this.Id);
       this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id);
+      this.CreditTransactions = GetCreditTransactions(this.Customer.Id);
 
       SetOrderTotals();
     }
@@ -194,10 +196,11 @@ namespace Empiria.Trade.Sales {
 
       this.Actions = OrderActions.GetAuthorizedActions();
 
-      SalesOrderData.Write(this);
-      this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id);
 
-      SetOrderTotals();
+       SalesOrderData.Write(this);
+          
+
+      SetOrderValues();
     }
 
     public void Supply() {
@@ -206,11 +209,21 @@ namespace Empiria.Trade.Sales {
       AuthorizationStatus = OrderAuthorizationStatus.CarrierSelctor;
 
       SalesOrderData.Write(this);
-      this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id);
-      this.Actions = OrderActions.GetPackingActions();
-      SetOrderTotals();
+      SetOrderValues();
 
+      this.Actions = OrderActions.GetPackingActions(); 
     }
+
+    public void Deliver() {
+      this.Status = OrderStatus.Delivery;
+
+      AuthorizationStatus = OrderAuthorizationStatus.CarrierSelctor;
+
+      SalesOrderData.Write(this);
+      SetOrderValues();
+      this.Actions = OrderActions.GetSelectDeliverActions();
+    }
+
 
     public void SetCustomerCreditInfos() {
       this.TotalDebt = CrediLineData.GetCreditDebt(this.Customer.Id);
@@ -255,6 +268,21 @@ namespace Empiria.Trade.Sales {
     #endregion Public methods
 
     #region Helpers
+
+    private void SetOrderValues() {
+      this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id);
+
+      SetOrderTotals();
+            
+      this.CreditTransactions = this.GetCustomerCreditTransactions();
+      this.TotalDebt = CrediLineData.GetCreditDebt(this.Customer.Id);
+      this.CreditLimit = CrediLineData.GetCreditLimit(this.Customer.Id);
+
+      var usecasePackage = PackagingUseCases.UseCaseInteractor();
+      PackagedData packageInfo = usecasePackage.GetPackagedData(this.UID);
+      this.Weight = packageInfo.Weight;
+      this.TotalPackages = packageInfo.Count;
+    }
 
     private FixedList<SalesOrderItem> LoadSalesOrderItems(FixedList<SalesOrderItemsFields> orderItemsFields) {
       List<SalesOrderItem> orderItems = new List<SalesOrderItem>();
@@ -329,10 +357,14 @@ namespace Empiria.Trade.Sales {
         case OrderStatus.CarrierSelector:
           this.Actions = OrderActions.GetSelectCarrierActions();
           break;
+        case OrderStatus.Delivery:
+          this.Actions = OrderActions.GetSelectDeliverActions();
+          break;
       }
 
     }
 
+  
 
 
     #endregion Helpers

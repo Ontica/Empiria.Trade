@@ -59,6 +59,18 @@ namespace Empiria.Trade.Sales.UseCases {
       return orderDto;
     }
 
+    public ISalesOrderDto DeliverySalesOrder(string orderUID) {
+
+      Assertion.Require(orderUID, "orderUID");
+
+      var order = SalesOrder.Parse(orderUID);
+      order.Deliver();
+
+      var orderDto = SalesOrderMapper.Map(order);
+
+      return orderDto;
+    }
+
     public FixedList<ISalesOrderDto> GetOrders(SearchOrderFields fields) {
       Assertion.Require(fields, "fields");
 
@@ -173,7 +185,9 @@ namespace Empiria.Trade.Sales.UseCases {
       return SalesOrderStatusService.GetPackingStatusList();
     }
 
-   
+    
+
+
 
     #endregion Use cases
 
