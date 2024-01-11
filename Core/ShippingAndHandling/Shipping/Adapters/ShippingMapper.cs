@@ -33,10 +33,10 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
 
     private static ShippingEntryDto MapEntry(ShippingEntry entry) {
 
+      var parcel = SimpleDataObject.Parse(entry.ParcelSupplierId);
+
       var dto = new ShippingEntryDto {
-        ShippingUID = entry.ShippingUID,
-        OrderUID = Order.Parse(entry.OrderId).UID,
-        ParcelSupplierUID = SimpleDataObject.Parse(entry.ParcelSupplierId).UID,
+        ParcelSupplier = new NamedEntityDto(parcel.UID, parcel.Name),
         ShippingGuide = entry.ShippingGuide,
         ParcelAmount = entry.ParcelAmount,
         CustomerAmount = entry.CustomerAmount,

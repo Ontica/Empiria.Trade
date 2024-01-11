@@ -12,10 +12,25 @@ using System;
 namespace Empiria.Trade.ShippingAndHandling.Adapters {
 
   /// <summary>Output DTO used to return the entries of shipping.</summary>
-  public class ShippingEntryDto : ShippingFields {
+  public class ShippingEntryDto {
+
+    
+    public INamedEntity ParcelSupplier {
+      get; set;
+    }
 
 
-    public string ShippingUID {
+    public string ShippingGuide {
+      get; set;
+    }
+
+
+    public decimal ParcelAmount {
+      get; set;
+    }
+
+
+    public decimal CustomerAmount {
       get; set;
     }
 
