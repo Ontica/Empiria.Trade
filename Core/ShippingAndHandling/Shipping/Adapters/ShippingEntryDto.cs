@@ -14,15 +14,15 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
   /// <summary>Output DTO used to return the entries of shipping.</summary>
   public class ShippingEntryDto {
 
-    
+
     public INamedEntity ParcelSupplier {
       get; set;
-    }
+    } = new NamedEntityDto("","");
 
 
     public string ShippingGuide {
       get; set;
-    }
+    } = string.Empty;
 
 
     public decimal ParcelAmount {

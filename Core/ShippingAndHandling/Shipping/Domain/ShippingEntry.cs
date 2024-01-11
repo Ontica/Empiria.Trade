@@ -9,6 +9,9 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
 using System;
+using Empiria.Trade.Core.Common;
+using Empiria.Trade.Orders;
+using Empiria.Trade.ShippingAndHandling.Adapters;
 
 namespace Empiria.Trade.ShippingAndHandling {
 
@@ -19,8 +22,23 @@ namespace Empiria.Trade.ShippingAndHandling {
     #region Constructor and parser
 
     public ShippingEntry() {
-
+      //no-op
     }
+
+
+    //static public ShippingEntry Parse(int id) => ParseId<ShippingEntry>(id);
+
+    //static public ShippingEntry Parse(int id, bool reload) => ParseId<ShippingEntry>(id, reload);
+
+    //static public ShippingEntry Parse(string uid) => ParseKey<ShippingEntry>(uid);
+
+    //static public ShippingEntry Empty => ParseEmpty<ShippingEntry>();
+
+
+    public ShippingEntry(string orderUID, ShippingFields fields, string shippingUID) {
+      MapToShippingEntry(orderUID, fields, shippingUID);
+    }
+
 
     #endregion Constructor and parser
 
@@ -84,6 +102,31 @@ namespace Empiria.Trade.ShippingAndHandling {
 
     #endregion Properties
 
+
+    #region Private methods
+
+
+    private void MapToShippingEntry(string orderUID, ShippingFields fields, string shippingUID) {
+
+      //var shipping = Parse(shippingUID);
+
+      //if (shipping.ShippingId > 0) {
+      //  this.ShippingId= shipping.ShippingId;
+      //  this.ShippingUID= shippingUID;
+      //}
+
+      this.OrderId = Order.Parse(orderUID).Id;
+      this.ParcelSupplierId = SimpleDataObject.Parse(fields.ParcelSupplierUID).Id;
+      this.ShippingUID = Guid.NewGuid().ToString();
+      this.ShippingGuide = fields.ShippingGuide;
+      this.ParcelAmount = fields.ParcelAmount;
+      this.CustomerAmount = fields.CustomerAmount;
+      this.ShippingDate = DateTime.Now;
+      this.DeliveryDate = DateTime.Now;
+    }
+
+
+    #endregion Private methods
 
   } // class ShippingEntry
 

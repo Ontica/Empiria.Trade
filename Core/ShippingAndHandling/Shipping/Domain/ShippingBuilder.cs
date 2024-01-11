@@ -9,6 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Empiria.Trade.Core.Common;
 using Empiria.Trade.ShippingAndHandling.Data;
 
@@ -50,9 +51,17 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
 
 
     internal ShippingEntry GetShippingForOrder(string orderUID) {
+      
       var data = new ShippingData();
 
-      return data.GetShippingForOrder(orderUID);
+      var shippingList = data.GetShippingForOrder(orderUID);
+
+      if (shippingList.Count>0) {
+        return shippingList.FirstOrDefault();
+      } else {
+        return new ShippingEntry();
+      }
+
     }
 
 

@@ -32,6 +32,10 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
 
 
     private static ShippingEntryDto MapEntry(ShippingEntry entry) {
+      
+      if (entry.ShippingId == 0) {
+        return new ShippingEntryDto();
+      }
 
       var parcel = SimpleDataObject.Parse(entry.ParcelSupplierId);
 

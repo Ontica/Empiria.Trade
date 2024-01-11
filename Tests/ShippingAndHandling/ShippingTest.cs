@@ -51,13 +51,13 @@ namespace Empiria.Trade.Tests {
 
 
     [Fact]
-    public void GetShippingForOrderTest() {
+    public void GetShippingOrderTest() {
 
       var usecase = ShippingUseCases.UseCaseInteractor();
       
       string orderUID = "f3bcb4ad-faaa-4afa-8a0c-8e2986c80065";
 
-      ShippingEntryDto sut = usecase.GetShippingForOrder(orderUID);
+      ShippingEntryDto sut = usecase.GetShippingOrder(orderUID);
 
       Assert.NotNull(sut);
 

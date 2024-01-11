@@ -42,15 +42,15 @@ namespace Empiria.Trade.ShippingAndHandling.UseCases {
     }
 
 
-    public ShippingEntryDto CreateShippingForOrder(string orderUID) {
+    public ShippingEntryDto CreateShippingOrder(string orderUID, ShippingFields fields) {
 
-      //TODO CREATE STRUCTURE IN OBJECT
+      var shippingOrder = new ShippingEntry(orderUID, fields, "");
 
       return GetShipping(orderUID);
     }
 
 
-    public ShippingEntryDto GetShippingForOrder(string orderUID) {
+    public ShippingEntryDto GetShippingOrder(string orderUID) {
 
       return GetShipping(orderUID);
     }
