@@ -135,6 +135,63 @@ namespace Empiria.Trade.Sales {
       SetOrderValues();
     }
 
+    public void Authorize() {
+      AuthorizationStatus = OrderAuthorizationStatus.Authorized;
+      this.AuthorizationTime = DateTime.Now;
+      this.AuthorizatedById = ExecutionServer.CurrentUserId;
+
+      this.Status = OrderStatus.Packing;
+      AuthorizationStatus = OrderAuthorizationStatus.ToSupply;
+
+      this.Actions = OrderActions.GetAuthorizedActions();
+
+
+      SalesOrderData.Write(this);
+
+
+      SetOrderValues();
+    }
+
+    public void Cancel() {
+
+      Status = OrderStatus.Cancelled;
+
+      SalesOrderData.Write(this);
+      SalesOrderItemsData.CancelOrderItems(this.Id);
+      this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id);
+      this.CreditTransactions = GetCreditTransactions(this.Customer.Id);
+
+      SetOrderTotals();
+    }
+
+    public void Deliver() {
+      this.Status = OrderStatus.Delivery;
+
+      AuthorizationStatus = OrderAuthorizationStatus.CarrierSelctor;
+
+      SalesOrderData.Write(this);
+      SetOrderValues();
+      this.Actions = OrderActions.GetSelectDeliverActions();
+    }
+
+    public void Modify(SalesOrderFields fields) {
+      SalesOrderItemsData.CancelOrderItems(this.Id);
+      Update(fields);
+
+      Save();
+    }
+
+    public void Supply() {
+      this.Status = OrderStatus.CarrierSelector;
+
+      AuthorizationStatus = OrderAuthorizationStatus.CarrierSelctor;
+
+      SalesOrderData.Write(this);
+      SetOrderValues();
+
+      this.Actions = OrderActions.GetPackingActions();
+    }
+
     internal void Update(SalesOrderFields fields) {
 
       this.OrderTypeId = 1025;
@@ -167,71 +224,13 @@ namespace Empiria.Trade.Sales {
       this.Actions = OrderActions.GetCaptureActions();
     }
 
-    public void Cancel() {
-
-      Status = OrderStatus.Cancelled;
-
-      SalesOrderData.Write(this);
-      SalesOrderItemsData.CancelOrderItems(this.Id);
-      this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id);
-      this.CreditTransactions = GetCreditTransactions(this.Customer.Id);
-
-      SetOrderTotals();
-    }
-
-    public void Modify(SalesOrderFields fields) {
-      SalesOrderItemsData.CancelOrderItems(this.Id);
-      Update(fields);
-
-      Save();
-    }
-
-    public void Authorize() {
-      AuthorizationStatus = OrderAuthorizationStatus.Authorized;
-      this.AuthorizationTime = DateTime.Now;
-      this.AuthorizatedById = ExecutionServer.CurrentUserId;
-
-      this.Status = OrderStatus.Packing;
-      AuthorizationStatus = OrderAuthorizationStatus.ToSupply;
-
-      this.Actions = OrderActions.GetAuthorizedActions();
-
-
-       SalesOrderData.Write(this);
-          
-
-      SetOrderValues();
-    }
-
-    public void Supply() {
-      this.Status = OrderStatus.CarrierSelector;
-      
-      AuthorizationStatus = OrderAuthorizationStatus.CarrierSelctor;
-
-      SalesOrderData.Write(this);
-      SetOrderValues();
-
-      this.Actions = OrderActions.GetPackingActions(); 
-    }
-
-    public void Deliver() {
-      this.Status = OrderStatus.Delivery;
-
-      AuthorizationStatus = OrderAuthorizationStatus.CarrierSelctor;
-
-      SalesOrderData.Write(this);
-      SetOrderValues();
-      this.Actions = OrderActions.GetSelectDeliverActions();
-    }
-
-
     public void SetCustomerCreditInfos() {
       this.TotalDebt = CrediLineData.GetCreditDebt(this.Customer.Id);
       this.CreditLimit = CrediLineData.GetCreditLimit(this.Customer.Id);
     }
      
 
-      public void GetWeightTotalPackageByOrder() {
+     public void GetWeightTotalPackageByOrder() {
       var usecasePackage = PackagingUseCases.UseCaseInteractor();
       PackagedData packageInfo = usecasePackage.GetPackagedData(this.UID);
 
