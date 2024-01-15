@@ -119,6 +119,21 @@ namespace Empiria.Trade.Sales {
 
     }
 
+    static public FixedList<SalesDiscount> GetDiscountsByCustomer(VendorProduct vendor, DateTime orderDate, int customerId) {
+      var discountsList = new List<SalesDiscount>();
+
+      var discountsByGroup = SalesDiscountData.GetSalesDiscountsByDiscountTypeAndCustomerId(4,vendor.ProductFields.ProductGroup.Id, customerId, orderDate);
+      var discountsBySubGroup = SalesDiscountData.GetSalesDiscountsByDiscountTypeAndCustomerId(3,vendor.ProductFields.ProductSubgroup.Id, customerId, orderDate);
+      var discountsByProduct = SalesDiscountData.GetSalesDiscountsByDiscountTypeAndCustomerId(2,vendor.ProductFields.ProductId, customerId, orderDate);
+
+      discountsList.AddRange(discountsByGroup);
+      discountsList.AddRange(discountsBySubGroup);
+      discountsList.AddRange(discountsByProduct);
+
+      return discountsList.ToFixedList();
+
+    }
+
     #endregion Public methods
 
     #region Private methods

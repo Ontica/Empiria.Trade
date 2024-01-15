@@ -13,11 +13,11 @@ using System;
 using Empiria.Trade.Orders;
 using Empiria.Trade.ShippingAndHandling.Adapters;
 
-using Empiria.Trade.Orders.Adapters;
 
 namespace Empiria.Trade.Sales.Adapters {
 
- 
+  public interface ISalesOrderDto {
+  }  // interface ISalesOrderDto
 
   /// <summary>Output DTO used to return orders. </summary>
   public class BaseSalesOrderDto : ISalesOrderDto {

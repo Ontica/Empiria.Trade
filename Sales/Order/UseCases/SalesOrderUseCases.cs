@@ -11,7 +11,6 @@ using System;
 using Empiria.Services;
 
 using Empiria.Trade.Sales.Adapters;
-using Empiria.Trade.Orders.Adapters;
 
 namespace Empiria.Trade.Sales.UseCases {
 

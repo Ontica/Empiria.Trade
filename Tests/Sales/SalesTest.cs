@@ -16,7 +16,6 @@ using Xunit;
 using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Sales;
 
-using Empiria.Trade.Orders.Adapters;
 
 using Empiria.StateEnums;
 using System.Collections.Generic;
