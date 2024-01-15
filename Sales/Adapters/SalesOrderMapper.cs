@@ -15,6 +15,8 @@ using Empiria.Trade.Orders;
 using Empiria.Trade.ShippingAndHandling.Adapters;
 using Empiria.Trade.ShippingAndHandling.UseCases;
 
+using Empiria.Trade.Orders.Adapters;
+
 namespace Empiria.Trade.Sales.Adapters {
 
   /// <summary> Methods used to map Order. </summary>

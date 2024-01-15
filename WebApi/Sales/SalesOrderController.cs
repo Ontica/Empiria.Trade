@@ -15,6 +15,9 @@ using Empiria.WebApi;
 
 using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Sales.UseCases;
+
+using Empiria.Trade.Orders.Adapters;
+
 using Empiria.DataTypes;
 using System.Security.Cryptography;
 

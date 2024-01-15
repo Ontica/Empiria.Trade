@@ -16,6 +16,8 @@ using Xunit;
 using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Sales;
 
+using Empiria.Trade.Orders.Adapters;
+
 using Empiria.StateEnums;
 using System.Collections.Generic;
 using Empiria.Trade.Sales.UseCases;
@@ -30,24 +32,7 @@ namespace Empiria.Trade.Tests.Sales {
   /// <summary>Test cases for sales.   </summary>
   public class SalesTest {
 
-  //  [Fact]
-    //public void ShouldGetOrderTest() {
 
-    //  var fields = new SearchOrderFields {
-    //    Status = OrderStatus.CarrierSelector, 
-    //    FromDate = Convert.ToDateTime("2023/01/10"),
-    //    ToDate = Convert.ToDateTime("2023/12/28"),
-       
-    //  };
-
-
-    //  var salesOrders = SalesOrder.GetOrders(fields);
-      
-    //  var x = SalesOrderMapper.Map(salesOrders);
-
-
-    //  Assert.NotNull(x);
-    //}
 
     [Fact]
     public void ShouldCreateOrderTest() {
@@ -69,8 +54,7 @@ namespace Empiria.Trade.Tests.Sales {
 
       var salesOrderItem = new SalesOrderItem(salesOrder, item);
 
-      //salesOrderItem.Save();
-
+     
       ////var vendorProduct = salesOrderItem.VendorProduct;
 
       var y = SalesOrderItemsMapper.Map(salesOrderItem);
@@ -93,23 +77,10 @@ namespace Empiria.Trade.Tests.Sales {
       Notes = ""
     };
 
-    //  var item1 = new SalesOrderItemsFields {
-    //    OrderItemUID = "",
-    //    VendorProductUID = "f3f1fbc8-453b-4d5f-afe6-6b13e221c61f",
-    //    Quantity = 5,
-    //    BasePrice = 100,
-    //    SpecialPrice = 96,
-    //    SalesPrice = 393.30m,
-    //    AdditionalDiscount = 5,
-    //    AdditionalDiscountToApply = 0,
-    //    Shipment = 339,
-    //    Taxes = 19,
-    //    Total = 800,
-    //    Notes = "",
-    //  };
+    
       List<SalesOrderItemsFields> items = new List<SalesOrderItemsFields>();
      items.Add(item);
-      //  items.Add(item1);
+     
 
       var order = new SalesOrderFields {
         //UID = "217ac442-5409-44b9-ae4d-22f9f104c5fe",
@@ -133,51 +104,13 @@ namespace Empiria.Trade.Tests.Sales {
 
       }
 
-    [Fact]
-    public void ProccessOrder() {
-      var item = new SalesOrderItemsFields {
-        OrderItemUID = "",
-        VendorProductUID = "56214e92-2cb0-49fd-943e-0a1c5df51a10",
-        Quantity = 1,
-        UnitPrice = 100,
-        SalesPrice = 0,
-        DiscountPolicy = "",
-        Discount1 = 0,
-        Discount2 = 0,
-        Subtotal = 800,
-        Notes = ""
-      };
-
-      List<SalesOrderItemsFields> items = new List<SalesOrderItemsFields>();
-      items.Add(item);
-      
-
-      var order = new SalesOrderFields {
-        //UID = "217ac442-5409-44b9-ae4d-22f9f104c5fe",
-        //OrderNumber = "P-EY2DDRfrr2",
-        OrderTime = DateTime.Now,
-        Status = Orders.OrderStatus.Captured,
-        CustomerUID = "97c3b0b7-6f7d-4700-a329-9825a60440c1",
-
-        CustomerContactUID = "",
-        SupplierUID = "211e9e92-c56e-4ed3-b42f-e916211b92ce",
-        SalesAgentUID = "8b1d6d37-8d6c-4983-a3a0-42ed6b867bbe",
-        PaymentCondition = "1 Mes",
-        ShippingMethod = "Red Paq",
-        Items = items.ToFixedList()
-      };
-
-      var salesOrder = new SalesOrder(order);
-
-      var map = SalesOrderMapper.Map(salesOrder);
-      Assert.NotNull(map);
-    }
+  
 
       [Fact]
     public void ShouldCancelOrder() {
 
       var order = SalesOrder.Parse("ead9f502-e94c-4b3c-aa75-367482f9ba2c");
-      //order.Cancel();
+     
 
       var orderDto = SalesOrderMapper.Map(order);
 

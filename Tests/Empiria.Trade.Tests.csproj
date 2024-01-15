@@ -82,7 +82,6 @@
   <ItemGroup Condition=" '$(Configuration)' == 'Multisolutions' ">
     <ProjectReference Include="..\..\extensions\Tests\Empiria.Tests.csproj" />
     <ProjectReference Include="..\Core\Empiria.Trade.Core.csproj" />
-    <ProjectReference Include="..\Sales\Empiria.Trade.Sales.csproj" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\extensions\Tests\Empiria.Tests.csproj" />
