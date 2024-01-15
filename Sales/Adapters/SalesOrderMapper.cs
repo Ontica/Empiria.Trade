@@ -47,12 +47,13 @@ namespace Empiria.Trade.Sales.Adapters {
         TotalPackages = order.TotalPackages,
         StatusName = MapOrderStatus(order.Status.ToString()),
         Shipping = GetShipping(order.UID),
+        Packing = GetPacking(order.UID),
         Actions = MapOrderActions(order.Actions)
       };
 
       return dto;
     }
-
+       
     static public FixedList<ISalesOrderDto> Map(FixedList<SalesOrder> salesOrders) {
       List<ISalesOrderDto> salesOrderDtoList = new List<ISalesOrderDto>();
 
@@ -154,6 +155,15 @@ namespace Empiria.Trade.Sales.Adapters {
 
       var shippingUseCase = ShippingUseCases.UseCaseInteractor();
       return shippingUseCase.GetShippingOrder(orderUID);     
+    }
+
+    private static IShippingAndHandling GetPacking(string orderUID) {
+      if (orderUID == "") {
+        return new PackingDto();
+      }
+
+      var packingUseCase = PackagingUseCases.UseCaseInteractor();
+      return packingUseCase.GetPackagingForOrder(orderUID);
     }
 
     private static OrderActionsDto MapOrderActions(OrderActions actions) {

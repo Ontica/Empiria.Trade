@@ -114,10 +114,6 @@ namespace Empiria.Trade.Sales.Adapters {
       get; internal set;
     }
 
-    ////public PartyContactsDto CustomerContact {
-    ////  get; internal set;
-    ////}
-
     public NamedEntityDto Supplier {
       get; internal set;
     }
@@ -191,6 +187,10 @@ namespace Empiria.Trade.Sales.Adapters {
     }
 
     public ShippingEntryDto Shipping {
+      get; internal set;
+    }
+
+    public IShippingAndHandling Packing {
       get; internal set;
     }
 

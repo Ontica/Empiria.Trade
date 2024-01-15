@@ -133,6 +133,46 @@ namespace Empiria.Trade.Tests.Sales {
 
       }
 
+    [Fact]
+    public void ProccessOrder() {
+      var item = new SalesOrderItemsFields {
+        OrderItemUID = "",
+        VendorProductUID = "56214e92-2cb0-49fd-943e-0a1c5df51a10",
+        Quantity = 1,
+        UnitPrice = 100,
+        SalesPrice = 0,
+        DiscountPolicy = "",
+        Discount1 = 0,
+        Discount2 = 0,
+        Subtotal = 800,
+        Notes = ""
+      };
+
+      List<SalesOrderItemsFields> items = new List<SalesOrderItemsFields>();
+      items.Add(item);
+      
+
+      var order = new SalesOrderFields {
+        //UID = "217ac442-5409-44b9-ae4d-22f9f104c5fe",
+        //OrderNumber = "P-EY2DDRfrr2",
+        OrderTime = DateTime.Now,
+        Status = Orders.OrderStatus.Captured,
+        CustomerUID = "97c3b0b7-6f7d-4700-a329-9825a60440c1",
+
+        CustomerContactUID = "",
+        SupplierUID = "211e9e92-c56e-4ed3-b42f-e916211b92ce",
+        SalesAgentUID = "8b1d6d37-8d6c-4983-a3a0-42ed6b867bbe",
+        PaymentCondition = "1 Mes",
+        ShippingMethod = "Red Paq",
+        Items = items.ToFixedList()
+      };
+
+      var salesOrder = new SalesOrder(order);
+
+      var map = SalesOrderMapper.Map(salesOrder);
+      Assert.NotNull(map);
+    }
+
       [Fact]
     public void ShouldCancelOrder() {
 
@@ -187,8 +227,8 @@ namespace Empiria.Trade.Tests.Sales {
 
     [Fact]
     public void ShouldGetCreditTransactions() {
-     
-      var creditTransactions = SalesOrder.GetCreditTransactions(1200);
+      var order = SalesOrder.Parse("044cbcfa-ebbe-4745-a27b-7783c4cff64b");
+      var creditTransactions = order.GetCustomerCreditTransactions();
 
       Assert.NotNull(creditTransactions);
     }
