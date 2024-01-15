@@ -120,7 +120,6 @@ namespace Empiria.Trade.Sales {
 
       SalesOrderData.Write(this);
       SalesOrderItem.SaveSalesOrderItems(this.SalesOrderItems, this.Id);
-
     }
 
     public void Apply() {
@@ -145,21 +144,18 @@ namespace Empiria.Trade.Sales {
 
       this.Actions = OrderActions.GetAuthorizedActions();
 
-
       SalesOrderData.Write(this);
-
 
       SetOrderValues();
     }
 
     public void Cancel() {
-
       Status = OrderStatus.Cancelled;
 
       SalesOrderData.Write(this);
       SalesOrderItemsData.CancelOrderItems(this.Id);
       this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id);
-      this.CreditTransactions = GetCreditTransactions(this.Customer.Id);
+      this.CreditTransactions = GetCustomerCreditTransactions();
 
       SetOrderTotals();
     }
@@ -206,18 +202,11 @@ namespace Empiria.Trade.Sales {
       this.PriceList = GetPriceList();
       this.SalesOrderItems = LoadSalesOrderItems(fields.Items);
 
-      this.CreditTransactions = GetCreditTransactions(this.Customer.Id);
+      this.CreditTransactions = GetCustomerCreditTransactions(); 
       this.TotalDebt = CrediLineData.GetCreditDebt(this.Customer.Id);
       this.CreditLimit = CrediLineData.GetCreditLimit(this.Customer.Id);
-      if (this.UID != "") {
-        var usecasePackage = PackagingUseCases.UseCaseInteractor();
-        PackagedData packageInfo = usecasePackage.GetPackagedData(this.UID);
-        this.Weight = packageInfo.Weight;
-        this.TotalPackages = packageInfo.Count;
-      } else {
-        this.Weight = 0;
-        this.TotalPackages = 0;
-      }
+    
+      this.GetWeightTotalPackageByOrder();
 
       SetOrderTotals();
 
@@ -231,27 +220,23 @@ namespace Empiria.Trade.Sales {
      
 
      public void GetWeightTotalPackageByOrder() {
-      var usecasePackage = PackagingUseCases.UseCaseInteractor();
-      PackagedData packageInfo = usecasePackage.GetPackagedData(this.UID);
+      if (this.UID != "") {
+        var usecasePackage = PackagingUseCases.UseCaseInteractor();
+        PackagedData packageInfo = usecasePackage.GetPackagedData(this.UID);
 
-      this.Weight = packageInfo.Weight;
-      this.TotalPackages = packageInfo.Count;
+        this.Weight = packageInfo.Weight;
+        this.TotalPackages = packageInfo.Count;
+      } else {
+        this.Weight = 0;
+        this.TotalPackages = 0;
+      }
+      
     }
 
     public void CalculateSalesOrder(string queryType) {
-
-      this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id);
-      SetOrderTotals();
+      this.SetOrderValues();      
 
       this.SetAuthorizedActions(queryType);
-      this.CreditTransactions = this.GetCustomerCreditTransactions();
-      this.TotalDebt = CrediLineData.GetCreditDebt(this.Customer.Id);
-      this.CreditLimit = CrediLineData.GetCreditLimit(this.Customer.Id);
-
-      var usecasePackage = PackagingUseCases.UseCaseInteractor();
-      PackagedData packageInfo = usecasePackage.GetPackagedData(this.UID);
-      this.Weight = packageInfo.Weight;
-      this.TotalPackages = packageInfo.Count;
     }
 
     public FixedList<CreditTransaction> GetCustomerCreditTransactions() {
@@ -274,13 +259,9 @@ namespace Empiria.Trade.Sales {
       SetOrderTotals();
             
       this.CreditTransactions = this.GetCustomerCreditTransactions();
-      this.TotalDebt = CrediLineData.GetCreditDebt(this.Customer.Id);
-      this.CreditLimit = CrediLineData.GetCreditLimit(this.Customer.Id);
-
-      var usecasePackage = PackagingUseCases.UseCaseInteractor();
-      PackagedData packageInfo = usecasePackage.GetPackagedData(this.UID);
-      this.Weight = packageInfo.Weight;
-      this.TotalPackages = packageInfo.Count;
+      this.SetCustomerCreditInfos();
+      
+      this.GetWeightTotalPackageByOrder();
     }
 
     private FixedList<SalesOrderItem> LoadSalesOrderItems(FixedList<SalesOrderItemsFields> orderItemsFields) {
@@ -294,7 +275,6 @@ namespace Empiria.Trade.Sales {
 
       return orderItems.ToFixedList();
     }
-
 
     private void SetOrderTotals() {
       this.OrderTotal = 0;
@@ -311,9 +291,7 @@ namespace Empiria.Trade.Sales {
       }
 
     }
-
   
-
     private string GetPriceList() {
       var pricesList = CustomerPrices.GetVendorPrices(this.Customer.Id);
 
@@ -321,13 +299,7 @@ namespace Empiria.Trade.Sales {
 
       return vendorPrice.PriceListId.ToString();
     }
-
-   
-
-    static public FixedList<CreditTransaction> GetCreditTransactions(int customerId) {
-      var creditLineId = Empiria.Trade.Sales.Data.CrediLineData.GetCreditLineId(customerId);
-      return CreditTransaction.GetCreditTransactions(creditLineId);
-    }
+     
 
     internal void SetAuthorizedActions(string queryType) {
       switch (this.Status) {
@@ -362,9 +334,6 @@ namespace Empiria.Trade.Sales {
       }
 
     }
-
-  
-
 
     #endregion Helpers
 
