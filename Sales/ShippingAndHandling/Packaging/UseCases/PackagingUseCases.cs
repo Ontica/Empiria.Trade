@@ -70,7 +70,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
     }
 
 
-    public IShippingAndHandling CreatePackageForItem(string orderUID, PackingItemFields orderFields) {
+    public ISalesOrderDto CreatePackageForItem(string orderUID, PackingItemFields orderFields) {
 
       PackagingBuilder.ValidateIfExistPackagesForItems(
                                   orderUID, orderFields.PackageID, string.Empty);
@@ -79,13 +79,12 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
       packagingOrder.Save();
 
-      return GetPackaging(orderUID);
-      //string queryType = "SalesOrdersPacking";
-      //return GetSalesOrder(orderUID, queryType);
+      string queryType = "SalesOrdersPacking";
+      return GetSalesOrder(orderUID, queryType);
     }
 
 
-    public IShippingAndHandling UpdatePackageForItem(string orderUID, string packageForItemUID,
+    public ISalesOrderDto UpdatePackageForItem(string orderUID, string packageForItemUID,
                                                   PackingItemFields orderFields) {
 
       PackagingBuilder.ValidateIfExistPackagesForItems(
@@ -95,25 +94,23 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
       PackagingData.WritePacking(packagingOrder);
 
-      return GetPackaging(orderUID);
-      //string queryType = "SalesOrdersPacking";
-      //return GetSalesOrder(orderUID, queryType);
+      string queryType = "SalesOrdersPacking";
+      return GetSalesOrder(orderUID, queryType);
     }
 
 
-    public IShippingAndHandling DeletePackageForItem(string orderUID, string packageForItemUID) {
+    public ISalesOrderDto DeletePackageForItem(string orderUID, string packageForItemUID) {
 
       var data = new PackagingData();
 
       data.DeletePackageForItem(packageForItemUID);
 
-      return GetPackaging(orderUID);
-      //string queryType = "SalesOrdersPacking";
-      //return GetSalesOrder(orderUID, queryType);
+      string queryType = "SalesOrdersPacking";
+      return GetSalesOrder(orderUID, queryType);
     }
 
 
-    public IShippingAndHandling CreatePackingOrderItemFields(
+    public ISalesOrderDto CreatePackingOrderItemFields(
               string orderUID, string packingItemUID, MissingItemField missingItemFields) {
 
       var builder = new PackagingBuilder();
@@ -126,23 +123,21 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
       packagingOrder.Save();
 
-      return GetPackaging(orderUID);
-      //string queryType = "SalesOrdersPacking";
-      //return GetSalesOrder(orderUID, queryType);
+      string queryType = "SalesOrdersPacking";
+      return GetSalesOrder(orderUID, queryType);
 
     }
 
 
-    public IShippingAndHandling DeletePackingOrderItem(string orderUID,
+    public ISalesOrderDto DeletePackingOrderItem(string orderUID,
                                  string packingItemUID, string packingItemEntryUID) {
 
       var data = new PackagingData();
 
       data.DeletePackingOrderItem(packingItemEntryUID);
 
-      return GetPackaging(orderUID);
-      //string queryType = "SalesOrdersPacking";
-      //return GetSalesOrder(orderUID, queryType);
+      string queryType = "SalesOrdersPacking";
+      return GetSalesOrder(orderUID, queryType);
     }
 
 

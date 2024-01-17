@@ -91,7 +91,7 @@ namespace Empiria.Trade.Tests {
         PackageTypeUID = "0452a10b-0607-4d45-8614-385dda701b54"
       };
 
-      IShippingAndHandling sut = usecase.CreatePackageForItem(orderUID, packingItemFields);
+      ISalesOrderDto sut = usecase.CreatePackageForItem(orderUID, packingItemFields);
 
       Assert.NotNull(sut);
 
@@ -111,7 +111,7 @@ namespace Empiria.Trade.Tests {
         PackageTypeUID = "0452a10b-0607-4d45-8614-385dda701b54"
       };
 
-      IShippingAndHandling sut = usecase.UpdatePackageForItem(orderUID, packageForItemUID, packingItemFields);
+      ISalesOrderDto sut = usecase.UpdatePackageForItem(orderUID, packageForItemUID, packingItemFields);
 
       Assert.NotNull(sut);
 
@@ -126,7 +126,7 @@ namespace Empiria.Trade.Tests {
       string orderUID = "e1513326-ffa6-4a3d-af32-6e9d41316606";
       string packageForItemUID = "41c4cfe0-18d4-4242-ad4e-b7ca3dc9c287";
 
-      IShippingAndHandling sut = usecase.DeletePackageForItem(orderUID, packageForItemUID);
+      ISalesOrderDto sut = usecase.DeletePackageForItem(orderUID, packageForItemUID);
 
       Assert.NotNull(sut);
 
@@ -148,7 +148,7 @@ namespace Empiria.Trade.Tests {
         Quantity = 2
       };
 
-      IShippingAndHandling sut = usecase.CreatePackingOrderItemFields(
+      ISalesOrderDto sut = usecase.CreatePackingOrderItemFields(
                                   orderUID, packingOrderUID, missingItemFields);
 
       Assert.NotNull(sut);
@@ -165,7 +165,7 @@ namespace Empiria.Trade.Tests {
       string packingItemUID = "789bc9f2-1304-488e-b573-d2da58f04515";
       string packingItemEntryUID = "f67be6b1-2a47-46c5-9d68-a49b8382165f";
 
-      IShippingAndHandling sut = usecase.DeletePackingOrderItem(
+      ISalesOrderDto sut = usecase.DeletePackingOrderItem(
                                   orderUID, packingItemUID, packingItemEntryUID);
 
       Assert.NotNull(sut);
