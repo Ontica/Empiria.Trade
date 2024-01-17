@@ -11,9 +11,11 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Empiria.Services;
+using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 using Empiria.Trade.Sales.ShippingAndHandling.Data;
 using Empiria.Trade.Sales.ShippingAndHandling.Domain;
+using Empiria.Trade.Sales.UseCases;
 
 namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
@@ -78,6 +80,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
       packagingOrder.Save();
 
       return GetPackaging(orderUID);
+      //string queryType = "SalesOrdersPacking";
+      //return GetSalesOrder(orderUID, queryType);
     }
 
 
@@ -92,6 +96,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
       PackagingData.WritePacking(packagingOrder);
 
       return GetPackaging(orderUID);
+      //string queryType = "SalesOrdersPacking";
+      //return GetSalesOrder(orderUID, queryType);
     }
 
 
@@ -102,6 +108,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
       data.DeletePackageForItem(packageForItemUID);
 
       return GetPackaging(orderUID);
+      //string queryType = "SalesOrdersPacking";
+      //return GetSalesOrder(orderUID, queryType);
     }
 
 
@@ -119,6 +127,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
       packagingOrder.Save();
 
       return GetPackaging(orderUID);
+      //string queryType = "SalesOrdersPacking";
+      //return GetSalesOrder(orderUID, queryType);
 
     }
 
@@ -131,6 +141,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
       data.DeletePackingOrderItem(packingItemEntryUID);
 
       return GetPackaging(orderUID);
+      //string queryType = "SalesOrdersPacking";
+      //return GetSalesOrder(orderUID, queryType);
     }
 
 
@@ -149,6 +161,14 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
     }
 
+
+    private ISalesOrderDto GetSalesOrder(string orderUID, string queryType) {
+
+      using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
+
+        return usecases.GetSalesOrder(orderUID, queryType);
+      }
+    }
 
     #endregion Private methods
 

@@ -18,6 +18,7 @@ using Empiria.Tests;
 using Empiria.Trade.Sales.ShippingAndHandling;
 using Empiria.Trade.Sales.ShippingAndHandling.UseCases;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
+using Empiria.Trade.Sales.Adapters;
 
 namespace Empiria.Trade.Tests {
 
@@ -86,7 +87,7 @@ namespace Empiria.Trade.Tests {
 
       var packingItemFields = new PackingItemFields {
         OrderUID = "c75a25fc-92e6-493e-aefb-fc24a312898a",
-        PackageID = "Caja 1",
+        PackageID = "Caja 4",
         PackageTypeUID = "0452a10b-0607-4d45-8614-385dda701b54"
       };
 
@@ -144,7 +145,7 @@ namespace Empiria.Trade.Tests {
         orderItemUID = "5adf0776-0528-4ccb-b89f-7618c3266674",
         WarehouseUID = "f0061eb4-833c-44bf-8893-adcb88281d06",
         WarehouseBinUID = "22d33c45-c41f-426c-92f4-453fdc0abc1b",
-        Quantity = 1
+        Quantity = 2
       };
 
       IShippingAndHandling sut = usecase.CreatePackingOrderItemFields(

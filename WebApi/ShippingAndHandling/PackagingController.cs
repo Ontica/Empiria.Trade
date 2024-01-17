@@ -12,6 +12,7 @@ using System.Web.Http;
 using Empiria.WebApi;
 using Empiria.Trade.Sales.ShippingAndHandling.UseCases;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
+using Empiria.Trade.Sales.Adapters;
 //using Empiria.Trade.Shipping.UseCases;
 
 namespace Empiria.Trade.WebApi.ShippingAndHandling {
