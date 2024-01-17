@@ -11,7 +11,7 @@ using System;
 using Empiria.Trade.Core.Common;
 using Empiria.Trade.Orders;
 
-namespace Empiria.Trade.ShippingAndHandling.Adapters {
+namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
   /// <summary>Methods used to map Shipping.</summary>
   static internal class ShippingMapper {
@@ -37,7 +37,7 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
         return new ShippingEntryDto();
       }
 
-      var parcel = SimpleDataObject.Parse(entry.ParcelSupplierId);
+      var parcel = SimpleObjectData.Parse(entry.ParcelSupplierId);
 
       var dto = new ShippingEntryDto {
         ParcelSupplier = new NamedEntityDto(parcel.UID, parcel.Name),

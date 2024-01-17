@@ -12,8 +12,8 @@ using System.Collections.Generic;
 
 using Empiria.Trade.Core;
 using Empiria.Trade.Orders;
-using Empiria.Trade.ShippingAndHandling.Adapters;
-using Empiria.Trade.ShippingAndHandling.UseCases;
+using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
+using Empiria.Trade.Sales.ShippingAndHandling.UseCases;
 
 
 namespace Empiria.Trade.Sales.Adapters {

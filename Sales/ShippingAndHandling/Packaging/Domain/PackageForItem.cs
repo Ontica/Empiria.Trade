@@ -9,10 +9,10 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using Empiria.Trade.Orders;
-using Empiria.Trade.ShippingAndHandling.Adapters;
-using Empiria.Trade.ShippingAndHandling.Data;
+using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
+using Empiria.Trade.Sales.ShippingAndHandling.Data;
 
-namespace Empiria.Trade.ShippingAndHandling {
+namespace Empiria.Trade.Sales.ShippingAndHandling {
 
 
   /// <summary>Represents a Packaging order.</summary>
@@ -103,9 +103,9 @@ namespace Empiria.Trade.ShippingAndHandling {
 
     protected override void OnSave() {
 
-      if (this.OrderPackingId == 0) {
+      if (OrderPackingId == 0) {
 
-        this.OrderPackingId = this.Id;
+        OrderPackingId = Id;
       }
       PackagingData.WritePacking(this);
 
@@ -117,18 +117,18 @@ namespace Empiria.Trade.ShippingAndHandling {
       var packaging = Parse(packageForItemUID);
 
       if (packaging.Id > 0) {
-        this.OrderPackingId = packaging.OrderPackingId;
-        this.OrderPackingUID = packageForItemUID;
-      } 
+        OrderPackingId = packaging.OrderPackingId;
+        OrderPackingUID = packageForItemUID;
+      }
 
-      this.Order = Order.Parse(orderUID);
-      this.PackageType = PackageType.Parse(orderFields.PackageTypeUID);
+      Order = Order.Parse(orderUID);
+      PackageType = PackageType.Parse(orderFields.PackageTypeUID);
 
-      this.OrderId = Order.Id;
-      this.PackageTypeId = PackageType.PackageTypeId;
-      this.PackageID = orderFields.PackageID;
+      OrderId = Order.Id;
+      PackageTypeId = PackageType.PackageTypeId;
+      PackageID = orderFields.PackageID;
 
-      
+
     }
 
 

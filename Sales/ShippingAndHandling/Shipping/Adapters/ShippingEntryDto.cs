@@ -9,7 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 
-namespace Empiria.Trade.ShippingAndHandling.Adapters {
+namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
   /// <summary>Output DTO used to return the entries of shipping.</summary>
   public class ShippingEntryDto {

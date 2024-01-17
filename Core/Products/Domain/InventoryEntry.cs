@@ -37,86 +37,74 @@ namespace Empiria.Trade.Products {
 
 
     [DataField("InventoryEntryId")]
-    internal int InventoryEntryId {
-      get;
-      private set;
+    public int InventoryEntryId {
+      get; private set;
     }
 
 
     [DataField("InventoryEntryUID")]
     internal string InventoryEntryUID {
-      get;
-      private set;
+      get; private set;
     }
 
 
     [DataField("WarehouseId")]
-    internal int WarehouseId {
-      get;
-      private set;
+    public int WarehouseId {
+      get; private set;
     }
 
 
     [DataField("WarehouseBinId")]
-    internal int WarehouseBinId {
-      get;
-      private set;
+    public int WarehouseBinId {
+      get; private set;
     }
 
 
     [DataField("VendorProductId")]
     internal int VendorProductId {
-      get;
-      private set;
+      get; private set;
     }
 
 
     [DataField("InventoryEntryTypeId")]
     internal int InventoryEntryTypeId {
-      get;
-      private set;
+      get; private set;
     }
 
 
     [DataField("ReferenceId")]
     internal int ReferenceId {
-      get;
-      private set;
+      get; private set;
     }
 
 
     [DataField("EntryTime")]
     internal DateTime EntryTime {
-      get;
-      private set;
+      get; private set;
     }
 
 
     [DataField("InputQuantity")]
-    internal decimal InputQuantity {
-      get;
-      private set;
+    public decimal InputQuantity {
+      get; private set;
     }
 
 
     [DataField("InputCost")]
     internal decimal InputCost {
-      get;
-      private set;
+      get; private set;
     }
 
 
     [DataField("OutputQuantity")]
-    internal decimal OutputQuantity {
-      get;
-      private set;
+    public decimal OutputQuantity {
+      get; private set;
     }
 
 
     [DataField("OutputCost")]
     internal decimal OutputCost {
-      get;
-      private set;
+      get; private set;
     }
 
 

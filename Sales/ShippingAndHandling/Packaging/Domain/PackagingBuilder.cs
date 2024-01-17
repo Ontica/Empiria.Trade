@@ -10,15 +10,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Products;
-using Empiria.Trade.Products.Adapters;
-using Empiria.Trade.ShippingAndHandling.Adapters;
-using Empiria.Trade.ShippingAndHandling.Data;
+using Empiria.Trade.Sales.ShippingAndHandling.Data;
 using Newtonsoft.Json;
 
-namespace Empiria.Trade.ShippingAndHandling.Domain {
+namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
 
   /// <summary>Generate data for packaging.</summary>

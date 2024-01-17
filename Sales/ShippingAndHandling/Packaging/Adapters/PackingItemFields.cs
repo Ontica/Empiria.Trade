@@ -2,34 +2,27 @@
 *                                                                                                            *
 *  Module   : Packing Management                         Component : Interface adapters                      *
 *  Assembly : Empiria.Trade.ShippingAndHandling.dll      Pattern   : Data Transfer Object                    *
-*  Type     : PackingOrderDto                            License   : Please read LICENSE.txt file            *
+*  Type     : PackingItemFields                          License   : Please read LICENSE.txt file            *
 *                                                                                                            *
-*  Summary  : DTO used to manage order packing output.                                                       *
+*  Summary  : DTO used to manage shipping and handling fields.                                               *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-using Empiria.Trade.Orders;
 
-namespace Empiria.Trade.ShippingAndHandling.Adapters {
-
-
-  /// <summary>Interface used to manage shipping and handling fields.</summary>
-  public interface IShippingAndHandling {
+namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
 
-  } // interface IShippingAndHandling
+  /// <summary>DTO used to manage order shipping fields.</summary>
+  public class PackingItemFields {
 
 
-  /// <summary>DTO used to manage order packing output.</summary>
-  public class PackingOrderDto : IShippingAndHandling {
-
-    public string UID {
+    public string OrderUID {
       get; set;
     }
 
 
-    public Order Order {
-      get; set;
+    public string PackageTypeUID {
+      get;  set;
     }
 
 
@@ -38,7 +31,34 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
     }
 
 
-  } // class PackingOrderDto
+
+  } // class PackingItemFields
+
+
+  public class MissingItemField {
+
+
+    public string orderItemUID {
+      get; set;
+    }
+
+
+    public string WarehouseUID {
+      get; set;
+    }
+
+
+    public string WarehouseBinUID {
+      get; set;
+    }
+
+
+    public decimal Quantity {
+      get; set;
+    }
+
+
+  } // class MissingItemField
 
 
 } // namespace Empiria.Trade.ShippingAndHandling.Adapters

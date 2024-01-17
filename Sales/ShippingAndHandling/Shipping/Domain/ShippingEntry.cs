@@ -11,11 +11,11 @@
 using System;
 using Empiria.Trade.Core.Common;
 using Empiria.Trade.Orders;
-using Empiria.Trade.ShippingAndHandling.Adapters;
-using Empiria.Trade.ShippingAndHandling.Data;
-using Empiria.Trade.ShippingAndHandling.Domain;
+using Empiria.Trade.Sales.ShippingAndHandling.Data;
+using Empiria.Trade.Sales.ShippingAndHandling.Domain;
+using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 
-namespace Empiria.Trade.ShippingAndHandling {
+namespace Empiria.Trade.Sales.ShippingAndHandling {
 
   /// <summary>Represents a shipping entry.</summary>
   internal class ShippingEntry : BaseObject {
@@ -129,7 +129,7 @@ namespace Empiria.Trade.ShippingAndHandling {
       }
 
       this.OrderId = Order.Parse(orderUID).Id;
-      this.ParcelSupplierId = SimpleDataObject.Parse(fields.ParcelSupplierUID).Id;
+      this.ParcelSupplierId = SimpleObjectData.Parse(fields.ParcelSupplierUID).Id;
       this.ShippingGuide = fields.ShippingGuide;
       this.ParcelAmount = fields.ParcelAmount;
       this.CustomerAmount = fields.CustomerAmount;

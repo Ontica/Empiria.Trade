@@ -11,12 +11,11 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Empiria.Services;
-using Empiria.Trade.Products;
-using Empiria.Trade.ShippingAndHandling.Adapters;
-using Empiria.Trade.ShippingAndHandling.Data;
-using Empiria.Trade.ShippingAndHandling.Domain;
+using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
+using Empiria.Trade.Sales.ShippingAndHandling.Data;
+using Empiria.Trade.Sales.ShippingAndHandling.Domain;
 
-namespace Empiria.Trade.ShippingAndHandling.UseCases {
+namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
 
   /// <summary>Use cases used to build packaging orders.</summary>

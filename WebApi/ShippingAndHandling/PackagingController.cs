@@ -8,14 +8,10 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-using System.Threading.Tasks;
 using System.Web.Http;
-using Empiria.Services;
-using System.Xml.Linq;
 using Empiria.WebApi;
-using Empiria.Trade.ShippingAndHandling.Adapters;
-using Empiria.Trade.ShippingAndHandling.UseCases;
-using Empiria.Trade.Orders;
+using Empiria.Trade.Sales.ShippingAndHandling.UseCases;
+using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 //using Empiria.Trade.Shipping.UseCases;
 
 namespace Empiria.Trade.WebApi.ShippingAndHandling {

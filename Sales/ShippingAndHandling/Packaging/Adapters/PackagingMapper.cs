@@ -17,7 +17,7 @@ using Empiria.Trade.Orders;
 using Empiria.Trade.Products;
 using Empiria.Trade.Products.Adapters;
 
-namespace Empiria.Trade.ShippingAndHandling.Adapters {
+namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
 
   /// <summary>Methods used to map packaging.</summary>
@@ -159,7 +159,7 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
         data.OrderUID = packingItems.Select(x => x.OrderUID).First();
       }
       
-      data.Weight = _vol;
+      data.TotalWeight = _vol;
       data.TotalPackages = packingItems.Count();
 
       return data;

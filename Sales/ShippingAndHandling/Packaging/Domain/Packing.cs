@@ -12,7 +12,7 @@ using System;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Products;
 
-namespace Empiria.Trade.ShippingAndHandling {
+namespace Empiria.Trade.Sales.ShippingAndHandling {
 
 
   public class Packing {

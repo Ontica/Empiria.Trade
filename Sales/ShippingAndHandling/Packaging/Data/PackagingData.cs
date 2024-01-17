@@ -12,11 +12,9 @@ using Empiria.Data;
 using Empiria.Trade.Core;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Products;
-using Empiria.Trade.Products.Adapters;
-using Empiria.Trade.ShippingAndHandling.Adapters;
 using Newtonsoft.Json;
 
-namespace Empiria.Trade.ShippingAndHandling.Data {
+namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
 
 
   /// <summary>Provides data read  and write methods for packaging.</summary>

@@ -12,7 +12,7 @@ using System;
 using Empiria.Trade.Products.Adapters;
 using Newtonsoft.Json;
 
-namespace Empiria.Trade.ShippingAndHandling {
+namespace Empiria.Trade.Sales.ShippingAndHandling {
 
 
   public class PackageType : GeneralObject {

@@ -38,8 +38,7 @@ namespace Empiria.Trade.Products.Adapters {
 
 
     public string ProductImageUrl {
-      get;
-      internal set;
+      get; set;
     }
 
 

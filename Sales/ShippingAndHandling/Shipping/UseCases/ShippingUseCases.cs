@@ -9,10 +9,10 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using Empiria.Services;
-using Empiria.Trade.ShippingAndHandling.Adapters;
-using Empiria.Trade.ShippingAndHandling.Domain;
+using Empiria.Trade.Sales.ShippingAndHandling.Domain;
+using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 
-namespace Empiria.Trade.ShippingAndHandling.UseCases {
+namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
   /// <summary>Use cases used to build shipping.</summary>
   public class ShippingUseCases : UseCase {

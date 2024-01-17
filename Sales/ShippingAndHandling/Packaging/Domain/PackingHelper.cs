@@ -8,14 +8,12 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-using Empiria.Trade.ShippingAndHandling.Adapters;
 using System.Collections.Generic;
 using Empiria.Trade.Products;
 using System.Linq;
-using Empiria.Trade.Orders;
-using Empiria.Trade.ShippingAndHandling.Data;
+using Empiria.Trade.Sales.ShippingAndHandling.Data;
 
-namespace Empiria.Trade.ShippingAndHandling.Domain {
+namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
   /// <summary>Helper methods to build packing structure.</summary>
   internal class PackingHelper {

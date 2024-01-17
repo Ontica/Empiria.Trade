@@ -15,9 +15,9 @@ using Empiria.DataTypes;
 using Xunit;
 
 using Empiria.Tests;
-using Empiria.Trade.ShippingAndHandling.UseCases;
-using Empiria.Trade.ShippingAndHandling.Adapters;
-using Empiria.Trade.ShippingAndHandling;
+using Empiria.Trade.Sales.ShippingAndHandling;
+using Empiria.Trade.Sales.ShippingAndHandling.UseCases;
+using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 
 namespace Empiria.Trade.Tests {
 
@@ -42,7 +42,7 @@ namespace Empiria.Trade.Tests {
     public void GetPackagingTest() {
 
       var usecase = PackagingUseCases.UseCaseInteractor();
-      string uid = "72e920b8-60cd-4d26-be2f-4a91a540d1f1";
+      string uid = "9af1e772-1847-4fbe-a897-d3f0d137efaa";
       PackageForItem sut = usecase.GetPackagingByUID(uid);
 
       Assert.NotNull(sut);
@@ -138,13 +138,13 @@ namespace Empiria.Trade.Tests {
       var usecase = PackagingUseCases.UseCaseInteractor();
 
       string orderUID = "c75a25fc-92e6-493e-aefb-fc24a312898a";
-      string packingOrderUID = "fbade95a-3b01-468b-b524-7283248c20ee";
+      string packingOrderUID = "943a2830-6a04-4e1e-89ac-ce22b88fb884";
 
       var missingItemFields = new MissingItemField {
         orderItemUID = "5adf0776-0528-4ccb-b89f-7618c3266674",
         WarehouseUID = "f0061eb4-833c-44bf-8893-adcb88281d06",
         WarehouseBinUID = "22d33c45-c41f-426c-92f4-453fdc0abc1b",
-        Quantity = 10
+        Quantity = 1
       };
 
       IShippingAndHandling sut = usecase.CreatePackingOrderItemFields(

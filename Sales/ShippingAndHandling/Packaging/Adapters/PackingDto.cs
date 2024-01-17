@@ -8,13 +8,9 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-using Empiria.Trade.Core;
-using Empiria.Trade.Orders;
-using Empiria.Trade.Products;
 using Empiria.Trade.Products.Adapters;
-using Empiria.Trade.ShippingAndHandling.Adapters;
 
-namespace Empiria.Trade.ShippingAndHandling.Adapters {
+namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
   /// <summary>DTO used to manage order packing detail.</summary>
   public class PackingDto : IShippingAndHandling {
@@ -46,7 +42,7 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
     } = string.Empty;
 
 
-    public decimal Weight {
+    public decimal TotalWeight {
       get; set;
     }
 
@@ -56,7 +52,32 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
     }
 
 
+    public FixedList<PackingTypeData> PackingTypeData {
+      get; set;
+    } = new FixedList<PackingTypeData>();
+
+
   } // class PackingData
+
+
+  public class PackingTypeData {
+
+    public string PackageTypeUID {
+      get; set;
+    }
+
+
+    public string PackageTypeName {
+      get; set;
+    }
+
+
+    public int Packages {
+      get; set;
+    }
+
+
+  }
 
 
   public class PackageForItemDto {

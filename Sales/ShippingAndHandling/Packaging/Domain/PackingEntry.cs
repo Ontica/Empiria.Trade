@@ -10,11 +10,9 @@
 using System;
 using Empiria.Trade.Core;
 using Empiria.Trade.Orders;
-using Empiria.Trade.Products.Adapters;
 using Empiria.Trade.Products;
-using Empiria.Trade.ShippingAndHandling.Adapters;
 
-namespace Empiria.Trade.ShippingAndHandling {
+namespace Empiria.Trade.Sales.ShippingAndHandling {
 
   /// <summary>Represents a Packing item for order.</summary>
   internal class PackingEntry {

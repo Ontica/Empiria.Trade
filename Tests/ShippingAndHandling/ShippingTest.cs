@@ -15,9 +15,8 @@ using Empiria.DataTypes;
 using Xunit;
 
 using Empiria.Tests;
-using Empiria.Trade.ShippingAndHandling.UseCases;
-using Empiria.Trade.ShippingAndHandling.Adapters;
-using Empiria.Trade.ShippingAndHandling;
+using Empiria.Trade.Sales.ShippingAndHandling.UseCases;
+using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 
 namespace Empiria.Trade.Tests {
 
@@ -60,9 +59,9 @@ namespace Empiria.Trade.Tests {
       ShippingFields fields = new ShippingFields() {
         OrderUID = orderUID,
         ParcelSupplierUID = "8521a10b-0607-4d45-8614-385aba701b1r",
-        ShippingGuide ="123456789",
-        ParcelAmount = 1000,
-        CustomerAmount= 500
+        ShippingGuide ="9876543210",
+        ParcelAmount = 200,
+        CustomerAmount= 100
       };
 
       ShippingEntryDto sut = usecase.CreateShippingOrder(orderUID, fields);

@@ -11,9 +11,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Empiria.Trade.Core.Common;
-using Empiria.Trade.ShippingAndHandling.Data;
+using Empiria.Trade.Sales.ShippingAndHandling.Data;
 
-namespace Empiria.Trade.ShippingAndHandling.Domain {
+namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
   /// <summary>Generate data for Shipping.</summary>
   internal class ShippingBuilder {
@@ -69,7 +69,7 @@ namespace Empiria.Trade.ShippingAndHandling.Domain {
     #region Private methods
 
 
-    private FixedList<INamedEntity> MergeParcelToNamedDto(FixedList<SimpleDataObject> parcelSupplierList) {
+    private FixedList<INamedEntity> MergeParcelToNamedDto(FixedList<SimpleObjectData> parcelSupplierList) {
 
       var returnedNamed = new List<INamedEntity>();
 
