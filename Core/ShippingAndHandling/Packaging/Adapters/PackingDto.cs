@@ -46,12 +46,12 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
     } = string.Empty;
 
 
-    public decimal Size {
+    public decimal Weight {
       get; set;
     }
 
 
-    public int Count {
+    public int TotalPackages {
       get; set;
     }
 

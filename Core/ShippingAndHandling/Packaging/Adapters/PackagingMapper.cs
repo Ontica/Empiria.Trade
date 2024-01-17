@@ -159,8 +159,8 @@ namespace Empiria.Trade.ShippingAndHandling.Adapters {
         data.OrderUID = packingItems.Select(x => x.OrderUID).First();
       }
       
-      data.Size = _vol;
-      data.Count = packingItems.Count();
+      data.Weight = _vol;
+      data.TotalPackages = packingItems.Count();
 
       return data;
     }

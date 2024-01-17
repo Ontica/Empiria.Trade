@@ -53,7 +53,6 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
     }
 
 
-
     [HttpPost]
     [Route("v4/trade/shipping-and-handling/packing/{orderUID:guid}/packing-item")]
     public SingleObjectModel CreatePackageForItem([FromUri] string orderUID,
