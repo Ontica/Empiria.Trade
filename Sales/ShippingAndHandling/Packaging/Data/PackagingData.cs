@@ -40,14 +40,16 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
 
 
     internal FixedList<InventoryEntry> GetInventoryByVendorProduct(
-                                        int vendorProductId, string warehouseBinUid) {
+                                        int vendorProductId, string warehouseBinProductUID) {
 
-      var warehouseBin = string.Empty;
-      if (warehouseBinUid != string.Empty) {
-        warehouseBin = $" AND WarehouseBinId = {WarehouseBin.Parse(warehouseBinUid).Id}";
+      var warehouseBinProduct = string.Empty;
+
+      if (warehouseBinProductUID != string.Empty) {
+        warehouseBinProduct = $" AND WarehouseBinProductId = " +
+                              $"{WarehouseBinProduct.Parse(warehouseBinProductUID).Id}";
       }
       string sql = $"SELECT * FROM TRDInventory " +
-                   $"WHERE EntryStatus = 'A' AND VendorProductId = {vendorProductId} {warehouseBin}";
+                   $"WHERE EntryStatus = 'A' AND VendorProductId = {vendorProductId} {warehouseBinProduct}";
 
       var dataOperation = DataOperation.Parse(sql);
 

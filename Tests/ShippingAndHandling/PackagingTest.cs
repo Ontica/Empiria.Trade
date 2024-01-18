@@ -87,7 +87,7 @@ namespace Empiria.Trade.Tests {
 
       var packingItemFields = new PackingItemFields {
         OrderUID = "c75a25fc-92e6-493e-aefb-fc24a312898a",
-        PackageID = "Caja 4",
+        PackageID = "Caja 40001",
         PackageTypeUID = "0452a10b-0607-4d45-8614-385dda701b54"
       };
 
@@ -143,8 +143,8 @@ namespace Empiria.Trade.Tests {
 
       var missingItemFields = new MissingItemField {
         orderItemUID = "5adf0776-0528-4ccb-b89f-7618c3266674",
-        WarehouseUID = "f0061eb4-833c-44bf-8893-adcb88281d06",
-        WarehouseBinUID = "22d33c45-c41f-426c-92f4-453fdc0abc1b",
+        WarehouseUID = "2f6dfb0d-137b-4309-94ac-c5f7b8fbc9df",
+        WarehouseBinUID = "be68b023-202d-4bf3-b0b6-3726ed5be44f",
         Quantity = 2
       };
 

@@ -35,13 +35,13 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     #region Public methods
 
 
-    internal InventoryEntry GetInventoryEntries(string orderItemUID, string warehouseBinUID) {
+    internal InventoryEntry GetInventoryEntries(string orderItemUID, string warehouseBinProductUID) {
 
       var data = new PackagingData();
 
       var orderItem = OrderItem.Parse(orderItemUID);
       FixedList<InventoryEntry> inventories = data.GetInventoryByVendorProduct(
-                                              orderItem.VendorProduct.Id, warehouseBinUID);
+                                              orderItem.VendorProduct.Id, warehouseBinProductUID);
       var inventory = inventories.Last();
       return inventory;
     }

@@ -122,6 +122,13 @@ namespace Empiria.Trade.Products.UseCases {
     }
 
 
+    public WarehouseBinProduct GetWarehouseBinProduct(string warehouseBinProductUID) {
+      Assertion.Require(warehouseBinProductUID, "warehouseBinProductUID");
+
+      return WarehouseBinProduct.Parse(warehouseBinProductUID);
+    }
+
+
     public async Task<string> UpdateGUID(TableQuery query) {
       
       try {

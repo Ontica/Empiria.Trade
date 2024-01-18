@@ -179,9 +179,23 @@ namespace Empiria.Trade.Tests {
 
       var usecase = TRDProductUseCases.UseCaseInteractor();
 
-      string uid = "22d33c45-c41f-426c-92f4-453fdc0ccc8a";
+      string uid = "f06a2b16-e744-412e-bd94-82821a7b5cd9";
 
       WarehouseBin sut = usecase.GetWarehouseBin(uid);
+
+      Assert.NotNull(sut);
+
+    }
+
+
+    [Fact]
+    public void GetWarehouseBinProductTest() {
+
+      var usecase = TRDProductUseCases.UseCaseInteractor();
+
+      string uid = "be68b023-202d-4bf3-b0b6-3726ed5be44f";
+
+      WarehouseBinProduct sut = usecase.GetWarehouseBinProduct(uid);
 
       Assert.NotNull(sut);
 

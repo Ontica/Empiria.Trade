@@ -151,14 +151,15 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
         packingOrderItem.WarehouseForPacking = whDto;
       }
 
-      if (inventory?.WarehouseBinId > 0) {
+      if (inventory?.WarehouseBinProductId > 0) {
 
-        var warehouseBin = WarehouseBin.Parse(inventory.WarehouseBinId);
+        var warehouseBinProduct = WarehouseBinProduct.Parse(inventory.WarehouseBinProductId);
         var whBinDto = new WarehouseBinForPacking();
-        whBinDto.UID = warehouseBin.WarehouseBinUID;
+        whBinDto.UID = warehouseBinProduct.WarehouseBinProductUID;
         whBinDto.OrderItemUID = packingOrderItem.OrderItemUID;
-        whBinDto.Name = warehouseBin.BinCode;
-        whBinDto.WarehouseName = $"Almacen {warehouseBin.Warehouse.Code}";
+        whBinDto.Name = $"Rack: {warehouseBinProduct.WarehouseBin.BinDescription}";
+        whBinDto.WarehouseName = $"Almacen {warehouseBinProduct.WarehouseBin.Warehouse.Code}";
+                                 //$"rack: {warehouseBinProduct.WarehouseBin.BinDescription}";
         //whBinDto.Stock = //TODO SACAR STOCK DE INVENTARIO-WAREHOUSE
         packingOrderItem.WarehouseBinForPacking = whBinDto;
       }
@@ -174,19 +175,19 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       var whBinDto = new List<WarehouseBinForPacking>();
 
       foreach (var item in inventory) {
-        var _whBin = WarehouseBin.Parse(item.WarehouseBinId);
+        var whBinProduct = WarehouseBinProduct.Parse(item.WarehouseBinProductId);
 
-        var exist = whBinDto.Find(x => x.UID == _whBin.UID && x.OrderItemUID == missing.OrderItemUID);
+        var exist = whBinDto.Find(x => x.UID == whBinProduct.UID && x.OrderItemUID == missing.OrderItemUID);
 
         if (exist == null) {
-          var input = inventory.Where(x => x.WarehouseBinId == _whBin.Id).Sum(x => x.InputQuantity);
-          var output = inventory.Where(x => x.WarehouseBinId == _whBin.Id).Sum(x => x.OutputQuantity);
+          var input = inventory.Where(x => x.WarehouseBinProductId == whBinProduct.Id).Sum(x => x.InputQuantity);
+          var output = inventory.Where(x => x.WarehouseBinProductId == whBinProduct.Id).Sum(x => x.OutputQuantity);
 
           var bin = new WarehouseBinForPacking();
-          bin.UID = _whBin.UID;
+          bin.UID = whBinProduct.UID;
           bin.OrderItemUID = missing.OrderItemUID;
-          bin.Name = _whBin.BinCode;
-          bin.WarehouseName = $"Almacen {_whBin.Warehouse.Code}";
+          bin.Name = whBinProduct.WarehouseBin.BinDescription;
+          bin.WarehouseName = $"Almacen {whBinProduct.WarehouseBin.Warehouse.Code}";
           bin.Stock = input > output ? input - output : 0;
 
           whBinDto.Add(bin);

@@ -38,13 +38,6 @@ namespace Empiria.Trade.Products {
 
 
 
-    [DataField("WarehouseBinUID")]
-    public string WarehouseBinUID {
-      get;
-      internal set;
-    }
-
-
     [DataField("WarehouseId")]
     public Warehouse Warehouse {
       get;
@@ -52,29 +45,29 @@ namespace Empiria.Trade.Products {
     }
 
 
-    [DataField("BinCode")]
-    public string BinCode {
+    [DataField("WarehouseBinUID")]
+    public string WarehouseBinUID {
       get;
       internal set;
     }
 
 
-    [DataField("BinShelf")]
-    public string BinShelf {
+    [DataField("Rack")]
+    public string Rack {
       get;
       internal set;
     }
 
 
-    [DataField("BinRow")]
-    public string BinRow {
+    [DataField("PositionFrom")]
+    public int PositionFrom {
       get;
       internal set;
     }
 
 
-    [DataField("BinColumn")]
-    public string BinColumn {
+    [DataField("PositionUp")]
+    public int PositionUp {
       get;
       internal set;
     }
@@ -87,15 +80,8 @@ namespace Empiria.Trade.Products {
     }
 
 
-    [DataField("AssignedVendorProductId")]
-    public ProductFields AssignedVendorProduct {
-      get;
-      internal set;
-    }
-
-
-    [DataField("BinStatus")]
-    public string BinStatus {
+    [DataField("RackLevel")]
+    public int RackLevel {
       get;
       internal set;
     }
