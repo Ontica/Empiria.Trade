@@ -42,6 +42,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
     } = string.Empty;
 
 
+    public decimal TotalVolume {
+      get; set;
+    }
+
+
     public decimal TotalWeight {
       get; set;
     }

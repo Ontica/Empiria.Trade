@@ -30,7 +30,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
     internal static IShippingAndHandling MapPackingDto(PackingEntry packaging) {
 
       var packagedItems = MapToPackagedItems(packaging);
-      var packingData = MapPackingData(packagedItems);
+      var packingData = MapPackingData(packagedItems, packaging.PackagedItems);
       var missingItems = MapToMissingItems_(packaging.MissingItems);
 
       return new PackingDto() {
@@ -142,7 +142,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
     }
 
 
-    static private PackagedDataDto MapPackingData(FixedList<PackageForItemDto> packingItems) {
+    static private PackagedDataDto MapPackingData(FixedList<PackageForItemDto> packingItems,
+                                                  FixedList<PackagedForItem> packagedItems) {
       var data = new PackagedDataDto();
 
       decimal _vol = 0;
@@ -159,7 +160,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
         data.OrderUID = packingItems.Select(x => x.OrderUID).First();
       }
       
-      data.TotalWeight = _vol;
+      data.TotalVolume = _vol;
+      data.TotalWeight = packagedItems.Sum(x=>x.PackageWeight);
       data.TotalPackages = packingItems.Count();
 
       return data;

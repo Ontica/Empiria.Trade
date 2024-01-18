@@ -107,7 +107,7 @@ namespace Empiria.Trade.Tests {
       string packageForItemUID = "789bc9f2-1304-488e-b573-d2da58f04515";
       var packingItemFields = new PackingItemFields {
         OrderUID = "c75a25fc-92e6-493e-aefb-fc24a312898a",
-        PackageID = "Caja 1",
+        PackageID = "Caja 00001",
         PackageTypeUID = "0452a10b-0607-4d45-8614-385dda701b54"
       };
 
