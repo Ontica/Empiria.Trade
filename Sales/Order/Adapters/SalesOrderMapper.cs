@@ -23,30 +23,11 @@ namespace Empiria.Trade.Sales.Adapters {
 
     static public ISalesOrderDto Map(SalesOrder order) {
       var dto = new SalesOrderDto {
-        UID = order.UID,
-        OrderNumber = order.OrderNumber,
-        OrderTime = order.OrderTime,
-        Notes = order.Notes,
-        Status = order.Status,
-        Customer = order.Customer.MapToNamedEntity(),
-        Supplier = order.Supplier.MapToNamedEntity(),
-        SalesAgent = order.SalesAgent.MapToNamedEntity(),
-        ShippingMethod = order.ShippingMethod,
-        PaymentCondition = order.PaymentCondition,
-        PriceList = order.PriceList,
+        OrderData = MapDataDto(order),
         Items = MapSalesOrderItems(order.SalesOrderItems),
-        ItemsCount = order.ItemsCount,
-        ItemsTotal = order.ItemsTotal,
-        Shipment = order.Shipment,
-        Taxes = order.Taxes,
-        OrderTotal = order.OrderTotal,
-        AuthorizationStatus = order.AuthorizationStatus,
-        AuthorizationTime = order.AuthorizationTime,
-        AuthorizatedById = order.AuthorizatedById,
+        Authorization = MapAuthorizationDto(order),
         CustomerCredit = MapCustomerCredit(order),
-        Weight = order.Weight,
-        TotalPackages = order.TotalPackages,
-        StatusName = MapOrderStatus(order.Status.ToString()),
+        //WeightData = MapWeightDataDto(order),
         Shipping = GetShipping(order.UID),
         Packing = GetPacking(order.UID),
         Actions = MapOrderActions(order.Actions)
@@ -147,6 +128,40 @@ namespace Empiria.Trade.Sales.Adapters {
     }
 
     #region Private methods
+
+    private static OrderDataDto MapDataDto(SalesOrder order) {
+      var dto = new OrderDataDto {
+        UID = order.UID,
+        OrderNumber = order.OrderNumber,
+        OrderTime = order.OrderTime,
+        Notes = order.Notes,
+        Status = order.Status,
+        StatusName = MapOrderStatus(order.Status.ToString()),
+        Customer = order.Customer.MapToNamedEntity(),
+        Supplier = order.Supplier.MapToNamedEntity(),
+        SalesAgent = order.SalesAgent.MapToNamedEntity(),
+        ShippingMethod = order.ShippingMethod,
+        PaymentCondition = order.PaymentCondition,
+        PriceList = order.PriceList,
+        ItemsCount = order.ItemsCount,
+        ItemsTotal = order.ItemsTotal,
+        Shipment = order.Shipment,
+        Taxes = order.Taxes,
+        OrderTotal = order.OrderTotal
+      };
+
+      return dto;
+    }
+
+    private static AuthorizationDto MapAuthorizationDto(SalesOrder order) {
+      var dto = new AuthorizationDto {
+        AuthorizationStatus = order.AuthorizationStatus,
+        AuthorizationTime = order.AuthorizationTime,
+        AuthorizatedById = order.AuthorizatedById
+      };
+
+      return dto;
+    }
 
     private static ShippingEntryDto GetShipping(string orderUID) {
 

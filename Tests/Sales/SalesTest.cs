@@ -31,6 +31,27 @@ namespace Empiria.Trade.Tests.Sales {
   /// <summary>Test cases for sales.   </summary>
   public class SalesTest {
 
+    [Fact]
+    public void ShouldGetOrderTest() {
+              
+      var fields = new SearchOrderFields {
+        QueryType = "SalesOrdersPacking",
+        Keywords = "",
+        FromDate = Convert.ToDateTime("2023/01/10"),
+        ToDate = Convert.ToDateTime("2024/12/28"),
+
+      };
+
+
+      var salesOrdersHelper = new SalesOrderHelper();
+
+      var salesOrders = salesOrdersHelper.GetOrdersToPacking(fields);
+
+      var x = SalesOrderMapper.MapBaseSalesOrderPackingList(salesOrders);
+
+
+      Assert.NotNull(x);
+    }
 
 
     [Fact]

@@ -86,6 +86,45 @@ namespace Empiria.Trade.Sales.Adapters {
     /// <summary>Output DTO used to return orders. </summary>
     public class SalesOrderDto : ISalesOrderDto {
 
+    public OrderDataDto OrderData {
+      get; internal set;
+    }
+
+
+    public FixedList<SalesOrderItemDto> Items {
+      get; internal set;
+    }
+
+
+    public AuthorizationDto Authorization {
+      get; internal set;
+    }
+
+    public CustomerCreditDto CustomerCredit {
+      get; internal set;
+    }
+
+
+    //public WeightDataDto WeightData {
+    //  get; internal set;
+    //}
+
+    public ShippingEntryDto Shipping {
+      get; internal set;
+    }
+
+    public IShippingAndHandling Packing {
+      get; internal set;
+    }
+
+    public OrderActionsDto Actions {
+      get; internal set;
+    }
+
+  } // public class OrderDto
+
+  // General Sales OrderInfo
+  public class OrderDataDto {
     public string UID {
       get; internal set;
     }
@@ -103,6 +142,10 @@ namespace Empiria.Trade.Sales.Adapters {
     }
 
     public OrderStatus Status {
+      get; internal set;
+    }
+
+    public string StatusName {
       get; internal set;
     }
 
@@ -130,10 +173,6 @@ namespace Empiria.Trade.Sales.Adapters {
       get; internal set;
     }
 
-    public FixedList<SalesOrderItemDto> Items {
-      get; internal set;
-    }
-
     public int ItemsCount {
       get; internal set;
     }
@@ -154,6 +193,10 @@ namespace Empiria.Trade.Sales.Adapters {
       get; internal set;
     }
 
+  } // class Data
+
+  public class AuthorizationDto {
+
     public OrderAuthorizationStatus AuthorizationStatus {
       get; internal set;
     }
@@ -166,9 +209,9 @@ namespace Empiria.Trade.Sales.Adapters {
       get; internal set;
     }
 
-    public CustomerCreditDto CustomerCredit {
-      get; internal set;
-    }
+  } // class AuthorizationDto
+
+  public class WeightDataDto {
 
     public decimal Weight {
       get; internal set;
@@ -178,24 +221,7 @@ namespace Empiria.Trade.Sales.Adapters {
       get; internal set;
     }
 
-    public string StatusName {
-      get; internal set;
-    }
-
-    public OrderActionsDto Actions {
-      get; internal set;
-    }
-
-    public ShippingEntryDto Shipping {
-      get; internal set;
-    }
-
-    public IShippingAndHandling Packing {
-      get; internal set;
-    }
-
-  } // public class OrderDto
-
+  } // class WeightDataDto
 
   public class OrderActionsDto {
 
