@@ -1,7 +1,7 @@
 ﻿/* Empiria Trade *********************************************************************************************
 *                                                                                                            *
-*  Module   : Product Management                         Component : Domain Layer                            *
-*  Assembly : Empiria.Trade.Products.dll                 Pattern   : Partitioned Type / Information Holder   *
+*  Module   : Core Management                            Component : Domain Layer                            *
+*  Assembly : Empiria.Trade.Core.dll                     Pattern   : Partitioned Type / Information Holder   *
 *  Type     : WarehouseBin                               License   : Please read LICENSE.txt file            *
 *                                                                                                            *
 *  Summary  : Represents a warehouse bin.                                                                    *
@@ -9,7 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 
-namespace Empiria.Trade.Products {
+namespace Empiria.Trade.Core.Catalogues {
 
   /// <summary>Represents a warehouse bin.</summary>
   public class WarehouseBin : BaseObject {
@@ -92,4 +92,4 @@ namespace Empiria.Trade.Products {
 
   } // class WarehouseBin
 
-} // namespace Empiria.Trade.Products
+} // namespace Empiria.Trade.Core.Catalogues

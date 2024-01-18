@@ -67,6 +67,6 @@
     <ProjectReference Include="..\..\trade.sujetsa\SujetsaTemp\TradeDataSchemaManager\TradeDataSchemaManager.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Catalogues\" />
+    <Folder Include="Catalogues\Adapters\" />
   </ItemGroup>
 </Project>

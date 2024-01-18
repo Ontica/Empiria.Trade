@@ -10,15 +10,17 @@
 using System;
 using Empiria.Data;
 using Empiria.Trade.Core;
+using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Products;
 using Newtonsoft.Json;
 
-namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
+namespace Empiria.Trade.Sales.ShippingAndHandling.Data
+{
 
 
-  /// <summary>Provides data read  and write methods for packaging.</summary>
-  internal class PackagingData {
+    /// <summary>Provides data read  and write methods for packaging.</summary>
+    internal class PackagingData {
 
 
     internal FixedList<Packing> GetPackagingForOrder(string orderUid) {

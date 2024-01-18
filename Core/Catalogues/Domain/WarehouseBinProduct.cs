@@ -1,13 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿/* Empiria Trade *********************************************************************************************
+*                                                                                                            *
+*  Module   : Core Management                            Component : Domain Layer                            *
+*  Assembly : Empiria.Trade.Core.dll                     Pattern   : Partitioned Type / Information Holder   *
+*  Type     : WarehouseBinProduct                        License   : Please read LICENSE.txt file            *
+*                                                                                                            *
+*  Summary  : Represents a warehouse bin product.                                                            *
+*                                                                                                            *
+************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
+using System;
 using Empiria.Trade.Products;
 
-namespace Empiria.Trade.Products {
-  
-  
+namespace Empiria.Trade.Core.Catalogues {
+
+
+  /// <summary>Represents a warehouse bin product.</summary>
   public class WarehouseBinProduct : BaseObject {
 
     #region Constructors and parsers
@@ -77,5 +83,6 @@ namespace Empiria.Trade.Products {
 
     #endregion Properties
 
-  }
-}
+  } // class WarehouseBinProduct
+
+} // namespace Empiria.Trade.Core.Catalogues

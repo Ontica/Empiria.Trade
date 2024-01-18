@@ -12,11 +12,13 @@ using System.Collections.Generic;
 using Empiria.Trade.Products;
 using System.Linq;
 using Empiria.Trade.Sales.ShippingAndHandling.Data;
+using Empiria.Trade.Core.Catalogues;
 
-namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
+namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
+{
 
-  /// <summary>Helper methods to build packing structure.</summary>
-  internal class PackingHelper {
+    /// <summary>Helper methods to build packing structure.</summary>
+    internal class PackingHelper {
 
     #region Public methods
 

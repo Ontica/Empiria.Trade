@@ -17,10 +17,11 @@ using Empiria.Trade.Products.Adapters;
 using Empiria.Trade.Products.Data;
 using Empiria.Trade.Products.Domain;
 
-namespace Empiria.Trade.Products.UseCases {
+namespace Empiria.Trade.Products.UseCases
+{
 
-  /// <summary>Use cases used to build TRDProducts.</summary>
-  public class TRDProductUseCases : UseCase {
+    /// <summary>Use cases used to build TRDProducts.</summary>
+    public class TRDProductUseCases : UseCase {
 
 
     #region Constructors and parsers
@@ -105,27 +106,6 @@ namespace Empiria.Trade.Products.UseCases {
       var builder = new TRDProductBuilder();
 
       return builder.GetStockAndAddToVendorProduct(vendorProduct);
-    }
-
-
-    public Warehouse GetWarehouse(string warehouseUid) {
-      Assertion.Require(warehouseUid, "warehouseUid");
-
-      return Warehouse.Parse(warehouseUid);
-    }
-
-
-    public WarehouseBin GetWarehouseBin(string warehouseBinUid) {
-      Assertion.Require(warehouseBinUid, "warehouseBinUid");
-
-      return WarehouseBin.Parse(warehouseBinUid);
-    }
-
-
-    public WarehouseBinProduct GetWarehouseBinProduct(string warehouseBinProductUID) {
-      Assertion.Require(warehouseBinProductUID, "warehouseBinProductUID");
-
-      return WarehouseBinProduct.Parse(warehouseBinProductUID);
     }
 
 

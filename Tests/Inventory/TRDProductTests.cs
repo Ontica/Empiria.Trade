@@ -20,10 +20,11 @@ using Empiria.Trade.Products;
 using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Sales.UseCases;
 
-namespace Empiria.Trade.Tests {
+namespace Empiria.Trade.Tests
+{
 
-  /// <summary>Test cases for products.</summary>
-  public class TRDProductTests {
+    /// <summary>Test cases for products.</summary>
+    public class TRDProductTests {
 
     #region Initialization
 
@@ -154,48 +155,6 @@ namespace Empiria.Trade.Tests {
       string uid = "UID-SUBGROUP-0000-001";
 
       ProductSubgroup sut = usecase.GetProductSubgroup(uid);
-
-      Assert.NotNull(sut);
-
-    }
-
-
-    [Fact]
-    public void GetWarehouseTest() {
-
-      var usecase = TRDProductUseCases.UseCaseInteractor();
-
-      string uid = "2f6dfb0d-137b-4309-94ac-c5f7b8fbc9df";
-
-      Warehouse sut = usecase.GetWarehouse(uid);
-
-      Assert.NotNull(sut);
-
-    }
-
-
-    [Fact]
-    public void GetWarehouseBinTest() {
-
-      var usecase = TRDProductUseCases.UseCaseInteractor();
-
-      string uid = "f06a2b16-e744-412e-bd94-82821a7b5cd9";
-
-      WarehouseBin sut = usecase.GetWarehouseBin(uid);
-
-      Assert.NotNull(sut);
-
-    }
-
-
-    [Fact]
-    public void GetWarehouseBinProductTest() {
-
-      var usecase = TRDProductUseCases.UseCaseInteractor();
-
-      string uid = "be68b023-202d-4bf3-b0b6-3726ed5be44f";
-
-      WarehouseBinProduct sut = usecase.GetWarehouseBinProduct(uid);
 
       Assert.NotNull(sut);
 
