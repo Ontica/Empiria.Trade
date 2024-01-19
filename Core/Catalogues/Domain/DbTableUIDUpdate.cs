@@ -1,0 +1,28 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Empiria.Trade.Core.Catalogues {
+
+
+  internal class DbTableUIDUpdate {
+
+
+    [DataField("ID")]
+    public int Id {
+      get; set;
+    }
+
+
+    [DataField("UID")]
+    public string Uid {
+      get; set;
+    }
+
+
+  } // class DbTableUIDUpdate
+
+
+}

@@ -159,8 +159,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
         var whBinDto = new WarehouseBinForPacking();
         whBinDto.UID = warehouseBinProduct.WarehouseBinProductUID;
         whBinDto.OrderItemUID = packingOrderItem.OrderItemUID;
-        whBinDto.Name = $"Rack: {warehouseBinProduct.WarehouseBin.BinDescription}";
-        whBinDto.WarehouseName = $"Almacen {warehouseBinProduct.WarehouseBin.Warehouse.Code}";
+        whBinDto.Name = $"{warehouseBinProduct.WarehouseBin.BinDescription}";
+        whBinDto.WarehouseName = $"{warehouseBinProduct.WarehouseBin.Warehouse.Code}";
                                  //$"rack: {warehouseBinProduct.WarehouseBin.BinDescription}";
         //whBinDto.Stock = //TODO SACAR STOCK DE INVENTARIO-WAREHOUSE
         packingOrderItem.WarehouseBinForPacking = whBinDto;

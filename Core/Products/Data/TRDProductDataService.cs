@@ -75,52 +75,8 @@ namespace Empiria.Trade.Products.Data {
 
     }
 
-
-    internal static string UpdateTableGUID(string tableName, string idName, string uidName) {
-      
-      try {
-
-        var select = $"SELECT {idName} AS ID, {uidName} as UID FROM {tableName} WHERE {uidName} = '' ";
-        
-        var selectOperation = DataOperation.Parse(select);
-
-        var entries = DataReader.GetPlainObjectFixedList<DbTableUpdate>(selectOperation);
-
-        int count = 0;
-        foreach (var entry in entries) {
-          
-          var update = $"UPDATE {tableName} SET {uidName} = '{Guid.NewGuid().ToString()}' WHERE {idName} = {entry.Id}";
-
-          var dataOperation = DataOperation.Parse(update);
-
-          DataReader.IsEmpty(dataOperation);
-          count++;
-        }
-
-        return $"SE ACTUALIZARON {count} UID DE {entries.Count} EN {uidName} DE LA TABLA {tableName}";
-
-      } catch (Exception ex) {
-
-        throw new Exception(ex.Message, ex);
-      }
-      
-    }
+    
   } // class TRDProductDataService
-
-
-  internal class DbTableUpdate {
-
-    [DataField("ID")]
-    public int Id {
-      get; set;
-    }
-
-    [DataField("UID")]
-    public string Uid{
-      get; set;
-    }
-
-  }
 
 
 } // namespace Empiria.Trade.Products.Data

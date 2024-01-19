@@ -17,6 +17,7 @@ using Empiria.Trade.Products.UseCases;
 using Empiria.WebApi;
 using Empiria.Trade.Sales.UseCases;
 using Empiria.Trade.Sales.Adapters;
+using Empiria.Trade.Core.Catalogues;
 
 namespace Empiria.Trade.WebApi.Inventory {
 
@@ -75,12 +76,12 @@ namespace Empiria.Trade.WebApi.Inventory {
 
 
     [HttpPost]
-    [Route("v4/trade/products/update-uid")]
+    [Route("v4/trade/catalogues/update-uid")]
     public async Task<SingleObjectModel> UpdateTableUID([FromBody] TableQuery query) {
 
       base.RequireBody(query);
 
-      using (var usecases = TRDProductUseCases.UseCaseInteractor()) {
+      using (var usecases = CataloguesUseCases.UseCaseInteractor()) {
         
         string msj = await usecases.UpdateGUID(query).ConfigureAwait(false);
 

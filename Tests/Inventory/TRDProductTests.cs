@@ -161,24 +161,6 @@ namespace Empiria.Trade.Tests
     }
 
 
-    [Fact]
-    public async Task ShouldUpdateUID() {
-
-      var usecase = TRDProductUseCases.UseCaseInteractor();
-
-      var query = new TableQuery {
-        TableName = "TRDProductPrice",
-        IdName = "ProductPriceId",
-        UidName = "ProductPriceUID"
-      };
-
-      string sut = await usecase.UpdateGUID(query).ConfigureAwait(false);
-
-      Assert.NotEmpty(sut);
-
-    }
-
-
     #endregion Facts
 
 

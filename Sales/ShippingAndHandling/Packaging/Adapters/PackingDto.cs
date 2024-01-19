@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Products.Adapters;
 
 namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
@@ -160,61 +161,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
 
   } // class MissingItem
-
-
-  public class WarehouseDto {
-
-
-    public string UID {
-      get; set;
-    }
-
-
-    public string Code {
-      get; set;
-    }
-
-
-    public string Name {
-      get; set;
-    }
-
-
-    public decimal Stock {
-      get; set;
-    }
-
-  }
-
-
-  public class WarehouseBinDto {
-
-
-    public string UID {
-      get; set;
-    }
-
-
-    public string OrderItemUID {
-      get; set;
-    }
-
-
-    public string Name {
-      get; set;
-    }
-
-
-    public string WarehouseName {
-      get; set;
-    }
-
-
-    public decimal Stock {
-      get; set;
-    }
-
-  }
 
 
   public class CommonPackingItemFieldsDto {

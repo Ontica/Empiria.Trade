@@ -10,6 +10,7 @@
 using System;
 using System.Threading.Tasks;
 using Empiria.Trade.Core.Catalogues;
+using Empiria.Trade.Products.Adapters;
 using Empiria.Trade.Products.UseCases;
 using Xunit;
 
@@ -60,6 +61,25 @@ namespace Empiria.Trade.Tests.Core {
       Assert.NotNull(sut);
 
     }
+
+
+    [Fact]
+    public async Task ShouldUpdateUID() {
+
+      var usecase = CataloguesUseCases.UseCaseInteractor();
+
+      var query = new TableQuery {
+        TableName = "TRDProductPrice",
+        IdName = "ProductPriceId",
+        UidName = "ProductPriceUID"
+      };
+
+      string sut = await usecase.UpdateGUID(query).ConfigureAwait(false);
+
+      Assert.NotEmpty(sut);
+
+    }
+
 
   } // class CataloguesTests
 

@@ -108,20 +108,6 @@ namespace Empiria.Trade.Products.UseCases
       return builder.GetStockAndAddToVendorProduct(vendorProduct);
     }
 
-
-    public async Task<string> UpdateGUID(TableQuery query) {
-      
-      try {
-
-        return await Task.Run(() => TRDProductDataService.UpdateTableGUID(
-                              query.TableName, query.IdName, query.UidName))
-                              .ConfigureAwait(false);
-
-      } catch (Exception ex) {
-        throw new Exception(ex.Message, ex);
-      }
-    }
-
     
     #endregion Use cases
 

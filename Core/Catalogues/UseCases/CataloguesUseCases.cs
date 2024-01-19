@@ -9,7 +9,9 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
 using System;
+using System.Threading.Tasks;
 using Empiria.Services;
+using Empiria.Trade.Products.Adapters;
 
 namespace Empiria.Trade.Core.Catalogues {
   
@@ -52,6 +54,20 @@ namespace Empiria.Trade.Core.Catalogues {
       Assertion.Require(warehouseBinProductUID, "warehouseBinProductUID");
 
       return WarehouseBinProduct.Parse(warehouseBinProductUID);
+    }
+
+
+    public async Task<string> UpdateGUID(TableQuery query) {
+
+      try {
+
+        return await Task.Run(() => CataloguesData.UpdateTableGUID(
+                              query.TableName, query.IdName, query.UidName))
+                              .ConfigureAwait(false);
+
+      } catch (Exception ex) {
+        throw new Exception(ex.Message, ex);
+      }
     }
 
 
