@@ -45,10 +45,9 @@ namespace Empiria.Trade.Core.Catalogues {
       }
 
     }
-  } // class TRDProductDataService
 
 
-} // class CataloguesData
+  } // class CataloguesData
 
 
 } // namespace Empiria.Trade.Core.Catalogues
