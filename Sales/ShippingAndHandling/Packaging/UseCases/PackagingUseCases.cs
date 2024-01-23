@@ -64,7 +64,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
     }
 
 
-    public IShippingAndHandling GetPackagingForOrder(string orderUid) {
+    public PackingDto GetPackagingForOrder(string orderUid) {
 
       return GetPackaging(orderUid);
     }
@@ -147,11 +147,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
     #region Private methods
 
 
-    private IShippingAndHandling GetPackaging(string orderUid) {
+    private PackingDto GetPackaging(string orderUid) {
       var builder = new PackagingBuilder();
 
       var packaging = builder.GetPackagesAndItemsForOrder(orderUid);
-
+      
       return PackagingMapper.MapPackingDto(packaging);
 
     }

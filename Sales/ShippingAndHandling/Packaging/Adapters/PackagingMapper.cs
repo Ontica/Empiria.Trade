@@ -28,7 +28,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
     #region Public methods
 
 
-    internal static IShippingAndHandling MapPackingDto(PackingEntry packaging) {
+    internal static PackingDto MapPackingDto(PackingEntry packaging) {
 
       var packagedItems = MapToPackagedItems(packaging);
       var packingData = MapPackingData(packagedItems, packaging.PackagedItems);

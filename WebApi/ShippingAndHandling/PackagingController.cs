@@ -43,7 +43,7 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
 
       using (var usecases = PackagingUseCases.UseCaseInteractor()) {
 
-        IShippingAndHandling packageForItems = usecases.GetPackagingForOrder(orderUID);
+        PackingDto packageForItems = usecases.GetPackagingForOrder(orderUID);
 
         return new SingleObjectModel(this.Request, packageForItems);
       }
