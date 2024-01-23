@@ -94,7 +94,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
       ProductTypeDto type = new ProductTypeDto {
         ProductTypeUID = product.UID,
         Name = product.ProductGroup.Name,
-        Attributes = new AttributesDto().GetAttributes(product.Attributes)
+        Attributes = new Attributes().GetAttributes(product.Attributes)
       };
 
       var productDto = new ProductDto();

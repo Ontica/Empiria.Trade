@@ -10,12 +10,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Empiria.Trade.Core.Catalogues;
 using Newtonsoft.Json;
 
-namespace Empiria.Trade.Products.Adapters {
+namespace Empiria.Trade.Products.Adapters
+{
 
-  /// <summary>Methods used to map TRDProducts.</summary>
-  public class TRDProductMapper {
+    /// <summary>Methods used to map TRDProducts.</summary>
+    public class TRDProductMapper {
 
 
     #region Public methods
@@ -93,12 +95,12 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
-    static private FixedList<AttributesDto> GetAttributes(Product entry) {
+    static private FixedList<Attributes> GetAttributes(Product entry) {
 
-      AttributesListDto attrs = new AttributesListDto();
+      AttributesList attrs = new AttributesList();
       try {
         if (entry.Attributes != "") {
-          attrs = JsonConvert.DeserializeObject<AttributesListDto>(entry.Attributes);
+          attrs = JsonConvert.DeserializeObject<AttributesList>(entry.Attributes);
         }
 
         return attrs.Attributes.ToFixedList();

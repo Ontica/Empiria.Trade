@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Products;
 using Empiria.Trade.Sales.ShippingAndHandling.Data;
@@ -126,11 +127,14 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       var returnedNamed = new List<INamedEntity>();
 
       foreach (var package in packageTypes) {
+        string length = package.Length > 0 ? $"largo {package.Length} " : "";
+        string width = package.Width > 0 ? $"ancho {package.Width} " : "";
+        string height = package.Height > 0 ? $"alto {package.Height}" : "";
 
         var packageName = $"{package.Name} " +
-                          $"({package.Length.ToString()}x" +
-                          $"{package.Width.ToString()}x" +
-                          $"{package.Height.ToString()})";
+                          $"({length}" +
+                          $"{width}" +
+                          $"{height})";
 
         var namedDto = new NamedEntity(package.ObjectKey, packageName);
 

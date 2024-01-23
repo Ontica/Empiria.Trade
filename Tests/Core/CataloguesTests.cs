@@ -21,6 +21,20 @@ namespace Empiria.Trade.Tests.Core {
 
 
     [Fact]
+    public void GetPackageTypeTest() {
+
+      var usecase = CataloguesUseCases.UseCaseInteractor();
+
+      string uid = "0452a10b-0607-4d45-8614-385dda701b54";
+
+      PackageType sut = usecase.GetPackageType(uid);
+
+      Assert.NotNull(sut);
+
+    }
+
+
+    [Fact]
     public void GetWarehouseTest() {
 
       var usecase = CataloguesUseCases.UseCaseInteractor();
@@ -69,7 +83,7 @@ namespace Empiria.Trade.Tests.Core {
       var usecase = CataloguesUseCases.UseCaseInteractor();
 
       var query = new TableQuery {
-        TableName = "TRDProductPrice",
+        TableName = "TRDProductPrices",
         IdName = "ProductPriceId",
         UidName = "ProductPriceUID"
       };

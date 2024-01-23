@@ -9,12 +9,14 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Collections.Generic;
+using Empiria.Trade.Core.Catalogues;
 using Newtonsoft.Json;
 
-namespace Empiria.Trade.Products.Adapters {
+namespace Empiria.Trade.Products.Adapters
+{
 
-  /// <summary>Output DTO used to return the entries of Products.</summary>
-  public class ProductDto {
+    /// <summary>Output DTO used to return the entries of Products.</summary>
+    public class ProductDto {
     
     
     public string ProductUID {
@@ -114,48 +116,12 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
-    public FixedList<AttributesDto> Attributes {
+    public FixedList<Attributes> Attributes {
       get;  set;
-    } = new FixedList<AttributesDto>();
+    } = new FixedList<Attributes>();
 
 
   } // class ProductTypeDto
-
-
-  public class AttributesListDto {
-
-    public FixedList<AttributesDto> Attributes {
-      get; set;
-    } = new FixedList<AttributesDto>();
-
-  } // AttributesListDto
-
-
-  public class AttributesDto {
-
-    public string Name {
-      get; set;
-    } = string.Empty;
-
-
-    public string Value {
-      get; set;
-    } = string.Empty;
-
-
-    public FixedList<AttributesDto> GetAttributes(string attributes) {
-
-      AttributesListDto attrs = new AttributesListDto();
-
-      if (attributes != "") {
-        attrs = JsonConvert.DeserializeObject<AttributesListDto>(attributes);
-      }
-
-      return attrs.Attributes.ToFixedList<AttributesDto>();
-
-    }
-
-  } // class AttributesDto
 
 
 } // namespace Empiria.Trade.Products.Adapters

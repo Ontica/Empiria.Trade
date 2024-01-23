@@ -36,6 +36,17 @@ namespace Empiria.Trade.Core.Catalogues {
     #region Use cases
 
 
+    public PackageType GetPackageType(string packageTypeUid) {
+      Assertion.Require(packageTypeUid, "packageTypeUid");
+
+      PackageType packageType = PackageType.Parse(packageTypeUid);
+
+      packageType.GetVolumeAttributes();
+
+      return packageType;
+    }
+
+
     public Warehouse GetWarehouse(string warehouseUid) {
       Assertion.Require(warehouseUid, "warehouseUid");
 

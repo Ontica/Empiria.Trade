@@ -9,13 +9,13 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
 using System;
-using Empiria.Trade.Products.Adapters;
 using Newtonsoft.Json;
 
-namespace Empiria.Trade.Sales.ShippingAndHandling {
+namespace Empiria.Trade.Core.Catalogues
+{
 
 
-  public class PackageType : GeneralObject {
+    public class PackageType : GeneralObject {
 
 
     #region Constructor and parsers
@@ -63,9 +63,9 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
     }
 
 
-    public FixedList<AttributesDto> Attributes {
+    public FixedList<Attributes> Attributes {
       get; set;
-    } = new FixedList<AttributesDto>();
+    } = new FixedList<Attributes>();
 
 
     public decimal Length {
@@ -86,18 +86,9 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
     #endregion Properties
 
 
-    public FixedList<AttributesDto> GetExtData() {
-
-      AttributesListDto attrs = new AttributesListDto();
-      attrs = JsonConvert.DeserializeObject<AttributesListDto>(ObjectExtData);
-      return attrs.Attributes;
-
-    }
-
-
     public void GetVolumeAttributes() {
 
-      this.Attributes = this.GetExtData();
+      this.Attributes = new Attributes().GetAttributes(ObjectExtData); //this.GetExtData();
 
       foreach (var attr in this.Attributes) {
 
@@ -117,7 +108,9 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
 
       }
 
-      this.TotalVolume = Length * Width * Height;
+      this.TotalVolume = (Length == 0 ? 1 : Length) * 
+                         (Width == 0 ? 1 : Width) *
+                         (Height == 0 ? 1 : Height);
     }
 
   } // class PackageType
