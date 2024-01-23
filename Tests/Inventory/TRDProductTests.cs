@@ -92,20 +92,6 @@ namespace Empiria.Trade.Tests
 
 
     [Fact]
-    public void GetInventoryEntryTest() {
-
-      var usecase = TRDProductUseCases.UseCaseInteractor();
-
-      string uid = "eed89084-4b16-4a89-bcf8-2a26c82448cc";
-
-      InventoryEntry sut = usecase.GetInventoryEntry(uid);
-
-      Assert.NotNull(sut);
-
-    }
-
-
-    [Fact]
     public void GetProductPresentationTest() {
 
       var usecase = TRDProductUseCases.UseCaseInteractor();

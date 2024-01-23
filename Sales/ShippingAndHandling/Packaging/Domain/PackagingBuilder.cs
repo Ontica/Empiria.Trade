@@ -12,15 +12,15 @@ using System.Collections.Generic;
 using System.Linq;
 using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Orders;
-using Empiria.Trade.Products;
 using Empiria.Trade.Sales.ShippingAndHandling.Data;
 using Newtonsoft.Json;
 
-namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
+namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
+{
 
 
-  /// <summary>Generate data for packaging.</summary>
-  internal class PackagingBuilder {
+    /// <summary>Generate data for packaging.</summary>
+    internal class PackagingBuilder {
 
 
     #region Constructor

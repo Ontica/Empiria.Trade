@@ -9,15 +9,16 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Linq;
+using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Orders;
-using Empiria.Trade.Products;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 using Empiria.Trade.Sales.ShippingAndHandling.Data;
 
-namespace Empiria.Trade.Sales.ShippingAndHandling {
+namespace Empiria.Trade.Sales.ShippingAndHandling
+{
 
-  /// <summary>Represents a Packaging order item.</summary>
-  public class PackingOrderItem : BaseObject {
+    /// <summary>Represents a Packaging order item.</summary>
+    public class PackingOrderItem : BaseObject {
 
 
 

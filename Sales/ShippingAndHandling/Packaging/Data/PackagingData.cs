@@ -12,7 +12,6 @@ using Empiria.Data;
 using Empiria.Trade.Core;
 using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Orders;
-using Empiria.Trade.Products;
 using Newtonsoft.Json;
 
 namespace Empiria.Trade.Sales.ShippingAndHandling.Data

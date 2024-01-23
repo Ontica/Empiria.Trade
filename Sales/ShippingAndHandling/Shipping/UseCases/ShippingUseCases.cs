@@ -11,6 +11,7 @@ using System;
 using Empiria.Services;
 using Empiria.Trade.Sales.ShippingAndHandling.Domain;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
+using Empiria.Trade.Core.Catalogues;
 
 namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
@@ -36,9 +37,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
     public FixedList<INamedEntity> GetParcelSupplierList() {
 
-      var builder = new ShippingBuilder();
+      var catalogueUsecase = CataloguesUseCases.UseCaseInteractor();
 
-      return builder.GetParcelSupplierList();
+      FixedList<INamedEntity> sut = catalogueUsecase.GetParcelSupplierList();
+
+      return catalogueUsecase.GetParcelSupplierList();
     }
 
 

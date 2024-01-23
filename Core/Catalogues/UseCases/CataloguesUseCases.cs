@@ -36,6 +36,13 @@ namespace Empiria.Trade.Core.Catalogues {
     #region Use cases
 
 
+    internal InventoryEntry GetInventoryEntry(string inventoryEntryUid) {
+      Assertion.Require(inventoryEntryUid, "inventoryEntryUid");
+
+      return InventoryEntry.Parse(inventoryEntryUid);
+    }
+
+
     public PackageType GetPackageType(string packageTypeUid) {
       Assertion.Require(packageTypeUid, "packageTypeUid");
 
@@ -44,6 +51,14 @@ namespace Empiria.Trade.Core.Catalogues {
       packageType.GetVolumeAttributes();
 
       return packageType;
+    }
+
+
+    public FixedList<INamedEntity> GetParcelSupplierList() {
+
+      var parcelSupplier = new ParcelSupplier();
+
+      return parcelSupplier.GetParcelSupplierList();
     }
 
 

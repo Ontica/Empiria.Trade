@@ -60,13 +60,6 @@ namespace Empiria.Trade.Core.Catalogues {
     }
 
 
-    //[DataField("Rack")]
-    //public string Rack {
-    //  get;
-    //  internal set;
-    //}
-
-
     [DataField("RackLevel")]
     public int RackLevel {
       get;

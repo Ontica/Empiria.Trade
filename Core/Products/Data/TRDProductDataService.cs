@@ -11,12 +11,12 @@ using System;
 using System.Linq;
 using Empiria.Data;
 using Empiria.Trade.Products.Adapters;
-using Empiria.Trade.Products.Domain;
 
-namespace Empiria.Trade.Products.Data {
+namespace Empiria.Trade.Products.Data
+{
 
-  /// <summary>Provides data read methods for TRDProducts.</summary>
-  internal class TRDProductDataService {
+    /// <summary>Provides data read methods for TRDProducts.</summary>
+    internal class TRDProductDataService {
 
 
     internal static FixedList<Product> GetProductsForOrder(ProductQuery query) {
@@ -61,17 +61,6 @@ namespace Empiria.Trade.Products.Data {
       var dataOperation = DataOperation.Parse(sql);
 
       return DataReader.GetPlainObjectFixedList<Product>(dataOperation);
-
-    }
-
-
-    internal static InventoryEntry GetInventoryEntry(int vendorProductId) {
-
-      var sql = $"SELECT * FROM TRDInventory WHERE VendorProductId = {vendorProductId}";
-
-      var dataOperation = DataOperation.Parse(sql);
-      
-      return DataReader.GetPlainObject<InventoryEntry>(dataOperation);
 
     }
 

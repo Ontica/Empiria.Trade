@@ -11,11 +11,11 @@
 using System;
 using Newtonsoft.Json;
 
-namespace Empiria.Trade.Core.Catalogues
-{
+namespace Empiria.Trade.Core.Catalogues {
 
 
-    public class PackageType : GeneralObject {
+  /// <summary>Represents a package type.</summary>
+  public class PackageType : GeneralObject {
 
 
     #region Constructor and parsers
@@ -108,7 +108,7 @@ namespace Empiria.Trade.Core.Catalogues
 
       }
 
-      this.TotalVolume = (Length == 0 ? 1 : Length) * 
+      this.TotalVolume = (Length == 0 ? 1 : Length) *
                          (Width == 0 ? 1 : Width) *
                          (Height == 0 ? 1 : Height);
     }

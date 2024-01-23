@@ -41,15 +41,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     }
 
 
-    internal FixedList<INamedEntity> GetParcelSupplierList() {
-      var data = new ShippingData();
-
-      var parcelSupplierList = data.GetParcelSupplierList();
-
-      return MergeParcelToNamedDto(parcelSupplierList);
-    }
-
-
     internal ShippingEntry GetShippingForOrder(string orderUID) {
       
       var shippingList = ShippingData.GetShippingForOrder(orderUID);
@@ -65,26 +56,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
     #endregion Public methods
 
-
-    #region Private methods
-
-
-    private FixedList<INamedEntity> MergeParcelToNamedDto(FixedList<SimpleObjectData> parcelSupplierList) {
-
-      var returnedNamed = new List<INamedEntity>();
-
-      foreach (var parcel in parcelSupplierList) {
-
-        var namedDto = new NamedEntity(parcel.ObjectKey, parcel.Name);
-
-        returnedNamed.Add(namedDto);
-      }
-
-      return returnedNamed.ToFixedList();
-    }
-
-
-    #endregion Private methods
 
   } // class ShippingBuilder
 }

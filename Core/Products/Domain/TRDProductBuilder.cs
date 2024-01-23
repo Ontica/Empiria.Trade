@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Empiria.Json;
 using Empiria.Storage;
+using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Products.Adapters;
 using Empiria.Trade.Products.Data;
 using Newtonsoft.Json;
@@ -72,7 +73,7 @@ namespace Empiria.Trade.Products.Domain {
 
     internal VendorProduct GetStockAndAddToVendorProduct(VendorProduct vendorProduct) {
 
-      var inventoryEntry = TRDProductDataService.GetInventoryEntry(vendorProduct.Id);
+      var inventoryEntry = CataloguesData.GetInventoryEntry(vendorProduct.Id);
 
       if (inventoryEntry != null) {
         vendorProduct.InputQuantity = inventoryEntry.InputQuantity;

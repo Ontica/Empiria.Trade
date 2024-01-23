@@ -9,7 +9,6 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Collections.Generic;
-using Empiria.Trade.Products;
 using System.Linq;
 using Empiria.Trade.Sales.ShippingAndHandling.Data;
 using Empiria.Trade.Core.Catalogues;

@@ -11,12 +11,12 @@
 using System;
 using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Orders;
-using Empiria.Trade.Products;
 
-namespace Empiria.Trade.Sales.ShippingAndHandling {
+namespace Empiria.Trade.Sales.ShippingAndHandling
+{
 
 
-  public class Packing {
+    public class Packing {
 
 
     [DataField("OrderPackingId")]
