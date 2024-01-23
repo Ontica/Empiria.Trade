@@ -34,7 +34,7 @@ namespace Empiria.Trade.WebApi.Inventory {
 
       base.RequireBody(productUID);
 
-      using (var usecases = TRDProductUseCases.UseCaseInteractor()) {
+      using (var usecases = ProductUseCases.UseCaseInteractor()) {
 
         IProductEntryDto productDto = usecases.GetTRDProduct(productUID);
         
@@ -49,7 +49,7 @@ namespace Empiria.Trade.WebApi.Inventory {
 
       base.RequireBody(query);
 
-      using (var usecases = TRDProductUseCases.UseCaseInteractor()) {
+      using (var usecases = ProductUseCases.UseCaseInteractor()) {
 
         FixedList<IProductEntryDto> productDto = await usecases.GetProductsList(query)
                                                 .ConfigureAwait(false);

@@ -2,7 +2,7 @@
 *                                                                                                            *
 *  Module   : Product Management                         Component : Domain Layer                            *
 *  Assembly : Empiria.Trade.Products.dll                 Pattern   : Partitioned Type / Information Holder   *
-*  Type     : TRDProductHelper                           License   : Please read LICENSE.txt file            *
+*  Type     : ProductHelper                              License   : Please read LICENSE.txt file            *
 *                                                                                                            *
 *  Summary  : Helper methods to build product structure.                                                     *
 *                                                                                                            *
@@ -21,11 +21,11 @@ using System.Linq;
 namespace Empiria.Trade.Products.Domain {
 
   /// <summary>Helper methods to build product structure.</summary>
-  internal class TRDProductHelper {
+  internal class ProductHelper {
 
     private ProductQuery query;
 
-    internal TRDProductHelper(ProductQuery _query) {
+    internal ProductHelper(ProductQuery _query) {
       query = _query;
 
     }
@@ -281,6 +281,6 @@ namespace Empiria.Trade.Products.Domain {
 
     #endregion Private methods
 
-  } // class TRDProductHelper
+  } // class ProductHelper
 
 } // namespace Empiria.Trade.Products.Domain

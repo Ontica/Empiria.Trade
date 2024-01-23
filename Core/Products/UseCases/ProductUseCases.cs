@@ -2,7 +2,7 @@
 *                                                                                                            *
 *  Module   : Product Management                         Component : Use cases Layer                         *
 *  Assembly : Empiria.Trade.Products.dll                 Pattern   : Use case interactor class               *
-*  Type     : TRDProductUseCases                         License   : Please read LICENSE.txt file            *
+*  Type     : ProductUseCases                            License   : Please read LICENSE.txt file            *
 *                                                                                                            *
 *  Summary  : Use cases used to build TRDProducts.                                                           *
 *                                                                                                            *
@@ -20,17 +20,17 @@ namespace Empiria.Trade.Products.UseCases
 {
 
     /// <summary>Use cases used to build TRDProducts.</summary>
-    public class TRDProductUseCases : UseCase {
+    public class ProductUseCases : UseCase {
 
 
     #region Constructors and parsers
 
-    protected TRDProductUseCases() {
+    protected ProductUseCases() {
       // no-op
     }
 
-    static public TRDProductUseCases UseCaseInteractor() {
-      return CreateInstance<TRDProductUseCases>();
+    static public ProductUseCases UseCaseInteractor() {
+      return CreateInstance<ProductUseCases>();
     }
 
 
@@ -45,27 +45,27 @@ namespace Empiria.Trade.Products.UseCases
 
       var product = ProductFields.Parse(productUID);
 
-      return TRDProductMapper.MapToDto(product);
+      return ProductMapper.MapToDto(product);
     }
 
 
     public async Task<FixedList<IProductEntryDto>> GetProductsList(ProductQuery query) {
-      var builder = new TRDProductBuilder();
+      var builder = new ProductBuilder();
 
       FixedList<Product> products = await Task.Run(() => builder.GetProductsList(query))
                                             .ConfigureAwait(false);
 
-      return TRDProductMapper.MapToEntriesDto(products);
+      return ProductMapper.MapToEntriesDto(products);
     }
 
 
     public async Task<FixedList<IProductEntryDto>> GetProductsForOrder(ProductQuery query) {
-      var builder = new TRDProductBuilder();
+      var builder = new ProductBuilder();
 
       FixedList<Product> products = await Task.Run(() => builder.GetProductsForOrder(query))
                                             .ConfigureAwait(false);
 
-      return TRDProductMapper.MapToEntriesDto(products);
+      return ProductMapper.MapToEntriesDto(products);
     }
 
 
@@ -95,7 +95,7 @@ namespace Empiria.Trade.Products.UseCases
 
       var vendorProduct = VendorProduct.Parse(vendorProductUid);
 
-      var builder = new TRDProductBuilder();
+      var builder = new ProductBuilder();
 
       return builder.GetStockAndAddToVendorProduct(vendorProduct);
     }
@@ -104,6 +104,6 @@ namespace Empiria.Trade.Products.UseCases
     #endregion Use cases
 
 
-  } // class TRDProductUseCases
+  } // class ProductUseCases
 
 } // namespace Empiria.Trade.Products.UseCases

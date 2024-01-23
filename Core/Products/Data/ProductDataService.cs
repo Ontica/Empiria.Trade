@@ -2,7 +2,7 @@
 *                                                                                                            *
 *  Module   : Product Management                         Component : Data Layer                              *
 *  Assembly : Empiria.Trade.Products.dll                 Pattern   : Data Service                            *
-*  Type     : TRDProductDataService                      License   : Please read LICENSE.txt file            *
+*  Type     : ProductDataService                         License   : Please read LICENSE.txt file            *
 *                                                                                                            *
 *  Summary  : Provides data read methods for TRDProducts.                                                    *
 *                                                                                                            *
@@ -15,8 +15,8 @@ using Empiria.Trade.Products.Adapters;
 namespace Empiria.Trade.Products.Data
 {
 
-    /// <summary>Provides data read methods for TRDProducts.</summary>
-    internal class TRDProductDataService {
+    /// <summary>Provides data read methods for Products.</summary>
+    internal class ProductDataService {
 
 
     internal static FixedList<Product> GetProductsForOrder(ProductQuery query) {
@@ -65,7 +65,7 @@ namespace Empiria.Trade.Products.Data
     }
 
     
-  } // class TRDProductDataService
+  } // class ProductDataService
 
 
 } // namespace Empiria.Trade.Products.Data

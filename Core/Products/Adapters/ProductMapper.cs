@@ -2,7 +2,7 @@
 *                                                                                                            *
 *  Module   : Product Management                         Component : Interface adapters                      *
 *  Assembly : Empiria.Trade.Products.dll                 Pattern   : Mapper class                            *
-*  Type     : TRDProductMapper                           License   : Please read LICENSE.txt file            *
+*  Type     : ProductMapper                              License   : Please read LICENSE.txt file            *
 *                                                                                                            *
 *  Summary  : Methods used to map TRDProducts.                                                               *
 *                                                                                                            *
@@ -16,8 +16,8 @@ using Newtonsoft.Json;
 namespace Empiria.Trade.Products.Adapters
 {
 
-    /// <summary>Methods used to map TRDProducts.</summary>
-    public class TRDProductMapper {
+    /// <summary>Methods used to map Products.</summary>
+    public class ProductMapper {
 
 
     #region Public methods
@@ -195,6 +195,6 @@ namespace Empiria.Trade.Products.Adapters
     #endregion Private methods
 
 
-  } // class TRDProductMapper
+  } // class ProductMapper
 
 } // namespace Empiria.Trade.Products.Adapters

@@ -39,7 +39,7 @@ namespace Empiria.Trade.Sales.UseCases {
 
     public async Task<FixedList<IProductEntryDto>> GetProductsForOrder(ProductOrderQuery OrderQuery) {
 
-      using (var usecases = TRDProductUseCases.UseCaseInteractor()) {
+      using (var usecases = ProductUseCases.UseCaseInteractor()) {
 
         ProductQuery query = MapToProductQuery(OrderQuery);
 

@@ -4,7 +4,7 @@
 *  Assembly : Empiria.Trade.Products.dll                 Pattern   : Partitioned Type / Information Holder   *
 *  Type     : Product                                    License   : Please read LICENSE.txt file            *
 *                                                                                                            *
-*  Summary  : Generate data for TRDProducts.                                                                 *
+*  Summary  : Generate data for Products.                                                                    *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
@@ -20,12 +20,12 @@ using Newtonsoft.Json;
 
 namespace Empiria.Trade.Products.Domain {
 
-  /// <summary>Generate data for TRDProducts.</summary>
-  internal class TRDProductBuilder {
+  /// <summary>Generate data for roducts.</summary>
+  internal class ProductBuilder {
 
     #region Constructor
 
-    public TRDProductBuilder() {
+    public ProductBuilder() {
       
     }
 
@@ -43,11 +43,11 @@ namespace Empiria.Trade.Products.Domain {
 
     internal FixedList<Product> GetProductsForOrder(ProductQuery query) {
 
-      FixedList<Product> products = TRDProductDataService.GetProductsForOrder(query);
+      FixedList<Product> products = ProductDataService.GetProductsForOrder(query);
 
       ValidateToGetPriceList(products, query);
 
-      var helper = new TRDProductHelper(query);
+      var helper = new ProductHelper(query);
 
       FixedList<Product> productsByCode = helper.GetProductsByCode(products);
 
@@ -59,11 +59,11 @@ namespace Empiria.Trade.Products.Domain {
 
     internal FixedList<Product> GetProductsList(ProductQuery query) {
 
-      FixedList<Product> products = TRDProductDataService.GetProductsList(query.Keywords);
+      FixedList<Product> products = ProductDataService.GetProductsList(query.Keywords);
 
       ValidateToGetPriceList(products, query);
 
-      var helper = new TRDProductHelper(query);
+      var helper = new ProductHelper(query);
 
       FixedList<Product> productsByCode = helper.GetProductsByCode(products);
 
@@ -90,7 +90,7 @@ namespace Empiria.Trade.Products.Domain {
 
     private void ValidateToGetPriceList(FixedList<Product> products, ProductQuery query) {
 
-      var helper = new TRDProductHelper(query);
+      var helper = new ProductHelper(query);
 
       if (query.CustomerUID != "") {
 
@@ -107,7 +107,7 @@ namespace Empiria.Trade.Products.Domain {
     #endregion Private methods
 
 
-  } // class TRDProductBuilder
+  } // class ProductBuilder
 
 
 } // Empiria.Trade.Products.Domain
