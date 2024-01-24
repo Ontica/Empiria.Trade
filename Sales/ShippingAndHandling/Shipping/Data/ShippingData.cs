@@ -44,7 +44,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
     internal static void WriteShipping(ShippingEntry shipping) {
 
       var op = DataOperation.Parse("writeShipping",
-        shipping.ShippingId, shipping.OrderId, shipping.ParcelSupplierId,
+        shipping.ShippingOrderId, shipping.OrderId, shipping.ParcelSupplierId,
         shipping.ShippingUID, shipping.ShippingGuide, shipping.ParcelAmount,
         shipping.CustomerAmount, shipping.ShippingDate, shipping.DeliveryDate);
 

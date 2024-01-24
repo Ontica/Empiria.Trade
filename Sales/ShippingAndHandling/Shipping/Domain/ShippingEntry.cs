@@ -48,8 +48,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
     #region Properties
 
 
-    [DataField("ShippingId")]
-    public int ShippingId {
+    [DataField("ShippingOrderId")]
+    public int ShippingOrderId {
       get; set;
     }
 
@@ -109,9 +109,9 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
 
     protected override void OnSave() {
 
-      if (this.ShippingId == 0) {
+      if (this.ShippingOrderId == 0) {
 
-        this.ShippingId = this.Id;
+        this.ShippingOrderId = this.Id;
         this.ShippingUID = this.UID;
       }
       ShippingData.WriteShipping(this);
@@ -123,8 +123,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
       var builder = new ShippingBuilder();
       var shipping = builder.GetShippingForOrder(orderUID);
 
-      if (shipping.ShippingId > 0) {
-        this.ShippingId = shipping.ShippingId;
+      if (shipping.ShippingOrderId > 0) {
+        this.ShippingOrderId = shipping.ShippingOrderId;
         this.ShippingUID = shipping.ShippingUID;
       }
 

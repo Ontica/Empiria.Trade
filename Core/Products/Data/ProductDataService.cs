@@ -21,14 +21,8 @@ namespace Empiria.Trade.Products.Data
 
     internal static FixedList<Product> GetProductsForOrder(ProductQuery query) {
 
-      //var whereClauses = GetQueryClauses(query);
-
       return GetProductsList(query.Keywords);
 
-    }
-
-    private static object GetQueryClauses(ProductQuery query) {
-      throw new NotImplementedException();
     }
 
 

@@ -33,7 +33,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
     private static ShippingEntryDto MapEntry(ShippingEntry entry) {
       
-      if (entry.ShippingId == 0) {
+      if (entry.ShippingOrderId == 0) {
         return new ShippingEntryDto();
       }
 
