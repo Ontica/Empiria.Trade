@@ -48,7 +48,7 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
     }
 
 
-    [HttpGet]
+    [HttpPost]
     [Route("v4/trade/sales/shipping/parcel-delivery")]
     public SingleObjectModel GetShippingOrderForParcelDelivery([FromBody] ShippingQuery query) {
 

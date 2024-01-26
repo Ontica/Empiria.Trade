@@ -46,9 +46,9 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
     internal ShippingEntry GetShippingOrderForParcelDelivery(ShippingQuery query) {
 
-      var helper = new ShippingHelper();
+      var helper = new ShippingHelper(query);
 
-      FixedList<ShippingOrderItem> orderForShippingList = helper.GetShippingOrderItemList(query.OrderUIDs);
+      FixedList<ShippingOrderItem> orderForShippingList = helper.GetShippingOrderItemList();
 
       helper.ShippingDataValidations(orderForShippingList);
 

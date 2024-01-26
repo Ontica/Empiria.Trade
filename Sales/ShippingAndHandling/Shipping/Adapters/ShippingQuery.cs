@@ -15,7 +15,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
   /// <summary>Query used to get order shipping entries.</summary>
   public class ShippingQuery {
 
-    public string[] OrderUIDs {
+    public string[] Orders {
       get; set;
     } = new string[0];
 

@@ -21,7 +21,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
     } = new ShippingEntryDto();
 
 
-    public FixedList<ShippingOrderItemDto> OrderForShipping {
+    public FixedList<ShippingOrderItemDto> OrdersForShipping {
       get; set;
     } = new FixedList<ShippingOrderItemDto>();
 
@@ -31,6 +31,12 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
   /// <summary>Output DTO used to return the entries of shipping.</summary>
   public class ShippingEntryDto : ShippingCommonFieldsDto {
+
+
+    public string ShippingUID {
+      get; set;
+    }
+
 
     public int TotalOrders {
       get; set;

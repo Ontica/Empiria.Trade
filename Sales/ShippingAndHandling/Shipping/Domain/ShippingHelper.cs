@@ -8,8 +8,10 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Empiria.Trade.Orders;
+using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 using Empiria.Trade.Sales.ShippingAndHandling.Data;
 using Empiria.Trade.Sales.ShippingAndHandling.UseCases;
 
@@ -20,9 +22,13 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
     #region Constructor and parsers
 
-    public ShippingHelper() {
+    private ShippingQuery query;
 
+
+    public ShippingHelper(ShippingQuery _query) {
+      query = _query;
     }
+
 
     #endregion Constructor and parsers
 
@@ -30,19 +36,45 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     #region Public methods
 
 
-    public FixedList<ShippingOrderItem> GetShippingOrderItemList(string[] orderUIDs) {
+    internal FixedList<ShippingOrderItem> GetShippingOrderItemList() {
 
       FixedList<ShippingOrderItem> shippingOrderItemList =
-                                   ShippingData.GetShippingOrderItemList(orderUIDs);
+                                   ShippingData.GetShippingOrderItemList(query.Orders);
 
-      GetShippingOrderItemMeasurementUnits(shippingOrderItemList);
+      FixedList<ShippingOrderItem> orderItemByPackingOrder = 
+                                   GetOrderItemByPackingOrder(shippingOrderItemList);
 
-      return shippingOrderItemList;
+      GetShippingOrderItemMeasurementUnits(orderItemByPackingOrder);
+
+      return orderItemByPackingOrder;
+    }
+
+
+    private FixedList<ShippingOrderItem> GetOrderItemByPackingOrder(
+              FixedList<ShippingOrderItem> shippingOrderItemList) {
+
+      if (shippingOrderItemList.Count > 0) {
+        return shippingOrderItemList;
+      }
+
+      var orderItemList = new List<ShippingOrderItem>();
+
+      foreach (var orderUID in query.Orders) {
+        var orderItem = new ShippingOrderItem();
+        var order = Order.Parse(orderUID);
+        orderItem.ShippingOrderItemId = -1;
+        orderItem.ShippingOrderItemUID= "";
+        orderItem.ShippingOrder = ShippingEntry.Parse(-1);
+        orderItem.Order = order;
+        orderItemList.Add(orderItem);
+      }
+
+      return orderItemList.ToFixedList();
     }
 
 
     internal ShippingEntry GetShippingEntry(FixedList<ShippingOrderItem> orderForShippingList) {
-      
+
       if (orderForShippingList.Count == 0) {
         return new ShippingEntry();
       }
@@ -91,10 +123,10 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
     private void ValidateShippingDataByCustomerId(ShippingOrderItem orderItem,
                                                   FixedList<ShippingOrderItem> orderForShippingList) {
-      
+
       var countCustomerId = orderForShippingList.FindAll(x =>
                               x.Order.Customer.Id == orderItem.Order.Customer.Id).Count;
-      
+
       if (countCustomerId != orderForShippingList.Count) {
         Assertion.EnsureFailed("Uno o más pedidos no pertenecen al mismo cliente!");
       }

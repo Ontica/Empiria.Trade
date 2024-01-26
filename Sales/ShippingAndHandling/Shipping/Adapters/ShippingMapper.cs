@@ -34,7 +34,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
       ShippingDto shippingDto = new ShippingDto();
 
       shippingDto.ShippingData = MapEntry(entry);
-      shippingDto.OrderForShipping = MapToOrderForShippingDto(entry.OrderForShipping);
+      shippingDto.OrdersForShipping = MapToOrderForShippingDto(entry.OrderForShipping);
 
       return shippingDto;
     }
@@ -55,6 +55,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
       var parcel = SimpleObjectData.Parse(entry.ParcelSupplierId);
 
       var shippingDto = new ShippingEntryDto {
+        ShippingUID= entry.ShippingUID,
         ParcelSupplier = new NamedEntityDto(parcel.UID, parcel.Name),
         ShippingGuide = entry.ShippingGuide,
         ParcelAmount = entry.ParcelAmount,
