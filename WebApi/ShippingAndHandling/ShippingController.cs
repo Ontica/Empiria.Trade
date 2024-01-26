@@ -48,6 +48,19 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
     }
 
 
+    [HttpGet]
+    [Route("v4/trade/sales/shipping/parcel-delivery")]
+    public SingleObjectModel GetShippingOrderForParcelDelivery([FromBody] ShippingQuery query) {
+
+      using (var usecases = ShippingUseCases.UseCaseInteractor()) {
+
+        ShippingDto shippingOrder = usecases.GetShippingOrderForParcelDelivery(query);
+
+        return new SingleObjectModel(this.Request, shippingOrder);
+      }
+    }
+
+
     #endregion Web Apis
   }
 }

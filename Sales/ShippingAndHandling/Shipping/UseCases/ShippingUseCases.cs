@@ -67,12 +67,12 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
     }
 
 
-    public ShippingDto GetCompleteShippingByOrderUIDList(ShippingQuery query) {
+    public ShippingDto GetShippingOrderForParcelDelivery(ShippingQuery query) {
       var builder = new ShippingBuilder();
 
-      ShippingEntry entry = builder.GetCompleteShippingByOrderUIDList(query);
+      ShippingEntry entry = builder.GetShippingOrderForParcelDelivery(query);
 
-      return ShippingMapper.MapShipping(entry);
+      return ShippingMapper.MapShippingForParcelDelivery(entry);
     }
 
 

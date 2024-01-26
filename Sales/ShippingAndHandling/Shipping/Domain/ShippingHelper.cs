@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using System.Linq;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.ShippingAndHandling.Data;
 using Empiria.Trade.Sales.ShippingAndHandling.UseCases;
@@ -29,12 +30,12 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     #region Public methods
 
 
-    public FixedList<ShippingOrderItem> GetOrderForShippingList(string[] orderUIDs) {
+    public FixedList<ShippingOrderItem> GetShippingOrderItemList(string[] orderUIDs) {
 
       FixedList<ShippingOrderItem> shippingOrderItemList =
-                                   ShippingData.GetShippingOrderItemByOrderUIDList(orderUIDs);
+                                   ShippingData.GetShippingOrderItemList(orderUIDs);
 
-      GetOrderItemsMeasurementUnits(shippingOrderItemList);
+      GetShippingOrderItemMeasurementUnits(shippingOrderItemList);
 
       return shippingOrderItemList;
     }
@@ -46,7 +47,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
         return new ShippingEntry();
       }
 
-      return new ShippingEntry();
+      var shipping = orderForShippingList.FirstOrDefault().ShippingOrder;
+
+      shipping.OrderForShipping = orderForShippingList;
+
+      return shipping;
     }
 
 
@@ -105,7 +110,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     #region Private methods
 
 
-    private void GetOrderItemsMeasurementUnits(FixedList<ShippingOrderItem> shippingOrderItemList) {
+    private void GetShippingOrderItemMeasurementUnits(FixedList<ShippingOrderItem> shippingOrderItemList) {
 
       foreach (var orderItem in shippingOrderItemList) {
 

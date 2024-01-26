@@ -107,10 +107,10 @@ namespace Empiria.Trade.Tests {
 
       //string orderUID = "f3bcb4ad-faaa-4afa-8a0c-8e2986c80065";
       ShippingQuery query = new ShippingQuery {
-        OrderUIDs = new[] { "a99e6f92-4c07-4516-a7d2-17bf9629ede7", "0ca1ee24-bf52-4295-896e-c200eb1bfd04", "f3bcb4ad-faaa-4afa-8a0c-8e2986c80065" }
+        OrderUIDs = new[] { "a99e6f92-4c07-4516-a7d2-17bf9629ede7", "0ca1ee24-bf52-4295-896e-c200eb1bfd04"}
       };
 
-      ShippingDto sut = usecase.GetCompleteShippingByOrderUIDList(query);
+      ShippingDto sut = usecase.GetShippingOrderForParcelDelivery(query);
 
       Assert.NotNull(sut);
 

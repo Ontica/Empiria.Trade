@@ -44,19 +44,17 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     }
 
 
-    internal ShippingEntry GetCompleteShippingByOrderUIDList(ShippingQuery query) {
+    internal ShippingEntry GetShippingOrderForParcelDelivery(ShippingQuery query) {
 
       var helper = new ShippingHelper();
 
-      FixedList<ShippingOrderItem> orderForShippingList = helper.GetOrderForShippingList(query.OrderUIDs);
-
-      //TODO VALIDAR QUE TODAS LAS ORDENES SEAN DEL MISMO CLIENTE, MISMO SHIPPING,
+      FixedList<ShippingOrderItem> orderForShippingList = helper.GetShippingOrderItemList(query.OrderUIDs);
 
       helper.ShippingDataValidations(orderForShippingList);
 
       ShippingEntry shippingEntry = helper.GetShippingEntry(orderForShippingList);
 
-      return new ShippingEntry();
+      return shippingEntry;
 
     }
 

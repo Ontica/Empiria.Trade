@@ -34,7 +34,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
     }
 
 
-    internal static FixedList<ShippingOrderItem> GetShippingOrderItemByOrderUIDList(string[] OrderUIDs) {
+    internal static FixedList<ShippingOrderItem> GetShippingOrderItemList(string[] OrderUIDs) {
 
       string orderIdList = GetOrderIdList(OrderUIDs);
 
