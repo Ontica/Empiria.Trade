@@ -18,7 +18,7 @@ using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 namespace Empiria.Trade.Sales.ShippingAndHandling {
 
   /// <summary>Represents a shipping entry.</summary>
-  internal class ShippingEntry : BaseObject {
+  public class ShippingEntry : BaseObject {
 
 
     #region Constructor and parser
@@ -121,7 +121,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
     private void MapToShippingEntry(string orderUID, ShippingFields fields) {
 
       var builder = new ShippingBuilder();
-      var shipping = builder.GetShippingForOrder(orderUID);
+      var shipping = builder.GetShippingByOrderUID(orderUID);
 
       if (shipping.ShippingOrderId > 0) {
         this.ShippingOrderId = shipping.ShippingOrderId;
@@ -142,4 +142,5 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
 
   } // class ShippingEntry
 
+  
 } // namespace Empiria.Trade.ShippingAndHandling

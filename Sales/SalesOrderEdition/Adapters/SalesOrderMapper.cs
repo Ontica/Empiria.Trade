@@ -170,7 +170,7 @@ namespace Empiria.Trade.Sales.Adapters {
       }
 
       var shippingUseCase = ShippingUseCases.UseCaseInteractor();
-      return shippingUseCase.GetShippingOrder(orderUID);     
+      return shippingUseCase.GetShippingByOrderUID(orderUID);     
     }
 
     private static IShippingAndHandling GetPacking(string orderUID) {

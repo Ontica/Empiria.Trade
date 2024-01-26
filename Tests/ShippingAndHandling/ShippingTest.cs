@@ -17,6 +17,7 @@ using Xunit;
 using Empiria.Tests;
 using Empiria.Trade.Sales.ShippingAndHandling.UseCases;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
+using Empiria.Trade.Sales.ShippingAndHandling;
 
 namespace Empiria.Trade.Tests {
 
@@ -72,13 +73,44 @@ namespace Empiria.Trade.Tests {
 
 
     [Fact]
-    public void GetShippingOrderTest() {
+    public void GetShippingTest() {
+
+      var usecase = ShippingUseCases.UseCaseInteractor();
+
+      string shippingUID = "b1c7eb56-d9d7-45cc-b7af-5335e0496bc7";
+
+      ShippingEntry sut = usecase.GetShippingByUID(shippingUID);
+
+      Assert.NotNull(sut);
+
+    }
+
+
+    [Fact]
+    public void GetShippingByOrderUIDTest() {
 
       var usecase = ShippingUseCases.UseCaseInteractor();
 
       string orderUID = "f3bcb4ad-faaa-4afa-8a0c-8e2986c80065";
 
-      ShippingEntryDto sut = usecase.GetShippingOrder(orderUID);
+      ShippingEntryDto sut = usecase.GetShippingByOrderUID(orderUID);
+
+      Assert.NotNull(sut);
+
+    }
+
+
+    [Fact]
+    public void GetShippingByOrderUIDListTest() {
+
+      var usecase = ShippingUseCases.UseCaseInteractor();
+
+      //string orderUID = "f3bcb4ad-faaa-4afa-8a0c-8e2986c80065";
+      ShippingQuery query = new ShippingQuery {
+        OrderUIDs = new[] { "a99e6f92-4c07-4516-a7d2-17bf9629ede7", "0ca1ee24-bf52-4295-896e-c200eb1bfd04", "f3bcb4ad-faaa-4afa-8a0c-8e2986c80065" }
+      };
+
+      ShippingDto sut = usecase.GetCompleteShippingByOrderUIDList(query);
 
       Assert.NotNull(sut);
 

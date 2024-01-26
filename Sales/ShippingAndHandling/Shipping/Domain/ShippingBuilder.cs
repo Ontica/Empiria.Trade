@@ -8,9 +8,12 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Empiria.Trade.Core.Common;
+using Empiria.Trade.Orders;
+using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 using Empiria.Trade.Sales.ShippingAndHandling.Data;
 
 namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
@@ -41,21 +44,44 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     }
 
 
-    internal ShippingEntry GetShippingForOrder(string orderUID) {
-      
-      var shippingList = ShippingData.GetShippingForOrder(orderUID);
+    internal ShippingEntry GetCompleteShippingByOrderUIDList(ShippingQuery query) {
 
-      if (shippingList.Count>0) {
-        return shippingList.FirstOrDefault();
-      } else {
+      var helper = new ShippingHelper();
+
+      FixedList<ShippingOrderItem> orderForShippingList = helper.GetOrderForShippingList(query.OrderUIDs);
+
+      //TODO VALIDAR QUE TODAS LAS ORDENES SEAN DEL MISMO CLIENTE, MISMO SHIPPING,
+
+      helper.ShippingDataValidations(orderForShippingList);
+
+      ShippingEntry shippingEntry = helper.GetShippingEntry(orderForShippingList);
+
+      return new ShippingEntry();
+
+    }
+
+    
+    internal ShippingEntry GetShippingByOrderUID(string orderUID) {
+
+      string orderId = Order.Parse(orderUID).Id.ToString();
+      var shippingOrderItemList = ShippingData.GetShippingOrderItemByOrderUID(orderId);
+
+      if (shippingOrderItemList.Count == 0) {
         return new ShippingEntry();
       }
 
+      //ShippingEntry.Parse(shippingOrderItemList.FirstOrDefault().ShippingOrderId);
+      return shippingOrderItemList.FirstOrDefault().ShippingOrder;
     }
 
 
     #endregion Public methods
 
+
+    #region Private methods
+
+
+    #endregion Private methods
 
   } // class ShippingBuilder
 }

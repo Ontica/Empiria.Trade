@@ -225,7 +225,7 @@ namespace Empiria.Trade.Sales {
         PackagedData packageInfo = usecasePackage.GetPackagedData(this.UID);
 
         this.Weight = packageInfo.Weight;
-        this.TotalPackages = packageInfo.Count;
+        this.TotalPackages = packageInfo.TotalPackages;
       } else {
         this.Weight = 0;
         this.TotalPackages = 0;

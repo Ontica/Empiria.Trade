@@ -2,42 +2,17 @@
 *                                                                                                            *
 *  Module   : Shipping Management                        Component : Interface adapters                      *
 *  Assembly : Empiria.Trade.ShippingAndHandling.dll      Pattern   : Data Transfer Object                    *
-*  Type     : ShippingEntryDto                           License   : Please read LICENSE.txt file            *
+*  Type     : ShippingFields                             License   : Please read LICENSE.txt file            *
 *                                                                                                            *
-*  Summary  : Output DTO used to return the entries of shipping.                                             *
+*  Summary  : DTO used to manage order shipping fields.                                                      *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 
 namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
-  /// <summary>Output DTO used to return the entries of shipping.</summary>
-  public class ShippingEntryDto {
 
-
-    public INamedEntity ParcelSupplier {
-      get; set;
-    } = new NamedEntityDto("","");
-
-
-    public string ShippingGuide {
-      get; set;
-    } = string.Empty;
-
-
-    public decimal ParcelAmount {
-      get; set;
-    }
-
-
-    public decimal CustomerAmount {
-      get; set;
-    }
-
-
-  } // class ShippingEntryDto
-
-
+  /// <summary>DTO used to manage order shipping fields.</summary>
   public class ShippingFields {
 
 
@@ -65,6 +40,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
       get; set;
     }
 
-  }
 
-} // namespace Empiria.Trade.ShippingAndHandling.Adapters
+  } // class ShippingFields
+
+} // namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters

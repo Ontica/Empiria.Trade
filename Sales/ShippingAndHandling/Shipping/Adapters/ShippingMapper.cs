@@ -24,6 +24,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
       return MapEntry(entry);
     }
 
+    
+    internal static ShippingDto MapShipping(ShippingEntry entry) {
+      return new ShippingDto();
+    }
+
 
     #endregion Public methods
 

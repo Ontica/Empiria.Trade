@@ -55,9 +55,24 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
     }
 
 
-    public ShippingEntryDto GetShippingOrder(string orderUID) {
+    public ShippingEntry GetShippingByUID(string shippingUID) {
+
+      return ShippingEntry.Parse(shippingUID);
+    }
+
+
+    public ShippingEntryDto GetShippingByOrderUID(string orderUID) {
 
       return GetShipping(orderUID);
+    }
+
+
+    public ShippingDto GetCompleteShippingByOrderUIDList(ShippingQuery query) {
+      var builder = new ShippingBuilder();
+
+      ShippingEntry entry = builder.GetCompleteShippingByOrderUIDList(query);
+
+      return ShippingMapper.MapShipping(entry);
     }
 
 
@@ -71,7 +86,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
       var builder = new ShippingBuilder();
 
-      ShippingEntry entry = builder.GetShippingForOrder(orderUID);
+      ShippingEntry entry = builder.GetShippingByOrderUID(orderUID);
 
       return ShippingMapper.Map(entry);
 
