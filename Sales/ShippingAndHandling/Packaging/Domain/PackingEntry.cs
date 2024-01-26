@@ -41,10 +41,10 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
 
     public string OrderUID {
       get; set;
-    }
+    } = string.Empty;
 
 
-    public decimal Size {
+    public decimal Volume {
       get; set;
     }
 
@@ -54,7 +54,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
     }
 
 
-    public int Count {
+    public int TotalPackages {
       get; set;
     }
 
@@ -248,7 +248,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
       var vendorProduct = VendorProduct.Parse(orderItem.VendorProduct.Id);
       //TODO QUITAR URL Y HACER VALIDACION DE IMAGEN EN SERVER
       string url = "http://apps.sujetsa.com.mx:8080/imagenes-productos/";
-      
+
       this.ProductImageUrl = $"{url}{vendorProduct.ProductFields.ProductCode}.jpg";
       this.OrderItemUID = orderItem.UID;
       this.VendorProductId = orderItem.VendorProduct.Id;

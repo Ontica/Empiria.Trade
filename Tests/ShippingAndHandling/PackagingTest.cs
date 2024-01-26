@@ -52,7 +52,7 @@ namespace Empiria.Trade.Tests {
 
 
     [Fact]
-    public void GetGetPackagedDataTest() {
+    public void GetPackagedDataTest() {
 
       var usecase = PackagingUseCases.UseCaseInteractor();
       string uid = "e1513326-ffa6-4a3d-af32-6e9d41316606";
@@ -64,12 +64,11 @@ namespace Empiria.Trade.Tests {
     }
 
 
-
     [Fact]
     public void GetPackagingForOrderTest() {
 
       var usecase = PackagingUseCases.UseCaseInteractor();
-      string uid = "7d035bba-e4c9-40e3-92f4-772389806fb2";//"e1513326-ffa6-4a3d-af32-6e9d41316606";
+      string uid = "6b7cc013-75a3-4751-abb9-02b95d18ba5b";//"e1513326-ffa6-4a3d-af32-6e9d41316606";
 
       PackingDto sut = usecase.GetPackagingForOrder(uid);
       

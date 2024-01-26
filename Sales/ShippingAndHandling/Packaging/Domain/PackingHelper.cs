@@ -13,18 +13,17 @@ using System.Linq;
 using Empiria.Trade.Sales.ShippingAndHandling.Data;
 using Empiria.Trade.Core.Catalogues;
 
-namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
-{
+namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
-    /// <summary>Helper methods to build packing structure.</summary>
-    internal class PackingHelper {
+  /// <summary>Helper methods to build packing structure.</summary>
+  internal class PackingHelper {
 
     #region Public methods
 
 
     public FixedList<MissingItem> GetMissingItems(string orderUid,
                                         FixedList<PackagedForItem> packagesForItems) {
-      
+
       var missingItems = new List<MissingItem>();
 
       var data = new PackagingData();
@@ -54,7 +53,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
     public FixedList<PackagedForItem> GetPackagesByOrder(string orderUid,
                                           FixedList<PackageForItem> packItems) {
 
-      if (packItems.Count==0) {
+      if (packItems.Count == 0) {
         return new FixedList<PackagedForItem>();
       }
 
@@ -70,7 +69,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
         package.PackageTypeUID = packageType.ObjectKey;
         package.PackageTypeName = packageType.Name;
         package.OrderItems = GetPackingItems(entry.OrderPackingId, entry.OrderPackingUID);
-        package.PackageWeight = package.OrderItems.Sum(x=>x.ItemWeight);
+        package.PackageWeight = package.OrderItems.Sum(x => x.ItemWeight);
         packagesList.Add(package);
 
       }
@@ -87,22 +86,22 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
 
       var data = new PackagedData();
 
-      decimal _vol = 0, weight = 0;
+      decimal volume = 0, weight = 0;
 
       foreach (var item in packageForItemsList) {
         var type = PackageType.Parse(item.PackageTypeUID);
 
         if (type != null) {
           type.GetVolumeAttributes();
-          _vol += type.TotalVolume;
+          volume += type.TotalVolume;
         }
         weight += item.PackageWeight;
       }
 
       data.OrderUID = orderUid;
-      data.Size = _vol;
+      data.Volume = volume;
       data.Weight = weight;
-      data.Count = packageForItemsList.Count();
+      data.TotalPackages = packageForItemsList.Count();
 
       return data;
     }
@@ -160,7 +159,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
         whBinDto.OrderItemUID = packingOrderItem.OrderItemUID;
         whBinDto.Name = $"{warehouseBinProduct.WarehouseBin.BinDescription}";
         whBinDto.WarehouseName = $"{warehouseBinProduct.WarehouseBin.Warehouse.Code}";
-                                 //$"rack: {warehouseBinProduct.WarehouseBin.BinDescription}";
+        //$"rack: {warehouseBinProduct.WarehouseBin.BinDescription}";
         //whBinDto.Stock = //TODO SACAR STOCK DE INVENTARIO-WAREHOUSE
         packingOrderItem.WarehouseBinForPacking = whBinDto;
       }
