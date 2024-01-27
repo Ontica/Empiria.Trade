@@ -53,20 +53,23 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     private FixedList<ShippingOrderItem> GetOrderItemByPackingOrder(
               FixedList<ShippingOrderItem> shippingOrderItemList) {
 
-      if (shippingOrderItemList.Count > 0) {
-        return shippingOrderItemList;
-      }
-
-      var orderItemList = new List<ShippingOrderItem>();
+      var orderItemList = new List<ShippingOrderItem>(shippingOrderItemList);
 
       foreach (var orderUID in query.Orders) {
-        var orderItem = new ShippingOrderItem();
-        var order = Order.Parse(orderUID);
-        orderItem.ShippingOrderItemId = -1;
-        orderItem.ShippingOrderItemUID= "";
-        orderItem.ShippingOrder = ShippingEntry.Parse(-1);
-        orderItem.Order = order;
-        orderItemList.Add(orderItem);
+
+        var existShippingOrderItem = orderItemList.FirstOrDefault(x=>x.Order.UID == orderUID);
+
+        if (existShippingOrderItem == null) {
+
+          var orderItem = new ShippingOrderItem();
+          var order = Order.Parse(orderUID);
+          orderItem.ShippingOrderItemId = -1;
+          orderItem.ShippingOrderItemUID = "";
+          orderItem.ShippingOrder = ShippingEntry.Parse(-1);
+          orderItem.Order = order;
+          orderItemList.Add(orderItem);
+
+        }
       }
 
       return orderItemList.ToFixedList();
