@@ -24,8 +24,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
 
     static internal ShippingEntryDto Map(ShippingEntry entry) {
-
-      return MapEntry(entry);
+      var shippingOrderItem = new FixedList<ShippingOrderItemDto>();
+      return MapEntry(entry, shippingOrderItem);
     }
 
 
@@ -33,8 +33,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
       ShippingDto shippingDto = new ShippingDto();
 
-      shippingDto.ShippingData = MapEntry(entry);
       shippingDto.OrdersForShipping = MapToOrderForShippingDto(entry.OrderForShipping);
+      shippingDto.ShippingData = MapEntry(entry, shippingDto.OrdersForShipping);
 
       return shippingDto;
     }
@@ -46,7 +46,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
     #region Private methods
 
 
-    private static ShippingEntryDto MapEntry(ShippingEntry entry) {
+    private static ShippingEntryDto MapEntry(ShippingEntry entry,
+                    FixedList<ShippingOrderItemDto> ordersForShipping) {
 
       if (entry.ShippingOrderId == 0) {
         return new ShippingEntryDto();
@@ -61,7 +62,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
         ParcelAmount = entry.ParcelAmount,
         CustomerAmount = entry.CustomerAmount,
         ShippingDate = entry.ShippingDate,
-        TotalOrders = entry.OrderForShipping.Count,
+        OrdersCount = entry.OrderForShipping.Count,
+        OrdersTotal= ordersForShipping.Sum(x => x.OrderTotal),
         TotalPackages = entry.OrderForShipping.Sum(x => x.TotalPackages),
         TotalWeight = entry.OrderForShipping.Sum(x => x.TotalWeight),
         TotalVolume = entry.OrderForShipping.Sum(x => x.TotalVolume)
@@ -77,9 +79,13 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
       var orderForShippingDto = new List<ShippingOrderItemDto>();
 
       foreach (var item in orderForShipping) {
+
+        FixedList<SalesOrderItem> salesOrderItems = SalesOrderItem.GetOrderItems(item.Order.Id);
+
         var itemDto = new ShippingOrderItemDto();
         itemDto.OrderUID = item.Order.UID;
         itemDto.OrderName = item.Order.OrderNumber;
+        itemDto.OrderTotal = salesOrderItems.Sum(x => x.Total);
         itemDto.Customer = new NamedEntityDto(item.Order.Customer.UID, item.Order.Customer.Name);
         itemDto.Vendor = new NamedEntityDto(item.Order.SalesAgent.UID, item.Order.SalesAgent.Name);
         itemDto.TotalPackages = item.TotalPackages;

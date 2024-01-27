@@ -38,7 +38,12 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
     }
 
 
-    public int TotalOrders {
+    public int OrdersCount {
+      get; set;
+    }
+
+
+    public decimal OrdersTotal {
       get; set;
     }
 
@@ -81,6 +86,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
 
     public string OrderName {
+      get; set;
+    }
+
+
+    public decimal OrderTotal {
       get; set;
     }
 
