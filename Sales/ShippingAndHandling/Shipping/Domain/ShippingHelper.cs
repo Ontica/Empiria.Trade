@@ -65,7 +65,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
           var order = SalesOrder.Parse(orderUID);
           orderItem.ShippingOrderItemId = -1;
           orderItem.ShippingOrderItemUID = "";
-          orderItem.ShippingOrder = new ShippingEntry();
+          orderItem.ShippingOrder = ShippingEntry.Parse(-1);
           orderItem.Order = order;
           orderItemList.Add(orderItem);
 

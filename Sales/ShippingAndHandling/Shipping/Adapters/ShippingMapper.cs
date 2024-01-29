@@ -49,15 +49,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
     private static ShippingEntryDto MapEntry(ShippingEntry entry,
                     FixedList<ShippingOrderItemDto> ordersForShipping) {
 
-      if (entry.ShippingOrderId == 0) {
-        return new ShippingEntryDto();
-      }
-
       var parcel = SimpleObjectData.Parse(entry.ParcelSupplierId);
       var parcelName = parcel.UID != "" ? parcel.Name : "";
 
       var shippingDto = new ShippingEntryDto {
-        ShippingUID= entry.ShippingUID,
+        ShippingUID= entry.ShippingOrderId == -1 ? "" : entry.ShippingUID,
         ParcelSupplier = new NamedEntityDto(parcel.UID, parcelName),
         ShippingGuide = entry.ShippingGuide,
         ParcelAmount = entry.ParcelAmount,

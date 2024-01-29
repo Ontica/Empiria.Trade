@@ -97,11 +97,11 @@ namespace Empiria.Trade.Tests {
 
       ShippingQuery query = new ShippingQuery {
         Orders = new[] {
-          "dc9aa2bb-1082-43b9-afd5-fdaae4e7deeb" //vacio
+          //"dc9aa2bb-1082-43b9-afd5-fdaae4e7deeb" //vacio
           //"a99e6f92-4c07-4516-a7d2-17bf9629ede7", //ligados1
           //"0ca1ee24-bf52-4295-896e-c200eb1bfd04", //ligados1
-          //"9096d6cd-1ba7-42fe-9c0a-55fd37ecadc1", //ligados2
-          //"f959a4df-af9b-4596-9ee8-4a3e2e94757f"  //ligados2
+          "9096d6cd-1ba7-42fe-9c0a-55fd37ecadc1", //ligados2
+          "f959a4df-af9b-4596-9ee8-4a3e2e94757f"  //ligados2
         }
       };
 
