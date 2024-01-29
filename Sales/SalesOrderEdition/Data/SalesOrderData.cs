@@ -36,9 +36,13 @@ namespace Empiria.Trade.Sales.Data {
 
       if (fields.Status != Orders.OrderStatus.Empty) {
        status = $" AND (OrderStatus = '{(char)fields.Status}')";
-      }      
-            
-       var sql = "SELECT * FROM TRDOrders " +
+      } else {
+        status = $" AND (OrderStatus <> '{(char) Orders.OrderStatus.Cancelled}')";
+      }
+
+
+
+      var sql = "SELECT * FROM TRDOrders " +
                  $"WHERE {keywords}  (orderTime >= CONVERT(SMALLDATETIME, '{fromDate}') AND " +
                  $"orderTime <= CONVERT(SMALLDATETIME,'{toDate}')) {status} ";
       
