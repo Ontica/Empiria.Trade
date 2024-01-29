@@ -35,7 +35,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
     public string ShippingUID {
       get; set;
-    }
+    } = string.Empty;
 
 
     public int OrdersCount {

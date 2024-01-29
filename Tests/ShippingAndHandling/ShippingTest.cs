@@ -54,24 +54,14 @@ namespace Empiria.Trade.Tests {
     public void CreateShippingOrderTest() {
 
       var usecase = ShippingUseCases.UseCaseInteractor();
-      
-      string orderUID = "f3bcb4ad-faaa-4afa-8a0c-8e2986c80065";
 
-      ShippingFields fields = new ShippingFields() {
-        OrderUID = orderUID,
-        ParcelSupplierUID = "8521a10b-0607-4d45-8614-385aba701b1r",
-        ShippingGuide ="9876543210",
-        ParcelAmount = 200,
-        CustomerAmount= 100
-      };
-
-      ShippingEntryDto sut = usecase.CreateShippingOrder(orderUID, fields);
+      ShippingDto sut = usecase.CreateShippingOrder(GetShippingFields());
 
       Assert.NotNull(sut);
 
     }
 
-
+    
     [Fact]
     public void GetShippingTest() {
 
@@ -107,15 +97,15 @@ namespace Empiria.Trade.Tests {
 
       ShippingQuery query = new ShippingQuery {
         Orders = new[] {
-          //"dc9aa2bb-1082-43b9-afd5-fdaae4e7deeb", //vacio
+          "dc9aa2bb-1082-43b9-afd5-fdaae4e7deeb" //vacio
           //"a99e6f92-4c07-4516-a7d2-17bf9629ede7", //ligados1
           //"0ca1ee24-bf52-4295-896e-c200eb1bfd04", //ligados1
-          "9096d6cd-1ba7-42fe-9c0a-55fd37ecadc1", //ligados2
-          "f959a4df-af9b-4596-9ee8-4a3e2e94757f"  //ligados2
+          //"9096d6cd-1ba7-42fe-9c0a-55fd37ecadc1", //ligados2
+          //"f959a4df-af9b-4596-9ee8-4a3e2e94757f"  //ligados2
         }
       };
 
-      ShippingDto sut = usecase.GetShippingOrderForParcelDelivery(query);
+      ShippingDto sut = usecase.GetShippingOrderByQuery(query);
 
       Assert.NotNull(sut);
 
@@ -124,6 +114,30 @@ namespace Empiria.Trade.Tests {
 
     #endregion Facts
 
+
+    #region Private methods
+
+    private ShippingFields GetShippingFields() {
+      string[] orders = new string[] { };
+
+      ShippingDataFields dataFields = new ShippingDataFields() {
+        ShippingUID = "",
+        ParcelSupplierUID = "8521a10b-0607-4d45-8614-385aba701b1r",
+        ShippingGuide = "GUIA 00003",
+        ParcelAmount = 200,
+        CustomerAmount = 100
+      };
+
+      ShippingFields fields = new ShippingFields() {
+        Orders = orders,
+        ShippingData = dataFields
+      };
+
+      return fields;
+    }
+
+
+    #endregion Private methods
 
 
   } // class ShippingTest

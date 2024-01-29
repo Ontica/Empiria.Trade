@@ -37,8 +37,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
     static public ShippingEntry Empty => ParseEmpty<ShippingEntry>();
 
 
-    public ShippingEntry(string orderUID, ShippingFields fields) {
-      MapToShippingEntry(orderUID, fields);
+    public ShippingEntry(ShippingDataFields fields) {
+      MapToShippingEntry(fields);
     }
 
 
@@ -54,12 +54,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
     }
 
 
-    [DataField("OrderId")]
-    public int OrderId {
-      get; set;
-    }
-
-
     [DataField("ParcelSupplierId")]
     public int ParcelSupplierId {
       get; set;
@@ -69,13 +63,13 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
     [DataField("ShippingUID")]
     public string ShippingUID {
       get; set;
-    }
-    
+    } = string.Empty;
+
 
     [DataField("ShippingGuide")]
     public string ShippingGuide {
       get; set;
-    }
+    } = string.Empty;
 
 
     [DataField("ParcelAmount")]
@@ -102,7 +96,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
     }
 
 
-    public FixedList<ShippingOrderItem> OrderForShipping {
+    public FixedList<ShippingOrderItem> OrdersForShipping {
       get ; set;
     } = new FixedList<ShippingOrderItem>();
 
@@ -123,17 +117,16 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
     }
 
 
-    private void MapToShippingEntry(string orderUID, ShippingFields fields) {
+    private void MapToShippingEntry(ShippingDataFields fields) {
 
       var builder = new ShippingBuilder();
-      var shipping = builder.GetShippingByOrderUID(orderUID);
+      //var shipping = builder.GetShippingByOrderUID(orderUID);
 
-      if (shipping.ShippingOrderId > 0) {
-        this.ShippingOrderId = shipping.ShippingOrderId;
-        this.ShippingUID = shipping.ShippingUID;
-      }
+      //if (shipping.ShippingOrderId > 0) {
+      //  this.ShippingOrderId = shipping.ShippingOrderId;
+      //  this.ShippingUID = shipping.ShippingUID;
+      //}
 
-      this.OrderId = Order.Parse(orderUID).Id;
       this.ParcelSupplierId = SimpleObjectData.Parse(fields.ParcelSupplierUID).Id;
       this.ShippingGuide = fields.ShippingGuide;
       this.ParcelAmount = fields.ParcelAmount;

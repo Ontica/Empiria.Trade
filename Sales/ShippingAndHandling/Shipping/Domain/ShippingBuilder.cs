@@ -44,8 +44,9 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     }
 
 
-    internal ShippingEntry GetShippingOrderForParcelDelivery(ShippingQuery query) {
-
+    internal ShippingEntry GetShippingOrderForParcelDelivery(string[] orders) {
+      
+      var query = new ShippingQuery() { Orders = orders };
       var helper = new ShippingHelper(query);
 
       FixedList<ShippingOrderItem> orderForShippingList = helper.GetShippingOrderItemList();
@@ -68,7 +69,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
         return new ShippingEntry();
       }
 
-      //ShippingEntry.Parse(shippingOrderItemList.FirstOrDefault().ShippingOrderId);
       return shippingOrderItemList.FirstOrDefault().ShippingOrder;
     }
 

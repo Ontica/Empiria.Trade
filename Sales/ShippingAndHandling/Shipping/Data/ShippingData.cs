@@ -50,6 +50,10 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
 
     internal static FixedList<ShippingOrderItem> GetShippingOrderItemByOrderUID(string orderUIDs) {
 
+      if (orderUIDs == string.Empty) {
+        return new FixedList<ShippingOrderItem>();
+      }
+
       string sql = $"SELECT * FROM TRDShippingOrderItems where OrderId IN ({orderUIDs})";
 
       var dataOperation = DataOperation.Parse(sql);
@@ -61,7 +65,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
     internal static void WriteShipping(ShippingEntry shipping) {
 
       var op = DataOperation.Parse("writeShipping",
-        shipping.ShippingOrderId, shipping.OrderId, shipping.ParcelSupplierId,
+        shipping.ShippingOrderId, shipping.ParcelSupplierId,
         shipping.ShippingUID, shipping.ShippingGuide, shipping.ParcelAmount,
         shipping.CustomerAmount, shipping.ShippingDate, shipping.DeliveryDate);
 
@@ -80,6 +84,10 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
     #region Private methods
 
     static private string GetOrderIdList(string[] orderUIDs) {
+
+      if (orderUIDs.Length == 0) {
+        return string.Empty;
+      }
 
       string orderIdList = "";
       

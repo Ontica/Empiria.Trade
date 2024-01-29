@@ -45,16 +45,16 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
     }
 
 
-    public ShippingEntryDto CreateShippingOrder(string orderUID, ShippingFields fields) {
+    public ShippingDto CreateShippingOrder(ShippingFields fields) {
 
-      var shippingOrder = new ShippingEntry(orderUID, fields);
+      var shippingOrder = new ShippingEntry(fields.ShippingData);
 
       shippingOrder.Save();
 
-      return GetShipping(orderUID);
+      return GetShippingOrderByUID(shippingOrder.UID);
     }
 
-
+    
     public ShippingEntry GetShippingByUID(string shippingUID) {
 
       return ShippingEntry.Parse(shippingUID);
@@ -63,16 +63,17 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
     public ShippingEntryDto GetShippingByOrderUID(string orderUID) {
 
-      return GetShipping(orderUID);
+      var builder = new ShippingBuilder();
+
+      ShippingEntry entry = builder.GetShippingByOrderUID(orderUID);
+
+      return ShippingMapper.Map(entry);
     }
 
 
-    public ShippingDto GetShippingOrderForParcelDelivery(ShippingQuery query) {
-      var builder = new ShippingBuilder();
+    public ShippingDto GetShippingOrderByQuery(ShippingQuery query) {
 
-      ShippingEntry entry = builder.GetShippingOrderForParcelDelivery(query);
-
-      return ShippingMapper.MapShippingForParcelDelivery(entry);
+      return GetShippingByOrders(query.Orders);
     }
 
 
@@ -82,15 +83,31 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
     #region Private methods
 
 
-    private ShippingEntryDto GetShipping(string orderUID) {
+    private ShippingDto GetShippingOrderByUID(string uID) {
 
+      return new ShippingDto();
+    }
+
+
+    private ShippingDto GetShippingByOrders(string[] orders) {
       var builder = new ShippingBuilder();
 
-      ShippingEntry entry = builder.GetShippingByOrderUID(orderUID);
+      ShippingEntry entry = builder.GetShippingOrderForParcelDelivery(orders);
 
-      return ShippingMapper.Map(entry);
-
+      return ShippingMapper.MapShippingForParcelDelivery(entry);
     }
+
+
+    //private ShippingEntryDto GetShipping(string orderUID) {
+
+    //  var builder = new ShippingBuilder();
+
+    //  ShippingEntry entry = builder.GetShippingByOrderUID(orderUID);
+
+    //  return ShippingMapper.Map(entry);
+
+    //}
+
 
 
     #endregion Private methods

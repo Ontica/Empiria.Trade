@@ -33,7 +33,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
       ShippingDto shippingDto = new ShippingDto();
 
-      shippingDto.OrdersForShipping = MapToOrderForShippingDto(entry.OrderForShipping);
+      shippingDto.OrdersForShipping = MapToOrderForShippingDto(entry.OrdersForShipping);
       shippingDto.ShippingData = MapEntry(entry, shippingDto.OrdersForShipping);
 
       return shippingDto;
@@ -54,19 +54,20 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
       }
 
       var parcel = SimpleObjectData.Parse(entry.ParcelSupplierId);
+      var parcelName = parcel.UID != "" ? parcel.Name : "";
 
       var shippingDto = new ShippingEntryDto {
         ShippingUID= entry.ShippingUID,
-        ParcelSupplier = new NamedEntityDto(parcel.UID, parcel.Name),
+        ParcelSupplier = new NamedEntityDto(parcel.UID, parcelName),
         ShippingGuide = entry.ShippingGuide,
         ParcelAmount = entry.ParcelAmount,
         CustomerAmount = entry.CustomerAmount,
         ShippingDate = entry.ShippingDate,
-        OrdersCount = entry.OrderForShipping.Count,
+        OrdersCount = entry.OrdersForShipping.Count,
         OrdersTotal= ordersForShipping.Sum(x => x.OrderTotal),
-        TotalPackages = entry.OrderForShipping.Sum(x => x.TotalPackages),
-        TotalWeight = entry.OrderForShipping.Sum(x => x.TotalWeight),
-        TotalVolume = entry.OrderForShipping.Sum(x => x.TotalVolume)
+        TotalPackages = entry.OrdersForShipping.Sum(x => x.TotalPackages),
+        TotalWeight = entry.OrdersForShipping.Sum(x => x.TotalWeight),
+        TotalVolume = entry.OrdersForShipping.Sum(x => x.TotalVolume)
       };
 
       return shippingDto;

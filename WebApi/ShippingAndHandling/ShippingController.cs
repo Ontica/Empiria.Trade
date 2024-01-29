@@ -36,12 +36,12 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
 
 
     [HttpPost]
-    [Route("v4/trade/shipping-and-handling/shipping/{orderUID:guid}")]
-    public SingleObjectModel CreateShippingOrder([FromUri] string orderUID, [FromBody] ShippingFields fields) {
+    [Route("v4/trade/shipping-and-handling/shipping/")]
+    public SingleObjectModel CreateShippingOrder([FromBody] ShippingFields fields) {
 
       using (var usecases = ShippingUseCases.UseCaseInteractor()) {
 
-        ShippingEntryDto shippingOrder = usecases.CreateShippingOrder(orderUID, fields);
+        ShippingDto shippingOrder = usecases.CreateShippingOrder(fields);
 
         return new SingleObjectModel(this.Request, shippingOrder);
       }
@@ -54,7 +54,7 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
 
       using (var usecases = ShippingUseCases.UseCaseInteractor()) {
 
-        ShippingDto shippingOrder = usecases.GetShippingOrderForParcelDelivery(query);
+        ShippingDto shippingOrder = usecases.GetShippingOrderByQuery(query);
 
         return new SingleObjectModel(this.Request, shippingOrder);
       }

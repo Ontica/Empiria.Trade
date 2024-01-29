@@ -16,7 +16,23 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
   public class ShippingFields {
 
 
-    public string OrderUID {
+    public string[] Orders {
+      get; set;
+    }
+
+
+   public ShippingDataFields ShippingData {
+      get;set;
+    } 
+
+
+  } // class ShippingFields
+
+
+  public class ShippingDataFields {
+
+
+    public string ShippingUID {
       get; set;
     }
 
@@ -40,7 +56,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
       get; set;
     }
 
-
-  } // class ShippingFields
+  }
 
 } // namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters
