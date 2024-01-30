@@ -47,6 +47,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
     public ShippingDto CreateShipping(ShippingFields fields) {
 
+      Assertion.EnsureFailed("Funcionalidad en proceso de desarrollo!");
       var builder = new ShippingBuilder();
 
       ShippingEntry shippingOrder = builder.CreateOrUpdateShipping(fields);
@@ -56,7 +57,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
 
     public ShippingDto UpdateShippingOrder(string shippingOrderUID, ShippingFields fields) {
-
+      Assertion.EnsureFailed("Funcionalidad en proceso de desarrollo!");
       fields.ShippingData.ShippingUID = shippingOrderUID;
 
       var builder = new ShippingBuilder();
