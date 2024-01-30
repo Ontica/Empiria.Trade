@@ -104,7 +104,7 @@ namespace Empiria.Trade.Sales {
     public int TotalPackages {
       get; set;
     }
-
+       
 
     #endregion
 
@@ -186,6 +186,7 @@ namespace Empiria.Trade.Sales {
       SetOrderValues();
 
       this.Actions = OrderActions.GetPackingActions();
+           
     }
 
     internal void Update(SalesOrderFields fields) {
@@ -233,10 +234,11 @@ namespace Empiria.Trade.Sales {
       
     }
 
-    public void CalculateSalesOrder(string queryType) {
+    public void CalculateSalesOrder(QueryType queryType) {
       this.SetOrderValues();      
 
       this.SetAuthorizedActions(queryType);
+      
     }
 
     public FixedList<CreditTransaction> GetCustomerCreditTransactions() {
@@ -301,14 +303,14 @@ namespace Empiria.Trade.Sales {
     }
      
 
-    internal void SetAuthorizedActions(string queryType) {
+    internal void SetAuthorizedActions(QueryType queryType) {
       switch (this.Status) {
         case OrderStatus.Captured:
           this.Actions = OrderActions.GetCaptureActions();
           break;
         case OrderStatus.Applied: {
           this.Actions = OrderActions.GetApplyActions();
-          if (queryType == "SalesOrdersAuthorization") {
+          if (queryType == QueryType.SalesOrdersAuthorization) { //"SalesOrdersAuthorization
             this.Actions.CanAuthorize = true;
           } else {
             this.Actions.CanAuthorize = false;

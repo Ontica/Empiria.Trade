@@ -104,7 +104,7 @@ namespace Empiria.Trade.Sales.WebApi {
 
     [HttpGet]
     [Route("v4/trade/sales/orders/{orderUID:guid}/{queryType}")]
-    public SingleObjectModel GetSalesOrder([FromUri] string orderUID, [FromUri] string queryType) {
+    public SingleObjectModel GetSalesOrder([FromUri] string orderUID, [FromUri] QueryType queryType) {
 
        base.RequireResource(orderUID, "orderUID");
 

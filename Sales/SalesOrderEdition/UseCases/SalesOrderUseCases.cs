@@ -116,7 +116,7 @@ namespace Empiria.Trade.Sales.UseCases {
       return orderDto;
     }
 
-    public ISalesOrderDto GetSalesOrder(string orderUID, string queryType) {
+    public ISalesOrderDto GetSalesOrder(string orderUID, QueryType queryType) {
       var order = SalesOrder.Parse(orderUID);
       order.CalculateSalesOrder(queryType);
 

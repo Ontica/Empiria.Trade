@@ -14,8 +14,20 @@ using Empiria.Trade.Orders;
 
 namespace Empiria.Trade.Sales.Adapters {
 
+  public enum QueryType {
+    Sales,
+    SalesAuthorization,
+    SalesPacking,
+    SalesShipping,
+    SalesOrdersAuthorization, //Temporal 
+    SalesOrders, //temporal
+    SalesOrdersPacking
+  }
+
   /// <summary>Input DTO for sales orders.</summary>
   public class SalesOrderFields {
+
+    
 
     #region Constructors and parsers
 
