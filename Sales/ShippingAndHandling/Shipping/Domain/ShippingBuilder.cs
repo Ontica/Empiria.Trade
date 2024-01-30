@@ -11,6 +11,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using Empiria.Trade.Core.Common;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
@@ -36,20 +37,12 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     #region Public methods
 
 
-    internal ShippingEntry CreateShippingForOrder() {
-
-      var data = new ShippingData();
-
-      throw new NotImplementedException();
-    }
-
-
-    internal ShippingEntry GetShippingOrderForParcelDelivery(string[] orders) {
+    internal ShippingEntry GetShippingByOrders(string[] orders) {
       
       var query = new ShippingQuery() { Orders = orders };
-      var helper = new ShippingHelper(query);
+      var helper = new ShippingHelper();
 
-      FixedList<ShippingOrderItem> orderForShippingList = helper.GetShippingOrderItemList();
+      FixedList<ShippingOrderItem> orderForShippingList = helper.GetShippingOrderItemList(orders);
 
       helper.ShippingDataValidations(orderForShippingList);
 
@@ -75,9 +68,16 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
     internal ShippingEntry CreateOrUpdateShipping(ShippingFields fields) {
 
+      var helper = new ShippingHelper();
+
+      FixedList<ShippingOrderItem> orderForShippingList = helper.GetShippingOrderItemList(fields.Orders);
+
+      helper.ShippingDataValidations(orderForShippingList);
+
       ShippingEntry shippingOrder = CreateOrUpdateShippingOrder(fields.ShippingData);
 
-      FixedList<ShippingOrderItem> shippingOrderItem = CreateShippingOrderItem(shippingOrder.UID, fields.Orders);
+      FixedList<ShippingOrderItem> shippingOrderItem = CreateOrUpdateShippingOrderItem(
+                                                        shippingOrder.UID, fields.Orders);
 
       ShippingEntry shippingOrderMerged = MergeShippingOrderWithItems(shippingOrder, shippingOrderItem);
 
@@ -101,7 +101,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     }
 
 
-    private FixedList<ShippingOrderItem> CreateShippingOrderItem(string shippingOrderUID, string[] orders) {
+    private FixedList<ShippingOrderItem> CreateOrUpdateShippingOrderItem(
+                                          string shippingOrderUID, string[] orders) {
 
       var shipping = ShippingEntry.Parse(shippingOrderUID);
       var shippingItems = new List<ShippingOrderItem>();

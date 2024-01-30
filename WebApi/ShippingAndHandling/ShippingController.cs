@@ -41,7 +41,7 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
 
       using (var usecases = ShippingUseCases.UseCaseInteractor()) {
 
-        ShippingDto shippingOrder = usecases.CreateShipping(fields);
+        ShippingDto shippingOrder = usecases.CreateShippingOrder(fields);
 
         return new SingleObjectModel(this.Request, shippingOrder);
       }

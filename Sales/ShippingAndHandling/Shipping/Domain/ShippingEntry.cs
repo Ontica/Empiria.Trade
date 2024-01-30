@@ -121,8 +121,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
 
     private void MapToShippingEntry(ShippingDataFields fields) {
 
-      var builder = new ShippingBuilder();
-
       if (fields.ShippingUID != string.Empty) {
         this.ShippingOrderId = Parse(fields.ShippingUID).ShippingOrderId;
         this.ShippingUID = fields.ShippingUID;

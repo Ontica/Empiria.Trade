@@ -55,7 +55,20 @@ namespace Empiria.Trade.Tests {
 
       var usecase = ShippingUseCases.UseCaseInteractor();
 
-      ShippingDto sut = usecase.CreateShipping(GetShippingFields());
+      ShippingDto sut = usecase.CreateShippingOrder(GetShippingFields());
+
+      Assert.NotNull(sut);
+
+    }
+
+
+    [Fact]
+    public void UpdateShippingOrderTest() {
+
+      var usecase = ShippingUseCases.UseCaseInteractor();
+
+      string shippingUID = "d1ea2b82-ccb6-4bd4-ad90-5df757f2ddb3";
+      ShippingDto sut = usecase.UpdateShippingOrder(shippingUID, GetShippingFields());
 
       Assert.NotNull(sut);
 
@@ -133,16 +146,16 @@ namespace Empiria.Trade.Tests {
 
     private ShippingFields GetShippingFields() {
       string[] orders = new string[] {
-        "9096d6cd-1ba7-42fe-9c0a-55fd37ecadc1", //159
-        "f959a4df-af9b-4596-9ee8-4a3e2e94757f"  //194
+        "9096d6cd-1ba7-42fe-9c0a-55fd37ecadc1", //159 1
+        "f959a4df-af9b-4596-9ee8-4a3e2e94757f" //194 1
       };
 
       ShippingDataFields dataFields = new ShippingDataFields() {
-        ShippingUID = "84c97351-5fe8-427a-a61c-20cfe441a8b5",
+        ShippingUID = "",
         ParcelSupplierUID = "8521a10b-0607-4d45-8614-385aba701b1r",
-        ShippingGuide = "GUIA 00004",
-        ParcelAmount = 1000,
-        CustomerAmount = 100
+        ShippingGuide = "GUIA 0000444444",
+        ParcelAmount = 1500,
+        CustomerAmount = 1500
       };
 
       ShippingFields fields = new ShippingFields() {

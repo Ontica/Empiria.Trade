@@ -103,13 +103,13 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
       this.Order = Order.Parse(orderUID);
       this.ShippingOrder = shipping;
       
-      var exist = ShippingData.GetShippingOrderItemByShippingOrderUID(
+      var existItem = ShippingData.GetShippingOrderItemByShippingOrderUID(
                     shipping.ShippingOrderId).Find(o => o.Order.Id == this.Order.Id);
 
-      if (exist != null) {
+      if (existItem != null) {
         
-        this.ShippingOrderItemId = exist.ShippingOrderItemId;
-        this.ShippingOrderItemUID = exist.ShippingOrderItemUID;
+        this.ShippingOrderItemId = existItem.ShippingOrderItemId;
+        this.ShippingOrderItemUID = existItem.ShippingOrderItemUID;
       }
 
     }

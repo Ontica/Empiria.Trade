@@ -45,26 +45,17 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
     }
 
 
-    public ShippingDto CreateShipping(ShippingFields fields) {
+    public ShippingDto CreateShippingOrder(ShippingFields fields) {
 
-      Assertion.EnsureFailed("Funcionalidad en proceso de desarrollo!");
-      var builder = new ShippingBuilder();
-
-      ShippingEntry shippingOrder = builder.CreateOrUpdateShipping(fields);
-
-      return GetShippingDtoByUID(shippingOrder.UID);
+      return CreateOrUpdateShippingOrder(fields);
     }
 
 
     public ShippingDto UpdateShippingOrder(string shippingOrderUID, ShippingFields fields) {
-      Assertion.EnsureFailed("Funcionalidad en proceso de desarrollo!");
+
       fields.ShippingData.ShippingUID = shippingOrderUID;
 
-      var builder = new ShippingBuilder();
-
-      ShippingEntry shippingOrder = builder.CreateOrUpdateShipping(fields);
-
-      return GetShippingDtoByUID(shippingOrder.UID);
+      return CreateOrUpdateShippingOrder(fields);
     }
 
 
@@ -101,17 +92,20 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
     #region Private methods
 
+    private ShippingDto CreateOrUpdateShippingOrder(ShippingFields fields) {
 
-    private ShippingDto GetShippingDtoByUID(string uID) {
+      var builder = new ShippingBuilder();
 
-      return new ShippingDto();
+      ShippingEntry shippingOrder = builder.CreateOrUpdateShipping(fields);
+
+      return GetShippingByOrders(fields.Orders);
     }
 
 
     private ShippingDto GetShippingByOrders(string[] orders) {
       var builder = new ShippingBuilder();
 
-      ShippingEntry entry = builder.GetShippingOrderForParcelDelivery(orders);
+      ShippingEntry entry = builder.GetShippingByOrders(orders);
 
       return ShippingMapper.MapShippingForParcelDelivery(entry);
     }

@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Empiria.Trade.Orders;
@@ -22,11 +23,9 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
     #region Constructor and parsers
 
-    private ShippingQuery query;
 
-
-    public ShippingHelper(ShippingQuery _query) {
-      query = _query;
+    public ShippingHelper() {
+      
     }
 
 
@@ -36,13 +35,13 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     #region Public methods
 
 
-    internal FixedList<ShippingOrderItem> GetShippingOrderItemList() {
+    internal FixedList<ShippingOrderItem> GetShippingOrderItemList(string[] orders) {
 
       FixedList<ShippingOrderItem> shippingOrderItemList =
-                                   ShippingData.GetShippingOrderItemList(query.Orders);
+                                   ShippingData.GetShippingOrderItemList(orders);
 
       FixedList<ShippingOrderItem> orderItemByPackingOrder = 
-                                   GetOrderItemByPackingOrder(shippingOrderItemList);
+                                   GetOrderItemByPackingOrder(orders, shippingOrderItemList);
 
       GetShippingOrderItemMeasurementUnits(orderItemByPackingOrder);
 
@@ -50,12 +49,12 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     }
 
 
-    private FixedList<ShippingOrderItem> GetOrderItemByPackingOrder(
+    private FixedList<ShippingOrderItem> GetOrderItemByPackingOrder(string[] orders,
               FixedList<ShippingOrderItem> shippingOrderItemList) {
 
       var orderItemList = new List<ShippingOrderItem>(shippingOrderItemList);
 
-      foreach (var orderUID in query.Orders) {
+      foreach (var orderUID in orders) {
 
         var existShippingOrderItem = orderItemList.FirstOrDefault(x=>x.Order.UID == orderUID);
 
