@@ -62,12 +62,33 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
     }
 
 
+    internal static FixedList<ShippingOrderItem> GetShippingOrderItemByShippingOrderUID(int shippingId) {
+
+      string sql = $"SELECT * FROM TRDShippingOrderItems where ShippingOrderId IN ({shippingId})";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetPlainObjectFixedList<ShippingOrderItem>(dataOperation);
+    }
+
+
     internal static void WriteShipping(ShippingEntry shipping) {
 
       var op = DataOperation.Parse("writeShipping",
         shipping.ShippingOrderId, shipping.ParcelSupplierId,
         shipping.ShippingUID, shipping.ShippingGuide, shipping.ParcelAmount,
         shipping.CustomerAmount, shipping.ShippingDate, shipping.DeliveryDate);
+
+      DataWriter.Execute(op);
+    }
+
+
+    static internal void WriteShippingOrderItem(ShippingOrderItem shippingOrderItem) {
+      var op = DataOperation.Parse("writeShippingOrderItems",
+        shippingOrderItem.ShippingOrderItemId,
+        shippingOrderItem.ShippingOrderItemUID,
+        shippingOrderItem.ShippingOrder.ShippingOrderId,
+        shippingOrderItem.Order.Id);
 
       DataWriter.Execute(op);
     }
@@ -101,6 +122,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
 
       return orderIdList;
     }
+
 
     #endregion Private methods
 

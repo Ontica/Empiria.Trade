@@ -45,19 +45,37 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
     }
 
 
-    public ShippingDto CreateShippingOrder(ShippingFields fields) {
+    public ShippingDto CreateShipping(ShippingFields fields) {
 
-      var shippingOrder = new ShippingEntry(fields.ShippingData);
+      var builder = new ShippingBuilder();
 
-      shippingOrder.Save();
+      ShippingEntry shippingOrder = builder.CreateOrUpdateShipping(fields);
 
-      return GetShippingOrderByUID(shippingOrder.UID);
+      return GetShippingDtoByUID(shippingOrder.UID);
     }
 
-    
+
+    public ShippingDto UpdateShippingOrder(string shippingOrderUID, ShippingFields fields) {
+
+      fields.ShippingData.ShippingUID = shippingOrderUID;
+
+      var builder = new ShippingBuilder();
+
+      ShippingEntry shippingOrder = builder.CreateOrUpdateShipping(fields);
+
+      return GetShippingDtoByUID(shippingOrder.UID);
+    }
+
+
     public ShippingEntry GetShippingByUID(string shippingUID) {
 
       return ShippingEntry.Parse(shippingUID);
+    }
+
+
+    public ShippingOrderItem GetShippingOrderItemByUID(string shippingUID) {
+
+      return ShippingOrderItem.Parse(shippingUID);
     }
 
 
@@ -83,7 +101,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
     #region Private methods
 
 
-    private ShippingDto GetShippingOrderByUID(string uID) {
+    private ShippingDto GetShippingDtoByUID(string uID) {
 
       return new ShippingDto();
     }

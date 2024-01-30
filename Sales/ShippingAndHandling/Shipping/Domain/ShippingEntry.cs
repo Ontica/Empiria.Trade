@@ -38,7 +38,9 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
 
 
     public ShippingEntry(ShippingDataFields fields) {
+
       MapToShippingEntry(fields);
+
     }
 
 
@@ -120,12 +122,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
     private void MapToShippingEntry(ShippingDataFields fields) {
 
       var builder = new ShippingBuilder();
-      //var shipping = builder.GetShippingByOrderUID(orderUID);
 
-      //if (shipping.ShippingOrderId > 0) {
-      //  this.ShippingOrderId = shipping.ShippingOrderId;
-      //  this.ShippingUID = shipping.ShippingUID;
-      //}
+      if (fields.ShippingUID != string.Empty) {
+        this.ShippingOrderId = Parse(fields.ShippingUID).ShippingOrderId;
+        this.ShippingUID = fields.ShippingUID;
+      }
 
       this.ParcelSupplierId = SimpleObjectData.Parse(fields.ParcelSupplierUID).Id;
       this.ShippingGuide = fields.ShippingGuide;

@@ -73,10 +73,60 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     }
 
 
+    internal ShippingEntry CreateOrUpdateShipping(ShippingFields fields) {
+
+      ShippingEntry shippingOrder = CreateOrUpdateShippingOrder(fields.ShippingData);
+
+      FixedList<ShippingOrderItem> shippingOrderItem = CreateShippingOrderItem(shippingOrder.UID, fields.Orders);
+
+      ShippingEntry shippingOrderMerged = MergeShippingOrderWithItems(shippingOrder, shippingOrderItem);
+
+      return shippingOrderMerged;
+    }
+
+    
     #endregion Public methods
 
 
     #region Private methods
+
+
+    private ShippingEntry CreateOrUpdateShippingOrder(ShippingDataFields shippingData) {
+
+      var shippingOrder = new ShippingEntry(shippingData);
+
+      shippingOrder.Save();
+
+      return shippingOrder;
+    }
+
+
+    private FixedList<ShippingOrderItem> CreateShippingOrderItem(string shippingOrderUID, string[] orders) {
+
+      var shipping = ShippingEntry.Parse(shippingOrderUID);
+      var shippingItems = new List<ShippingOrderItem>();
+
+      foreach (var order in orders) {
+        
+        var shippingOrder = new ShippingOrderItem(order, shipping);
+
+        shippingOrder.Save();
+
+        shippingItems.Add(shippingOrder);
+
+      }
+
+      return shippingItems.ToFixedList();
+    }
+
+
+    private ShippingEntry MergeShippingOrderWithItems(ShippingEntry shippingOrder,
+                                                      FixedList<ShippingOrderItem> shippingOrderItem) {
+
+      shippingOrder.OrdersForShipping = shippingOrderItem;
+      
+      return shippingOrder;
+    }
 
 
     #endregion Private methods

@@ -41,7 +41,20 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
 
       using (var usecases = ShippingUseCases.UseCaseInteractor()) {
 
-        ShippingDto shippingOrder = usecases.CreateShippingOrder(fields);
+        ShippingDto shippingOrder = usecases.CreateShipping(fields);
+
+        return new SingleObjectModel(this.Request, shippingOrder);
+      }
+    }
+
+
+    [HttpPut]
+    [Route("v4/trade/shipping-and-handling/shipping/{shippingOrderUID:guid}")]
+    public SingleObjectModel UpdateShippingOrder([FromUri]string shippingOrderUID, [FromBody] ShippingFields fields) {
+
+      using (var usecases = ShippingUseCases.UseCaseInteractor()) {
+
+        ShippingDto shippingOrder = usecases.UpdateShippingOrder(shippingOrderUID, fields);
 
         return new SingleObjectModel(this.Request, shippingOrder);
       }

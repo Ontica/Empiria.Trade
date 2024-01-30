@@ -9,14 +9,43 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
 using System;
+using System.Linq;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
+using Empiria.Trade.Sales.ShippingAndHandling.Data;
 
-namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
+namespace Empiria.Trade.Sales.ShippingAndHandling {
 
 
   /// <summary>Represents a shipping order item entry.</summary>
-  public class ShippingOrderItem : ShippingCommonFields {
+  public class ShippingOrderItem : BaseObject {
+
+
+    #region Constructors and parsers
+
+
+    public ShippingOrderItem() {
+      //no-op
+    }
+
+
+    static public ShippingOrderItem Parse(int id) => ParseId<ShippingOrderItem>(id);
+
+    static public ShippingOrderItem Parse(int id, bool reload) => ParseId<ShippingOrderItem>(id, reload);
+
+    static public ShippingOrderItem Parse(string uid) => ParseKey<ShippingOrderItem>(uid);
+
+    static public ShippingOrderItem Empty => ParseEmpty<ShippingOrderItem>();
+
+
+    public ShippingOrderItem(string order, ShippingEntry shipping) {
+
+      MapToShippingOrderItem(order, shipping);
+
+    }
+
+
+    #endregion Constructors and parsers
 
 
     [DataField("ShippingOrderItemId")]
@@ -43,12 +72,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     }
 
 
-  } // class ShippingOrderItem
-
-
-  /// <summary>Common data fields for shipping entries.</summary>
-  public class ShippingCommonFields {
-
     public int TotalPackages {
       get; set;
     }
@@ -63,7 +86,36 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       get; set;
     }
 
-  } // class ShippingCommonFields
+
+    protected override void OnSave() {
+
+      if (this.ShippingOrderItemId == 0) {
+
+        this.ShippingOrderItemId = this.Id;
+        this.ShippingOrderItemUID = this.UID;
+      }
+      ShippingData.WriteShippingOrderItem(this);
+    }
+
+
+    private void MapToShippingOrderItem(string orderUID, ShippingEntry shipping) {
+
+      this.Order = Order.Parse(orderUID);
+      this.ShippingOrder = shipping;
+      
+      var exist = ShippingData.GetShippingOrderItemByShippingOrderUID(
+                    shipping.ShippingOrderId).Find(o => o.Order.Id == this.Order.Id);
+
+      if (exist != null) {
+        
+        this.ShippingOrderItemId = exist.ShippingOrderItemId;
+        this.ShippingOrderItemUID = exist.ShippingOrderItemUID;
+      }
+
+    }
+
+
+  } // class ShippingOrderItem
 
 
 } // namespace Empiria.Trade.Sales.ShippingAndHandling.Shipping.Domain
