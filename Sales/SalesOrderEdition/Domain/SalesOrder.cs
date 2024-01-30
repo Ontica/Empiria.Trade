@@ -80,11 +80,6 @@ namespace Empiria.Trade.Sales {
       get; private set;
     }
 
-    public OrderActions Actions {
-      get;
-      protected set;
-    }
-
     public decimal TotalDebt {
       get; private set;
     } = 0;
@@ -104,7 +99,10 @@ namespace Empiria.Trade.Sales {
     public int TotalPackages {
       get; set;
     }
-       
+
+    public TransactionActions Actions {
+      get; private set;
+    } = new TransactionActions();
 
     #endregion
 
@@ -127,11 +125,12 @@ namespace Empiria.Trade.Sales {
       AuthorizationStatus = OrderAuthorizationStatus.Pending;
 
       SalesOrderData.Write(this);
-           
-      this.Actions = OrderActions.GetApplyActions();
-      this.Actions.CanAuthorize = false;
-           
+                   
       SetOrderValues();
+
+      var actions = ActionsService.Load();
+      actions.OnApply();
+      this.Actions = actions.SetActions(this, QueryType.Sales);
     }
 
     public void Authorize() {
@@ -141,12 +140,15 @@ namespace Empiria.Trade.Sales {
 
       this.Status = OrderStatus.Packing;
       AuthorizationStatus = OrderAuthorizationStatus.ToSupply;
-
-      this.Actions = OrderActions.GetAuthorizedActions();
+           
 
       SalesOrderData.Write(this);
 
       SetOrderValues();
+
+      var actions = ActionsService.Load();
+      actions.OnAuthorize();
+      this.Actions = actions.SetActions(this, QueryType.SalesAuthorization);
     }
 
     public void Cancel() {
@@ -167,7 +169,6 @@ namespace Empiria.Trade.Sales {
 
       SalesOrderData.Write(this);
       SetOrderValues();
-      this.Actions = OrderActions.GetSelectDeliverActions();
     }
 
     public void Modify(SalesOrderFields fields) {
@@ -185,8 +186,8 @@ namespace Empiria.Trade.Sales {
       SalesOrderData.Write(this);
       SetOrderValues();
 
-      this.Actions = OrderActions.GetPackingActions();
-           
+      var actions = ActionsService.Load();
+      this.Actions = actions.SetActions(this, QueryType.SalesPacking);
     }
 
     internal void Update(SalesOrderFields fields) {
@@ -210,8 +211,6 @@ namespace Empiria.Trade.Sales {
       this.GetWeightTotalPackageByOrder();
 
       SetOrderTotals();
-
-      this.Actions = OrderActions.GetCaptureActions();
     }
 
     public void SetCustomerCreditInfos() {
@@ -236,9 +235,14 @@ namespace Empiria.Trade.Sales {
 
     public void CalculateSalesOrder(QueryType queryType) {
       this.SetOrderValues();      
+           
+      var actions = ActionsService.Load();
 
-      this.SetAuthorizedActions(queryType);
-      
+      if (queryType == QueryType.SalesOrdersPacking) {
+        this.Actions = actions.SetActions(this, QueryType.SalesPacking);
+      } else {
+        this.Actions = actions.SetActions(this, queryType);
+      }
     }
 
     public FixedList<CreditTransaction> GetCustomerCreditTransactions() {
@@ -301,41 +305,7 @@ namespace Empiria.Trade.Sales {
 
       return vendorPrice.PriceListId.ToString();
     }
-     
-
-    internal void SetAuthorizedActions(QueryType queryType) {
-      switch (this.Status) {
-        case OrderStatus.Captured:
-          this.Actions = OrderActions.GetCaptureActions();
-          break;
-        case OrderStatus.Applied: {
-          this.Actions = OrderActions.GetApplyActions();
-          if (queryType == QueryType.SalesOrdersAuthorization) { //"SalesOrdersAuthorization
-            this.Actions.CanAuthorize = true;
-          } else {
-            this.Actions.CanAuthorize = false;
-          }
-
-        }
-        break;
-        case OrderStatus.Authorized:
-          this.Actions = OrderActions.GetAuthorizedActions();
-          break;
-        case OrderStatus.Packing:
-          this.Actions = OrderActions.GetPackingActions();
-          break;
-        case OrderStatus.Cancelled:
-          this.Actions = OrderActions.GetCancellActions();
-          break;
-        case OrderStatus.CarrierSelector:
-          this.Actions = OrderActions.GetSelectCarrierActions();
-          break;
-        case OrderStatus.Delivery:
-          this.Actions = OrderActions.GetSelectDeliverActions();
-          break;
-      }
-
-    }
+    
 
     #endregion Helpers
 

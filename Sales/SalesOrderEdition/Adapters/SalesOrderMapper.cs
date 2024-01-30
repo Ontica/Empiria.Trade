@@ -29,8 +29,8 @@ namespace Empiria.Trade.Sales.Adapters {
         CustomerCredit = MapCustomerCredit(order),
         //WeightData = MapWeightDataDto(order),
         Shipping = GetShipping(order.UID),
-        Packing = GetPacking(order.UID),
-        Actions = MapOrderActions(order.Actions)
+        Packing = GetPacking(order.UID),      
+        Actions = TransactionActionsMapper.Map(order.Actions)
       };
 
       return dto;
@@ -182,20 +182,7 @@ namespace Empiria.Trade.Sales.Adapters {
       return packingUseCase.GetPackagingForOrder(orderUID);
     }
 
-    private static OrderActionsDto MapOrderActions(OrderActions actions) {
-
-      var dto = new OrderActionsDto {
-        CanEdit = actions.CanEdit,
-        CanApply = actions.CanApply,
-        CanAuthorize = actions.CanAuthorize,
-        CanPackaging = actions.CanPackaging,
-        CanSelectCarrier = actions.CanSelectCarrier,
-        CanShipping = actions.CanShipping,
-        CanClose = actions.CanClose
-      };
-            
-      return dto;
-    }
+  
 
     private static CustomerCreditDto MapCustomerCredit(SalesOrder order) {
       var dto = new CustomerCreditDto {

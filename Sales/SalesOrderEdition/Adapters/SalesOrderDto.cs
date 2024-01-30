@@ -117,9 +117,10 @@ namespace Empiria.Trade.Sales.Adapters {
       get; internal set;
     }
 
-    public OrderActionsDto Actions {
+    public TransactionActionsDto Actions {
       get; internal set;
     }
+
 
   } // public class OrderDto
 
@@ -222,38 +223,6 @@ namespace Empiria.Trade.Sales.Adapters {
     }
 
   } // class WeightDataDto
-
-  public class OrderActionsDto {
-
-    public Boolean CanEdit {
-      get; internal set;
-    } = true;
-
-    public Boolean CanApply {
-      get; internal set;
-    } = true;
-
-    public Boolean CanAuthorize {
-      get; internal set;
-    } = true;
-
-    public Boolean CanPackaging {
-      get; internal set;
-    } = true;
-
-    public Boolean CanSelectCarrier {
-      get; internal set;
-    } = true;
-
-    public Boolean CanShipping {
-      get; internal set;
-    } = true;
-
-    public Boolean CanClose {
-      get; internal set;
-    } = true;
-
-  }  //  class OrderActionsDto
 
 
 } // namespace Empiria.Trade.Sales.Adapters
