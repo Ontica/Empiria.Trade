@@ -77,21 +77,28 @@ namespace Empiria.Trade.Sales.UseCases {
       var helper = new SalesOrderHelper();
 
       switch (fields.QueryType) {
-        case "SalesOrdersAuthorization": {
-          FixedList<SalesOrder> salesOrders = helper.GetOrdersToAuthorize(fields);
-          return SalesOrderMapper.MapBaseSalesOrderAuthorizationList(salesOrders);         
+
+        case QueryType.Sales: {
+          var salesOrdersList = helper.GetOrders(fields);
+          return SalesOrderMapper.MapBaseSalesOrders(salesOrdersList);
         }
-        case "SalesOrdersPacking": {
+        case QueryType.SalesAuthorization: {
+          FixedList<SalesOrder> salesOrders = helper.GetOrdersToAuthorize(fields);
+          return SalesOrderMapper.MapBaseSalesOrderAuthorizationList(salesOrders);
+        }
+        case QueryType.SalesPacking: {
           FixedList<SalesOrder> salesOrdersPacking = helper.GetOrdersToPacking(fields);
           return SalesOrderMapper.MapBaseSalesOrderPackingList(salesOrdersPacking);
         }
 
         default: {
-          var salesOrdersList = helper.GetOrders(fields);
-          return SalesOrderMapper.MapBaseSalesOrders(salesOrdersList);
+          throw Assertion.EnsureNoReachThisCode($"It is invalid queryType:{fields.QueryType}");
+
         }
-      } 
-     
+       
+      }
+
+    
     }
     
     public ISalesOrderDto CancelSalesOrder(string orderUID) {

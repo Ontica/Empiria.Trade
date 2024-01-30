@@ -35,7 +35,7 @@ namespace Empiria.Trade.Tests.Sales {
     public void ShouldGetOrderTest() {
               
       var fields = new SearchOrderFields {
-        QueryType = "SalesOrdersPacking",
+        QueryType = QueryType.SalesPacking,
         Keywords = "",
         FromDate = Convert.ToDateTime("2023/01/10"),
         ToDate = Convert.ToDateTime("2024/12/28"),

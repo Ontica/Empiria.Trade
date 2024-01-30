@@ -15,6 +15,7 @@ using Empiria.Trade.Orders;
 namespace Empiria.Trade.Sales.Adapters {
 
   public enum QueryType {
+    Empty,
     Sales,
     SalesAuthorization,
     SalesPacking,
@@ -116,9 +117,9 @@ namespace Empiria.Trade.Sales.Adapters {
 
   public class SearchOrderFields {
 
-    public string QueryType {
+    public QueryType QueryType {
       get; set;
-    } = string.Empty;
+    } = QueryType.Empty;
 
     public string Keywords {
       get; set;
