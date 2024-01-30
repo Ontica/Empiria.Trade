@@ -49,18 +49,18 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
     private static ShippingEntryDto MapEntry(ShippingEntry entry,
                     FixedList<ShippingOrderItemDto> ordersForShipping) {
 
-      var parcel = SimpleObjectData.Parse(entry.ParcelSupplierId);
+      var parcel = SimpleObjectData.Parse(entry.ParcelSupplierId != 0 ? entry.ParcelSupplierId : -1);
       var parcelName = parcel.UID != "" ? parcel.Name : "";
 
       var shippingDto = new ShippingEntryDto {
-        ShippingUID= entry.ShippingOrderId == -1 ? "" : entry.ShippingUID,
+        ShippingUID = entry.ShippingOrderId == -1 ? "" : entry.ShippingUID,
         ParcelSupplier = new NamedEntityDto(parcel.UID, parcelName),
         ShippingGuide = entry.ShippingGuide,
         ParcelAmount = entry.ParcelAmount,
         CustomerAmount = entry.CustomerAmount,
         ShippingDate = entry.ShippingDate,
         OrdersCount = entry.OrdersForShipping.Count,
-        OrdersTotal= ordersForShipping.Sum(x => x.OrderTotal),
+        OrdersTotal = ordersForShipping.Sum(x => x.OrderTotal),
         TotalPackages = entry.OrdersForShipping.Sum(x => x.TotalPackages),
         TotalWeight = entry.OrdersForShipping.Sum(x => x.TotalWeight),
         TotalVolume = entry.OrdersForShipping.Sum(x => x.TotalVolume)
