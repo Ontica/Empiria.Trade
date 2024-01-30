@@ -79,8 +79,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
       packagingOrder.Save();
 
-      string queryType = "SalesOrdersPacking";
-      return GetSalesOrder(orderUID, queryType);
+      return GetSalesOrder(orderUID);
     }
 
 
@@ -94,8 +93,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
       PackagingData.WritePacking(packagingOrder);
 
-      string queryType = "SalesOrdersPacking";
-      return GetSalesOrder(orderUID, queryType);
+      return GetSalesOrder(orderUID);
     }
 
 
@@ -105,8 +103,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
       data.DeletePackageForItem(packageForItemUID);
 
-      string queryType = "SalesOrdersPacking";
-      return GetSalesOrder(orderUID, queryType);
+      return GetSalesOrder(orderUID);
     }
 
 
@@ -123,8 +120,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
       packagingOrder.Save();
 
-      string queryType = "SalesOrdersPacking";
-      return GetSalesOrder(orderUID, queryType);
+      return GetSalesOrder(orderUID);
 
     }
 
@@ -136,8 +132,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
       data.DeletePackingOrderItem(packingItemEntryUID);
 
-      string queryType = "SalesOrdersPacking";
-      return GetSalesOrder(orderUID, queryType);
+      return GetSalesOrder(orderUID);
     }
 
 
@@ -157,11 +152,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
     }
 
 
-    private ISalesOrderDto GetSalesOrder(string orderUID, string queryType) {
+    private ISalesOrderDto GetSalesOrder(string orderUID) {
 
       using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
 
-        return usecases.GetSalesOrder(orderUID, queryType);
+        return usecases.GetSalesOrder(orderUID, QueryType.SalesOrdersPacking);
       }
     }
 
