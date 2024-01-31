@@ -237,12 +237,9 @@ namespace Empiria.Trade.Sales {
       this.SetOrderValues();      
            
       var actions = ActionsService.Load();
+          
 
-      if (queryType == QueryType.SalesOrdersPacking) {
-        this.Actions = actions.SetActions(this, QueryType.SalesPacking);
-      } else {
-        this.Actions = actions.SetActions(this, queryType);
-      }
+      this.Actions = actions.SetActions(this, queryType);
     }
 
     public FixedList<CreditTransaction> GetCustomerCreditTransactions() {

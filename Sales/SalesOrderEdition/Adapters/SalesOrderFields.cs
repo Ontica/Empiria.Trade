@@ -20,8 +20,6 @@ namespace Empiria.Trade.Sales.Adapters {
     SalesAuthorization,
     SalesPacking,
     SalesShipping,
-    SalesOrdersAuthorization, //Temporal 
-    SalesOrders, //temporal
     SalesOrdersPacking
   }
 
