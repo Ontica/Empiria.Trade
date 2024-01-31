@@ -186,7 +186,10 @@ namespace Empiria.Trade.Sales {
       SalesOrderData.Write(this);
       SetOrderValues();
 
+
+
       var actions = ActionsService.Load();
+      actions.OnSuppy();
       this.Actions = actions.SetActions(this, QueryType.SalesPacking);
     }
 

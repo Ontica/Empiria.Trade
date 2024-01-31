@@ -38,6 +38,9 @@ namespace Empiria.Trade.Sales {
       get; private set;
     } = false;
 
+    public bool OnSupplyEvent {
+      get; private set;
+    } = false;
     
 
 
@@ -45,6 +48,8 @@ namespace Empiria.Trade.Sales {
     public void OnApply() => OnApplyEvent = true;
 
     public void OnAuthorize() => OnAuthorizeEvent = true;
+
+    public void OnSuppy() => OnSupplyEvent = true;
 
      public TransactionActions SetActions(SalesOrder salesOrder, QueryType queryType) {
 
@@ -96,15 +101,13 @@ namespace Empiria.Trade.Sales {
       if (queryType != QueryType.SalesPacking) {
         return false;
       }
+          
 
-      var packingUseCase = PackagingUseCases.UseCaseInteractor();
-      var packingOrder = packingUseCase.GetPackagingForOrder(salesOrder.UID);
-
-      if (packingOrder.MissingItems.Count == 0) {
-        return  false;
-      } else {
-        return true;
+      if (OnSupplyEvent) {
+        return false;
       }
+
+      return true;
 
     }
 
@@ -121,11 +124,12 @@ namespace Empiria.Trade.Sales {
       var packingUseCase = PackagingUseCases.UseCaseInteractor();
       var packingOrder = packingUseCase.GetPackagingForOrder(salesOrder.UID);
 
-      if (packingOrder.MissingItems.Count == 0) {
+      if ((packingOrder.MissingItems.Count == 0) && OnSupplyEvent) {
         return true;
       } else {
         return false;
       }
+
 
     }
 
