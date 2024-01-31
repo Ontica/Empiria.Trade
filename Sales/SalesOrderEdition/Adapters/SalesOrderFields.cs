@@ -19,14 +19,11 @@ namespace Empiria.Trade.Sales.Adapters {
     Sales,
     SalesAuthorization,
     SalesPacking,
-    SalesShipping,
-    SalesOrdersPacking
+    SalesShipping
   }
 
   /// <summary>Input DTO for sales orders.</summary>
   public class SalesOrderFields {
-
-    
 
     #region Constructors and parsers
 

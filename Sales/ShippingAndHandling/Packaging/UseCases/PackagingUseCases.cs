@@ -156,7 +156,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
       using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
 
-        return usecases.GetSalesOrder(orderUID, QueryType.SalesOrdersPacking);
+        return usecases.GetSalesOrder(orderUID, QueryType.SalesPacking);
       }
     }
 
