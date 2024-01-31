@@ -214,6 +214,10 @@ namespace Empiria.Trade.Sales {
       this.GetWeightTotalPackageByOrder();
 
       SetOrderTotals();
+
+      var actions = ActionsService.Load();
+      actions.OnCreate();
+      this.Actions = actions.SetActions(this, QueryType.Sales);
     }
 
     public void SetCustomerCreditInfos() {

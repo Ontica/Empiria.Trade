@@ -42,8 +42,13 @@ namespace Empiria.Trade.Sales {
       get; private set;
     } = false;
     
+   public bool OnCreateEvent {
+      get; private set;
+    } = false;
 
 
+
+    public void OnCreate() => OnCreateEvent = true;
 
     public void OnApply() => OnApplyEvent = true;
 
@@ -76,16 +81,16 @@ namespace Empiria.Trade.Sales {
       
 
     private bool ValidateCancel(QueryType queryType, SalesOrder salesOrder) {
-      return salesOrder.Status == OrderStatus.Captured && queryType == QueryType.Sales;
+      return (salesOrder.Status == OrderStatus.Captured && queryType == QueryType.Sales) || OnCreateEvent;
     }
 
     private bool ValidateApply(QueryType queryType, SalesOrder salesOrder) {
-      return salesOrder.Status == OrderStatus.Captured && queryType == QueryType.Sales && !OnApplyEvent;
+      return (salesOrder.Status == OrderStatus.Captured && queryType == QueryType.Sales && !OnApplyEvent) || OnCreateEvent;
       
     }
 
     private bool ValidateUpdate(QueryType queryType, SalesOrder salesOrder) {
-      return salesOrder.Status == OrderStatus.Captured && queryType == QueryType.Sales;
+      return (salesOrder.Status == OrderStatus.Captured && queryType == QueryType.Sales) || OnCreateEvent;
     }
 
     private bool ValidateAuthorize(QueryType queryType, SalesOrder salesOrder) {
@@ -121,14 +126,20 @@ namespace Empiria.Trade.Sales {
         return false;
       }
 
+      if (OnSupplyEvent) {
+        return false;
+      }
+
       var packingUseCase = PackagingUseCases.UseCaseInteractor();
       var packingOrder = packingUseCase.GetPackagingForOrder(salesOrder.UID);
 
-      if ((packingOrder.MissingItems.Count == 0) && OnSupplyEvent) {
+      if (packingOrder.MissingItems.Count == 0)  {
         return true;
       } else {
         return false;
       }
+
+     
 
 
     }
