@@ -80,7 +80,7 @@ namespace Empiria.Trade.Tests {
 
       var usecase = ShippingUseCases.UseCaseInteractor();
 
-      string shippingUID = "b1c7eb56-d9d7-45cc-b7af-5335e0496bc7";
+      string shippingUID = "d1ea2b82-ccb6-4bd4-ad90-5df757f2ddb3";
 
       ShippingEntry sut = usecase.GetShippingByUID(shippingUID);
 
@@ -108,7 +108,7 @@ namespace Empiria.Trade.Tests {
 
       var usecase = ShippingUseCases.UseCaseInteractor();
 
-      string orderUID = "dc9aa2bb-1082-43b9-afd5-fdaae4e7deeb";
+      string orderUID = "f959a4df-af9b-4596-9ee8-4a3e2e94757f";
 
       ShippingEntryDto sut = usecase.GetShippingByOrderUID(orderUID);
 
@@ -153,9 +153,9 @@ namespace Empiria.Trade.Tests {
       ShippingDataFields dataFields = new ShippingDataFields() {
         ShippingUID = "",
         ParcelSupplierUID = "8521a10b-0607-4d45-8614-385aba701b1r",
-        ShippingGuide = "GUIA 0000444444",
-        ParcelAmount = 1500,
-        CustomerAmount = 1500
+        ShippingGuide = "GUIA DE ENVIO 0004",
+        ParcelAmount = 25.60M,
+        CustomerAmount = 0.60M
       };
 
       ShippingFields fields = new ShippingFields() {

@@ -81,7 +81,9 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
         return new ShippingEntry();
       }
 
-      var shipping = orderForShippingList.FirstOrDefault().ShippingOrder;
+      ShippingEntry shipping = ShippingData.GetShippingOrder(
+                                orderForShippingList[0].ShippingOrder.ShippingOrderId)
+                              .FirstOrDefault();
 
       shipping.OrdersForShipping = orderForShippingList;
 

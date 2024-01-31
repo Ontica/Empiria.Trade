@@ -104,8 +104,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
     private ShippingDto GetShippingByOrders(string[] orders) {
       var builder = new ShippingBuilder();
-
-      ShippingEntry entry = builder.GetShippingByOrders(orders);
+      ShippingEntry entry = new ShippingEntry();
+      entry = builder.GetShippingByOrders(orders);
 
       return ShippingMapper.MapShippingForParcelDelivery(entry);
     }

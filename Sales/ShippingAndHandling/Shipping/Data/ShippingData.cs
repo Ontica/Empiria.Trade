@@ -94,8 +94,13 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
     }
 
 
-    static internal ShippingEntry GetShippingByOrderUIDList(Adapters.ShippingQuery query) {
-      return new ShippingEntry();
+    static internal FixedList<ShippingEntry> GetShippingOrder(int ShippingId) {
+      
+      string sql = $"SELECT * FROM TRDShipping WHERE ShippingOrderId IN ({ShippingId})";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetPlainObjectFixedList<ShippingEntry>(dataOperation);
     }
 
 
