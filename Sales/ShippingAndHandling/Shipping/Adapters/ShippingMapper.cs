@@ -46,7 +46,26 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
     #region Private methods
 
 
-    private static ShippingEntryDto MapEntry(ShippingEntry entry,
+    static private FixedList<OrderPackageForShippingDto> GetPackagesDtoByOrder(
+                    FixedList<OrderPackageForShipping> orderPackages) {
+
+      var packagesDto = new List<OrderPackageForShippingDto>();
+
+      foreach (var orderPackage in orderPackages) {
+        var packageDto = new OrderPackageForShippingDto();
+        packageDto.PackingItemUID = orderPackage.PackingItemUID;
+        packageDto.PackageID = orderPackage.PackageID;
+        packageDto.PackageTypeName = orderPackage.PackageTypeName;
+        packageDto.TotalVolume = orderPackage.TotalVolume;
+        packageDto.TotalWeight = orderPackage.TotalWeight;
+        packagesDto.Add(packageDto);
+      }
+
+      return packagesDto.ToFixedList();
+    }
+
+
+    static private ShippingEntryDto MapEntry(ShippingEntry entry,
                     FixedList<ShippingOrderItemDto> ordersForShipping) {
 
       var parcel = SimpleObjectData.Parse(entry.ParcelSupplierId != 0 ? entry.ParcelSupplierId : -1);
@@ -88,13 +107,15 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
         itemDto.TotalPackages = item.TotalPackages;
         itemDto.TotalWeight = item.TotalWeight;
         itemDto.TotalVolume = item.TotalVolume;
+        itemDto.Packages = GetPackagesDtoByOrder(item.OrderPackages);
+
         orderForShippingDto.Add(itemDto);
       }
 
       return orderForShippingDto.ToFixedList();
     }
 
-
+    
     #endregion Private methods
 
   } // class ShippingMapper

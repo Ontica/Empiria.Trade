@@ -95,10 +95,15 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
     }
 
 
+    public decimal PackageVolume {
+      get; internal set;
+    }
+
+
     public FixedList<PackingItem> OrderItems {
       get; set;
     } = new FixedList<PackingItem>();
-
+    
 
   } // class PackagedForItem
 

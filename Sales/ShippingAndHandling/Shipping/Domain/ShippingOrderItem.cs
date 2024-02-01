@@ -72,6 +72,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
     }
 
 
+    public FixedList<OrderPackageForShipping> OrderPackages {
+      get; internal set;
+    }
+
+
     public int TotalPackages {
       get; set;
     }
@@ -116,6 +121,35 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
 
 
   } // class ShippingOrderItem
+
+
+  public class OrderPackageForShipping {
+
+    public string PackingItemUID {
+      get; set;
+    }
+
+
+    public string PackageID {
+      get; set;
+    }
+
+
+    public string PackageTypeName {
+      get; set;
+    }
+
+
+    public decimal TotalWeight {
+      get; set;
+    }
+
+
+    public decimal TotalVolume {
+      get; set;
+    }
+
+  } // class OrderPackageForShipping
 
 
 } // namespace Empiria.Trade.Sales.ShippingAndHandling.Shipping.Domain

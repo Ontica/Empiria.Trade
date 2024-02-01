@@ -111,17 +111,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
     }
 
 
-    private ShippingEntryDto GetShipping(string orderUID) {
-
-      var builder = new ShippingBuilder();
-
-      ShippingEntry entry = builder.GetShippingByOrderUID(orderUID);
-
-      return ShippingMapper.Map(entry);
-
-    }
-
-
     #endregion Private methods
 
   } // class ShippingUseCases

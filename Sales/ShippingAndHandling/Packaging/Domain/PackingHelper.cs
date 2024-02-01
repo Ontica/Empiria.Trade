@@ -61,6 +61,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       foreach (var entry in packItems) {
         var packageType = PackageType.Parse(entry.PackageTypeId);
+        packageType.GetVolumeAttributes();
 
         var package = new PackagedForItem();
         package.UID = entry.OrderPackingUID;
@@ -70,6 +71,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
         package.PackageTypeName = packageType.Name;
         package.OrderItems = GetPackingItems(entry.OrderPackingId, entry.OrderPackingUID);
         package.PackageWeight = package.OrderItems.Sum(x => x.ItemWeight);
+        package.PackageVolume = packageType.TotalVolume;
+
         packagesList.Add(package);
 
       }

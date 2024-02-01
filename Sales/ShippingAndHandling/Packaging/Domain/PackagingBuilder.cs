@@ -60,15 +60,27 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
 
     public PackagedData GetPackagedData(string orderUID) {
 
-      FixedList<PackageForItem> packsForItems = GetPackagesForItemsData(orderUID);
+      //FixedList<PackageForItem> packsForItems = GetPackagesForItemsData(orderUID);
 
       var helper = new PackingHelper();
 
-      FixedList<PackagedForItem> packagesForItems = helper.GetPackagesByOrder(orderUID, packsForItems);
+      //FixedList<PackagedForItem> packagesForItems = helper.GetPackagesByOrder(orderUID, packsForItems);
+
+      FixedList<PackagedForItem> packagesForItems = GetPackagedForItemList(orderUID);
 
       PackagedData packingData = helper.GetPackingData(orderUID, packagesForItems);
 
       return packingData;
+    }
+
+
+    public FixedList<PackagedForItem> GetPackagedForItemList(string orderUID) {
+      
+      FixedList<PackageForItem> packsForItems = GetPackagesForItemsData(orderUID);
+
+      var helper = new PackingHelper();
+
+      return helper.GetPackagesByOrder(orderUID, packsForItems);
     }
 
 

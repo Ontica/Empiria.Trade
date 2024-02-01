@@ -105,12 +105,15 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
     } = new NamedEntityDto("", "");
 
 
-    
+    public FixedList<OrderPackageForShippingDto> Packages {
+      get; set;
+    } = new FixedList<OrderPackageForShippingDto>();
+
 
   }
 
 
-  public class OrderPackage {
+  public class OrderPackageForShippingDto {
 
     public string PackingItemUID {
       get; set;

@@ -49,6 +49,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     }
 
 
+
+
     private FixedList<ShippingOrderItem> GetOrderItemByPackingOrder(string[] orders,
               FixedList<ShippingOrderItem> shippingOrderItemList) {
 
@@ -60,12 +62,14 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
         if (existShippingOrderItem == null) {
 
-          var orderItem = new ShippingOrderItem();
           var order = SalesOrder.Parse(orderUID);
+          var orderItem = new ShippingOrderItem();
+
           orderItem.ShippingOrderItemId = -1;
           orderItem.ShippingOrderItemUID = "";
           orderItem.ShippingOrder = ShippingEntry.Parse(-1);
           orderItem.Order = order;
+
           orderItemList.Add(orderItem);
 
         }
@@ -160,11 +164,36 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
           orderItem.TotalWeight = packageInfo.Weight;
           orderItem.TotalVolume = packageInfo.Volume;
 
+          var packagedForItem = usecasePackage.GetPackagedForItemList(orderItem.Order.UID);
+
+          FixedList<OrderPackageForShipping> orderPackages = GetPackagedForItemListByOrder(packagedForItem);
+
+          orderItem.OrderPackages = orderPackages;
+          
         }
 
       }
     }
 
+
+    private FixedList<OrderPackageForShipping> GetPackagedForItemListByOrder(
+            FixedList<PackagedForItem> packagedForItem) {
+
+      var packages = new List<OrderPackageForShipping>();
+      foreach (var item in packagedForItem) {
+        var package = new OrderPackageForShipping();
+
+        package.PackingItemUID= item.UID;
+        package.PackageID= item.PackageID;
+        package.PackageTypeName= item.PackageTypeName;
+        package.TotalVolume = item.PackageVolume;
+        package.TotalWeight = item.PackageWeight;
+
+        packages.Add(package);
+      }
+
+      return packages.ToFixedList();
+    }
 
     #endregion Private methods
 

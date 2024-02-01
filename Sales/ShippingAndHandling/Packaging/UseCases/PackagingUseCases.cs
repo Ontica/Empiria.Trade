@@ -64,6 +64,14 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
     }
 
 
+    public FixedList<PackagedForItem> GetPackagedForItemList(string orderUID) {
+      
+      var builder = new PackagingBuilder();
+      return builder.GetPackagedForItemList(orderUID);
+
+    }
+
+
     public PackingDto GetPackagingForOrder(string orderUid) {
 
       return GetPackaging(orderUid);
