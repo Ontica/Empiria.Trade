@@ -165,7 +165,7 @@ namespace Empiria.Trade.Sales {
     public void Deliver() {
       this.Status = OrderStatus.Delivery;
 
-      AuthorizationStatus = OrderAuthorizationStatus.CarrierSelctor;
+      AuthorizationStatus = OrderAuthorizationStatus.Suppled;
 
       SalesOrderData.Write(this);
       SetOrderValues();
@@ -179,9 +179,9 @@ namespace Empiria.Trade.Sales {
     }
 
     public void Supply() {
-      this.Status = OrderStatus.CarrierSelector;
+      this.Status = OrderStatus.Shipping;
 
-      AuthorizationStatus = OrderAuthorizationStatus.CarrierSelctor;
+      AuthorizationStatus = OrderAuthorizationStatus.Suppled;
 
       SalesOrderData.Write(this);
       SetOrderValues();

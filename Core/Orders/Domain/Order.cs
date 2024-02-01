@@ -150,8 +150,7 @@ namespace Empiria.Trade.Orders {
     Applied = 'A',   
     Authorized = 'O',
     Packing = 'P',
-    CarrierSelector = 'S',
-    Shipping = 'G',
+    Shipping = 'S',
     Delivery = 'D',
     Closed = 'F',
     Cancelled = 'X',
@@ -170,8 +169,7 @@ namespace Empiria.Trade.Orders {
     Pendings = 'W',
     ToSupply = 'I',
     InProgress = 'U',
-    Suppled = 'Y',
-    CarrierSelctor = 'S'
+    Suppled = 'S'
   } // enum AutorizationStatus
 
   

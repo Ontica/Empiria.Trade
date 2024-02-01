@@ -28,9 +28,12 @@ namespace Empiria.Trade.Sales {
     static public ActionsService Load() {
       return new ActionsService();
     }
-    #endregion
 
-    public  bool OnApplyEvent {
+    #endregion Constructors and parsers
+
+    #region Public Properties
+
+    public bool OnApplyEvent {
       get; private set;
     } = false;
 
@@ -46,7 +49,9 @@ namespace Empiria.Trade.Sales {
       get; private set;
     } = false;
 
+    #endregion Public Properties
 
+    #region Public Methods
 
     public void OnCreate() => OnCreateEvent = true;
 
@@ -73,12 +78,15 @@ namespace Empiria.Trade.Sales {
       Actions.Can.Authorize = ValidateAuthorize(queryType, salesOrder);
       Actions.Can.EditPacking = ValidateEditPacking(queryType, salesOrder);
       Actions.Can.ClosePacking = ValidateEditClosePacking(queryType, salesOrder);
-      Actions.Can.EditShipping = ValidateEditShipping(queryType, salesOrder); 
-
+      Actions.Can.EditShipping = ValidateEditShipping(salesOrder);
+      Actions.Can.SendShipping = ValidateEditSendShipping(salesOrder);
 
       return Actions;
     }
-      
+
+    #endregion Public Methods
+
+    #region Private Methods
 
     private bool ValidateCancel(QueryType queryType, SalesOrder salesOrder) {
       return (salesOrder.Status == OrderStatus.Captured && queryType == QueryType.Sales) || OnCreateEvent;
@@ -139,14 +147,16 @@ namespace Empiria.Trade.Sales {
         return false;
       }
 
-     
-
-
     }
 
-    private bool ValidateEditShipping(QueryType queryType, SalesOrder salesOrder) {
-      return salesOrder.Status == OrderStatus.CarrierSelector && queryType == QueryType.SalesShipping;
+    private bool ValidateEditShipping(SalesOrder salesOrder) {
+      return salesOrder.Status == OrderStatus.Shipping;
     }
+
+    private bool ValidateEditSendShipping(SalesOrder salesOrder) {
+      return salesOrder.Status == OrderStatus.Shipping;
+    }
+
 
 
     private bool ValidateShowOrderData(QueryType queryType) {
@@ -168,7 +178,8 @@ namespace Empiria.Trade.Sales {
     private bool ValidateSendShippingEditor(QueryType queryType) {
       return queryType == QueryType.Sales || queryType == QueryType.SalesShipping;
     }
-    
+
+    #endregion Private Methods
 
   } // class ActionsService
 

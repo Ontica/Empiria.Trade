@@ -122,7 +122,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
     private void ValidateShippingDataByStatus(ShippingOrderItem orderItem) {
 
-      if (orderItem.Order.Status != OrderStatus.CarrierSelector) {
+      if (orderItem.Order.Status != OrderStatus.Shipping) {
         Assertion.EnsureFailed($"El estatus de uno o más pedidos no es valido!");
       }
 

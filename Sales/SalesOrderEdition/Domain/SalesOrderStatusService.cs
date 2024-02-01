@@ -22,7 +22,6 @@ namespace Empiria.Trade.Sales {
       var applied = new NamedEntityDto("Applied", "Aplicada");
       var authorized = new NamedEntityDto("Authorized", "Autorizada");
       var packing = new NamedEntityDto("Packing", "Surtiendose");
-      var carrierSelector = new NamedEntityDto("CarrierSelector", "Seleccion de paqueteria");
       var shipping = new NamedEntityDto("Shipping", "Envio");
       var delivery = new NamedEntityDto("Delivery", "Entrega");
       var closed = new NamedEntityDto("Closed", "Cerrada");
@@ -33,7 +32,6 @@ namespace Empiria.Trade.Sales {
       orderSalesStatus.Add(applied);
       orderSalesStatus.Add(authorized);
       orderSalesStatus.Add(packing);
-      orderSalesStatus.Add(carrierSelector);
       orderSalesStatus.Add(shipping);
       orderSalesStatus.Add(delivery);
       orderSalesStatus.Add(closed);

@@ -221,7 +221,6 @@ namespace Empiria.Trade.Sales.Adapters {
         case "Applied":  return "Aplicada";
         case "Authorized": return "Autorizada";
         case "Packing":    return "Surtiendose";
-        case "CarrierSelector": return "Selección de paqueteria";
         case "Shipping": return "Envio";
         case "Delivery": return "Entrega";
         case "Closed": return "Cerrada";
