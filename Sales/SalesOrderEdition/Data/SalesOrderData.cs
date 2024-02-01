@@ -29,6 +29,8 @@ namespace Empiria.Trade.Sales.Data {
 
       string keywords = string.Empty;
       string status = string.Empty;
+      string shippingMethod = string.Empty;
+
 
       if (fields.Keywords != string.Empty) {
         keywords = $" {SearchExpression.ParseAndLikeKeywords("OrderKeywords", fields.Keywords)} AND ";
@@ -40,11 +42,14 @@ namespace Empiria.Trade.Sales.Data {
         status = $" AND (OrderStatus <> '{(char) Orders.OrderStatus.Cancelled}')";
       }
 
+      if (fields.ShippingMethod != string.Empty) {
+        shippingMethod = $" AND (OrderExtData like '%{fields.ShippingMethod}%') ";
+      }
 
 
       var sql = "SELECT * FROM TRDOrders " +
                  $"WHERE {keywords}  (orderTime >= CONVERT(SMALLDATETIME, '{fromDate}') AND " +
-                 $"orderTime <= CONVERT(SMALLDATETIME,'{toDate}')) {status} ";
+                 $"orderTime <= CONVERT(SMALLDATETIME,'{toDate}')) {status} {shippingMethod}";
       
 
       var dataOperation = DataOperation.Parse(sql);
@@ -58,6 +63,7 @@ namespace Empiria.Trade.Sales.Data {
 
       string keywords = string.Empty;
       string status = string.Empty;
+      string shippingMethod = string.Empty;
 
       if (fields.Keywords != string.Empty) {
         keywords = $" {SearchExpression.ParseAndLikeKeywords("OrderKeywords", fields.Keywords)} AND ";
@@ -74,9 +80,13 @@ namespace Empiria.Trade.Sales.Data {
         status = " AND ((OrderAuthorizationStatus = 'A') or (OrderAuthorizationStatus = 'P'))";
       }
 
+      if (fields.ShippingMethod != string.Empty) {
+        shippingMethod = $" AND (OrderExtData like '%{fields.ShippingMethod}%') ";
+      }
+
       var sql = "SELECT * FROM TRDOrders " +
                 $"WHERE {keywords}  (orderTime >= CONVERT(SMALLDATETIME, '{fromDate}') AND " +
-                $"orderTime <= CONVERT(SMALLDATETIME,'{toDate}'))  {status} ";
+                $"orderTime <= CONVERT(SMALLDATETIME,'{toDate}')) {shippingMethod} {status}  ";
 
 
       var dataOperation = DataOperation.Parse(sql);
@@ -90,6 +100,7 @@ namespace Empiria.Trade.Sales.Data {
 
       string keywords = string.Empty;
       string status = string.Empty;
+      string shippingMethod = string.Empty;
 
       if (fields.Keywords != string.Empty) {
         keywords = $" {SearchExpression.ParseAndLikeKeywords("OrderKeywords", fields.Keywords)} AND ";
@@ -101,9 +112,15 @@ namespace Empiria.Trade.Sales.Data {
         status = " AND ((OrderAuthorizationStatus = 'I') or (OrderAuthorizationStatus = 'U') or (OrderAuthorizationStatus = 'Y'))";
       }
 
+
+      if (fields.ShippingMethod != string.Empty) {
+        shippingMethod = $" AND (OrderExtData like '%{fields.ShippingMethod}%') ";
+      }
+
+
       var sql = "SELECT * FROM TRDOrders " +
                $"WHERE {keywords}  (orderTime >= CONVERT(SMALLDATETIME, '{fromDate}') AND " +
-               $"orderTime <= CONVERT(SMALLDATETIME,'{toDate}'))  {status} ";
+               $"orderTime <= CONVERT(SMALLDATETIME,'{toDate}'))  {status} {shippingMethod}";
 
       var dataOperation = DataOperation.Parse(sql);
 

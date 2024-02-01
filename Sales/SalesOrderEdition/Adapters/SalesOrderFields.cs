@@ -21,6 +21,8 @@ namespace Empiria.Trade.Sales.Adapters {
     SalesPacking,
     SalesShipping
   }
+    
+    
 
   /// <summary>Input DTO for sales orders.</summary>
   public class SalesOrderFields {
@@ -131,6 +133,10 @@ namespace Empiria.Trade.Sales.Adapters {
     public OrderStatus Status {
       get; set;
     } = OrderStatus.Empty;
+
+    public string ShippingMethod {
+      get; set;
+    } = String.Empty;
 
   } // class SearchOrderFields
 
