@@ -105,6 +105,37 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
     } = new NamedEntityDto("", "");
 
 
+    
+
+  }
+
+
+  public class OrderPackage {
+
+    public string PackingItemUID {
+      get; set;
+    }
+
+
+    public string PackageID {
+      get; set;
+    }
+
+
+    public string PackageTypeName {
+      get; set;
+    }
+
+
+    public decimal TotalWeight {
+      get; set;
+    }
+
+
+    public decimal TotalVolume {
+      get; set;
+    }
+
   }
 
 

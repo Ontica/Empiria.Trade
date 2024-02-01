@@ -39,7 +39,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
     internal ShippingEntry GetShippingByOrders(string[] orders) {
       
-      var query = new ShippingQuery() { Orders = orders };
       var helper = new ShippingHelper();
 
       FixedList<ShippingOrderItem> orderForShippingList = helper.GetShippingOrderItemList(orders);
@@ -56,13 +55,13 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     internal ShippingEntry GetShippingByOrderUID(string orderUID) {
 
       string orderId = Order.Parse(orderUID).Id.ToString();
-      var shippingOrderItemList = ShippingData.GetShippingOrderItemByOrderUID(orderId);
+      var orderForShippingList = ShippingData.GetShippingOrderItemByOrderUID(orderId);
 
-      if (shippingOrderItemList.Count == 0) {
-        return new ShippingEntry();
-      }
+      var helper = new ShippingHelper();
 
-      return shippingOrderItemList.FirstOrDefault().ShippingOrder;
+      ShippingEntry shipping = helper.GetShippingEntry(orderForShippingList);
+
+      return shipping;
     }
 
 
@@ -81,7 +80,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       ShippingEntry shippingOrderMerged = MergeShippingOrderWithItems(shippingOrder, shippingOrderItem);
 
-      return shippingOrderMerged;
+      return GetShippingByOrders(fields.Orders);
     }
 
     

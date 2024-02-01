@@ -39,8 +39,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
       var catalogueUsecase = CataloguesUseCases.UseCaseInteractor();
 
-      FixedList<INamedEntity> sut = catalogueUsecase.GetParcelSupplierList();
-
       return catalogueUsecase.GetParcelSupplierList();
     }
 
@@ -92,35 +90,36 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
     #region Private methods
 
+
     private ShippingDto CreateOrUpdateShippingOrder(ShippingFields fields) {
 
       var builder = new ShippingBuilder();
 
       ShippingEntry shippingOrder = builder.CreateOrUpdateShipping(fields);
 
-      return GetShippingByOrders(fields.Orders);
+      return ShippingMapper.MapShippingForParcelDelivery(shippingOrder);
     }
 
 
     private ShippingDto GetShippingByOrders(string[] orders) {
+      
       var builder = new ShippingBuilder();
-      ShippingEntry entry = new ShippingEntry();
-      entry = builder.GetShippingByOrders(orders);
+      
+      ShippingEntry entry = builder.GetShippingByOrders(orders);
 
       return ShippingMapper.MapShippingForParcelDelivery(entry);
     }
 
 
-    //private ShippingEntryDto GetShipping(string orderUID) {
+    private ShippingEntryDto GetShipping(string orderUID) {
 
-    //  var builder = new ShippingBuilder();
+      var builder = new ShippingBuilder();
 
-    //  ShippingEntry entry = builder.GetShippingByOrderUID(orderUID);
+      ShippingEntry entry = builder.GetShippingByOrderUID(orderUID);
 
-    //  return ShippingMapper.Map(entry);
+      return ShippingMapper.Map(entry);
 
-    //}
-
+    }
 
 
     #endregion Private methods

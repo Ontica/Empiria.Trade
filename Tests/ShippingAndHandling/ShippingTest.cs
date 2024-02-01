@@ -153,9 +153,9 @@ namespace Empiria.Trade.Tests {
       ShippingDataFields dataFields = new ShippingDataFields() {
         ShippingUID = "",
         ParcelSupplierUID = "8521a10b-0607-4d45-8614-385aba701b1r",
-        ShippingGuide = "GUIA DE ENVIO 0004",
-        ParcelAmount = 25.60M,
-        CustomerAmount = 0.60M
+        ShippingGuide = "GUIA 0004",
+        ParcelAmount = 300,
+        CustomerAmount = 45
       };
 
       ShippingFields fields = new ShippingFields() {
