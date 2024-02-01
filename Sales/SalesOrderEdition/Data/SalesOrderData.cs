@@ -24,133 +24,52 @@ namespace Empiria.Trade.Sales.Data {
     #region Internal methods
 
     internal static FixedList<SalesOrder> GetSalesOrders(SearchOrderFields fields) {
-      var toDate = fields.ToDate.ToString("yyyy-dd-MM");
-      var fromDate = fields.FromDate.ToString("yyyy-dd-MM");
 
-      string keywords = string.Empty;
       string status = string.Empty;
-      string shippingMethod = string.Empty;
-      string customerSearch = string.Empty;
-
-      if (fields.CustomerUID != string.Empty) {
-        customerSearch = $"SELECT * FROM TRDOrders INNER JOIN TRDParties ON TRdOrders.CustomerId = TRdParties.PartyId WHERE (partyUID = '{fields.CustomerUID}') AND ";
-      } else {
-        customerSearch = "SELECT * FROM TRDOrders WHERE "; 
-      }
-        
-
-
-      if (fields.Keywords != string.Empty) {
-        keywords = $" {SearchExpression.ParseAndLikeKeywords("OrderKeywords", fields.Keywords)} AND ";
-      }
 
       if (fields.Status != Orders.OrderStatus.Empty) {
-       status = $" AND (OrderStatus = '{(char)fields.Status}')";
-      } else {
-        status = $" AND (OrderStatus <> '{(char) Orders.OrderStatus.Cancelled}')";
-      }
+          status = $" AND (OrderStatus = '{(char)fields.Status}')";
+        } else {
+          status = $" AND (OrderStatus <> '{(char) Orders.OrderStatus.Cancelled}')";
+       }
 
-      if (fields.ShippingMethod != string.Empty) {
-        shippingMethod = $" AND (OrderExtData like '%{fields.ShippingMethod}%') ";
-      }
-
-
-      var sql = $"{customerSearch} " +
-                 $" {keywords}  (orderTime >= CONVERT(SMALLDATETIME, '{fromDate}') AND " +
-                 $"orderTime <= CONVERT(SMALLDATETIME,'{toDate}')) {status} {shippingMethod}";
-      
-
-      var dataOperation = DataOperation.Parse(sql);
-
-      return DataReader.GetFixedList<SalesOrder>(dataOperation);      
+       return GetOrders(fields, status); 
+        
     }
 
     internal static FixedList<SalesOrder> GetSalesOrdersToAuthorize(SearchOrderFields fields) {
-      var toDate = fields.ToDate.ToString("yyyy-dd-MM");
-      var fromDate = fields.FromDate.ToString("yyyy-dd-MM");
+      
+        string status = string.Empty;
 
-      string keywords = string.Empty;
-      string status = string.Empty;
-      string shippingMethod = string.Empty;
-      string customerSearch = string.Empty;
-
-      if (fields.CustomerUID != string.Empty) {
-        customerSearch = $"SELECT * FROM TRDOrders INNER JOIN TRDParties ON TRdOrders.CustomerId = TRdParties.PartyId WHERE (partyUID = '{fields.CustomerUID}') AND ";
-      } else {
-        customerSearch = "SELECT * FROM TRDOrders WHERE ";
-      }
-
-      if (fields.Keywords != string.Empty) {
-        keywords = $" {SearchExpression.ParseAndLikeKeywords("OrderKeywords", fields.Keywords)} AND ";
-      }
-
-      if (fields.Status != Orders.OrderStatus.Empty) {
-        if (fields.Status == OrderStatus.Authorized) {
-          status = " AND (OrderAuthorizationStatus = 'A')";
+        if (fields.Status != Orders.OrderStatus.Empty) {
+          if (fields.Status == OrderStatus.Authorized) {
+            status = " AND (OrderAuthorizationStatus = 'A')";
+          }
+          if (fields.Status == OrderStatus.Pending) {
+            status = " AND (OrderAuthorizationStatus = 'P')";
+          }
+        } else {
+          status = " AND ((OrderAuthorizationStatus = 'A') or (OrderAuthorizationStatus = 'P'))";
         }
-        if (fields.Status == OrderStatus.Pending) {
-          status = " AND (OrderAuthorizationStatus = 'P')";
-        }
-      } else {
-        status = " AND ((OrderAuthorizationStatus = 'A') or (OrderAuthorizationStatus = 'P'))";
-      }
 
-      if (fields.ShippingMethod != string.Empty) {
-        shippingMethod = $" AND (OrderExtData like '%{fields.ShippingMethod}%') ";
-      }
-
-      var sql = $"{customerSearch} " +
-                $" {keywords}  (orderTime >= CONVERT(SMALLDATETIME, '{fromDate}') AND " +
-                $"orderTime <= CONVERT(SMALLDATETIME,'{toDate}')) {shippingMethod} {status}  ";
-
-
-      var dataOperation = DataOperation.Parse(sql);
-
-      return DataReader.GetFixedList<SalesOrder>(dataOperation);
+      return GetOrders(fields, status);
     }
 
     internal static FixedList<SalesOrder> GetSalesOrdersToPacking(SearchOrderFields fields) {
-      var toDate = fields.ToDate.ToString("yyyy-dd-MM");
-      var fromDate = fields.FromDate.ToString("yyyy-dd-MM");
 
-      string keywords = string.Empty;
-      string status = string.Empty;
-      string shippingMethod = string.Empty;
-      string customerSearch = string.Empty;
+        string status = string.Empty;
 
-      if (fields.CustomerUID != string.Empty) {
-        customerSearch = $"SELECT * FROM TRDOrders INNER JOIN TRDParties ON TRdOrders.CustomerId = TRdParties.PartyId WHERE (partyUID = '{fields.CustomerUID}') AND ";
-      } else {
-        customerSearch = "SELECT * FROM TRDOrders WHERE ";
-      }
+        if (fields.Status != Orders.OrderStatus.Empty) {
+          status = $" AND (OrderAuthorizationStatus = '{(char) fields.Status}')";
+        } else {
+          status = " AND ((OrderAuthorizationStatus = 'I') or (OrderAuthorizationStatus = 'U') or (OrderAuthorizationStatus = 'Y'))";
+        }
 
-      if (fields.Keywords != string.Empty) {
-        keywords = $" {SearchExpression.ParseAndLikeKeywords("OrderKeywords", fields.Keywords)} AND ";
-      }
-
-      if (fields.Status != Orders.OrderStatus.Empty) {
-        status = $" AND (OrderAuthorizationStatus = '{(char) fields.Status}')";
-      } else {
-        status = " AND ((OrderAuthorizationStatus = 'I') or (OrderAuthorizationStatus = 'U') or (OrderAuthorizationStatus = 'Y'))";
-      }
-
-
-      if (fields.ShippingMethod != string.Empty) {
-        shippingMethod = $" AND (OrderExtData like '%{fields.ShippingMethod}%') ";
-      }
-
-
-      var sql = $"{customerSearch} " +
-               $" {keywords}  (orderTime >= CONVERT(SMALLDATETIME, '{fromDate}') AND " +
-               $"orderTime <= CONVERT(SMALLDATETIME,'{toDate}'))  {status} {shippingMethod}";
-
-      var dataOperation = DataOperation.Parse(sql);
-
-      return DataReader.GetFixedList<SalesOrder>(dataOperation);
+      return GetOrders(fields, status);
 
     }
 
-    internal static void Write(SalesOrder o) {
+      internal static void Write(SalesOrder o) {
         var op = DataOperation.Parse("writeOrder", o.Id, o.UID, o.OrderTypeId, o.Customer.Id, o.Supplier.Id,
                                     o.SalesAgent.Id, o.OrderNumber, o.OrderTime, o.Notes,
                                     o.Keywords, o.ExtData.ToString(), (char)o.Status, (char)o.AuthorizationStatus, 
@@ -159,6 +78,42 @@ namespace Empiria.Trade.Sales.Data {
       }
 
     #endregion Internal methods
+
+    #region Private methods 
+
+    private static FixedList<SalesOrder> GetOrders(SearchOrderFields fields, string statusFilter) {
+      var toDate = fields.ToDate.ToString("yyyy-dd-MM");
+      var fromDate = fields.FromDate.ToString("yyyy-dd-MM");
+
+      string keywordsFilter = string.Empty;
+
+      string shippingMethodFilter = string.Empty;
+      string customerFilter = string.Empty;
+
+      if (fields.CustomerUID != string.Empty) {
+        customerFilter = $"INNER JOIN TRDParties ON TRdOrders.CustomerId = TRdParties.PartyId WHERE (partyUID = '{fields.CustomerUID}') AND ";
+      } else {
+        customerFilter = "WHERE ";
+      }
+
+      if (fields.Keywords != string.Empty) {
+        keywordsFilter = $" {SearchExpression.ParseAndLikeKeywords("OrderKeywords", fields.Keywords)} AND ";
+      }
+
+      if (fields.ShippingMethod != string.Empty) {
+        shippingMethodFilter = $" AND (OrderExtData LIKE '%{fields.ShippingMethod}%') ";
+      }
+
+      var sql = $"SELECT * FROM TRDOrders {customerFilter} " +
+                 $" {keywordsFilter}  (orderTime >= CONVERT(SMALLDATETIME, '{fromDate}') AND " +
+                 $"orderTime <= CONVERT(SMALLDATETIME,'{toDate}')) {statusFilter} {shippingMethodFilter}";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetFixedList<SalesOrder>(dataOperation);
+    }
+
+    #endregion Private methods
 
   } // class OrderData
 
