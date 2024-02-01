@@ -138,6 +138,10 @@ namespace Empiria.Trade.Sales.Adapters {
       get; set;
     } = String.Empty;
 
+    public string CustomerUID {
+      get; set;
+    } = String.Empty;
+
   } // class SearchOrderFields
 
 } // namespace Empiria.Trade.Sales.Adapters

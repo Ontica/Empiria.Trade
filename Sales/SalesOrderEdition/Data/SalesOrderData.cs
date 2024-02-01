@@ -30,6 +30,14 @@ namespace Empiria.Trade.Sales.Data {
       string keywords = string.Empty;
       string status = string.Empty;
       string shippingMethod = string.Empty;
+      string customerSearch = string.Empty;
+
+      if (fields.CustomerUID != string.Empty) {
+        customerSearch = $"SELECT * FROM TRDOrders INNER JOIN TRDParties ON TRdOrders.CustomerId = TRdParties.PartyId WHERE (partyUID = '{fields.CustomerUID}') AND ";
+      } else {
+        customerSearch = "SELECT * FROM TRDOrders WHERE "; 
+      }
+        
 
 
       if (fields.Keywords != string.Empty) {
@@ -47,8 +55,8 @@ namespace Empiria.Trade.Sales.Data {
       }
 
 
-      var sql = "SELECT * FROM TRDOrders " +
-                 $"WHERE {keywords}  (orderTime >= CONVERT(SMALLDATETIME, '{fromDate}') AND " +
+      var sql = $"{customerSearch} " +
+                 $" {keywords}  (orderTime >= CONVERT(SMALLDATETIME, '{fromDate}') AND " +
                  $"orderTime <= CONVERT(SMALLDATETIME,'{toDate}')) {status} {shippingMethod}";
       
 
@@ -64,6 +72,13 @@ namespace Empiria.Trade.Sales.Data {
       string keywords = string.Empty;
       string status = string.Empty;
       string shippingMethod = string.Empty;
+      string customerSearch = string.Empty;
+
+      if (fields.CustomerUID != string.Empty) {
+        customerSearch = $"SELECT * FROM TRDOrders INNER JOIN TRDParties ON TRdOrders.CustomerId = TRdParties.PartyId WHERE (partyUID = '{fields.CustomerUID}') AND ";
+      } else {
+        customerSearch = "SELECT * FROM TRDOrders WHERE ";
+      }
 
       if (fields.Keywords != string.Empty) {
         keywords = $" {SearchExpression.ParseAndLikeKeywords("OrderKeywords", fields.Keywords)} AND ";
@@ -84,8 +99,8 @@ namespace Empiria.Trade.Sales.Data {
         shippingMethod = $" AND (OrderExtData like '%{fields.ShippingMethod}%') ";
       }
 
-      var sql = "SELECT * FROM TRDOrders " +
-                $"WHERE {keywords}  (orderTime >= CONVERT(SMALLDATETIME, '{fromDate}') AND " +
+      var sql = $"{customerSearch} " +
+                $" {keywords}  (orderTime >= CONVERT(SMALLDATETIME, '{fromDate}') AND " +
                 $"orderTime <= CONVERT(SMALLDATETIME,'{toDate}')) {shippingMethod} {status}  ";
 
 
@@ -101,6 +116,13 @@ namespace Empiria.Trade.Sales.Data {
       string keywords = string.Empty;
       string status = string.Empty;
       string shippingMethod = string.Empty;
+      string customerSearch = string.Empty;
+
+      if (fields.CustomerUID != string.Empty) {
+        customerSearch = $"SELECT * FROM TRDOrders INNER JOIN TRDParties ON TRdOrders.CustomerId = TRdParties.PartyId WHERE (partyUID = '{fields.CustomerUID}') AND ";
+      } else {
+        customerSearch = "SELECT * FROM TRDOrders WHERE ";
+      }
 
       if (fields.Keywords != string.Empty) {
         keywords = $" {SearchExpression.ParseAndLikeKeywords("OrderKeywords", fields.Keywords)} AND ";
@@ -118,8 +140,8 @@ namespace Empiria.Trade.Sales.Data {
       }
 
 
-      var sql = "SELECT * FROM TRDOrders " +
-               $"WHERE {keywords}  (orderTime >= CONVERT(SMALLDATETIME, '{fromDate}') AND " +
+      var sql = $"{customerSearch} " +
+               $" {keywords}  (orderTime >= CONVERT(SMALLDATETIME, '{fromDate}') AND " +
                $"orderTime <= CONVERT(SMALLDATETIME,'{toDate}'))  {status} {shippingMethod}";
 
       var dataOperation = DataOperation.Parse(sql);
