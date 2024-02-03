@@ -35,22 +35,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     #region Public methods
 
 
-    internal FixedList<ShippingOrderItem> GetShippingOrderItemList(string[] orders) {
-
-      FixedList<ShippingOrderItem> shippingOrderItemList =
-                                   ShippingData.GetShippingOrderItemList(orders);
-
-      FixedList<ShippingOrderItem> orderItemByPackingOrder = 
-                                   GetOrderItemByPackingOrder(orders, shippingOrderItemList);
-
-      GetShippingOrderItemMeasurementUnits(orderItemByPackingOrder);
-
-      return orderItemByPackingOrder;
-    }
-
-
-
-
     private FixedList<ShippingOrderItem> GetOrderItemByPackingOrder(string[] orders,
               FixedList<ShippingOrderItem> shippingOrderItemList) {
 
@@ -58,7 +42,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       foreach (var orderUID in orders) {
 
-        var existShippingOrderItem = orderItemList.FirstOrDefault(x=>x.Order.UID == orderUID);
+        var existShippingOrderItem = orderItemList.FirstOrDefault(x => x.Order.UID == orderUID);
 
         if (existShippingOrderItem == null) {
 
@@ -95,6 +79,20 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     }
 
 
+    internal FixedList<ShippingOrderItem> GetShippingOrderItemList(string[] orders) {
+
+      FixedList<ShippingOrderItem> shippingOrderItemList =
+                                   ShippingData.GetShippingOrderItemList(orders);
+
+      FixedList<ShippingOrderItem> orderItemByPackingOrder = 
+                                   GetOrderItemByPackingOrder(orders, shippingOrderItemList);
+
+      GetShippingOrderItemMeasurementUnits(orderItemByPackingOrder);
+
+      return orderItemByPackingOrder;
+    }
+
+
     internal void ShippingDataValidations(FixedList<ShippingOrderItem> orderForShippingList) {
 
       foreach (var orderItem in orderForShippingList) {
@@ -108,46 +106,30 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     }
 
 
-    private void ValidateOrdersByShippingOrder(ShippingOrderItem orderItem,
-                                          FixedList<ShippingOrderItem> orderForShippingList) {
-
-      var countShippingId = orderForShippingList.FindAll(x =>
-                              x.ShippingOrder.Id == orderItem.ShippingOrder.Id).Count;
-
-      if (countShippingId != orderForShippingList.Count) {
-        Assertion.EnsureFailed("Uno o más pedidos no pertenecen al mismo envío!");
-      }
-    }
-
-
-    private void ValidateShippingDataByStatus(ShippingOrderItem orderItem) {
-
-      if (orderItem.Order.Status != OrderStatus.Shipping) {
-        Assertion.EnsureFailed($"El estatus de uno o más pedidos no es valido!");
-      }
-
-    }
-
-
-    private void ValidateShippingDataByCustomerId(ShippingOrderItem orderItem,
-                                                  FixedList<ShippingOrderItem> orderForShippingList) {
-
-      var countCustomerId = orderForShippingList.FindAll(x =>
-                              x.Order.Customer.Id == orderItem.Order.Customer.Id).Count;
-
-      if (countCustomerId != orderForShippingList.Count) {
-        Assertion.EnsureFailed("Uno o más pedidos no pertenecen al mismo cliente!");
-      }
-    }
-
-
-
-
-
     #endregion Public methods
 
 
     #region Private methods
+
+
+    private FixedList<OrderPackageForShipping> GetPackagedForItemListByOrder(
+            FixedList<PackagedForItem> packagedForItem) {
+
+      var packages = new List<OrderPackageForShipping>();
+      foreach (var item in packagedForItem) {
+        var package = new OrderPackageForShipping();
+
+        package.PackingItemUID = item.UID;
+        package.PackageID = item.PackageID;
+        package.PackageTypeName = item.PackageTypeName;
+        package.TotalVolume = item.PackageVolume;
+        package.TotalWeight = item.PackageWeight;
+
+        packages.Add(package);
+      }
+
+      return packages.ToFixedList();
+    }
 
 
     private void GetShippingOrderItemMeasurementUnits(FixedList<ShippingOrderItem> shippingOrderItemList) {
@@ -176,24 +158,38 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     }
 
 
-    private FixedList<OrderPackageForShipping> GetPackagedForItemListByOrder(
-            FixedList<PackagedForItem> packagedForItem) {
+    private void ValidateOrdersByShippingOrder(ShippingOrderItem orderItem,
+                                          FixedList<ShippingOrderItem> orderForShippingList) {
 
-      var packages = new List<OrderPackageForShipping>();
-      foreach (var item in packagedForItem) {
-        var package = new OrderPackageForShipping();
+      var countShippingId = orderForShippingList.FindAll(x =>
+                              x.ShippingOrder.Id == orderItem.ShippingOrder.Id).Count;
 
-        package.PackingItemUID= item.UID;
-        package.PackageID= item.PackageID;
-        package.PackageTypeName= item.PackageTypeName;
-        package.TotalVolume = item.PackageVolume;
-        package.TotalWeight = item.PackageWeight;
+      if (countShippingId != orderForShippingList.Count) {
+        Assertion.EnsureFailed("Uno o más pedidos no pertenecen al mismo envío!");
+      }
+    }
 
-        packages.Add(package);
+
+    private void ValidateShippingDataByCustomerId(ShippingOrderItem orderItem,
+                                                  FixedList<ShippingOrderItem> orderForShippingList) {
+
+      var countCustomerId = orderForShippingList.FindAll(x =>
+                              x.Order.Customer.Id == orderItem.Order.Customer.Id).Count;
+
+      if (countCustomerId != orderForShippingList.Count) {
+        Assertion.EnsureFailed("Uno o más pedidos no pertenecen al mismo cliente!");
+      }
+    }
+
+
+    private void ValidateShippingDataByStatus(ShippingOrderItem orderItem) {
+
+      if (orderItem.Order.Status != OrderStatus.Shipping) {
+        Assertion.EnsureFailed($"El estatus de uno o más pedidos no es valido!");
       }
 
-      return packages.ToFixedList();
     }
+
 
     #endregion Private methods
 

@@ -12,6 +12,7 @@ using Empiria.Services;
 using Empiria.Trade.Sales.ShippingAndHandling.Domain;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 using Empiria.Trade.Core.Catalogues;
+using Empiria.Trade.Sales.ShippingAndHandling.Data;
 
 namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
@@ -35,6 +36,24 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
     #region Use cases
 
 
+    public ShippingDto CreateShippingOrder(ShippingFields fields) {
+
+      return CreateOrUpdateShippingOrder(fields);
+    }
+
+
+    public ShippingDto DeleteShippingOrderItem(string shippingOrderUID, string shippingOrderItemUID) {
+
+      ShippingData.DeleteShippingOrderItem(shippingOrderItemUID);
+
+      var builder = new ShippingBuilder();
+
+      ShippingEntry shippingEntry = builder.GetShippingByUID(shippingOrderUID);
+
+      return ShippingMapper.MapShippingForParcelDelivery(shippingEntry);
+    }
+
+
     public FixedList<INamedEntity> GetParcelSupplierList() {
 
       var catalogueUsecase = CataloguesUseCases.UseCaseInteractor();
@@ -43,17 +62,13 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
     }
 
 
-    public ShippingDto CreateShippingOrder(ShippingFields fields) {
+    public ShippingEntryDto GetShippingByOrderUID(string orderUID) {
 
-      return CreateOrUpdateShippingOrder(fields);
-    }
+      var builder = new ShippingBuilder();
 
+      ShippingEntry entry = builder.GetShippingByOrderUID(orderUID);
 
-    public ShippingDto UpdateShippingOrder(string shippingOrderUID, ShippingFields fields) {
-
-      fields.ShippingData.ShippingUID = shippingOrderUID;
-
-      return CreateOrUpdateShippingOrder(fields);
+      return ShippingMapper.Map(entry);
     }
 
 
@@ -69,19 +84,17 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
     }
 
 
-    public ShippingEntryDto GetShippingByOrderUID(string orderUID) {
-
-      var builder = new ShippingBuilder();
-
-      ShippingEntry entry = builder.GetShippingByOrderUID(orderUID);
-
-      return ShippingMapper.Map(entry);
-    }
-
-
     public ShippingDto GetShippingOrderByQuery(ShippingQuery query) {
 
       return GetShippingByOrders(query.Orders);
+    }
+
+
+    public ShippingDto UpdateShippingOrder(string shippingOrderUID, ShippingFields fields) {
+
+      fields.ShippingData.ShippingUID = shippingOrderUID;
+
+      return CreateOrUpdateShippingOrder(fields);
     }
 
 

@@ -18,8 +18,38 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
   /// <summary></summary>
   public class ShippingController : WebApiController {
 
-
+    //TODO CAMBIAR ENDPOINTS DE v4/trade/shipping-and-handling/
+    //A v4/trade/sales/
     #region Web Apis
+
+
+    [HttpPost]
+    [Route("v4/trade/shipping-and-handling/shipping/")]
+    public SingleObjectModel CreateShippingOrder([FromBody] ShippingFields fields) {
+
+      using (var usecases = ShippingUseCases.UseCaseInteractor()) {
+
+        ShippingDto shippingOrder = usecases.CreateShippingOrder(fields);
+
+        return new SingleObjectModel(this.Request, shippingOrder);
+      }
+    }
+
+
+    [HttpDelete]
+    [Route("v4/trade/shipping-and-handling/shipping/{shippingOrderUID:guid}/" +
+           "shipping-item/{shippingOrderItemUID:guid}")]
+    public SingleObjectModel DeleteShippingOrderItem([FromUri] string shippingOrderUID,
+                                                     [FromUri] string shippingOrderItemUID) {
+
+      using (var usecases = ShippingUseCases.UseCaseInteractor()) {
+
+        ShippingDto shippingOrder = usecases.DeleteShippingOrderItem(shippingOrderUID, shippingOrderItemUID);
+
+        return new SingleObjectModel(this.Request, shippingOrder);
+      }
+    }
+
 
 
     [HttpGet]
@@ -36,12 +66,12 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
 
 
     [HttpPost]
-    [Route("v4/trade/shipping-and-handling/shipping/")]
-    public SingleObjectModel CreateShippingOrder([FromBody] ShippingFields fields) {
+    [Route("v4/trade/sales/shipping/parcel-delivery")]
+    public SingleObjectModel GetShippingOrderForParcelDelivery([FromBody] ShippingQuery query) {
 
       using (var usecases = ShippingUseCases.UseCaseInteractor()) {
 
-        ShippingDto shippingOrder = usecases.CreateShippingOrder(fields);
+        ShippingDto shippingOrder = usecases.GetShippingOrderByQuery(query);
 
         return new SingleObjectModel(this.Request, shippingOrder);
       }
@@ -50,24 +80,11 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
 
     [HttpPut]
     [Route("v4/trade/shipping-and-handling/shipping/{shippingOrderUID:guid}")]
-    public SingleObjectModel UpdateShippingOrder([FromUri]string shippingOrderUID, [FromBody] ShippingFields fields) {
+    public SingleObjectModel UpdateShippingOrder([FromUri] string shippingOrderUID, [FromBody] ShippingFields fields) {
 
       using (var usecases = ShippingUseCases.UseCaseInteractor()) {
 
         ShippingDto shippingOrder = usecases.UpdateShippingOrder(shippingOrderUID, fields);
-
-        return new SingleObjectModel(this.Request, shippingOrder);
-      }
-    }
-
-
-    [HttpPost]
-    [Route("v4/trade/sales/shipping/parcel-delivery")]
-    public SingleObjectModel GetShippingOrderForParcelDelivery([FromBody] ShippingQuery query) {
-
-      using (var usecases = ShippingUseCases.UseCaseInteractor()) {
-
-        ShippingDto shippingOrder = usecases.GetShippingOrderByQuery(query);
 
         return new SingleObjectModel(this.Request, shippingOrder);
       }

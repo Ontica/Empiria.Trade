@@ -24,6 +24,20 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
     #region Public methods
 
 
+    static internal void DeleteShippingOrderItem(string shippingOrderItemUID) {
+
+      var itemId = ShippingOrderItem.Parse(shippingOrderItemUID).ShippingOrderItemId;
+
+      string sql = $"DELETE FROM TRDShippingOrderItems " +
+                   $"WHERE ShippingOrderItemId = '{itemId}' ";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      DataWriter.Execute(dataOperation);
+
+    }
+
+
     internal FixedList<SimpleObjectData> GetParcelSupplierList() {
 
       string sql = "SELECT * FROM SimpleObjects WHERE ObjectStatus = 'A' AND ObjectTypeId = 1063";
@@ -34,21 +48,17 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
     }
 
 
-    internal static FixedList<ShippingOrderItem> GetShippingOrderItemList(string[] OrderUIDs) {
+    static internal FixedList<ShippingEntry> GetShippingOrder(int ShippingId) {
 
-      string orderIdList = GetOrderIdList(OrderUIDs);
+      string sql = $"SELECT * FROM TRDShipping WHERE ShippingOrderId IN ({ShippingId})";
 
-      var shippingOrderItem = GetShippingOrderItemByOrderUID(orderIdList);
-      
-      if (shippingOrderItem.Count == 0) {
-        return new FixedList<ShippingOrderItem>();
-      }
+      var dataOperation = DataOperation.Parse(sql);
 
-      return shippingOrderItem;
+      return DataReader.GetPlainObjectFixedList<ShippingEntry>(dataOperation);
     }
 
 
-    internal static FixedList<ShippingOrderItem> GetShippingOrderItemByOrderUID(string orderUIDs) {
+    static internal FixedList<ShippingOrderItem> GetShippingOrderItemByOrderUID(string orderUIDs) {
 
       if (orderUIDs == string.Empty) {
         return new FixedList<ShippingOrderItem>();
@@ -62,13 +72,27 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
     }
 
 
-    internal static FixedList<ShippingOrderItem> GetShippingOrderItemByShippingOrderUID(int shippingId) {
+    static internal FixedList<ShippingOrderItem> GetShippingOrderItemByShippingOrderUID(int shippingId) {
 
       string sql = $"SELECT * FROM TRDShippingOrderItems where ShippingOrderId IN ({shippingId})";
 
       var dataOperation = DataOperation.Parse(sql);
 
       return DataReader.GetPlainObjectFixedList<ShippingOrderItem>(dataOperation);
+    }
+
+
+    internal static FixedList<ShippingOrderItem> GetShippingOrderItemList(string[] OrderUIDs) {
+
+      string orderIdList = GetOrderIdList(OrderUIDs);
+
+      var shippingOrderItem = GetShippingOrderItemByOrderUID(orderIdList);
+
+      if (shippingOrderItem.Count == 0) {
+        return new FixedList<ShippingOrderItem>();
+      }
+
+      return shippingOrderItem;
     }
 
 
@@ -94,20 +118,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
     }
 
 
-    static internal FixedList<ShippingEntry> GetShippingOrder(int ShippingId) {
-      
-      string sql = $"SELECT * FROM TRDShipping WHERE ShippingOrderId IN ({ShippingId})";
-
-      var dataOperation = DataOperation.Parse(sql);
-
-      return DataReader.GetPlainObjectFixedList<ShippingEntry>(dataOperation);
-    }
-
-
     #endregion Public methods
 
 
     #region Private methods
+
 
     static private string GetOrderIdList(string[] orderUIDs) {
 
@@ -116,13 +131,13 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
       }
 
       string orderIdList = "";
-      
+
       foreach (var uid in orderUIDs) {
-        
+
         int orderId = Order.Parse(uid).Id;
         orderIdList += $"{orderId},";
       }
-      
+
       orderIdList = orderIdList.Remove(orderIdList.Length - 1, 1);
 
       return orderIdList;

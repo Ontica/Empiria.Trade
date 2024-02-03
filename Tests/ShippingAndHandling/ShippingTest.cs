@@ -39,18 +39,6 @@ namespace Empiria.Trade.Tests {
 
 
     [Fact]
-    public void GetParcelSupplierListTest() {
-
-      var usecase = ShippingUseCases.UseCaseInteractor();
-
-      FixedList<INamedEntity> sut = usecase.GetParcelSupplierList();
-
-      Assert.NotNull(sut);
-
-    }
-
-
-    [Fact]
     public void CreateShippingOrderTest() {
 
       var usecase = ShippingUseCases.UseCaseInteractor();
@@ -63,12 +51,25 @@ namespace Empiria.Trade.Tests {
 
 
     [Fact]
-    public void UpdateShippingOrderTest() {
+    public void DeleteShippingOrderItemTest() {
 
       var usecase = ShippingUseCases.UseCaseInteractor();
 
-      string shippingUID = "d1ea2b82-ccb6-4bd4-ad90-5df757f2ddb3";
-      ShippingDto sut = usecase.UpdateShippingOrder(shippingUID, GetShippingFields());
+      string shippingOrderUID = "d1ea2b82-ccb6-4bd4-ad90-5df757f2ddb3";
+      string shippingOrderItemUID = "e1a6df0e-76cf-4085-a09c-4b5688b22522";
+      ShippingDto sut = usecase.DeleteShippingOrderItem(shippingOrderUID, shippingOrderItemUID);
+
+      Assert.NotNull(sut);
+
+    }
+
+
+    [Fact]
+    public void GetParcelSupplierListTest() {
+
+      var usecase = ShippingUseCases.UseCaseInteractor();
+
+      FixedList<INamedEntity> sut = usecase.GetParcelSupplierList();
 
       Assert.NotNull(sut);
 
@@ -83,20 +84,6 @@ namespace Empiria.Trade.Tests {
       string shippingUID = "d1ea2b82-ccb6-4bd4-ad90-5df757f2ddb3";
 
       ShippingEntry sut = usecase.GetShippingByUID(shippingUID);
-
-      Assert.NotNull(sut);
-
-    }
-
-
-    [Fact]
-    public void GetShippingOrderItemByUID() {
-
-      var usecase = ShippingUseCases.UseCaseInteractor();
-
-      string shippingUID = "47f1f9cc-6948-4dc5-ba9e-c92060448902";
-
-      ShippingOrderItem sut = usecase.GetShippingOrderItemByUID(shippingUID);
 
       Assert.NotNull(sut);
 
@@ -133,6 +120,33 @@ namespace Empiria.Trade.Tests {
       };
 
       ShippingDto sut = usecase.GetShippingOrderByQuery(query);
+
+      Assert.NotNull(sut);
+
+    }
+
+
+    [Fact]
+    public void GetShippingOrderItemByUID() {
+
+      var usecase = ShippingUseCases.UseCaseInteractor();
+
+      string shippingUID = "47f1f9cc-6948-4dc5-ba9e-c92060448902";
+
+      ShippingOrderItem sut = usecase.GetShippingOrderItemByUID(shippingUID);
+
+      Assert.NotNull(sut);
+
+    }
+
+
+    [Fact]
+    public void UpdateShippingOrderTest() {
+
+      var usecase = ShippingUseCases.UseCaseInteractor();
+
+      string shippingUID = "d1ea2b82-ccb6-4bd4-ad90-5df757f2ddb3";
+      ShippingDto sut = usecase.UpdateShippingOrder(shippingUID, GetShippingFields());
 
       Assert.NotNull(sut);
 

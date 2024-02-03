@@ -23,7 +23,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
   internal class ShippingBuilder {
 
 
-
     #region Constructor
 
     public ShippingBuilder() {
@@ -35,34 +34,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
 
     #region Public methods
-
-
-    internal ShippingEntry GetShippingByOrders(string[] orders) {
-      
-      var helper = new ShippingHelper();
-
-      FixedList<ShippingOrderItem> orderForShippingList = helper.GetShippingOrderItemList(orders);
-
-      helper.ShippingDataValidations(orderForShippingList);
-
-      ShippingEntry shippingEntry = helper.GetShippingEntry(orderForShippingList);
-
-      return shippingEntry;
-
-    }
-
-    
-    internal ShippingEntry GetShippingByOrderUID(string orderUID) {
-
-      string orderId = Order.Parse(orderUID).Id.ToString();
-      var orderForShippingList = ShippingData.GetShippingOrderItemByOrderUID(orderId);
-
-      var helper = new ShippingHelper();
-
-      ShippingEntry shipping = helper.GetShippingEntry(orderForShippingList);
-
-      return shipping;
-    }
 
 
     internal ShippingEntry CreateOrUpdateShipping(ShippingFields fields) {
@@ -83,7 +54,51 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       return GetShippingByOrders(fields.Orders);
     }
 
-    
+
+    internal ShippingEntry GetShippingByOrders(string[] orders) {
+      
+      var helper = new ShippingHelper();
+
+      FixedList<ShippingOrderItem> orderForShippingList = helper.GetShippingOrderItemList(orders);
+
+      helper.ShippingDataValidations(orderForShippingList);
+
+      ShippingEntry shippingEntry = helper.GetShippingEntry(orderForShippingList);
+
+      return shippingEntry;
+
+    }
+
+
+    internal ShippingEntry GetShippingByOrderUID(string orderUID) {
+
+      string orderId = Order.Parse(orderUID).Id.ToString();
+      var orderForShippingList = ShippingData.GetShippingOrderItemByOrderUID(orderId);
+
+      var helper = new ShippingHelper();
+
+      ShippingEntry shipping = helper.GetShippingEntry(orderForShippingList);
+
+      return shipping;
+    }
+
+
+    internal ShippingEntry GetShippingByUID(string shippingOrderUID) {
+      
+      var shippingOrderId = ShippingEntry.Parse(shippingOrderUID).ShippingOrderId;
+
+      var shippingItems = ShippingData.GetShippingOrderItemByShippingOrderUID(shippingOrderId);
+
+      List<string> orders = new List<string>();
+
+      foreach (var item in shippingItems) {
+        orders.Add(item.Order.UID);
+      }
+
+      return GetShippingByOrders(orders.ToArray());
+    }
+
+
     #endregion Public methods
 
 
