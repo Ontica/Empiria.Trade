@@ -19,7 +19,7 @@ namespace Empiria.Trade.Sales.UseCases {
 
     #region Constructors and parsers
 
-    protected SalesOrderUseCases() {
+    public SalesOrderUseCases() {
       // no-op
     }
 
@@ -110,6 +110,15 @@ namespace Empiria.Trade.Sales.UseCases {
       var orderDto = SalesOrderMapper.Map(order);
 
       return orderDto;
+    }
+
+    public void ChangeOrdersToDeliveryStatus(string [] ordersUID) {
+      Assertion.Require(ordersUID, "orderUID");
+
+      foreach(var orderUID in ordersUID) {
+        DeliverySalesOrder(orderUID);
+      }     
+    
     }
 
     public ISalesOrderDto ApplySalesOrder(string orderUID) {
