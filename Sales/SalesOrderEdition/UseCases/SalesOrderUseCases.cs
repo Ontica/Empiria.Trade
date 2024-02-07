@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using System.Runtime.Remoting.Messaging;
 using Empiria.Services;
 
 using Empiria.Trade.Sales.Adapters;
@@ -100,7 +101,37 @@ namespace Empiria.Trade.Sales.UseCases {
 
     
     }
-    
+
+    //Temporal Function name 
+    public SearchSalesOrderDto FindOrders(SearchOrderFields fields) {
+      Assertion.Require(fields, "fields");
+
+      var helper = new SalesOrderHelper();
+
+      switch (fields.QueryType) {
+
+        case QueryType.Sales: {
+          var salesOrdersList = helper.GetOrders(fields);
+          return SearchSealesOrderMapper.Map(fields, salesOrdersList);
+        }
+        case QueryType.SalesAuthorization: {
+          FixedList<SalesOrder> salesOrders = helper.GetOrdersToAuthorize(fields);
+          return SearchSealesOrderMapper.Map(fields, salesOrders);
+        }
+        case QueryType.SalesPacking: {
+          FixedList<SalesOrder> salesOrders = helper.GetOrdersToPacking(fields);
+          return SearchSealesOrderMapper.Map(fields, salesOrders);
+        }
+
+        default: {
+          throw Assertion.EnsureNoReachThisCode($"It is invalid queryType:{fields.QueryType}");
+
+        }
+      }
+       
+     
+    }
+
     public ISalesOrderDto CancelSalesOrder(string orderUID) {
       Assertion.Require(orderUID, "orderUID");
 
