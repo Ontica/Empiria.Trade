@@ -24,8 +24,19 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
 
     static internal ShippingEntryDto Map(ShippingEntry entry) {
-      var shippingOrderItem = new FixedList<ShippingOrderItemDto>();
-      return MapEntry(entry, shippingOrderItem);
+      
+      return MapEntry(entry);
+    }
+
+
+    internal static FixedList<ShippingEntryDto> MapShippings(FixedList<ShippingEntry> entries) {
+      var shippingDto = new List<ShippingEntryDto>();
+
+      foreach (var entry in entries) {
+        shippingDto.Add(MapEntry(entry));
+      }
+
+      return shippingDto.ToFixedList();
     }
 
 
@@ -34,7 +45,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
       ShippingDto shippingDto = new ShippingDto();
 
       shippingDto.OrdersForShipping = MapToOrderForShippingDto(entry.OrdersForShipping);
-      shippingDto.ShippingData = MapEntry(entry, shippingDto.OrdersForShipping);
+
+      shippingDto.ShippingData = MapEntry(entry);
 
       return shippingDto;
     }
@@ -65,8 +77,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
     }
 
 
-    static private ShippingEntryDto MapEntry(ShippingEntry entry,
-                    FixedList<ShippingOrderItemDto> ordersForShipping) {
+    static private ShippingEntryDto MapEntry(ShippingEntry entry) {
 
       var parcel = SimpleObjectData.Parse(entry.ParcelSupplierId != 0 ? entry.ParcelSupplierId : -1);
       var parcelName = parcel.UID != "" ? parcel.Name : "";
@@ -79,7 +90,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
         CustomerAmount = entry.CustomerAmount,
         ShippingDate = entry.ShippingDate,
         OrdersCount = entry.OrdersForShipping.Count,
-        OrdersTotal = ordersForShipping.Sum(x => x.OrderTotal),
+        OrdersTotal = entry.OrdersTotal,
         TotalPackages = entry.OrdersForShipping.Sum(x => x.TotalPackages),
         TotalWeight = entry.OrdersForShipping.Sum(x => x.TotalWeight),
         TotalVolume = entry.OrdersForShipping.Sum(x => x.TotalVolume)
@@ -96,12 +107,10 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
       foreach (var item in orderForShipping) {
 
-        FixedList<SalesOrderItem> salesOrderItems = SalesOrderItem.GetOrderItems(item.Order.Id);
-
         var itemDto = new ShippingOrderItemDto();
         itemDto.OrderUID = item.Order.UID;
-        itemDto.OrderName = item.Order.OrderNumber;
-        itemDto.OrderTotal = salesOrderItems.Sum(x => x.Total);
+        itemDto.OrderNumber = item.Order.OrderNumber;
+        itemDto.OrderTotal = item.OrderTotal;
         itemDto.Customer = new NamedEntityDto(item.Order.Customer.UID, item.Order.Customer.Name);
         itemDto.Vendor = new NamedEntityDto(item.Order.SalesAgent.UID, item.Order.SalesAgent.Name);
         itemDto.TotalPackages = item.TotalPackages;

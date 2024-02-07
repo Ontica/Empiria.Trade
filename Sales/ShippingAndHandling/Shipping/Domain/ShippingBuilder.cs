@@ -55,6 +55,18 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     }
 
 
+    internal FixedList<ShippingEntry> GetShippingList(ShippingQuery query) {
+
+      var helper = new ShippingHelper();
+
+      FixedList<ShippingEntry> shippingList = ShippingData.GetShippingOrders(query.Keywords);
+
+      helper.GetShippingOrderItemByEntry(shippingList);
+
+      return shippingList;
+    }
+
+
     internal ShippingEntry GetShippingByOrders(string[] orders) {
       
       var helper = new ShippingHelper();

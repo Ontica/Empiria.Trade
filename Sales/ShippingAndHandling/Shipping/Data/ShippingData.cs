@@ -48,9 +48,17 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
     }
 
 
-    static internal FixedList<ShippingEntry> GetShippingOrder(int ShippingId) {
+    static internal FixedList<ShippingEntry> GetShippingOrders(string shippingUID) {
 
-      string sql = $"SELECT * FROM TRDShipping WHERE ShippingOrderId IN ({ShippingId})";
+      var clauses = string.Empty;
+
+      if (shippingUID != string.Empty) {
+
+        var shippingId = ShippingEntry.Parse(shippingUID).ShippingOrderId;
+        clauses = $"AND ShippingOrderId IN ({shippingId})";
+      }
+
+      string sql = $"SELECT * FROM TRDShipping WHERE ShippingOrderId > 0 {clauses}";
 
       var dataOperation = DataOperation.Parse(sql);
 

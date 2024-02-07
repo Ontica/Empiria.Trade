@@ -14,7 +14,7 @@ using Empiria.Trade.Sales.ShippingAndHandling.UseCases;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 
 namespace Empiria.Trade.WebApi.ShippingAndHandling {
-  
+
   /// <summary></summary>
   public class ShippingController : WebApiController {
 
@@ -24,7 +24,7 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
 
 
     [HttpPost]
-    [Route("v4/trade/shipping-and-handling/shipping/")]
+    [Route("v4/trade/sales/shipping/")]
     public SingleObjectModel CreateShippingOrder([FromBody] ShippingFields fields) {
 
       using (var usecases = ShippingUseCases.UseCaseInteractor()) {
@@ -37,7 +37,7 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
 
 
     [HttpDelete]
-    [Route("v4/trade/shipping-and-handling/shipping/{shippingOrderUID:guid}/" +
+    [Route("v4/trade/sales/shipping/{shippingOrderUID:guid}/" +
            "shipping-item/{shippingOrderItemUID:guid}")]
     public SingleObjectModel DeleteShippingOrderItem([FromUri] string shippingOrderUID,
                                                      [FromUri] string shippingOrderItemUID) {
@@ -51,9 +51,8 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
     }
 
 
-
     [HttpGet]
-    [Route("v4/trade/shipping-and-handling/shipping/parcel-suppliers")]
+    [Route("v4/trade/sales/shipping/parcel-suppliers")]
     public CollectionModel GetPackageTypeList() {
 
       using (var usecases = ShippingUseCases.UseCaseInteractor()) {
@@ -66,8 +65,21 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
 
 
     [HttpPost]
+    [Route("v4/trade/sales/shipping/search")]
+    public CollectionModel GetShippingList([FromBody] ShippingQuery query) {
+
+      using (var usecases = ShippingUseCases.UseCaseInteractor()) {
+
+        FixedList<ShippingEntryDto> shippingList = usecases.GetShippingsList(query);
+
+        return new CollectionModel(this.Request, shippingList);
+      }
+    }
+
+
+    [HttpPost]
     [Route("v4/trade/sales/shipping/parcel-delivery")]
-    public SingleObjectModel GetShippingOrderForParcelDelivery([FromBody] ShippingQuery query) {
+    public SingleObjectModel GetShippingOrderForParcelDelivery([FromBody] ShippingFieldsQuery query) {
 
       using (var usecases = ShippingUseCases.UseCaseInteractor()) {
 
@@ -79,7 +91,7 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
 
 
     [HttpPut]
-    [Route("v4/trade/shipping-and-handling/shipping/{shippingOrderUID:guid}")]
+    [Route("v4/trade/sales/shipping/{shippingOrderUID:guid}")]
     public SingleObjectModel UpdateShippingOrder([FromUri] string shippingOrderUID, [FromBody] ShippingFields fields) {
 
       using (var usecases = ShippingUseCases.UseCaseInteractor()) {

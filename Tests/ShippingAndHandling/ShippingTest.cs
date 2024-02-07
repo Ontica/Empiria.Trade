@@ -109,7 +109,7 @@ namespace Empiria.Trade.Tests {
 
       var usecase = ShippingUseCases.UseCaseInteractor();
 
-      ShippingQuery query = new ShippingQuery {
+      ShippingFieldsQuery query = new ShippingFieldsQuery {
         Orders = new[] {
           //"dc9aa2bb-1082-43b9-afd5-fdaae4e7deeb" //vacio
           //"a99e6f92-4c07-4516-a7d2-17bf9629ede7", //ligados1
@@ -120,6 +120,20 @@ namespace Empiria.Trade.Tests {
       };
 
       ShippingDto sut = usecase.GetShippingOrderByQuery(query);
+
+      Assert.NotNull(sut);
+
+    }
+
+
+    [Fact]
+    public void GetShippingListTest() {
+
+      var usecase = ShippingUseCases.UseCaseInteractor();
+
+      ShippingQuery query = new ShippingQuery();
+
+      FixedList<ShippingEntryDto> sut = usecase.GetShippingsList(query);
 
       Assert.NotNull(sut);
 
@@ -145,7 +159,7 @@ namespace Empiria.Trade.Tests {
 
       var usecase = ShippingUseCases.UseCaseInteractor();
 
-      string shippingUID = "d1ea2b82-ccb6-4bd4-ad90-5df757f2ddb3";
+      string shippingUID = "3531d517-5fee-4725-ac92-06fad7e75c6f";
       ShippingDto sut = usecase.UpdateShippingOrder(shippingUID, GetShippingFields());
 
       Assert.NotNull(sut);
@@ -160,16 +174,19 @@ namespace Empiria.Trade.Tests {
 
     private ShippingFields GetShippingFields() {
       string[] orders = new string[] {
-        "9096d6cd-1ba7-42fe-9c0a-55fd37ecadc1", //159 1
-        "f959a4df-af9b-4596-9ee8-4a3e2e94757f" //194 1
+        "c17c2b0b-f50c-4985-9857-8be701752248", //202
+        "55b3c607-bbd1-4812-80bd-5afa28782e6d", //198
+        "cb536880-4f9c-4922-95e4-eca95872c563" //179
+        //"9096d6cd-1ba7-42fe-9c0a-55fd37ecadc1", //159 1
+        //"f959a4df-af9b-4596-9ee8-4a3e2e94757f" //194 1
       };
 
       ShippingDataFields dataFields = new ShippingDataFields() {
         ShippingUID = "",
         ParcelSupplierUID = "8521a10b-0607-4d45-8614-385aba701b1r",
-        ShippingGuide = "GUIA 0004",
-        ParcelAmount = 300,
-        CustomerAmount = 45
+        ShippingGuide = "GUIA0001 EDITADA - MAS ORDEN 179",
+        ParcelAmount = 1000,
+        CustomerAmount = 500
       };
 
       ShippingFields fields = new ShippingFields() {

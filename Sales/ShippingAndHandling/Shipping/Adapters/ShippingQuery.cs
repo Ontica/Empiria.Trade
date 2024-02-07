@@ -15,11 +15,25 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
   /// <summary>Query used to get order shipping entries.</summary>
   public class ShippingQuery {
 
+
+    public string Keywords {
+      get; set;
+    } = string.Empty;
+
+
+  } // class ShippingQuery
+
+
+  /// <summary>Query used to get order shipping entries for edit.</summary>
+  public class ShippingFieldsQuery {
+
+
     public string[] Orders {
       get; set;
     } = new string[0];
 
-  } // class ShippingQuery
+
+  } // class ShippingFieldsQuery
 
 
 } // namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters

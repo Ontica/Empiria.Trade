@@ -12,9 +12,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Empiria.Trade.Orders;
+using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 using Empiria.Trade.Sales.ShippingAndHandling.Data;
 using Empiria.Trade.Sales.ShippingAndHandling.UseCases;
+using Empiria.Trade.Sales.UseCases;
 
 namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
@@ -25,7 +27,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
 
     public ShippingHelper() {
-      
+
     }
 
 
@@ -69,13 +71,31 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
         return new ShippingEntry();
       }
 
-      ShippingEntry shipping = ShippingData.GetShippingOrder(
-                                orderForShippingList[0].ShippingOrder.ShippingOrderId)
+      ShippingEntry shipping = ShippingData.GetShippingOrders(
+                                orderForShippingList[0].ShippingOrder.ShippingUID)
                               .FirstOrDefault();
 
       shipping.OrdersForShipping = orderForShippingList;
+      shipping.OrdersTotal = orderForShippingList.Sum(x => x.OrderTotal);
 
       return shipping;
+    }
+
+
+    internal void GetShippingOrderItemByEntry(FixedList<ShippingEntry> shippingList) {
+
+      foreach (var shipping in shippingList) {
+
+        FixedList<ShippingOrderItem> ordersForShipping = 
+          ShippingData.GetShippingOrderItemByShippingOrderUID(shipping.ShippingOrderId);
+
+        GetShippingOrderItemMeasurementUnits(ordersForShipping);
+
+        shipping.OrdersForShipping = ordersForShipping;
+        shipping.OrdersTotal = ordersForShipping.Sum(x => x.OrderTotal);
+
+      }
+      
     }
 
 
@@ -84,7 +104,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       FixedList<ShippingOrderItem> shippingOrderItemList =
                                    ShippingData.GetShippingOrderItemList(orders);
 
-      FixedList<ShippingOrderItem> orderItemByPackingOrder = 
+      FixedList<ShippingOrderItem> orderItemByPackingOrder =
                                    GetOrderItemByPackingOrder(orders, shippingOrderItemList);
 
       GetShippingOrderItemMeasurementUnits(orderItemByPackingOrder);
@@ -116,14 +136,15 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
             FixedList<PackagedForItem> packagedForItem) {
 
       var packages = new List<OrderPackageForShipping>();
-      foreach (var item in packagedForItem) {
+
+      foreach (var packaging in packagedForItem) {
         var package = new OrderPackageForShipping();
 
-        package.PackingItemUID = item.UID;
-        package.PackageID = item.PackageID;
-        package.PackageTypeName = item.PackageTypeName;
-        package.TotalVolume = item.PackageVolume;
-        package.TotalWeight = item.PackageWeight;
+        package.PackingItemUID = packaging.UID;
+        package.PackageID = packaging.PackageID;
+        package.PackageTypeName = packaging.PackageTypeName;
+        package.TotalVolume = packaging.PackageVolume;
+        package.TotalWeight = packaging.PackageWeight;
 
         packages.Add(package);
       }
@@ -142,16 +163,17 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
         if (packageInfo.OrderUID != string.Empty) {
 
+          var salesOrder = SalesOrder.Parse(orderItem.Order.UID);
+          salesOrder.CalculateSalesOrder(QueryType.SalesShipping);
+
+          orderItem.OrderTotal = salesOrder.OrderTotal;
           orderItem.TotalPackages = packageInfo.TotalPackages;
           orderItem.TotalWeight = packageInfo.Weight;
           orderItem.TotalVolume = packageInfo.Volume;
 
           var packagedForItem = usecasePackage.GetPackagedForItemList(orderItem.Order.UID);
 
-          FixedList<OrderPackageForShipping> orderPackages = GetPackagedForItemListByOrder(packagedForItem);
-
-          orderItem.OrderPackages = orderPackages;
-          
+          orderItem.OrderPackages = GetPackagedForItemListByOrder(packagedForItem);
         }
 
       }

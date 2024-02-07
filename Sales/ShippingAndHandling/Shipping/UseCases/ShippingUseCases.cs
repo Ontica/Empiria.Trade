@@ -62,6 +62,16 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
     }
 
 
+    public FixedList<ShippingEntryDto> GetShippingsList(ShippingQuery query) {
+
+      var builder = new ShippingBuilder();
+
+      FixedList<ShippingEntry> entries = builder.GetShippingList(query);
+
+      return ShippingMapper.MapShippings(entries);
+    }
+
+
     public ShippingEntryDto GetShippingByOrderUID(string orderUID) {
 
       var builder = new ShippingBuilder();
@@ -84,7 +94,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
     }
 
 
-    public ShippingDto GetShippingOrderByQuery(ShippingQuery query) {
+    public ShippingDto GetShippingOrderByQuery(ShippingFieldsQuery query) {
 
       return GetShippingByOrders(query.Orders);
     }

@@ -77,6 +77,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
     }
 
 
+    public decimal OrderTotal {
+      get; set;
+    }
+
+
     public int TotalPackages {
       get; set;
     }

@@ -85,7 +85,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
     }
 
 
-    public string OrderName {
+    public string OrderNumber {
       get; set;
     }
 
