@@ -107,7 +107,12 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
     public FixedList<ShippingOrderItem> OrdersForShipping {
       get ; set;
     } = new FixedList<ShippingOrderItem>();
-    
+
+
+    public bool CanEdit {
+      get;
+      internal set;
+    }
 
 
     #endregion Properties

@@ -144,7 +144,7 @@ namespace Empiria.Trade.Sales.UseCases {
     }
 
     public void ChangeOrdersToDeliveryStatus(string [] ordersUID) {
-      Assertion.Require(ordersUID, "orderUID");
+      Assertion.Require(ordersUID, "ordersUID");
 
       foreach(var orderUID in ordersUID) {
         DeliverySalesOrder(orderUID);

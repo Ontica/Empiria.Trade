@@ -91,6 +91,19 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
 
 
     [HttpPost]
+    [Route("v4/trade/sales/shipping/{shippingOrderUID}/send")]
+    public SingleObjectModel ChangeOrdersForShippingStatus([FromUri] string shippingOrderUID) {
+
+      using (var usecases = ShippingUseCases.UseCaseInteractor()) {
+
+        ShippingDto shippingOrder = usecases.ChangeOrdersForShippingStatus(shippingOrderUID);
+
+        return new SingleObjectModel(this.Request, shippingOrder);
+      }
+    }
+
+
+    [HttpPost]
     [Route("v4/trade/sales/shipping/parcel-delivery")]
     public SingleObjectModel GetShippingOrderForParcelDelivery([FromBody] ShippingFieldsQuery query) {
 

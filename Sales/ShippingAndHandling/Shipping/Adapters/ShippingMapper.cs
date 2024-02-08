@@ -45,8 +45,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
       ShippingDto shippingDto = new ShippingDto();
 
       shippingDto.OrdersForShipping = MapToOrderForShippingDto(entry.OrdersForShipping);
-
       shippingDto.ShippingData = MapEntry(entry);
+      shippingDto.CanEdit = entry.CanEdit;
 
       return shippingDto;
     }
@@ -93,7 +93,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
         OrdersTotal = entry.OrdersTotal,
         TotalPackages = entry.OrdersForShipping.Sum(x => x.TotalPackages),
         TotalWeight = entry.OrdersForShipping.Sum(x => x.TotalWeight),
-        TotalVolume = entry.OrdersForShipping.Sum(x => x.TotalVolume)
+        TotalVolume = entry.OrdersForShipping.Sum(x => x.TotalVolume),
       };
 
       return shippingDto;

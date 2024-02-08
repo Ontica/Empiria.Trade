@@ -14,6 +14,7 @@ using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Sales.ShippingAndHandling.Data;
 using Empiria.Trade.Orders;
+using Empiria.Trade.Sales.UseCases;
 
 namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
@@ -137,6 +138,22 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
       ShippingEntry shippingOrder = builder.UpdateShippingOrder(fields);
 
       return ShippingMapper.MapShippingForParcelDelivery(shippingOrder);
+    }
+
+
+    public ShippingDto ChangeOrdersForShippingStatus(string shippingOrderUID) {
+
+      var builder = new ShippingBuilder();
+
+      var orders = builder.GetOrdersToChangeStatus(shippingOrderUID);
+
+      SalesOrderUseCases orderUseCases = new SalesOrderUseCases();
+
+      orderUseCases.ChangeOrdersToDeliveryStatus(orders);
+
+      ShippingEntry shipping = builder.GetShippingByOrders(orders);
+
+      return ShippingMapper.MapShippingForParcelDelivery(shipping);
     }
 
 

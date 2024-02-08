@@ -80,7 +80,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
     }
 
 
-    static internal FixedList<ShippingOrderItem> GetShippingOrderItemByShippingOrderUID(int shippingId) {
+    static internal FixedList<ShippingOrderItem> GetOrdersForShippingByShippingId(int shippingId) {
 
       string sql = $"SELECT * FROM TRDShippingOrderItems where ShippingOrderId IN ({shippingId})";
 
@@ -90,7 +90,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
     }
 
 
-    internal static FixedList<ShippingOrderItem> GetShippingOrderItemList(string[] OrderUIDs) {
+    internal static FixedList<ShippingOrderItem> GetOrdersForShippingByOrders(string[] OrderUIDs) {
 
       string orderIdList = GetOrderIdList(OrderUIDs);
 

@@ -17,6 +17,7 @@ using Empiria.Trade.Core.Common;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 using Empiria.Trade.Sales.ShippingAndHandling.Data;
+using Empiria.Trade.Sales.UseCases;
 
 namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
@@ -39,7 +40,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
     internal ShippingEntry CreateOrUpdateShipping(ShippingFields fields) {
 
-      GetOrdersForShipping(fields.Orders);
+      GetOrdersForShippingByOrders(fields.Orders);
 
       ShippingEntry shipping = CreateOrUpdateShipping(fields.ShippingData);
 
@@ -51,7 +52,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
     internal ShippingEntry UpdateShippingOrder(ShippingFields fields) {
 
-      GetOrdersForShipping(fields.Orders);
+      GetOrdersForShippingByOrders(fields.Orders);
 
       CreateOrUpdateShipping(fields.ShippingData);
 
@@ -63,7 +64,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       var helper = new ShippingHelper();
 
-      FixedList<ShippingOrderItem> orderForShippingList = GetOrdersForShipping(orders);
+      FixedList<ShippingOrderItem> orderForShippingList = GetOrdersForShippingByOrders(orders);
 
       ShippingEntry shippingEntry = helper.GetShippingWithOrders(orderForShippingList);
 
@@ -72,11 +73,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     }
 
 
-    internal FixedList<ShippingOrderItem> GetOrdersForShipping(string[] orders) {
+    internal FixedList<ShippingOrderItem> GetOrdersForShippingByOrders(string[] orders) {
 
       var helper = new ShippingHelper();
 
-      FixedList<ShippingOrderItem> orderForShippingList = helper.GetShippingOrderItemList(orders);
+      FixedList<ShippingOrderItem> orderForShippingList = helper.GetOrdersForShippingByOrders(orders);
 
       helper.ShippingDataValidations(orderForShippingList);
 
@@ -100,11 +101,13 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       var helper = new ShippingHelper();
 
-      FixedList<ShippingEntry> shippingList = ShippingData.GetShippingOrders(query.Keywords);
+      FixedList<ShippingEntry> shippingList = ShippingData.GetShippingOrders("");
+
+      shippingList = shippingList.Where(x => x.ShippingOrderId > 0).ToList().ToFixedList();
 
       helper.GetShippingOrderItemByEntry(shippingList);
 
-      return shippingList.Where(x => x.ShippingOrderId > 0).ToList().ToFixedList();
+      return shippingList;
     }
 
 
@@ -125,7 +128,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       var shippingOrderId = ShippingEntry.Parse(shippingOrderUID).ShippingOrderId;
 
-      var ordersForShipping = ShippingData.GetShippingOrderItemByShippingOrderUID(shippingOrderId);
+      var ordersForShipping = ShippingData.GetOrdersForShippingByShippingId(shippingOrderId);
 
       List<string> orders = new List<string>();
 
@@ -169,13 +172,13 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     internal ShippingEntry GetShippingEntry(string[] orders) {
 
       FixedList<ShippingOrderItem> ordersForShipping =
-                                   ShippingData.GetShippingOrderItemList(orders);
+                                   ShippingData.GetOrdersForShippingByOrders(orders);
 
       FixedList<ShippingOrderItem> ordersList;
 
       if (ordersForShipping.Count > 0) {
 
-        ordersList = GetAllOrdersForShipping(ordersForShipping);
+        ordersList = GetAllOrdersForShipping(orders, ordersForShipping);
 
       } else {
 
@@ -190,17 +193,24 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     }
 
 
-    private FixedList<ShippingOrderItem> GetAllOrdersForShipping(
+    private FixedList<ShippingOrderItem> GetAllOrdersForShipping(string[] orders,
                                           FixedList<ShippingOrderItem> ordersForShipping) {
 
       var helper = new ShippingHelper();
 
-      foreach (var order in ordersForShipping) {
-        helper.ValidateOrdersByShippingOrder(order, ordersForShipping);
+      var ordersList = ShippingData.GetOrdersForShippingByShippingId(
+              ordersForShipping[0].ShippingOrder.ShippingOrderId);
+
+      foreach (var order in orders) {
+        
+        var orderForShipping = ordersList.FirstOrDefault(x => x.Order.UID == order);
+        
+        if (orderForShipping == null) {
+          Assertion.EnsureFailed("Uno o más pedidos no pertenecen al mismo envío!");
+        }
       }
 
-      return ShippingData.GetShippingOrderItemByShippingOrderUID(
-              ordersForShipping[0].ShippingOrder.ShippingOrderId);
+      return ordersList;
     }
 
 
@@ -228,6 +238,28 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       }
 
       return ordersList.ToFixedList();
+    }
+
+
+    private FixedList<ShippingOrderItem> GetOrdersForShippingByUID(string shippingOrderUID) {
+
+      var shippingId = ShippingEntry.Parse(shippingOrderUID).ShippingOrderId;
+
+      return ShippingData.GetOrdersForShippingByShippingId(shippingId);
+    }
+
+
+    internal string[] GetOrdersToChangeStatus(string shippingOrderUID) {
+
+      FixedList<ShippingOrderItem> ordersForShipping = GetOrdersForShippingByUID(shippingOrderUID);
+
+      List<string> orderList = new List<string>(); 
+      
+      foreach (var order in ordersForShipping) {
+        orderList.Add(order.Order.UID);
+      }
+      
+      return orderList.ToArray();
     }
 
 

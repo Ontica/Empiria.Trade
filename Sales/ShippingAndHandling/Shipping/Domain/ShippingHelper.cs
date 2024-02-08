@@ -76,6 +76,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
                               .FirstOrDefault();
 
       shipping.OrdersForShipping = orderForShippingList;
+      shipping.CanEdit = orderForShippingList[0].Order.Status == OrderStatus.Shipping ? true : false;
       shipping.OrdersTotal = orderForShippingList.Sum(x => x.OrderTotal);
 
       return shipping;
@@ -87,7 +88,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       foreach (var shipping in shippingList) {
 
         FixedList<ShippingOrderItem> ordersForShipping = 
-          ShippingData.GetShippingOrderItemByShippingOrderUID(shipping.ShippingOrderId);
+          ShippingData.GetOrdersForShippingByShippingId(shipping.ShippingOrderId);
 
         GetShippingOrderItemMeasurementUnits(ordersForShipping);
 
@@ -99,10 +100,10 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     }
 
 
-    internal FixedList<ShippingOrderItem> GetShippingOrderItemList(string[] orders) {
+    internal FixedList<ShippingOrderItem> GetOrdersForShippingByOrders(string[] orders) {
 
       FixedList<ShippingOrderItem> shippingOrderItemList =
-                                   ShippingData.GetShippingOrderItemList(orders);
+                                   ShippingData.GetOrdersForShippingByOrders(orders);
 
       FixedList<ShippingOrderItem> orderItemByPackingOrder =
                                    GetOrderItemByPackingOrder(orders, shippingOrderItemList);
@@ -206,7 +207,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
     private void ValidateShippingDataByStatus(ShippingOrderItem orderItem) {
 
-      if (orderItem.Order.Status != OrderStatus.Shipping) {
+      if (orderItem.Order.Status != OrderStatus.Shipping &&
+          orderItem.Order.Status != OrderStatus.Delivery) {
         Assertion.EnsureFailed($"El estatus de uno o más pedidos no es valido!");
       }
 
