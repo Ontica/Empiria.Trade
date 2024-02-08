@@ -47,7 +47,7 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
 
         return new SingleObjectModel(this.Request, shippingOrder);
       }
-    }
+    } 
 
 
     [HttpDelete]
