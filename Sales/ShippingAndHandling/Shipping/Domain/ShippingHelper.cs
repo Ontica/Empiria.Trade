@@ -65,7 +65,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     }
 
 
-    internal ShippingEntry GetShippingWithOrderItems(FixedList<ShippingOrderItem> orderForShippingList) {
+    internal ShippingEntry GetShippingWithOrders(FixedList<ShippingOrderItem> orderForShippingList) {
 
       if (orderForShippingList.Count == 0) {
         return new ShippingEntry();
@@ -74,7 +74,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       ShippingEntry shipping = ShippingData.GetShippingOrders(
                                 orderForShippingList[0].ShippingOrder.ShippingUID)
                               .FirstOrDefault();
-      
+
       shipping.OrdersForShipping = orderForShippingList;
       shipping.OrdersTotal = orderForShippingList.Sum(x => x.OrderTotal);
 
@@ -119,7 +119,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
         ValidateShippingDataByCustomerId(orderItem, orderForShippingList);
         ValidateShippingDataByStatus(orderItem);
-        //ValidateOrdersByShippingOrder(orderItem, orderForShippingList);
+        ValidateOrdersByShippingOrder(orderItem, orderForShippingList);
 
       }
 
@@ -210,6 +210,17 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
         Assertion.EnsureFailed($"El estatus de uno o más pedidos no es valido!");
       }
 
+    }
+
+
+    internal void ValidateIfExistOrderForShipping(string orderUID) {
+
+      var order = SalesOrder.Parse(orderUID);
+      var orderForShippingList = ShippingData.GetOrdersForShippingByOrderUID(order.Id.ToString());
+
+      if (orderForShippingList.Count > 0) {
+        Assertion.EnsureFailed($"El pedido {order.OrderNumber} ya pertenece a un envío!");
+      }
     }
 
 

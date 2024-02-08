@@ -169,7 +169,7 @@ namespace Empiria.Trade.Tests {
 
       var usecase = ShippingUseCases.UseCaseInteractor();
 
-      string shippingUID = "050590d4-3dd9-4331-8bf8-d7764c371850";
+      string shippingUID = "68db22ab-891e-466e-80d1-e766fc370bcc";
       string orderUID = "8a15068a-3bc2-4693-a415-a9e3410f63fc";
       ShippingDto sut = usecase.CreateOrderForShipping(shippingUID, orderUID);
 
@@ -185,15 +185,15 @@ namespace Empiria.Trade.Tests {
 
     private ShippingFields GetShippingFields() {
       string[] orders = new string[] {
-        "f960c77a-1873-477b-a7af-75f99a6df41d",
-        "f959a4df-af9b-4596-9ee8-4a3e2e94757f",
+        //"f960c77a-1873-477b-a7af-75f99a6df41d",
+        //"f959a4df-af9b-4596-9ee8-4a3e2e94757f",
         "8a15068a-3bc2-4693-a415-a9e3410f63fc"
       };
 
       ShippingDataFields dataFields = new ShippingDataFields() {
         ShippingUID = "",
         ParcelSupplierUID = "8521a10b-0607-4d45-8614-385aba701b1r",
-        ShippingGuide = "GUIA PAQUETEXPRESS 0001-4",
+        ShippingGuide = "GUIA PAQUETEXPRESS 0001",
         ParcelAmount = 200,
         CustomerAmount = 50
       };

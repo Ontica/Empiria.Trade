@@ -66,13 +66,13 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
     }
 
 
-    static internal FixedList<ShippingOrderItem> GetShippingOrderItemByOrderUID(string orderUIDs) {
+    static internal FixedList<ShippingOrderItem> GetOrdersForShippingByOrderUID(string orderIdList) {
 
-      if (orderUIDs == string.Empty) {
+      if (orderIdList == string.Empty) {
         return new FixedList<ShippingOrderItem>();
       }
 
-      string sql = $"SELECT * FROM TRDShippingOrderItems where OrderId IN ({orderUIDs})";
+      string sql = $"SELECT * FROM TRDShippingOrderItems where OrderId IN ({orderIdList})";
 
       var dataOperation = DataOperation.Parse(sql);
 
@@ -94,7 +94,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
 
       string orderIdList = GetOrderIdList(OrderUIDs);
 
-      var shippingOrderItem = GetShippingOrderItemByOrderUID(orderIdList);
+      var shippingOrderItem = GetOrdersForShippingByOrderUID(orderIdList);
 
       if (shippingOrderItem.Count == 0) {
         return new FixedList<ShippingOrderItem>();

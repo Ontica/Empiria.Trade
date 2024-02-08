@@ -13,6 +13,7 @@ using Empiria.Trade.Sales.ShippingAndHandling.Domain;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Sales.ShippingAndHandling.Data;
+using Empiria.Trade.Orders;
 
 namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
@@ -38,8 +39,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
     public ShippingDto CreateOrderForShipping(string shippingOrderUID, string orderUID) {
 
+      var helper = new ShippingHelper();
+      helper.ValidateIfExistOrderForShipping(orderUID);
+
       var builder = new ShippingBuilder();
-      string[] orders = new string[] { orderUID};
+      string[] orders = new string[] { orderUID };
 
       builder.CreateOrUpdateOrderForShipping(shippingOrderUID, orders);
 
@@ -54,8 +58,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
       var builder = new ShippingBuilder();
 
       ShippingEntry shippingOrder = builder.CreateOrUpdateShipping(fields);
-
-      builder.CreateOrUpdateOrderForShipping(shippingOrder.ShippingUID, fields.Orders);
 
       return ShippingMapper.MapShippingForParcelDelivery(shippingOrder);
     }
@@ -130,7 +132,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
       
       var builder = new ShippingBuilder();
 
-      ShippingEntry shippingOrder = builder.CreateOrUpdateShipping(fields);
+      ShippingEntry shippingOrder = builder.UpdateShippingOrder(fields);
 
       return ShippingMapper.MapShippingForParcelDelivery(shippingOrder);
     }
@@ -141,15 +143,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
     #region Private methods
 
-
-    private ShippingDto CreateOrUpdateShippingOrder(ShippingFields fields) {
-
-      var builder = new ShippingBuilder();
-
-      ShippingEntry shippingOrder = builder.CreateOrUpdateShipping(fields);
-
-      return ShippingMapper.MapShippingForParcelDelivery(shippingOrder);
-    }
 
 
     #endregion Private methods
