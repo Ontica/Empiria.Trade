@@ -65,7 +65,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     }
 
 
-    internal ShippingEntry GetShippingEntry(FixedList<ShippingOrderItem> orderForShippingList) {
+    internal ShippingEntry GetShippingWithOrderItems(FixedList<ShippingOrderItem> orderForShippingList) {
 
       if (orderForShippingList.Count == 0) {
         return new ShippingEntry();
@@ -74,7 +74,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       ShippingEntry shipping = ShippingData.GetShippingOrders(
                                 orderForShippingList[0].ShippingOrder.ShippingUID)
                               .FirstOrDefault();
-
+      
       shipping.OrdersForShipping = orderForShippingList;
       shipping.OrdersTotal = orderForShippingList.Sum(x => x.OrderTotal);
 
@@ -119,7 +119,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
         ValidateShippingDataByCustomerId(orderItem, orderForShippingList);
         ValidateShippingDataByStatus(orderItem);
-        ValidateOrdersByShippingOrder(orderItem, orderForShippingList);
+        //ValidateOrdersByShippingOrder(orderItem, orderForShippingList);
 
       }
 
@@ -182,7 +182,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
     private void ValidateOrdersByShippingOrder(ShippingOrderItem orderItem,
                                           FixedList<ShippingOrderItem> orderForShippingList) {
-
+      //TODO CAMBIAR LA VALIDACION CONSULTANDO EN BD LOS ID'S
       var countShippingId = orderForShippingList.FindAll(x =>
                               x.ShippingOrder.Id == orderItem.ShippingOrder.Id).Count;
 

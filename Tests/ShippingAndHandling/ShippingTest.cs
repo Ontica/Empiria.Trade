@@ -55,9 +55,9 @@ namespace Empiria.Trade.Tests {
 
       var usecase = ShippingUseCases.UseCaseInteractor();
 
-      string shippingOrderUID = "d1ea2b82-ccb6-4bd4-ad90-5df757f2ddb3";
-      string shippingOrderItemUID = "e1a6df0e-76cf-4085-a09c-4b5688b22522";
-      ShippingDto sut = usecase.DeleteShippingOrderItem(shippingOrderUID, shippingOrderItemUID);
+      string shippingOrderUID = "050590d4-3dd9-4331-8bf8-d7764c371850";
+      string orderUID = "8a15068a-3bc2-4693-a415-a9e3410f63fc";
+      ShippingDto sut = usecase.DeleteShippingOrderItem(shippingOrderUID, orderUID);
 
       Assert.NotNull(sut);
 
@@ -81,7 +81,7 @@ namespace Empiria.Trade.Tests {
 
       var usecase = ShippingUseCases.UseCaseInteractor();
 
-      string shippingUID = "d1ea2b82-ccb6-4bd4-ad90-5df757f2ddb3";
+      string shippingUID = "9ed68735-af5c-4e49-85dc-4a177c82b273";
 
       ShippingEntry sut = usecase.GetShippingByUID(shippingUID);
 
@@ -111,11 +111,8 @@ namespace Empiria.Trade.Tests {
 
       ShippingFieldsQuery query = new ShippingFieldsQuery {
         Orders = new[] {
-          //"dc9aa2bb-1082-43b9-afd5-fdaae4e7deeb" //vacio
-          //"a99e6f92-4c07-4516-a7d2-17bf9629ede7", //ligados1
-          //"0ca1ee24-bf52-4295-896e-c200eb1bfd04", //ligados1
-          "9096d6cd-1ba7-42fe-9c0a-55fd37ecadc1", //ligados2
-          "f959a4df-af9b-4596-9ee8-4a3e2e94757f"  //ligados2
+          "f960c77a-1873-477b-a7af-75f99a6df41d",
+          "f959a4df-af9b-4596-9ee8-4a3e2e94757f"
         }
       };
 
@@ -159,8 +156,22 @@ namespace Empiria.Trade.Tests {
 
       var usecase = ShippingUseCases.UseCaseInteractor();
 
-      string shippingUID = "3531d517-5fee-4725-ac92-06fad7e75c6f";
+      string shippingUID = "050590d4-3dd9-4331-8bf8-d7764c371850";
       ShippingDto sut = usecase.UpdateShippingOrder(shippingUID, GetShippingFields());
+
+      Assert.NotNull(sut);
+
+    }
+
+
+    [Fact]
+    public void CreateOrdersForShippingTest() {
+
+      var usecase = ShippingUseCases.UseCaseInteractor();
+
+      string shippingUID = "050590d4-3dd9-4331-8bf8-d7764c371850";
+      string orderUID = "8a15068a-3bc2-4693-a415-a9e3410f63fc";
+      ShippingDto sut = usecase.CreateOrderForShipping(shippingUID, orderUID);
 
       Assert.NotNull(sut);
 
@@ -174,19 +185,17 @@ namespace Empiria.Trade.Tests {
 
     private ShippingFields GetShippingFields() {
       string[] orders = new string[] {
-        "c17c2b0b-f50c-4985-9857-8be701752248", //202
-        "55b3c607-bbd1-4812-80bd-5afa28782e6d", //198
-        "cb536880-4f9c-4922-95e4-eca95872c563" //179
-        //"9096d6cd-1ba7-42fe-9c0a-55fd37ecadc1", //159 1
-        //"f959a4df-af9b-4596-9ee8-4a3e2e94757f" //194 1
+        "f960c77a-1873-477b-a7af-75f99a6df41d",
+        "f959a4df-af9b-4596-9ee8-4a3e2e94757f",
+        "8a15068a-3bc2-4693-a415-a9e3410f63fc"
       };
 
       ShippingDataFields dataFields = new ShippingDataFields() {
         ShippingUID = "",
         ParcelSupplierUID = "8521a10b-0607-4d45-8614-385aba701b1r",
-        ShippingGuide = "GUIA0001 EDITADA - MAS ORDEN 179",
-        ParcelAmount = 1000,
-        CustomerAmount = 500
+        ShippingGuide = "GUIA PAQUETEXPRESS 0001-4",
+        ParcelAmount = 200,
+        CustomerAmount = 50
       };
 
       ShippingFields fields = new ShippingFields() {

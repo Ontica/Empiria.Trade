@@ -36,15 +36,28 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
     }
 
 
-    [HttpDelete]
-    [Route("v4/trade/sales/shipping/{shippingOrderUID:guid}/" +
-           "shipping-item/{shippingOrderItemUID:guid}")]
-    public SingleObjectModel DeleteShippingOrderItem([FromUri] string shippingOrderUID,
-                                                     [FromUri] string shippingOrderItemUID) {
+    [HttpPost]
+    [Route("v4/trade/sales/shipping/{shippingOrderUID:guid}/order/{orderUID:guid}")]
+    public SingleObjectModel CreateOrderForShipping([FromUri] string shippingOrderUID,
+                                                     [FromUri] string orderUID) {
 
       using (var usecases = ShippingUseCases.UseCaseInteractor()) {
 
-        ShippingDto shippingOrder = usecases.DeleteShippingOrderItem(shippingOrderUID, shippingOrderItemUID);
+        ShippingDto shippingOrder = usecases.CreateOrderForShipping(shippingOrderUID, orderUID);
+
+        return new SingleObjectModel(this.Request, shippingOrder);
+      }
+    }
+
+
+    [HttpDelete]
+    [Route("v4/trade/sales/shipping/{shippingOrderUID:guid}/order/{orderUID:guid}")]
+    public SingleObjectModel DeleteOrderForShipping([FromUri] string shippingOrderUID,
+                                                     [FromUri] string orderUID) {
+
+      using (var usecases = ShippingUseCases.UseCaseInteractor()) {
+
+        ShippingDto shippingOrder = usecases.DeleteShippingOrderItem(shippingOrderUID, orderUID);
 
         return new SingleObjectModel(this.Request, shippingOrder);
       }
@@ -62,7 +75,7 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
         return new CollectionModel(this.Request, packingDetail);
       }
     }
-
+    
 
     [HttpPost]
     [Route("v4/trade/sales/shipping/search")]

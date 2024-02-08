@@ -24,12 +24,12 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
     #region Public methods
 
 
-    static internal void DeleteShippingOrderItem(string shippingOrderItemUID) {
+    static internal void DeleteShippingOrderItem(string orderUID) {
 
-      var itemId = ShippingOrderItem.Parse(shippingOrderItemUID).ShippingOrderItemId;
+      var orderId = SalesOrder.Parse(orderUID).Id;
 
       string sql = $"DELETE FROM TRDShippingOrderItems " +
-                   $"WHERE ShippingOrderItemId = '{itemId}' ";
+                   $"WHERE OrderId = '{orderId}' ";
 
       var dataOperation = DataOperation.Parse(sql);
 
@@ -55,10 +55,10 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
       if (shippingUID != string.Empty) {
 
         var shippingId = ShippingEntry.Parse(shippingUID).ShippingOrderId;
-        clauses = $"AND ShippingOrderId IN ({shippingId})";
+        clauses = $"WHERE ShippingOrderId IN ({shippingId})";
       }
 
-      string sql = $"SELECT * FROM TRDShipping WHERE ShippingOrderId > 0 {clauses}";
+      string sql = $"SELECT * FROM TRDShipping {clauses}";
 
       var dataOperation = DataOperation.Parse(sql);
 

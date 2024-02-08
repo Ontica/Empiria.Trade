@@ -38,20 +38,48 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
     internal ShippingEntry CreateOrUpdateShipping(ShippingFields fields) {
 
+      GetOrdersForShipping(fields.Orders);
+
+      CreateOrUpdateShipping(fields.ShippingData);
+
+      return GetShippingByOrders(fields.Orders);
+    }
+
+
+    internal ShippingEntry GetShippingByOrders(string[] orders) {
+
       var helper = new ShippingHelper();
 
-      FixedList<ShippingOrderItem> orderForShippingList = helper.GetShippingOrderItemList(fields.Orders);
+      FixedList<ShippingOrderItem> orderForShippingList = GetOrdersForShipping(orders);
+
+      ShippingEntry shippingEntry = helper.GetShippingWithOrderItems(orderForShippingList);
+
+      return shippingEntry;
+
+    }
+
+
+    internal FixedList<ShippingOrderItem> GetOrdersForShipping(string[] orders) {
+
+      var helper = new ShippingHelper();
+
+      FixedList<ShippingOrderItem> orderForShippingList = helper.GetShippingOrderItemList(orders);
 
       helper.ShippingDataValidations(orderForShippingList);
 
-      ShippingEntry shippingOrder = CreateOrUpdateShippingOrder(fields.ShippingData);
+      return orderForShippingList;
 
-      FixedList<ShippingOrderItem> shippingOrderItem = CreateOrUpdateShippingOrderItem(
-                                                        shippingOrder.UID, fields.Orders);
+    }
 
-      ShippingEntry shippingOrderMerged = MergeShippingOrderWithItems(shippingOrder, shippingOrderItem);
 
-      return GetShippingByOrders(fields.Orders);
+    internal ShippingEntry GetShippingWithOrders(FixedList<ShippingOrderItem> orderForShippingList) {
+
+      var helper = new ShippingHelper();
+
+      ShippingEntry shippingEntry = helper.GetShippingWithOrderItems(orderForShippingList);
+
+      return shippingEntry;
+
     }
 
 
@@ -63,22 +91,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       helper.GetShippingOrderItemByEntry(shippingList);
 
-      return shippingList;
-    }
-
-
-    internal ShippingEntry GetShippingByOrders(string[] orders) {
-      
-      var helper = new ShippingHelper();
-
-      FixedList<ShippingOrderItem> orderForShippingList = helper.GetShippingOrderItemList(orders);
-
-      helper.ShippingDataValidations(orderForShippingList);
-
-      ShippingEntry shippingEntry = helper.GetShippingEntry(orderForShippingList);
-
-      return shippingEntry;
-
+      return shippingList.Where(x => x.ShippingOrderId > 0).ToList().ToFixedList();
     }
 
 
@@ -89,7 +102,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       var helper = new ShippingHelper();
 
-      ShippingEntry shipping = helper.GetShippingEntry(orderForShippingList);
+      ShippingEntry shipping = helper.GetShippingWithOrderItems(orderForShippingList);
 
       return shipping;
     }
@@ -99,12 +112,12 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       
       var shippingOrderId = ShippingEntry.Parse(shippingOrderUID).ShippingOrderId;
 
-      var shippingItems = ShippingData.GetShippingOrderItemByShippingOrderUID(shippingOrderId);
+      var ordersForShipping = ShippingData.GetShippingOrderItemByShippingOrderUID(shippingOrderId);
 
       List<string> orders = new List<string>();
 
-      foreach (var item in shippingItems) {
-        orders.Add(item.Order.UID);
+      foreach (var order in ordersForShipping) {
+        orders.Add(order.Order.UID);
       }
 
       return GetShippingByOrders(orders.ToArray());
@@ -117,7 +130,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     #region Private methods
 
 
-    private ShippingEntry CreateOrUpdateShippingOrder(ShippingDataFields shippingData) {
+    private ShippingEntry CreateOrUpdateShipping(ShippingDataFields shippingData) {
 
       var shippingOrder = new ShippingEntry(shippingData);
 
@@ -127,7 +140,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     }
 
 
-    private FixedList<ShippingOrderItem> CreateOrUpdateShippingOrderItem(
+    internal void CreateOrUpdateOrderForShipping(
                                           string shippingOrderUID, string[] orders) {
 
       var shipping = ShippingEntry.Parse(shippingOrderUID);
@@ -136,14 +149,10 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       foreach (var order in orders) {
         
         var shippingOrder = new ShippingOrderItem(order, shipping);
-
         shippingOrder.Save();
-
         shippingItems.Add(shippingOrder);
 
       }
-
-      return shippingItems.ToFixedList();
     }
 
 
