@@ -118,9 +118,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
     public ShippingDto GetShippingOrderByQuery(ShippingFieldsQuery query) {
       var builder = new ShippingBuilder();
 
-      FixedList<ShippingOrderItem> orderForShippingList = builder.GetOrdersForShipping(query.Orders);
+      ShippingEntry shipping = builder.GetShippingEntry(query.Orders);
 
-      ShippingEntry shipping = builder.GetShippingWithOrders(orderForShippingList);
+      //FixedList<ShippingOrderItem> orderForShippingList = builder.GetOrdersForShipping(query.Orders);
+
+      //ShippingEntry shipping = builder.GetShippingWithOrders(orderForShippingList);
 
       return ShippingMapper.MapShippingForParcelDelivery(shipping);
     }

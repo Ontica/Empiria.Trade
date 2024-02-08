@@ -42,7 +42,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       GetOrdersForShipping(fields.Orders);
 
       ShippingEntry shipping = CreateOrUpdateShipping(fields.ShippingData);
-      
+
       CreateOrUpdateOrderForShipping(shipping.ShippingUID, fields.Orders);
 
       return GetShippingByOrders(fields.Orders);
@@ -88,25 +88,10 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     internal ShippingEntry GetShippingWithOrders(FixedList<ShippingOrderItem> orderForShippingList) {
 
       var helper = new ShippingHelper();
-      int shippingId = 0;
-      
-      foreach (var item in orderForShippingList) {
-        if (item.ShippingOrder.Id > 0) {
-          shippingId = item.Id;
-        }
-      }
 
-      if (shippingId > 0) {
+      ShippingEntry shippingEntry = helper.GetShippingWithOrders(orderForShippingList);
 
-        return new ShippingEntry();
-
-      } else {
-
-        ShippingEntry shippingEntry = helper.GetShippingWithOrders(orderForShippingList);
-
-        return shippingEntry;
-      }
-
+      return shippingEntry;
 
     }
 
@@ -137,7 +122,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
 
     internal ShippingEntry GetShippingByUID(string shippingOrderUID) {
-      
+
       var shippingOrderId = ShippingEntry.Parse(shippingOrderUID).ShippingOrderId;
 
       var ordersForShipping = ShippingData.GetShippingOrderItemByShippingOrderUID(shippingOrderId);
@@ -178,6 +163,71 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
         shippingOrder.Save();
 
       }
+    }
+
+
+    internal ShippingEntry GetShippingEntry(string[] orders) {
+
+      FixedList<ShippingOrderItem> ordersForShipping =
+                                   ShippingData.GetShippingOrderItemList(orders);
+
+      FixedList<ShippingOrderItem> ordersList;
+
+      if (ordersForShipping.Count > 0) {
+
+        ordersList = GetAllOrdersForShipping(ordersForShipping);
+
+      } else {
+
+        ordersList = GetOrdersWithoutShipping(orders);
+
+      }
+
+      var helper = new ShippingHelper();
+      helper.GetShippingOrderItemMeasurementUnits(ordersList.ToFixedList());
+
+      return helper.GetShippingWithOrders(ordersList);
+    }
+
+
+    private FixedList<ShippingOrderItem> GetAllOrdersForShipping(
+                                          FixedList<ShippingOrderItem> ordersForShipping) {
+
+      var helper = new ShippingHelper();
+
+      foreach (var order in ordersForShipping) {
+        helper.ValidateOrdersByShippingOrder(order, ordersForShipping);
+      }
+
+      return ShippingData.GetShippingOrderItemByShippingOrderUID(
+              ordersForShipping[0].ShippingOrder.ShippingOrderId);
+    }
+
+
+    private FixedList<ShippingOrderItem> GetOrdersWithoutShipping(string[] orders) {
+
+      var ordersList = new List<ShippingOrderItem>();
+
+      foreach (var orderUID in orders) {
+
+        var existShippingOrderItem = ordersList.FirstOrDefault(x => x.Order.UID == orderUID);
+
+        if (existShippingOrderItem == null) {
+
+          var order = SalesOrder.Parse(orderUID);
+          var orderItem = new ShippingOrderItem();
+
+          orderItem.ShippingOrderItemId = -1;
+          orderItem.ShippingOrderItemUID = "";
+          orderItem.ShippingOrder = ShippingEntry.Parse(-1);
+          orderItem.Order = order;
+
+          ordersList.Add(orderItem);
+
+        }
+      }
+
+      return ordersList.ToFixedList();
     }
 
 

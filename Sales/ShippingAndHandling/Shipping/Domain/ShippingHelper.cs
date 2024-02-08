@@ -119,7 +119,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
         ValidateShippingDataByCustomerId(orderItem, orderForShippingList);
         ValidateShippingDataByStatus(orderItem);
-        ValidateOrdersByShippingOrder(orderItem, orderForShippingList);
+        //ValidateOrdersByShippingOrder(orderItem, orderForShippingList);
 
       }
 
@@ -153,7 +153,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     }
 
 
-    private void GetShippingOrderItemMeasurementUnits(FixedList<ShippingOrderItem> shippingOrderItemList) {
+    internal void GetShippingOrderItemMeasurementUnits(FixedList<ShippingOrderItem> shippingOrderItemList) {
 
       foreach (var orderItem in shippingOrderItemList) {
 
@@ -180,7 +180,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     }
 
 
-    private void ValidateOrdersByShippingOrder(ShippingOrderItem orderItem,
+    internal void ValidateOrdersByShippingOrder(ShippingOrderItem orderItem,
                                           FixedList<ShippingOrderItem> orderForShippingList) {
       //TODO CAMBIAR LA VALIDACION CONSULTANDO EN BD LOS ID'S
       var countShippingId = orderForShippingList.FindAll(x =>
