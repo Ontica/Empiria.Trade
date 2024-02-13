@@ -57,8 +57,17 @@ namespace Empiria.Trade.Sales.Adapters {
       get; internal set;
     }
 
-   
+
   } // Output DTO used to return  basic orders.
+
+  /// Output DTO used to return Shipment status 
+  public class BaseSalesOrderShipmentDto : BaseSalesOrderDto {
+
+    public string Shipment {
+      get; internal set;
+    }
+
+  }
 
   /// Output DTO used to return base autorization orders.
   public class BaseSalesOrdersAuthorizationDto : BaseSalesOrderDto {

@@ -72,38 +72,12 @@ namespace Empiria.Trade.Sales.UseCases {
       return orderDto;
     }
 
-    public FixedList<ISalesOrderDto> GetOrders(SearchOrderFields fields) {
-      Assertion.Require(fields, "fields");
+ 
 
-      var helper = new SalesOrderHelper();
-
-      switch (fields.QueryType) {
-
-        case QueryType.Sales: {
-          var salesOrdersList = helper.GetOrders(fields);
-          return SalesOrderMapper.MapBaseSalesOrders(salesOrdersList);
-        }
-        case QueryType.SalesAuthorization: {
-          FixedList<SalesOrder> salesOrders = helper.GetOrdersToAuthorize(fields);
-          return SalesOrderMapper.MapBaseSalesOrderAuthorizationList(salesOrders);
-        }
-        case QueryType.SalesPacking: {
-          FixedList<SalesOrder> salesOrdersPacking = helper.GetOrdersToPacking(fields);
-          return SalesOrderMapper.MapBaseSalesOrderPackingList(salesOrdersPacking);
-        }
-
-        default: {
-          throw Assertion.EnsureNoReachThisCode($"It is invalid queryType:{fields.QueryType}");
-
-        }
-       
-      }
-
-    
-    }
+   
 
     //Temporal Function name 
-    public SearchSalesOrderDto FindOrders(SearchOrderFields fields) {
+    public SearchSalesOrderDto GetOrders(SearchOrderFields fields) {
       Assertion.Require(fields, "fields");
 
       var helper = new SalesOrderHelper();

@@ -62,6 +62,25 @@ namespace Empiria.Trade.Sales.Adapters {
       return dto;
     }
 
+    private static ISalesOrderDto MapBaseSalesOrderShipmentStatus(SalesOrder order) {
+      var dto = new BaseSalesOrderShipmentDto {
+        UID = order.UID,
+        OrderNumber = order.OrderNumber,
+        OrderTime = order.OrderTime,
+        CustomerName = order.Customer.Name,
+        SupplierName = order.Supplier.Name,
+        SalesAgentName = order.SalesAgent.Name,
+        OrderTotal = order.OrderTotal,
+        Status = order.Status,
+        Shipment = "Pendiente",
+        StatusName = MapOrderStatus(order.Status.ToString())
+      };
+
+      return dto;
+    }
+
+
+
     static public ISalesOrderDto MapBaseSalesOrderAuthorization(SalesOrder order) {
       var dto = new BaseSalesOrdersAuthorizationDto {
         UID = order.UID,
@@ -106,6 +125,18 @@ namespace Empiria.Trade.Sales.Adapters {
 
       return baseSalesOrderDtoList.ToFixedList();
     }
+
+     static public FixedList<ISalesOrderDto> MapBaseSalesOrdersShipmentStatus(FixedList<SalesOrder> salesOrders) {
+      List<ISalesOrderDto> baseSalesOrderDtoList = new List<ISalesOrderDto>();
+
+      foreach (var salesOrder in salesOrders) {
+        baseSalesOrderDtoList.Add(MapBaseSalesOrderShipmentStatus(salesOrder));
+      }
+
+      return baseSalesOrderDtoList.ToFixedList();
+    }
+
+   
 
     static public FixedList<ISalesOrderDto> MapBaseSalesOrderAuthorizationList(FixedList<SalesOrder> salesOrders) {
       List<ISalesOrderDto> salesOrderDtoList = new List<ISalesOrderDto>();
@@ -253,6 +284,8 @@ namespace Empiria.Trade.Sales.Adapters {
       }
 
     }
+
+   
     #endregion Private methods
 
 

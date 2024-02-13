@@ -117,18 +117,20 @@ namespace Empiria.Trade.Sales.WebApi {
 
     }
 
+
+
     [HttpPost]
     [Route("v4/trade/sales/orders/search")]
-    public CollectionModel GetOrders([FromBody] SearchOrderFields fields) {
+    public SingleObjectModel GetOrders([FromBody] SearchOrderFields fields) {
 
       base.RequireBody(fields);
       using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
 
-        FixedList<ISalesOrderDto> salesOrders = usecases.GetOrders(fields);
-        return new CollectionModel(base.Request, salesOrders);  
+        SearchSalesOrderDto salesOrders = usecases.GetOrders(fields);
+        return new SingleObjectModel(base.Request, salesOrders);
 
 
-    } // using 
+      } // using 
 
     }
 

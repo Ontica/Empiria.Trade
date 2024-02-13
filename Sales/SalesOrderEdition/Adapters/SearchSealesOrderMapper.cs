@@ -36,23 +36,25 @@ namespace Empiria.Trade.Sales.Adapters {
     static private FixedList<DataTableColumn> DataColumns(SearchOrderFields query) {
       List<DataTableColumn> columns = new List<DataTableColumn>();  
 
-      columns.Add(new DataTableColumn("uid", "UID", "text"));
+    
       columns.Add(new DataTableColumn("orderNumber", "No. Orden", "text"));
-      columns.Add(new DataTableColumn("orderTime", "Fecha", "datetime"));
+      columns.Add(new DataTableColumn("orderTime", "Fecha", "date"));
       columns.Add(new DataTableColumn("customerName", "Cliente", "text"));
       columns.Add(new DataTableColumn("statusName", "Estatus", "text"));
       columns.Add(new DataTableColumn("salesAgentName", "Vendedor", "text"));
       columns.Add(new DataTableColumn("orderTotal", "Total", "decimal"));
-      columns.Add(new DataTableColumn("supplierName", "Proveedor", "Text"));
-      columns.Add(new DataTableColumn("status", "Status", "Text"));
 
-      switch (query.QueryType) {
+      if ((query.ShippingMethod == "Paqueteria") && (query.Status == Orders.OrderStatus.Shipping)) {
+        columns.Add(new DataTableColumn("shipment", "Envío", "text"));
+      }
+
+        switch (query.QueryType) {
         case QueryType.SalesAuthorization: {  
           columns.Add(new DataTableColumn("totalDebt", "Adeudo", "decimal")); break;
         }
         case QueryType.SalesPacking: {
-          columns.Add(new DataTableColumn("weight", "Peso", "decimal"));
-          columns.Add(new DataTableColumn("totalPackages", "No. Paquetes", "number"));
+          columns.Add(new DataTableColumn("weight", "Peso", "decimal", 2));
+          columns.Add(new DataTableColumn("totalPackages", "No. Paquetes", "decimal",0));
           break;
         }
       }
@@ -64,7 +66,12 @@ namespace Empiria.Trade.Sales.Adapters {
       switch (query.QueryType) {
 
         case QueryType.Sales: {
-          return SalesOrderMapper.MapBaseSalesOrders(salesOrders);
+          if ((query.ShippingMethod == "Paqueteria") && (query.Status == Orders.OrderStatus.Shipping)) {
+            return SalesOrderMapper.MapBaseSalesOrdersShipmentStatus(salesOrders);
+          } else {
+            return SalesOrderMapper.MapBaseSalesOrders(salesOrders);
+          }
+
         }
         case QueryType.SalesAuthorization: {
           return SalesOrderMapper.MapBaseSalesOrderAuthorizationList(salesOrders);
