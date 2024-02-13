@@ -116,17 +116,17 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
     }
 
 
-    //[HttpGet]
-    //[Route("v4/trade/sales/shipping/parcel-delivery/{shippingOrderUID:guid}")]
-    //public SingleObjectModel GetShippingOrder([FromUri] string shippingOrderUID) {
+    [HttpGet]
+    [Route("v4/trade/sales/shipping/parcel-delivery/{shippingOrderUID:guid}")]
+    public SingleObjectModel GetShippingOrder([FromUri] string shippingOrderUID) {
 
-    //  using (var usecases = ShippingUseCases.UseCaseInteractor()) {
+      using (var usecases = ShippingUseCases.UseCaseInteractor()) {
 
-    //    ShippingDto shippingOrder = usecases.GetShippingByUID(shippingOrderUID);
+        ShippingDto shippingOrder = usecases.GetShippingByUID(shippingOrderUID);
 
-    //    return new SingleObjectModel(this.Request, shippingOrder);
-    //  }
-    //}
+        return new SingleObjectModel(this.Request, shippingOrder);
+      }
+    }
 
 
     [HttpPut]
