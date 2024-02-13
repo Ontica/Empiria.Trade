@@ -49,13 +49,13 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
 
 
     [DataField("ShippingOrderItemId")]
-    public int ShippingOrderItemId {
+    public int OrderForShippingId {
       get; internal set;
     }
 
 
     [DataField("ShippingOrderItemUID")]
-    public string ShippingOrderItemUID {
+    public string OrderForShippingUID {
       get; internal set;
     }
 
@@ -99,10 +99,10 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
 
     protected override void OnSave() {
 
-      if (this.ShippingOrderItemId == 0) {
+      if (this.OrderForShippingId == 0) {
 
-        this.ShippingOrderItemId = this.Id;
-        this.ShippingOrderItemUID = this.UID;
+        this.OrderForShippingId = this.Id;
+        this.OrderForShippingUID = this.UID;
       }
       ShippingData.WriteShippingOrderItem(this);
     }
@@ -114,12 +114,12 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
       this.ShippingOrder = shipping;
       
       var existItem = ShippingData.GetOrdersForShippingByShippingId(
-                    shipping.ShippingOrderId).Find(o => o.Order.Id == this.Order.Id);
+                    shipping.ShippingUID).Find(o => o.Order.Id == this.Order.Id);
 
       if (existItem != null) {
         
-        this.ShippingOrderItemId = existItem.ShippingOrderItemId;
-        this.ShippingOrderItemUID = existItem.ShippingOrderItemUID;
+        this.OrderForShippingId = existItem.OrderForShippingId;
+        this.OrderForShippingUID = existItem.OrderForShippingUID;
       }
 
     }

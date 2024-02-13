@@ -24,12 +24,12 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
 
 
     [HttpPost]
-    [Route("v4/trade/sales/shipping/")]
-    public SingleObjectModel CreateShippingOrder([FromBody] ShippingFields fields) {
+    [Route("v4/trade/sales/shipping/{shippingOrderUID}/send")]
+    public SingleObjectModel ChangeOrdersForShippingStatus([FromUri] string shippingOrderUID) {
 
       using (var usecases = ShippingUseCases.UseCaseInteractor()) {
 
-        ShippingDto shippingOrder = usecases.CreateShippingOrder(fields);
+        ShippingDto shippingOrder = usecases.ChangeOrdersForShippingStatus(shippingOrderUID);
 
         return new SingleObjectModel(this.Request, shippingOrder);
       }
@@ -47,7 +47,20 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
 
         return new SingleObjectModel(this.Request, shippingOrder);
       }
-    } 
+    }
+
+
+    [HttpPost]
+    [Route("v4/trade/sales/shipping/")]
+    public SingleObjectModel CreateShippingOrder([FromBody] ShippingFields fields) {
+
+      using (var usecases = ShippingUseCases.UseCaseInteractor()) {
+
+        ShippingDto shippingOrder = usecases.CreateShippingOrder(fields);
+
+        return new SingleObjectModel(this.Request, shippingOrder);
+      }
+    }
 
 
     [HttpDelete]
@@ -57,7 +70,7 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
 
       using (var usecases = ShippingUseCases.UseCaseInteractor()) {
 
-        ShippingDto shippingOrder = usecases.DeleteShippingOrderItem(shippingOrderUID, orderUID);
+        ShippingDto shippingOrder = usecases.DeleteOrderForShipping(shippingOrderUID, orderUID);
 
         return new SingleObjectModel(this.Request, shippingOrder);
       }
@@ -91,19 +104,6 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
 
 
     [HttpPost]
-    [Route("v4/trade/sales/shipping/{shippingOrderUID}/send")]
-    public SingleObjectModel ChangeOrdersForShippingStatus([FromUri] string shippingOrderUID) {
-
-      using (var usecases = ShippingUseCases.UseCaseInteractor()) {
-
-        ShippingDto shippingOrder = usecases.ChangeOrdersForShippingStatus(shippingOrderUID);
-
-        return new SingleObjectModel(this.Request, shippingOrder);
-      }
-    }
-
-
-    [HttpPost]
     [Route("v4/trade/sales/shipping/parcel-delivery")]
     public SingleObjectModel GetShippingOrderForParcelDelivery([FromBody] ShippingFieldsQuery query) {
 
@@ -114,6 +114,19 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
         return new SingleObjectModel(this.Request, shippingOrder);
       }
     }
+
+
+    //[HttpGet]
+    //[Route("v4/trade/sales/shipping/parcel-delivery/{shippingOrderUID:guid}")]
+    //public SingleObjectModel GetShippingOrder([FromUri] string shippingOrderUID) {
+
+    //  using (var usecases = ShippingUseCases.UseCaseInteractor()) {
+
+    //    ShippingDto shippingOrder = usecases.GetShippingByUID(shippingOrderUID);
+
+    //    return new SingleObjectModel(this.Request, shippingOrder);
+    //  }
+    //}
 
 
     [HttpPut]

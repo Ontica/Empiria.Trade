@@ -51,13 +51,13 @@ namespace Empiria.Trade.Tests {
 
 
     [Fact]
-    public void DeleteShippingOrderItemTest() {
+    public void DeleteOrderForShippingTest() {
 
       var usecase = ShippingUseCases.UseCaseInteractor();
 
       string shippingOrderUID = "050590d4-3dd9-4331-8bf8-d7764c371850";
       string orderUID = "8a15068a-3bc2-4693-a415-a9e3410f63fc";
-      ShippingDto sut = usecase.DeleteShippingOrderItem(shippingOrderUID, orderUID);
+      ShippingDto sut = usecase.DeleteOrderForShipping(shippingOrderUID, orderUID);
 
       Assert.NotNull(sut);
 
@@ -83,7 +83,7 @@ namespace Empiria.Trade.Tests {
 
       string shippingUID = "9ed68735-af5c-4e49-85dc-4a177c82b273";
 
-      ShippingEntry sut = usecase.GetShippingByUID(shippingUID);
+      ShippingEntry sut = usecase.GetShippingByShippingUID(shippingUID);
 
       Assert.NotNull(sut);
 
@@ -152,13 +152,13 @@ namespace Empiria.Trade.Tests {
 
 
     [Fact]
-    public void GetShippingOrderItemByUID() {
+    public void GetOrdersForShippingByUIDTest() {
 
       var usecase = ShippingUseCases.UseCaseInteractor();
 
-      string shippingUID = "47f1f9cc-6948-4dc5-ba9e-c92060448902";
+      string orderForShippingUID = "47f1f9cc-6948-4dc5-ba9e-c92060448902";
 
-      ShippingOrderItem sut = usecase.GetShippingOrderItemByUID(shippingUID);
+      ShippingOrderItem sut = usecase.GetOrdersForShippingByUID(orderForShippingUID);
 
       Assert.NotNull(sut);
 

@@ -15,6 +15,7 @@ using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Sales.ShippingAndHandling.Data;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.UseCases;
+using System.Reflection;
 
 namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
@@ -38,19 +39,32 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
     #region Use cases
 
 
+    public ShippingDto ChangeOrdersForShippingStatus(string shippingOrderUID) {
+
+      var builder = new ShippingBuilder();
+
+      var orders = builder.GetOrdersUIDList(shippingOrderUID);
+
+      SalesOrderUseCases orderUseCases = new SalesOrderUseCases();
+
+      orderUseCases.ChangeOrdersToDeliveryStatus(orders);
+
+      return GetShippingByUID(shippingOrderUID);
+    }
+
+
     public ShippingDto CreateOrderForShipping(string shippingOrderUID, string orderUID) {
 
       var helper = new ShippingHelper();
       helper.ValidateIfExistOrderForShipping(orderUID);
 
-      var builder = new ShippingBuilder();
       string[] orders = new string[] { orderUID };
 
-      builder.CreateOrUpdateOrderForShipping(shippingOrderUID, orders);
+      var builder = new ShippingBuilder();
+      
+      builder.CreateOrUpdateOrdersForShipping(shippingOrderUID, orders);
 
-      ShippingEntry shippingEntry = builder.GetShippingByUID(shippingOrderUID);
-
-      return ShippingMapper.MapShippingForParcelDelivery(shippingEntry);
+      return GetShippingByUID(shippingOrderUID);
     }
 
 
@@ -58,21 +72,23 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
       var builder = new ShippingBuilder();
 
-      ShippingEntry shippingOrder = builder.CreateOrUpdateShipping(fields);
+      ShippingEntry shippingOrder = builder.CreateShippingOrder(fields);
 
-      return ShippingMapper.MapShippingForParcelDelivery(shippingOrder);
+      return GetShippingByUID(shippingOrder.ShippingUID);
     }
 
 
-    public ShippingDto DeleteShippingOrderItem(string shippingOrderUID, string orderUID) {
+    public ShippingDto DeleteOrderForShipping(string shippingOrderUID, string orderUID) {
 
-      ShippingData.DeleteShippingOrderItem(orderUID);
+      ShippingData.DeleteOrderForShipping(orderUID);
 
-      var builder = new ShippingBuilder();
+      return GetShippingByUID(shippingOrderUID);
+    }
 
-      ShippingEntry shippingEntry = builder.GetShippingByUID(shippingOrderUID);
 
-      return ShippingMapper.MapShippingForParcelDelivery(shippingEntry);
+    public ShippingOrderItem GetOrdersForShippingByUID(string orderForShippingUID) {
+
+      return ShippingOrderItem.Parse(orderForShippingUID);
     }
 
 
@@ -84,13 +100,14 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
     }
 
 
-    public FixedList<ShippingEntryDto> GetShippingsList(ShippingQuery query) {
+    public ShippingDto GetShippingByUID(string shippingOrderUID) {
 
       var builder = new ShippingBuilder();
 
-      FixedList<ShippingEntry> entries = builder.GetShippingList(query);
+      ShippingEntry shippingEntry = builder.GetShippingByUID(shippingOrderUID);
 
-      return ShippingMapper.MapShippings(entries);
+      return ShippingMapper.MapShippingForParcelDelivery(shippingEntry);
+
     }
 
 
@@ -104,15 +121,19 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
     }
 
 
-    public ShippingEntry GetShippingByUID(string shippingUID) {
+    public ShippingEntry GetShippingByShippingUID(string shippingUID) {
 
       return ShippingEntry.Parse(shippingUID);
     }
 
 
-    public ShippingOrderItem GetShippingOrderItemByUID(string shippingUID) {
+    public FixedList<ShippingEntryDto> GetShippingsList(ShippingQuery query) {
 
-      return ShippingOrderItem.Parse(shippingUID);
+      var builder = new ShippingBuilder();
+
+      FixedList<ShippingEntry> entries = builder.GetShippingList(query);
+
+      return ShippingMapper.MapShippings(entries);
     }
 
 
@@ -120,10 +141,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
       var builder = new ShippingBuilder();
 
       ShippingEntry shipping = builder.GetShippingEntry(query.Orders);
-
-      //FixedList<ShippingOrderItem> orderForShippingList = builder.GetOrdersForShipping(query.Orders);
-
-      //ShippingEntry shipping = builder.GetShippingWithOrders(orderForShippingList);
 
       return ShippingMapper.MapShippingForParcelDelivery(shipping);
     }
@@ -137,23 +154,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
       ShippingEntry shippingOrder = builder.UpdateShippingOrder(fields);
 
-      return ShippingMapper.MapShippingForParcelDelivery(shippingOrder);
-    }
-
-
-    public ShippingDto ChangeOrdersForShippingStatus(string shippingOrderUID) {
-
-      var builder = new ShippingBuilder();
-
-      var orders = builder.GetOrdersToChangeStatus(shippingOrderUID);
-
-      SalesOrderUseCases orderUseCases = new SalesOrderUseCases();
-
-      orderUseCases.ChangeOrdersToDeliveryStatus(orders);
-
-      ShippingEntry shipping = builder.GetShippingByOrders(orders);
-
-      return ShippingMapper.MapShippingForParcelDelivery(shipping);
+      return GetShippingByUID(shippingOrder.ShippingUID);
     }
 
 

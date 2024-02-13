@@ -24,7 +24,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
     #region Public methods
 
 
-    static internal void DeleteShippingOrderItem(string orderUID) {
+    static internal void DeleteOrderForShipping(string orderUID) {
 
       var orderId = SalesOrder.Parse(orderUID).Id;
 
@@ -48,24 +48,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
     }
 
 
-    static internal FixedList<ShippingEntry> GetShippingOrders(string shippingUID) {
-
-      var clauses = string.Empty;
-
-      if (shippingUID != string.Empty) {
-
-        var shippingId = ShippingEntry.Parse(shippingUID).ShippingOrderId;
-        clauses = $"WHERE ShippingOrderId IN ({shippingId})";
-      }
-
-      string sql = $"SELECT * FROM TRDShipping {clauses}";
-
-      var dataOperation = DataOperation.Parse(sql);
-
-      return DataReader.GetPlainObjectFixedList<ShippingEntry>(dataOperation);
-    }
-
-
     static internal FixedList<ShippingOrderItem> GetOrdersForShippingByOrderUID(string orderIdList) {
 
       if (orderIdList == string.Empty) {
@@ -80,7 +62,9 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
     }
 
 
-    static internal FixedList<ShippingOrderItem> GetOrdersForShippingByShippingId(int shippingId) {
+    static internal FixedList<ShippingOrderItem> GetOrdersForShippingByShippingId(string shippingOrderUID) {
+      
+      var shippingId = ShippingEntry.Parse(shippingOrderUID).ShippingOrderId;
 
       string sql = $"SELECT * FROM TRDShippingOrderItems where ShippingOrderId IN ({shippingId})";
 
@@ -104,6 +88,24 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
     }
 
 
+    static internal FixedList<ShippingEntry> GetShippingOrders(string shippingUID) {
+
+      var clauses = string.Empty;
+
+      if (shippingUID != string.Empty) {
+
+        var shippingId = ShippingEntry.Parse(shippingUID).ShippingOrderId;
+        clauses = $"WHERE ShippingOrderId IN ({shippingId})";
+      }
+
+      string sql = $"SELECT * FROM TRDShipping {clauses}";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetPlainObjectFixedList<ShippingEntry>(dataOperation);
+    }
+
+
     internal static void WriteShipping(ShippingEntry shipping) {
 
       var op = DataOperation.Parse("writeShipping",
@@ -117,8 +119,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
 
     static internal void WriteShippingOrderItem(ShippingOrderItem shippingOrderItem) {
       var op = DataOperation.Parse("writeShippingOrderItems",
-        shippingOrderItem.ShippingOrderItemId,
-        shippingOrderItem.ShippingOrderItemUID,
+        shippingOrderItem.OrderForShippingId,
+        shippingOrderItem.OrderForShippingUID,
         shippingOrderItem.ShippingOrder.ShippingOrderId,
         shippingOrderItem.Order.Id);
 
