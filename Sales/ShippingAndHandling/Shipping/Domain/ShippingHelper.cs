@@ -49,7 +49,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
         shipping.OrdersForShipping = ordersForShipping;
         shipping.OrdersTotal = ordersForShipping.Sum(x => x.OrderTotal);
-
+        shipping.CanEdit = ordersForShipping[0].Order.Status == OrderStatus.Shipping ? true : false;
       }
 
     }
@@ -110,6 +110,9 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
         ordersList = GetOrdersWithoutShipping(orders);
       }
+
+      //ValidateOrdersForParcelDelivery(ordersList.SelectMany(Order);
+
       GetOrdersMeasurementUnits(ordersList.ToFixedList());
 
       return GetShippingWithOrders(ordersList);
@@ -183,6 +186,20 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
         }
 
       }
+    }
+
+
+    private void ValidateOrdersForParcelDelivery(string[] orders) {
+
+      foreach (var orderUID in orders) {
+        
+        var order = SalesOrder.Parse(orderUID);
+
+        if (order.ShippingMethod != "Paqueteria") {
+          Assertion.EnsureFailed("La forma de envío de uno o más pedidos no es 'Paquetería!'");
+        }
+      }
+
     }
 
 
@@ -271,14 +288,14 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       foreach (var orderUID in orders) {
 
         var order = SalesOrder.Parse(orderUID);
-        var orderItem = new ShippingOrderItem();
+        var orderForShipping = new ShippingOrderItem();
 
-        orderItem.OrderForShippingId = -1;
-        orderItem.OrderForShippingUID = "";
-        orderItem.ShippingOrder = ShippingEntry.Parse(-1);
-        orderItem.Order = order;
+        orderForShipping.OrderForShippingId = -1;
+        orderForShipping.OrderForShippingUID = "";
+        orderForShipping.ShippingOrder = ShippingEntry.Parse(-1);
+        orderForShipping.Order = order;
 
-        ordersList.Add(orderItem);
+        ordersList.Add(orderForShipping);
       }
 
       return ordersList.ToFixedList();

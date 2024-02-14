@@ -78,6 +78,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
     } = new DateTime();
 
 
+    public bool Status {
+      get; set;
+    }
+
+
   } // class ShippingEntryDto
 
 
