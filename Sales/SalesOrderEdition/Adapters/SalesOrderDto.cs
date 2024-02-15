@@ -19,78 +19,6 @@ namespace Empiria.Trade.Sales.Adapters {
   public interface ISalesOrderDto {
   }  // interface ISalesOrderDto
 
-  /// <summary>Output DTO used to return orders. </summary>
-  public class BaseSalesOrderDto : ISalesOrderDto {
-    public string UID {
-      get; internal set;
-    }
-
-    public string OrderNumber {
-      get; internal set;
-    }
-
-    public DateTime OrderTime {
-      get; internal set;
-    }  
-
-    public string CustomerName {
-      get; internal set;
-    }      
-
-    public string SupplierName {
-      get; internal set;
-    }
-
-    public string SalesAgentName {
-      get; internal set;
-    }
-
-    public decimal OrderTotal {
-      get; internal set;
-    }
-
-    public OrderStatus Status {
-      get; internal set;
-    }
-
-    public string StatusName {
-      get; internal set;
-    }
-
-
-  } // Output DTO used to return  basic orders.
-
-  /// Output DTO used to return Shipment status 
-  public class BaseSalesOrderShipmentDto : BaseSalesOrderDto {
-
-    public string Shipment {
-      get; internal set;
-    }
-
-  }
-
-  /// Output DTO used to return base autorization orders.
-  public class BaseSalesOrdersAuthorizationDto : BaseSalesOrderDto {
-
-    public decimal TotalDebt {
-      get; internal set;
-    }
-
-  } //  Output DTO used to return basico autorization orders.
-
-  /// Output DTO used to return base packing orders.
-  public class BaseSalesOrderPackingDto : BaseSalesOrderDto {
-
-    public decimal Weight {
-      get; internal set;
-    }
-
-    public int TotalPackages {
-      get; internal set;
-    }
-
-  } //  class SalesOrdersPackingDto
-
 
     /// <summary>Output DTO used to return orders. </summary>
     public class SalesOrderDto : ISalesOrderDto {
@@ -113,10 +41,6 @@ namespace Empiria.Trade.Sales.Adapters {
       get; internal set;
     }
 
-
-    //public WeightDataDto WeightData {
-    //  get; internal set;
-    //}
 
     public ShippingEntryDto Shipping {
       get; internal set;

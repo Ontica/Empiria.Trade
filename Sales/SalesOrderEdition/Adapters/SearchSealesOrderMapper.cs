@@ -67,17 +67,17 @@ namespace Empiria.Trade.Sales.Adapters {
 
         case QueryType.Sales: {
           if ((query.ShippingMethod == "Paqueteria") && (query.Status == Orders.OrderStatus.Shipping)) {
-            return SalesOrderMapper.MapBaseSalesOrdersShipmentStatus(salesOrders);
+            return MapBaseSalesOrdersShipmentStatus(salesOrders);
           } else {
-            return SalesOrderMapper.MapBaseSalesOrders(salesOrders);
+            return MapBaseSalesOrders(salesOrders);
           }
 
         }
         case QueryType.SalesAuthorization: {
-          return SalesOrderMapper.MapBaseSalesOrderAuthorizationList(salesOrders);
+          return MapBaseSalesOrderAuthorizationList(salesOrders);
         }
         case QueryType.SalesPacking: {
-          return SalesOrderMapper.MapBaseSalesOrderPackingList(salesOrders);
+          return MapBaseSalesOrderPackingList(salesOrders);
         }
 
         default: {
@@ -87,6 +87,144 @@ namespace Empiria.Trade.Sales.Adapters {
 
       }
     }
+
+    static public FixedList<ISalesOrderDto> MapBaseSalesOrdersShipmentStatus(FixedList<SalesOrder> salesOrders) {
+      List<ISalesOrderDto> baseSalesOrderDtoList = new List<ISalesOrderDto>();
+
+      foreach (var salesOrder in salesOrders) {
+        baseSalesOrderDtoList.Add(MapBaseSalesOrderShipmentStatus(salesOrder));
+      }
+
+      return baseSalesOrderDtoList.ToFixedList();
+    }
+
+    static public FixedList<ISalesOrderDto> MapBaseSalesOrders(FixedList<SalesOrder> salesOrders) {
+      List<ISalesOrderDto> baseSalesOrderDtoList = new List<ISalesOrderDto>();
+
+      foreach (var salesOrder in salesOrders) {
+        baseSalesOrderDtoList.Add(MapBaseSalesOrder(salesOrder));
+      }
+
+      return baseSalesOrderDtoList.ToFixedList();
+    }
+
+    static public FixedList<ISalesOrderDto> MapBaseSalesOrderAuthorizationList(FixedList<SalesOrder> salesOrders) {
+      List<ISalesOrderDto> salesOrderDtoList = new List<ISalesOrderDto>();
+
+      foreach (var salesOrder in salesOrders) {
+        salesOrderDtoList.Add(MapBaseSalesOrderAuthorization(salesOrder));
+      }
+
+      return salesOrderDtoList.ToFixedList();
+    }
+
+    static public FixedList<ISalesOrderDto> MapBaseSalesOrderPackingList(FixedList<SalesOrder> salesOrders) {
+      List<ISalesOrderDto> salesOrderDtoList = new List<ISalesOrderDto>();
+
+      foreach (var salesOrder in salesOrders) {
+        salesOrderDtoList.Add(MapBaseSalesOrderPacking(salesOrder));
+      }
+
+      return salesOrderDtoList.ToFixedList();
+    }
+
+
+
+    private static ISalesOrderDto MapBaseSalesOrderShipmentStatus(SalesOrder order) {
+      var dto = new BaseSalesOrderShipmentDto {
+        UID = order.UID,
+        OrderNumber = order.OrderNumber,
+        OrderTime = order.OrderTime,
+        CustomerName = order.Customer.Name,
+        SupplierName = order.Supplier.Name,
+        SalesAgentName = order.SalesAgent.Name,
+        OrderTotal = order.OrderTotal,
+        Status = order.Status,
+        Shipment = "Pendiente",
+        StatusName = SalesOrderMapper.MapOrderStatus(order.Status.ToString())
+      };
+
+      return dto;
+    }
+
+    static public ISalesOrderDto MapBaseSalesOrder(SalesOrder order) {
+      var dto = new BaseSalesOrderDto {
+        UID = order.UID,
+        OrderNumber = order.OrderNumber,
+        OrderTime = order.OrderTime,
+        CustomerName = order.Customer.Name,
+        SupplierName = order.Supplier.Name,
+        SalesAgentName = order.SalesAgent.Name,
+        OrderTotal = order.OrderTotal,
+        Status = order.Status,
+        StatusName = SalesOrderMapper.MapOrderStatus(order.Status.ToString())
+      };
+
+      return dto;
+    }
+
+    static public ISalesOrderDto MapBaseSalesOrderAuthorization(SalesOrder order) {
+      var dto = new BaseSalesOrdersAuthorizationDto {
+        UID = order.UID,
+        OrderNumber = order.OrderNumber,
+        OrderTime = order.OrderTime,
+        CustomerName = order.Customer.Name,
+        SupplierName = order.Supplier.Name,
+        SalesAgentName = order.SalesAgent.Name,
+        OrderTotal = order.OrderTotal,
+        TotalDebt = order.TotalDebt,
+        Status = order.Status,
+        StatusName = MapOrderAuthorizationStatus(order.AuthorizationStatus.ToString())
+      };
+
+      return dto;
+    }
+
+    static public ISalesOrderDto MapBaseSalesOrderPacking(SalesOrder order) {
+      var dto = new BaseSalesOrderPackingDto {
+        UID = order.UID,
+        OrderNumber = order.OrderNumber,
+        OrderTime = order.OrderTime,
+        CustomerName = order.Customer.Name,
+        SupplierName = order.Supplier.Name,
+        SalesAgentName = order.SalesAgent.Name,
+        OrderTotal = order.OrderTotal,
+        Weight = order.Weight,
+        TotalPackages = order.TotalPackages,
+        Status = order.Status,
+        StatusName = MapOrderPackingStatus(order.AuthorizationStatus.ToString())
+      };
+
+      return dto;
+    }
+
+    static private string MapOrderAuthorizationStatus(string status) {
+      switch (status) {
+        case "Authorized":
+          return "Autorizado";
+        case "Pending":
+          return "Por Autorizar";
+        default:
+          return "Por Autorizar";
+      }
+
+    }
+
+    static private string MapOrderPackingStatus(string status) {
+      switch (status) {
+        case "ToSupply":
+          return "Por surtir";
+        case "InProgress":
+          return "En proceso";
+        case "Suppled":
+          return "Surtido";
+        default:
+          return "Por surtir";
+      }
+
+    }
+
+
     #endregion Private methods
 
   } //  class SearchSealesOrderMapper

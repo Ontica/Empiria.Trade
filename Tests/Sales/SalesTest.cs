@@ -47,7 +47,7 @@ namespace Empiria.Trade.Tests.Sales {
 
       var salesOrders = salesOrdersHelper.GetOrdersToPacking(fields);
 
-      var x = SalesOrderMapper.MapBaseSalesOrderPackingList(salesOrders);
+      var x = SearchSealesOrderMapper.MapBaseSalesOrderPackingList(salesOrders);
 
 
       Assert.NotNull(x);
