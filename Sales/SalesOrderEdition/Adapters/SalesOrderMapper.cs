@@ -46,25 +46,38 @@ namespace Empiria.Trade.Sales.Adapters {
       return salesOrderDtoList.ToFixedList();
     }
 
-   
 
-  
+    static public string MapOrderStatus(string status) {
+      switch (status) {
+        case "Captured":
+          return "Capturada";
+        case "Applied":
+          return "Aplicada";
+        case "Authorized":
+          return "Autorizada";
+        case "Packing":
+          return "Surtiendose";
+        case "Shipping":
+          return "Envio";
+        case "Delivery":
+          return "Entrega";
+        case "Closed":
+          return "Cerrada";
+        case "Cancelled":
+          return "Cancelada";
+        case "Pending":
+          return "Por Autorizar";
+        case "ToSupply":
+          return "Por surtir";
+        case "InProgress":
+          return "En proceso";
+        case "Suppled":
+          return "Surtido";
+        default:
+          return "Capturada";
+      }
 
-
-
-   
-
-    
-
-   
-
-   
-
-   
-
-    
-
-    
+    }
 
     #region Private methods
 
@@ -154,28 +167,6 @@ namespace Empiria.Trade.Sales.Adapters {
       return creditTransactionList.ToFixedList();
     }
 
-    static public string MapOrderStatus(string status) {
-      switch (status) {
-        case "Captured": return "Capturada";
-        case "Applied":  return "Aplicada";
-        case "Authorized": return "Autorizada";
-        case "Packing":    return "Surtiendose";
-        case "Shipping": return "Envio";
-        case "Delivery": return "Entrega";
-        case "Closed": return "Cerrada";
-        case "Cancelled": return "Cancelada";
-        case "Pending": return "Por Autorizar";
-        case "ToSupply": return "Por surtir";
-        case "InProgress": return "En proceso";
-        case "Suppled": return "Surtido";
-        default:  return "Capturada";
-      }
-
-    }
-
-    
-
-    
    
     #endregion Private methods
 

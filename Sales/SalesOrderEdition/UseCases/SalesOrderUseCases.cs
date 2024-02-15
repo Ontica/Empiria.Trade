@@ -72,11 +72,6 @@ namespace Empiria.Trade.Sales.UseCases {
       return orderDto;
     }
 
- 
-
-   
-
-    //Temporal Function name 
     public SearchSalesOrderDto GetOrders(SearchOrderFields fields) {
       Assertion.Require(fields, "fields");
 
