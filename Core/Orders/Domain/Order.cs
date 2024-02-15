@@ -172,6 +172,13 @@ namespace Empiria.Trade.Orders {
     Suppled = 'S'
   } // enum AutorizationStatus
 
+  public enum ShippingMethod {
+    RutaLocal, 
+    RutaForanea,
+    Ocurre,
+    Paquteria
+  }
+
   
 
 }  // namespace Empiria.Trade.Orders
