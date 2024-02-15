@@ -80,9 +80,9 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
 
       var shippingOrderItem = GetOrdersForShippingByOrderUID(orderIdList);
 
-      if (shippingOrderItem.Count == 0) {
-        return new FixedList<ShippingOrderItem>();
-      }
+      //if (shippingOrderItem.Count == 0) {
+      //  return new FixedList<ShippingOrderItem>();
+      //}
 
       return shippingOrderItem;
     }
