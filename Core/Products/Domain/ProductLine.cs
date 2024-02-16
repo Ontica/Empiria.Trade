@@ -20,24 +20,21 @@ namespace Empiria.Trade.Products
         [DataField("ProductLineName")]
         internal string Name
         {
-            get;
-            private set;
+            get; private set;
         }
 
 
         [DataField("ProductLineDescription")]
         internal string Description
         {
-            get;
-            private set;
+            get; private set;
         }
 
 
         [DataField("ParentProductLine")]
         internal string ParentLine
         {
-            get;
-            private set;
+            get; private set;
         }
 
 
@@ -52,8 +49,7 @@ namespace Empiria.Trade.Products
 
         internal EntityStatus Status
         {
-            get;
-            private set;
+            get; private set;
         }
 
 

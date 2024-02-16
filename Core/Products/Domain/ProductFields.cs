@@ -35,8 +35,6 @@ namespace Empiria.Trade.Products {
 
     static public ProductFields Parse(int id) => ParseId<ProductFields>(id);
 
-    static public ProductFields Parse(int id, bool reload) => ParseId<ProductFields>(id, reload);
-
     static public ProductFields Parse(string uid) => ParseKey<ProductFields>(uid);
 
     static public ProductFields Empty => ParseEmpty<ProductFields>();

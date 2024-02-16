@@ -26,8 +26,6 @@ namespace Empiria.Trade.Core.Catalogues
 
         static public InventoryEntry Parse(int id) => ParseId<InventoryEntry>(id);
 
-        static public InventoryEntry Parse(int id, bool reload) => ParseId<InventoryEntry>(id, reload);
-
         static public InventoryEntry Parse(string uid) => ParseKey<InventoryEntry>(uid);
 
         static public InventoryEntry Empty => ParseEmpty<InventoryEntry>();

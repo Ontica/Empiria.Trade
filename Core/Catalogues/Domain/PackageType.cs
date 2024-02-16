@@ -27,8 +27,6 @@ namespace Empiria.Trade.Core.Catalogues {
 
     static public PackageType Parse(int id) => ParseId<PackageType>(id);
 
-    static public PackageType Parse(int id, bool reload) => ParseId<PackageType>(id, reload);
-
     static public PackageType Parse(string uid) => ParseKey<PackageType>(uid);
 
     static public PackageType Empty => ParseEmpty<PackageType>();

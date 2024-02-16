@@ -29,8 +29,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
 
     static public PackageForItem Parse(int id) => ParseId<PackageForItem>(id);
 
-    static public PackageForItem Parse(int id, bool reload) => ParseId<PackageForItem>(id, reload);
-
     static public PackageForItem Parse(string uid) => ParseKey<PackageForItem>(uid);
 
     static public PackageForItem Empty => ParseEmpty<PackageForItem>();

@@ -31,8 +31,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
 
     static public ShippingOrderItem Parse(int id) => ParseId<ShippingOrderItem>(id);
 
-    static public ShippingOrderItem Parse(int id, bool reload) => ParseId<ShippingOrderItem>(id, reload);
-
     static public ShippingOrderItem Parse(string uid) => ParseKey<ShippingOrderItem>(uid);
 
     static public ShippingOrderItem Empty => ParseEmpty<ShippingOrderItem>();

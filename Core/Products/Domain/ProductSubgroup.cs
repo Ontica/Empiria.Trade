@@ -33,8 +33,6 @@ namespace Empiria.Trade.Products {
 
     static public ProductSubgroup Parse(int id) => ParseId<ProductSubgroup>(id);
 
-    static public ProductSubgroup Parse(int id, bool reload) => ParseId<ProductSubgroup>(id, reload);
-
     static public ProductSubgroup Parse(string uid) => ParseKey<ProductSubgroup>(uid);
 
     static public ProductSubgroup Empty => ParseEmpty<ProductSubgroup>();

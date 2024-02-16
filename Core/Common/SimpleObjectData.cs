@@ -25,8 +25,6 @@ namespace Empiria.Trade.Core.Common {
 
     static public SimpleObjectData Parse(int id) => ParseId<SimpleObjectData>(id);
 
-    static public SimpleObjectData Parse(int id, bool reload) => ParseId<SimpleObjectData>(id, reload);
-
     static public SimpleObjectData Parse(string uid) => ParseKey<SimpleObjectData>(uid);
 
     static public SimpleObjectData Empty => ParseEmpty<SimpleObjectData>();

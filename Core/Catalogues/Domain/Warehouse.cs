@@ -26,8 +26,6 @@ namespace Empiria.Trade.Core.Catalogues
 
         static public Warehouse Parse(int id) => ParseId<Warehouse>(id);
 
-        static public Warehouse Parse(int id, bool reload) => ParseId<Warehouse>(id, reload);
-
         static public Warehouse Parse(string uid) => ParseKey<Warehouse>(uid);
 
         static public Warehouse Empty => ParseEmpty<Warehouse>();

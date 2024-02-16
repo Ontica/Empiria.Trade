@@ -23,8 +23,6 @@ namespace Empiria.Trade.Products {
     
     static public ProductGroup Parse(int id) => ParseId<ProductGroup>(id);
 
-    static public ProductGroup Parse(int id, bool reload) => ParseId<ProductGroup>(id, reload);
-
     static public ProductGroup Parse(string uid) => ParseKey<ProductGroup>(uid);
 
     static public ProductGroup Empty => ParseEmpty<ProductGroup>();
