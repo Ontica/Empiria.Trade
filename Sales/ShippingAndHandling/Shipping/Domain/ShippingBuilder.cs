@@ -66,7 +66,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     }
 
 
-    internal ShippingEntry GetShippingByOrders(string[] orders) {
+    internal ShippingEntry GetShippingByOrders(string shippingOrderUID, string[] orders) {
 
       var helper = new ShippingHelper();
 
@@ -74,7 +74,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       helper.ShippingDataValidations(orderForShippingList);
 
-      ShippingEntry shippingEntry = helper.GetShippingWithOrders(orderForShippingList);
+      ShippingEntry shippingEntry = helper.GetShippingWithOrders(orderForShippingList, shippingOrderUID);
 
       return shippingEntry;
 
@@ -88,7 +88,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       var helper = new ShippingHelper();
 
-      ShippingEntry shipping = helper.GetShippingWithOrders(orderForShippingList);
+      ShippingEntry shipping = helper.GetShippingWithOrders(orderForShippingList, "");
 
       return shipping;
     }
@@ -96,7 +96,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
     internal ShippingEntry GetShippingByUID(string shippingOrderUID) {
 
-      return GetShippingByOrders(GetOrdersUIDList(shippingOrderUID));
+      return GetShippingByOrders(shippingOrderUID, GetOrdersUIDList(shippingOrderUID));
     }
 
 

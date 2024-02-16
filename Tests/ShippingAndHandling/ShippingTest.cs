@@ -55,8 +55,8 @@ namespace Empiria.Trade.Tests {
 
       var usecase = ShippingUseCases.UseCaseInteractor();
 
-      string shippingOrderUID = "050590d4-3dd9-4331-8bf8-d7764c371850";
-      string orderUID = "8a15068a-3bc2-4693-a415-a9e3410f63fc";
+      string shippingOrderUID = "68db22ab-891e-466e-80d1-e766fc370bcc";
+      string orderUID = "f960c77a-1873-477b-a7af-75f99a6df41d";
       ShippingDto sut = usecase.DeleteOrderForShipping(shippingOrderUID, orderUID);
 
       Assert.NotNull(sut);

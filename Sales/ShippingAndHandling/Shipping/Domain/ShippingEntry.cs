@@ -97,8 +97,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
 
 
     public decimal OrdersTotal {
-      get;
-      internal set;
+      get; internal set;
     }
 
 
@@ -108,8 +107,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
 
 
     public bool CanEdit {
-      get;
-      internal set;
+      get; internal set;
     }
 
 

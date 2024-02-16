@@ -115,24 +115,33 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       GetOrdersMeasurementUnits(ordersList.ToFixedList());
 
-      return GetShippingWithOrders(ordersList);
+      return GetShippingWithOrders(ordersList, "");
 
     }
 
 
-    internal ShippingEntry GetShippingWithOrders(FixedList<ShippingOrderItem> orderForShippingList) {
+    internal ShippingEntry GetShippingWithOrders(
+      FixedList<ShippingOrderItem> orderForShippingList, string shippingUID) {
 
-      if (orderForShippingList.Count == 0) {
+      if (shippingUID == string.Empty && orderForShippingList.Count == 0) {
         return new ShippingEntry();
       }
 
-      ShippingEntry shipping = ShippingData.GetShippingOrders(
-                                orderForShippingList[0].ShippingOrder.ShippingUID)
-                              .FirstOrDefault();
+      ShippingEntry shipping = new ShippingEntry();
 
-      shipping.OrdersForShipping = orderForShippingList;
-      shipping.CanEdit = orderForShippingList[0].Order.Status == OrderStatus.Shipping ? true : false;
-      shipping.OrdersTotal = orderForShippingList.Sum(x => x.OrderTotal);
+      if (shippingUID != string.Empty && orderForShippingList.Count == 0) {
+
+        shipping = ShippingData.GetShippingOrders(shippingUID).FirstOrDefault();
+      } else {
+
+        shipping = ShippingData.GetShippingOrders(
+                                orderForShippingList[0].ShippingOrder.ShippingUID)
+                               .FirstOrDefault();
+
+        shipping.OrdersForShipping = orderForShippingList;
+        shipping.CanEdit = orderForShippingList[0].Order.Status == OrderStatus.Shipping ? true : false;
+        shipping.OrdersTotal = orderForShippingList.Sum(x => x.OrderTotal);
+      }
 
       return shipping;
     }
