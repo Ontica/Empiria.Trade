@@ -40,7 +40,7 @@ namespace Empiria.Trade.Sales.Adapters {
       columns.Add(new DataTableColumn("orderNumber", "No. Orden", "text-link"));
       columns.Add(new DataTableColumn("orderTime", "Fecha", "date"));
       columns.Add(new DataTableColumn("customerName", "Cliente", "text"));
-      columns.Add(new DataTableColumn("statusName", "Estatus", "text"));
+      columns.Add(new DataTableColumn("statusName", "Estatus", "text-tag"));
       columns.Add(new DataTableColumn("salesAgentName", "Vendedor", "text"));
       columns.Add(new DataTableColumn("orderTotal", "Total", "decimal"));
 
