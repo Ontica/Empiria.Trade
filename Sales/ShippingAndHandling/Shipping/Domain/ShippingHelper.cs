@@ -45,13 +45,14 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
         FixedList<ShippingOrderItem> ordersForShipping =
           ShippingData.GetOrdersForShippingByShippingId(shipping.ShippingUID);
 
-        GetOrdersMeasurementUnits(ordersForShipping);
+        if (ordersForShipping.Count>0) {
+          GetOrdersMeasurementUnits(ordersForShipping);
 
-        shipping.OrdersForShipping = ordersForShipping;
-        shipping.OrdersTotal = ordersForShipping.Sum(x => x.OrderTotal);
-        shipping.CanEdit = ordersForShipping[0].Order.Status == OrderStatus.Shipping ? true : false;
+          shipping.OrdersForShipping = ordersForShipping;
+          shipping.OrdersTotal = ordersForShipping.Sum(x => x.OrderTotal);
+          shipping.CanEdit = ordersForShipping[0].Order.Status == OrderStatus.Shipping ? true : false;
+        }
       }
-
     }
 
 
