@@ -13,6 +13,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Remoting.Messaging;
 using Empiria.Trade.Core.Common;
+using Empiria.Trade.Sales.ShippingAndHandling.UseCases;
+using Empiria.Trade.Sales.ShippingAndHandling;
 
 namespace Empiria.Trade.Sales.Adapters {
 
@@ -140,7 +142,7 @@ namespace Empiria.Trade.Sales.Adapters {
         SalesAgentName = order.SalesAgent.Name,
         OrderTotal = order.OrderTotal,
         Status = order.Status,
-        Shipment = "Pendiente",
+        Shipment = GetShippingStatus(order.UID),
         StatusName = SalesOrderMapper.MapOrderStatus(order.Status.ToString())
       };
 
@@ -220,6 +222,19 @@ namespace Empiria.Trade.Sales.Adapters {
           return "Surtido";
         default:
           return "Por surtir";
+      }
+
+    }
+
+    static private string GetShippingStatus(string orderUID) {
+
+      var shippingUseCase = ShippingUseCases.UseCaseInteractor();
+      var shippingEntryDto= shippingUseCase.GetShippingByOrderUID(orderUID);
+
+      if (shippingEntryDto.ShippingUID == "") {
+        return "Pendiente";
+      } else {
+        return "Asignado";
       }
 
     }
