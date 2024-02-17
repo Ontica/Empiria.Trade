@@ -38,7 +38,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     #region Public methods
 
 
-    internal void CreateOrUpdateOrdersForShipping(string shippingOrderUID, string[] orders) {
+    internal void CreateOrdersForShipping(string shippingOrderUID, string[] orders) {
 
       var shipping = ShippingEntry.Parse(shippingOrderUID);
 
@@ -50,18 +50,17 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       }
     }
 
+
     internal ShippingEntry CreateShippingOrder(ShippingFields fields) {
 
       var helper = new ShippingHelper();
 
-      helper.ValidationsToCreateShipping(helper.GetOrdersForShippingByOrders(fields.Orders));
+      helper.ShippingValidations(helper.GetOrdersForShippingByOrders(fields.Orders));
 
       ShippingEntry shipping = CreateOrUpdateShipping(fields.ShippingData);
 
-      CreateOrUpdateOrdersForShipping(shipping.ShippingUID, fields.Orders);
+      CreateOrdersForShipping(shipping.ShippingUID, fields.Orders);
 
-      //return GetShippingByOrders(fields.Orders);
-      //return GetShippingEntry(fields.Orders);
       return shipping;
     }
 
@@ -72,7 +71,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       FixedList<ShippingOrderItem> orderForShippingList = helper.GetOrdersForShippingByOrders(orders);
 
-      helper.ShippingDataValidations(orderForShippingList);
+      helper.ShippingValidations(orderForShippingList);
 
       ShippingEntry shippingEntry = helper.GetShippingWithOrders(orderForShippingList, shippingOrderUID);
 
@@ -125,7 +124,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       var helper = new ShippingHelper();
 
-      helper.ValidationsToCreateShipping(helper.GetOrdersForShippingByOrders(fields.Orders));
+      helper.ShippingValidations(helper.GetOrdersForShippingByOrders(fields.Orders));
 
       return CreateOrUpdateShipping(fields.ShippingData);
     }

@@ -62,7 +62,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
       var builder = new ShippingBuilder();
       
-      builder.CreateOrUpdateOrdersForShipping(shippingOrderUID, orders);
+      builder.CreateOrdersForShipping(shippingOrderUID, orders);
 
       return GetShippingByUID(shippingOrderUID);
     }

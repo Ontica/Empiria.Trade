@@ -106,13 +106,17 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       if (ordersForShipping.Count > 0) {
 
-        ordersList = GetAllOrdersForShipping(orders, ordersForShipping);
+        ordersList = GetAllOrdersForShipping(ordersForShipping);
+        ValidateGetOrdersByShipping(orders, ordersList);
+
       } else {
 
         ordersList = GetOrdersWithoutShipping(orders);
       }
 
-      //ValidateOrdersForParcelDelivery(ordersList.SelectMany(Order);
+      ValidateOrdersStatusForParcelDelivery(ordersList);
+
+      ValidateShippingMethodForOrders(ordersList);
 
       GetOrdersMeasurementUnits(ordersList.ToFixedList());
 
@@ -148,28 +152,10 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     }
 
 
-    internal void ShippingDataValidations(FixedList<ShippingOrderItem> orderForShippingList) {
-
-      foreach (var orderItem in orderForShippingList) {
-
-        ValidateShippingDataByCustomerId(orderItem, orderForShippingList);
-        ValidateShippingDataByStatus(orderItem);
-        //ValidateOrdersByShippingOrder(orderItem, orderForShippingList);
-
-      }
-    }
-
-
-    internal void ValidateGetOrdersByShipping(string[] orders,
-                    FixedList<ShippingOrderItem> ordersByShipping) {
-
-      foreach (var order in orders) {
-        var orderForShipping = ordersByShipping.FirstOrDefault(x => x.Order.UID == order);
-
-        if (orderForShipping == null) {
-          Assertion.EnsureFailed("Uno o más pedidos no pertenecen al mismo envío!");
-        }
-      }
+    internal void ShippingValidations(FixedList<ShippingOrderItem> ordersForShipping) {
+      
+      ValidateOrdersStatusForParcelDelivery(ordersForShipping);
+      ValidateShippingByCustomer(ordersForShipping);
 
     }
 
@@ -177,71 +163,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     internal void ValidateIfExistOrderForShipping(string orderUID) {
 
       var order = SalesOrder.Parse(orderUID);
-      var orderForShippingList = ShippingData.GetOrdersForShippingByOrderUID(order.Id.ToString());
+      var ordersForShipping = ShippingData.GetOrdersForShippingByOrderUID(order.Id.ToString());
 
-      if (orderForShippingList.Count > 0) {
+      if (ordersForShipping.Count > 0) {
         Assertion.EnsureFailed($"El pedido {order.OrderNumber} ya pertenece a un envío!");
       }
-    }
-
-
-    internal void ValidateOrdersByShippingOrder(ShippingOrderItem orderItem,
-                                                FixedList<ShippingOrderItem> ordersForShipping) {
-
-      foreach (var order in ordersForShipping) {
-
-        if (orderItem.ShippingOrder.ShippingOrderId != -1 &&
-            orderItem.ShippingOrder.ShippingOrderId != order.ShippingOrder.ShippingOrderId) {
-          Assertion.EnsureFailed("Uno o más pedidos no pertenecen al mismo envío!");
-        }
-
-      }
-    }
-
-
-    private void ValidateOrdersForParcelDelivery(string[] orders) {
-
-      foreach (var orderUID in orders) {
-        
-        var order = SalesOrder.Parse(orderUID);
-
-        if (order.ShippingMethod != "Paqueteria") {
-          Assertion.EnsureFailed("La forma de envío de uno o más pedidos no es 'Paquetería!'");
-        }
-      }
-
-    }
-
-
-    internal void ValidateShippingDataByCustomerId(ShippingOrderItem ordersForShipping,
-                                                  FixedList<ShippingOrderItem> orderForShippingList) {
-
-      var countCustomerId = orderForShippingList.FindAll(x =>
-                              x.Order.Customer.Id == ordersForShipping.Order.Customer.Id).Count;
-
-      if (countCustomerId != orderForShippingList.Count) {
-        Assertion.EnsureFailed("Uno o más pedidos no pertenecen al mismo cliente!");
-      }
-    }
-
-
-    internal void ValidateShippingDataByStatus(ShippingOrderItem ordersForShipping) {
-
-      if (ordersForShipping.Order.Status != OrderStatus.Shipping &&
-          ordersForShipping.Order.Status != OrderStatus.Delivery) {
-        Assertion.EnsureFailed($"El estatus de uno o más pedidos no es valido!");
-      }
-
-    }
-
-
-    internal void ValidationsToCreateShipping(FixedList<ShippingOrderItem> ordersForShipping) {
-
-      foreach (var orderItem in ordersForShipping) {
-        ValidateShippingDataByCustomerId(orderItem, ordersForShipping);
-        ValidateShippingDataByStatus(orderItem);
-      }
-
     }
 
 
@@ -251,13 +177,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     #region Private methods
 
 
-    private FixedList<ShippingOrderItem> GetAllOrdersForShipping(string[] orders,
-                                          FixedList<ShippingOrderItem> ordersForShipping) {
+    private FixedList<ShippingOrderItem> GetAllOrdersForShipping(
+      FixedList<ShippingOrderItem> ordersForShipping) {
 
       var ordersByShipping = ShippingData.GetOrdersForShippingByShippingId(
               ordersForShipping[0].ShippingOrder.ShippingUID);
-
-      ValidateGetOrdersByShipping(orders, ordersByShipping);
 
       return ordersByShipping;
     }
@@ -296,18 +220,14 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       var ordersList = new List<ShippingOrderItem>();
 
       foreach (var orderUID in orders) {
-
         var order = SalesOrder.Parse(orderUID);
         var orderForShipping = new ShippingOrderItem();
-
         orderForShipping.OrderForShippingId = -1;
         orderForShipping.OrderForShippingUID = "";
         orderForShipping.ShippingOrder = ShippingEntry.Parse(-1);
         orderForShipping.Order = order;
-
         ordersList.Add(orderForShipping);
       }
-
       return ordersList.ToFixedList();
     }
 
@@ -330,6 +250,56 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       }
 
       return packages.ToFixedList();
+    }
+
+
+    private void ValidateGetOrdersByShipping(string[] orders,
+                    FixedList<ShippingOrderItem> ordersByShipping) {
+
+      foreach (var order in orders) {
+        var orderForShipping = ordersByShipping.FirstOrDefault(x => x.Order.UID == order);
+
+        if (orderForShipping == null) {
+          Assertion.EnsureFailed("Uno o más pedidos no pertenecen al mismo envío!");
+        }
+      }
+
+    }
+
+
+    private void ValidateOrdersStatusForParcelDelivery(FixedList<ShippingOrderItem> ordersForShipping) {
+
+      foreach (var order in ordersForShipping) {
+        if (order.Order.Status != OrderStatus.Shipping && order.Order.Status != OrderStatus.Delivery) {
+          Assertion.EnsureFailed("El estatus de los pedidos debe ser 'Envío' o 'Entrega'!");
+        }
+      }
+
+    }
+
+
+    private void ValidateShippingByCustomer(FixedList<ShippingOrderItem> ordersForShipping) {
+
+      foreach (var order in ordersForShipping) {
+
+        var countCustomerId = ordersForShipping.FindAll(x =>
+                              x.Order.Customer.Id == order.Order.Customer.Id).Count;
+
+        if (countCustomerId != ordersForShipping.Count) {
+          Assertion.EnsureFailed("Uno o más pedidos no pertenecen al mismo cliente!");
+        }
+      }
+    }
+
+
+    private void ValidateShippingMethodForOrders(FixedList<ShippingOrderItem> ordersForShipping) {
+
+      foreach (var order in ordersForShipping) {
+        if (order.Order.ShippingMethod != "Paqueteria") {
+          Assertion.EnsureFailed("La forma de envío de uno o mas pedidos no es 'Paquetería'!");
+        }
+      }
+
     }
 
 
