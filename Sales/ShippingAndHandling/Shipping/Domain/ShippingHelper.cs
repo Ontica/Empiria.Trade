@@ -91,7 +91,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
           var packagedList = usecasePackage.GetPackagedForItemList(order.Order.UID);
 
           order.OrderPackages = GetPackagedListByOrder(packagedList);
-        }
+        } 
 
       }
     }
@@ -166,7 +166,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       var ordersForShipping = ShippingData.GetOrdersForShippingByOrderUID(order.Id.ToString());
 
       if (ordersForShipping.Count > 0) {
-        Assertion.EnsureFailed($"El pedido {order.OrderNumber} ya pertenece a un envío!");
+        Assertion.EnsureFailed($"El pedido {order.OrderNumber} ya pertenece a un envío.");
       }
     }
 
@@ -260,7 +260,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
         var orderForShipping = ordersByShipping.FirstOrDefault(x => x.Order.UID == order);
 
         if (orderForShipping == null) {
-          Assertion.EnsureFailed("Uno o más pedidos no pertenecen al mismo envío!");
+          Assertion.EnsureFailed("Uno o más pedidos no pertenecen al mismo envío.");
         }
       }
 
@@ -271,7 +271,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       foreach (var order in ordersForShipping) {
         if (order.Order.Status != OrderStatus.Shipping && order.Order.Status != OrderStatus.Delivery) {
-          Assertion.EnsureFailed("El estatus de los pedidos debe ser 'Envío' o 'Entrega'!");
+          Assertion.EnsureFailed("El estatus de los pedidos debe ser 'Envío' o 'Entrega'.");
         }
       }
 
@@ -286,7 +286,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
                               x.Order.Customer.Id == order.Order.Customer.Id).Count;
 
         if (countCustomerId != ordersForShipping.Count) {
-          Assertion.EnsureFailed("Uno o más pedidos no pertenecen al mismo cliente!");
+          Assertion.EnsureFailed("Uno o más pedidos no pertenecen al mismo cliente.");
         }
       }
     }
@@ -296,7 +296,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       foreach (var order in ordersForShipping) {
         if (order.Order.ShippingMethod != "Paqueteria") {
-          Assertion.EnsureFailed("La forma de envío de uno o mas pedidos no es 'Paquetería'!");
+          Assertion.EnsureFailed("La forma de envío de uno o mas pedidos no es 'Paquetería'.");
         }
       }
 

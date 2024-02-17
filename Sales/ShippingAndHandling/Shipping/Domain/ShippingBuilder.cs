@@ -83,11 +83,12 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     internal ShippingEntry GetShippingByOrderUID(string orderUID) {
 
       string orderId = Order.Parse(orderUID).Id.ToString();
-      var orderForShippingList = ShippingData.GetOrdersForShippingByOrderUID(orderId);
+      var ordersForShipping = ShippingData.GetOrdersForShippingByOrderUID(orderId);
 
       var helper = new ShippingHelper();
 
-      ShippingEntry shipping = helper.GetShippingWithOrders(orderForShippingList, "");
+      //helper.GetOrdersMeasurementUnits(ordersForShipping);
+      ShippingEntry shipping = helper.GetShippingWithOrders(ordersForShipping, "");
 
       return shipping;
     }

@@ -72,7 +72,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
 
     public FixedList<OrderPackageForShipping> OrderPackages {
       get; internal set;
-    }
+    } = new FixedList<OrderPackageForShipping>();
 
 
     public decimal OrderTotal {
