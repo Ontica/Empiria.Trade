@@ -160,7 +160,7 @@ namespace Empiria.Trade.Sales {
 
 
     private bool ValidateShowOrderData(QueryType queryType) {
-      return queryType == QueryType.Sales || queryType == QueryType.SalesAuthorization;
+      return queryType == QueryType.Sales || queryType == QueryType.SalesAuthorization || queryType == QueryType.SalesShipping;
     }
 
     private bool ValidateShowCreditEdtior(QueryType queryType) {
@@ -172,7 +172,7 @@ namespace Empiria.Trade.Sales {
     }
 
     private bool ValidateShippingEditor(QueryType queryType) {
-      return queryType == QueryType.Sales || queryType == QueryType.SalesShipping;
+      return queryType == QueryType.Sales  || queryType == QueryType.SalesShipping;
     }
 
     private bool ValidateSendShippingEditor(QueryType queryType) {
