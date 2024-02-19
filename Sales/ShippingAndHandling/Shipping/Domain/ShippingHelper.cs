@@ -50,7 +50,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
           shipping.OrdersForShipping = ordersForShipping;
           shipping.OrdersTotal = ordersForShipping.Sum(x => x.OrderTotal);
-          shipping.CanEdit = ordersForShipping[0].Order.Status == OrderStatus.Shipping ? true : false;
+          shipping.CanEdit = ordersForShipping.First().Order.Status == OrderStatus.Shipping ? true : false;
         }
       }
     }
@@ -106,7 +106,9 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       if (ordersForShipping.Count > 0) {
 
-        ordersList = GetAllOrdersForShipping(ordersForShipping);
+        ordersList = ShippingData.GetOrdersForShippingByShippingId(
+              ordersForShipping.First().ShippingOrder.ShippingUID);
+
         ValidateGetOrdersByShipping(orders, ordersList);
 
       } else {
@@ -140,11 +142,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       } else {
 
         shipping = ShippingData.GetShippingOrders(
-                                orderForShippingList[0].ShippingOrder.ShippingUID)
+                                orderForShippingList.First().ShippingOrder.ShippingUID)
                                .FirstOrDefault();
 
         shipping.OrdersForShipping = orderForShippingList;
-        shipping.CanEdit = orderForShippingList[0].Order.Status == OrderStatus.Shipping ? true : false;
+        shipping.CanEdit = orderForShippingList.First().Order.Status == OrderStatus.Shipping ? true : false;
         shipping.OrdersTotal = orderForShippingList.Sum(x => x.OrderTotal);
       }
 
@@ -175,16 +177,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
 
     #region Private methods
-
-
-    private FixedList<ShippingOrderItem> GetAllOrdersForShipping(
-      FixedList<ShippingOrderItem> ordersForShipping) {
-
-      var ordersByShipping = ShippingData.GetOrdersForShippingByShippingId(
-              ordersForShipping[0].ShippingOrder.ShippingUID);
-
-      return ordersByShipping;
-    }
 
 
     private FixedList<ShippingOrderItem> GetOrdersForShippingIfNotExist(string[] orders,

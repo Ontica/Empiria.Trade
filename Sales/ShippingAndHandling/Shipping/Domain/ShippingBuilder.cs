@@ -87,7 +87,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       var helper = new ShippingHelper();
 
-      //helper.GetOrdersMeasurementUnits(ordersForShipping);
+      helper.GetOrdersMeasurementUnits(ordersForShipping);
       ShippingEntry shipping = helper.GetShippingWithOrders(ordersForShipping, "");
 
       return shipping;
@@ -117,7 +117,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       helper.GetOrdersForShippingByEntry(shippingList);
 
-      return shippingList;
+      return shippingList.OrderByDescending(x=>x.CanEdit).ToFixedList();
     }
 
 

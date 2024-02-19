@@ -4,7 +4,7 @@
 *  Assembly : Empiria.Trade.WebApi.ShippingAndHandling.dll  Pattern   : Controller                           *
 *  Type     : PackagingController                           License   : Please read LICENSE.txt file         *
 *                                                                                                            *
-*  Summary  : Query web API used to manage order packaging.                                                  *
+*  Summary  : Query web API used to manage shippings.                                                        *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
@@ -18,8 +18,7 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
   /// <summary></summary>
   public class ShippingController : WebApiController {
 
-    //TODO CAMBIAR ENDPOINTS DE v4/trade/shipping-and-handling/
-    //A v4/trade/sales/
+
     #region Web Apis
 
 
