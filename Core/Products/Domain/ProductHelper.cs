@@ -17,6 +17,7 @@ using System.Diagnostics;
 using Empiria.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 
 namespace Empiria.Trade.Products.Domain {
 
@@ -34,6 +35,22 @@ namespace Empiria.Trade.Products.Domain {
     #region public methods
 
 
+    internal decimal DefaultPrice(Product product) {
+
+      if (product.Vendor.Id == 1) {
+
+        return product.PriceList1;
+
+      } else if (product.Vendor.Id == 2) {
+
+        return product.PriceList7;
+
+      } else {
+        return 0;
+      }
+    }
+
+
     internal void GetDefaultProductBasePrices(FixedList<Product> products) {
 
       foreach (var product in products) {
@@ -42,7 +59,6 @@ namespace Empiria.Trade.Products.Domain {
       }
 
     }
-
 
 
     internal FixedList<Product> GetProductsByCode(FixedList<Product> products) {
@@ -61,81 +77,19 @@ namespace Empiria.Trade.Products.Domain {
     }
 
 
-    private void AssingProductPresentations(EmpiriaHashTable<Product> hashProducts, Product product) {
+    internal FixedList<Product> GetProductsOrderBy(FixedList<Product> productsByCode) {
 
-      string hash = $"{product.Code}";
-
-      Product productEntry;
-
-      hashProducts.TryGetValue(hash, out productEntry);
-
-      
-      if (productEntry == null) {
-
-        productEntry = product;
-
-        //productEntry.Presentations.Add(GetPresentation(product));
-
-        GetProductPresentations(productEntry, product);
-
-        hashProducts.Insert(hash, productEntry);
-
-      } else {
-
-        GetProductPresentations(productEntry, product);
-        //productEntry.Presentations.Add(GetPresentation(product));
-
+      foreach (var product in productsByCode) {
+        product.Presentations = product.Presentations.OrderBy(x => x.Units).ToList();
       }
 
-    }
-
-
-    private void GetProductPresentations(Product productEntry, Product product) {
-
-      var existPresentation = productEntry.Presentations.Find(
-                          x => x.PresentationUID == product.ProductPresentation.UID);
-
-      if (existPresentation != null) {
-
-        GetVendorsByPresentation(existPresentation, product);
-
-      } else {
-
-        var presentation = new ProductPresentationForSeach();
-        presentation.PresentationUID = product.ProductPresentation.UID;
-        presentation.Description = product.ProductPresentation.PresentationDescription;
-        presentation.Units = product.ProductPresentation.QuantityAmount;
-
-        GetVendorsByPresentation(presentation, product);
-
-        productEntry.Presentations.Add(presentation);
-
+      if (query.InStock) {
+        productsByCode = productsByCode.Where(x=>x.InventoryEntry.InputQuantity > 0).ToFixedList();
       }
 
-      //return productEntry.Presentations;
-    }
-
-
-    private void GetVendorsByPresentation(ProductPresentationForSeach presentation, Product product) {
-      
-      var vendorProduct = VendorProduct.Parse(product.VendorProductUID);
-
-      var existVendor = presentation.Vendors.Find(x => x.VendorUID == product.Vendor.UID);
-
-      if (existVendor == null) {
-
-        VendorDto vendor = new VendorDto();
-        vendor.VendorProductUID = product.VendorProductUID;
-        vendor.VendorUID = product.Vendor.UID;
-        vendor.VendorName = product.Vendor.Name;
-        vendor.Sku = vendorProduct.SKU;
-        vendor.Stock = product.InventoryEntry.InputQuantity;
-        vendor.Price = product.PriceList;
-
-        presentation.Vendors.Add(vendor);
-      }
-
-      //return presentation.Vendors;
+      return productsByCode.OrderBy(p => p.Code)
+                                          .ThenBy(p => p.ProductName)
+                                          .ToList().ToFixedList();
     }
 
 
@@ -154,13 +108,38 @@ namespace Empiria.Trade.Products.Domain {
     #region Private methods
 
 
+    private void AssingProductPresentations(EmpiriaHashTable<Product> hashProducts, Product product) {
+
+      string hash = $"{product.Code}";
+
+      Product productEntry;
+
+      hashProducts.TryGetValue(hash, out productEntry);
+
+
+      if (productEntry == null) {
+
+        productEntry = product;
+
+        GetProductPresentations(productEntry, product);
+
+        hashProducts.Insert(hash, productEntry);
+
+      } else {
+
+        GetProductPresentations(productEntry, product);
+      }
+
+    }
+
+
     private void GetAssignedPrice(FixedList<Product> products, PartyExtData customerExtData) {
 
       foreach (var product in products) {
-        
+
         var vendorId = product.Vendor.Id;
         var customerVendorId = GetVendorId(product, customerExtData.FromDatabase);
-        
+
         if (customerVendorId == vendorId) {
           product.PriceList = GetPrice(product, customerExtData.PriceListId);
         }
@@ -175,14 +154,6 @@ namespace Empiria.Trade.Products.Domain {
 
     }
 
-    private int GetVendorId(Product product, string fromDatabase) {
-
-      if (fromDatabase == "NK SUJETSA") {
-        return 1;
-      }
-      
-      return 3;
-    }
 
     private PartyExtData GetCustomerAssignedPriceNumber() {
 
@@ -200,7 +171,7 @@ namespace Empiria.Trade.Products.Domain {
     private decimal GetPrice(Product product, int customerPriceNumber) {
 
       decimal price = 0;
-      
+
       if (customerPriceNumber == 0) {
 
         price = DefaultPrice(product);
@@ -251,31 +222,61 @@ namespace Empiria.Trade.Products.Domain {
     }
 
 
-    public decimal DefaultPrice(Product product) {
-      
-      if (product.Vendor.Id == 1) {
+    private void GetProductPresentations(Product productEntry, Product product) {
 
-        return product.PriceList1;
+      var existPresentation = productEntry.Presentations.Find(
+                          x => x.PresentationUID == product.ProductPresentation.UID);
 
-      } else if (product.Vendor.Id == 2) {
+      if (existPresentation != null) {
 
-        return product.PriceList7;
+        GetVendorsByPresentation(existPresentation, product);
 
       } else {
-        return 0;
+
+        var presentation = new ProductPresentationForSeach();
+        presentation.PresentationUID = product.ProductPresentation.UID;
+        presentation.Description = product.ProductPresentation.PresentationDescription;
+        presentation.Units = product.ProductPresentation.QuantityAmount;
+
+        GetVendorsByPresentation(presentation, product);
+
+        productEntry.Presentations.Add(presentation);
+
       }
+
+      //return productEntry.Presentations;
     }
 
 
-    internal FixedList<Product> GetProductsOrderBy(FixedList<Product> productsByCode) {
+    private void GetVendorsByPresentation(ProductPresentationForSeach presentation, Product product) {
 
-      foreach (var product in productsByCode) {
-        product.Presentations = product.Presentations.OrderBy(x => x.Units).ToList();
+      var vendorProduct = VendorProduct.Parse(product.VendorProductUID);
+
+      var existVendor = presentation.Vendors.Find(x => x.VendorUID == product.Vendor.UID);
+
+      if (existVendor == null) {
+
+        VendorDto vendor = new VendorDto();
+        vendor.VendorProductUID = product.VendorProductUID;
+        vendor.VendorUID = product.Vendor.UID;
+        vendor.VendorName = product.Vendor.Name;
+        vendor.Sku = vendorProduct.SKU;
+        vendor.Stock = product.InventoryEntry.InputQuantity;
+        vendor.Price = product.PriceList;
+
+        presentation.Vendors.Add(vendor);
       }
 
-      return productsByCode.OrderBy(p => p.Code)
-                                          .ThenBy(p => p.ProductName)
-                                          .ToList().ToFixedList();
+    }
+
+
+    private int GetVendorId(Product product, string fromDatabase) {
+
+      if (fromDatabase == "NK SUJETSA") {
+        return 1;
+      }
+
+      return 3;
     }
 
 

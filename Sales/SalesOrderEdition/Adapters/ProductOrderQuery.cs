@@ -21,6 +21,11 @@ namespace Empiria.Trade.Sales.Adapters {
     } = string.Empty;
 
 
+    public bool InStock {
+      get; set;
+    }
+
+
     public SalesOrderFields Order {
       get; set;
     } = new SalesOrderFields();

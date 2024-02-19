@@ -60,7 +60,8 @@ namespace Empiria.Trade.Sales.UseCases {
     private ProductQuery MapToProductQuery(ProductOrderQuery orderQuery) {
       var query = new ProductQuery();
 
-      query.Keywords= orderQuery.Keywords;
+      query.Keywords = orderQuery.Keywords;
+      query.InStock = orderQuery.InStock;
       query.CustomerUID = orderQuery.Order.CustomerUID;
       query.SalesAgentUID = orderQuery.Order.SalesAgentUID;
       query.SuplierUID = orderQuery.Order.SupplierUID;

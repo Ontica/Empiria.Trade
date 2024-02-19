@@ -20,147 +20,137 @@ using Empiria.Trade.Products;
 using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Sales.UseCases;
 
-namespace Empiria.Trade.Tests.Core
-{
+namespace Empiria.Trade.Tests.Core {
 
-    /// <summary>Test cases for products.</summary>
-    public class ProductTests
-    {
+  /// <summary>Test cases for products.</summary>
+  public class ProductTests {
 
-        #region Initialization
+    #region Initialization
 
-        public ProductTests()
-        {
-            //TestsCommonMethods.Authenticate();
-        }
+    public ProductTests() {
+      //TestsCommonMethods.Authenticate();
+    }
 
-        #endregion Initialization
+    #endregion Initialization
 
 
-        #region Facts
+    #region Facts
 
 
 
-        [Fact]
-        public void GetProductTest()
-        {
+    [Fact]
+    public void GetProductTest() {
 
-            var usecase = ProductUseCases.UseCaseInteractor();
+      var usecase = ProductUseCases.UseCaseInteractor();
 
-            string uid = "78be58ab-75d0-4e8f-bed4-2305e70101c8";
+      string uid = "78be58ab-75d0-4e8f-bed4-2305e70101c8";
 
-            IProductEntryDto sut = usecase.GetTRDProduct(uid);
+      IProductEntryDto sut = usecase.GetTRDProduct(uid);
 
-            Assert.NotNull(sut);
+      Assert.NotNull(sut);
 
-        }
-
-
-        [Fact]
-        public async Task GetProductListTest()
-        {
-
-            var usecase = ProductUseCases.UseCaseInteractor();
-            ProductQuery query = new ProductQuery
-            {
-                Keywords = "TM1X2"
-            };
-
-            FixedList<IProductEntryDto> sut = await usecase.GetProductsList(query).ConfigureAwait(false);
-
-            Assert.NotNull(sut);
-            Assert.NotEmpty(sut);
-
-        }
+    }
 
 
-        [Fact]
-        public async Task GetProductsForOrderTest()
-        {
+    [Fact]
+    public async Task GetProductListTest() {
 
-            var usecase = ProductForOrderUseCases.UseCaseInteractor();
+      var usecase = ProductUseCases.UseCaseInteractor();
+      ProductQuery query = new ProductQuery {
+        Keywords = "TM1X2"
+      };
 
-            ProductOrderQuery query = new ProductOrderQuery
-            {
-                Keywords = "TA58X412",
-                Order = {
+      FixedList<IProductEntryDto> sut = await usecase.GetProductsList(query).ConfigureAwait(false);
+
+      Assert.NotNull(sut);
+      Assert.NotEmpty(sut);
+
+    }
+
+
+    [Fact]
+    public async Task GetProductsForOrderTest() {
+
+      var usecase = ProductForOrderUseCases.UseCaseInteractor();
+
+      ProductOrderQuery query = new ProductOrderQuery {
+        Keywords = "tuerca hexagonal inserto de nylon",
+        InStock = true,
+        Order = {
           CustomerUID = "7ed4164a-24b0-4728-910b-eb26f0684a12",
           SalesAgentUID = "",
-          SupplierUID = ""
-        }
-            };
-
-            FixedList<IProductEntryDto> sut = await usecase.GetProductsForOrder(query).ConfigureAwait(false);
-
-            Assert.NotNull(sut);
-            Assert.NotEmpty(sut);
+          SupplierUID = "",
 
         }
+      };
+
+      FixedList<IProductEntryDto> sut = await usecase.GetProductsForOrder(query).ConfigureAwait(false);
+
+      Assert.NotNull(sut);
+      Assert.NotEmpty(sut);
+
+    }
 
 
-        [Fact]
-        public void GetProductPresentationTest()
-        {
+    [Fact]
+    public void GetProductPresentationTest() {
 
-            var usecase = ProductUseCases.UseCaseInteractor();
+      var usecase = ProductUseCases.UseCaseInteractor();
 
-            string uid = "6012ea18-82d2-4e0e-9fe2-f81a1d076b94";
+      string uid = "6012ea18-82d2-4e0e-9fe2-f81a1d076b94";
 
-            ProductPresentation sut = usecase.GetProductPresentation(uid);
+      ProductPresentation sut = usecase.GetProductPresentation(uid);
 
-            Assert.NotNull(sut);
+      Assert.NotNull(sut);
 
-        }
-
-
-        [Fact]
-        public void GetVendorProductTest()
-        {
-
-            var usecase = ProductUseCases.UseCaseInteractor();
-
-            string uid = "aa2396b5-9acf-43bd-870a-112e9ed61351";
-
-            VendorProduct sut = usecase.GetVendorProduct(uid);
-
-            Assert.NotNull(sut);
-
-        }
+    }
 
 
-        [Fact]
-        public void GetProductGroupTest()
-        {
+    [Fact]
+    public void GetVendorProductTest() {
 
-            var usecase = ProductUseCases.UseCaseInteractor();
+      var usecase = ProductUseCases.UseCaseInteractor();
 
-            string uid = "382dd00c-5be5-43b3-aeca-5d5addb72fb2";
+      string uid = "aa2396b5-9acf-43bd-870a-112e9ed61351";
 
-            ProductGroup sut = usecase.GetProductGroup(uid);
+      VendorProduct sut = usecase.GetVendorProduct(uid);
 
-            Assert.NotNull(sut);
+      Assert.NotNull(sut);
 
-        }
-
-
-        [Fact]
-        public void GetProductSubgroupTest()
-        {
-
-            var usecase = ProductUseCases.UseCaseInteractor();
-
-            string uid = "UID-SUBGROUP-0000-001";
-
-            ProductSubgroup sut = usecase.GetProductSubgroup(uid);
-
-            Assert.NotNull(sut);
-
-        }
+    }
 
 
-        #endregion Facts
+    [Fact]
+    public void GetProductGroupTest() {
+
+      var usecase = ProductUseCases.UseCaseInteractor();
+
+      string uid = "382dd00c-5be5-43b3-aeca-5d5addb72fb2";
+
+      ProductGroup sut = usecase.GetProductGroup(uid);
+
+      Assert.NotNull(sut);
+
+    }
 
 
-    } // class ProductTests
+    [Fact]
+    public void GetProductSubgroupTest() {
+
+      var usecase = ProductUseCases.UseCaseInteractor();
+
+      string uid = "UID-SUBGROUP-0000-001";
+
+      ProductSubgroup sut = usecase.GetProductSubgroup(uid);
+
+      Assert.NotNull(sut);
+
+    }
+
+
+    #endregion Facts
+
+
+  } // class ProductTests
 
 } // namespace Empiria.Trade.Tests.Products
