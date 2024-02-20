@@ -77,6 +77,10 @@ namespace Empiria.Trade.Core.Adapters {
       get; internal set;
     }
 
+    public FixedList<CustomerShortAddressDto> Addresses {
+      get; internal set;
+    }
+
   }
 
 } // namespace Empiria.Trade.Core.Adapters

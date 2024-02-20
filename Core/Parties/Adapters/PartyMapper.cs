@@ -11,7 +11,7 @@
 using System;
 
 using System.Collections.Generic;
-
+using Empiria.Trade.Core.UsesCases;
 
 namespace Empiria.Trade.Core.Adapters {
 
@@ -46,10 +46,20 @@ namespace Empiria.Trade.Core.Adapters {
       var dto = new ContactDto {
         UID = party.UID,
         Name = party.Name,
-        Contacts = MapPartyContacts(party.Contacts)
+        Contacts = MapPartyContacts(party.Contacts),
+        Addresses = MapAddresses(party.UID)
       };
 
     return dto;
+    }
+
+    private static FixedList<CustomerShortAddressDto> MapAddresses(string UID) {
+      using (var usescase = CustomerUseCases.UseCaseInteractor()) {
+        var addresses = usescase.GetCustomerAddress(UID);
+
+        return addresses;
+      }
+
     }
 
     private static PartyContactsDto MapToPartyContact(PartyContact contact) {
