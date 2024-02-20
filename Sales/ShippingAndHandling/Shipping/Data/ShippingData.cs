@@ -38,13 +38,41 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
     }
 
 
-    internal FixedList<SimpleObjectData> GetParcelSupplierList() {
+    internal static void DeleteOrdersForShippingByShippingUID(string shippingOrderUID) {
 
-      string sql = "SELECT * FROM SimpleObjects WHERE ObjectStatus = 'A' AND ObjectTypeId = 1063";
+      var shippingId = ShippingEntry.Parse(shippingOrderUID).Id;
+
+      string sql = $"DELETE FROM TRDShippingOrderItems " +
+                   $"WHERE ShippingOrderId = '{shippingId}' ";
 
       var dataOperation = DataOperation.Parse(sql);
 
-      return DataReader.GetPlainObjectFixedList<SimpleObjectData>(dataOperation);
+      DataWriter.Execute(dataOperation);
+    }
+
+
+    static internal void DeleteShipping(string shippingOrderUID) {
+
+      var shippingId = ShippingEntry.Parse(shippingOrderUID).Id;
+
+      string sql = $"DELETE FROM TRDShipping " +
+                   $"WHERE ShippingOrderId = '{shippingId}' ";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      DataWriter.Execute(dataOperation);
+    }
+
+
+    internal static void DeleteShippingPalletsByShippingUID(string shippingOrderUID) {
+      var shippingId = ShippingEntry.Parse(shippingOrderUID).Id;
+
+      string sql = $"DELETE FROM TRDShippingPallets " +
+                   $"WHERE ShippingOrderId = '{shippingId}' ";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      DataWriter.Execute(dataOperation);
     }
 
 
@@ -152,6 +180,9 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
 
       return orderIdList;
     }
+
+
+
 
 
     #endregion Private methods

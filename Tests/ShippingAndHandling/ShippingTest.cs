@@ -65,6 +65,19 @@ namespace Empiria.Trade.Tests {
 
 
     [Fact]
+    public void DeleteShippingTest() {
+
+      var usecase = ShippingUseCases.UseCaseInteractor();
+
+      string shippingOrderUID = "68db22ab-891e-466e-80d1-e766fc370bcc";
+      usecase.DeleteShipping(shippingOrderUID);
+
+      Assert.True(true);
+
+    }
+
+
+    [Fact]
     public void GetParcelSupplierListTest() {
 
       var usecase = ShippingUseCases.UseCaseInteractor();

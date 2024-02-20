@@ -76,6 +76,19 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
     }
 
 
+    [HttpDelete]
+    [Route("v4/trade/sales/shipping/{shippingOrderUID:guid}")]
+    public NoDataModel DeleteShipping([FromUri] string shippingOrderUID) {
+
+      using (var usecases = ShippingUseCases.UseCaseInteractor()) {
+
+        usecases.DeleteShipping(shippingOrderUID);
+
+        return new NoDataModel(this.Request);
+      }
+    }
+
+
     [HttpGet]
     [Route("v4/trade/sales/shipping/parcel-suppliers")]
     public CollectionModel GetPackageTypeList() {

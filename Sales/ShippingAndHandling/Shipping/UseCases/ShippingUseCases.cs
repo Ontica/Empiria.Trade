@@ -79,10 +79,24 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
 
     public ShippingDto DeleteOrderForShipping(string shippingOrderUID, string orderUID) {
+      Assertion.Require(shippingOrderUID, "shippingOrderUID");
+      Assertion.Require(orderUID, "orderUID");
 
       ShippingData.DeleteOrderForShipping(orderUID);
 
       return GetShippingByUID(shippingOrderUID);
+    }
+
+
+    public void DeleteShipping(string shippingOrderUID) {
+      
+      Assertion.Require(shippingOrderUID, "shippingOrderUID");
+
+      ShippingData.DeleteOrdersForShippingByShippingUID(shippingOrderUID);
+
+      ShippingData.DeleteShippingPalletsByShippingUID(shippingOrderUID);
+
+      ShippingData.DeleteShipping(shippingOrderUID);
     }
 
 
