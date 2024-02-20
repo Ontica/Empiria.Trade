@@ -61,7 +61,7 @@ namespace Empiria.Trade.Sales.UseCases {
       var query = new ProductQuery();
 
       query.Keywords = orderQuery.Keywords;
-      query.InStock = orderQuery.InStock;
+      query.OnStock = orderQuery.OnStock;
       query.CustomerUID = orderQuery.Order.CustomerUID;
       query.SalesAgentUID = orderQuery.Order.SalesAgentUID;
       query.SuplierUID = orderQuery.Order.SupplierUID;

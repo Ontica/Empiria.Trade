@@ -83,7 +83,7 @@ namespace Empiria.Trade.Products.Domain {
         product.Presentations = product.Presentations.OrderBy(x => x.Units).ToList();
       }
 
-      if (query.InStock) {
+      if (query.OnStock) {
         productsByCode = productsByCode.Where(x=>x.InventoryEntry.InputQuantity > 0).ToFixedList();
       }
 

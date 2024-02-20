@@ -158,6 +158,13 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
     }
 
 
+    public ShippingPallet GetShippingPalletByUID(string shippingPalletUID) {
+      var pallet = ShippingPallet.Parse(shippingPalletUID);
+      
+      return pallet;
+    }
+
+
     #endregion Use cases
 
 

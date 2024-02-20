@@ -57,7 +57,8 @@ namespace Empiria.Trade.Tests.Core {
 
       var usecase = ProductUseCases.UseCaseInteractor();
       ProductQuery query = new ProductQuery {
-        Keywords = "TM1X2"
+        Keywords = "tuerca hexagonal inserto de nylon",
+        OnStock= true
       };
 
       FixedList<IProductEntryDto> sut = await usecase.GetProductsList(query).ConfigureAwait(false);
@@ -75,7 +76,7 @@ namespace Empiria.Trade.Tests.Core {
 
       ProductOrderQuery query = new ProductOrderQuery {
         Keywords = "tuerca hexagonal inserto de nylon",
-        InStock = true,
+        OnStock = true,
         Order = {
           CustomerUID = "7ed4164a-24b0-4728-910b-eb26f0684a12",
           SalesAgentUID = "",
