@@ -21,7 +21,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
   public class ShippingEntry : BaseObject {
 
 
-    #region Constructor and parser
+    #region Constructors and parsers
 
     public ShippingEntry() {
       //no-op
@@ -42,7 +42,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
     }
 
 
-    #endregion Constructor and parser
+    #endregion Constructors and parsers
 
 
     #region Properties

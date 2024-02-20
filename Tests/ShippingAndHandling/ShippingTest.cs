@@ -192,6 +192,20 @@ namespace Empiria.Trade.Tests {
     }
 
 
+    [Fact]
+    public void GetShippingPalletByUIDTest() {
+
+      var usecase = ShippingUseCases.UseCaseInteractor();
+
+      string shippingPalletUID = "24563f9f-48f7-466e-8a61-7bf4a6ekrlf5";
+      ShippingPallet sut = usecase.GetShippingPalletByUID(shippingPalletUID);
+
+      Assert.NotNull(sut);
+
+    }
+
+
+
     #endregion Facts
 
 

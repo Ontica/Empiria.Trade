@@ -36,7 +36,7 @@ namespace Empiria.Trade.Products.Adapters {
     } = string.Empty;
 
 
-    public bool InStock {
+    public bool OnStock {
       get; set;
     }
 
