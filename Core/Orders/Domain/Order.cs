@@ -138,8 +138,13 @@ namespace Empiria.Trade.Orders {
       get;
       protected set;
     }
-      
-    
+
+    [DataField("CustomerAddressId")]
+    public CustomerAddress CustomerAddress {
+      get;
+      protected set;
+    }
+
     #endregion Public properties
 
   }  // class Order

@@ -160,6 +160,9 @@ namespace Empiria.Trade.Sales {
       this.CreditTransactions = GetCustomerCreditTransactions();
 
       SetOrderTotals();
+
+      var actions = ActionsService.Load();
+      this.Actions = actions.SetActions(this, QueryType.Sales);
     }
 
     public void Deliver() {
@@ -200,6 +203,7 @@ namespace Empiria.Trade.Sales {
       this.Customer = fields.GetCustomer();
       this.Supplier = fields.GetSupplier();
       this.SalesAgent = fields.GetSalesAgent();
+      this.CustomerAddress = fields.GetCustomerAddress();
       this.Notes = fields.Notes;
       this.Status = fields.Status;
       this.ShippingMethod = fields.ShippingMethod;
@@ -210,7 +214,7 @@ namespace Empiria.Trade.Sales {
       this.CreditTransactions = GetCustomerCreditTransactions(); 
       this.TotalDebt = CrediLineData.GetCreditDebt(this.Customer.Id);
       this.CreditLimit = CrediLineData.GetCreditLimit(this.Customer.Id);
-    
+      
       this.GetWeightTotalPackageByOrder();
 
       SetOrderTotals();

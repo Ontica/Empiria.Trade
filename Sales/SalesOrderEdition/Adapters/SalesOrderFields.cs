@@ -91,6 +91,10 @@ namespace Empiria.Trade.Sales.Adapters {
       get; set;
     }
 
+    public string customerAddressUID {
+      get; set;
+    } = "Empty";
+
     #endregion Properties
 
     #region Internal methods
@@ -105,6 +109,10 @@ namespace Empiria.Trade.Sales.Adapters {
 
     internal  Party GetSupplier() {
       return Party.Parse(this.SupplierUID);
+    }
+
+    internal CustomerAddress GetCustomerAddress() {
+      return CustomerAddress.Parse(this.customerAddressUID);
     }
 
     #endregion Internal methods

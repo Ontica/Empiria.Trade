@@ -9,7 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
 using System;
-
+using Empiria.Trade.Core.Adapters;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 
@@ -84,6 +84,10 @@ namespace Empiria.Trade.Sales.Adapters {
     }
 
     public NamedEntityDto Customer {
+      get; internal set;
+    }
+
+    public CustomerShortAddressDto CustomerAddress {
       get; internal set;
     }
 

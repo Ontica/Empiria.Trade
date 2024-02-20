@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 
 using Empiria.Trade.Core;
+using Empiria.Trade.Core.Adapters;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 using Empiria.Trade.Sales.ShippingAndHandling.UseCases;
@@ -90,6 +91,7 @@ namespace Empiria.Trade.Sales.Adapters {
         Status = order.Status,
         StatusName = MapOrderStatus(order.Status.ToString()),
         Customer = order.Customer.MapToNamedEntity(),
+        CustomerAddress = CustomerAddressMapper.MapShortAddress(order.CustomerAddress),
         Supplier = order.Supplier.MapToNamedEntity(),
         SalesAgent = order.SalesAgent.MapToNamedEntity(),
         ShippingMethod = order.ShippingMethod,

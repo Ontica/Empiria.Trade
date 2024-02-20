@@ -56,7 +56,7 @@ namespace Empiria.Trade.Core.Adapters {
       return CustomerAddressDtoList.ToFixedList();
     }
 
-    static private CustomerShortAddressDto MapShortAddress(CustomerAddress address) {
+    static public CustomerShortAddressDto MapShortAddress(CustomerAddress address) {
       var dto = new CustomerShortAddressDto {
         UID = address.UID,
         Name = address.Address1 + ", " + address.Address2 + " " + address.City + ", " + address.State
