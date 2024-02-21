@@ -23,7 +23,7 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
 
 
     [HttpPost]
-    [Route("v4/trade/sales/shipping/{shippingOrderUID}/send")]
+    [Route("v4/trade/sales/shipping/{shippingOrderUID:guid}/send")]
     public SingleObjectModel ChangeOrdersForShippingStatus([FromUri] string shippingOrderUID) {
 
       using (var usecases = ShippingUseCases.UseCaseInteractor()) {
@@ -62,6 +62,20 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
     }
 
 
+    [HttpPost]
+    [Route("v4/trade/sales/shipping/{shippingOrderUID:guid}/pallet")]
+    public SingleObjectModel CreateShippingPallet([FromUri] string shippingUID,
+                                                  [FromBody] ShippingPalletFields fields) {
+
+      using (var usecases = ShippingUseCases.UseCaseInteractor()) {
+
+        ShippingDto shippingOrder = usecases.CreateShippingPallet(shippingUID, fields);
+
+        return new SingleObjectModel(this.Request, shippingOrder);
+      }
+    }
+
+
     [HttpDelete]
     [Route("v4/trade/sales/shipping/{shippingOrderUID:guid}/order/{orderUID:guid}")]
     public SingleObjectModel DeleteOrderForShipping([FromUri] string shippingOrderUID,
@@ -87,6 +101,20 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
         return new NoDataModel(this.Request);
       }
     }
+
+
+    //[HttpDelete]
+    //[Route("v4/trade/sales/shipping/{shippingOrderUID:guid}/pallet/{shippingPalletUID:guid}")]
+    //public SingleObjectModel DeleteShippingPallet([FromUri] string shippingUID,
+    //                                                 [FromUri] string shippingPalletUID) {
+
+    //  using (var usecases = ShippingUseCases.UseCaseInteractor()) {
+
+    //    ShippingDto shippingOrder = usecases.DeleteShippingPallet(shippingUID, shippingPalletUID);
+
+    //    return new SingleObjectModel(this.Request, shippingOrder);
+    //  }
+    //}
 
 
     [HttpGet]
@@ -153,6 +181,20 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
       }
     }
 
+
+    //[HttpPut]
+    //[Route("v4/trade/sales/shipping/{shippingOrderUID:guid}/pallet/{shippingPalletUID:guid}")]
+    //public SingleObjectModel UpdateShippingPallet([FromUri] string shippingUID,
+    //                                              [FromUri] string shippingPalletUID,
+    //                                              [FromBody] ShippingPalletFields fields) {
+
+    //  using (var usecases = ShippingUseCases.UseCaseInteractor()) {
+
+    //    ShippingDto shippingOrder = usecases.UpdateShippingPallet(shippingUID, shippingPalletUID, fields);
+
+    //    return new SingleObjectModel(this.Request, shippingOrder);
+    //  }
+    //}
 
     #endregion Web Apis
   }

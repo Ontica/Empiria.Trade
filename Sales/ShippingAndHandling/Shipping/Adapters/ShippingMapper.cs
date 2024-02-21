@@ -58,13 +58,13 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
     #region Private methods
 
 
-    static private FixedList<OrderPackageForShippingDto> GetPackagesDtoByOrder(
+    static private FixedList<PackageForShippingDto> GetPackagesDtoByOrder(
                     FixedList<OrderPackageForShipping> orderPackages) {
 
-      var packagesDto = new List<OrderPackageForShippingDto>();
+      var packagesDto = new List<PackageForShippingDto>();
 
       foreach (var orderPackage in orderPackages) {
-        var packageDto = new OrderPackageForShippingDto();
+        var packageDto = new PackageForShippingDto();
         packageDto.PackingItemUID = orderPackage.PackingItemUID;
         packageDto.PackageID = orderPackage.PackageID;
         packageDto.PackageTypeName = orderPackage.PackageTypeName;

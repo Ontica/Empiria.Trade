@@ -58,4 +58,18 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
   }
 
+
+  public class ShippingPalletFields {
+
+    public string ShippingPalletName {
+      get; set;
+    }
+
+
+    public string[] Packages {
+      get; set;
+    }
+
+  }
+
 } // namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters

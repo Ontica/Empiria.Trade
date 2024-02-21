@@ -26,6 +26,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
     } = new FixedList<ShippingOrderItemDto>();
 
 
+    public FixedList<ShippingPalletDto> ShippingPalletWithPackages {
+      get; set;
+    } = new FixedList<ShippingPalletDto>();
+    
+
     public bool CanEdit{
       get; set;
     }
@@ -35,7 +40,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
 
   /// <summary>Output DTO used to return the entries of shipping.</summary>
-  public class ShippingEntryDto : ShippingCommonFieldsDto {
+  public class ShippingEntryDto : ShippingTotalFieldsDto {
 
 
     public string ShippingUID {
@@ -87,7 +92,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
 
   /// <summary>Output DTO used to return the entries of shipping order item.</summary>
-  public class ShippingOrderItemDto : ShippingCommonFieldsDto {
+  public class ShippingOrderItemDto : ShippingTotalFieldsDto {
 
 
     public string OrderUID {
@@ -115,15 +120,36 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
     } = new NamedEntityDto("", "");
 
 
-    public FixedList<OrderPackageForShippingDto> Packages {
+    public FixedList<PackageForShippingDto> Packages {
       get; set;
-    } = new FixedList<OrderPackageForShippingDto>();
+    } = new FixedList<PackageForShippingDto>();
 
 
   }
 
 
-  public class OrderPackageForShippingDto {
+  public class ShippingPalletDto : ShippingTotalFieldsDto {
+
+
+    public string ShippingPalletUID {
+      get; set;
+    }
+
+
+    public string ShippingPalletName {
+      get; set;
+    }
+
+
+    public FixedList<PackageForShippingDto> Packages {
+      get; set;
+    } = new FixedList<PackageForShippingDto>();
+
+
+  }
+
+
+  public class PackageForShippingDto {
 
     public string PackingItemUID {
       get; set;
@@ -153,7 +179,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
 
   /// <summary>Common data fields for shipping entries dto.</summary>
-  public class ShippingCommonFieldsDto {
+  public class ShippingTotalFieldsDto {
 
     public int TotalPackages {
       get; set;

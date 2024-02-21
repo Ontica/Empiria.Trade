@@ -156,6 +156,29 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
     }
 
 
+    static internal void WriteShippingPallet(ShippingPallet shippingPallet) {
+      var op = DataOperation.Parse("writeShippingPallet",
+        shippingPallet.ShippingPalletId,
+        shippingPallet.ShippingPalletUID,
+        shippingPallet.ShippingPalletName,
+        shippingPallet.ShippingOrder.ShippingOrderId);
+
+      DataWriter.Execute(op);
+    }
+
+
+    static internal void WriteShippingPackage(ShippingPackage shippingPackage) {
+
+      var op = DataOperation.Parse("writeShippingPackage",
+        shippingPackage.ShippingPackageId,
+        shippingPackage.ShippingPackageUID,
+        shippingPackage.ShippingPallet.ShippingPalletId,
+        shippingPackage.OrderPacking.OrderPackingId,
+        shippingPackage.Order.Id);
+
+      DataWriter.Execute(op);
+    }
+
     #endregion Public methods
 
 
@@ -181,10 +204,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
       return orderIdList;
     }
 
-
-
-
-
+    
     #endregion Private methods
 
   } // class ShippingData

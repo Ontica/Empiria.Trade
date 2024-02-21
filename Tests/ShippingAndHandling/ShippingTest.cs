@@ -51,6 +51,29 @@ namespace Empiria.Trade.Tests {
 
 
     [Fact]
+    public void CreateShippingPalletTest() {
+
+      var usecase = ShippingUseCases.UseCaseInteractor();
+      
+      string shippingUID = "31841ac9-168a-4b32-8b3c-65d1db9c7930";
+      
+      ShippingPalletFields fields = new ShippingPalletFields() {
+        ShippingPalletName = "TARIMA 01",
+        Packages = new string[] { 
+          "768d0762-58a1-46c6-88e1-17103a78d76f",
+          "3866728f-567e-4947-89eb-27c9da7bf817",
+          "6bf9da6e-6aad-426c-a479-7a3fd4fec217"
+        }
+      };
+
+      ShippingDto sut = usecase.CreateShippingPallet(shippingUID, fields);
+
+      Assert.NotNull(sut);
+
+    }
+
+
+    [Fact]
     public void DeleteOrderForShippingTest() {
 
       var usecase = ShippingUseCases.UseCaseInteractor();
@@ -160,7 +183,18 @@ namespace Empiria.Trade.Tests {
       FixedList<ShippingEntryDto> sut = usecase.GetShippingsList(query);
 
       Assert.NotNull(sut);
+    }
 
+
+    [Fact]
+    public void GetShippingByUIDTest() {
+
+      var usecase = ShippingUseCases.UseCaseInteractor();
+
+      ShippingDto sut = usecase.GetShippingByUID("se31ce1f-f07a-4bfd-a454-3355ca64c2dr");
+
+      Assert.NotNull(sut);
+      
     }
 
 
@@ -199,6 +233,19 @@ namespace Empiria.Trade.Tests {
       string shippingUID = "68db22ab-891e-466e-80d1-e766fc370bcc";
       string orderUID = "f960c77a-1873-477b-a7af-75f99a6df41d";
       ShippingDto sut = usecase.CreateOrderForShipping(shippingUID, orderUID);
+
+      Assert.NotNull(sut);
+
+    }
+
+
+    [Fact]
+    public void GetShippingPackageByUIDTest() {
+
+      var usecase = ShippingUseCases.UseCaseInteractor();
+
+      string shippingPackageUID = "jf2053f7-d1ab-4584-9f9b-3526c3594krt";
+      ShippingPackage sut = usecase.GetShippingPackageByUID(shippingPackageUID);
 
       Assert.NotNull(sut);
 

@@ -9,8 +9,10 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
 using System;
+using Empiria.Trade.Core.Common;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
+using Empiria.Trade.Sales.ShippingAndHandling.Data;
 
 namespace Empiria.Trade.Sales.ShippingAndHandling {
 
@@ -32,10 +34,14 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
     static public ShippingPallet Empty => ParseEmpty<ShippingPallet>();
 
 
+    public ShippingPallet(string shippingUID, ShippingPalletFields fields) {
+      MapToShippingPallet(shippingUID, fields);
+    }
+
+
     #endregion Constructors and parsers
 
     #region Properties
-
 
 
     [DataField("ShippingPalletId")]
@@ -56,20 +62,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
     } = string.Empty;
 
 
-    [DataField("OrderPackingId")]
-    public PackageForItem OrderPackingId {
-      get; set;
-    }
-
-
     [DataField("ShippingOrderId")]
     public ShippingEntry ShippingOrder {
-      get; set;
-    }
-
-
-    [DataField("OrderId")]
-    public Order Order {
       get; set;
     }
 
@@ -94,7 +88,21 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
     #region Private methods
 
 
+    protected override void OnSave() {
 
+      if (this.ShippingPalletId == 0) {
+        this.ShippingPalletId = this.Id;
+        this.ShippingPalletUID = this.UID;
+      }
+      ShippingData.WriteShippingPallet(this);
+    }
+
+
+    private void MapToShippingPallet(string shippingUID, ShippingPalletFields fields) {
+
+      this.ShippingOrder = ShippingEntry.Parse(shippingUID);
+      this.ShippingPalletName = fields.ShippingPalletName;
+    }
 
 
     #endregion Private methods

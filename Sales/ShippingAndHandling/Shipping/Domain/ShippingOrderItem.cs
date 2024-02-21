@@ -95,6 +95,9 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
     }
 
 
+    #region Private methods
+
+
     protected override void OnSave() {
 
       if (this.OrderForShippingId == 0) {
@@ -122,6 +125,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
 
     }
 
+
+    #endregion Private methods
 
   } // class ShippingOrderItem
 

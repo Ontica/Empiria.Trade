@@ -51,6 +51,21 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     }
 
 
+    internal void CreateShippingPallet(string shippingUID, ShippingPalletFields fields) {
+
+      ShippingPallet pallet = new ShippingPallet(shippingUID, fields);
+      
+      pallet.Save();
+
+      foreach (var package in fields.Packages) {
+
+        var shippingOrder = new ShippingPackage(package, pallet);
+        shippingOrder.Save();
+
+      }
+    }
+
+
     internal ShippingEntry CreateShippingOrder(ShippingFields fields) {
 
       var helper = new ShippingHelper();
@@ -162,7 +177,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       return orderList.ToArray();
     }
 
-
+    
     #endregion Private methods
 
   } // class ShippingBuilder
