@@ -141,9 +141,14 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
     }
 
 
-    public FixedList<PackageForShippingDto> Packages {
+    public string[] Packages {
       get; set;
-    } = new FixedList<PackageForShippingDto>();
+    } = new string[] { };
+
+
+    //public FixedList<PackageForShippingDto> Packages {
+    //  get; set;
+    //} = new FixedList<PackageForShippingDto>();
 
 
   }

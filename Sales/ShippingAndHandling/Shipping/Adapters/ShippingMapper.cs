@@ -43,8 +43,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
     internal static ShippingDto MapShippingForParcelDelivery(ShippingEntry entry) {
 
       ShippingDto shippingDto = new ShippingDto();
-
       shippingDto.OrdersForShipping = MapToOrderForShippingDto(entry.OrdersForShipping);
+      shippingDto.ShippingPalletWithPackages = MapToShippingPalletDto(entry.ShippingPallets);
       shippingDto.ShippingData = MapEntry(entry);
       shippingDto.CanEdit = entry.CanEdit;
 
@@ -125,7 +125,25 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
       return orderForShippingDto.ToFixedList();
     }
 
-    
+
+    static private FixedList<ShippingPalletDto> MapToShippingPalletDto(
+                    FixedList<ShippingPallet> shippingPallets) {
+      
+      var palletsDto = new List<ShippingPalletDto>();
+
+      foreach (var pallet in shippingPallets) {
+
+        var palletDto = new ShippingPalletDto();
+        palletDto.ShippingPalletUID= pallet.ShippingPalletUID;
+        palletDto.ShippingPalletName= pallet.ShippingPalletName;
+        palletDto.Packages = pallet.ShippingPackages;
+        palletsDto.Add(palletDto);
+      }
+
+      return palletsDto.ToFixedList();
+    }
+
+
     #endregion Private methods
 
   } // class ShippingMapper

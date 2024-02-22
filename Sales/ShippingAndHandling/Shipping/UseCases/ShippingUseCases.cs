@@ -196,14 +196,20 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
     }
 
 
+    public ShippingDto UpdateShippingPallet(string shippingUID, string shippingPalletUID, ShippingPalletFields fields) {
+      var builder = new ShippingBuilder();
+
+      builder.UpdateShippingPallet(shippingUID, shippingPalletUID, fields);
+
+      return GetShippingByUID(shippingUID);
+    }
+
+
     public ShippingDto DeleteShippingPallet(string shippingUID, string shippingPalletUID) {
       throw new NotImplementedException();
     }
 
 
-    public ShippingDto UpdateShippingPallet(string shippingUID, string shippingPalletUID, ShippingPalletFields fields) {
-      throw new NotImplementedException();
-    }
 
 
     #endregion Use cases

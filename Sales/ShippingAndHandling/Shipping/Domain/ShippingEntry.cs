@@ -106,6 +106,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
     } = new FixedList<ShippingOrderItem>();
 
 
+    public FixedList<ShippingPallet> ShippingPallets {
+      get; set;
+    } = new FixedList<ShippingPallet>();
+
+
     public bool CanEdit {
       get; internal set;
     }

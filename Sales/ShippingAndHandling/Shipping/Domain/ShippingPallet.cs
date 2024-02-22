@@ -34,8 +34,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
     static public ShippingPallet Empty => ParseEmpty<ShippingPallet>();
 
 
-    public ShippingPallet(string shippingUID, ShippingPalletFields fields) {
-      MapToShippingPallet(shippingUID, fields);
+    public ShippingPallet(string shippingUID, ShippingPalletFields fields, string shippingPalletUID) {
+      MapToShippingPallet(shippingUID, fields, shippingPalletUID);
     }
 
 
@@ -68,6 +68,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
     }
 
 
+    public string[] ShippingPackages {
+      get; set;
+    } = new string[] { };
+
+
     public int TotalPackages {
       get; set;
     }
@@ -98,7 +103,14 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
     }
 
 
-    private void MapToShippingPallet(string shippingUID, ShippingPalletFields fields) {
+    private void MapToShippingPallet(string shippingUID,
+                  ShippingPalletFields fields, string shippingPalletUID) {
+
+      var exist = Parse(shippingPalletUID);
+
+      if (exist != null) {
+        this.ShippingPalletId = exist.Id;
+      }
 
       this.ShippingOrder = ShippingEntry.Parse(shippingUID);
       this.ShippingPalletName = fields.ShippingPalletName;

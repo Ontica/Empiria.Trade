@@ -53,16 +53,120 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
     internal void CreateShippingPallet(string shippingUID, ShippingPalletFields fields) {
 
-      ShippingPallet pallet = new ShippingPallet(shippingUID, fields);
-      
+      ValidateIfExistShippingPackages(fields.Packages);
+
+      ShippingPallet pallet = new ShippingPallet(shippingUID, fields, "");
+
       pallet.Save();
 
-      foreach (var package in fields.Packages) {
+      CreatePackagesForPallet(fields.Packages, pallet);
+    }
+
+
+    internal void UpdateShippingPallet(string shippingUID, string shippingPalletUID,
+                                       ShippingPalletFields fields) {
+
+      //VARIFICAR ELIMINADOS EN LISTA NUEVA Y ELIMINARLOS DE GUARDADOS
+      ComparePackagesToRemoveFromPallet(shippingPalletUID, fields.Packages);
+      //VERIFICAR LISTA NUEVA SI YA EXISTEN EN GUARDADOS Y AGREGAR LOS QUE NO EXISTEN
+
+      CreatePackagesIfNotExistInPallet(shippingPalletUID, fields.Packages);
+
+      //ValidateIfExistShippingPackages(fields.Packages);
+
+      ShippingPallet pallet = new ShippingPallet(shippingUID, fields, shippingPalletUID);
+
+      pallet.Save();
+    }
+
+
+    private void CreatePackagesIfNotExistInPallet(string shippingPalletUID, string[] packagesUID) {
+      //CARGAR LISTA DE GUARDADOS
+      var shippingPackages = ShippingData.GetShippingPackagesByPalletUID(shippingPalletUID);
+
+      foreach (var packageUID in packagesUID) {
+
+        if (!shippingPackages.Any(x => x.OrderPacking.UID.Equals(packageUID))) {
+
+          var pallet = ShippingPallet.Parse(shippingPalletUID);
+          var shippingPackage = new ShippingPackage(packageUID, pallet);
+          shippingPackage.Save();
+        }
+      }
+    }
+
+
+    private void ComparePackagesToRemoveFromPallet(string shippingPalletUID, string[] packagesUID) {
+      //CARGAR LISTA DE GUARDADOS
+      var shippingPackages = ShippingData.GetShippingPackagesByPalletUID(shippingPalletUID);
+
+      foreach (var shippingPackage in shippingPackages) {
+        
+        var packaging = PackageForItem.Parse(shippingPackage.OrderPacking.Id);
+
+        if (!packagesUID.Any(x => x.Equals(packaging.UID))) {
+          ShippingData.DeleteShippingPackageById(shippingPackage.ShippingPackageId);
+        }
+      }
+    }
+
+
+    private void CreatePackagesForPallet(string[] packages, ShippingPallet pallet) {
+
+      foreach (var package in packages) {
 
         var shippingOrder = new ShippingPackage(package, pallet);
         shippingOrder.Save();
 
       }
+    }
+
+
+    private void ValidateIfExistShippingPackages(string[] packages) {
+
+      string failMessage = string.Empty;
+
+      foreach (var packageUID in packages) {
+
+        var package = PackageForItem.Parse(packageUID);
+
+        FixedList<ShippingPackage> shippingPackages = 
+          ShippingData.GetShippingPackagesByPackageId(package.Id);
+
+        if (shippingPackages.Count > 0) {
+          failMessage += $"{package.PackageID}. ";
+        }
+      }
+
+      if (failMessage != string.Empty) {
+        Assertion.EnsureFailed($"Los paquetes {failMessage} ya estan en una tarima.");
+      }
+
+    }
+
+
+    //TODO AGREGAR VALIDACION EN UPDATE
+    private void ValidateIfExistPackageInPallet(string[] packages, ShippingPallet pallet) {
+
+      string failMessage = string.Empty;
+
+      foreach (var packageUID in packages) {
+
+        var package = PackageForItem.Parse(packageUID);
+
+        FixedList<ShippingPackage> shippingPackages = 
+          ShippingData.GetShippingPackagesByPackageId(package.Id);
+
+        if (shippingPackages.FindAll(x => x.ShippingPallet.Id == pallet.Id).Count > 0) {
+          failMessage += $"El paquete {package.PackageID} ya existe en: {pallet.ShippingPalletName}. ";
+        }
+      }
+
+
+      if (failMessage != string.Empty) {
+        Assertion.EnsureFailed(failMessage);
+      }
+
     }
 
 
@@ -90,8 +194,24 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       ShippingEntry shippingEntry = helper.GetShippingWithOrders(orderForShippingList, shippingOrderUID);
 
+      GetShippingWithPallets(shippingEntry);
+
       return shippingEntry;
 
+    }
+
+
+    internal void GetShippingWithPallets(ShippingEntry shippingEntry) {
+
+      var shippingPallets = ShippingData.GetPalletByShippingUID(shippingEntry.ShippingUID);
+
+      foreach (var pallet in shippingPallets) {
+
+        var shippingPackages = ShippingData.GetShippingPackagesByPalletUID(pallet.ShippingPalletUID);
+        pallet.ShippingPackages = shippingPackages.Select(x => x.OrderPacking.OrderPackingUID).ToArray();
+      }
+
+      shippingEntry.ShippingPallets = shippingPallets;
     }
 
 
@@ -132,7 +252,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       helper.GetOrdersForShippingByEntry(shippingList);
 
-      return shippingList.OrderByDescending(x=>x.CanEdit).ToFixedList();
+      return shippingList.OrderByDescending(x => x.CanEdit).ToFixedList();
     }
 
 
@@ -177,7 +297,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       return orderList.ToArray();
     }
 
-    
+
     #endregion Private methods
 
   } // class ShippingBuilder

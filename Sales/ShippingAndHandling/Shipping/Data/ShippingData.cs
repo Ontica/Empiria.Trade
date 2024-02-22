@@ -204,7 +204,55 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
       return orderIdList;
     }
 
-    
+
+    static internal FixedList<ShippingPackage> GetShippingPackagesByPackageId(int packageId) {
+
+      string sql = $"SELECT * FROM TRDShippingPackages WHERE OrderPackingId IN ({packageId})";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetPlainObjectFixedList<ShippingPackage>(dataOperation);
+
+    }
+
+
+    static internal FixedList<ShippingPackage> GetShippingPackagesByPalletUID(string palletUID) {
+
+      var palletId = ShippingPallet.Parse(palletUID).Id;
+
+      string sql = $"SELECT * FROM TRDShippingPackages WHERE ShippingPalletId IN ({palletId})";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetPlainObjectFixedList<ShippingPackage>(dataOperation);
+
+    }
+
+
+    static internal void DeleteShippingPackageById(int shippingPackageId) {
+
+      string sql = $"DELETE FROM TRDShippingPackages " +
+                   $"WHERE ShippingPackageId = '{shippingPackageId}' ";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      DataWriter.Execute(dataOperation);
+    }
+
+
+    static internal FixedList<ShippingPallet> GetPalletByShippingUID(string shippingUID) {
+
+      var shippingId = ShippingEntry.Parse(shippingUID).ShippingOrderId;
+
+      string sql = $"SELECT * FROM TRDShippingPallets WHERE ShippingOrderId IN ({shippingId})";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetPlainObjectFixedList<ShippingPallet>(dataOperation);
+
+    }
+
+
     #endregion Private methods
 
   } // class ShippingData

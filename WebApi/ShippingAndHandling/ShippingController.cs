@@ -182,19 +182,19 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
     }
 
 
-    //[HttpPut]
-    //[Route("v4/trade/sales/shipping/{shippingOrderUID:guid}/pallet/{shippingPalletUID:guid}")]
-    //public SingleObjectModel UpdateShippingPallet([FromUri] string shippingUID,
-    //                                              [FromUri] string shippingPalletUID,
-    //                                              [FromBody] ShippingPalletFields fields) {
+    [HttpPut]
+    [Route("v4/trade/sales/shipping/{shippingOrderUID:guid}/pallet/{shippingPalletUID:guid}")]
+    public SingleObjectModel UpdateShippingPallet([FromUri] string shippingUID,
+                                                  [FromUri] string shippingPalletUID,
+                                                  [FromBody] ShippingPalletFields fields) {
 
-    //  using (var usecases = ShippingUseCases.UseCaseInteractor()) {
+      using (var usecases = ShippingUseCases.UseCaseInteractor()) {
 
-    //    ShippingDto shippingOrder = usecases.UpdateShippingPallet(shippingUID, shippingPalletUID, fields);
+        ShippingDto shippingOrder = usecases.UpdateShippingPallet(shippingUID, shippingPalletUID, fields);
 
-    //    return new SingleObjectModel(this.Request, shippingOrder);
-    //  }
-    //}
+        return new SingleObjectModel(this.Request, shippingOrder);
+      }
+    }
 
     #endregion Web Apis
   }
