@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Empiria.Services;
+using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 using Empiria.Trade.Sales.ShippingAndHandling.Data;
@@ -41,6 +42,14 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
     #region Use cases
 
 
+    public PackageType GetPackageTypeById(int packageTypeId) {
+      var helper = new PackingHelper();
+      PackageType packageType = helper.GetPackageTypeById(packageTypeId);
+
+      return packageType;
+    }
+
+
     public FixedList<INamedEntity> GetPackageTypeList() {
 
       var builder = new PackagingBuilder();
@@ -55,6 +64,13 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
       var builder = new PackagingBuilder();
       return builder.GetPackagedData(orderUid);
+    }
+
+
+    public FixedList<PackingItem> GetPackingItemsByOrderPackingUID(string orderPackingUID) {
+
+      var builder = new PackagingBuilder();
+      return builder.GetPackingItemsByOrderPackingUID(orderPackingUID);
     }
 
 

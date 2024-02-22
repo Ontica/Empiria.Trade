@@ -238,7 +238,12 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       helper.GetOrdersForShippingByEntry(shippingList);
 
-      return shippingList.OrderByDescending(x => x.CanEdit).ToFixedList();
+      shippingList = shippingList.OrderByDescending(x => x.CanEdit)
+                         .ThenBy(x => x.ParcelSupplierId)
+                         .ThenBy(x => x.ShippingDate)
+                         .ThenBy(x => x.ShippingGuide).ToFixedList();
+
+      return shippingList;
     }
 
 

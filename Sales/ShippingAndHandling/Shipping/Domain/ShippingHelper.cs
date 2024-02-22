@@ -12,6 +12,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
+using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
@@ -45,7 +46,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
         FixedList<ShippingOrderItem> ordersForShipping =
           ShippingData.GetOrdersForShippingByShippingId(shipping.ShippingUID);
 
-        if (ordersForShipping.Count>0) {
+        if (ordersForShipping.Count > 0) {
           GetOrdersMeasurementUnits(ordersForShipping);
 
           shipping.OrdersForShipping = ordersForShipping;
@@ -67,33 +68,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       GetOrdersMeasurementUnits(orderItemByPackingOrder);
 
       return orderItemByPackingOrder;
-    }
-
-
-    internal void GetOrdersMeasurementUnits(FixedList<ShippingOrderItem> ordersForShipping) {
-
-      foreach (var order in ordersForShipping) {
-
-        var usecasePackage = PackagingUseCases.UseCaseInteractor();
-
-        PackagedData packageInfo = usecasePackage.GetPackagedData(order.Order.UID);
-
-        if (packageInfo.OrderUID != string.Empty) {
-
-          var salesOrder = SalesOrder.Parse(order.Order.UID);
-          salesOrder.CalculateSalesOrder(QueryType.SalesShipping);
-
-          order.OrderTotal = salesOrder.OrderTotal;
-          order.TotalPackages = packageInfo.TotalPackages;
-          order.TotalWeight = packageInfo.Weight;
-          order.TotalVolume = packageInfo.Volume;
-
-          var packagedList = usecasePackage.GetPackagedForItemList(order.Order.UID);
-
-          order.OrderPackages = GetPackagedListByOrder(packagedList);
-        } 
-
-      }
     }
 
 
@@ -157,26 +131,82 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     }
 
 
-    internal void GetShippingWithPallets(ShippingEntry shippingEntry) {
 
-      var shippingPallets = ShippingData.GetPalletByShippingUID(shippingEntry.ShippingUID);
+    internal void GetOrdersMeasurementUnits(FixedList<ShippingOrderItem> ordersForShipping) {
 
-      foreach (var pallet in shippingPallets) {
+      foreach (var order in ordersForShipping) {
 
-        var shippingPackages = ShippingData.GetShippingPackagesByPalletUID(pallet.ShippingPalletUID);
+        var usecasePackage = PackagingUseCases.UseCaseInteractor();
 
-        pallet.ShippingPackages = shippingPackages.Select(x => x.OrderPacking.OrderPackingUID).ToArray();
-        pallet.TotalPackages = shippingPackages.Count();
+        PackagedData packageInfo = usecasePackage.GetPackagedData(order.Order.UID);
 
-        //TODO CALCULAR TotalWeight Y TotalVolume
+        if (packageInfo.OrderUID != string.Empty) {
+
+          var salesOrder = SalesOrder.Parse(order.Order.UID);
+          salesOrder.CalculateSalesOrder(QueryType.SalesShipping);
+
+          order.OrderTotal = salesOrder.OrderTotal;
+          order.TotalPackages = packageInfo.TotalPackages;
+          order.TotalWeight = packageInfo.Weight;
+          order.TotalVolume = packageInfo.Volume;
+
+          var packagedList = usecasePackage.GetPackagedForItemList(order.Order.UID);
+
+          order.OrderPackages = GetPackagedListByOrder(packagedList);
+        }
+
+      }
+    }
+
+
+    private void GetTotalsForPackagesByPallet(ShippingPallet pallet,
+      FixedList<ShippingPackage> shippingPackages) {
+
+      foreach (var shippingPackage in shippingPackages) {
+
+        var usecasePackage = PackagingUseCases.UseCaseInteractor();
+
+        FixedList<PackingItem> packingItems = usecasePackage.GetPackingItemsByOrderPackingUID(
+                                   shippingPackage.OrderPacking.OrderPackingUID);
+
+        var packageForItem = PackageForItem.Parse(shippingPackage.OrderPacking.OrderPackingUID);
+        var packageType = usecasePackage.GetPackageTypeById(packageForItem.PackageTypeId);
+
+        pallet.TotalWeight += packingItems.Sum(x => x.ItemWeight);
+        pallet.TotalVolume += packageType.TotalVolume;
       }
 
-      shippingEntry.ShippingPallets = shippingPallets;
+    }
+
+
+    internal void GetShippingWithPallets(ShippingEntry shippingEntry) {
+
+      if (shippingEntry.ShippingOrderId == -1) {
+
+        shippingEntry.ShippingPallets = new FixedList<ShippingPallet>();
+
+      } else {
+
+        var shippingPallets = ShippingData.GetPalletByShippingUID(shippingEntry.ShippingUID);
+
+        foreach (var pallet in shippingPallets) {
+
+          var shippingPackages = ShippingData.GetShippingPackagesByPalletUID(pallet.ShippingPalletUID);
+
+          pallet.ShippingPackages = shippingPackages.Select(x => x.OrderPacking.OrderPackingUID).ToArray();
+          pallet.TotalPackages = shippingPackages.Count();
+          GetTotalsForPackagesByPallet(pallet, shippingPackages);
+        }
+
+        shippingEntry.ShippingPallets = shippingPallets;
+
+      }
+
     }
 
 
     internal void ShippingValidations(FixedList<ShippingOrderItem> ordersForShipping) {
-      
+
       ValidateOrdersStatusForParcelDelivery(ordersForShipping);
       ValidateShippingByCustomer(ordersForShipping);
 
@@ -291,7 +321,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     }
 
 
-    private void ValidateShippingByCustomer(FixedList<ShippingOrderItem> ordersForShipping) {
+    internal void ValidateShippingByCustomer(FixedList<ShippingOrderItem> ordersForShipping) {
 
       foreach (var order in ordersForShipping) {
 
@@ -311,6 +341,17 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
         if (order.Order.ShippingMethod != "Paqueteria") {
           Assertion.EnsureFailed("La forma de envío de uno o mas pedidos no es 'Paquetería'.");
         }
+      }
+
+    }
+
+    internal void ValidateOrdersByCustomer(string shippingOrderUID, string orderUID) {
+
+      var ordersForShipping = ShippingData.GetOrdersForShippingByShippingId(shippingOrderUID);
+      var order = SalesOrder.Parse(orderUID);
+
+      if (ordersForShipping.Select(x => x.Order.Customer.Id).FirstOrDefault() != order.Customer.Id) {
+        Assertion.EnsureFailed($"El pedidos {order.OrderNumber} no pertenecen al mismo cliente.");
       }
 
     }

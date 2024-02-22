@@ -177,6 +177,16 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
     }
 
 
+    internal FixedList<PackingItem> GetPackingItemsByOrderPackingUID(string orderPackingUID) {
+
+      var packageForItem = PackageForItem.Parse(orderPackingUID);
+      
+      var helper = new PackingHelper();
+
+      return helper.GetPackingItems(packageForItem.OrderPackingId, orderPackingUID);
+    }
+
+
     #endregion Private methods
 
   } // class PackagingBuilder

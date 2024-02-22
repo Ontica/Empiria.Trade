@@ -138,6 +138,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
         palletDto.ShippingPalletName= pallet.ShippingPalletName;
         palletDto.Packages = pallet.ShippingPackages;
         palletDto.TotalPackages = pallet.TotalPackages;
+        palletDto.TotalWeight = pallet.TotalWeight;
+        palletDto.TotalVolume = pallet.TotalVolume;
         palletsDto.Add(palletDto);
       }
 

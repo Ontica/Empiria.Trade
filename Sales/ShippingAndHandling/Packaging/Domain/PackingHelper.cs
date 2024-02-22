@@ -60,8 +60,10 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       var packagesList = new List<PackagedForItem>();
 
       foreach (var entry in packItems) {
-        var packageType = PackageType.Parse(entry.PackageTypeId);
-        packageType.GetVolumeAttributes();
+        //var packageType = PackageType.Parse(entry.PackageTypeId);
+        //packageType.GetVolumeAttributes();
+
+        PackageType packageType = GetPackageTypeById(entry.PackageTypeId);
 
         var package = new PackagedForItem();
         package.UID = entry.OrderPackingUID;
@@ -80,6 +82,14 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       return packagesList.ToFixedList();
     }
 
+
+    internal PackageType GetPackageTypeById(int packageTypeId) {
+      
+      var packageType = PackageType.Parse(packageTypeId);
+      packageType.GetVolumeAttributes();
+      return packageType;
+
+    }
 
     public PackagedData GetPackingData(string orderUid, FixedList<PackagedForItem> packageForItemsList) {
 
@@ -116,7 +126,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     #region Private methods
 
 
-    private FixedList<PackingItem> GetPackingItems(int orderPackingId,
+    internal FixedList<PackingItem> GetPackingItems(int orderPackingId,
                                                     string orderPackingUID) {
 
       var data = new PackagingData();

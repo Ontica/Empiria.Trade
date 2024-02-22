@@ -60,6 +60,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
       string[] orders = new string[] { orderUID };
 
+      helper.ValidateOrdersByCustomer(shippingOrderUID, orderUID);
+      
       var builder = new ShippingBuilder();
       
       builder.CreateOrdersForShipping(shippingOrderUID, orders);
