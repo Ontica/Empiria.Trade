@@ -122,8 +122,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       GetOrdersMeasurementUnits(ordersList.ToFixedList());
 
-      return GetShippingWithOrders(ordersList, "");
+      ShippingEntry shippingEntry = GetShippingWithOrders(ordersList, "");
 
+      GetShippingWithPallets(shippingEntry);
+
+      return shippingEntry;
     }
 
 
@@ -151,6 +154,24 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       }
 
       return shipping;
+    }
+
+
+    internal void GetShippingWithPallets(ShippingEntry shippingEntry) {
+
+      var shippingPallets = ShippingData.GetPalletByShippingUID(shippingEntry.ShippingUID);
+
+      foreach (var pallet in shippingPallets) {
+
+        var shippingPackages = ShippingData.GetShippingPackagesByPalletUID(pallet.ShippingPalletUID);
+
+        pallet.ShippingPackages = shippingPackages.Select(x => x.OrderPacking.OrderPackingUID).ToArray();
+        pallet.TotalPackages = shippingPackages.Count();
+
+        //TODO CALCULAR TotalWeight Y TotalVolume
+      }
+
+      shippingEntry.ShippingPallets = shippingPallets;
     }
 
 

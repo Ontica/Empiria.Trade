@@ -26,7 +26,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
     } = new FixedList<ShippingOrderItemDto>();
 
 
-    public FixedList<ShippingPalletDto> ShippingPalletWithPackages {
+    public FixedList<ShippingPalletDto> ShippingPalletsWithPackages {
       get; set;
     } = new FixedList<ShippingPalletDto>();
     

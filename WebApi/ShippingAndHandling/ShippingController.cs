@@ -64,12 +64,12 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
 
     [HttpPost]
     [Route("v4/trade/sales/shipping/{shippingOrderUID:guid}/pallet")]
-    public SingleObjectModel CreateShippingPallet([FromUri] string shippingUID,
+    public SingleObjectModel CreateShippingPallet([FromUri] string shippingOrderUID,
                                                   [FromBody] ShippingPalletFields fields) {
 
       using (var usecases = ShippingUseCases.UseCaseInteractor()) {
 
-        ShippingDto shippingOrder = usecases.CreateShippingPallet(shippingUID, fields);
+        ShippingDto shippingOrder = usecases.CreateShippingPallet(shippingOrderUID, fields);
 
         return new SingleObjectModel(this.Request, shippingOrder);
       }
@@ -103,18 +103,18 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
     }
 
 
-    //[HttpDelete]
-    //[Route("v4/trade/sales/shipping/{shippingOrderUID:guid}/pallet/{shippingPalletUID:guid}")]
-    //public SingleObjectModel DeleteShippingPallet([FromUri] string shippingUID,
-    //                                                 [FromUri] string shippingPalletUID) {
+    [HttpDelete]
+    [Route("v4/trade/sales/shipping/{shippingOrderUID:guid}/pallet/{shippingPalletUID:guid}")]
+    public SingleObjectModel DeleteShippingPallet([FromUri] string shippingOrderUID,
+                                                     [FromUri] string shippingPalletUID) {
 
-    //  using (var usecases = ShippingUseCases.UseCaseInteractor()) {
+      using (var usecases = ShippingUseCases.UseCaseInteractor()) {
 
-    //    ShippingDto shippingOrder = usecases.DeleteShippingPallet(shippingUID, shippingPalletUID);
+        ShippingDto shippingOrder = usecases.DeleteShippingPalletByUID(shippingOrderUID, shippingPalletUID);
 
-    //    return new SingleObjectModel(this.Request, shippingOrder);
-    //  }
-    //}
+        return new SingleObjectModel(this.Request, shippingOrder);
+      }
+    }
 
 
     [HttpGet]
@@ -184,13 +184,13 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
 
     [HttpPut]
     [Route("v4/trade/sales/shipping/{shippingOrderUID:guid}/pallet/{shippingPalletUID:guid}")]
-    public SingleObjectModel UpdateShippingPallet([FromUri] string shippingUID,
+    public SingleObjectModel UpdateShippingPallet([FromUri] string shippingOrderUID,
                                                   [FromUri] string shippingPalletUID,
                                                   [FromBody] ShippingPalletFields fields) {
 
       using (var usecases = ShippingUseCases.UseCaseInteractor()) {
 
-        ShippingDto shippingOrder = usecases.UpdateShippingPallet(shippingUID, shippingPalletUID, fields);
+        ShippingDto shippingOrder = usecases.UpdateShippingPallet(shippingOrderUID, shippingPalletUID, fields);
 
         return new SingleObjectModel(this.Request, shippingOrder);
       }

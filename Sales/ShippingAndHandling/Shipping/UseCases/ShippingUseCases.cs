@@ -100,6 +100,16 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
     }
 
 
+    public ShippingDto DeleteShippingPalletByUID(string shippingUID, string shippingPalletUID) {
+
+      ShippingData.DeleteShippingPackageByPalletUID(shippingPalletUID);
+
+      ShippingData.DeleteShippingPalletByUID(shippingPalletUID);
+
+      return GetShippingByUID(shippingUID);
+    }
+
+
     public ShippingOrderItem GetOrdersForShippingByUID(string orderForShippingUID) {
 
       return ShippingOrderItem.Parse(orderForShippingUID);
@@ -203,13 +213,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
       return GetShippingByUID(shippingUID);
     }
-
-
-    public ShippingDto DeleteShippingPallet(string shippingUID, string shippingPalletUID) {
-      throw new NotImplementedException();
-    }
-
-
 
 
     #endregion Use cases

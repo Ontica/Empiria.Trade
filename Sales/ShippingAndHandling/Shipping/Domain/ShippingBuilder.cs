@@ -194,24 +194,10 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       ShippingEntry shippingEntry = helper.GetShippingWithOrders(orderForShippingList, shippingOrderUID);
 
-      GetShippingWithPallets(shippingEntry);
+      helper.GetShippingWithPallets(shippingEntry);
 
       return shippingEntry;
 
-    }
-
-
-    internal void GetShippingWithPallets(ShippingEntry shippingEntry) {
-
-      var shippingPallets = ShippingData.GetPalletByShippingUID(shippingEntry.ShippingUID);
-
-      foreach (var pallet in shippingPallets) {
-
-        var shippingPackages = ShippingData.GetShippingPackagesByPalletUID(pallet.ShippingPalletUID);
-        pallet.ShippingPackages = shippingPackages.Select(x => x.OrderPacking.OrderPackingUID).ToArray();
-      }
-
-      shippingEntry.ShippingPallets = shippingPallets;
     }
 
 
@@ -221,8 +207,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       var ordersForShipping = ShippingData.GetOrdersForShippingByOrderUID(orderId);
 
       var helper = new ShippingHelper();
-
       helper.GetOrdersMeasurementUnits(ordersForShipping);
+
       ShippingEntry shipping = helper.GetShippingWithOrders(ordersForShipping, "");
 
       return shipping;

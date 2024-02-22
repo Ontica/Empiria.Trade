@@ -253,6 +253,32 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
     }
 
 
+    internal static void DeleteShippingPackageByPalletUID(string shippingPalletUID) {
+
+      var shippingPalletId = ShippingPallet.Parse(shippingPalletUID).ShippingPalletId;
+
+      string sql = $"DELETE FROM TRDShippingPackages " +
+                   $"WHERE ShippingPalletId = '{shippingPalletId}' ";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      DataWriter.Execute(dataOperation);
+    }
+
+
+    internal static void DeleteShippingPalletByUID(string shippingPalletUID) {
+
+      var shippingPalletId = ShippingPallet.Parse(shippingPalletUID).ShippingPalletId;
+
+      string sql = $"DELETE FROM TRDShippingPallets " +
+                   $"WHERE ShippingPalletId = '{shippingPalletId}' ";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      DataWriter.Execute(dataOperation);
+    }
+
+
     #endregion Private methods
 
   } // class ShippingData

@@ -105,13 +105,17 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
 
     private void MapToShippingPallet(string shippingUID,
                   ShippingPalletFields fields, string shippingPalletUID) {
+      
+      if (shippingPalletUID != string.Empty) {
+        
+        var exist = Parse(shippingPalletUID);
 
-      var exist = Parse(shippingPalletUID);
+        if (exist != null) {
+          this.ShippingPalletId = exist.Id;
+        }
 
-      if (exist != null) {
-        this.ShippingPalletId = exist.Id;
       }
-
+      
       this.ShippingOrder = ShippingEntry.Parse(shippingUID);
       this.ShippingPalletName = fields.ShippingPalletName;
     }
