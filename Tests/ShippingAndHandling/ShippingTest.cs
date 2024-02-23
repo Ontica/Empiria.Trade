@@ -200,8 +200,8 @@ namespace Empiria.Trade.Tests {
 
       ShippingFieldsQuery query = new ShippingFieldsQuery {
         Orders = new[] {
-          "f3bcb4ad-faaa-4afa-8a0c-8e2986c80065"
-          //"f959a4df-af9b-4596-9ee8-4a3e2e94757f"
+          "5e145da2-9858-4bfe-a31f-3b6ea071f91f",
+          "555a87cc-5155-4550-b60c-3f765ee33006"
         }
       };
 

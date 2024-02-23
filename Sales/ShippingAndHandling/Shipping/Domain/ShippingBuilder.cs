@@ -288,6 +288,20 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       return orderList.ToArray();
     }
 
+    internal void DeleteShipping(string shippingOrderUID) {
+      ShippingData.DeleteOrdersForShippingByShippingUID(shippingOrderUID);
+
+      FixedList<ShippingPallet> pallets = ShippingData.GetPalletByShippingUID(shippingOrderUID);
+
+      foreach (var pallet in pallets) {
+        ShippingData.DeleteShippingPackageByPalletUID(pallet.UID);
+      }
+
+      ShippingData.DeleteShippingPalletsByShippingUID(shippingOrderUID);
+
+      ShippingData.DeleteShipping(shippingOrderUID);
+    }
+
 
     #endregion Private methods
 
