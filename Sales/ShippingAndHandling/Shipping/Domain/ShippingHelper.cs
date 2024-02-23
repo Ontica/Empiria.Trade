@@ -90,6 +90,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
         ordersList = GetOrdersWithoutShipping(orders);
       }
 
+      ValidateShippingByCustomer(ordersList);
+
       ValidateOrdersStatusForParcelDelivery(ordersList);
 
       ValidateShippingMethodForOrders(ordersList);
