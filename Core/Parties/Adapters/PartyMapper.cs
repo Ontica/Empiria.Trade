@@ -46,14 +46,14 @@ namespace Empiria.Trade.Core.Adapters {
       var dto = new ContactDto {
         UID = party.UID,
         Name = party.Name,
-        Contacts = MapPartyContacts(party.Contacts),
-        Addresses = MapAddresses(party.UID)
+        Contacts = MapCustomerContacts(party.Id),
+        Addresses = MapCustomerAddresses(party.UID)
       };
 
     return dto;
     }
 
-    private static FixedList<CustomerShortAddressDto> MapAddresses(string UID) {
+    private static FixedList<CustomerShortAddressDto> MapCustomerAddresses(string UID) {
       using (var usescase = CustomerUseCases.UseCaseInteractor()) {
         var addresses = usescase.GetCustomerAddress(UID);
 
@@ -62,18 +62,16 @@ namespace Empiria.Trade.Core.Adapters {
 
     }
 
-    private static PartyContactsDto MapToPartyContact(PartyContact contact) {
-      var dto = new PartyContactsDto {
-        UID = contact.Index,        
-        Name = contact.Name,
-        Phone = contact.PhoneNumber
-      };
+    private static FixedList<CustomerContactDto> MapCustomerContacts(int customerId) {
+      using (var usescase = CustomerUseCases.UseCaseInteractor()) {
+        var contacts = usescase.GetCustomerContacts(customerId);
 
+        return contacts;
+      }
 
-      return dto;
     }
 
-
+   
     internal static FixedList<NamedEntityDto> MapToMinimalPartyDto(FixedList<Party> partyList) {      
       return partyList.MapToNamedEntityList();
   }
@@ -83,16 +81,7 @@ namespace Empiria.Trade.Core.Adapters {
 
 
     #region Private methods
-   private static FixedList<PartyContactsDto> MapPartyContacts(FixedList<PartyContact> contacts) {
-    List<PartyContactsDto> contactsList = new List<PartyContactsDto>();
-
-    foreach (PartyContact contact in contacts) {
-        contactsList.Add(MapToPartyContact(contact));
-    }
-
-     return contactsList.ToFixedList();
-  }
-
+ 
    
     #endregion Private methods
 

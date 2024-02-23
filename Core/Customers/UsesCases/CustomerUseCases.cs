@@ -11,8 +11,7 @@ using System;
 
 using Empiria.Services;
 using Empiria.Trade.Core.Adapters;
-
-
+using Empiria.Trade.Core.Data;
 
 namespace Empiria.Trade.Core.UsesCases {
 
@@ -45,6 +44,14 @@ namespace Empiria.Trade.Core.UsesCases {
       var addressesDto = CustomerAddressMapper.MapToShortAddresses(addresses);
 
       return addressesDto;
+    }
+
+    public  FixedList<CustomerContactDto> GetCustomerContacts(int customerId) {
+      var contact = new CustomerContact();
+     
+      var contacts = contact.GetContacts(customerId);
+
+      return CustomerConctacMapper.MapCustomerContacts(contacts);
     }
 
     #endregion Use cases
