@@ -55,13 +55,13 @@ namespace Empiria.Trade.Tests {
 
       var usecase = ShippingUseCases.UseCaseInteractor();
       
-      string shippingUID = "31841ac9-168a-4b32-8b3c-65d1db9c7930";
+      string shippingUID = "78111577-fb09-428d-ac69-9f1062441f33";
       
       ShippingPalletFields fields = new ShippingPalletFields() {
         ShippingPalletName = "TARIMA 02",
         Packages = new string[] { 
           "768d0762-58a1-46c6-88e1-17103a78d76f",
-          "3866728f-567e-4947-89eb-27c9da7bf817",
+          //"3866728f-567e-4947-89eb-27c9da7bf817"
           "6bf9da6e-6aad-426c-a479-7a3fd4fec217"
         }
       };
@@ -78,15 +78,15 @@ namespace Empiria.Trade.Tests {
 
       var usecase = ShippingUseCases.UseCaseInteractor();
 
-      string shippingUID = "31841ac9-168a-4b32-8b3c-65d1db9c7930";
-      string shippingPalletUID = "7e18a808-16ea-4544-9116-213a0d649ac6";
+      string shippingUID = "78111577-fb09-428d-ac69-9f1062441f33";
+      string shippingPalletUID = "71339233-ef14-45c6-a0a7-598a2383a894";
 
       ShippingPalletFields fields = new ShippingPalletFields() {
-        ShippingPalletName = "TARIMA 02",
+        ShippingPalletName = "TARIMA 01",
         Packages = new string[] {
-          "768d0762-58a1-46c6-88e1-17103a78d76f", // 80
-          "3866728f-567e-4947-89eb-27c9da7bf817", // 82
-          "6bf9da6e-6aad-426c-a479-7a3fd4fec217"  // 84
+          "768d0762-58a1-46c6-88e1-17103a78d76f",
+          //"3866728f-567e-4947-89eb-27c9da7bf817"
+          "6bf9da6e-6aad-426c-a479-7a3fd4fec217"
         }
       };
 
@@ -116,7 +116,7 @@ namespace Empiria.Trade.Tests {
 
       var usecase = ShippingUseCases.UseCaseInteractor();
 
-      string shippingOrderUID = "68db22ab-891e-466e-80d1-e766fc370bcc";
+      string shippingOrderUID = "31841ac9-168a-4b32-8b3c-65d1db9c7930";
       usecase.DeleteShipping(shippingOrderUID);
 
       Assert.True(true);
@@ -312,15 +312,14 @@ namespace Empiria.Trade.Tests {
 
     private ShippingFields GetShippingFields() {
       string[] orders = new string[] {
-        //"f960c77a-1873-477b-a7af-75f99a6df41d",
-        //"f959a4df-af9b-4596-9ee8-4a3e2e94757f",
+        "f960c77a-1873-477b-a7af-75f99a6df41d",
         "8a15068a-3bc2-4693-a415-a9e3410f63fc"
       };
 
       ShippingDataFields dataFields = new ShippingDataFields() {
         ShippingUID = "",
         ParcelSupplierUID = "8521a10b-0607-4d45-8614-385aba701b1r",
-        ShippingGuide = "GUIA PAQUETEXPRESS 0001",
+        ShippingGuide = "GUIA XD 0001",
         ParcelAmount = 200,
         CustomerAmount = 50
       };

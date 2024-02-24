@@ -312,7 +312,53 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     }
 
 
-    private void ValidateOrdersStatusForParcelDelivery(FixedList<ShippingOrderItem> ordersForShipping) {
+    internal void ValidateIfExistShippingPackages(string[] packages) {
+
+      string failPackages = string.Empty;
+
+      foreach (var packageUID in packages) {
+
+        var package = PackageForItem.Parse(packageUID);
+
+        var shippingPackages = ShippingData.GetShippingPackagesByPackageId(package.Id);
+
+        if (shippingPackages.Count > 0) {
+
+          failPackages += $"{package.PackageID}. ";
+        }
+      }
+
+      if (failPackages != string.Empty) {
+        Assertion.EnsureFailed($"Los paquetes {failPackages} ya estan en una tarima.");
+      }
+    }
+
+
+    internal void ValidateIfExistPackageInPallet(string[] packages, ShippingPallet pallet) {
+
+      string failMessage = string.Empty;
+
+      foreach (var packageUID in packages) {
+
+        var package = PackageForItem.Parse(packageUID);
+
+        FixedList<ShippingPackage> shippingPackages =
+          ShippingData.GetShippingPackagesByPackageId(package.Id);
+
+        if (shippingPackages.FindAll(x => x.ShippingPallet.Id == pallet.Id).Count > 0) {
+          failMessage += $"El paquete {package.PackageID} ya existe en: {pallet.ShippingPalletName}. ";
+        }
+      }
+
+
+      if (failMessage != string.Empty) {
+        Assertion.EnsureFailed(failMessage);
+      }
+
+    }
+
+
+    internal void ValidateOrdersStatusForParcelDelivery(FixedList<ShippingOrderItem> ordersForShipping) {
 
       foreach (var order in ordersForShipping) {
         if (order.Order.Status != OrderStatus.Shipping && order.Order.Status != OrderStatus.Delivery) {
@@ -346,6 +392,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       }
 
     }
+
 
     internal void ValidateOrdersByCustomer(string shippingOrderUID, string orderUID) {
 

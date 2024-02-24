@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Remoting.Messaging;
+using System.Transactions;
 using Empiria.Trade.Core.Common;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
@@ -53,9 +54,10 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
     internal void CreateShippingPallet(string shippingUID, ShippingPalletFields fields) {
 
-      ValidateIfExistShippingPackages(fields.Packages);
-
       ShippingPallet pallet = new ShippingPallet(shippingUID, fields, "");
+
+      var helper = new ShippingHelper();
+      helper.ValidateIfExistShippingPackages(fields.Packages);
 
       pallet.Save();
 
@@ -66,13 +68,9 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     internal void UpdateShippingPallet(string shippingUID, string shippingPalletUID,
                                        ShippingPalletFields fields) {
 
-      //VARIFICAR ELIMINADOS EN LISTA NUEVA Y ELIMINARLOS DE GUARDADOS
       ComparePackagesToRemoveFromPallet(shippingPalletUID, fields.Packages);
-      //VERIFICAR LISTA NUEVA SI YA EXISTEN EN GUARDADOS Y AGREGAR LOS QUE NO EXISTEN
 
       CreatePackagesIfNotExistInPallet(shippingPalletUID, fields.Packages);
-
-      //ValidateIfExistShippingPackages(fields.Packages);
 
       ShippingPallet pallet = new ShippingPallet(shippingUID, fields, shippingPalletUID);
 
@@ -81,7 +79,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
 
     private void CreatePackagesIfNotExistInPallet(string shippingPalletUID, string[] packagesUID) {
-      //CARGAR LISTA DE GUARDADOS
+      
       var shippingPackages = ShippingData.GetShippingPackagesByPalletUID(shippingPalletUID);
 
       foreach (var packageUID in packagesUID) {
@@ -97,11 +95,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
 
     private void ComparePackagesToRemoveFromPallet(string shippingPalletUID, string[] packagesUID) {
-      //CARGAR LISTA DE GUARDADOS
+     
       var shippingPackages = ShippingData.GetShippingPackagesByPalletUID(shippingPalletUID);
 
       foreach (var shippingPackage in shippingPackages) {
-        
+
         var packaging = PackageForItem.Parse(shippingPackage.OrderPacking.Id);
 
         if (!packagesUID.Any(x => x.Equals(packaging.UID))) {
@@ -119,54 +117,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
         shippingOrder.Save();
 
       }
-    }
-
-
-    private void ValidateIfExistShippingPackages(string[] packages) {
-
-      string failMessage = string.Empty;
-
-      foreach (var packageUID in packages) {
-
-        var package = PackageForItem.Parse(packageUID);
-
-        FixedList<ShippingPackage> shippingPackages = 
-          ShippingData.GetShippingPackagesByPackageId(package.Id);
-
-        if (shippingPackages.Count > 0) {
-          failMessage += $"{package.PackageID}. ";
-        }
-      }
-
-      if (failMessage != string.Empty) {
-        Assertion.EnsureFailed($"Los paquetes {failMessage} ya estan en una tarima.");
-      }
-
-    }
-
-
-    //TODO AGREGAR VALIDACION EN UPDATE
-    private void ValidateIfExistPackageInPallet(string[] packages, ShippingPallet pallet) {
-
-      string failMessage = string.Empty;
-
-      foreach (var packageUID in packages) {
-
-        var package = PackageForItem.Parse(packageUID);
-
-        FixedList<ShippingPackage> shippingPackages = 
-          ShippingData.GetShippingPackagesByPackageId(package.Id);
-
-        if (shippingPackages.FindAll(x => x.ShippingPallet.Id == pallet.Id).Count > 0) {
-          failMessage += $"El paquete {package.PackageID} ya existe en: {pallet.ShippingPalletName}. ";
-        }
-      }
-
-
-      if (failMessage != string.Empty) {
-        Assertion.EnsureFailed(failMessage);
-      }
-
     }
 
 
@@ -288,18 +238,21 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       return orderList.ToArray();
     }
 
+
     internal void DeleteShipping(string shippingOrderUID) {
-      ShippingData.DeleteOrdersForShippingByShippingUID(shippingOrderUID);
 
       FixedList<ShippingPallet> pallets = ShippingData.GetPalletByShippingUID(shippingOrderUID);
 
       foreach (var pallet in pallets) {
-        ShippingData.DeleteShippingPackageByPalletUID(pallet.UID);
+        ShippingData.DeleteShippingPackageByPalletUID(pallet.ShippingPalletUID);
       }
 
       ShippingData.DeleteShippingPalletsByShippingUID(shippingOrderUID);
 
+      ShippingData.DeleteOrdersForShippingByShippingUID(shippingOrderUID);
+
       ShippingData.DeleteShipping(shippingOrderUID);
+
     }
 
 
