@@ -173,13 +173,7 @@ namespace Empiria.Trade.Sales {
       SalesOrderData.Write(this);
       SetOrderValues();
     }
-
-    public void Modify(SalesOrderFields fields) {
-      SalesOrderItemsData.CancelOrderItems(this.Id);
-      Update(fields);
-
-      Save();
-    }
+       
 
     public void Supply() {
       this.Status = OrderStatus.Shipping;

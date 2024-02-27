@@ -12,6 +12,7 @@ using System.Runtime.Remoting.Messaging;
 using Empiria.Services;
 
 using Empiria.Trade.Sales.Adapters;
+using Empiria.Trade.Sales.Data;
 
 namespace Empiria.Trade.Sales.UseCases {
 
@@ -55,9 +56,7 @@ namespace Empiria.Trade.Sales.UseCases {
 
       order.Save();
 
-      var orderDto = SalesOrderMapper.Map(order);
-
-      return orderDto;
+      return SalesOrderMapper.Map(order); 
     }
 
     public ISalesOrderDto DeliverySalesOrder(string orderUID) {
@@ -65,11 +64,10 @@ namespace Empiria.Trade.Sales.UseCases {
       Assertion.Require(orderUID, "orderUID");
 
       var order = SalesOrder.Parse(orderUID);
+
       order.Deliver();
-
-      var orderDto = SalesOrderMapper.Map(order);
-
-      return orderDto;
+          
+      return SalesOrderMapper.Map(order);
     }
 
     public SearchSalesOrderDto GetOrders(SearchOrderFields fields) {
@@ -94,11 +92,10 @@ namespace Empiria.Trade.Sales.UseCases {
 
         default: {
           throw Assertion.EnsureNoReachThisCode($"It is invalid queryType:{fields.QueryType}");
-
         }
-      }
-       
-     
+
+      } // switch (fields.QueryType)
+
     }
 
     public ISalesOrderDto CancelSalesOrder(string orderUID) {
@@ -107,9 +104,7 @@ namespace Empiria.Trade.Sales.UseCases {
       var order = SalesOrder.Parse(orderUID);
       order.Cancel();
 
-      var orderDto = SalesOrderMapper.Map(order);
-
-      return orderDto;
+      return SalesOrderMapper.Map(order);
     }
 
     public void ChangeOrdersToDeliveryStatus(string [] ordersUID) {
@@ -125,20 +120,16 @@ namespace Empiria.Trade.Sales.UseCases {
       Assertion.Require(orderUID, "orderUID");
 
       var order = SalesOrder.Parse(orderUID);
-      order.Apply();
+      order.Apply();    
 
-      var orderDto = SalesOrderMapper.Map(order);
-
-      return orderDto;
+      return SalesOrderMapper.Map(order);
     }
 
     public ISalesOrderDto GetSalesOrder(string orderUID, QueryType queryType) {
       var order = SalesOrder.Parse(orderUID);
       order.CalculateSalesOrder(queryType);
 
-      var orderDto = SalesOrderMapper.Map(order);
-
-      return orderDto;
+      return SalesOrderMapper.Map(order);
     }
 
     public ISalesOrderDto UpdateSalesOrder(SalesOrderFields fields) {
@@ -147,12 +138,15 @@ namespace Empiria.Trade.Sales.UseCases {
       if (fields.Status != Orders.OrderStatus.Captured) {
         Assertion.RequireFail($"It is only possible to update orders in the Captured status your order status is:{fields.Status}");
       }
-        var order = SalesOrder.Parse(fields.UID);
-        order.Modify(fields);
 
-        var orderDto = SalesOrderMapper.Map(order);
+      var order = SalesOrder.Parse(fields.UID);
 
-        return orderDto;
+      SalesOrderItemsData.CancelOrderItems(order.Id);
+
+      order.Update(fields);
+      order.Save();
+                       
+      return SalesOrderMapper.Map(order);
     }
 
     public FixedList<NamedEntityDto> GetStatusList() {
@@ -168,11 +162,10 @@ namespace Empiria.Trade.Sales.UseCases {
       if (order.Status != Orders.OrderStatus.Applied) {
         Assertion.RequireFail($"It is only possible to Authorize orders in the Applied status, your order status is: {order.Status}");
       }
+
       order.Authorize();
-
-      var orderDto = SalesOrderMapper.Map(order);
-
-      return orderDto;
+           
+      return SalesOrderMapper.Map(order);
     }
 
 
@@ -186,10 +179,8 @@ namespace Empiria.Trade.Sales.UseCases {
       }
 
       order.Supply();
-
-      var orderDto = SalesOrderMapper.Map(order);
-
-      return orderDto;
+         
+      return SalesOrderMapper.Map(order);
     }
 
 
@@ -200,9 +191,6 @@ namespace Empiria.Trade.Sales.UseCases {
     public FixedList<NamedEntityDto> GetPackingStatusList() {
       return SalesOrderStatusService.GetPackingStatusList();
     }
-
-    
-
 
 
     #endregion Use cases
