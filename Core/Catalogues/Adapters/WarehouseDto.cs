@@ -45,11 +45,6 @@ namespace Empiria.Trade.Core.Catalogues {
     }
 
 
-    public string OrderItemUID {
-      get; set;
-    }
-
-
     public string Name {
       get; set;
     }

@@ -130,7 +130,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
       var whBinDto = new List<WarehouseBinDto>();
 
       foreach (var bin in warehouseBins) {
-        var whBin = new WarehouseBinDto();
+        var whBin = new WarehouseBinForPackingDto();
         whBin.UID = bin.UID;
         whBin.OrderItemUID = bin.OrderItemUID;
         whBin.Name = bin.Name;
@@ -208,7 +208,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
       warehouse.Name = item.WarehouseForPacking.Name;
       warehouse.Stock = item.WarehouseForPacking.Stock;
 
-      var warehouseBin = new WarehouseBinDto();
+      var warehouseBin = new WarehouseBinForPackingDto();
       warehouseBin.UID = item.WarehouseBinForPacking.UID;
       warehouseBin.OrderItemUID = item.WarehouseBinForPacking.OrderItemUID;
       warehouseBin.Name = item.WarehouseBinForPacking.Name;

@@ -134,9 +134,9 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
     } = new WarehouseDto();
 
 
-    public WarehouseBinDto WarehouseBin {
+    public WarehouseBinForPackingDto WarehouseBin {
       get; set;
-    } = new WarehouseBinDto();
+    } = new WarehouseBinForPackingDto();
 
 
     public decimal Quantity {
@@ -161,6 +161,17 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
 
   } // class MissingItem
+
+
+  public class WarehouseBinForPackingDto : WarehouseBinDto {
+
+
+    public string OrderItemUID {
+      get; set;
+    }
+
+
+  } // WarehouseBinForPacking
 
 
   public class CommonPackingItemFieldsDto {
