@@ -65,7 +65,7 @@ namespace Empiria.Trade.Sales.Adapters {
 
     public string CustomerContactUID {
       get; set;
-    }
+    } = string.Empty;
 
     public string SupplierUID {
       get; set;
@@ -113,6 +113,14 @@ namespace Empiria.Trade.Sales.Adapters {
 
     internal CustomerAddress GetCustomerAddress() {
       return CustomerAddress.Parse(this.customerAddressUID);
+    }
+
+    internal CustomerContact GetCustomerContact() {
+   
+      if (String.IsNullOrEmpty(this.CustomerContactUID) ) {
+        return CustomerContact.Empty;
+      }
+      return CustomerContact.Parse(this.CustomerContactUID);
     }
 
     #endregion Internal methods

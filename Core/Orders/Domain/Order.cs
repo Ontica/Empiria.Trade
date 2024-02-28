@@ -145,6 +145,12 @@ namespace Empiria.Trade.Orders {
       protected set;
     }
 
+    [DataField("ContactId")]
+    public CustomerContact CustomerContact {
+      get;
+      protected set;
+    }
+
     #endregion Public properties
 
   }  // class Order

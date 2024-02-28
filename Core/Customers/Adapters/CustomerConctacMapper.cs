@@ -27,7 +27,7 @@ namespace Empiria.Trade.Core.Adapters {
       return contactsList.ToFixedList();
     }
 
-    private static CustomerContactDto MapCustomerContact(CustomerContact contact) {
+   static public CustomerContactDto MapCustomerContact(CustomerContact contact) {
       var dto = new CustomerContactDto {
         UID = contact.UID,
         Name = contact.Name,

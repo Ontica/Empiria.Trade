@@ -27,9 +27,7 @@ namespace Empiria.Trade.Core {
     public static CustomerContact Parse(int id) => BaseObject.ParseId<CustomerContact>(id);
 
     public static CustomerContact Parse(string uid) => BaseObject.ParseKey<CustomerContact>(uid);
-
-    
-
+       
     public static CustomerContact Empty => BaseObject.ParseEmpty<CustomerContact>();
 
 

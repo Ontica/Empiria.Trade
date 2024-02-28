@@ -198,6 +198,7 @@ namespace Empiria.Trade.Sales {
       this.Supplier = fields.GetSupplier();
       this.SalesAgent = fields.GetSalesAgent();
       this.CustomerAddress = fields.GetCustomerAddress();
+      this.CustomerContact = fields.GetCustomerContact();
       this.Notes = fields.Notes;
       this.Status = fields.Status;
       this.ShippingMethod = fields.ShippingMethod;

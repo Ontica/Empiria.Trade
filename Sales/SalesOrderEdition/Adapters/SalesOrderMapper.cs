@@ -92,6 +92,7 @@ namespace Empiria.Trade.Sales.Adapters {
         StatusName = MapOrderStatus(order.Status.ToString()),
         Customer = order.Customer.MapToNamedEntity(),
         CustomerAddress = CustomerAddressMapper.MapShortAddress(order.CustomerAddress),
+        CustomerContact = CustomerConctacMapper.MapCustomerContact(order.CustomerContact),
         Supplier = order.Supplier.MapToNamedEntity(),
         SalesAgent = order.SalesAgent.MapToNamedEntity(),
         ShippingMethod = order.ShippingMethod,
