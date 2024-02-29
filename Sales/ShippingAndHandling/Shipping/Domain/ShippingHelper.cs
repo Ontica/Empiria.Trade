@@ -117,10 +117,10 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       if (shippingUID != string.Empty && orderForShippingList.Count == 0) {
 
-        shipping = ShippingData.GetShippingOrders(shippingUID).FirstOrDefault();
+        shipping = ShippingData.GetShippingOrdersByUID(shippingUID).FirstOrDefault();
       } else {
 
-        shipping = ShippingData.GetShippingOrders(
+        shipping = ShippingData.GetShippingOrdersByUID(
                                 orderForShippingList.First().ShippingOrder.ShippingUID)
                                .FirstOrDefault();
 

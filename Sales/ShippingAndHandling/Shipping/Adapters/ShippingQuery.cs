@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using Empiria.Trade.Orders;
 
 namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
@@ -20,6 +21,15 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
       get; set;
     } = string.Empty;
 
+
+    public string ParcelSupplierUID {
+      get;set;
+    }
+
+
+    public string Status {
+      get; set;
+    }
 
   } // class ShippingQuery
 

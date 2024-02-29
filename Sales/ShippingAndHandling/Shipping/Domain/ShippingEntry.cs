@@ -96,6 +96,16 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
     }
 
 
+    internal string Keywords {
+      get {
+        return EmpiriaString.BuildKeywords(
+
+          ShippingUID, ShippingGuide, ParcelAmount.ToString(), CustomerAmount.ToString()
+        );
+      }
+    }
+
+
     public decimal OrdersTotal {
       get; internal set;
     }
