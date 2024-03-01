@@ -24,12 +24,12 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
     public string ParcelSupplierUID {
       get;set;
-    }
+    } = string.Empty;
 
 
     public string Status {
       get; set;
-    }
+    } = string.Empty;
 
   } // class ShippingQuery
 

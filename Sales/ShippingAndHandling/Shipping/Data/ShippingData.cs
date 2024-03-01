@@ -124,7 +124,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
       }
 
       if (query.ParcelSupplierUID != string.Empty) {
-        var parcelSupplierId = SimpleObjectData.Parse(query.ParcelSupplierUID);
+        var parcelSupplierId = SimpleObjectData.Parse(query.ParcelSupplierUID).Id;
         
         clauses += clauses != "" ? $"AND ParcelSupplierId IN ({parcelSupplierId}) "
                                  : $"WHERE ParcelSupplierId IN ({parcelSupplierId}) ";
@@ -161,7 +161,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
       var op = DataOperation.Parse("writeShipping",
         shipping.ShippingOrderId, shipping.ParcelSupplierId,
         shipping.ShippingUID, shipping.ShippingGuide, shipping.ParcelAmount,
-        shipping.CustomerAmount, shipping.ShippingDate, shipping.DeliveryDate);
+        shipping.CustomerAmount, shipping.ShippingDate, shipping.DeliveryDate,
+        shipping.Keywords);
 
       DataWriter.Execute(op);
     }

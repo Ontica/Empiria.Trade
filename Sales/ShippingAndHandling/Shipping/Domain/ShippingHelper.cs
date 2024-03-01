@@ -39,6 +39,29 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     #region Public methods
 
 
+    internal FixedList<ShippingEntry> FilterShippingListByStatus(
+      ShippingQuery query, FixedList<ShippingEntry> shippingList) {
+
+      FixedList<ShippingEntry> shippingsByStatus = new FixedList<ShippingEntry>(shippingList);
+
+      //TODO CAMBIAR STATUS STRING POR ENUM
+      if (query.Status == "Abierto") {
+        shippingsByStatus = shippingList.Where(x => x.CanEdit).ToFixedList();
+      }
+
+      if (query.Status == "Cerrado") {
+        shippingsByStatus = shippingList.Where(x => !x.CanEdit).ToFixedList();
+      }
+
+      shippingsByStatus = shippingsByStatus.OrderByDescending(x => x.CanEdit)
+                         .ThenBy(x => x.ParcelSupplierId)
+                         .ThenBy(x => x.ShippingDate)
+                         .ThenBy(x => x.ShippingGuide).ToFixedList();
+
+      return shippingsByStatus;
+    }
+
+
     internal void GetOrdersForShippingByEntry(FixedList<ShippingEntry> shippingList) {
 
       foreach (var shipping in shippingList) {
@@ -131,7 +154,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       return shipping;
     }
-
 
 
     internal void GetOrdersMeasurementUnits(FixedList<ShippingOrderItem> ordersForShipping) {
@@ -404,6 +426,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       }
 
     }
+
+    
 
 
     #endregion Private methods
