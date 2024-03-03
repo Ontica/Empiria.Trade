@@ -65,6 +65,5 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Empiria.Trade.Core.csproj" />
-    <ProjectReference Include="..\Inventory\Empiria.Trade.Inventory.csproj" />
   </ItemGroup>
 </Project>
