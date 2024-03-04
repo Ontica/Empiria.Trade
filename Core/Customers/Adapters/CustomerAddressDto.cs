@@ -56,6 +56,10 @@ namespace Empiria.Trade.Core.Adapters {
       get; set;
     }
 
+    public string Description {
+      get; set;
+    }
+
   } // class CustomerShortAddressDto 
 
 
