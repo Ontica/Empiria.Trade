@@ -193,6 +193,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
         var exist = whBinDto.Find(x => x.UID == whBinProduct.UID && x.OrderItemUID == missing.OrderItemUID);
 
         if (exist == null) {
+          //TODO SEPARAR VALIDACIONES DE IVENTARIO A UN METODO A PARTE
           var input = inventory.Where(x => x.WarehouseBinProductId == whBinProduct.Id).Sum(x => x.InputQuantity);
           var output = inventory.Where(x => x.WarehouseBinProductId == whBinProduct.Id).Sum(x => x.OutputQuantity);
 

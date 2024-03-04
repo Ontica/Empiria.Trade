@@ -182,18 +182,13 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       var helper = new ShippingHelper();
 
-      FixedList<ShippingEntry> shippingList = ShippingData.GetShippingOrders("");
+      FixedList<ShippingEntry> shippingList = ShippingData.GetShippingOrdersByQuery(query);
 
       shippingList = shippingList.Where(x => x.ShippingOrderId > 0).ToList().ToFixedList();
 
       helper.GetOrdersForShippingByEntry(shippingList);
 
-      shippingList = shippingList.OrderByDescending(x => x.CanEdit)
-                         .ThenBy(x => x.ParcelSupplierId)
-                         .ThenBy(x => x.ShippingDate)
-                         .ThenBy(x => x.ShippingGuide).ToFixedList();
-
-      return shippingList;
+      return helper.FilterShippingListByStatus(query, shippingList);
     }
 
 

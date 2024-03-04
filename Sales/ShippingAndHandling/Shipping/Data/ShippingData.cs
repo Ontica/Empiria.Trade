@@ -11,8 +11,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Empiria.Data;
+using Empiria.DataTypes;
+using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Core.Common;
 using Empiria.Trade.Orders;
+using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 using Empiria.Trade.Sales.ShippingAndHandling.Domain;
 
 namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
@@ -108,16 +111,35 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
 
       var shippingOrderItem = GetOrdersForShippingByOrderUID(orderIdList);
 
-      //if (shippingOrderItem.Count == 0) {
-      //  return new FixedList<ShippingOrderItem>();
-      //}
-
       return shippingOrderItem;
     }
 
 
-    static internal FixedList<ShippingEntry> GetShippingOrders(string shippingUID) {
+    internal static FixedList<ShippingEntry> GetShippingOrdersByQuery(ShippingQuery query) {
 
+      var clauses = string.Empty;
+      
+      if (query.Keywords != string.Empty) {
+        clauses += $"WHERE {SearchExpression.ParseAndLikeKeywords("ShippingKeywords", query.Keywords)} ";
+      }
+
+      if (query.ParcelSupplierUID != string.Empty) {
+        var parcelSupplierId = SimpleObjectData.Parse(query.ParcelSupplierUID).Id;
+        
+        clauses += clauses != "" ? $"AND ParcelSupplierId IN ({parcelSupplierId}) "
+                                 : $"WHERE ParcelSupplierId IN ({parcelSupplierId}) ";
+      }
+
+      string sql = $"SELECT * FROM TRDShipping {clauses}";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetPlainObjectFixedList<ShippingEntry>(dataOperation);
+    }
+
+
+    static internal FixedList<ShippingEntry> GetShippingOrdersByUID(string shippingUID) {
+      
       var clauses = string.Empty;
 
       if (shippingUID != string.Empty) {
@@ -139,7 +161,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
       var op = DataOperation.Parse("writeShipping",
         shipping.ShippingOrderId, shipping.ParcelSupplierId,
         shipping.ShippingUID, shipping.ShippingGuide, shipping.ParcelAmount,
-        shipping.CustomerAmount, shipping.ShippingDate, shipping.DeliveryDate);
+        shipping.CustomerAmount, shipping.ShippingDate, shipping.DeliveryDate,
+        shipping.Keywords);
 
       DataWriter.Execute(op);
     }
