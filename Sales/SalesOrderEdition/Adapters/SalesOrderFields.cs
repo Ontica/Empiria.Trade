@@ -112,6 +112,10 @@ namespace Empiria.Trade.Sales.Adapters {
     }
 
     internal CustomerAddress GetCustomerAddress() {
+      if (this.ShippingMethod == "Ocurre") {
+        return CustomerAddress.Empty;
+      }
+
       return CustomerAddress.Parse(this.customerAddressUID);
     }
 

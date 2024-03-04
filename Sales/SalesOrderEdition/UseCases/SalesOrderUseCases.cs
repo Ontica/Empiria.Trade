@@ -52,6 +52,8 @@ namespace Empiria.Trade.Sales.UseCases {
     public ISalesOrderDto CreateSalesOrder(SalesOrderFields fields) {
       Assertion.Require(fields, "fields");
 
+      ValidateShippingMethod(fields);
+
       var order = new SalesOrder(fields);
 
       order.Save();
@@ -194,6 +196,16 @@ namespace Empiria.Trade.Sales.UseCases {
 
 
     #endregion Use cases
+
+    #region Private methods
+
+    private void ValidateShippingMethod(SalesOrderFields fields) {
+      if ((fields.ShippingMethod != "Ocurre") && (fields.customerAddressUID == String.Empty)) {
+        throw Assertion.EnsureNoReachThisCode($"It is customer address is mandatory.");
+      }
+    }
+
+    #endregion Private methods
 
   } // class SalesOrderUseCases
 
