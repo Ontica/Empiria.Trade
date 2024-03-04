@@ -135,6 +135,30 @@ namespace Empiria.Trade.Sales.WebApi {
     }
 
     [HttpGet]
+    [Route("v4/trade/sales/orders/searchorderforshipping")]
+    public SingleObjectModel GetOrdersForShipping([FromUri] string keywords) {
+
+      base.RequireResource(keywords, "keywords");
+
+      using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
+
+        SearchOrderFields fields = new SearchOrderFields();
+
+        fields.QueryType = QueryType.Sales;
+        fields.Status = Orders.OrderStatus.Shipping;
+        fields.ShippingMethod = "Paqueteria";
+        fields.Keywords = keywords;
+
+
+        SearchSalesOrderDto salesOrders = usecases.GetOrders(fields);
+        return new SingleObjectModel(base.Request, salesOrders);
+
+
+      } // using 
+
+    }
+
+    [HttpGet]
     [Route("v4/trade/sales/orders/status")]
     public CollectionModel GetOrderStatus() {
 
