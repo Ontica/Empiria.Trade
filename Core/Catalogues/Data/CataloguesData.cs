@@ -1,7 +1,7 @@
 ﻿/* Empiria Trade *********************************************************************************************
 *                                                                                                            *
 *  Module   : Trade Core                                 Component : Data Layer                              *
-*  Assembly : Empiria.Trade.Products.dll                 Pattern   : Data Service                            *
+*  Assembly : Empiria.Trade.Core.dll                     Pattern   : Data Service                            *
 *  Type     : CataloguesData                             License   : Please read LICENSE.txt file            *
 *                                                                                                            *
 *  Summary  : Provides data read methods for catalogues.                                                     *
@@ -11,10 +11,11 @@ using System;
 using Empiria.Data;
 using Empiria.Trade.Core.Common;
 
-namespace Empiria.Trade.Core.Catalogues {
+namespace Empiria.Trade.Core.Catalogues
+{
 
-  /// <summary>Provides data read methods for catalogues.</summary>
-  internal class CataloguesData {
+    /// <summary>Provides data read methods for catalogues.</summary>
+    internal class CataloguesData {
 
 
     internal FixedList<SimpleObjectData> GetParcelSupplierList() {

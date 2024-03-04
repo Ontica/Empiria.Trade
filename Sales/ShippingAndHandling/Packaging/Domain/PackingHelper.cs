@@ -10,13 +10,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Empiria.Trade.Sales.ShippingAndHandling.Data;
+using Empiria.Trade.Core;
 using Empiria.Trade.Core.Catalogues;
+using Empiria.Trade.Sales.ShippingAndHandling.Data;
 
-namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
+namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
+{
 
-  /// <summary>Helper methods to build packing structure.</summary>
-  internal class PackingHelper {
+    /// <summary>Helper methods to build packing structure.</summary>
+    internal class PackingHelper {
 
     #region Public methods
 
@@ -164,17 +166,17 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
         packingOrderItem.WarehouseForPacking = whDto;
       }
 
-      if (inventory?.WarehouseBinProductId > 0) {
+      if (inventory?.WarehouseBinId > 0) {
 
-        var warehouseBinProduct = WarehouseBinProduct.Parse(inventory.WarehouseBinProductId);
-        var whBinDto = new WarehouseBinForPacking();
-        whBinDto.UID = warehouseBinProduct.WarehouseBinProductUID;
-        whBinDto.OrderItemUID = packingOrderItem.OrderItemUID;
-        whBinDto.Name = $"{warehouseBinProduct.WarehouseBin.BinDescription}";
-        whBinDto.WarehouseName = $"{warehouseBinProduct.WarehouseBin.Warehouse.Code}";
+        var warehouseBin = WarehouseBin.Parse(inventory.WarehouseBinId);
+        var whBinForPacking = new WarehouseBinForPacking();
+        whBinForPacking.UID = warehouseBin.UID;
+        whBinForPacking.OrderItemUID = packingOrderItem.OrderItemUID;
+        whBinForPacking.Name = $"{warehouseBin.BinDescription}";
+        whBinForPacking.WarehouseName = $"{warehouseBin.Warehouse.Code}";
         //$"rack: {warehouseBinProduct.WarehouseBin.BinDescription}";
         //whBinDto.Stock = //TODO SACAR STOCK DE INVENTARIO-WAREHOUSE
-        packingOrderItem.WarehouseBinForPacking = whBinDto;
+        packingOrderItem.WarehouseBinForPacking = whBinForPacking;
       }
     }
 
@@ -183,32 +185,36 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       var data = new PackagingData();
 
-      FixedList<InventoryEntry> inventory = data.GetInventoryByVendorProduct(vendorProductId, "");
+      FixedList<InventoryEntry> inventoryByVendorProduct = 
+        data.GetInventoryByVendorProduct(vendorProductId, "");
+      
+      var whBinForPacking = new List<WarehouseBinForPacking>();
 
-      var whBinDto = new List<WarehouseBinForPacking>();
+      foreach (var inventory in inventoryByVendorProduct) {
+        var warehouseBin = WarehouseBin.Parse(inventory.WarehouseBinId);
 
-      foreach (var item in inventory) {
-        var whBinProduct = WarehouseBinProduct.Parse(item.WarehouseBinProductId);
-
-        var exist = whBinDto.Find(x => x.UID == whBinProduct.UID && x.OrderItemUID == missing.OrderItemUID);
+        var exist = whBinForPacking.Find(
+          x => x.UID == warehouseBin.UID && x.OrderItemUID == missing.OrderItemUID);
 
         if (exist == null) {
           //TODO SEPARAR VALIDACIONES DE IVENTARIO A UN METODO A PARTE
-          var input = inventory.Where(x => x.WarehouseBinProductId == whBinProduct.Id).Sum(x => x.InputQuantity);
-          var output = inventory.Where(x => x.WarehouseBinProductId == whBinProduct.Id).Sum(x => x.OutputQuantity);
+          var input = inventoryByVendorProduct.Where(x => x.WarehouseBinId == warehouseBin.Id)
+                                              .Sum(x => x.InputQuantity);
+          var output = inventoryByVendorProduct.Where(x => x.WarehouseBinId == warehouseBin.Id)
+                                               .Sum(x => x.OutputQuantity);
 
           var bin = new WarehouseBinForPacking();
-          bin.UID = whBinProduct.UID;
+          bin.UID = warehouseBin.UID;
           bin.OrderItemUID = missing.OrderItemUID;
-          bin.Name = whBinProduct.WarehouseBin.BinDescription;
-          bin.WarehouseName = $"Almacen {whBinProduct.WarehouseBin.Warehouse.Code}";
+          bin.Name = warehouseBin.BinDescription;
+          bin.WarehouseName = $"Almacen {warehouseBin.Warehouse.Code}";
           bin.Stock = input > output ? input - output : 0;
 
-          whBinDto.Add(bin);
+          whBinForPacking.Add(bin);
         }
 
       }
-      missing.WarehouseBins = whBinDto.ToFixedList();
+      missing.WarehouseBins = whBinForPacking.ToFixedList();
     }
 
 

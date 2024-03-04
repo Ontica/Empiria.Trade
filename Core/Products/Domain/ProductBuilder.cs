@@ -23,14 +23,14 @@ namespace Empiria.Trade.Products.Domain {
   /// <summary>Generate data for roducts.</summary>
   internal class ProductBuilder {
 
-    #region Constructor
+    #region Constructors and parsers
 
     public ProductBuilder() {
       
     }
 
 
-    #endregion Constructor
+    #endregion Constructors and parsers
 
 
     #region Public methods

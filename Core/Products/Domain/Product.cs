@@ -12,7 +12,6 @@ using System.Collections.Generic;
 using Empiria.Json;
 using Empiria.Ontology;
 using Empiria.Trade.Core;
-using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Products.Adapters;
 
 namespace Empiria.Trade.Products

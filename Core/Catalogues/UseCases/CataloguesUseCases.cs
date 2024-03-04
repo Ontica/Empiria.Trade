@@ -13,10 +13,11 @@ using System.Threading.Tasks;
 using Empiria.Services;
 using Empiria.Trade.Products.Adapters;
 
-namespace Empiria.Trade.Core.Catalogues {
-  
-  
-  public class CataloguesUseCases : UseCase {
+namespace Empiria.Trade.Core.Catalogues
+{
+
+
+    public class CataloguesUseCases : UseCase {
 
 
     #region Constructors and parsers
@@ -40,6 +41,13 @@ namespace Empiria.Trade.Core.Catalogues {
       Assertion.Require(inventoryEntryUid, "inventoryEntryUid");
 
       return InventoryEntry.Parse(inventoryEntryUid);
+    }
+
+
+    internal FixedList<SalesInventoryStock> GetInventoryStockByVendorProduct(int vendorProductId) {
+      Assertion.Require(vendorProductId, "vendorProductId");
+      var inventoryBuilder = new InventoryBuilder();
+      return inventoryBuilder.GetInventoryStockByVendorProduct(vendorProductId);
     }
 
 

@@ -9,15 +9,16 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Threading.Tasks;
+using Empiria.Trade.Core;
 using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Products.Adapters;
-using Empiria.Trade.Products.UseCases;
 using Xunit;
 
-namespace Empiria.Trade.Tests.Core {
-  
-  
-  public class CataloguesTests {
+namespace Empiria.Trade.Tests.Core
+{
+
+
+    public class CataloguesTests {
 
 
     [Fact]
@@ -25,9 +26,21 @@ namespace Empiria.Trade.Tests.Core {
 
       var usecase = CataloguesUseCases.UseCaseInteractor();
 
-      string uid = "eed89084-4b16-4a89-bcf8-2a26c82448cc";
+      string uid = "1250b007-9d8a-46b9-83e3-bbf2e00c7ef1";
 
       InventoryEntry sut = usecase.GetInventoryEntry(uid);
+
+      Assert.NotNull(sut);
+
+    }
+
+
+    [Fact]
+    public void GetInventoryStockByVendorProductTest() {
+
+      var usecase = CataloguesUseCases.UseCaseInteractor();
+
+      FixedList<SalesInventoryStock> sut = usecase.GetInventoryStockByVendorProduct(1566);
 
       Assert.NotNull(sut);
 
