@@ -138,12 +138,15 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
 
       foreach (var item in packingItems) {
         var packingOrderItem = new PackingItem();
+        packingOrderItem.MergeCommonFieldsData(item.OrderItemId);
+
         packingOrderItem.UID = item.PackingItemUID;
         packingOrderItem.OrderPackingUID = orderPackingUID;
-        packingOrderItem.MergeCommonFieldsData(item.OrderItemId);
         packingOrderItem.Quantity = item.Quantity;
         packingOrderItem.ItemWeight = item.Quantity * packingOrderItem.Product.ProductWeight;
+
         GetWarehouses(packingOrderItem, item);
+
         packingOrderItems.Add(packingOrderItem);
       }
 
@@ -153,17 +156,18 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
 
     static private void GetWarehouses(PackingItem packingOrderItem, PackingOrderItem item) {
 
-      var inventory = InventoryEntry.Parse(item.InventoryEntryId);
+      var inventory = item.InventoryEntry;//InventoryEntry.Parse(item.InventoryEntry);
+
       if (inventory?.WarehouseId > 0) {
 
         var warehouse = Warehouse.Parse(inventory.WarehouseId);
-
-        var whDto = new WarehouseForPacking();
-        whDto.UID = warehouse.UID;
-        whDto.Code = warehouse.Code;
-        whDto.Name = warehouse.Name;
-        //whDto.Stock = //TODO SACAR STOCK DE INVENTARIO-WAREHOUSE
-        packingOrderItem.WarehouseForPacking = whDto;
+        
+        var whForPacking = new WarehouseForPacking();
+        whForPacking.UID = warehouse.UID;
+        whForPacking.Code = warehouse.Code;
+        whForPacking.Name = warehouse.Name;
+        //whForPacking.Stock = //TODO SACAR STOCK DE INVENTARIO-WAREHOUSE
+        packingOrderItem.WarehouseForPacking = whForPacking;
       }
 
       if (inventory?.WarehouseBinId > 0) {
@@ -174,7 +178,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
         whBinForPacking.OrderItemUID = packingOrderItem.OrderItemUID;
         whBinForPacking.Name = $"{warehouseBin.BinDescription}";
         whBinForPacking.WarehouseName = $"{warehouseBin.Warehouse.Code}";
-        //$"rack: {warehouseBinProduct.WarehouseBin.BinDescription}";
         //whBinDto.Stock = //TODO SACAR STOCK DE INVENTARIO-WAREHOUSE
         packingOrderItem.WarehouseBinForPacking = whBinForPacking;
       }
@@ -197,7 +200,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
           x => x.UID == warehouseBin.UID && x.OrderItemUID == missing.OrderItemUID);
 
         if (exist == null) {
-          //TODO SEPARAR VALIDACIONES DE IVENTARIO A UN METODO A PARTE
+          
           var input = inventoryByVendorProduct.Where(x => x.WarehouseBinId == warehouseBin.Id)
                                               .Sum(x => x.InputQuantity);
           var output = inventoryByVendorProduct.Where(x => x.WarehouseBinId == warehouseBin.Id)

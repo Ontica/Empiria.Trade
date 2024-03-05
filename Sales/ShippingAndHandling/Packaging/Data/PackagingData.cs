@@ -41,16 +41,16 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data
 
 
     internal FixedList<InventoryEntry> GetInventoryByVendorProduct(
-                                        int vendorProductId, string warehouseBinProductUID) {
+                                        int vendorProductId, string warehouseBinUID) {
 
-      var warehouseBinProduct = string.Empty;
+      var warehouseBin = string.Empty;
 
-      if (warehouseBinProductUID != string.Empty) {
-        warehouseBinProduct = $" AND WarehouseBinProductId = " +
-                              $"{WarehouseBinProduct.Parse(warehouseBinProductUID).Id}";
+      if (warehouseBinUID != string.Empty) {
+        warehouseBin = $" AND WarehouseBinId = " +
+                              $"{WarehouseBin.Parse(warehouseBinUID).Id}";
       }
       string sql = $"SELECT * FROM TRDInventory " +
-                   $"WHERE EntryStatus = 'A' AND VendorProductId = {vendorProductId} {warehouseBinProduct}";
+                   $"WHERE EntryStatus = 'A' AND VendorProductId = {vendorProductId} {warehouseBin}";
 
       var dataOperation = DataOperation.Parse(sql);
 
@@ -126,8 +126,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data
     internal static void WritePackingOrderItem(PackingOrderItem orderItem) {
 
       var op = DataOperation.Parse("writePackagingItem",
-        orderItem.PackingItemId, orderItem.UID, orderItem.OrderPackingId, orderItem.OrderId,
-        orderItem.OrderItemId, orderItem.InventoryEntryId, orderItem.Quantity);
+        orderItem.PackingItemId, orderItem.UID, orderItem.OrderPacking.OrderPackingId, orderItem.OrderId,
+        orderItem.OrderItemId, orderItem.InventoryEntry.InventoryEntryId, orderItem.WarehouseBin.Id, orderItem.Quantity);
 
       DataWriter.Execute(op);
     }
