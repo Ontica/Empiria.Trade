@@ -227,7 +227,7 @@ namespace Empiria.Trade.Sales.WebApi {
       base.RequireResource(orderUID, "orderUID");
 
      using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
-        ISalesOrderDto orderDto = usecases.DeliverySalesOrder(orderUID);
+        ISalesOrderDto orderDto = usecases.DeliverySalesOrderWithMap(orderUID);
 
         return new SingleObjectModel(this.Request, orderDto);
      }

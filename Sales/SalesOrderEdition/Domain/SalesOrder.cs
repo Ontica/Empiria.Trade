@@ -165,6 +165,15 @@ namespace Empiria.Trade.Sales {
       this.Actions = actions.SetActions(this, QueryType.Sales);
     }
 
+    public void Close() {
+      this.Status = OrderStatus.Closed;
+
+      AuthorizationStatus = OrderAuthorizationStatus.Empty;
+
+      SalesOrderData.Write(this);
+      SetOrderValues();
+    }
+
     public void Deliver() {
       this.Status = OrderStatus.Delivery;
 

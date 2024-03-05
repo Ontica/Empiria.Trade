@@ -63,7 +63,7 @@ namespace Empiria.Trade.Sales.UseCases {
       return SalesOrderMapper.Map(order); 
     }
 
-    public ISalesOrderDto DeliverySalesOrder(string orderUID) {
+    public ISalesOrderDto DeliverySalesOrderWithMap(string orderUID) {
 
       Assertion.Require(orderUID, "orderUID");
 
@@ -72,6 +72,24 @@ namespace Empiria.Trade.Sales.UseCases {
       order.Deliver();
           
       return SalesOrderMapper.Map(order);
+    }
+
+    public void DeliverySalesOrder(string orderUID) {
+
+      Assertion.Require(orderUID, "orderUID");
+
+      var order = SalesOrder.Parse(orderUID);
+
+      order.Deliver();
+    }
+
+    public void CloseSalesOrder(string orderUID) {
+
+      Assertion.Require(orderUID, "orderUID");
+
+      var order = SalesOrder.Parse(orderUID);
+
+      order.Close();
     }
 
     public SearchSalesOrderDto GetOrders(SearchOrderFields fields) {
