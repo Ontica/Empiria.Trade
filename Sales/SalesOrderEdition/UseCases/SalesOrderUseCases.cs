@@ -10,7 +10,9 @@
 using System;
 using System.Runtime.Remoting.Messaging;
 using Empiria.Services;
-
+using Empiria.Trade.Core;
+using Empiria.Trade.Core.Catalogues;
+using Empiria.Trade.Products;
 using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Sales.Data;
 
@@ -37,7 +39,7 @@ namespace Empiria.Trade.Sales.UseCases {
       Assertion.Require(fields, "fields");
 
       SalesOrder order;
-
+            
       if (fields.UID.Length != 0) {
         order = SalesOrder.Parse(fields.UID);
         order.Update(fields);
@@ -53,7 +55,7 @@ namespace Empiria.Trade.Sales.UseCases {
       Assertion.Require(fields, "fields");
 
       ValidateShippingMethod(fields);
-
+           
       var order = new SalesOrder(fields);
 
       order.Save();
@@ -100,6 +102,13 @@ namespace Empiria.Trade.Sales.UseCases {
 
     }
 
+    public FixedList<ISalesOrderDto> GetOrdersForShipping(SearchOrderFields fields) {
+      var helper = new SalesOrderHelper();
+      var salesOrdersList = helper.GetOrders(fields);
+
+      return SearchSealesOrderMapper.MapEntries(fields, salesOrdersList);
+    }
+
     public ISalesOrderDto CancelSalesOrder(string orderUID) {
       Assertion.Require(orderUID, "orderUID");
 
@@ -136,7 +145,7 @@ namespace Empiria.Trade.Sales.UseCases {
 
     public ISalesOrderDto UpdateSalesOrder(SalesOrderFields fields) {
       Assertion.Require(fields, "fields");
-
+            
       if (fields.Status != Orders.OrderStatus.Captured) {
         Assertion.RequireFail($"It is only possible to update orders in the Captured status your order status is:{fields.Status}");
       }
@@ -204,7 +213,8 @@ namespace Empiria.Trade.Sales.UseCases {
         throw Assertion.EnsureNoReachThisCode($"It is customer address is mandatory.");
       }
     }
-
+       
+   
     #endregion Private methods
 
   } // class SalesOrderUseCases

@@ -135,7 +135,7 @@ namespace Empiria.Trade.Sales.WebApi {
     }
 
     [HttpGet]
-    [Route("v4/trade/sales/orders/searchorderforshipping")]
+    [Route("v4/trade/sales/orders/search-order-for-shipping")]
     public SingleObjectModel GetOrdersForShipping([FromUri] string keywords) {
 
       base.RequireResource(keywords, "keywords");
@@ -150,7 +150,7 @@ namespace Empiria.Trade.Sales.WebApi {
         fields.Keywords = keywords;
 
 
-        SearchSalesOrderDto salesOrders = usecases.GetOrders(fields);
+        var salesOrders = usecases.GetOrdersForShipping(fields);
         return new SingleObjectModel(base.Request, salesOrders);
 
 

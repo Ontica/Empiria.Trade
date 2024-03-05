@@ -64,7 +64,7 @@ namespace Empiria.Trade.Sales.Adapters {
       return columns.ToFixedList();
     }
 
-    static private FixedList<ISalesOrderDto> MapEntries(SearchOrderFields query, FixedList<SalesOrder> salesOrders) {
+    static public FixedList<ISalesOrderDto> MapEntries(SearchOrderFields query, FixedList<SalesOrder> salesOrders) {
       switch (query.QueryType) {
 
         case QueryType.Sales: {
