@@ -80,6 +80,12 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
     }
 
 
+    public PackingOrderItem GetPackingOrderItemByUID(string Uid) {
+
+      return PackingOrderItem.Parse(Uid);
+    }
+
+    
     public FixedList<PackagedForItem> GetPackagedForItemList(string orderUID) {
       
       var builder = new PackagingBuilder();
@@ -140,7 +146,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
                                                   missingItemFields.WarehouseBinUID);
 
       var packagingOrder = new PackingOrderItem(orderUID, packingItemUID,
-                                inventory.InventoryEntryId, missingItemFields);
+                                inventory, missingItemFields);
 
       packagingOrder.Save();
 
