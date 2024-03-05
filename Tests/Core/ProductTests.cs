@@ -75,10 +75,10 @@ namespace Empiria.Trade.Tests.Core {
       var usecase = ProductForOrderUseCases.UseCaseInteractor();
 
       ProductOrderQuery query = new ProductOrderQuery {
-        Keywords = "tuerca hexagonal inserto de nylon",
+        Keywords = "ed7bff14-9be7-4dba-87c3-08a0e4d86680",
         OnStock = true,
         Order = {
-          CustomerUID = "7ed4164a-24b0-4728-910b-eb26f0684a12",
+          CustomerUID = "4dc2c734-d190-4d1b-b34c-07156c11e516",
           SalesAgentUID = "",
           SupplierUID = "",
 

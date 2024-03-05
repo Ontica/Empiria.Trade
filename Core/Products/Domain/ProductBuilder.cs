@@ -45,11 +45,13 @@ namespace Empiria.Trade.Products.Domain {
 
       FixedList<Product> products = ProductDataService.GetProductsForOrder(query);
 
-      ValidateToGetPriceList(products, query);
-
       var helper = new ProductHelper(query);
 
-      FixedList<Product> productsByCode = helper.GetProductsByCode(products);
+      FixedList<Product> productsByStock = helper.GetProductsByStock(products);
+      
+      ValidateToGetPriceList(productsByStock, query);
+
+      FixedList<Product> productsByCode = helper.GetProductsByCode(productsByStock);
 
       FixedList<Product> orderedProducts = helper.GetProductsOrderBy(productsByCode);
 
@@ -61,11 +63,13 @@ namespace Empiria.Trade.Products.Domain {
 
       FixedList<Product> products = ProductDataService.GetProductsList(query.Keywords);
 
-      ValidateToGetPriceList(products, query);
-
       var helper = new ProductHelper(query);
 
-      FixedList<Product> productsByCode = helper.GetProductsByCode(products);
+      FixedList<Product> productsByStock = helper.GetProductsByStock(products);
+
+      ValidateToGetPriceList(productsByStock, query);
+
+      FixedList<Product> productsByCode = helper.GetProductsByCode(productsByStock);
 
       FixedList<Product> orderedProducts = helper.GetProductsOrderBy(productsByCode);
 

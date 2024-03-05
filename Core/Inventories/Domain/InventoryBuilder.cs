@@ -29,7 +29,7 @@ namespace Empiria.Trade.Core {
     #region Public methods
 
 
-    public FixedList<SalesInventoryStock> GetInventoryStockByVendorProduct(int vendorProducId) {
+    static public FixedList<SalesInventoryStock> GetInventoryStockByVendorProduct(int vendorProducId) {
 
       return InventoryData.GetInventoryStockByVendorProduct(vendorProducId);
     }

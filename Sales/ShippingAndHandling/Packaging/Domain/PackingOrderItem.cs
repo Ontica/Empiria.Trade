@@ -106,12 +106,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling
     }
 
 
-    //public InventoryEntry InventoryEntry {
-    //  get; internal set;
-    //}
-
-
-
     #endregion Properties
 
 

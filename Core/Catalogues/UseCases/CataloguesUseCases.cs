@@ -46,8 +46,8 @@ namespace Empiria.Trade.Core.Catalogues
 
     public FixedList<SalesInventoryStock> GetInventoryStockByVendorProduct(int vendorProductId) {
       Assertion.Require(vendorProductId, "vendorProductId");
-      var inventoryBuilder = new InventoryBuilder();
-      return inventoryBuilder.GetInventoryStockByVendorProduct(vendorProductId);
+      
+      return InventoryBuilder.GetInventoryStockByVendorProduct(vendorProductId);
     }
 
 

@@ -34,7 +34,6 @@ namespace Empiria.Trade.Products.Data
         whereClauses = $"WHERE {SearchExpression.ParseAndLikeKeywords("ProductKeywords", keywords)}";
       }
 
-
       var sql = "SELECT " +
                 "P.ProductId, P.ProductUID, VP.VendorProductUID, PRESENT.PresentationId, VENDOR.PartyId VendorId, I.InventoryEntryId, GROUPS.ProductGroupId, " +
                 "SUBGROUPS.ProductSubgroupId, P.ProductCode, P.ProductUPC, P.ProductName, P.ProductDescription, P.Attributes, VP.SKU, " +

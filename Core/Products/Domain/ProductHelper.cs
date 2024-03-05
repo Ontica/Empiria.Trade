@@ -83,10 +83,6 @@ namespace Empiria.Trade.Products.Domain {
         product.Presentations = product.Presentations.OrderBy(x => x.Units).ToList();
       }
 
-      if (query.OnStock) {
-        productsByCode = productsByCode.Where(x=>x.InventoryEntry.InputQuantity > 0).ToFixedList();
-      }
-
       return productsByCode.OrderBy(p => p.Code)
                                           .ThenBy(p => p.ProductName)
                                           .ToList().ToFixedList();
@@ -222,6 +218,18 @@ namespace Empiria.Trade.Products.Domain {
     }
 
 
+    internal FixedList<Product> GetProductsByStock(FixedList<Product> products) {
+
+      FixedList<Product> productsByStock = new FixedList<Product>(products);
+
+      if (query.OnStock) {
+        productsByStock = products.Where(x => x.InventoryEntry.InputQuantity > 0).ToFixedList();
+      }
+
+      return productsByStock;
+    }
+
+
     private void GetProductPresentations(Product productEntry, Product product) {
 
       var existPresentation = productEntry.Presentations.Find(
@@ -243,8 +251,6 @@ namespace Empiria.Trade.Products.Domain {
         productEntry.Presentations.Add(presentation);
 
       }
-
-      //return productEntry.Presentations;
     }
 
 
@@ -261,7 +267,7 @@ namespace Empiria.Trade.Products.Domain {
         vendor.VendorUID = product.Vendor.UID;
         vendor.VendorName = product.Vendor.Name;
         vendor.Sku = vendorProduct.SKU;
-        vendor.Stock = product.InventoryEntry.InputQuantity;
+        vendor.Stock = InventoryBuilder.GetInventoryStockByVendorProduct(vendorProduct.Id).Sum(x=>x.Stock);
         vendor.Price = product.PriceList;
 
         presentation.Vendors.Add(vendor);
