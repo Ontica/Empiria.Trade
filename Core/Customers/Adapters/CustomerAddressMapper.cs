@@ -44,8 +44,8 @@ namespace Empiria.Trade.Core.Adapters {
         } else {
           var dto = new CustomerShortAddressDto {
             UID = address.UID,
-            Name = address.Description,
-            Description = "Sucursal"
+            Name = "Sucursal " +  address.Description,
+            Description = address.Address1 + ", " + address.Address2 + " " + address.City + ", " + address.State, 
           };
 
           CustomerAddressDtoList.Add(dto);
@@ -60,8 +60,8 @@ namespace Empiria.Trade.Core.Adapters {
     static public CustomerShortAddressDto MapShortAddress(CustomerAddress address) {
       var dto = new CustomerShortAddressDto {
         UID = address.UID,
-        Name = address.Address1 + ", " + address.Address2 + " " + address.City + ", " + address.State,
-        Description = address.Description,
+        Name = address.Description,
+        Description = address.Address1 + ", " + address.Address2 + " " + address.City + ", " + address.State
       };
 
       return dto;
