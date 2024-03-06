@@ -46,8 +46,8 @@ namespace Empiria.Trade.Sales.Adapters {
       columns.Add(new DataTableColumn("salesAgentName", "Vendedor", "text"));
       columns.Add(new DataTableColumn("orderTotal", "Total", "decimal"));
 
-      if ((query.ShippingMethod == "Paqueteria") && (query.Status == Orders.OrderStatus.Shipping)) {
-        columns.Add(new DataTableColumn("shipment", "Envío", "text-tag"));
+      if (query.Status == Orders.OrderStatus.Shipping) {
+        columns.Add(new DataTableColumn("shippingStatus", "Envío", "text-tag"));
       }
 
         switch (query.QueryType) {
@@ -68,7 +68,14 @@ namespace Empiria.Trade.Sales.Adapters {
       switch (query.QueryType) {
 
         case QueryType.Sales: {
-          if ((query.ShippingMethod == "Paqueteria") && (query.Status == Orders.OrderStatus.Shipping)) {
+          if ((query.shippingStatus != string.Empty) && (query.Status == Orders.OrderStatus.Shipping)) {            
+            var list = MapBaseSalesOrdersShipmentStatus(salesOrders);
+            var orders = list.ConvertAll(o => (BaseSalesOrderShipmentDto) o);
+
+            return  orders.FindAll(x => x.ShipmentStatus == query.shippingStatus).ToFixedList<ISalesOrderDto>();             
+          }
+
+          if (query.Status == Orders.OrderStatus.Shipping) {
             return MapBaseSalesOrdersShipmentStatus(salesOrders);
           } else {
             return MapBaseSalesOrders(salesOrders);
@@ -96,7 +103,7 @@ namespace Empiria.Trade.Sales.Adapters {
       foreach (var salesOrder in salesOrders) {
         baseSalesOrderDtoList.Add(MapBaseSalesOrderShipmentStatus(salesOrder));
       }
-
+      
       return baseSalesOrderDtoList.ToFixedList();
     }
 
@@ -142,7 +149,7 @@ namespace Empiria.Trade.Sales.Adapters {
         SalesAgentName = order.SalesAgent.Name,
         OrderTotal = order.OrderTotal,
         Status = order.Status,
-        Shipment = GetShippingStatus(order.UID),
+        ShipmentStatus = GetShippingStatus(order.UID),
         StatusName = SalesOrderMapper.MapOrderStatus(order.Status.ToString())
       };
 

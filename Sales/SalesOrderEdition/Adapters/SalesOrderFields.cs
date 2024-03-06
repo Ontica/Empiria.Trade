@@ -162,6 +162,10 @@ namespace Empiria.Trade.Sales.Adapters {
       get; set;
     } = String.Empty;
 
-  } // class SearchOrderFields
+    public string shippingStatus {
+      get; set;
+    } = String.Empty;
 
-} // namespace Empiria.Trade.Sales.Adapters
+    } // class SearchOrderFields
+
+  } // namespace Empiria.Trade.Sales.Adapters
