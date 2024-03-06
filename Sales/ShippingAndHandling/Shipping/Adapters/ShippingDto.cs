@@ -29,9 +29,45 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
     public FixedList<ShippingPalletDto> ShippingPalletsWithPackages {
       get; set;
     } = new FixedList<ShippingPalletDto>();
-    
 
-    public bool CanEdit{
+
+    public ShippingActions Actions {
+      get;set;
+    } = new ShippingActions();
+
+
+  }
+
+
+  public class ShippingActions {
+
+
+    public bool CanEdit {
+      get; set;
+    }
+
+
+    public bool CanDelete {
+      get; set;
+    }
+
+
+    public bool CanCloseEdit {
+      get; set;
+    }
+
+
+    public bool CanPrintShippingLabel {
+      get; set;
+    }
+
+
+    public bool CanPrintOrder {
+      get; set;
+    }
+
+
+    public bool CanCloseShipping {
       get; set;
     }
 

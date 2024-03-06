@@ -45,11 +45,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       FixedList<ShippingEntry> shippingsByStatus = new FixedList<ShippingEntry>(shippingList);
 
       //TODO CAMBIAR STATUS STRING POR ENUM
-      if (query.Status == "Abierto") {
+      if (query.Status == ShippingStatus.Open) {
         shippingsByStatus = shippingList.Where(x => x.CanEdit).ToFixedList();
       }
 
-      if (query.Status == "Cerrado") {
+      if (query.Status == ShippingStatus.Close) {
         shippingsByStatus = shippingList.Where(x => !x.CanEdit).ToFixedList();
       }
 

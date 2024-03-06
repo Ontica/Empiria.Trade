@@ -12,6 +12,15 @@ using System;
 namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
 
+  public enum ShippingQueryType {
+    
+    Shipping,
+
+    Delivery
+
+  }
+
+
   /// <summary>DTO used to manage order shipping fields.</summary>
   public class ShippingFields {
 

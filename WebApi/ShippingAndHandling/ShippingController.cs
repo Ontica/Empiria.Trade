@@ -12,10 +12,11 @@ using Empiria.WebApi;
 using System.Web.Http;
 using Empiria.Trade.Sales.ShippingAndHandling.UseCases;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
+using Empiria.Trade.Core.Catalogues;
 
 namespace Empiria.Trade.WebApi.ShippingAndHandling {
 
-  /// <summary></summary>
+  /// <summary>Query web API used to manage shippings.</summary>
   public class ShippingController : WebApiController {
 
 
@@ -121,7 +122,7 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
     [Route("v4/trade/sales/shipping/parcel-suppliers")]
     public CollectionModel GetPackageTypeList() {
 
-      using (var usecases = ShippingUseCases.UseCaseInteractor()) {
+      using (var usecases = CataloguesUseCases.UseCaseInteractor()) {
 
         FixedList<INamedEntity> packingDetail = usecases.GetParcelSupplierList();
 

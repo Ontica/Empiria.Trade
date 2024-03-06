@@ -46,7 +46,9 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
       shippingDto.OrdersForShipping = MapToOrderForShippingDto(entry.OrdersForShipping);
       shippingDto.ShippingPalletsWithPackages = MapToShippingPalletDto(entry.ShippingPallets);
       shippingDto.ShippingData = MapEntry(entry);
-      shippingDto.CanEdit = entry.CanEdit;
+      shippingDto.Actions.CanEdit = entry.CanEdit;
+      shippingDto.Actions.CanDelete = entry.CanEdit;
+      shippingDto.Actions.CanCloseEdit = entry.CanEdit;
 
       return shippingDto;
     }

@@ -133,14 +133,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
     }
 
 
-    public FixedList<INamedEntity> GetParcelSupplierList() {
-     
-      var catalogueUsecase = CataloguesUseCases.UseCaseInteractor();
-
-      return catalogueUsecase.GetParcelSupplierList();
-    }
-
-
     public ShippingDto GetShippingByUID(string shippingOrderUID) {
       Assertion.Require(shippingOrderUID, nameof(shippingOrderUID));
 

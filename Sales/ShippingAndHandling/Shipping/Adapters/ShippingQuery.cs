@@ -13,6 +13,16 @@ using Empiria.Trade.Orders;
 namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
 
+  public enum ShippingStatus {
+    Open,
+
+    Close
+    // EnCapturaDeDatos = 'Abierto',
+    // EnProcesoDeEnvio = 'Cerrado',
+    // Cerrado = 'Cerrado',
+  }
+
+
   /// <summary>Query used to get order shipping entries.</summary>
   public class ShippingQuery {
 
@@ -27,9 +37,9 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
     } = string.Empty;
 
 
-    public string Status {
+    public ShippingStatus Status {
       get; set;
-    } = string.Empty;
+    } = ShippingStatus.Open;
 
   } // class ShippingQuery
 

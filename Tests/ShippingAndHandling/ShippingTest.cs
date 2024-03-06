@@ -18,6 +18,7 @@ using Empiria.Tests;
 using Empiria.Trade.Sales.ShippingAndHandling.UseCases;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 using Empiria.Trade.Sales.ShippingAndHandling;
+using Empiria.Trade.Core.Catalogues;
 
 namespace Empiria.Trade.Tests {
 
@@ -142,7 +143,7 @@ namespace Empiria.Trade.Tests {
     [Fact]
     public void GetParcelSupplierListTest() {
 
-      var usecase = ShippingUseCases.UseCaseInteractor();
+      var usecase = CataloguesUseCases.UseCaseInteractor();
 
       FixedList<INamedEntity> sut = usecase.GetParcelSupplierList();
 
@@ -220,7 +221,7 @@ namespace Empiria.Trade.Tests {
       ShippingQuery query = new ShippingQuery();
       query.Keywords = "";
       query.ParcelSupplierUID = "";
-      query.Status = "Abierto";
+      query.Status = ShippingStatus.Close;
       FixedList<ShippingEntryDto> sut = usecase.GetShippingsList(query);
 
       Assert.NotNull(sut);
