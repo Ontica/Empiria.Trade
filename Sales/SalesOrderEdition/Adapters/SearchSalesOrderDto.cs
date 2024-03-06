@@ -79,7 +79,7 @@ namespace Empiria.Trade.Sales.Adapters {
   /// Output DTO used to return Shipment status 
   public class BaseSalesOrderShipmentDto : BaseSalesOrderDto {
 
-    public string ShipmentStatus {
+    public string ShippingStatus {
       get; internal set;
     }
 

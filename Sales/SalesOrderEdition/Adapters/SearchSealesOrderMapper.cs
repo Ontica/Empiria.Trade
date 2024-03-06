@@ -68,11 +68,11 @@ namespace Empiria.Trade.Sales.Adapters {
       switch (query.QueryType) {
 
         case QueryType.Sales: {
-          if ((query.shippingStatus != string.Empty) && (query.Status == Orders.OrderStatus.Shipping)) {            
+          if ((query.ShippingStatus != string.Empty) && (query.Status == Orders.OrderStatus.Shipping)) {            
             var list = MapBaseSalesOrdersShipmentStatus(salesOrders);
             var orders = list.ConvertAll(o => (BaseSalesOrderShipmentDto) o);
 
-            return  orders.FindAll(x => x.ShipmentStatus == query.shippingStatus).ToFixedList<ISalesOrderDto>();             
+            return  orders.FindAll(x => x.ShippingStatus == query.ShippingStatus).ToFixedList<ISalesOrderDto>();             
           }
 
           if (query.Status == Orders.OrderStatus.Shipping) {
@@ -149,7 +149,7 @@ namespace Empiria.Trade.Sales.Adapters {
         SalesAgentName = order.SalesAgent.Name,
         OrderTotal = order.OrderTotal,
         Status = order.Status,
-        ShipmentStatus = GetShippingStatus(order.UID),
+        ShippingStatus = GetShippingStatus(order.UID),
         StatusName = SalesOrderMapper.MapOrderStatus(order.Status.ToString())
       };
 

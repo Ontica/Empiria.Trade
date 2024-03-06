@@ -162,7 +162,7 @@ namespace Empiria.Trade.Sales.Adapters {
       get; set;
     } = String.Empty;
 
-    public string shippingStatus {
+    public string ShippingStatus {
       get; set;
     } = String.Empty;
 
