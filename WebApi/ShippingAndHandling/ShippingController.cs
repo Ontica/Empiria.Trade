@@ -145,8 +145,8 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
 
 
     [HttpPost]
-    [Route("v4/trade/sales/shipping/parcel-delivery")]
-    public SingleObjectModel GetShippingOrderForParcelDelivery([FromBody] ShippingFieldsQuery query) {
+    [Route("v4/trade/sales/shipping/by-orders")]
+    public SingleObjectModel GetShippingByOrders([FromBody] ShippingFieldsQuery query) {
 
       using (var usecases = ShippingUseCases.UseCaseInteractor()) {
 
@@ -158,12 +158,13 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
 
 
     [HttpGet]
-    [Route("v4/trade/sales/shipping/parcel-delivery/{shippingOrderUID:guid}")]
-    public SingleObjectModel GetShippingOrder([FromUri] string shippingOrderUID) {
+    [Route("v4/trade/sales/shipping/{shippingOrderUID:guid}/{queryType}")]
+    public SingleObjectModel GetShippingOrder([FromUri] string shippingOrderUID,
+                                              [FromUri] ShippingQueryType queryType) {
 
       using (var usecases = ShippingUseCases.UseCaseInteractor()) {
 
-        ShippingDto shippingOrder = usecases.GetShippingByUID(shippingOrderUID);
+        ShippingDto shippingOrder = usecases.GetShippingByUID(shippingOrderUID, queryType);
 
         return new SingleObjectModel(this.Request, shippingOrder);
       }

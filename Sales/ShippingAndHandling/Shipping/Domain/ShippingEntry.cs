@@ -96,11 +96,17 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
     }
 
 
+    [DataField("ShippingStatus", Default = ShippingStatus.Abierto)]
+    public ShippingStatus Status {
+      get; set;
+    } = ShippingStatus.Abierto;
+
+
     internal string Keywords {
       get {
         return EmpiriaString.BuildKeywords(
 
-          ShippingUID, ShippingGuide, ParcelAmount.ToString(), CustomerAmount.ToString()
+          ShippingUID, ShippingGuide
         );
       }
     }
@@ -155,6 +161,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
       this.CustomerAmount = fields.CustomerAmount;
       this.ShippingDate = DateTime.Now;
       this.DeliveryDate = DateTime.Now;
+      this.Status = fields.Status;
     }
 
 

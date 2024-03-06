@@ -133,6 +133,20 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
     }
 
 
+    public ShippingDto GetShippingByUID(string shippingOrderUID, ShippingQueryType queryType) {
+      Assertion.Require(shippingOrderUID, nameof(shippingOrderUID));
+      Assertion.Require(queryType, nameof(queryType));
+
+      //TODO AGREGAR VALIDACION DE ACTIONS EN BASE A QUERY TYPE
+      //var builder = new ShippingBuilder();
+
+
+
+      return GetShippingByUID(shippingOrderUID);
+
+    }
+
+
     public ShippingDto GetShippingByUID(string shippingOrderUID) {
       Assertion.Require(shippingOrderUID, nameof(shippingOrderUID));
 

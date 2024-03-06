@@ -28,9 +28,9 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
     [Route("v4/trade/sales/shipping/search-for-delivery")]
     public CollectionModel GetShippingList([FromBody] ShippingQuery query) {
 
-      using (var usecases = ShippingUseCases.UseCaseInteractor()) {
+      using (var usecases = DeliveryUseCase.UseCaseInteractor()) {
 
-        FixedList<ShippingEntryDto> shippingList = usecases.GetShippingsList(query);
+        FixedList<ShippingEntryDto> shippingList = usecases.GetShippingsForDelivery(query);
 
         return new CollectionModel(this.Request, shippingList);
       }

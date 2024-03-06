@@ -221,7 +221,7 @@ namespace Empiria.Trade.Tests {
       ShippingQuery query = new ShippingQuery();
       query.Keywords = "";
       query.ParcelSupplierUID = "";
-      query.Status = ShippingStatus.Close;
+      query.Status = ShippingStatus.Abierto;
       FixedList<ShippingEntryDto> sut = usecase.GetShippingsList(query);
 
       Assert.NotNull(sut);

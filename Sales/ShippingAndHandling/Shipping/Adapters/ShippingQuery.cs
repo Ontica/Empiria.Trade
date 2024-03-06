@@ -14,12 +14,26 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
 
   public enum ShippingStatus {
-    Open,
+    
+    Todos = 'T',
 
-    Close
+    Abierto = 'A',
+
+    Cerrado = 'C',
+
+    EnProcesoDeEnvio = 'E'
     // EnCapturaDeDatos = 'Abierto',
     // EnProcesoDeEnvio = 'Cerrado',
     // Cerrado = 'Cerrado',
+  }
+
+
+  public enum ShippingQueryType {
+
+    Shipping,
+
+    Delivery
+
   }
 
 
@@ -39,7 +53,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
     public ShippingStatus Status {
       get; set;
-    } = ShippingStatus.Open;
+    } = ShippingStatus.Todos;
 
   } // class ShippingQuery
 

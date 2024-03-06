@@ -15,7 +15,7 @@ using Empiria.Trade.Sales.ShippingAndHandling.Domain;
 namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
   /// <summary>Use cases used to build delivery.</summary>
-  internal class DeliveryUseCase : UseCase {
+  public class DeliveryUseCase : UseCase {
 
 
     #region Constructors and parsers
@@ -41,7 +41,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
       var shippingBuilder = new ShippingBuilder();
 
       //TODO QUITAR CUANDO SE EMPIECE A MANDAR STATUS DESDE FRONT
-      query.Status = ShippingStatus.Close;
+      query.Status = ShippingStatus.Cerrado;
+
       FixedList<ShippingEntry> entries = shippingBuilder.GetShippingList(query);
 
       return ShippingMapper.MapShippings(entries);
