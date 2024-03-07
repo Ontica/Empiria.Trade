@@ -14,6 +14,7 @@ using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.ShippingAndHandling.Data;
 using Empiria.Trade.Sales.ShippingAndHandling.Domain;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
+using Empiria.Trade.Core;
 
 namespace Empiria.Trade.Sales.ShippingAndHandling {
 
@@ -130,6 +131,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
     public bool CanEdit {
       get; internal set;
     }
+
+
+    public INamedEntity Customer {
+      get; internal set;
+    } = new NamedEntity("","");
 
 
     #endregion Properties

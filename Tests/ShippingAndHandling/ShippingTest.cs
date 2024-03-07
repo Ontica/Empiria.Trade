@@ -221,7 +221,7 @@ namespace Empiria.Trade.Tests {
       ShippingQuery query = new ShippingQuery();
       query.Keywords = "";
       query.ParcelSupplierUID = "";
-      query.Status = ShippingStatus.EnProceso;
+      query.Status = ShippingStatus.Todos;
       FixedList<ShippingEntryDto> sut = usecase.GetShippingsList(query);
 
       Assert.NotNull(sut);
@@ -234,7 +234,7 @@ namespace Empiria.Trade.Tests {
       var usecase = ShippingUseCases.UseCaseInteractor();
 
       ShippingDto sut = usecase.GetShippingByUID(
-        "5fcc47c4-ba69-4c7c-bbc3-324bcd25418e", ShippingQueryType.Shipping);
+        "e4b2f811-b8e1-479a-a199-21fc0ed13e07", ShippingQueryType.Shipping);
 
       Assert.NotNull(sut);
       

@@ -79,6 +79,12 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
   public class ShippingEntryDto : ShippingTotalFieldsDto {
 
 
+    public NamedEntityDto Customer {
+      get;
+      internal set;
+    } = new NamedEntityDto("", "");
+
+
     public string ShippingUID {
       get; set;
     } = string.Empty;

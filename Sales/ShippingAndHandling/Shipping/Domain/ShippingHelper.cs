@@ -65,8 +65,9 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
           shipping.OrdersForShipping = ordersForShipping;
           shipping.OrdersTotal = ordersForShipping.Sum(x => x.OrderTotal);
-          //shipping.Status;
-          //ordersForShipping.First().Order.Status == OrderStatus.Shipping ? true : false;
+          
+          var customer = ordersForShipping.First().Order.Customer;
+          shipping.Customer = new NamedEntity(customer.UID, customer.Name);
         }
       }
     }
@@ -139,6 +140,9 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
                                 orderForShippingList.First().ShippingOrder.ShippingUID)
                                .FirstOrDefault();
 
+        var customer = orderForShippingList.First().Order.Customer;
+
+        shipping.Customer = new NamedEntity(customer.UID, customer.Name);
         shipping.OrdersForShipping = orderForShippingList;
         shipping.CanEdit = orderForShippingList.First().Order.Status == OrderStatus.Shipping ? true : false;
         shipping.OrdersTotal = orderForShippingList.Sum(x => x.OrderTotal);

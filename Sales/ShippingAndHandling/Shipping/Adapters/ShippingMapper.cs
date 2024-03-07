@@ -46,10 +46,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
       shippingDto.OrdersForShipping = MapToOrderForShippingDto(entry.OrdersForShipping);
       shippingDto.ShippingPalletsWithPackages = MapToShippingPalletDto(entry.ShippingPallets);
       shippingDto.ShippingData = MapEntry(entry);
-      //shippingDto.Actions.CanEdit = entry.CanEdit;
-      //shippingDto.Actions.CanDelete = entry.CanEdit;
-      //shippingDto.Actions.CanCloseEdit = entry.CanEdit;
-
+      
       return shippingDto;
     }
 
@@ -85,6 +82,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
       var parcelName = parcel.UID != "" ? parcel.Name : "";
 
       var shippingDto = new ShippingEntryDto {
+        Customer = new NamedEntityDto(entry.Customer.UID, entry.Customer.Name),
         ShippingUID = entry.ShippingOrderId == -1 ? "" : entry.ShippingUID,
         ParcelSupplier = new NamedEntityDto(parcel.UID, parcelName),
         ShippingGuide = entry.ShippingGuide,
