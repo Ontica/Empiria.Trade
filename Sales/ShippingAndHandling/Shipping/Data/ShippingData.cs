@@ -129,6 +129,13 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
         clauses += (clauses != "" ? "AND " : "WHERE ") + $"ParcelSupplierId IN ({parcelSupplierId}) ";
       }
 
+
+      if (query.QueryType == ShippingQueryType.Delivery && query.Status == ShippingStatus.Todos) {
+
+        clauses += (clauses != "" ? "AND " : "WHERE ") + $"ShippingStatus IN ('E', 'C') ";
+      }
+
+
       if (query.Status != ShippingStatus.Todos) {
         
         clauses += (clauses != "" ? "AND ": "WHERE ") + $"ShippingStatus IN ('{(char)query.Status}') ";

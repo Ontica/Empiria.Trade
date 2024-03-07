@@ -14,7 +14,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
 
   public enum ShippingStatus {
-    
+
     Todos = 'T',
 
     EnCaptura = 'A',
@@ -45,13 +45,18 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
 
     public string ParcelSupplierUID {
-      get;set;
+      get; set;
     } = string.Empty;
 
 
     public ShippingStatus Status {
       get; set;
     } = ShippingStatus.Todos;
+
+
+    public ShippingQueryType QueryType {
+      get; set;
+    } = ShippingQueryType.Shipping;
 
   } // class ShippingQuery
 
