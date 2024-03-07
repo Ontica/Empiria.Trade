@@ -171,7 +171,7 @@ namespace Empiria.Trade.Tests {
 
       var usecase = ShippingUseCases.UseCaseInteractor();
 
-      string shippingUID = "68db22ab-891e-466e-80d1-e766fc370bcc";
+      string shippingUID = "5fcc47c4-ba69-4c7c-bbc3-324bcd25418e";
 
       ShippingDto sut = usecase.ChangeOrdersForShippingStatus(shippingUID);
 

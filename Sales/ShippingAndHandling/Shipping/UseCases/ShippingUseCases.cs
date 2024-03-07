@@ -16,6 +16,7 @@ using Empiria.Trade.Sales.ShippingAndHandling.Data;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.UseCases;
 using System.Reflection;
+using System.Net.NetworkInformation;
 
 namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
@@ -49,6 +50,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
       SalesOrderUseCases orderUseCases = new SalesOrderUseCases();
 
       orderUseCases.ChangeOrdersToDeliveryStatus(orders);
+
+      ShippingData.UpdateShippingStatus(shippingOrderUID, ShippingStatus.EnProceso);
 
       return GetShippingByUID(shippingOrderUID);
     }

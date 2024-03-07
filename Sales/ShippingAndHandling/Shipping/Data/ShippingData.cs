@@ -306,6 +306,19 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
     }
 
 
+    static internal void UpdateShippingStatus(string shippingOrderUID, ShippingStatus status) {
+
+      var shippingId = ShippingEntry.Parse(shippingOrderUID).ShippingOrderId;
+
+      string sql = $"UPDATE TRDShipping SET ShippingStatus = '{(char) status}' " +
+                   $"WHERE ShippingOrderId = {shippingId}";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      DataWriter.Execute(dataOperation);
+    }
+
+
     #endregion Private methods
 
   } // class ShippingData
