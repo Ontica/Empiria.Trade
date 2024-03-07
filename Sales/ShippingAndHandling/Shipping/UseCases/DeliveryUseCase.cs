@@ -40,8 +40,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
     public FixedList<ShippingEntryDto> GetShippingsForDelivery(ShippingQuery query) {
       Assertion.Require(query, nameof(query));
 
-      query.QueryType = ShippingQueryType.Delivery;
-
       var shippingBuilder = new ShippingBuilder();
 
       FixedList<ShippingEntry> entries = shippingBuilder.GetShippingList(query);

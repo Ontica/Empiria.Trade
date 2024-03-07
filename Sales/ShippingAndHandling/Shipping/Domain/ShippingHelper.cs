@@ -379,7 +379,9 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     internal void ValidateOrdersStatusForParcelDelivery(FixedList<ShippingOrderItem> ordersForShipping) {
 
       foreach (var order in ordersForShipping) {
-        if (order.Order.Status != OrderStatus.Shipping && order.Order.Status != OrderStatus.Delivery) {
+        if (order.Order.Status != OrderStatus.Shipping && 
+            order.Order.Status != OrderStatus.Delivery &&
+            order.Order.Status != OrderStatus.Closed) {
           Assertion.EnsureFailed("El estatus de los pedidos debe ser 'Envío' o 'Entrega'.");
         }
       }

@@ -158,7 +158,7 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
 
 
     [HttpGet]
-    [Route("v4/trade/sales/shipping/{shippingOrderUID:guid}/{queryType}")]
+    [Route("v4/trade/sales/shipping/{queryType}/{shippingOrderUID:guid}")]
     public SingleObjectModel GetShippingOrder([FromUri] string shippingOrderUID,
                                               [FromUri] ShippingQueryType queryType) {
 

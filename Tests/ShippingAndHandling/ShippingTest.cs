@@ -316,7 +316,7 @@ namespace Empiria.Trade.Tests {
 
     private ShippingFields GetShippingFields() {
       string[] orders = new string[] {
-        "ba011179-c2b2-49d8-9647-b3d8651c9db7"
+        "d0389b37-bea7-400e-904d-e2056bafb723"
       };
 
       ShippingDataFields dataFields = new ShippingDataFields() {

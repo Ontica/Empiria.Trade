@@ -71,6 +71,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       helper.ShippingValidations(helper.GetOrdersForShippingByOrders(fields.Orders));
 
+      fields.ShippingData.Status = ShippingStatus.EnCaptura;
+
       ShippingEntry shipping = CreateOrUpdateShipping(fields.ShippingData);
 
       CreateOrdersForShipping(shipping.ShippingUID, fields.Orders);

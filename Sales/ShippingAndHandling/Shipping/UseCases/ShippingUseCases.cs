@@ -17,6 +17,7 @@ using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.UseCases;
 using System.Reflection;
 using System.Net.NetworkInformation;
+using Empiria.Trade.Sales.Adapters;
 
 namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
@@ -197,7 +198,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
       ShippingEntry shipping = builder.GetShippingEntry(query.Orders);
 
-      return ShippingMapper.MapShippingForParcelDelivery(shipping);
+      ShippingDto shippingDto = ShippingMapper.MapShippingForParcelDelivery(shipping);
+
+      builder.GetActionsByShippingQueryType(shippingDto, ShippingQueryType.Shipping);
+
+      return shippingDto;
     }
 
 

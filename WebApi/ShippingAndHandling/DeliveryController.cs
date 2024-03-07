@@ -17,14 +17,13 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
 
 
   /// <summary>Query web API used to manage shippings for delivery.</summary>
-  internal class DeliveryController : WebApiController {
+  public class DeliveryController : WebApiController {
 
 
     #region Web apis
 
 
     [HttpPost]
-    [Route("v4/trade/sales/delivery/search")]
     [Route("v4/trade/sales/shipping/search-for-delivery")]
     public CollectionModel GetShippingList([FromBody] ShippingQuery query) {
 
