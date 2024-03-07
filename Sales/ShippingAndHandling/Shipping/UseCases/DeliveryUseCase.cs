@@ -63,7 +63,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
       var shippingUseCase = new ShippingUseCases();
 
-      return shippingUseCase.GetShippingByUID(shippingOrderUID);
+      return shippingUseCase.GetShippingByUID(shippingOrderUID, ShippingQueryType.Delivery);
 
     }
 

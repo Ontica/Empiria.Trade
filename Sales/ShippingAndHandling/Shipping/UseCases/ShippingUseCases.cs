@@ -53,8 +53,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
       orderUseCases.ChangeOrdersToDeliveryStatus(orders);
 
       ShippingData.UpdateShippingStatus(shippingOrderUID, ShippingStatus.EnProceso);
-
-      return GetShippingByUID(shippingOrderUID);
+      
+      return GetShippingByUID(shippingOrderUID, ShippingQueryType.Shipping);
     }
 
 
@@ -73,7 +73,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
       
       builder.CreateOrdersForShipping(shippingOrderUID, orders);
 
-      return GetShippingByUID(shippingOrderUID);
+      return GetShippingByUID(shippingOrderUID, ShippingQueryType.Shipping);
     }
 
 
@@ -84,7 +84,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
       ShippingEntry shippingOrder = builder.CreateShippingOrder(fields);
 
-      return GetShippingByUID(shippingOrder.ShippingUID);
+      return GetShippingByUID(shippingOrder.ShippingUID, ShippingQueryType.Shipping);
 
     }
 
@@ -97,7 +97,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
       builder.CreateShippingPallet(shippingUID, fields);
 
-      return GetShippingByUID(shippingUID);
+      return GetShippingByUID(shippingUID, ShippingQueryType.Shipping);
     }
 
 
@@ -107,7 +107,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
       ShippingData.DeleteOrderForShipping(orderUID);
 
-      return GetShippingByUID(shippingOrderUID);
+      return GetShippingByUID(shippingOrderUID, ShippingQueryType.Shipping);
     }
     
 
@@ -128,7 +128,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
       ShippingData.DeleteShippingPalletByUID(shippingPalletUID);
 
-      return GetShippingByUID(shippingUID);
+      return GetShippingByUID(shippingUID, ShippingQueryType.Shipping);
     }
 
 
@@ -140,14 +140,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
     public ShippingDto GetShippingByUID(string shippingOrderUID, ShippingQueryType queryType) {
       Assertion.Require(shippingOrderUID, nameof(shippingOrderUID));
-      Assertion.Require(queryType, nameof(queryType));
-
-      return GetShippingByUID(shippingOrderUID);
-    }
-
-
-    public ShippingDto GetShippingByUID(string shippingOrderUID) {
-      Assertion.Require(shippingOrderUID, nameof(shippingOrderUID));
 
       var builder = new ShippingBuilder();
 
@@ -155,7 +147,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
       ShippingDto shippingDto = ShippingMapper.MapShippingForParcelDelivery(shippingEntry);
 
-      builder.GetActionsByShippingQueryType(shippingDto, ShippingQueryType.Shipping);
+      builder.GetActionsByShippingQueryType(shippingDto, queryType);
 
       return shippingDto;
     }
@@ -197,8 +189,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
       ShippingEntry shipping = builder.GetShippingEntry(query.Orders);
 
-      return ShippingMapper.MapShippingForParcelDelivery(shipping);
+      ShippingDto shippingDto= ShippingMapper.MapShippingForParcelDelivery(shipping);
 
+      builder.GetActionsByShippingQueryType(shippingDto, ShippingQueryType.Shipping);
+
+      return shippingDto;
     }
 
 
@@ -212,7 +207,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
       ShippingEntry shippingOrder = builder.UpdateShippingOrder(fields);
 
-      return GetShippingByUID(shippingOrder.ShippingUID);
+      return GetShippingByUID(shippingOrder.ShippingUID, ShippingQueryType.Shipping);
     }
 
 
@@ -244,7 +239,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
       builder.UpdateShippingPallet(shippingUID, shippingPalletUID, fields);
 
-      return GetShippingByUID(shippingUID);
+      return GetShippingByUID(shippingUID, ShippingQueryType.Shipping);
     }
 
 
