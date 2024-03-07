@@ -116,7 +116,7 @@ namespace Empiria.Trade.Sales.UseCases {
           throw Assertion.EnsureNoReachThisCode($"It is invalid queryType:{fields.QueryType}");
         }
 
-      } // switch (fields.QueryType)
+      } 
 
     }
 
@@ -143,6 +143,15 @@ namespace Empiria.Trade.Sales.UseCases {
         DeliverySalesOrder(orderUID);
       }     
     
+    }
+
+    public void ChangeOrdersToCloseStatus(string[] ordersUID) {
+      Assertion.Require(ordersUID, "ordersUID");
+
+      foreach (var orderUID in ordersUID) {
+        CloseSalesOrder(orderUID);
+      }
+
     }
 
     public ISalesOrderDto ApplySalesOrder(string orderUID) {
