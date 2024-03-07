@@ -85,6 +85,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
       ShippingEntry shippingOrder = builder.CreateShippingOrder(fields);
 
       return GetShippingByUID(shippingOrder.ShippingUID);
+
     }
 
 
@@ -141,12 +142,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
       Assertion.Require(shippingOrderUID, nameof(shippingOrderUID));
       Assertion.Require(queryType, nameof(queryType));
 
-      ShippingDto shipping = GetShippingByUID(shippingOrderUID);
-
-      var builder = new ShippingBuilder();
-      builder.GetActionsByShippingQueryType(shipping, queryType);
-
-      return shipping;
+      return GetShippingByUID(shippingOrderUID);
     }
 
 
@@ -157,8 +153,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
       ShippingEntry shippingEntry = builder.GetShippingByUID(shippingOrderUID);
 
-      return ShippingMapper.MapShippingForParcelDelivery(shippingEntry);
+      ShippingDto shippingDto = ShippingMapper.MapShippingForParcelDelivery(shippingEntry);
 
+      builder.GetActionsByShippingQueryType(shippingDto, ShippingQueryType.Shipping);
+
+      return shippingDto;
     }
 
 
@@ -198,11 +197,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
       ShippingEntry shipping = builder.GetShippingEntry(query.Orders);
 
-      ShippingDto shippingDto = ShippingMapper.MapShippingForParcelDelivery(shipping);
+      return ShippingMapper.MapShippingForParcelDelivery(shipping);
 
-      builder.GetActionsByShippingQueryType(shippingDto, ShippingQueryType.Shipping);
-
-      return shippingDto;
     }
 
 
