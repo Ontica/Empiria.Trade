@@ -17,14 +17,12 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
     
     Todos = 'T',
 
-    Abierto = 'A',
+    EnCaptura = 'A',
 
-    Cerrado = 'C',
+    EnProceso = 'E',
 
-    EnProcesoDeEnvio = 'E'
-    // EnCapturaDeDatos = 'Abierto',
-    // EnProcesoDeEnvio = 'Cerrado',
-    // Cerrado = 'Cerrado',
+    Cerrado = 'C'
+
   }
 
 

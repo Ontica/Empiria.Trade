@@ -39,25 +39,17 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     #region Public methods
 
 
-    internal FixedList<ShippingEntry> FilterShippingListByStatus(
+    internal FixedList<ShippingEntry> GetOrderingShippingList(
       ShippingQuery query, FixedList<ShippingEntry> shippingList) {
 
-      FixedList<ShippingEntry> shippingsByStatus = new FixedList<ShippingEntry>(shippingList);
+      FixedList<ShippingEntry> orderingShippingList = new FixedList<ShippingEntry>();
 
-      if (query.Status == ShippingStatus.Abierto) {
-        shippingsByStatus = shippingList.Where(x => x.CanEdit).ToFixedList();
-      }
-
-      if (query.Status == ShippingStatus.Cerrado) {
-        shippingsByStatus = shippingList.Where(x => !x.CanEdit).ToFixedList();
-      }
-
-      shippingsByStatus = shippingsByStatus.OrderByDescending(x => x.CanEdit)
+      orderingShippingList = shippingList.OrderByDescending(x => x.Status)
                          .ThenBy(x => x.ParcelSupplierId)
                          .ThenBy(x => x.ShippingDate)
                          .ThenBy(x => x.ShippingGuide).ToFixedList();
 
-      return shippingsByStatus;
+      return orderingShippingList;
     }
 
 
@@ -73,7 +65,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
           shipping.OrdersForShipping = ordersForShipping;
           shipping.OrdersTotal = ordersForShipping.Sum(x => x.OrderTotal);
-          shipping.CanEdit = ordersForShipping.First().Order.Status == OrderStatus.Shipping ? true : false;
+          //shipping.Status;
+          //ordersForShipping.First().Order.Status == OrderStatus.Shipping ? true : false;
         }
       }
     }
@@ -426,7 +419,30 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
     }
 
-    
+
+    internal ShippingActions GetActionsByShippingQueryType(
+       ShippingStatus status, ShippingQueryType queryType) {
+
+      ShippingActions shippingActions = new ShippingActions();
+
+      if (queryType == ShippingQueryType.Shipping && status == ShippingStatus.EnCaptura) {
+
+        shippingActions.CanEdit = true;
+        shippingActions.CanDelete = true;
+        shippingActions.CanCloseEdit = true;
+
+      } else if (queryType == ShippingQueryType.Delivery && status == ShippingStatus.EnProceso) {
+
+        shippingActions.CanPrintShippingLabel = true;
+        shippingActions.CanPrintOrder = true;
+        shippingActions.CanCloseShipping = true;
+
+      }
+
+      return shippingActions;
+    }
+
+
 
 
     #endregion Private methods

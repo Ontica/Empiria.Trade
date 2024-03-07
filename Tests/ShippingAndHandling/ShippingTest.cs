@@ -221,7 +221,7 @@ namespace Empiria.Trade.Tests {
       ShippingQuery query = new ShippingQuery();
       query.Keywords = "";
       query.ParcelSupplierUID = "";
-      query.Status = ShippingStatus.Abierto;
+      query.Status = ShippingStatus.EnProceso;
       FixedList<ShippingEntryDto> sut = usecase.GetShippingsList(query);
 
       Assert.NotNull(sut);
@@ -233,7 +233,8 @@ namespace Empiria.Trade.Tests {
 
       var usecase = ShippingUseCases.UseCaseInteractor();
 
-      ShippingDto sut = usecase.GetShippingByUID("31841ac9-168a-4b32-8b3c-65d1db9c7930");
+      ShippingDto sut = usecase.GetShippingByUID(
+        "5fcc47c4-ba69-4c7c-bbc3-324bcd25418e", ShippingQueryType.Shipping);
 
       Assert.NotNull(sut);
       
@@ -315,14 +316,13 @@ namespace Empiria.Trade.Tests {
 
     private ShippingFields GetShippingFields() {
       string[] orders = new string[] {
-        "f960c77a-1873-477b-a7af-75f99a6df41d",
-        "8a15068a-3bc2-4693-a415-a9e3410f63fc"
+        "ba011179-c2b2-49d8-9647-b3d8651c9db7"
       };
 
       ShippingDataFields dataFields = new ShippingDataFields() {
         ShippingUID = "",
-        ParcelSupplierUID = "8521a10b-0607-4d45-8614-385aba701b1r",
-        ShippingGuide = "GUIA XD 0001",
+        ParcelSupplierUID = "g5se58ab-75d0-4e8f-bed4-2305e5er2t55",
+        ShippingGuide = "GUIA CASTOR 0001",
         ParcelAmount = 200,
         CustomerAmount = 50
       };

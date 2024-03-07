@@ -126,8 +126,12 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
       if (query.ParcelSupplierUID != string.Empty) {
         var parcelSupplierId = SimpleObjectData.Parse(query.ParcelSupplierUID).Id;
         
-        clauses += clauses != "" ? $"AND ParcelSupplierId IN ({parcelSupplierId}) "
-                                 : $"WHERE ParcelSupplierId IN ({parcelSupplierId}) ";
+        clauses += (clauses != "" ? "AND " : "WHERE ") + $"ParcelSupplierId IN ({parcelSupplierId}) ";
+      }
+
+      if (query.Status != ShippingStatus.Todos) {
+        
+        clauses += (clauses != "" ? "AND ": "WHERE ") + $"ShippingStatus IN ('{(char)query.Status}') ";
       }
 
       string sql = $"SELECT * FROM TRDShipping {clauses}";

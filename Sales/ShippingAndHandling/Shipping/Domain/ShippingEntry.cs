@@ -96,10 +96,10 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
     }
 
 
-    [DataField("ShippingStatus", Default = ShippingStatus.Abierto)]
+    [DataField("ShippingStatus", Default = ShippingStatus.EnCaptura)]
     public ShippingStatus Status {
       get; set;
-    } = ShippingStatus.Abierto;
+    } = ShippingStatus.EnCaptura;
 
 
     internal string Keywords {

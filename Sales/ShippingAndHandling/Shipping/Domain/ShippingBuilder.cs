@@ -65,61 +65,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     }
 
 
-    internal void UpdateShippingPallet(string shippingUID, string shippingPalletUID,
-                                       ShippingPalletFields fields) {
-
-      ComparePackagesToRemoveFromPallet(shippingPalletUID, fields.Packages);
-
-      CreatePackagesIfNotExistInPallet(shippingPalletUID, fields.Packages);
-
-      ShippingPallet pallet = new ShippingPallet(shippingUID, fields, shippingPalletUID);
-
-      pallet.Save();
-    }
-
-
-    private void CreatePackagesIfNotExistInPallet(string shippingPalletUID, string[] packagesUID) {
-      
-      var shippingPackages = ShippingData.GetShippingPackagesByPalletUID(shippingPalletUID);
-
-      foreach (var packageUID in packagesUID) {
-
-        if (!shippingPackages.Any(x => x.OrderPacking.UID.Equals(packageUID))) {
-
-          var pallet = ShippingPallet.Parse(shippingPalletUID);
-          var shippingPackage = new ShippingPackage(packageUID, pallet);
-          shippingPackage.Save();
-        }
-      }
-    }
-
-
-    private void ComparePackagesToRemoveFromPallet(string shippingPalletUID, string[] packagesUID) {
-     
-      var shippingPackages = ShippingData.GetShippingPackagesByPalletUID(shippingPalletUID);
-
-      foreach (var shippingPackage in shippingPackages) {
-
-        var packaging = PackageForItem.Parse(shippingPackage.OrderPacking.Id);
-
-        if (!packagesUID.Any(x => x.Equals(packaging.UID))) {
-          ShippingData.DeleteShippingPackageById(shippingPackage.ShippingPackageId);
-        }
-      }
-    }
-
-
-    private void CreatePackagesForPallet(string[] packages, ShippingPallet pallet) {
-
-      foreach (var package in packages) {
-
-        var shippingOrder = new ShippingPackage(package, pallet);
-        shippingOrder.Save();
-
-      }
-    }
-
-
     internal ShippingEntry CreateShippingOrder(ShippingFields fields) {
 
       var helper = new ShippingHelper();
@@ -131,6 +76,48 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       CreateOrdersForShipping(shipping.ShippingUID, fields.Orders);
 
       return shipping;
+    }
+
+
+    internal void DeleteShipping(string shippingOrderUID) {
+
+      FixedList<ShippingPallet> pallets = ShippingData.GetPalletByShippingUID(shippingOrderUID);
+
+      foreach (var pallet in pallets) {
+        ShippingData.DeleteShippingPackageByPalletUID(pallet.ShippingPalletUID);
+      }
+
+      ShippingData.DeleteShippingPalletsByShippingUID(shippingOrderUID);
+
+      ShippingData.DeleteOrdersForShippingByShippingUID(shippingOrderUID);
+
+      ShippingData.DeleteShipping(shippingOrderUID);
+
+    }
+
+
+    internal void GetActionsByShippingQueryType(ShippingDto shipping, ShippingQueryType queryType) {
+
+      var helper = new ShippingHelper();
+      shipping.Actions = helper.GetActionsByShippingQueryType(shipping.ShippingData.Status, queryType);
+      
+    }
+
+
+    internal string[] GetOrdersUIDList(string shippingOrderUID) {
+
+      var ordersForShipping = ShippingData.GetOrdersForShippingByShippingId(shippingOrderUID);
+
+      List<string> orderList = new List<string>();
+
+      foreach (var order in ordersForShipping) {
+        orderList.Add(order.Order.UID);
+      }
+
+      List<string> orderList2 = new List<string>();
+      orderList2.AddRange(ordersForShipping.Select(x => x.Order.UID));
+
+      return orderList.ToArray();
     }
 
 
@@ -188,7 +175,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       helper.GetOrdersForShippingByEntry(shippingList);
 
-      return helper.FilterShippingListByStatus(query, shippingList);
+      return helper.GetOrderingShippingList(query, shippingList);
     }
 
 
@@ -201,10 +188,65 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       return CreateOrUpdateShipping(fields.ShippingData);
     }
 
+
+    internal void UpdateShippingPallet(string shippingUID, string shippingPalletUID,
+                                       ShippingPalletFields fields) {
+
+      ComparePackagesToRemoveFromPallet(shippingPalletUID, fields.Packages);
+
+      CreatePackagesIfNotExistInPallet(shippingPalletUID, fields.Packages);
+
+      ShippingPallet pallet = new ShippingPallet(shippingUID, fields, shippingPalletUID);
+
+      pallet.Save();
+    }
+
     #endregion Public methods
 
 
     #region Private methods
+
+
+    private void ComparePackagesToRemoveFromPallet(string shippingPalletUID, string[] packagesUID) {
+
+      var shippingPackages = ShippingData.GetShippingPackagesByPalletUID(shippingPalletUID);
+
+      foreach (var shippingPackage in shippingPackages) {
+
+        var packaging = PackageForItem.Parse(shippingPackage.OrderPacking.Id);
+
+        if (!packagesUID.Any(x => x.Equals(packaging.UID))) {
+          ShippingData.DeleteShippingPackageById(shippingPackage.ShippingPackageId);
+        }
+      }
+    }
+
+
+    private void CreatePackagesForPallet(string[] packages, ShippingPallet pallet) {
+
+      foreach (var package in packages) {
+
+        var shippingOrder = new ShippingPackage(package, pallet);
+        shippingOrder.Save();
+
+      }
+    }
+
+
+    private void CreatePackagesIfNotExistInPallet(string shippingPalletUID, string[] packagesUID) {
+
+      var shippingPackages = ShippingData.GetShippingPackagesByPalletUID(shippingPalletUID);
+
+      foreach (var packageUID in packagesUID) {
+
+        if (!shippingPackages.Any(x => x.OrderPacking.UID.Equals(packageUID))) {
+
+          var pallet = ShippingPallet.Parse(shippingPalletUID);
+          var shippingPackage = new ShippingPackage(packageUID, pallet);
+          shippingPackage.Save();
+        }
+      }
+    }
 
 
     private ShippingEntry CreateOrUpdateShipping(ShippingDataFields shippingData) {
@@ -214,40 +256,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       shippingOrder.Save();
 
       return shippingOrder;
-    }
-
-
-    internal string[] GetOrdersUIDList(string shippingOrderUID) {
-
-      var ordersForShipping = ShippingData.GetOrdersForShippingByShippingId(shippingOrderUID);
-
-      List<string> orderList = new List<string>();
-
-      foreach (var order in ordersForShipping) {
-        orderList.Add(order.Order.UID);
-      }
-
-      List<string> orderList2 = new List<string>();
-      orderList2.AddRange(ordersForShipping.Select(x => x.Order.UID));
-
-      return orderList.ToArray();
-    }
-
-
-    internal void DeleteShipping(string shippingOrderUID) {
-
-      FixedList<ShippingPallet> pallets = ShippingData.GetPalletByShippingUID(shippingOrderUID);
-
-      foreach (var pallet in pallets) {
-        ShippingData.DeleteShippingPackageByPalletUID(pallet.ShippingPalletUID);
-      }
-
-      ShippingData.DeleteShippingPalletsByShippingUID(shippingOrderUID);
-
-      ShippingData.DeleteOrdersForShippingByShippingUID(shippingOrderUID);
-
-      ShippingData.DeleteShipping(shippingOrderUID);
-
     }
 
 

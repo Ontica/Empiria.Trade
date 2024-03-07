@@ -119,7 +119,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
     } = new DateTime();
 
 
-    public bool Status {
+    public ShippingStatus Status {
       get; set;
     }
 

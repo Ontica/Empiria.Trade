@@ -59,7 +59,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
     public ShippingStatus Status {
       get; set;
-    } = ShippingStatus.Abierto;
+    } = ShippingStatus.EnCaptura;
 
   }
 
