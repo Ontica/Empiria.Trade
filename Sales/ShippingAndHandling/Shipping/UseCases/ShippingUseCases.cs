@@ -25,7 +25,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
     #region Constructors and parsers
 
-    protected ShippingUseCases() {
+    public ShippingUseCases() {
       // no-op
     }
 

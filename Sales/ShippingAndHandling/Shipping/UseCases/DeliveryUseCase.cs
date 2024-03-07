@@ -10,7 +10,9 @@
 using System;
 using Empiria.Services;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
+using Empiria.Trade.Sales.ShippingAndHandling.Data;
 using Empiria.Trade.Sales.ShippingAndHandling.Domain;
+using Empiria.Trade.Sales.UseCases;
 
 namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
@@ -46,6 +48,26 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
       FixedList<ShippingEntry> entries = shippingBuilder.GetShippingList(query);
 
       return ShippingMapper.MapShippings(entries);
+    }
+
+
+    public ShippingDto UpdateShippingStatus(string shippingOrderUID) {
+      Assertion.Require(shippingOrderUID, nameof(shippingOrderUID));
+
+      var builder = new ShippingBuilder();
+
+      var orders = builder.GetOrdersUIDList(shippingOrderUID);
+
+      SalesOrderUseCases orderUseCases = new SalesOrderUseCases();
+
+      orderUseCases.ChangeOrdersToCloseStatus(orders);
+
+      ShippingData.UpdateShippingStatus(shippingOrderUID, ShippingStatus.Cerrado);
+
+      var shippingUseCase = new ShippingUseCases();
+
+      return shippingUseCase.GetShippingByUID(shippingOrderUID);
+
     }
 
 

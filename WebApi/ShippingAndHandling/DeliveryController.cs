@@ -36,6 +36,19 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
       }
     }
 
+
+    [HttpPost]
+    [Route("v4/trade/sales/shipping/{shippingOrderUID:guid}/close-shipping")]
+    public SingleObjectModel UpdateShippingStatus([FromUri] string shippingOrderUID) {
+
+      using (var usecases = DeliveryUseCase.UseCaseInteractor()) {
+
+        ShippingDto shippingOrder = usecases.UpdateShippingStatus(shippingOrderUID);
+
+        return new SingleObjectModel(this.Request, shippingOrder);
+      }
+    }
+
     #endregion Web apis
 
   } // class DeliveryController

@@ -24,7 +24,7 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
 
 
     [HttpPost]
-    [Route("v4/trade/sales/shipping/{shippingOrderUID:guid}/send")]
+    [Route("v4/trade/sales/shipping/{shippingOrderUID:guid}/close-edition")]
     public SingleObjectModel ChangeOrdersForShippingStatus([FromUri] string shippingOrderUID) {
 
       using (var usecases = ShippingUseCases.UseCaseInteractor()) {
