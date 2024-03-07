@@ -39,7 +39,9 @@ namespace Empiria.Trade.Sales.UseCases {
       Assertion.Require(fields, "fields");
 
       SalesOrder order;
-            
+
+      ValidateOrderItemsExistence(fields.Items);
+
       if (fields.UID.Length != 0) {
         order = SalesOrder.Parse(fields.UID);
         order.Update(fields);
@@ -55,7 +57,8 @@ namespace Empiria.Trade.Sales.UseCases {
       Assertion.Require(fields, "fields");
 
       ValidateShippingMethod(fields);
-           
+      ValidateOrderItemsExistence(fields.Items);
+
       var order = new SalesOrder(fields);
 
       order.Save();
@@ -172,10 +175,12 @@ namespace Empiria.Trade.Sales.UseCases {
 
     public ISalesOrderDto UpdateSalesOrder(SalesOrderFields fields) {
       Assertion.Require(fields, "fields");
-            
+                  
       if (fields.Status != Orders.OrderStatus.Captured) {
         Assertion.RequireFail($"It is only possible to update orders in the Captured status your order status is:{fields.Status}");
       }
+
+      ValidateOrderItemsExistence(fields.Items);
 
       var order = SalesOrder.Parse(fields.UID);
 
@@ -240,8 +245,29 @@ namespace Empiria.Trade.Sales.UseCases {
         throw Assertion.EnsureNoReachThisCode($"It is customer address is mandatory.");
       }
     }
-       
-   
+
+    private void ValidateOrderItemsExistence(FixedList<SalesOrderItemsFields> items) {
+      foreach (var item in items) {
+        var vendor = VendorProduct.Parse(item.VendorProductUID);
+        var productExistence = GetItemExistence(vendor.Id);
+
+        if (productExistence < item.Quantity) {
+          throw Assertion.EnsureNoReachThisCode($"No hay existencia suficiente. del producto {vendor.ProductFields.ProductCode} {vendor.ProductFields.ProductName}");
+        }
+      }
+
+    }
+
+    private decimal GetItemExistence(int vendorProductId) {
+
+      var usecase = CataloguesUseCases.UseCaseInteractor();
+      FixedList<SalesInventoryStock> sut = usecase.GetInventoryStockByVendorProduct(vendorProductId);
+
+      return sut[0].Stock;
+    }
+
+    
+
     #endregion Private methods
 
   } // class SalesOrderUseCases
