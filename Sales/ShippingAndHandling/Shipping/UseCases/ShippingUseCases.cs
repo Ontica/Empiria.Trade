@@ -139,7 +139,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
 
     public ShippingDto GetShippingByUID(string shippingOrderUID, ShippingQueryType queryType) {
-      Assertion.Require(shippingOrderUID, nameof(shippingOrderUID));
+      Assertion.Require(shippingOrderUID, "shippingOrderUID");
+      Assertion.Require(queryType, nameof(queryType));
 
       var builder = new ShippingBuilder();
 

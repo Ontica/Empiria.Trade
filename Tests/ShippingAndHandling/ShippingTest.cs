@@ -201,8 +201,8 @@ namespace Empiria.Trade.Tests {
 
       ShippingFieldsQuery query = new ShippingFieldsQuery {
         Orders = new[] {
-          "5e145da2-9858-4bfe-a31f-3b6ea071f91f",
-          "555a87cc-5155-4550-b60c-3f765ee33006"
+          "ba011179-c2b2-49d8-9647-b3d8651c9db7",
+          "4c2b7b79-90f3-46c9-ae45-548b4fe518cc"
         }
       };
 
@@ -234,7 +234,7 @@ namespace Empiria.Trade.Tests {
       var usecase = ShippingUseCases.UseCaseInteractor();
 
       ShippingDto sut = usecase.GetShippingByUID(
-        "e4b2f811-b8e1-479a-a199-21fc0ed13e07", ShippingQueryType.Shipping);
+        "5be2ecc1-a5d3-41b8-a011-868936ccec00", ShippingQueryType.Shipping);
 
       Assert.NotNull(sut);
       
