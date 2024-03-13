@@ -80,8 +80,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
 
     public NamedEntityDto Customer {
-      get;
-      internal set;
+      get; set;
     } = new NamedEntityDto("", "");
 
 
