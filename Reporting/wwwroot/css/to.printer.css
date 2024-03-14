@@ -1,0 +1,373 @@
+﻿body
+{
+	font-size: 8pt;
+	margin: 0px 0px 0px 0px;
+	color: #000000;
+	font-family: Arial;
+	background-color: #ffffff;
+}
+h1
+{
+	font-weight: bold;
+	font-size: 16pt;
+	margin-bottom: 4px;
+	color: #000000;
+	font-family: Arial;
+}
+h2 {
+	font-size: 12pt;
+	font-weight: bold;
+	margin-bottom: 0px;
+	color: #000000;
+	font-family: Arial;
+	height: 14px;
+}
+h3 {
+	font-size: 12pt;
+	margin-bottom: 0px;
+	color: #000000;
+	font-family: Arial;
+}
+h4 {
+	font-size: 8pt;
+	margin-top: 20px;
+	margin-bottom: -10px;
+  font-weight: bold;
+	color: #fdfdfd;
+	font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
+	background-color: #7f7f7f;
+	padding: 6pt 0pt 6pt 4pt;
+}
+h5
+{
+	font-weight: normal;
+	font-size: 8pt;
+	margin-bottom: 2px;
+	color: #4682b4;
+	font-family: Tahoma;
+}
+.arrow
+{
+	font-weight: bold;
+	font-family: Wingdings;
+}
+.upperSeparator
+{
+	border-top: #f0f0f0 1px solid;
+}
+.indentedText
+{
+	margin-left: 6px;
+}
+.ghostText
+{
+	color: #a9a9a9;
+}
+.ghostBullet
+{
+	font-weight: bold;
+	color: #a9a9a9;
+}
+a:link
+{
+	color: #191970;
+	text-decoration: none;
+}
+a:visited
+{
+	color: #191970;
+	text-decoration: none;
+}
+a:active
+{
+	color: #191970;
+	text-decoration: none;
+}
+a:hover
+{
+	color: #191970;
+	text-decoration: underline;
+}
+.imageButton
+{
+	cursor: hand;
+	margin-right: 4px;
+}
+.txtQuantity
+{
+	text-align: right;
+}
+img
+{
+	border-right: medium none;
+	border-top: medium none;
+	border-left: medium none;
+	cursor: auto;
+	border-bottom: medium none;
+}
+select
+{
+	font-size: 8pt;
+	font-family: Arial, Tahoma, Helvetica, sans-serif;
+	height: 20px;
+}
+textarea
+{
+	border-right: #4682b4 1px outset;
+	border-top: #4682b4 1px outset;
+	font-size: 8pt;
+	border-left: #4682b4 1px outset;
+	border-bottom: #4682b4 1px outset;
+	font-family: Arial, Tahoma, Helvetica, sans-serif;
+}
+input
+{
+	border-right: #4682b4 1px solid;
+	border-top: #4682b4 1px solid;
+	font-size: 8pt;
+	border-left: #4682b4 1px solid;
+	border-bottom: #4682b4 1px solid;
+	font-family: Arial, Tahoma, Helvetica, sans-serif;
+	height: 20px;
+}
+table
+{
+	font-size: 8pt;
+	margin: 0px;
+	font-family: Tahoma, Arial, Helvetica, sans-serif;
+}
+.headerText
+{
+	font-weight: bold;
+	font-size: 12pt;
+	color: #ffdab9;
+	font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
+}
+.subHeaderRow
+{
+	border-right: medium none;
+	border-top: medium none;
+	font-weight: 600;
+	font-size: 10pt;
+	border-left: medium none;
+	color: #fffacd;
+	border-bottom: #ffdab9 1px solid;
+	font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
+}
+.checkBoxControl
+{
+	border: 0px, 0px, 0px, 0px;
+	padding: 0px, 0px, 0px, 0px;
+	margin: 0px, 0px, 0px, 0px;
+	width: 16px;
+	height: 16px;
+}
+.subHeaderText
+{
+	font-weight: bold;
+	font-size: 10pt;
+	color: #ffdab9;
+	font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif, sans-serif;
+}
+.subHeaderRowText
+{
+	font-weight: 600;
+	font-size: 10pt;
+	color: #fffacd;
+	font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
+}
+.dataGridHandler
+{
+	border-right: #b0c4de 1px solid;
+	padding-right: 0px;
+	border-top: #b0c4de 1px solid;
+	border-bottom: #b0c4de 1px solid;
+	padding-left: 2px;
+	padding-bottom: 2px;
+	border-left: #b0c4de 1px solid;
+	color: #4682b4;
+	padding-top: 2px;
+	font-family: Arial;
+	background-color: #f0f0f0;
+}
+table.dataGrid
+{
+	border-right: #bebebe 1px solid;
+	padding-right: 0px;
+	padding-left: 0px;
+	padding-bottom: 0px;
+	border-left: #bebebe 1px solid;
+	border: none;
+	color: #191970;
+	padding-top: 0px;
+	border-bottom: #bebebe 1px solid;
+	position: static;
+	background-color: #fdfdfd;
+}
+table.dataGrid tr
+{
+	margin-right: 0pt;
+}
+table.dataGrid tr td
+{
+	border-right: #c4d5eb 0px solid;
+	padding-right: 2px;
+	padding-left: 5px;
+	padding-bottom: 2px;
+	padding-top: 2px;
+	border-bottom: #c4d5eb 0px solid;
+	border: none;
+	padding: 0px;
+}
+table.dataGrid tr td a:link {
+	color: #124093;
+}
+table.dataGrid tr td a:hover {
+	color: #124093;
+}
+table.dataGrid tr td a:link {
+	color: #124093;
+}
+table.dataGrid tr td a:visited {
+	color: #124093;
+}
+table.dataGrid tr td a:hover {
+	color: #124093;
+	text-decoration: underline;
+}
+table .headerRow td {
+	color: #191970;
+	font-family: Arial;
+	font-weight: bold;
+}
+table.dataGrid .errorCell {
+	border-right: #000066 3px solid;
+	border-top: #000066 3px solid;
+	border-left: #000066 3px solid;
+	color: #000066;
+	border-bottom: #000066 3px solid;
+	font-family: Tahoma;
+	height: 22px;
+	background-color: #c0c0c0;
+}
+.borderHeaderRow
+{
+  font-size: 8pt;
+  margin-top: 20px;
+  margin-bottom: -10px;
+  color: #000000;
+  font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
+  padding: 4pt 0pt 4pt 4pt;
+  background-color: #f2f2f2;
+}
+.borderHeaderRow td {
+  height: 16pt;
+  font-weight: bold;
+  border-top: 4px solid #3a3a3a; border-bottom: 1px solid #3a3a3a;
+}
+
+.upperSeparatorRow td {
+	border-top: 1px dotted #3a3a3a;
+}
+
+table.dataGrid .messageHeaderRow td {
+	color: #191970;
+	font-family: Tahoma;
+	height: 22px;
+	background-color: #ffffff;
+	border-top: #6a6a6a 8px solid;
+	padding-left: 8px;
+	padding-right: 8px;
+}
+
+table.dataGrid .oddRow {
+	color: #191970;
+	background-color: #ffffff;
+	height: 22px;
+}
+table.dataGrid .evenRow {
+	color: #191970;
+	height: 22px;
+	background-color: #f8f8f8;
+}
+table.dataGrid .oddErrRow {
+	color: #191970;
+	height: 22px;
+	background-color: #ffe7d9;
+}
+table.dataGrid .evenErrRow {
+	color: #191970;
+	height: 22px;
+	background-color: #ffd6c8;
+}
+table.dataGrid .oddRowGreen {
+	color: #191970;
+	background-color: #b0c4de;
+}
+table.dataGrid .transparentRow {
+	color: #ffffff;
+	background-color: #5980c6;
+}
+table.dataGrid .totalsRow {
+	font-weight: bold;
+	color: #191970;
+	height: 22px;
+	background-color: #d7d7d7;
+}
+table.dataGrid .oddRow a {
+	color: #124093;
+}
+table.dataGrid .oddRow a:active {
+	color: #124093;
+}
+table.dataGrid .oddRow a:link {
+	color: #124093;
+}
+table.dataGrid .oddRow a:visited {
+	color: #124093;
+}
+table.dataGrid .oddRow a:hover {
+	color: #191970;
+	text-decoration: underline;
+}
+table.dataGrid .dataBoxSuperHeader {
+	color: #ffffff;
+	background-color: #1d4884;
+}
+table.dataGrid .dataBoxSuperHeader a {
+	color: white;
+}
+table.dataGrid .dataBoxSuperHeader a:active {
+	color: white;
+}
+table.dataGrid .dataBoxSuperHeader a:link {
+	color: white;
+}
+table.dataGrid .dataBoxSuperHeader a:visited {
+	color: white;
+}
+table.dataGrid .dataBoxSuperHeader a:hover {
+	color: white;
+}
+.rightnowrap {
+   text-align: right;
+   white-space: nowrap;
+}
+.reportItemHeader {
+  background-color: #cdcdcd;
+  padding: 0px;
+  margin: 0px;
+}
+.reportItemHeader td {
+  border-top: #a2a2a2 4px solid;
+}
+.breakpage {
+	page-break-after: always;
+}
+
+@media print {
+	.breakpage {
+		clear: both;
+		page-break-after: always;
+	}
+}
