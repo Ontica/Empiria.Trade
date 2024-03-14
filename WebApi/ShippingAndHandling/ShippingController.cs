@@ -119,6 +119,7 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
 
 
     [HttpGet]
+    [AllowAnonymous]
     [Route("v4/trade/sales/shipping/parcel-suppliers")]
     public CollectionModel GetPackageTypeList() {
 
