@@ -92,7 +92,9 @@ namespace Empiria.Trade.Sales {
 
     #region Public methods
 
-    public static FixedList<CreditTransaction> GetCreditTransactions(int creditLineId) {
+    public static FixedList<CreditTransaction> GetCreditTransactions(int customerId) {
+
+      var creditLineId = Empiria.Trade.Sales.Data.CrediLineData.GetCreditLineId(customerId);
       var creditTransactions = CreditTransactionsData.GetCreditTrasantions(creditLineId);
 
       return creditTransactions;
