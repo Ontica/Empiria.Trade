@@ -176,15 +176,7 @@ namespace Empiria.Trade.Tests.Sales {
       order.Authorize();
 
       Assert.NotNull(order);
-    }
-
-    [Fact]
-    public void ShouldGetCreditTransactions() {
-      var order = SalesOrder.Parse("044cbcfa-ebbe-4745-a27b-7783c4cff64b");
-      var creditTransactions = order.GetCustomerCreditTransactions();
-
-      Assert.NotNull(creditTransactions);
-    }
+    }   
 
     [Fact]
     public void ShouldDeliverSalesOrder() {

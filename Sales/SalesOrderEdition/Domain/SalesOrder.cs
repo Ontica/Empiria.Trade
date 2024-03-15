@@ -87,11 +87,7 @@ namespace Empiria.Trade.Sales {
     public decimal CreditLimit {
       get; private set;
     } = 0;
-
-    public FixedList<CreditTransaction> CreditTransactions {
-      get; private set;
-    } = new FixedList<CreditTransaction>();
-     
+        
     public decimal Weight {
       get; set;
     }
@@ -157,7 +153,6 @@ namespace Empiria.Trade.Sales {
       SalesOrderData.Write(this);
       SalesOrderItemsData.CancelOrderItems(this.Id);
       this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id);
-      this.CreditTransactions = GetCustomerCreditTransactions();
 
       SetOrderTotals();
 
@@ -214,8 +209,7 @@ namespace Empiria.Trade.Sales {
       this.PaymentCondition = fields.PaymentCondition;
       this.PriceList = GetPriceList();
       this.SalesOrderItems = LoadSalesOrderItems(fields.Items);
-
-      this.CreditTransactions = GetCustomerCreditTransactions(); 
+ 
       this.TotalDebt = CrediLineData.GetCreditDebt(this.Customer.Id);
       this.CreditLimit = CrediLineData.GetCreditLimit(this.Customer.Id);
       
@@ -253,15 +247,9 @@ namespace Empiria.Trade.Sales {
            
       var actions = ActionsService.Load();
           
-
       this.Actions = actions.SetActions(this, queryType);
     }
-
-    public FixedList<CreditTransaction> GetCustomerCreditTransactions() {
-      var creditLineId = Empiria.Trade.Sales.Data.CrediLineData.GetCreditLineId(this.Customer.Id);
-      return CreditTransaction.GetCreditTransactions(creditLineId);
-    }
-
+       
     public void GetOrderTotal() {
       this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id);
       SetOrderTotals();
@@ -276,7 +264,6 @@ namespace Empiria.Trade.Sales {
 
       SetOrderTotals();
             
-      this.CreditTransactions = this.GetCustomerCreditTransactions();
       this.SetCustomerCreditInfos();
       
       this.GetWeightTotalPackageByOrder();

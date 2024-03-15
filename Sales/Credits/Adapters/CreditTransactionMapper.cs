@@ -19,15 +19,27 @@ namespace Empiria.Trade.Sales.Adapters {
     static public CreditTransactionDto Map(CreditTransaction creditTransaction) {
       var dto = new CreditTransactionDto {
         TicketNumber = creditTransaction.ExtData,
-       TransactionDate = creditTransaction.TransactionTime,
-       CreditAmount = creditTransaction.CreditAmount,
-       DebitAmount = creditTransaction.DebitAmount,
-       DueDate = creditTransaction.DueDate,
-       DaysToPay = creditTransaction.DaysToPay
+        TransactionDate = creditTransaction.TransactionTime,
+        CreditAmount = creditTransaction.CreditAmount,
+        DebitAmount = creditTransaction.DebitAmount,
+        DueDate = creditTransaction.DueDate,
+        DaysToPay = creditTransaction.DaysToPay
       };
 
       return dto;
     }
+
+    static public FixedList<CreditTransactionDto> MapCreditTransactions(FixedList<CreditTransaction> creditTransactions) {
+      List<CreditTransactionDto> creditTransactionList = new List<CreditTransactionDto>();
+
+      foreach (var creditTransaction in creditTransactions) {
+        creditTransactionList.Add(Map(creditTransaction));
+      }
+
+      return creditTransactionList.ToFixedList();
+    }
+
+
   } // namespace Empiria.Trade.Sales.Adapters
 
 } // class CreditTransactionMapper

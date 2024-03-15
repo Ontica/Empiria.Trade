@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using Empiria.Trade.Core;
 using Empiria.Trade.Core.Adapters;
 using Empiria.Trade.Orders;
+using Empiria.Trade.Sales.Credits.UseCases;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 using Empiria.Trade.Sales.ShippingAndHandling.UseCases;
 
@@ -143,7 +144,7 @@ namespace Empiria.Trade.Sales.Adapters {
       var dto = new CustomerCreditDto {
         TotalDebt = order.TotalDebt,
         CreditLimit = order.CreditLimit,
-        CreditTransactions = MapCreditTransactions(order.CreditTransactions)
+        CreditTransactions = GetCreditTransactions(order.Customer.Id)
       };
 
       return dto;
@@ -160,14 +161,10 @@ namespace Empiria.Trade.Sales.Adapters {
       return salesOrderItemsList.ToFixedList();
     }
 
-    static private FixedList<CreditTransactionDto> MapCreditTransactions(FixedList<CreditTransaction> creditTransactions) {
-      List<CreditTransactionDto> creditTransactionList = new List<CreditTransactionDto>();
+    static private FixedList<CreditTransactionDto> GetCreditTransactions(int customerId) {
+      var CreditsUseCase = CreditTransactionUseCases.UseCaseInteractor();
 
-      foreach (var creditTransaction in creditTransactions) {
-        creditTransactionList.Add(CreditTransactionMapper.Map(creditTransaction));
-      }
-
-      return creditTransactionList.ToFixedList();
+      return CreditsUseCase.GetCreditTransactions(customerId);      
     }
 
    
