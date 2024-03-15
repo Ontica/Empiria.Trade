@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Empiria.DataTypes;
 using Empiria.Trade.Core.Common;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.ShippingAndHandling.Data;
@@ -81,21 +82,23 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
       var parcel = SimpleObjectData.Parse(entry.ParcelSupplierId != 0 ? entry.ParcelSupplierId : -1);
       var parcelName = parcel.UID != "" ? parcel.Name : "";
 
-      var shippingDto = new ShippingEntryDto {
-        Customer = new NamedEntityDto(entry.Customer.UID, entry.Customer.Name),
-        ShippingUID = entry.ShippingOrderId == -1 ? "" : entry.ShippingUID,
-        ParcelSupplier = new NamedEntityDto(parcel.UID, parcelName),
-        ShippingGuide = entry.ShippingGuide,
-        ParcelAmount = entry.ParcelAmount,
-        CustomerAmount = entry.CustomerAmount,
-        ShippingDate = entry.ShippingDate,
-        OrdersCount = entry.OrdersForShipping.Count,
-        OrdersTotal = entry.OrdersTotal,
-        TotalPackages = entry.OrdersForShipping.Sum(x => x.TotalPackages),
-        TotalWeight = entry.OrdersForShipping.Sum(x => x.TotalWeight),
-        TotalVolume = entry.OrdersForShipping.Sum(x => x.TotalVolume),
-        Status = entry.Status
-      };
+            var shippingDto = new ShippingEntryDto {
+                Customer = new NamedEntityDto(entry.Customer.UID, entry.Customer.Name),
+                ShippingUID = entry.ShippingOrderId == -1 ? "" : entry.ShippingUID,
+                ParcelSupplier = new NamedEntityDto(parcel.UID, parcelName),
+                ShippingGuide = entry.ShippingGuide,
+                ParcelAmount = entry.ParcelAmount,
+                CustomerAmount = entry.CustomerAmount,
+                ShippingDate = entry.ShippingDate,
+                OrdersCount = entry.OrdersForShipping.Count,
+                OrdersTotal = entry.OrdersTotal,
+                TotalPackages = entry.OrdersForShipping.Sum(x => x.TotalPackages),
+                TotalWeight = entry.OrdersForShipping.Sum(x => x.TotalWeight),
+                TotalVolume = entry.OrdersForShipping.Sum(x => x.TotalVolume),
+                Status = entry.Status,
+                ShippingLabelsMedia = new MediaData("text/html", "http://10.113.5.57/pages/receipts/transaction.receipt.aspx?uid=TR-ZS-72VY5-4PL83-7"),
+                BillingsMedia = new MediaData("text/html", "http://10.113.5.57/pages/receipts/transaction.receipt.aspx?uid=TR-ZS-72VY5-4PL83-7")
+            };
 
       return shippingDto;
     }
@@ -118,7 +121,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
         itemDto.TotalWeight = item.TotalWeight;
         itemDto.TotalVolume = item.TotalVolume;
         itemDto.Packages = GetPackagesDtoByOrder(item.OrderPackages);
-
+        itemDto.BillingMedia = new MediaData("text/html", "http://10.113.5.57/pages/receipts/transaction.receipt.aspx?uid=TR-ZS-72VY5-4PL83-7");
         orderForShippingDto.Add(itemDto);
       }
 
