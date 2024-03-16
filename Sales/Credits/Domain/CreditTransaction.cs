@@ -115,7 +115,12 @@ namespace Empiria.Trade.Sales {
       this.DaysToPay = fields.DaysToPay;
       this.ExtData = fields.ExtData;
       this.Status = EntityStatus.Active;
+    }
 
+    public void Cancel() {
+      Status = EntityStatus.Deleted;
+
+      this.Save();
     }
 
     public static FixedList<CreditTransaction> GetCreditTransactions(int customerId) {

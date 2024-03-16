@@ -74,6 +74,15 @@ namespace Empiria.Trade.Tests.Credits {
       Assert.NotNull(creditTransaction);
     }
 
+    [Fact]
+    public void ShouldCancelCreditTransaction() {
+
+      var creditTransaction = CreditTransaction.Parse("d93c7e0d-48c5-415e-b5f5-f33f49760620");
+      creditTransaction.Cancel();
+
+      Assert.NotNull(creditTransaction);
+    }
+
 
   } // class CreditsTest
 

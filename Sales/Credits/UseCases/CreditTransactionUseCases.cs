@@ -8,8 +8,10 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
+using System.Net.NetworkInformation;
 using System.Xml.Linq;
 using Empiria.Services;
+using Empiria.StateEnums;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Sales.Credits.Adapters;
@@ -52,7 +54,14 @@ namespace Empiria.Trade.Sales.Credits.UseCases {
       return CreditTransactionMapper.Map(creditTransaction);
     }
 
+    public CreditTransactionDto Cancel(string creditTransactionUID) {
+      Assertion.Require(creditTransactionUID, "creditTransactionUID");
 
+      var creditTransaction = CreditTransaction.Parse(creditTransactionUID);
+      creditTransaction.Cancel();
+
+      return CreditTransactionMapper.Map(creditTransaction);
+    }
 
     public FixedList<CreditTransactionDto> GetCreditTransactions(int customerId) {
      
