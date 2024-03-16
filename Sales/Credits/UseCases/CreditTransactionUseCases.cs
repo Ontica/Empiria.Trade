@@ -42,8 +42,18 @@ namespace Empiria.Trade.Sales.Credits.UseCases {
       return CreditTransactionMapper.Map(creditTransaction);
     }
 
+    public CreditTransactionDto Update(CreditTrasnactionFields fields) {
+      Assertion.Require(fields, "fields");
 
-   
+      var creditTransaction = CreditTransaction.Parse(fields.UID);
+      creditTransaction.Update(fields);
+      creditTransaction.Save();
+
+      return CreditTransactionMapper.Map(creditTransaction);
+    }
+
+
+
     public FixedList<CreditTransactionDto> GetCreditTransactions(int customerId) {
      
       var creditTransactions = CreditTransaction.GetCreditTransactions(customerId);

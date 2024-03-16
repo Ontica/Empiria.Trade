@@ -50,8 +50,31 @@ namespace Empiria.Trade.Tests.Credits {
       Assert.NotNull(credit);
     }
 
-   
 
-    } // class CreditsTest
+    [Fact]
+    public void ShouldUpdateCreditTransaction() {
+
+      var creditTransactionFields = new CreditTrasnactionFields {
+        UID = "d93c7e0d-48c5-415e-b5f5-f33f49760620",
+        TypeId = 1,
+        CreditLineId = 28,
+        CreditAmount = 55100.40m,
+        DebitAmount = Convert.ToDecimal(1234.45),
+        PayableOrderId = -1,
+        DaysToPay = 50,
+        ExtData = "",
+        TransactionTime = Convert.ToDateTime("2023/03/10"),
+        DueDate = Convert.ToDateTime("2023/05/10")
+      };
+
+      var creditTransaction = CreditTransaction.Parse(creditTransactionFields.UID);
+      creditTransaction.Update(creditTransactionFields);
+      creditTransaction.Save();
+
+      Assert.NotNull(creditTransaction);
+    }
+
+
+  } // class CreditsTest
 
 } // namespace Empiria.Trade.Tests.Credits
