@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Empiria.Data;
+using Empiria.Trade.Core;
 
 namespace Empiria.Trade.Sales.Data {
   /// <summary>Provides data for Credit Transactions.   </summary>
@@ -27,6 +28,16 @@ namespace Empiria.Trade.Sales.Data {
 
       return DataReader.GetFixedList<CreditTransaction>(op);
     }
+
+    static internal void Write(CreditTransaction o) {
+   
+      var op = DataOperation.Parse("writeCreditTransactions", o.Id,o.UID,o.TypeId,o.CreditLineId,o.TransactionTime,o.CreditAmount,
+                                                            o.DebitAmount,o.PayableOrderId,o.DueDate,o.DaysToPay,o.ExtData,(char)o.Status);
+                                  
+      DataWriter.Execute(op);
+    }
+
+
   } // class Empiria.Trade.Sales.Data
 
 } //  namespace Empiria.Trade.Sales.Data 

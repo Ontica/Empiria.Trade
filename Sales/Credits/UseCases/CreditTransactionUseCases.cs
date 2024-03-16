@@ -8,8 +8,11 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
+using System.Xml.Linq;
 using Empiria.Services;
+using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.Adapters;
+using Empiria.Trade.Sales.Credits.Adapters;
 
 namespace Empiria.Trade.Sales.Credits.UseCases {
 
@@ -30,12 +33,25 @@ namespace Empiria.Trade.Sales.Credits.UseCases {
 
     #region Use cases
 
+    public CreditTransactionDto AddCreditTransaction(CreditTrasnactionFields fields) {
+      Assertion.Require(fields, "fields");
+
+      var creditTransaction = new CreditTransaction(fields);
+      creditTransaction.Save();
+
+      return CreditTransactionMapper.Map(creditTransaction);
+    }
+
+
+   
     public FixedList<CreditTransactionDto> GetCreditTransactions(int customerId) {
      
       var creditTransactions = CreditTransaction.GetCreditTransactions(customerId);
 
       return CreditTransactionMapper.MapCreditTransactions(creditTransactions);
     }
+
+
 
     #endregion Use cases
 

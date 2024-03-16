@@ -9,7 +9,10 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using Empiria.StateEnums;
+using Empiria.Trade.Core.Adapters;
 using Empiria.Trade.Orders;
+using Empiria.Trade.Sales.Adapters;
+using Empiria.Trade.Sales.Credits.Adapters;
 using Empiria.Trade.Sales.Data;
 using static System.TimeZoneInfo;
 
@@ -21,6 +24,10 @@ namespace Empiria.Trade.Sales {
 
     public CreditTransaction() {
       //no-op
+    }
+
+    public CreditTransaction(CreditTrasnactionFields fields) {
+      Update(fields);
     }
 
     static public CreditTransaction Empty => BaseObject.ParseEmpty<CreditTransaction>();
@@ -84,13 +91,32 @@ namespace Empiria.Trade.Sales {
     } = string.Empty;
 
     [DataField("CreditTransactionStatus", Default = EntityStatus.Active)]
-    public char Status {
+    public EntityStatus Status {
       get; private set;
-    }
+    } = EntityStatus.Active;
 
     #endregion Public properties
 
     #region Public methods
+
+    protected override void OnSave() {
+      CreditTransactionsData.Write(this);
+    }
+
+    public void Update(CreditTrasnactionFields fields) {
+
+      this.TypeId = fields.TypeId;
+      this.CreditLineId = fields.CreditLineId;
+      this.TransactionTime = fields.TransactionTime;
+      this.CreditAmount = fields.CreditAmount;
+      this.DebitAmount = fields.DebitAmount;
+      this.PayableOrderId = fields.PayableOrderId;
+      this.DueDate = fields.DueDate;
+      this.DaysToPay = fields.DaysToPay;
+      this.ExtData = fields.ExtData;
+      this.Status = EntityStatus.Active;
+
+    }
 
     public static FixedList<CreditTransaction> GetCreditTransactions(int customerId) {
 
@@ -99,6 +125,9 @@ namespace Empiria.Trade.Sales {
 
       return creditTransactions;
     }
+
+   
+   
 
     #endregion Public methods
 
