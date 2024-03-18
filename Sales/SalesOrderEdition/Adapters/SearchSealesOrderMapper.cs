@@ -15,6 +15,8 @@ using System.Runtime.Remoting.Messaging;
 using Empiria.Trade.Core.Common;
 using Empiria.Trade.Sales.ShippingAndHandling.UseCases;
 using Empiria.Trade.Sales.ShippingAndHandling;
+using Empiria.Trade.Sales.Data;
+using Empiria.Trade.Sales.Credits.UseCases;
 
 namespace Empiria.Trade.Sales.Adapters {
 
@@ -181,7 +183,7 @@ namespace Empiria.Trade.Sales.Adapters {
         SupplierName = order.Supplier.Name,
         SalesAgentName = order.SalesAgent.Name,
         OrderTotal = order.OrderTotal,
-        TotalDebt = order.TotalDebt,
+        TotalDebt = GetCustomerTotalDebt(order.Customer.Id),// order.TotalDebt,
         Status = order.Status,
         StatusName = MapOrderAuthorizationStatus(order.AuthorizationStatus.ToString())
       };
@@ -244,6 +246,12 @@ namespace Empiria.Trade.Sales.Adapters {
         return "Asignado";
       }
 
+    }
+
+    static private decimal GetCustomerTotalDebt(int customerId) {
+      var CreditsUseCase = CreditTransactionUseCases.UseCaseInteractor();
+
+      return CreditsUseCase.GetCustomerTotalDebt(customerId);
     }
 
 

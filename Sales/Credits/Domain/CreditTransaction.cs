@@ -131,8 +131,17 @@ namespace Empiria.Trade.Sales {
       return creditTransactions;
     }
 
-   
-   
+    internal static decimal GetCustomerTotalDebt(int customerId) {
+      return CrediLineData.GetCreditDebt(customerId);
+    }
+
+    internal static decimal GetCreditLimit(int customerId) {
+      return CrediLineData.GetCreditLimit(customerId);
+    }
+
+
+
+
 
     #endregion Public methods
 

@@ -36,7 +36,6 @@ namespace Empiria.Trade.Sales {
       var orders = SalesOrderData.GetSalesOrdersToAuthorize(fields);
 
       foreach (var order in orders) {
-        order.SetCustomerCreditInfos();
         order.GetOrderTotal();
       }
 

@@ -14,6 +14,7 @@ using Empiria.Trade.Core;
 using Empiria.Trade.Core.Adapters;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.Credits.UseCases;
+using Empiria.Trade.Sales.Data;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 using Empiria.Trade.Sales.ShippingAndHandling.UseCases;
 
@@ -31,13 +32,13 @@ namespace Empiria.Trade.Sales.Adapters {
         CustomerCredit = MapCustomerCredit(order),
         //WeightData = MapWeightDataDto(order),
         Shipping = GetShipping(order.UID),
-        Packing = GetPacking(order.UID),      
+        Packing = GetPacking(order.UID),
         Actions = TransactionActionsMapper.Map(order.Actions)
       };
 
       return dto;
     }
-       
+
     static public FixedList<ISalesOrderDto> Map(FixedList<SalesOrder> salesOrders) {
       List<ISalesOrderDto> salesOrderDtoList = new List<ISalesOrderDto>();
 
@@ -126,7 +127,7 @@ namespace Empiria.Trade.Sales.Adapters {
       }
 
       var shippingUseCase = ShippingUseCases.UseCaseInteractor();
-      return shippingUseCase.GetShippingByOrderUID(orderUID);     
+      return shippingUseCase.GetShippingByOrderUID(orderUID);
     }
 
     private static IShippingAndHandling GetPacking(string orderUID) {
@@ -138,12 +139,12 @@ namespace Empiria.Trade.Sales.Adapters {
       return packingUseCase.GetPackagingForOrder(orderUID);
     }
 
-  
+
 
     private static CustomerCreditDto MapCustomerCredit(SalesOrder order) {
       var dto = new CustomerCreditDto {
-        TotalDebt = order.TotalDebt,
-        CreditLimit = order.CreditLimit,
+        TotalDebt = GetCustomerTotalDebt(order.Customer.Id), //order.TotalDebt,
+        CreditLimit = GetCusomerCreditLimit(order.Customer.Id), //order.CreditLimit,
         CreditTransactions = GetCreditTransactions(order.Customer.Id)
       };
 
@@ -159,6 +160,19 @@ namespace Empiria.Trade.Sales.Adapters {
       }
 
       return salesOrderItemsList.ToFixedList();
+    }
+
+    static private decimal GetCustomerTotalDebt(int customerId) {
+
+      var CreditsUseCase = CreditTransactionUseCases.UseCaseInteractor();
+
+      return CreditsUseCase.GetCustomerTotalDebt(customerId);
+    }
+
+    static private decimal GetCusomerCreditLimit(int customerId) {
+      var CreditsUseCase = CreditTransactionUseCases.UseCaseInteractor();
+
+      return CreditsUseCase.GetCusomerCreditLimit(customerId);
     }
 
     static private FixedList<CreditTransactionDto> GetCreditTransactions(int customerId) {

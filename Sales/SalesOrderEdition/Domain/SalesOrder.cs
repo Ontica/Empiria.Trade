@@ -79,14 +79,6 @@ namespace Empiria.Trade.Sales {
     public string PriceList {
       get; private set;
     }
-
-    public decimal TotalDebt {
-      get; private set;
-    } = 0;
-
-    public decimal CreditLimit {
-      get; private set;
-    } = 0;
         
     public decimal Weight {
       get; set;
@@ -187,8 +179,6 @@ namespace Empiria.Trade.Sales {
       SalesOrderData.Write(this);
       SetOrderValues();
 
-
-
       var actions = ActionsService.Load();
       actions.OnSuppy();
       this.Actions = actions.SetActions(this, QueryType.SalesPacking);
@@ -209,10 +199,7 @@ namespace Empiria.Trade.Sales {
       this.PaymentCondition = fields.PaymentCondition;
       this.PriceList = GetPriceList();
       this.SalesOrderItems = LoadSalesOrderItems(fields.Items);
- 
-      this.TotalDebt = CrediLineData.GetCreditDebt(this.Customer.Id);
-      this.CreditLimit = CrediLineData.GetCreditLimit(this.Customer.Id);
-      
+            
       this.GetWeightTotalPackageByOrder();
 
       SetOrderTotals();
@@ -221,14 +208,8 @@ namespace Empiria.Trade.Sales {
       actions.OnCreate();
       this.Actions = actions.SetActions(this, QueryType.Sales);
     }
-
-    public void SetCustomerCreditInfos() {
-      this.TotalDebt = CrediLineData.GetCreditDebt(this.Customer.Id);
-      this.CreditLimit = CrediLineData.GetCreditLimit(this.Customer.Id);
-    }
-     
-
-     public void GetWeightTotalPackageByOrder() {
+      
+    public void GetWeightTotalPackageByOrder() {
       if (this.UID != "") {
         var usecasePackage = PackagingUseCases.UseCaseInteractor();
         PackagedData packageInfo = usecasePackage.GetPackagedData(this.UID);
@@ -263,9 +244,7 @@ namespace Empiria.Trade.Sales {
       this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id);
 
       SetOrderTotals();
-            
-      this.SetCustomerCreditInfos();
-      
+                 
       this.GetWeightTotalPackageByOrder();
     }
 

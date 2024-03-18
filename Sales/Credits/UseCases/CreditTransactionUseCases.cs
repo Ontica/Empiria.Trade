@@ -15,6 +15,7 @@ using Empiria.StateEnums;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Sales.Credits.Adapters;
+using Empiria.Trade.Sales.Data;
 
 namespace Empiria.Trade.Sales.Credits.UseCases {
 
@@ -70,6 +71,14 @@ namespace Empiria.Trade.Sales.Credits.UseCases {
       return CreditTransactionMapper.MapCreditTransactions(creditTransactions);
     }
 
+
+    public decimal GetCustomerTotalDebt(int customerId) {
+      return CreditTransaction.GetCustomerTotalDebt(customerId);
+    }
+
+    public decimal GetCusomerCreditLimit(int customerId) {
+      return CreditTransaction.GetCreditLimit(customerId);
+    }
 
 
     #endregion Use cases
