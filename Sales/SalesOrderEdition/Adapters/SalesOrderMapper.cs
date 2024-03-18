@@ -30,7 +30,6 @@ namespace Empiria.Trade.Sales.Adapters {
         Items = MapSalesOrderItems(order.SalesOrderItems),
         Authorization = MapAuthorizationDto(order),
         CustomerCredit = MapCustomerCredit(order),
-        //WeightData = MapWeightDataDto(order),
         Shipping = GetShipping(order.UID),
         Packing = GetPacking(order.UID),
         Actions = TransactionActionsMapper.Map(order.Actions)
@@ -181,7 +180,7 @@ namespace Empiria.Trade.Sales.Adapters {
       return CreditsUseCase.GetCreditTransactions(customerId);      
     }
 
-   
+           
     #endregion Private methods
 
 

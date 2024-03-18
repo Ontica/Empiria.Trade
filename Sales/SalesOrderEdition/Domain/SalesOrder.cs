@@ -10,13 +10,12 @@
 using System;
 using System.Collections.Generic;
 using Empiria.Services;
-using System.Security.Cryptography;
+
 using Empiria.Trade.Core;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Sales.Data;
-using Empiria.Trade.Sales.ShippingAndHandling;
-using Empiria.Trade.Sales.ShippingAndHandling.UseCases;
+
 
 namespace Empiria.Trade.Sales {
 
@@ -41,7 +40,6 @@ namespace Empiria.Trade.Sales {
       return BaseObject.ParseKey<SalesOrder>(uid);
     }
 
-    
 
     #endregion Constructors and parsers
 
@@ -78,16 +76,8 @@ namespace Empiria.Trade.Sales {
 
     public string PriceList {
       get; private set;
-    }
-        
-    public decimal Weight {
-      get; set;
-    }
-
-    public int TotalPackages {
-      get; set;
-    }
-
+    }  
+   
     public TransactionActions Actions {
       get; private set;
     } = new TransactionActions();
@@ -200,8 +190,6 @@ namespace Empiria.Trade.Sales {
       this.PriceList = GetPriceList();
       this.SalesOrderItems = LoadSalesOrderItems(fields.Items);
             
-      this.GetWeightTotalPackageByOrder();
-
       SetOrderTotals();
 
       var actions = ActionsService.Load();
@@ -209,19 +197,6 @@ namespace Empiria.Trade.Sales {
       this.Actions = actions.SetActions(this, QueryType.Sales);
     }
       
-    public void GetWeightTotalPackageByOrder() {
-      if (this.UID != "") {
-        var usecasePackage = PackagingUseCases.UseCaseInteractor();
-        PackagedData packageInfo = usecasePackage.GetPackagedData(this.UID);
-
-        this.Weight = packageInfo.Weight;
-        this.TotalPackages = packageInfo.TotalPackages;
-      } else {
-        this.Weight = 0;
-        this.TotalPackages = 0;
-      }
-      
-    }
 
     public void CalculateSalesOrder(QueryType queryType) {
       this.SetOrderValues();      
@@ -241,11 +216,7 @@ namespace Empiria.Trade.Sales {
     #region Helpers
 
     private void SetOrderValues() {
-      this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id);
-
-      SetOrderTotals();
-                 
-      this.GetWeightTotalPackageByOrder();
+      GetOrderTotal();
     }
 
     private FixedList<SalesOrderItem> LoadSalesOrderItems(FixedList<SalesOrderItemsFields> orderItemsFields) {
@@ -264,9 +235,9 @@ namespace Empiria.Trade.Sales {
       this.OrderTotal = 0;
       this.ItemsTotal = 0;
       this.Taxes = 0;
+      this.ItemsCount = this.SalesOrderItems.Count;
 
       foreach (SalesOrderItem item in this.SalesOrderItems) {
-        this.ItemsCount++;
         this.ItemsTotal += item.SubTotal;
         this.Shipment += item.Shipment;
         this.Discount += item.Discount;

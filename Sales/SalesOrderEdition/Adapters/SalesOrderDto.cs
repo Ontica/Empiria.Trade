@@ -153,18 +153,6 @@ namespace Empiria.Trade.Sales.Adapters {
 
   } // class AuthorizationDto
 
-  public class WeightDataDto {
-
-    public decimal Weight {
-      get; internal set;
-    }
-
-    public int TotalPackages {
-      get; internal set;
-    }
-
-  } // class WeightDataDto
-
 
 } // namespace Empiria.Trade.Sales.Adapters
 

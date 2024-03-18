@@ -11,11 +11,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.Remoting.Messaging;
+
 using Empiria.Trade.Core.Common;
 using Empiria.Trade.Sales.ShippingAndHandling.UseCases;
 using Empiria.Trade.Sales.ShippingAndHandling;
-using Empiria.Trade.Sales.Data;
+
 using Empiria.Trade.Sales.Credits.UseCases;
 
 namespace Empiria.Trade.Sales.Adapters {
@@ -29,7 +29,7 @@ namespace Empiria.Trade.Sales.Adapters {
       return new SearchSalesOrderDto {
         Query = query,
         Columns = DataColumns(query),
-        Entries = MapEntries(query, salesOrders) //SalesOrderMapper.MapBaseSalesOrders(salesOrders)
+        Entries = MapEntries(query, salesOrders) 
       };
     }
 
@@ -183,7 +183,7 @@ namespace Empiria.Trade.Sales.Adapters {
         SupplierName = order.Supplier.Name,
         SalesAgentName = order.SalesAgent.Name,
         OrderTotal = order.OrderTotal,
-        TotalDebt = GetCustomerTotalDebt(order.Customer.Id),// order.TotalDebt,
+        TotalDebt = GetCustomerTotalDebt(order.Customer.Id),
         Status = order.Status,
         StatusName = MapOrderAuthorizationStatus(order.AuthorizationStatus.ToString())
       };
@@ -200,8 +200,8 @@ namespace Empiria.Trade.Sales.Adapters {
         SupplierName = order.Supplier.Name,
         SalesAgentName = order.SalesAgent.Name,
         OrderTotal = order.OrderTotal,
-        Weight = order.Weight,
-        TotalPackages = order.TotalPackages,
+        Weight = GetWeightTotalPackageByOrder(order),
+        TotalPackages = GetTotalPackageByOrder(order),
         Status = order.Status,
         StatusName = MapOrderPackingStatus(order.AuthorizationStatus.ToString())
       };
@@ -254,9 +254,32 @@ namespace Empiria.Trade.Sales.Adapters {
       return CreditsUseCase.GetCustomerTotalDebt(customerId);
     }
 
+    static public decimal GetWeightTotalPackageByOrder(SalesOrder order) {
+      if (order.UID != "") {
+        var usecasePackage = PackagingUseCases.UseCaseInteractor();
+        PackagedData packageInfo = usecasePackage.GetPackagedData(order.UID);
+
+        return packageInfo.Weight;
+      } else {
+        return 0; 
+      }
+
+    }
+
+    static public int GetTotalPackageByOrder(SalesOrder order) {
+      if (order.UID != "") {
+          var usecasePackage = PackagingUseCases.UseCaseInteractor();
+          PackagedData packageInfo = usecasePackage.GetPackagedData(order.UID);
+                
+        return packageInfo.TotalPackages;
+      } else {
+        return 0;
+      }
+
+    }
 
     #endregion Private methods
 
   } //  class SearchSealesOrderMapper
 
-} // namespace Empiria.Trade.Sales.Adapters
+  } // namespace Empiria.Trade.Sales.Adapters

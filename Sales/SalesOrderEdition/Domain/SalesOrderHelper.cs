@@ -45,7 +45,6 @@ namespace Empiria.Trade.Sales {
     public FixedList<SalesOrder> GetOrdersToPacking(SearchOrderFields fields) {
       var orders = SalesOrderData.GetSalesOrdersToPacking(fields);
       foreach (var order in orders) {
-        order.GetWeightTotalPackageByOrder();
         order.GetOrderTotal();
       }
 
