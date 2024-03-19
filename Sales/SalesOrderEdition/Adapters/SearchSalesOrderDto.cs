@@ -19,6 +19,13 @@ using Empiria.Trade.Orders;
 // <summary>Output DTO used to return serach orders info. </summary>
 namespace Empiria.Trade.Sales.Adapters {
 
+ public enum DataTableTagType {
+    none,
+    info,
+    sucess,
+    warning,
+    error,
+  }
 
   public class SearchSalesOrderDto {
         
@@ -82,6 +89,10 @@ namespace Empiria.Trade.Sales.Adapters {
     public string ShippingStatus {
       get; internal set;
     }
+
+    public DataTableTagType TagType {
+      get; set;
+    } = DataTableTagType.none;
 
   }
 

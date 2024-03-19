@@ -24,10 +24,11 @@ namespace Empiria.Trade.Core.Common {
     }
 
 
-    public DataTableColumn(string field, string title, string type, int digits = 2) {
+    public DataTableColumn(string field, string title, string type, int digits = 2, bool applyTagType = false) {
       this.Field = field;
       this.Title = title;
       this.Type = type;
+      this.ApplyTagType = applyTagType;
 
       if (type == "decimal") {
         this.Digits = digits;
@@ -106,6 +107,9 @@ namespace Empiria.Trade.Core.Common {
       get; set;
     }
 
+    public bool ApplyTagType {
+      get; set;
+    }
 
     #endregion Properties
 

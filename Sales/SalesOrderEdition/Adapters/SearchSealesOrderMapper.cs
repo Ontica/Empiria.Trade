@@ -17,6 +17,7 @@ using Empiria.Trade.Sales.ShippingAndHandling.UseCases;
 using Empiria.Trade.Sales.ShippingAndHandling;
 
 using Empiria.Trade.Sales.Credits.UseCases;
+using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 
 namespace Empiria.Trade.Sales.Adapters {
 
@@ -49,7 +50,7 @@ namespace Empiria.Trade.Sales.Adapters {
       columns.Add(new DataTableColumn("orderTotal", "Total", "decimal"));
 
       if (query.Status == Orders.OrderStatus.Shipping) {
-        columns.Add(new DataTableColumn("shippingStatus", "Envío", "text-tag"));
+        columns.Add(new DataTableColumn("shippingStatus", "Envío", "text-tag",0,true));
       }
 
         switch (query.QueryType) {
@@ -152,6 +153,7 @@ namespace Empiria.Trade.Sales.Adapters {
         OrderTotal = order.OrderTotal,
         Status = order.Status,
         ShippingStatus = GetShippingStatus(order.UID),
+        TagType = GetShippingStatusTagType(GetShippingStatus(order.UID)),
         StatusName = SalesOrderMapper.MapOrderStatus(order.Status.ToString())
       };
 
@@ -233,6 +235,15 @@ namespace Empiria.Trade.Sales.Adapters {
           return "Por surtir";
       }
 
+    }
+
+    static private DataTableTagType GetShippingStatusTagType(string shippingStatus) {
+      switch (shippingStatus) {
+        case "Pendiente":  return DataTableTagType.warning;
+        case "Asignado": return DataTableTagType.sucess;
+          
+        default: return DataTableTagType.none;
+      }
     }
 
     static private string GetShippingStatus(string orderUID) {
