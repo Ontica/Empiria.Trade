@@ -32,7 +32,7 @@ namespace Empiria.Trade.Tests.Credits {
 
       var creditTransactionFields = new CreditTrasnactionFields {
         TypeId = 1,
-        CreditLineId = 1,
+        CustomerId = 1,
         CreditAmount = 100,
         DebitAmount = Convert.ToDecimal(200),
         PayableOrderId = 3,
@@ -57,7 +57,7 @@ namespace Empiria.Trade.Tests.Credits {
       var creditTransactionFields = new CreditTrasnactionFields {
         UID = "d93c7e0d-48c5-415e-b5f5-f33f49760620",
         TypeId = 1,
-        CreditLineId = 28,
+        CustomerId = 28,
         CreditAmount = 55100.40m,
         DebitAmount = Convert.ToDecimal(1234.45),
         PayableOrderId = -1,

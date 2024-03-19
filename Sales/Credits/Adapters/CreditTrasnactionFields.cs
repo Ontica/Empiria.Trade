@@ -33,7 +33,7 @@ namespace Empiria.Trade.Sales.Credits.Adapters {
       get; set;
     }
     
-    public int CreditLineId {
+    public int CustomerId {
       get;  set;
     }
         

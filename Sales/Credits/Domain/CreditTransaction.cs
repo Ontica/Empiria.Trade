@@ -106,13 +106,13 @@ namespace Empiria.Trade.Sales {
     public void Update(CreditTrasnactionFields fields) {
 
       this.TypeId = fields.TypeId;
-      this.CreditLineId = fields.CreditLineId;
+      this.CreditLineId = GetCreditLindId(fields.CustomerId);
       this.TransactionTime = fields.TransactionTime;
       this.CreditAmount = fields.CreditAmount;
-      this.DebitAmount = fields.DebitAmount;
+      this.DebitAmount = this.CreditAmount;
       this.PayableOrderId = fields.PayableOrderId;
-      this.DueDate = fields.DueDate;
-      this.DaysToPay = fields.DaysToPay;
+      this.DueDate = GetDueDate(fields.CustomerId);
+      this.DaysToPay = GetCreditCondition(fields.CustomerId);
       this.ExtData = fields.ExtData;
       this.Status = EntityStatus.Active;
     }
@@ -139,11 +139,27 @@ namespace Empiria.Trade.Sales {
       return CrediLineData.GetCreditLimit(customerId);
     }
 
-
-
+    internal static int GetCreditLindId(int customerId) {
+      return CrediLineData.GetCreditLineId(customerId);
+    }
 
 
     #endregion Public methods
+
+    #region Private methods
+
+    private int GetCreditCondition(int customerId) {
+      var conditions =  CrediLineData.GetCreditConditions(customerId);
+
+      return Convert.ToInt32(conditions);
+    }
+
+    private DateTime GetDueDate(int customerId) {
+      int creditConditionDays = GetCreditCondition(customerId);
+      return this.TransactionTime.AddDays(creditConditionDays);
+    }
+
+    #endregion Private methods
 
   } // class CreditTransactions
 

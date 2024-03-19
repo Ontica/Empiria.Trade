@@ -14,6 +14,8 @@ using Empiria.Trade.Core;
 using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Products;
 using Empiria.Trade.Sales.Adapters;
+using Empiria.Trade.Sales.Credits.Adapters;
+using Empiria.Trade.Sales.Credits.UseCases;
 using Empiria.Trade.Sales.Data;
 
 namespace Empiria.Trade.Sales.UseCases {
@@ -161,8 +163,8 @@ namespace Empiria.Trade.Sales.UseCases {
       Assertion.Require(orderUID, "orderUID");
 
       var order = SalesOrder.Parse(orderUID);
-      order.Apply();    
-
+      order.Apply();
+           
       return SalesOrderMapper.Map(order);
     }
 
@@ -207,10 +209,12 @@ namespace Empiria.Trade.Sales.UseCases {
       }
 
       order.Authorize();
-           
+
+      AddCredit(order);
+
       return SalesOrderMapper.Map(order);
     }
-
+      
 
     public ISalesOrderDto SupplySalesOrder(string orderUID) {
       Assertion.Require(orderUID, "orderUID");
@@ -240,6 +244,19 @@ namespace Empiria.Trade.Sales.UseCases {
 
     #region Private methods
 
+    private void AddCredit(SalesOrder order) {
+      var creditFields = new CreditTrasnactionFields() {
+        CustomerId = order.Customer.Id,
+        TransactionTime = DateTime.Now,
+        CreditAmount = order.OrderTotal,        
+        PayableOrderId = order.Id,
+        ExtData = order.OrderNumber
+      };
+      var CreditsUseCase = CreditTransactionUseCases.UseCaseInteractor();
+
+      CreditsUseCase.AddCustomerCreditTransaction(creditFields);
+    }
+
     private void ValidateShippingMethod(SalesOrderFields fields) {
       if ((fields.ShippingMethod != "Ocurre") && (fields.customerAddressUID == String.Empty)) {
         throw Assertion.EnsureNoReachThisCode($"It is customer address is mandatory.");
@@ -266,8 +283,7 @@ namespace Empiria.Trade.Sales.UseCases {
       return sut[0].Stock;
     }
 
-    
-
+   
     #endregion Private methods
 
   } // class SalesOrderUseCases

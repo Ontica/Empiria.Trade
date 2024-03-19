@@ -36,8 +36,10 @@ namespace Empiria.Trade.Sales.Credits.UseCases {
 
     #region Use cases
 
-    public CreditTransactionDto AddCreditTransaction(CreditTrasnactionFields fields) {
+    public CreditTransactionDto AddCustomerCreditTransaction(CreditTrasnactionFields fields) {
       Assertion.Require(fields, "fields");
+
+      fields.TypeId = 1;
 
       var creditTransaction = new CreditTransaction(fields);
       creditTransaction.Save();
