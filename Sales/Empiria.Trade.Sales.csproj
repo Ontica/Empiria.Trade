@@ -64,6 +64,12 @@
     <ProjectReference Include="..\Core\Empiria.Trade.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Remove="Credits\**" />
+    <EmbeddedResource Remove="Credits\**" />
+    <None Remove="Credits\**" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Core\Empiria.Trade.Core.csproj" />
+    <ProjectReference Include="..\Financial\Empiria.Trade.Financial.csproj" />
   </ItemGroup>
 </Project>

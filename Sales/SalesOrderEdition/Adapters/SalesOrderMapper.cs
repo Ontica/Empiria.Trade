@@ -12,9 +12,10 @@ using System.Collections.Generic;
 
 using Empiria.Trade.Core;
 using Empiria.Trade.Core.Adapters;
+using Empiria.Trade.Financial.Adapters;
+using Empiria.Trade.Financial.UseCases;
 using Empiria.Trade.Orders;
-using Empiria.Trade.Sales.Credits.UseCases;
-using Empiria.Trade.Sales.Data;
+
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 using Empiria.Trade.Sales.ShippingAndHandling.UseCases;
 

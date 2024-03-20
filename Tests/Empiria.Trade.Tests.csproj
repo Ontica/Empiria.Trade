@@ -85,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\extensions\Tests\Empiria.Tests.csproj" />
+    <ProjectReference Include="..\Financial\Empiria.Trade.Financial.csproj" />
     <ProjectReference Include="..\Sales\Empiria.Trade.Sales.csproj" />
   </ItemGroup>
   <ItemGroup>

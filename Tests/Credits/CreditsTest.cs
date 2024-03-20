@@ -19,8 +19,10 @@ using Empiria.Trade.Sales.UseCases;
 
 using Empiria.Trade.Core;
 using Xunit.Abstractions;
-using Empiria.Trade.Sales.Credits.Adapters;
+
 using Empiria.Trade.Orders;
+using Empiria.Trade.Financial;
+using Empiria.Trade.Financial.Adapters;
 
 namespace Empiria.Trade.Tests.Credits {
 

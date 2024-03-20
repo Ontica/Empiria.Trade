@@ -8,14 +8,15 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-using System.Runtime.Remoting.Messaging;
+
 using Empiria.Services;
 using Empiria.Trade.Core;
 using Empiria.Trade.Core.Catalogues;
+using Empiria.Trade.Financial.Adapters;
+using Empiria.Trade.Financial.UseCases;
 using Empiria.Trade.Products;
 using Empiria.Trade.Sales.Adapters;
-using Empiria.Trade.Sales.Credits.Adapters;
-using Empiria.Trade.Sales.Credits.UseCases;
+
 using Empiria.Trade.Sales.Data;
 
 namespace Empiria.Trade.Sales.UseCases {
