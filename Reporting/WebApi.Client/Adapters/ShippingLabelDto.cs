@@ -21,32 +21,32 @@ namespace Empiria.Trade.Reporting.WebApi.Client.Adapters {
     } = string.Empty;
 
 
-    public string ProductCode {
+    public string productCode {
       get; set;
     } = string.Empty;
 
 
-    public string ProductPresentation {
+    public string productPresentation {
       get; set;
     } = string.Empty;
 
 
-    public string Description {
+    public string description {
       get; set;
     } = string.Empty;
 
 
-    public string Ubication {
+    public string ubication {
       get; set;
     } = string.Empty;
 
 
-    public string Comments {
+    public string comments {
       get; set;
     } = string.Empty;
 
 
-    public decimal Quantity {
+    public decimal quantity {
       get; set;
     }
 
