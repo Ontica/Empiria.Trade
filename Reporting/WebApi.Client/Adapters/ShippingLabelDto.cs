@@ -16,7 +16,7 @@ namespace Empiria.Trade.Reporting.WebApi.Client.Adapters {
   public class ShippingLabelDto {
 
 
-    public string OrderUID {
+    public string orderUID {
       get; set;
     } = string.Empty;
 

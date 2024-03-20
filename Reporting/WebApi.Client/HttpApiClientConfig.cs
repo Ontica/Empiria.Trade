@@ -12,23 +12,6 @@ namespace Empiria.Trade.Reporting.WebApi.Client {
         public HttpApiClientConfig() {
         }
 
-        public HttpApiClientConfig(string baseAddress, TimeSpan timeout) {
-
-            try {
-                baseAddress = baseAddress.EndsWith("/") ? baseAddress : baseAddress + "/";
-
-                httpClient.BaseAddress = new Uri(baseAddress);
-                httpClient.Timeout = timeout;
-
-                this.LoadDefaultHeaders();
-
-            } catch (Exception e) {
-                throw new Exception(e.Message);
-            }
-
-
-        }
-
 
         public HttpClient HttpApiClient(string baseAddress, TimeSpan timeout) {
 
@@ -48,13 +31,6 @@ namespace Empiria.Trade.Reporting.WebApi.Client {
                 throw new Exception(e.Message);
             }
         }
-
-
-        private void LoadDefaultHeaders() {
-            httpClient.DefaultRequestHeaders.Accept.Clear();
-            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-        }
-
 
 
     }

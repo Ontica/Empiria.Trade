@@ -3,18 +3,18 @@ using Microsoft.AspNetCore.Mvc;
 using Reporting.Web.Pages.Shipping;
 
 namespace Empiria.Trade.Reporting.WebApi.Client.ShippingAndHandling {
-    
-    
+
+
     [ApiController]
-    [Route("[controller]")]
-    public class ShippingLabelController :ControllerBase {
+    [Route("")]
+    public class BillingWebApiClientController : ControllerBase {
 
 
-        [HttpGet("trade/reporting/shipping/{shippingUID}/labels")]
+        [HttpGet("trade/reporting/shipping/{shippingUID}/billing")]
         public async Task<string> GetShippingLabelFromURI([FromRoute] string shippingUID) {
 
             var apiClientConfig = new HttpApiClientConfig();
-            
+
             var http = apiClientConfig.HttpApiClient("http://apps.sujetsa.com.mx:8080", TimeSpan.FromSeconds(240));
 
             var tradeController = $"/api/v4/trade/sales/shipping/{shippingUID}/labels";
@@ -25,6 +25,5 @@ namespace Empiria.Trade.Reporting.WebApi.Client.ShippingAndHandling {
 
             return content;
         }
-
     }
 }
