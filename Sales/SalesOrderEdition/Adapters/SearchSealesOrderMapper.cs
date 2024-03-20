@@ -240,7 +240,7 @@ namespace Empiria.Trade.Sales.Adapters {
     static private DataTableTagType GetShippingStatusTagType(string shippingStatus) {
       switch (shippingStatus) {
         case "Pendiente":  return DataTableTagType.warning;
-        case "Asignado": return DataTableTagType.sucess;
+        case "Asignado": return DataTableTagType.success;
           
         default: return DataTableTagType.none;
       }
