@@ -22,7 +22,7 @@ namespace Empiria.Trade.Sales.Adapters {
  public enum DataTableTagType {
     none,
     info,
-    sucess,
+    success,
     warning,
     error,
   }
