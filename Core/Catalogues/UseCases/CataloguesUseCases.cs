@@ -91,6 +91,13 @@ namespace Empiria.Trade.Core.Catalogues
     }
 
 
+    static public WarehouseBinProduct GetWarehouseBinProductByVendorProduct(int vendorProductId) {
+      Assertion.Require(vendorProductId, nameof(vendorProductId));
+
+      return CataloguesData.GetWarehouseBinProductByVendorProduct(vendorProductId);
+    }
+
+
     public async Task<string> UpdateGUID(TableQuery query) {
 
       try {

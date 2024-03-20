@@ -39,6 +39,17 @@ namespace Empiria.Trade.Core.Catalogues
     }
 
 
+    internal static WarehouseBinProduct GetWarehouseBinProductByVendorProduct(int vendorProductId) {
+
+      var sql = $"SELECT * FROM TRDWarehouseBinProducts WHERE VendorProductId = {vendorProductId}";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetPlainObject<WarehouseBinProduct>(dataOperation);
+
+    }
+
+
     internal static string UpdateTableGUID(string tableName, string idName, string uidName) {
 
       try {

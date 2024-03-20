@@ -72,7 +72,20 @@ namespace Empiria.Trade.Core.Catalogues {
     }
 
 
+    public string Description {
+      get; set;
+    }
+
+
     #endregion Properties
+
+
+    public void GetDescription() {
+
+      this.Description = $"{this.WarehouseBin.Warehouse.Name}-" + //almacen
+                         $"{this.WarehouseBin.Rack}-" +           //rack
+                         $"{this.RackLevel}-{this.RackPosition}"; //nivel-posicion
+    }
 
   } // class WarehouseBinProduct
 
