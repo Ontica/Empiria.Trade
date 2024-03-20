@@ -7,4 +7,9 @@
 </div>
 <br />
 <div class="text-center divResult">
+    @if (Model.LabelContent != null) {
+      
+        <p>@Html.Display(Model.LabelContent)</p>
+    }
+  
 </div>
