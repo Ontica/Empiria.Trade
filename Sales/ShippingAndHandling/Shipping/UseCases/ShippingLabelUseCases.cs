@@ -17,41 +17,51 @@ using Empiria.Trade.Sales.ShippingAndHandling.UseCases;
 
 namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
-  /// <summary>Use cases used to build shipping labels.</summary>
-  public class ShippingLabelUseCases : UseCase {
+    /// <summary>Use cases used to build shipping labels.</summary>
+    public class ShippingLabelUseCases : UseCase {
 
-    #region Constructors and parsers
+        #region Constructors and parsers
 
-    public ShippingLabelUseCases() {
-      // no-op
-    }
+        public ShippingLabelUseCases() {
+            // no-op
+        }
 
-    static public ShippingLabelUseCases UseCaseInteractor() {
-      return CreateInstance<ShippingLabelUseCases>();
-    }
-
-
-    #endregion Constructors and parsers
+        static public ShippingLabelUseCases UseCaseInteractor() {
+            return CreateInstance<ShippingLabelUseCases>();
+        }
 
 
-    public FixedList<ShippingLabel> GetShippingLabels(string shippingUID) {
-
-      var builder = new ShippingLabelBuilder();
-
-      FixedList<ShippingLabel> shippingLabels = builder.GetShippingLabels(shippingUID);
-
-      return shippingLabels;
-    }
+        #endregion Constructors and parsers
 
 
-    #region Use cases
+        public FixedList<ShippingLabel> GetShippingLabels(string shippingUID) {
+
+            var builder = new ShippingLabelBuilder();
+
+            FixedList<ShippingLabel> shippingLabels = builder.GetShippingLabels(shippingUID);
+
+            return shippingLabels;
+        }
+
+
+        public FixedList<ShippingLabelByPallet> GetShippingLabelsForPallets(string shippingUID) {
+
+            var builder = new ShippingLabelBuilder();
+
+            FixedList<ShippingLabelByPallet> shippingLabels = builder.GetShippingLabelsForPallets(shippingUID);
+
+            return shippingLabels;
+        }
+
+
+        #region Use cases
 
 
 
 
 
-    #endregion Use cases
+        #endregion Use cases
 
-  } // class ShippingLabelUseCases
+    } // class ShippingLabelUseCases
 
 } // namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases

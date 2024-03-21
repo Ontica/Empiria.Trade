@@ -18,38 +18,52 @@ using Empiria.WebApi;
 
 namespace Empiria.Trade.WebApi.Reporting {
 
-    
+
     /// <summary>Query web API used to manage shippings labels.</summary>
     [AllowAnonymous]
     public class ShippingLabelsController : WebApiController {
 
 
-    #region Web apis
+        #region Web apis
 
-    //trade/reporting/shipping/{shippingUID}/billings
+        //trade/reporting/shipping/{shippingUID}/billings
 
-    //trade/reporting/shipping/{shippingUID}/billing/{orderUID}
+        //trade/reporting/shipping/{shippingUID}/billing/{orderUID}
 
-    //trade/reporting/shipping/{shippingUID}/labels
-
-
-    [HttpGet]
-    [AllowAnonymous]
-    [Route("v4/trade/sales/shipping/{shippingUID}/labels")]
-    public CollectionModel GetShippingLabels([FromUri] string shippingUID) {
-
-      using (var usecases = ShippingLabelUseCases.UseCaseInteractor()) {
-
-        FixedList<ShippingLabel> shippingLabels = usecases.GetShippingLabels(shippingUID);
-
-        return new CollectionModel(this.Request, shippingLabels);
-      }
-    }
+        //trade/reporting/shipping/{shippingUID}/labels
 
 
-    #endregion Web apis
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("v4/trade/sales/shipping/{shippingUID}/labels")]
+        public CollectionModel GetShippingLabels([FromUri] string shippingUID) {
+
+            using (var usecases = ShippingLabelUseCases.UseCaseInteractor()) {
+
+                FixedList<ShippingLabel> shippingLabels = usecases.GetShippingLabels(shippingUID);
+
+                return new CollectionModel(this.Request, shippingLabels);
+            }
+        }
 
 
-  } // public class ShippingLabelsController
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("v4/trade/sales/shipping/{shippingUID}/label-pallets")]
+        public CollectionModel GetShippingLabelsForPallets([FromUri] string shippingUID) {
+
+            using (var usecases = ShippingLabelUseCases.UseCaseInteractor()) {
+
+                FixedList<ShippingLabelByPallet> shippingLabels = usecases.GetShippingLabelsForPallets(shippingUID);
+
+                return new CollectionModel(this.Request, shippingLabels);
+            }
+        }
+
+
+        #endregion Web apis
+
+
+    } // public class ShippingLabelsController
 
 } // namespace Empiria.Trade.WebApi.Reporting

@@ -96,8 +96,15 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
                 TotalWeight = entry.OrdersForShipping.Sum(x => x.TotalWeight),
                 TotalVolume = entry.OrdersForShipping.Sum(x => x.TotalVolume),
                 Status = entry.Status,
-                ShippingLabelsMedia = new MediaData("text/html", "http://10.113.5.57/pages/receipts/transaction.receipt.aspx?uid=TR-ZS-72VY5-4PL83-7"),
-                BillingsMedia = new MediaData("text/html", "http://10.113.5.57/pages/receipts/transaction.receipt.aspx?uid=TR-ZS-72VY5-4PL83-7")
+                ShippingLabelsMedia = new MediaData("text/html",
+                    $"http://apps.sujetsa.com.mx:8080/reporting.api/ShippingAndHandling/ShippingLabelByPallet?shippingUID=" +
+                    $"{entry.ShippingUID}"),
+                //ShippingLabelsMedia = new MediaData("text/html",
+                //    $"http://apps.sujetsa.com.mx:8080/reporting.api/trade/reporting/shipping/" +
+                //    $"{entry.ShippingUID}/labels"),
+                BillingsMedia = new MediaData("text/html",
+                    $"http://apps.sujetsa.com.mx:8080/reporting.api/trade/reporting/shipping/" +
+                    $"{entry.ShippingUID}/billing")
             };
 
       return shippingDto;
@@ -121,7 +128,9 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
         itemDto.TotalWeight = item.TotalWeight;
         itemDto.TotalVolume = item.TotalVolume;
         itemDto.Packages = GetPackagesDtoByOrder(item.OrderPackages);
-        itemDto.BillingMedia = new MediaData("text/html", "http://10.113.5.57/pages/receipts/transaction.receipt.aspx?uid=TR-ZS-72VY5-4PL83-7");
+        itemDto.BillingMedia = new MediaData("text/html",
+                $"http://apps.sujetsa.com.mx:8080/reporting.api/trade/reporting/shipping/" +
+                $"{item.ShippingOrder.ShippingUID}/billing");
         orderForShippingDto.Add(itemDto);
       }
 

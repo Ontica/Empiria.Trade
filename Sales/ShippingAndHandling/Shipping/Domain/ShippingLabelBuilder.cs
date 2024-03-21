@@ -9,7 +9,10 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Empiria.Trade.Core.Catalogues;
+using Empiria.Trade.Core.Common;
+using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.Data;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 using Empiria.Trade.Sales.ShippingAndHandling.Data;
@@ -17,76 +20,144 @@ using Empiria.Trade.Sales.ShippingAndHandling.Data;
 namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
 
-  /// <summary>Generate data for Shipping labels.</summary>
-  internal class ShippingLabelBuilder {
+    /// <summary>Generate data for Shipping labels.</summary>
+    internal class ShippingLabelBuilder {
 
 
-    #region Constructor
+        #region Constructor
 
-    public ShippingLabelBuilder() {
+        public ShippingLabelBuilder() {
 
-    }
-
-
-    #endregion Constructor
+        }
 
 
-    #region Public methods
+        #endregion Constructor
 
 
-    internal FixedList<ShippingLabel> GetShippingLabels(string shippingUID) {
-
-      FixedList<ShippingOrderItem> ordersForShipping =
-        ShippingData.GetOrdersForShippingByShippingId(shippingUID);
-
-      var shippingLabels = new List<ShippingLabel>();
-
-      foreach (var orderForShipping in ordersForShipping) {
-
-        FixedList<SalesOrderItem> orderItems = SalesOrderItemsData.GetOrderItems(orderForShipping.Order.Id);
-
-        shippingLabels.AddRange(MapToShippingLabelByOrderItem(orderItems));
-      }
-
-      return shippingLabels.ToFixedList();
-    }
+        #region Public methods
 
 
-    #endregion Public methods
+        internal FixedList<ShippingLabel> GetShippingLabels(string shippingUID) {
+
+            FixedList<ShippingOrderItem> ordersForShipping =
+              ShippingData.GetOrdersForShippingByShippingId(shippingUID);
+
+            var shippingLabels = new List<ShippingLabel>();
+
+            foreach (var orderForShipping in ordersForShipping) {
+
+                FixedList<SalesOrderItem> orderItems = SalesOrderItemsData.GetOrderItems(orderForShipping.Order.Id);
+
+                shippingLabels.AddRange(MapToShippingLabelByOrderItem(orderItems));
+            }
+
+            return shippingLabels.ToFixedList();
+        }
 
 
-    #region Private methods
+        internal FixedList<ShippingLabelByPallet> GetShippingLabelsForPallets(string shippingUID) {
+
+            ShippingEntry shipping = ShippingEntry.Parse(shippingUID);
+
+            FixedList<ShippingLabelByPallet> labelsByPallet = GetLabelsForPallets(shipping);
+
+            return labelsByPallet;
+        }
 
 
-    private List<ShippingLabel> MapToShippingLabelByOrderItem(FixedList<SalesOrderItem> orderItems) {
-
-      var shippingLabels= new List<ShippingLabel>();
-
-      foreach (var item in orderItems) {
-        
-        var warehouse = 
-          CataloguesUseCases.GetWarehouseBinProductByVendorProduct(item.VendorProduct.Id);
-        warehouse.GetDescription();
-
-        var shippingLabel = new ShippingLabel {
-          OrderUID = item.Order.UID,
-          ProductCode = item.VendorProduct.ProductFields.ProductCode,
-          ProductPresentation = item.VendorProduct.ProductPresentation.PresentationName,
-          Description = item.VendorProduct.ProductFields.ProductDescription,
-          Comments = "",
-          Quantity = item.Quantity,
-          Ubication = warehouse.Description
-        };
-
-        shippingLabels.Add(shippingLabel);
-      }
-
-      return shippingLabels;
-    }
+        #endregion Public methods
 
 
-    #endregion Private methods
+        #region Private methods
 
-  } // class ShippingLabelBuilder
+
+        private FixedList<ShippingLabelByPallet> GetLabelsForPallets(ShippingEntry shipping) {
+
+            FixedList<ShippingPallet> shippingPallets =
+              ShippingData.GetPalletByShippingUID(shipping.ShippingUID);
+
+            var labelsByPallet = new List<ShippingLabelByPallet>();
+
+            int palletCount = 0;
+            foreach (var shippingPallet in shippingPallets) {
+
+                var label = new ShippingLabelByPallet();
+
+
+                label.ParcelSupplier = SimpleObjectData.Parse(shipping.ParcelSupplierId).Name;
+                label.PalletName = shippingPallet.ShippingPalletName;
+                label.PalletCount = $"{palletCount++}/{shippingPallets.Count}";
+                
+                FixedList<ShippingPackage> shippingPackages =
+                    ShippingData.GetShippingPackagesByPalletUID(shippingPallet.ShippingPalletUID);
+
+                Order order = Order.Parse(shippingPackages.FirstOrDefault().Order.Id);
+                label.ShippingNumber = shipping.ShippingGuide;
+                label.ShippingType = order.ShippingMethod;
+                label.Customer = order.Customer.Name;
+                label.CustomerAddress = $"{order.CustomerAddress.Address1} CP. {order.Customer.ZipCode}.";
+                label.CustomerPhoneNumber = order.Customer.PhoneNumbers;
+
+                GetPackingTypeCountByPallet(label, shippingPackages);
+
+                labelsByPallet.Add(label);
+            }
+
+            return labelsByPallet.ToFixedList();
+        }
+
+
+        private void GetPackingTypeCountByPallet(ShippingLabelByPallet label,
+                                                 FixedList<ShippingPackage> shippingPackages) {
+
+            foreach (var pack in shippingPackages) {
+                var packageType = PackageType.Parse(pack.OrderPacking.PackageTypeId);
+                
+                if (packageType.Name.Contains("Caja")) {
+                    label.PackageQuantity++;
+                }
+                if (packageType.Name.Contains("Atado")) {
+                    label.TiedQuantity++;
+                }
+                if (packageType.Name.Contains("Costal")) {
+                    label.BagQuantity++;
+                }
+
+            }
+
+
+        }
+
+
+        private List<ShippingLabel> MapToShippingLabelByOrderItem(FixedList<SalesOrderItem> orderItems) {
+
+            var shippingLabels = new List<ShippingLabel>();
+
+            foreach (var item in orderItems) {
+
+                var warehouse =
+                  CataloguesUseCases.GetWarehouseBinProductByVendorProduct(item.VendorProduct.Id);
+                warehouse.GetDescription();
+
+                var shippingLabel = new ShippingLabel {
+                    OrderUID = item.Order.UID,
+                    ProductCode = item.VendorProduct.ProductFields.ProductCode,
+                    ProductPresentation = item.VendorProduct.ProductPresentation.PresentationName,
+                    Description = item.VendorProduct.ProductFields.ProductDescription,
+                    Comments = "",
+                    Quantity = item.Quantity,
+                    Ubication = warehouse.Description
+                };
+
+                shippingLabels.Add(shippingLabel);
+            }
+
+            return shippingLabels;
+        }
+
+
+        #endregion Private methods
+
+    } // class ShippingLabelBuilder
 
 } // Empiria.Trade.Sales.ShippingAndHandling.Domain
