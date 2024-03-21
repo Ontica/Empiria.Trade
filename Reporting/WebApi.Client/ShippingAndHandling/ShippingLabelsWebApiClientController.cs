@@ -38,11 +38,38 @@ namespace Empiria.Trade.Reporting.WebApi.Client.ShippingAndHandling {
 
             var data = content.RootElement.GetProperty("data");
 
-            var shippingLabelDto = data.Deserialize<List<ShippingLabelDto>>();
+            var shippingLabelDto = new List<ShippingLabelDto>();
+
+            JsonSerializer.Serialize(shippingLabelDto, new JsonSerializerOptions {
+                PropertyNamingPolicy=JsonNamingPolicy.CamelCase
+            });
+
+            shippingLabelDto = data.Deserialize<List<ShippingLabelDto>>();
 
             //var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
             return await Task.FromResult(shippingLabelDto).ConfigureAwait(false) ?? new List<ShippingLabelDto>();
+        }
+
+
+        [HttpGet("trade/reporting/shipping/{shippingUID}/label-pallets")]
+        public async Task<List<ShippingLabelByPalletDto>> GetShippingLabelByPalletFromURI([FromRoute] string shippingUID) {
+
+            var apiClientConfig = new HttpApiClientConfig();
+
+            var http = apiClientConfig.HttpApiClient("http://apps.sujetsa.com.mx:8080", TimeSpan.FromSeconds(240));
+
+            var uri = $"/api/v4/trade/sales/shipping/{shippingUID}/label-pallets";
+
+            var response = await http.GetAsync(uri).ConfigureAwait(false);
+
+            var content = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+
+            var data = content.RootElement.GetProperty("data");
+
+            var shippingLabelDto = data.Deserialize<List<ShippingLabelByPalletDto>>();
+
+            return await Task.FromResult(shippingLabelDto).ConfigureAwait(false) ?? new List<ShippingLabelByPalletDto>();
         }
     }
 }

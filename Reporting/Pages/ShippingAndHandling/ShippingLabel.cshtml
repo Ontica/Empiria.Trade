@@ -2,9 +2,34 @@
 @model Reporting.Web.Pages.Shipping.ShippingLabelModel
 @{
 }
-
+<link rel="stylesheet" href="~/css/to.printer.css" type="text/css" />
 <br />
-<div class="text-center divResult">
-    
-  
-</div>
+<body>
+    <div class="text-center">
+        @if (Model.Labels.Count() > 0) {
+
+            <table class="">
+                <tr>
+                    <th>@Html.DisplayNameFor(m => m.Labels.First().productCode)</th>
+                    <th>@Html.DisplayNameFor(m => m.Labels.First().productPresentation)</th>
+                    <th>@Html.DisplayNameFor(m => m.Labels.First().description)</th>
+                    <th>@Html.DisplayNameFor(m => m.Labels.First().ubication)</th>
+                    <th>@Html.DisplayNameFor(m => m.Labels.First().comments)</th>
+                    <th>@Html.DisplayNameFor(m => m.Labels.First().quantity)</th>
+                </tr>
+                @foreach (var item in Model.Labels) {
+                    <tr>
+                        <td>@Html.DisplayFor(m => item.orderUID)</td>
+                        <td>@Html.DisplayFor(m => item.productCode)</td>
+                        <td>@Html.DisplayFor(m => item.productPresentation)</td>
+                        <td>@Html.DisplayFor(m => item.description)</td>
+                        <td>@Html.DisplayFor(m => item.ubication)</td>
+                        <td>@Html.DisplayFor(m => item.comments)</td>
+                        <td>@Html.DisplayFor(m => item.quantity)</td>
+                    </tr>
+                }
+            </table>
+        }
+
+    </div>
+</body>

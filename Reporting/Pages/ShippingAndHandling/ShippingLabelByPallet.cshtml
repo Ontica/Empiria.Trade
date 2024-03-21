@@ -1,0 +1,68 @@
+﻿@page
+@model Empiria.Trade.Reporting.Pages.ShippingAndHandling.ShippingLabelByPalletModel
+@{
+}
+<link rel="stylesheet" href="~/css/to.printer.css" type="text/css" />
+<br />
+<body>
+    <div class="center">
+        @foreach (var item in Model.Labels) {
+
+            <div class="upperSeparator">
+
+                <div>
+                    <h1>SUJETSA</h1>
+                    <br />
+                    <h2>AV. SIGLO XXI 7801 LOS NEGRITOS</h2>
+                    <h2>AGUASCALIENTES AGUASCALIENTES 20310</h2>
+                    <h5>ESTIMADO CLIENTE, LE ENVIAMOS FOTOGRAFIAS DE COMO SE EMBARCA SU MERCANCIA</h5>
+                    <h3>EN CASO DE RECIBIR LA MERCANCIA DAÑADA O INCOMPLETA FAVOR</h3>
+                    <h3>DE ESPECIFICAR EN LA GUIA DE ENTREGA. POR SU ATENCION,</h3>
+                    <h3>¡GRACIAS¡.</h3>
+
+                </div>
+                <br />
+                <br />
+                <br />
+                <div>
+                    <h2>Tipo de Envío: @Html.DisplayFor(m => item.shippingType)</h2>
+                    <h1>@Html.DisplayFor(m => item.parcelSupplier)</h1>
+                    <h3>Cliente.</h3>
+                    <h5>@Html.DisplayFor(m => item.customer)</h5>
+                    <h3>Dirección.</h3>
+                    <h5>@Html.DisplayFor(m => item.customerAddress)</h5>
+                    <h3>TELÉFONO: @Html.DisplayFor(m => item.customerPhoneNumber)</h3>
+
+                </div>
+                <br />
+                <br />
+                <div>
+                    <h5>
+                        Tarima: @Html.DisplayFor(m => item.palletName)
+                        @Html.DisplayFor(m => item.palletCount)
+                    </h5>
+                    <h3>Contenido.</h3>
+                    <table>
+                        <tr>
+                            <td style="border:solid">@Html.DisplayFor(m => item.packageQuantity) Cajas.</td>
+
+                            <td style="border:solid">@Html.DisplayFor(m => item.tiedQuantity) Atados.</td>
+
+                            <td style="border:solid">@Html.DisplayFor(m => item.bagQuantity) Costales.</td>
+                        </tr>
+                    </table>
+                    <h5>@Html.DisplayFor(m => item.customerAddress)</h5>
+                </div>
+
+
+
+            </div>
+            <br />
+            <br />
+            <br />
+
+
+        }
+
+    </div>
+</body>

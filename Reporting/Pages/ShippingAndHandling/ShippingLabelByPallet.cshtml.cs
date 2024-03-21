@@ -3,21 +3,20 @@ using Empiria.Trade.Reporting.WebApi.Client.ShippingAndHandling;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Reporting.Web.Pages.Shipping {
-    public class ShippingLabelModel : PageModel {
+namespace Empiria.Trade.Reporting.Pages.ShippingAndHandling
+{
+    public class ShippingLabelByPalletModel : PageModel
+    {
 
-
-        public IEnumerable<ShippingLabelDto> Labels {
+        public IEnumerable<ShippingLabelByPalletDto> Labels {
             get; set;
-        } = new List<ShippingLabelDto>();
+        } = new List<ShippingLabelByPalletDto>();
 
 
         public async Task OnGet(string shippingUID) {
-
             var controller = new ShippingLabelsWebApiClientController();
-            
-            Labels = await controller.GetShippingLabelFromURI(shippingUID);
 
+            Labels = await controller.GetShippingLabelByPalletFromURI(shippingUID);
         }
     }
 }
