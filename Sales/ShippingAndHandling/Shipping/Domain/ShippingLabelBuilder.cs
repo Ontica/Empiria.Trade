@@ -80,13 +80,13 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
             int palletCount = 0;
             foreach (var shippingPallet in shippingPallets) {
-
+                palletCount = palletCount + 1;
                 var label = new ShippingLabelByPallet();
 
 
                 label.ParcelSupplier = SimpleObjectData.Parse(shipping.ParcelSupplierId).Name;
                 label.PalletName = shippingPallet.ShippingPalletName;
-                label.PalletCount = $"{palletCount++}/{shippingPallets.Count}";
+                label.PalletCount = $"{palletCount}/{shippingPallets.Count}";
                 
                 FixedList<ShippingPackage> shippingPackages =
                     ShippingData.GetShippingPackagesByPalletUID(shippingPallet.ShippingPalletUID);
