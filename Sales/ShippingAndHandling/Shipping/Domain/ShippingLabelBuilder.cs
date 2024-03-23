@@ -37,6 +37,14 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
         #region Public methods
 
 
+        internal BillingDto GetBillingForOrder(SalesOrder order) {
+
+
+
+            return MapSalesOrderToBilling(order);
+        }
+
+
         internal FixedList<ShippingLabel> GetShippingLabels(string shippingUID) {
 
             FixedList<ShippingOrderItem> ordersForShipping =
@@ -153,6 +161,57 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
             }
 
             return shippingLabels;
+        }
+
+
+        private BillingDto MapSalesOrderToBilling(SalesOrder order) {
+
+            BillingDto billing = new BillingDto {
+                OrderUID = order.UID,
+                OrderNumber = order.OrderNumber,
+                Customer = order.Customer.Name,
+                CustomerAddress = order.CustomerAddress.Address1,
+                CustomerContact = order.CustomerContact.Name,
+                CustomerPhone = order.CustomerContact.PhoneNumber,
+                Supplier = order.Supplier.Name,
+                SalesAgent = order.SalesAgent.Name,
+                PaymentCondition = order.PaymentCondition,
+                ShippingMethod = order.ShippingMethod,
+                ItemsCount = order.ItemsCount,
+                BillingSubtotal = order.ItemsTotal,
+                ShipmentTotal = order.Shipment,
+                Taxes = order.Taxes,
+                BillingTotal = order.OrderTotal,
+                BillingItems = GetBillingItems(order)
+
+            };
+
+            return billing;
+        }
+
+
+        private FixedList<BillingItemDto> GetBillingItems(SalesOrder order) {
+
+            List<BillingItemDto> billingItems = new List<BillingItemDto>();
+            foreach (var orderItem in order.SalesOrderItems) {
+                var item = new BillingItemDto {
+
+                    ProductPresentation = orderItem.VendorProduct.ProductPresentation.PresentationName,
+                    ProductCode = orderItem.VendorProduct.ProductFields.ProductCode,
+                    ProductName = orderItem.VendorProduct.ProductFields.ProductName,
+                    Quantity = orderItem.Quantity,
+                    UnitPrice = orderItem.BasePrice,
+                    SalesPrice = orderItem.SalesPrice,
+                    DiscountPolicy = orderItem.DiscountPolicy,
+                    Discount1 = orderItem.Discount,
+                    Discount2 = orderItem.AdditionalDiscount,
+                    Subtotal = orderItem.SubTotal
+                };
+
+
+            }
+
+            return billingItems.ToFixedList();
         }
 
 
