@@ -145,7 +145,7 @@ namespace Empiria.Trade.Sales.WebApi {
 
         fields.QueryType = QueryType.Sales;
         fields.Status = Orders.OrderStatus.Shipping;
-        fields.ShippingMethod = "Paqueteria";
+        fields.ShippingMethod = Orders.ShippingMethods.Paqueteria;
         fields.Keywords = keywords;
 
         var salesOrders = usecases.GetOrdersForShipping(fields);

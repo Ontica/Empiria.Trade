@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using Empiria.Trade.Orders;
 
 namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
@@ -69,7 +70,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
         }
 
 
-        public string ShippingType {
+        public ShippingMethods ShippingType {
             get; set;
         }
 

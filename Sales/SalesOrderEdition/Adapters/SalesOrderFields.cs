@@ -83,9 +83,9 @@ namespace Empiria.Trade.Sales.Adapters {
       get; set;
     }
 
-    public string ShippingMethod {
+    public ShippingMethods ShippingMethod {
       get; set;
-    }
+    } = ShippingMethods.None;
 
     public FixedList<SalesOrderItemsFields> Items {
       get; set;
@@ -112,7 +112,7 @@ namespace Empiria.Trade.Sales.Adapters {
     }
 
     internal CustomerAddress GetCustomerAddress() {
-      if (this.ShippingMethod == "Ocurre") {
+      if (this.ShippingMethod == ShippingMethods.Ocurre) {
         return CustomerAddress.Empty;
       }
 
@@ -154,9 +154,9 @@ namespace Empiria.Trade.Sales.Adapters {
       get; set;
     } = OrderStatus.Empty;
 
-    public string ShippingMethod {
+    public ShippingMethods ShippingMethod {
       get; set;
-    } = String.Empty;
+    } = ShippingMethods.None;
 
     public string CustomerUID {
       get; set;

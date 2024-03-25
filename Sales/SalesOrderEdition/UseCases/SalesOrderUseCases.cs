@@ -259,7 +259,7 @@ namespace Empiria.Trade.Sales.UseCases {
     }
 
     private void ValidateShippingMethod(SalesOrderFields fields) {
-      if ((fields.ShippingMethod != "Ocurre") && (fields.customerAddressUID == String.Empty)) {
+      if ((fields.ShippingMethod != Orders.ShippingMethods.Ocurre) && (fields.customerAddressUID == String.Empty)) {
         throw Assertion.EnsureNoReachThisCode($"It is customer address is mandatory.");
       }
     }

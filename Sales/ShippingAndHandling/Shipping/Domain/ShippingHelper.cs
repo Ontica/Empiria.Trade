@@ -406,7 +406,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     private void ValidateShippingMethodForOrders(FixedList<ShippingOrderItem> ordersForShipping) {
 
       foreach (var order in ordersForShipping) {
-        if (order.Order.ShippingMethod != "Paqueteria") {
+        if (order.Order.ShippingMethod != ShippingMethods.Paqueteria) {
           Assertion.EnsureFailed("La forma de envío de uno o mas pedidos no es 'Paquetería'.");
         }
       }

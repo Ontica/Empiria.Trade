@@ -33,19 +33,19 @@ namespace Empiria.Trade.Tests.Sales {
 
     [Fact]
     public void ShouldGetOrderTest() {
-              
+
       var fields = new SearchOrderFields {
-        QueryType = QueryType.SalesPacking,
+        QueryType = QueryType.Sales,
         Keywords = "",
         FromDate = Convert.ToDateTime("2023/01/10"),
         ToDate = Convert.ToDateTime("2024/12/28"),
-
+        ShippingMethod = ShippingMethods.Paqueteria
       };
 
 
       var salesOrdersHelper = new SalesOrderHelper();
 
-      var salesOrders = salesOrdersHelper.GetOrdersToPacking(fields);
+      var salesOrders = salesOrdersHelper.GetOrders(fields);
 
       var x = SearchSealesOrderMapper.MapBaseSalesOrderPackingList(salesOrders);
 
@@ -110,15 +110,15 @@ namespace Empiria.Trade.Tests.Sales {
         CustomerUID = "97c3b0b7-6f7d-4700-a329-9825a60440c1",
 
         CustomerContactUID = "",
-        SupplierUID = "211e9e92-c56e-4ed3-b42f-e916211b92ce",
+        SupplierUID = "45ff9d31-cb77-4fd5-9dea-7bcbc4cbe292",
         SalesAgentUID = "8b1d6d37-8d6c-4983-a3a0-42ed6b867bbe",
         PaymentCondition = "1 Mes",
-        ShippingMethod = "Red Paq",
+        ShippingMethod = ShippingMethods.Paqueteria,
         Items = items.ToFixedList()
       };
 
         var salesOrder = new SalesOrder(order);
-      
+      salesOrder.Save();
       var map = SalesOrderMapper.Map(salesOrder);
         Assert.NotNull(map);
 
@@ -140,7 +140,7 @@ namespace Empiria.Trade.Tests.Sales {
     [Fact]
     public void ShouldGetOrder() {
 
-     var order = SalesOrder.Parse("044cbcfa-ebbe-4745-a27b-7783c4cff64b");
+     var order = SalesOrder.Parse("e4bb8386-0b33-42f7-b638-c621c81e19d2");
      
 
       var orderDto = SalesOrderMapper.Map(order);

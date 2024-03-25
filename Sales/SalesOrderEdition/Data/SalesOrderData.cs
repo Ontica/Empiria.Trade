@@ -72,7 +72,7 @@ namespace Empiria.Trade.Sales.Data {
       internal static void Write(SalesOrder o) {
         var op = DataOperation.Parse("writeOrder", o.Id, o.UID, o.OrderTypeId, o.Customer.Id, o.Supplier.Id,
                                     o.SalesAgent.Id,o.CustomerContact.Id, o.OrderNumber, o.OrderTime, o.Notes,
-                                    o.Keywords, o.ExtData.ToString(), o.CustomerAddress.Id, (char)o.Status, (char)o.AuthorizationStatus, 
+                                    o.Keywords, o.ExtData.ToString(), o.CustomerAddress.Id, (char)o.ShippingMethod, (char)o.Status, (char)o.AuthorizationStatus, 
                                     o.AuthorizationTime, o.AuthorizatedById);
         DataWriter.Execute(op);
       }
@@ -100,8 +100,8 @@ namespace Empiria.Trade.Sales.Data {
         keywordsFilter = $" {SearchExpression.ParseAndLikeKeywords("OrderKeywords", fields.Keywords)} AND ";
       }
 
-      if (fields.ShippingMethod != string.Empty) {
-        shippingMethodFilter = $" AND (OrderExtData LIKE '%{fields.ShippingMethod}%') ";
+      if (fields.ShippingMethod != ShippingMethods.None) {
+        shippingMethodFilter = $" AND (ShippingMethod LIKE '%{(char) fields.ShippingMethod}%') ";
       }
 
       var sql = $"SELECT * FROM TRDOrders {customerFilter} " +

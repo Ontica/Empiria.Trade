@@ -99,16 +99,13 @@ namespace Empiria.Trade.Orders {
       protected set {
         this.ExtData.SetIfValue("PaymentCondition", value);
       }
-    } 
-
-    public string ShippingMethod {
-      get {
-        return this.ExtData.Get("ShippingMethod", string.Empty);
-      }
-      protected set {
-        this.ExtData.SetIfValue("ShippingMethod", value);
-      }
     }
+
+    [DataField("ShippingMethod", Default = ShippingMethods.None)]
+    public ShippingMethods ShippingMethod {
+      get;
+      protected set;
+    } = ShippingMethods.None;
 
     [DataField("OrderStatus", Default = OrderStatus.Captured)]
     public OrderStatus Status {
@@ -183,11 +180,12 @@ namespace Empiria.Trade.Orders {
     Suppled = 'S'
   } // enum AutorizationStatus
 
-  public enum ShippingMethod {
-    RutaLocal, 
-    RutaForanea,
-    Ocurre,
-    Paquteria
+  public enum ShippingMethods {
+    RutaLocal = 'L', 
+    RutaForanea = 'F',
+    Ocurre = 'O',
+    Paqueteria = 'P',
+    None = 'N'
   }
 
   
