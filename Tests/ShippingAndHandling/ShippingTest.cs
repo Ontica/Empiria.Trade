@@ -217,9 +217,9 @@ namespace Empiria.Trade.Tests {
 
             ShippingFieldsQuery query = new ShippingFieldsQuery {
                 Orders = new[] {
-          "ba011179-c2b2-49d8-9647-b3d8651c9db7",
-          "4c2b7b79-90f3-46c9-ae45-548b4fe518cc"
-        }
+                    "97c84cf7-3814-43b3-bf26-d2c96b16b98d",
+                    "d0389b37-bea7-400e-904d-e2056bafb723"
+                }
             };
 
             ShippingDto sut = usecase.GetShippingOrderByQuery(query);

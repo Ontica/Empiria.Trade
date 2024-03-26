@@ -1,5 +1,5 @@
 using Empiria.Trade.Reporting.WebApi.Client.Adapters;
-using Empiria.Trade.Reporting.WebApi.Client.ShippingAndHandling;
+using Empiria.Trade.Reporting.WebApi.Client.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -14,9 +14,10 @@ namespace Empiria.Trade.Reporting.Pages.ShippingAndHandling
 
 
         public async Task OnGet(string shippingUID) {
-            var controller = new ShippingLabelsWebApiClientController();
+            
+            var service = new ShippingLabelService();
 
-            Labels = await controller.GetShippingLabelByPalletFromURI(shippingUID);
+            Labels = await service.GetShippingLabelsFromURI(shippingUID);
         }
     }
 }
