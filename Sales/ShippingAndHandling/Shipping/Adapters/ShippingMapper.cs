@@ -98,20 +98,12 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
                 Status = entry.Status,
 
                 ShippingLabelsMedia = new MediaData("text/html",
-                    $"http://apps.sujetsa.com.mx:8080/reporting.api/ShippingAndHandling/ShippingLabelByPallet?shippingUID=" +
-                    $"{entry.ShippingUID}"),
+                    $"http://apps.sujetsa.com.mx:8080/reporting.api/ShippingAndHandling/" +
+                    $"ShippingLabelByPallet?shippingUID={entry.ShippingUID}"),
 
                 BillingsMedia = new MediaData("text/html",
-                    $"http://apps.sujetsa.com.mx:8080/reporting.api/ShippingAndHandling/Billing?shippingUID=" +
-                    $"{entry.ShippingUID}")
-
-
-                //ShippingLabelsMedia = new MediaData("text/html",
-                //    $"http://apps.sujetsa.com.mx:8080/reporting.api/trade/reporting/shipping/" +
-                //    $"{entry.ShippingUID}/labels"),
-                //BillingsMedia = new MediaData("text/html",
-                //    $"http://apps.sujetsa.com.mx:8080/reporting.api/trade/reporting/shipping/" +
-                //    $"{entry.ShippingUID}/billing")
+                    $"http://apps.sujetsa.com.mx:8080/reporting.api/ShippingAndHandling/" +
+                    $"BillingList?shippingUID={entry.ShippingUID}")
             };
 
             return shippingDto;
@@ -137,8 +129,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
                 itemDto.Packages = GetPackagesDtoByOrder(item.OrderPackages);
 
                 itemDto.BillingMedia = new MediaData("text/html",
-                $"http://apps.sujetsa.com.mx:8080/reporting.api/ShippingAndHandling/Billing?shippingUID=" +
-                $"{item.ShippingOrder.ShippingUID}");
+                $"http://apps.sujetsa.com.mx:8080/reporting.api/ShippingAndHandling/" +
+                $"Billing?shippingUID={item.ShippingOrder.ShippingUID}&orderUID={item.Order.UID}");
       
         orderForShippingDto.Add(itemDto);
             }
