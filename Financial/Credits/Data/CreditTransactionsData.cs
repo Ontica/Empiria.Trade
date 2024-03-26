@@ -28,7 +28,7 @@ namespace Empiria.Trade.Financial.Data {
 
     static internal void Write(CreditTransaction o) {
    
-      var op = DataOperation.Parse("writeCreditTransactions", o.Id,o.UID,o.TypeId,o.CreditLineId,o.TransactionTime,o.CreditAmount,
+      var op = DataOperation.Parse("writeCreditTransactions", o.Id,o.UID,o.TypeId,o.CreditLineId, o.OrderId, o.TransactionTime,o.CreditAmount,
                                                             o.DebitAmount,o.PayableOrderId,o.DueDate,o.DaysToPay,o.ExtData,(char)o.Status);
                                   
       DataWriter.Execute(op);

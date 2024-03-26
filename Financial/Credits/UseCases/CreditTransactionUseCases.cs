@@ -60,7 +60,7 @@ namespace Empiria.Trade.Financial.UseCases {
 
       var creditTransaction = CreditTransaction.Parse(creditTransactionUID);
       creditTransaction.Cancel();
-
+      
       return CreditTransactionMapper.Map(creditTransaction);
     }
 

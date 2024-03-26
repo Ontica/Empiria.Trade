@@ -251,7 +251,8 @@ namespace Empiria.Trade.Sales.UseCases {
         TransactionTime = DateTime.Now,
         CreditAmount = order.OrderTotal,        
         PayableOrderId = order.Id,
-        ExtData = order.OrderNumber
+        ExtData = order.OrderNumber,
+        OrderId = order.Id
       };
       var CreditsUseCase = CreditTransactionUseCases.UseCaseInteractor();
 
@@ -284,7 +285,17 @@ namespace Empiria.Trade.Sales.UseCases {
       return sut[0].Stock;
     }
 
-   
+    public ISalesOrderDto CancelCreditInOrder(string orderUID) {
+
+      var CreditsUseCase = CreditTransactionUseCases.UseCaseInteractor();
+      CreditsUseCase.Cancel(orderUID);
+
+      return ApplySalesOrder(orderUID);
+
+      throw new NotImplementedException();
+    }
+
+
     #endregion Private methods
 
   } // class SalesOrderUseCases

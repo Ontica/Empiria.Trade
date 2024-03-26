@@ -53,6 +53,11 @@ namespace Empiria.Trade.Financial {
       get; private set;
     }
 
+    [DataField("OrderId")]
+    public int OrderId {
+      get; private set;
+    }
+
     [DataField("TransactionTime")]
     public DateTime TransactionTime {
       get; private set;
@@ -105,6 +110,7 @@ namespace Empiria.Trade.Financial {
 
       this.TypeId = fields.TypeId;
       this.CreditLineId = GetCreditLindId(fields.CustomerId);
+      this.OrderId = fields.OrderId;
       this.TransactionTime = fields.TransactionTime;
       this.CreditAmount = fields.CreditAmount;
       this.DebitAmount = this.CreditAmount;

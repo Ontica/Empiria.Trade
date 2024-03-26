@@ -65,7 +65,12 @@ namespace Empiria.Trade.Financial.Adapters {
       get; set;
     } = string.Empty;
 
-     #endregion Properties
+    public int OrderId {
+      get;
+      internal set;
+    }
+
+    #endregion Properties
 
   } // class CreditTrasnactionFields
 
