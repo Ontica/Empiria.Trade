@@ -8,15 +8,15 @@ namespace Reporting.Web.Pages.Shipping
     public class BillingModel : PageModel
     {
 
-        public IEnumerable<ShippingLabelByPalletDto> Labels {
+        public ShippingBillingDto Billing {
             get; set;
-        } = new List<ShippingLabelByPalletDto>();
+        } = new ShippingBillingDto();
 
 
-        public async Task OnGet(string shippingUID) {
-            var controller = new ShippingLabelsWebApiClientController();
+        public async Task OnGet(string shippingUID, string orderUID) {
+            var controller = new BillingWebApiClientController();
 
-            Labels = await controller.GetShippingLabelByPalletFromURI(shippingUID);
+            Billing = await controller.GetShippingBillingFromURI(shippingUID, orderUID);
         }
     }
 }

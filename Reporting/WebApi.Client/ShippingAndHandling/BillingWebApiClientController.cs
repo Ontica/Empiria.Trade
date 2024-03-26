@@ -1,4 +1,6 @@
 ﻿
+using Empiria.Trade.Reporting.WebApi.Client.Adapters;
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Reporting.Web.Pages.Shipping;
 
@@ -11,19 +13,24 @@ namespace Empiria.Trade.Reporting.WebApi.Client.ShippingAndHandling {
 
 
         [HttpGet("trade/reporting/shipping/{shippingUID}/billing")]
-        public async Task<string> GetShippingLabelFromURI([FromRoute] string shippingUID) {
+        public async Task<ShippingBillingDto> GetShippingBillingFromURI(
+            [FromRoute] string shippingUID, [FromRoute] string orderUID) {
 
             var apiClientConfig = new HttpApiClientConfig();
 
             var http = apiClientConfig.HttpApiClient("http://apps.sujetsa.com.mx:8080", TimeSpan.FromSeconds(240));
 
-            var tradeController = $"/api/v4/trade/sales/shipping/{shippingUID}/labels";
+            var uri = $"/api/v4/trade/sales/shipping/{shippingUID}/billing/{orderUID}";
 
-            var response = await http.GetAsync(tradeController).ConfigureAwait(false);
+            var response = await http.GetAsync(uri).ConfigureAwait(false);
 
-            var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var content = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
 
-            return content;
+            var data = content.RootElement.GetProperty("data");
+
+            var billingDto = data.Deserialize<ShippingBillingDto>();
+
+            return await Task.FromResult(billingDto).ConfigureAwait(false) ?? new ShippingBillingDto();
         }
     }
 }

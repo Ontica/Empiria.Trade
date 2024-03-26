@@ -1,6 +1,6 @@
 ﻿/* Empiria Trade Reporting ***********************************************************************************
 *                                                                                                            *
-*  Module   : Shipping Management                        Component : Interface adapters                      *
+*  Module   : Shipping Reports Management                Component : Interface adapters                      *
 *  Assembly : Empiria.Trade.ShippingAndHandling.dll      Pattern   : Data Transfer Object                    *
 *  Type     : ShippingLabelDto                           License   : Please read LICENSE.txt file            *
 *                                                                                                            *
