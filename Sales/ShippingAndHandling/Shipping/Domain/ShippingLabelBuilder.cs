@@ -44,23 +44,23 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
         }
 
 
-        //internal FixedList<BillingDto> GetShippingBillingList(string shippingUID) {
+        internal FixedList<BillingDto> GetShippingBillingList(string shippingUID) {
 
-        //    List<BillingDto> billingList = new List<BillingDto>();
+            List<BillingDto> billingList = new List<BillingDto>();
 
-        //    var shippingItems = ShippingData.GetOrdersForShippingByShippingId(shippingUID);
+            var shippingItems = ShippingData.GetOrdersForShippingByShippingId(shippingUID);
 
-        //    foreach (var item in shippingItems) {
+            foreach (var item in shippingItems) {
 
-        //        SalesOrder order = SalesOrder.Parse(item.Order.UID);
+                SalesOrder order = SalesOrder.Parse(item.Order.UID);
 
-        //        order.CalculateSalesOrder(QueryType.SalesShipping);
+                order.CalculateSalesOrder(QueryType.SalesShipping);
 
-        //        billingList.Add(MapSalesOrderToBilling(order));
-        //    }
+                billingList.Add(MapSalesOrderToBilling(order));
+            }
 
-        //    return billingList.ToFixedList();
-        //}
+            return billingList.ToFixedList();
+        }
 
 
         internal FixedList<ShippingLabel> GetShippingLabels(string shippingUID) {

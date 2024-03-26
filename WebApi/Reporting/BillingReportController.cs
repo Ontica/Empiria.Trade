@@ -39,17 +39,17 @@ namespace Empiria.Trade.WebApi.Reporting {
         }
 
 
-        //[HttpGet]
-        //[Route("v4/trade/sales/shipping/{shippingUID}/billing")]
-        //public CollectionModel GetShippingBillings([FromUri] string shippingUID) {
+        [HttpGet]
+        [Route("v4/trade/sales/shipping/{shippingUID}/billing")]
+        public CollectionModel GetShippingBillings([FromUri] string shippingUID) {
 
-        //    using (var usecases = BillingUseCases.UseCaseInteractor()) {
+            using (var usecases = BillingUseCases.UseCaseInteractor()) {
 
-        //        FixedList<BillingDto> billingList = usecases.GetShippingBillingList(shippingUID);
+                FixedList<BillingDto> billingList = usecases.GetShippingBillingList(shippingUID);
 
-        //        return new CollectionModel(this.Request, billingList);
-        //    }
-        //}
+                return new CollectionModel(this.Request, billingList);
+            }
+        }
 
 
         #endregion Web apis

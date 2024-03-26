@@ -49,12 +49,12 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
         }
 
 
-        //public FixedList<BillingDto> GetShippingBillingList(string shippingUID) {
+        public FixedList<BillingDto> GetShippingBillingList(string shippingUID) {
 
-        //    var builder = new ShippingLabelBuilder();
+            var builder = new ShippingLabelBuilder();
 
-        //    return builder.GetShippingBillingList(shippingUID);
-        //}
+            return builder.GetShippingBillingList(shippingUID);
+        }
 
         #endregion Public methods
 
