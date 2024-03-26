@@ -26,6 +26,15 @@ namespace Empiria.Trade.Financial.Data {
       return DataReader.GetFixedList<CreditTransaction>(op);
     }
 
+    internal static CreditTransaction GetCreditTrasantion(int orderId) {
+      string sql = "SELECT * FROM TRDCreditTransactions " +
+                   $"WHERE PayableOrderId = {orderId} and CreditTransactionStatus <> 'X'";
+
+      var op = DataOperation.Parse(sql);
+
+      return DataReader.GetObject<CreditTransaction>(op);
+    }
+
     static internal void Write(CreditTransaction o) {
    
       var op = DataOperation.Parse("writeCreditTransactions", o.Id,o.UID,o.TypeId,o.CreditLineId, o.OrderId, o.TransactionTime,o.CreditAmount,

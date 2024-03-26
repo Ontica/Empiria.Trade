@@ -287,12 +287,15 @@ namespace Empiria.Trade.Sales.UseCases {
 
     public ISalesOrderDto CancelCreditInOrder(string orderUID) {
 
+      var order = SalesOrder.Parse(orderUID);
+
       var CreditsUseCase = CreditTransactionUseCases.UseCaseInteractor();
-      CreditsUseCase.Cancel(orderUID);
+      CreditsUseCase.Cancel(order.Id);
 
-      return ApplySalesOrder(orderUID);
-
-      throw new NotImplementedException();
+      order.Apply();
+      
+      return SalesOrderMapper.Map(order);
+    //  throw new NotImplementedException();
     }
 
 

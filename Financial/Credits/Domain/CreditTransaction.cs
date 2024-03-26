@@ -38,6 +38,10 @@ namespace Empiria.Trade.Financial {
       return BaseObject.ParseKey<CreditTransaction>(uid);
     }
 
+    static public CreditTransaction ParseByOrderId(int orderId) {
+      return CreditTransactionsData.GetCreditTrasantion(orderId);
+    }
+
     #endregion Constructors and parsers
 
     #region Public properties

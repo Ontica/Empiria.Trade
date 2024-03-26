@@ -25,6 +25,7 @@ using Empiria.Trade.Core;
 using Xunit.Abstractions;
 using Empiria.Trade.Orders;
 using System.Linq;
+using Empiria.Trade.Financial.UseCases;
 
 namespace Empiria.Trade.Tests.Sales {
 
@@ -187,7 +188,15 @@ namespace Empiria.Trade.Tests.Sales {
 
       Assert.NotNull(orderDto);
     }
-    
+
+    [Fact]
+    public void ShouldCancelCredintInOrder() {
+
+      var salesOrderUseCase = SalesOrderUseCases.UseCaseInteractor();
+      var x =  salesOrderUseCase.CancelCreditInOrder("88f479bb-4c95-41c8-86d6-51f8df9cf833");
+
+      Assert.NotNull(x);
+    }
 
 
   } // public class SalesTest
