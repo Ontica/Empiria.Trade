@@ -52,6 +52,16 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
         }
 
 
+        public string SupplierAddress {
+            get; set;
+        }
+
+
+        public string SupplierPhonoNumber {
+            get; set;
+        }
+
+
         public string SalesAgent {
             get; set;
         }
@@ -63,6 +73,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
 
         public ShippingMethods ShippingMethod {
+            get; set;
+        }
+
+
+        public string OrderNotes {
             get; set;
         }
 
@@ -95,8 +110,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
         public FixedList<BillingItemDto> BillingItems {
             get; set;
         } = new FixedList<BillingItemDto>();
-
-
+        
     } // class BillingDto
 
 

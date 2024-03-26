@@ -37,7 +37,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
         #region Public methods
 
 
-        public BillingDto GetShippingLabels(string shippingUID, string orderUID) {
+        public BillingDto GetShippingBilling(string shippingUID, string orderUID) {
 
             SalesOrder order = SalesOrder.Parse(orderUID);
 
@@ -47,6 +47,14 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
             return builder.GetBillingForOrder(order);
         }
+
+
+        //public FixedList<BillingDto> GetShippingBillingList(string shippingUID) {
+
+        //    var builder = new ShippingLabelBuilder();
+
+        //    return builder.GetShippingBillingList(shippingUID);
+        //}
 
         #endregion Public methods
 

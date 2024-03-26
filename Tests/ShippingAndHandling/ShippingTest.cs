@@ -41,6 +41,21 @@ namespace Empiria.Trade.Tests {
 
 
         [Fact]
+        public void GetShippingBillingTest() {
+
+            string shippingUID = "2d4e170f-8bb4-4ecf-9a4d-3609e542d25b";
+            string orderUID = "959427b0-b5e0-4942-81c5-3b4725bccc83";
+
+            var usecase = BillingUseCases.UseCaseInteractor();
+
+            var sut = usecase.GetShippingBilling(shippingUID, orderUID);
+
+            Assert.NotNull(sut);
+
+        }
+
+
+        [Fact]
         public void CreateShippingOrderTest() {
 
             var usecase = ShippingUseCases.UseCaseInteractor();

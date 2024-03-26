@@ -13,6 +13,7 @@ using System.Linq;
 using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Core.Common;
 using Empiria.Trade.Orders;
+using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Sales.Data;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 using Empiria.Trade.Sales.ShippingAndHandling.Data;
@@ -39,10 +40,27 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
         internal BillingDto GetBillingForOrder(SalesOrder order) {
 
-
-
             return MapSalesOrderToBilling(order);
         }
+
+
+        //internal FixedList<BillingDto> GetShippingBillingList(string shippingUID) {
+
+        //    List<BillingDto> billingList = new List<BillingDto>();
+
+        //    var shippingItems = ShippingData.GetOrdersForShippingByShippingId(shippingUID);
+
+        //    foreach (var item in shippingItems) {
+
+        //        SalesOrder order = SalesOrder.Parse(item.Order.UID);
+
+        //        order.CalculateSalesOrder(QueryType.SalesShipping);
+
+        //        billingList.Add(MapSalesOrderToBilling(order));
+        //    }
+
+        //    return billingList.ToFixedList();
+        //}
 
 
         internal FixedList<ShippingLabel> GetShippingLabels(string shippingUID) {
@@ -174,14 +192,17 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
                 CustomerContact = order.CustomerContact.Name,
                 CustomerPhone = order.CustomerContact.PhoneNumber,
                 Supplier = order.Supplier.Name,
+                SupplierAddress = order.Supplier.AddressLine1,
+                SupplierPhonoNumber = order.Supplier.PhoneNumbers,
                 SalesAgent = order.SalesAgent.Name,
                 PaymentCondition = order.PaymentCondition,
                 ShippingMethod = order.ShippingMethod,
+                OrderNotes = order.Notes,
                 ItemsCount = order.ItemsCount,
-                BillingSubtotal = order.ItemsTotal,
-                ShipmentTotal = order.Shipment,
-                Taxes = order.Taxes,
-                BillingTotal = order.OrderTotal,
+                BillingSubtotal = Math.Round(order.ItemsTotal,2),
+                ShipmentTotal = Math.Round(order.Shipment,2),
+                Taxes = Math.Round(order.Taxes, 2),
+                BillingTotal = Math.Round(order.OrderTotal, 2),
                 BillingItems = GetBillingItems(order)
 
             };
@@ -207,8 +228,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
                     Discount2 = orderItem.AdditionalDiscount,
                     Subtotal = orderItem.SubTotal
                 };
-
-
+                billingItems.Add(item);
             }
 
             return billingItems.ToFixedList();
