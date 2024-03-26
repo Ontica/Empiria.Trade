@@ -1,0 +1,104 @@
+﻿@page
+@model Empiria.Trade.Reporting.Pages.ShippingAndHandling.BillingListModel
+@{
+}
+<link rel="stylesheet" href="~/css/to.printer.css" type="text/css" />
+<br />
+<body>
+    <div class="center">
+        @foreach (var billing in Model.Billings) {
+
+            <div class="upperSeparator">
+
+                <div>
+                    <h1>FORMATO DE FACTURA</h1>
+                    <br />
+                </div>
+                <br />
+                <h1>@billing.orderNumber</h1>
+                <br />
+                <h1>FECHA: @DateTime.Now.ToString("dd/MM/yyyy")</h1>
+                <br />
+                <div>
+                    <h2>@billing.supplier</h2>
+                    <h2>AV. SIGLO XXI 7801 LOS NEGRITOS</h2>
+                    <h2>AGUASCALIENTES AGUASCALIENTES 20310</h2>
+                    @* <h2>@billing.supplierAddress</h2>
+                <h2>@billing.supplierPhonoNumber</h2> *@
+                    <h3>AGENTE: @billing.salesAgent</h3>
+
+                </div>
+                <br />
+                <div>
+                    <h2>CLIENTE:</h2>
+                    <h3>@billing.customer</h3>
+                    <h3>DIRECCION: @billing.customerAddress</h3>
+                    <h3>CONTACTO: @billing.customerContact</h3>
+
+                    @if (billing.customerPhone != string.Empty) {
+                        <h3>TELEFONO: @billing.customerPhone</h3>
+                    }
+
+                    <h5>Método de envío: @billing.shippingMethod</h5>
+                </div>
+                <br />
+                <div>
+                    <h3>Contenido: @billing.itemsCount productos</h3>
+                    <table>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Descripción</th>
+                            <th>Cantidad</th>
+                            <th>P. Unitario</th>
+                            <th>Importe</th>
+                            <th>Politica</th>
+                            <th>Descuento 1</th>
+                            <th>Descuento 2</th>
+                            <th>Subtotal</th>
+                        </tr>
+                        @foreach (var product in billing.billingItems) {
+                            <tr>
+                                <td>@Html.DisplayFor(m => product.productCode) - @Html.DisplayFor(m => product.productPresentation)</td>
+                                <td>@Html.DisplayFor(m => product.productName)</td>
+                                <td>@Html.DisplayFor(m => product.quantity)</td>
+                                <td>@Html.DisplayFor(m => product.unitPrice)</td>
+                                <td>@Html.DisplayFor(m => product.salesPrice)</td>
+                                <td>@Html.DisplayFor(m => product.discountPolicy)</td>
+                                <td>@Html.DisplayFor(m => product.discount1)</td>
+                                <td>@Html.DisplayFor(m => product.discount2)</td>
+                                <td>@Html.DisplayFor(m => product.subtotal)</td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+                <br />
+                <br />
+                <div>
+                    @if (billing.OrderNotes != string.Empty) {
+                        <h5>Notas: @billing.OrderNotes</h5>
+                    }
+
+                    <h5>Condiciones de pago: @billing.paymentCondition</h5>
+                </div>
+                <br />
+                <div style="align-content:end">
+                    <table>
+                        <tr>
+                            <th>Subtotal</th>
+                            <th>Envío</th>
+                            <th>Impuestos</th>
+                            <th>Importe total</th>
+                        </tr>
+                        <tr>
+                            <td>@billing.billingSubtotal</td>
+                            <td>@billing.shipmentTotal</td>
+                            <td>@billing.taxes</td>
+                            <td>@billing.billingTotal</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+        }
+    </div>
+</body>
