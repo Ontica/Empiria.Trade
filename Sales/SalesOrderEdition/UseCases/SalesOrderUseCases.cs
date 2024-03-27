@@ -164,8 +164,18 @@ namespace Empiria.Trade.Sales.UseCases {
       Assertion.Require(orderUID, "orderUID");
 
       var order = SalesOrder.Parse(orderUID);
-      order.Apply();
-           
+      if (order.PaymentCondition == "Credito") {
+        var debitTotal = GetCustomerTotalDebt(order.Customer.Id) + order.OrderTotal;
+        if (debitTotal > GetCustomerTotalDebt(order.Customer.Id)) {
+          order.Apply();
+        } else {
+          order.Authorize();
+        }
+      } else {
+        order.Authorize();
+
+      }
+     
       return SalesOrderMapper.Map(order);
     }
 
@@ -297,6 +307,18 @@ namespace Empiria.Trade.Sales.UseCases {
     //  throw new NotImplementedException();
     }
 
+    static private decimal GetCusomerCreditLimit(int customerId) {
+      var CreditsUseCase = CreditTransactionUseCases.UseCaseInteractor();
+
+      return CreditsUseCase.GetCusomerCreditLimit(customerId);
+    }
+
+    static private decimal GetCustomerTotalDebt(int customerId) {
+
+      var CreditsUseCase = CreditTransactionUseCases.UseCaseInteractor();
+
+      return CreditsUseCase.GetCustomerTotalDebt(customerId);
+    }
 
     #endregion Private methods
 
