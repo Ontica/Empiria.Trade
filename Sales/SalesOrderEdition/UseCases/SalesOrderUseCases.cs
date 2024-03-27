@@ -249,9 +249,9 @@ namespace Empiria.Trade.Sales.UseCases {
       var creditFields = new CreditTrasnactionFields() {
         CustomerId = order.Customer.Id,
         TransactionTime = DateTime.Now,
-        CreditAmount = order.OrderTotal,        
+        CreditAmount = order.OrderTotal,
         PayableOrderId = order.Id,
-        ExtData = order.OrderNumber,
+        ExtData = order.OrderNumber
       };
       var CreditsUseCase = CreditTransactionUseCases.UseCaseInteractor();
 

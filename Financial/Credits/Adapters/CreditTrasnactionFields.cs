@@ -65,7 +65,10 @@ namespace Empiria.Trade.Financial.Adapters {
       get; set;
     } = string.Empty;
 
-   
+    public string Notes {
+      get;
+      internal set;
+    } = string.Empty;
 
     #endregion Properties
 

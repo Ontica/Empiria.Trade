@@ -87,6 +87,11 @@ namespace Empiria.Trade.Financial {
       get; private set;
     }
 
+    [DataField("Notes")]
+    public string Notes {
+      get; private set;
+    } = string.Empty;
+
     [DataField("CreditTransactionExtData", Default = "")]
     public string ExtData {
       get; private set;
@@ -115,6 +120,7 @@ namespace Empiria.Trade.Financial {
       this.PayableOrderId = fields.PayableOrderId;
       this.DueDate = GetDueDate(fields.CustomerId);
       this.DaysToPay = GetCreditCondition(fields.CustomerId);
+      this.Notes = fields.Notes;
       this.ExtData = fields.ExtData;
       this.Status = EntityStatus.Active;
     }
