@@ -252,7 +252,6 @@ namespace Empiria.Trade.Sales.UseCases {
         CreditAmount = order.OrderTotal,        
         PayableOrderId = order.Id,
         ExtData = order.OrderNumber,
-        OrderId = order.Id
       };
       var CreditsUseCase = CreditTransactionUseCases.UseCaseInteractor();
 

@@ -65,10 +65,7 @@ namespace Empiria.Trade.Financial.Adapters {
       get; set;
     } = string.Empty;
 
-    public int OrderId {
-      get;
-      internal set;
-    }
+   
 
     #endregion Properties
 
