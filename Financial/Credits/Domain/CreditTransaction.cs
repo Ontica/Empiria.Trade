@@ -97,6 +97,12 @@ namespace Empiria.Trade.Financial {
       get; private set;
     } = string.Empty;
 
+    [DataField("AuthorizatedById")]
+    public int AuthorizatedById {
+      get;
+      protected set;
+    }
+
     [DataField("CreditTransactionStatus", Default = EntityStatus.Active)]
     public EntityStatus Status {
       get; private set;
@@ -122,6 +128,7 @@ namespace Empiria.Trade.Financial {
       this.DaysToPay = GetCreditCondition(fields.CustomerId);
       this.Notes = fields.Notes;
       this.ExtData = fields.ExtData;
+      this.AuthorizatedById = ExecutionServer.CurrentUserId;
       this.Status = EntityStatus.Active;
     }
 
