@@ -14,6 +14,7 @@ using Empiria.Trade.Core;
 using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Financial.Adapters;
 using Empiria.Trade.Financial.UseCases;
+using Empiria.Trade.Orders;
 using Empiria.Trade.Products;
 using Empiria.Trade.Sales.Adapters;
 
@@ -162,22 +163,18 @@ namespace Empiria.Trade.Sales.UseCases {
 
     public ISalesOrderDto ApplySalesOrder(string orderUID) {
       Assertion.Require(orderUID, "orderUID");
-
+           
       var order = SalesOrder.Parse(orderUID);
-      if (order.PaymentCondition == "Credito") {
-        var debitTotal = GetCustomerTotalDebt(order.Customer.Id) + order.OrderTotal;
-        if (debitTotal > GetCustomerTotalDebt(order.Customer.Id)) {
-          order.Apply();
-        } else {
-          order.Authorize();
-        }
-      } else {
-        order.Authorize();
+      order.GetOrderTotal();
 
+      switch (order.PaymentCondition) {
+        case "Contado": order.Authorize(); break;
+        case "Credito": SetCreditOrder(order); break;
       }
-     
+         
       return SalesOrderMapper.Map(order);
     }
+       
 
     public ISalesOrderDto GetSalesOrder(string orderUID, QueryType queryType) {
       var order = SalesOrder.Parse(orderUID);
@@ -266,6 +263,16 @@ namespace Empiria.Trade.Sales.UseCases {
       var CreditsUseCase = CreditTransactionUseCases.UseCaseInteractor();
 
       CreditsUseCase.AddCustomerCreditTransaction(creditFields);
+    }
+
+    private void SetCreditOrder(SalesOrder order) {
+      var debitTotal = GetCustomerTotalDebt(order.Customer.Id) + order.OrderTotal;
+      if (debitTotal > GetCusomerCreditLimit(order.Customer.Id)) {
+        order.Apply();
+      } else {
+        AddCredit(order);
+        order.Authorize();
+      }
     }
 
     private void ValidateShippingMethod(SalesOrderFields fields) {
