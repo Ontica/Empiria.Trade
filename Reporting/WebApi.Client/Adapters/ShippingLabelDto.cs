@@ -12,48 +12,6 @@ using System;
 namespace Empiria.Trade.Reporting.WebApi.Client.Adapters {
 
 
-    /// <summary>Output DTO used to return shipping label.</summary>
-    public class ShippingLabelDto {
-
-
-        public string orderUID {
-            get; set;
-        } = string.Empty;
-
-
-        public string productCode {
-            get; set;
-        } = string.Empty;
-
-
-        public string productPresentation {
-            get; set;
-        } = string.Empty;
-
-
-        public string description {
-            get; set;
-        } = string.Empty;
-
-
-        public string ubication {
-            get; set;
-        } = string.Empty;
-
-
-        public string comments {
-            get; set;
-        } = string.Empty;
-
-
-        public decimal quantity {
-            get; set;
-        }
-
-
-    } // class ShippingLabelDto
-
-
     /// <summary>Output DTO used to return shipping label by pallet.</summary>
     public class ShippingLabelByPalletDto {
 
@@ -97,12 +55,12 @@ namespace Empiria.Trade.Reporting.WebApi.Client.Adapters {
         } = string.Empty;
 
 
-        public string palletName {
+        public string packingName {
             get; set;
         } = string.Empty;
 
 
-        public string palletCount {
+        public string packingCount {
             get; set;
         } = string.Empty;
 
@@ -122,5 +80,47 @@ namespace Empiria.Trade.Reporting.WebApi.Client.Adapters {
         }
 
     } // class ShippingLabelByPallet
+
+
+    /// <summary>Output DTO used to return shipping label.</summary>
+    public class SupplyLabeDto {
+
+
+        public string orderUID {
+            get; set;
+        } = string.Empty;
+
+
+        public string productCode {
+            get; set;
+        } = string.Empty;
+
+
+        public string productPresentation {
+            get; set;
+        } = string.Empty;
+
+
+        public string description {
+            get; set;
+        } = string.Empty;
+
+
+        public string ubication {
+            get; set;
+        } = string.Empty;
+
+
+        public string comments {
+            get; set;
+        } = string.Empty;
+
+
+        public decimal quantity {
+            get; set;
+        }
+
+
+    } // class ShippingLabelDto
 
 } // namespace Empiria.Trade.Reporting.WebApi.Client.Adapters

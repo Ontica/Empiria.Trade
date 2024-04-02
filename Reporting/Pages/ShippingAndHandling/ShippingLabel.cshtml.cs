@@ -7,9 +7,9 @@ namespace Reporting.Web.Pages.Shipping {
     public class ShippingLabelModel : PageModel {
 
 
-        public IEnumerable<ShippingLabelDto> Labels {
+        public IEnumerable<SupplyLabeDto> Labels {
             get; set;
-        } = new List<ShippingLabelDto>();
+        } = new List<SupplyLabeDto>();
 
 
         public async Task OnGet(string shippingUID) {
