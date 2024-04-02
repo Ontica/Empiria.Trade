@@ -34,21 +34,21 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
         #endregion Constructors and parsers
 
 
-        public FixedList<ShippingLabel> GetShippingLabels(string shippingUID) {
+        public FixedList<SupplyLabe> GetSupplyLabels(string shippingUID) {
 
             var builder = new ShippingLabelBuilder();
 
-            FixedList<ShippingLabel> shippingLabels = builder.GetShippingLabels(shippingUID);
+            FixedList<SupplyLabe> shippingLabels = builder.GetSupplyLabels(shippingUID);
 
             return shippingLabels;
         }
 
 
-        public FixedList<ShippingLabelByPallet> GetShippingLabelsForPallets(string shippingUID) {
+        public FixedList<ShippingLabel> GetShippingLabels(string shippingUID) {
 
             var builder = new ShippingLabelBuilder();
 
-            FixedList<ShippingLabelByPallet> shippingLabels = builder.GetShippingLabelsForPallets(shippingUID);
+            FixedList<ShippingLabel> shippingLabels = builder.GetShippingLabels(shippingUID);
 
             return shippingLabels;
         }

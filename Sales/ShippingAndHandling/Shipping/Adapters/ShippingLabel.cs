@@ -15,46 +15,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
     /// <summary>Output DTO used to return shipping label.</summary>
     public class ShippingLabel {
 
-
-        public string OrderUID {
-            get; set;
-        }
-
-
-        public string ProductCode {
-            get; set;
-        }
-
-
-        public string ProductPresentation {
-            get; set;
-        }
-
-
-        public string Description {
-            get; set;
-        }
-
-
-        public string Comments {
-            get; set;
-        }
-
-
-        public decimal Quantity {
-            get; set;
-        }
-
-
-        public string Ubication {
-            get; set;
-        }
-
-    } // class ShippingLabel
-
-
-    public class ShippingLabelByPallet {
-
         public string Company {
             get; set;
         }
@@ -95,12 +55,12 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
         }
 
 
-        public string PalletName {
+        public string PackingName {
             get; set;
         }
 
 
-        public string PalletCount {
+        public string PackingCount {
             get; set;
         }
 
@@ -121,5 +81,46 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
 
     }
+
+
+    public class SupplyLabe {
+
+
+        public string OrderUID {
+            get; set;
+        }
+
+
+        public string ProductCode {
+            get; set;
+        }
+
+
+        public string ProductPresentation {
+            get; set;
+        }
+
+
+        public string Description {
+            get; set;
+        }
+
+
+        public string Comments {
+            get; set;
+        }
+
+
+        public decimal Quantity {
+            get; set;
+        }
+
+
+        public string Ubication {
+            get; set;
+        }
+
+    } // class ShippingLabel
+
 
 } // namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters

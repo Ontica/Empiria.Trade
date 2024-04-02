@@ -65,10 +65,22 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
         internal FixedList<ShippingLabel> GetShippingLabels(string shippingUID) {
 
+            ShippingEntry shipping = ShippingEntry.Parse(shippingUID);
+
+            FixedList<ShippingLabel> labelsByPallet = GetLabelsForPallets(shipping);
+
+            FixedList<ShippingLabel> labelsByOrders = GetLabelsForOrderItems(shipping, labelsByPallet);
+
+            return labelsByOrders;
+        }
+
+
+        internal FixedList<SupplyLabe> GetSupplyLabels(string shippingUID) {
+
             FixedList<ShippingOrderItem> ordersForShipping =
               ShippingData.GetOrdersForShippingByShippingId(shippingUID);
 
-            var shippingLabels = new List<ShippingLabel>();
+            var shippingLabels = new List<SupplyLabe>();
 
             foreach (var orderForShipping in ordersForShipping) {
 
@@ -81,38 +93,61 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
         }
 
 
-        internal FixedList<ShippingLabelByPallet> GetShippingLabelsForPallets(string shippingUID) {
-
-            ShippingEntry shipping = ShippingEntry.Parse(shippingUID);
-
-            FixedList<ShippingLabelByPallet> labelsByPallet = GetLabelsForPallets(shipping);
-
-            return labelsByPallet;
-        }
-
-
         #endregion Public methods
 
 
         #region Private methods
 
 
-        private FixedList<ShippingLabelByPallet> GetLabelsForPallets(ShippingEntry shipping) {
+        private FixedList<ShippingLabel> GetLabelsForOrderItems(ShippingEntry shipping,
+            FixedList<ShippingLabel> labelsByPallet) {
+
+            var labelsByItem = labelsByPallet.ToList();
+
+            FixedList<ShippingOrderItem> shippingItems =
+              ShippingData.GetOrdersForShippingByShippingId(shipping.ShippingUID);
+
+            int packingCount = 0;
+            foreach (var item in shippingItems) {
+
+                packingCount = packingCount + 1;
+                var label = new ShippingLabel();
+
+                label.ParcelSupplier = SimpleObjectData.Parse(shipping.ParcelSupplierId).Name;
+                label.PackingName = item.Order.OrderNumber;
+                label.PackingCount = $"{packingCount}/{shippingItems.Count}";
+                label.ShippingNumber = shipping.ShippingGuide;
+                label.ShippingType = item.Order.ShippingMethod;
+                label.Customer = item.Order.Customer.Name;
+                label.CustomerAddress = $"{item.Order.CustomerAddress.Address1} " +
+                                        $"CP. {item.Order.Customer.ZipCode}.";
+                label.CustomerPhoneNumber = item.Order.Customer.PhoneNumbers;
+
+                GetPackingTypesByOrder(label, item.Order.UID);
+
+                labelsByItem.Add(label);
+
+            }
+
+            return labelsByItem.ToFixedList();
+        }
+
+
+        private FixedList<ShippingLabel> GetLabelsForPallets(ShippingEntry shipping) {
 
             FixedList<ShippingPallet> shippingPallets =
               ShippingData.GetPalletByShippingUID(shipping.ShippingUID);
 
-            var labelsByPallet = new List<ShippingLabelByPallet>();
+            var labelsByPallet = new List<ShippingLabel>();
 
             int palletCount = 0;
             foreach (var shippingPallet in shippingPallets) {
                 palletCount = palletCount + 1;
-                var label = new ShippingLabelByPallet();
-
+                var label = new ShippingLabel();
 
                 label.ParcelSupplier = SimpleObjectData.Parse(shipping.ParcelSupplierId).Name;
-                label.PalletName = shippingPallet.ShippingPalletName;
-                label.PalletCount = $"{palletCount}/{shippingPallets.Count}";
+                label.PackingName = shippingPallet.ShippingPalletName;
+                label.PackingCount = $"{palletCount}/{shippingPallets.Count}";
                 
                 FixedList<ShippingPackage> shippingPackages =
                     ShippingData.GetShippingPackagesByPalletUID(shippingPallet.ShippingPalletUID);
@@ -133,7 +168,29 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
         }
 
 
-        private void GetPackingTypeCountByPallet(ShippingLabelByPallet label,
+        private void GetPackingTypesByOrder(ShippingLabel label, string orderUID) {
+
+            FixedList<PackageForItem> packingOrder =
+                PackagingData.GetPackagesForItemsByOrder(orderUID);
+
+            foreach (var pack in packingOrder) {
+                var packageType = PackageType.Parse(pack.PackageTypeId);
+
+                if (packageType.Name.Contains("Caja")) {
+                    label.PackageQuantity++;
+                }
+                if (packageType.Name.Contains("Atado")) {
+                    label.TiedQuantity++;
+                }
+                if (packageType.Name.Contains("Costal")) {
+                    label.BagQuantity++;
+                }
+
+            }
+        }
+
+
+        private void GetPackingTypeCountByPallet(ShippingLabel label,
                                                  FixedList<ShippingPackage> shippingPackages) {
 
             foreach (var pack in shippingPackages) {
@@ -148,16 +205,13 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
                 if (packageType.Name.Contains("Costal")) {
                     label.BagQuantity++;
                 }
-
             }
-
-
         }
 
 
-        private List<ShippingLabel> MapToShippingLabelByOrderItem(FixedList<SalesOrderItem> orderItems) {
+        private List<SupplyLabe> MapToShippingLabelByOrderItem(FixedList<SalesOrderItem> orderItems) {
 
-            var shippingLabels = new List<ShippingLabel>();
+            var shippingLabels = new List<SupplyLabe>();
 
             foreach (var item in orderItems) {
 
@@ -165,7 +219,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
                   CataloguesUseCases.GetWarehouseBinProductByVendorProduct(item.VendorProduct.Id);
                 warehouse.GetDescription();
 
-                var shippingLabel = new ShippingLabel {
+                var shippingLabel = new SupplyLabe {
                     OrderUID = item.Order.UID,
                     ProductCode = item.VendorProduct.ProductFields.ProductCode,
                     ProductPresentation = item.VendorProduct.ProductPresentation.PresentationName,

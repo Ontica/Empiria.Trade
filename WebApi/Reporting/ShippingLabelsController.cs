@@ -26,21 +26,15 @@ namespace Empiria.Trade.WebApi.Reporting {
 
         #region Web apis
 
-        //trade/reporting/shipping/{shippingUID}/billings
-
-        //trade/reporting/shipping/{shippingUID}/billing/{orderUID}
-
-        //trade/reporting/shipping/{shippingUID}/labels
-
 
         [HttpGet]
         [AllowAnonymous]
-        [Route("v4/trade/sales/shipping/{shippingUID}/labels")]
-        public CollectionModel GetShippingLabels([FromUri] string shippingUID) {
+        [Route("v4/trade/sales/shipping/supply/{shippingUID}/labels")]
+        public CollectionModel GetSupplyLabels([FromUri] string shippingUID) {
 
             using (var usecases = ShippingLabelUseCases.UseCaseInteractor()) {
 
-                FixedList<ShippingLabel> shippingLabels = usecases.GetShippingLabels(shippingUID);
+                FixedList<SupplyLabe> shippingLabels = usecases.GetSupplyLabels(shippingUID);
 
                 return new CollectionModel(this.Request, shippingLabels);
             }
@@ -50,11 +44,11 @@ namespace Empiria.Trade.WebApi.Reporting {
         [HttpGet]
         [AllowAnonymous]
         [Route("v4/trade/sales/shipping/{shippingUID}/label-pallets")]
-        public CollectionModel GetShippingLabelsForPallets([FromUri] string shippingUID) {
+        public CollectionModel GetShippingLabels([FromUri] string shippingUID) {
 
             using (var usecases = ShippingLabelUseCases.UseCaseInteractor()) {
 
-                FixedList<ShippingLabelByPallet> shippingLabels = usecases.GetShippingLabelsForPallets(shippingUID);
+                FixedList<ShippingLabel> shippingLabels = usecases.GetShippingLabels(shippingUID);
 
                 return new CollectionModel(this.Request, shippingLabels);
             }

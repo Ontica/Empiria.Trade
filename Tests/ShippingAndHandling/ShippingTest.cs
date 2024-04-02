@@ -20,6 +20,7 @@ using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 using Empiria.Trade.Sales.ShippingAndHandling;
 using Empiria.Trade.Core.Catalogues;
 using System.Collections.Generic;
+using Empiria.Services;
 
 namespace Empiria.Trade.Tests {
 
@@ -176,6 +177,20 @@ namespace Empiria.Trade.Tests {
             string shippingUID = "9ed68735-af5c-4e49-85dc-4a177c82b273";
 
             ShippingEntry sut = usecase.GetShippingByShippingUID(shippingUID);
+
+            Assert.NotNull(sut);
+
+        }
+
+
+        [Fact]
+        public void GetShippingLabelsTest() {
+
+            var usecase = ShippingLabelUseCases.UseCaseInteractor();
+
+            string shippingUID = "03de6c79-a76e-40bb-866b-acc64a65c755";
+
+            FixedList<ShippingLabel> sut = usecase.GetShippingLabels(shippingUID);
 
             Assert.NotNull(sut);
 
