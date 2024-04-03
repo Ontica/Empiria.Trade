@@ -15,7 +15,7 @@ using Empiria.Trade.Inventory.Domain;
 namespace Empiria.Trade.Inventory.UseCases {
 
     /// <summary>Use cases used to build Inventory order.</summary>
-    internal class InventoryOrderUseCases : UseCase {
+    public class InventoryOrderUseCases : UseCase {
 
 
         #region Constructors and parsers
@@ -49,6 +49,14 @@ namespace Empiria.Trade.Inventory.UseCases {
 
             return InventoryOrderMapper.MapInventoryOrder(inventoryOrder);
         }
+
+
+        public InventoryOrderEntry GetInventoryOrderParseUID(string inventoryUID) {
+            
+            return InventoryOrderEntry.Parse(inventoryUID);
+        }
+
+
 
         #endregion Public methods
 

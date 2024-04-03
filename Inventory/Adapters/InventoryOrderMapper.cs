@@ -14,14 +14,14 @@ namespace Empiria.Trade.Inventory.Adapters {
 
 
     /// <summary>Methods used to map Inventory order.</summary>
-    internal class InventoryOrderMapper {
+    static internal class InventoryOrderMapper {
         internal static FixedList<InventoryOrderDto> MapInventoryList(FixedList<InventoryOrderEntry> list) {
 
             return new FixedList<InventoryOrderDto>();
         }
 
 
-        internal static InventoryOrderDto MapInventoryOrder(InventoryOrderEntry inventoryOrder) {
+        static internal InventoryOrderDto MapInventoryOrder(InventoryOrderEntry inventoryOrder) {
            
             return new InventoryOrderDto();
         }

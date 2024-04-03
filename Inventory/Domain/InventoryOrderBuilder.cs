@@ -30,13 +30,13 @@ namespace Empiria.Trade.Inventory.Domain {
         #region Public methods
 
 
-        public FixedList<InventoryOrderEntry> GetInventoryOrderList() {
+        internal FixedList<InventoryOrderEntry> GetInventoryOrderList() {
 
             return InventoryOrderData.GetInventoryOrderList();
         }
 
 
-        public InventoryOrderEntry GetInventoryOrderByUID(string inventoryUID) {
+        internal InventoryOrderEntry GetInventoryOrderByUID(string inventoryUID) {
 
             return InventoryOrderData.GetInventoryOrderByUID(inventoryUID).FirstOrDefault();
         }
