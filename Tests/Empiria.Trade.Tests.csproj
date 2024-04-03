@@ -86,6 +86,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\extensions\Tests\Empiria.Tests.csproj" />
     <ProjectReference Include="..\Financial\Empiria.Trade.Financial.csproj" />
+    <ProjectReference Include="..\Inventory\Empiria.Trade.Inventory.csproj" />
     <ProjectReference Include="..\Sales\Empiria.Trade.Sales.csproj" />
   </ItemGroup>
   <ItemGroup>
@@ -95,8 +96,5 @@
     <None Update="empiria.environment.vars.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Inventory\" />
   </ItemGroup>
 </Project>
