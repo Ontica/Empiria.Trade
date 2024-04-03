@@ -23,7 +23,7 @@ namespace Empiria.Trade.Financial.Adapters {
         CreditAmount = creditTransaction.CreditAmount,
         DebitAmount = creditTransaction.DebitAmount,
         DueDate = creditTransaction.DueDate,
-        DaysToPay = creditTransaction.DaysToPay
+        DaysToPay = GetDaysToPay(creditTransaction.DueDate)
       };
 
       return dto;
@@ -37,6 +37,12 @@ namespace Empiria.Trade.Financial.Adapters {
       }
 
       return creditTransactionList.ToFixedList();
+    }
+
+    static private int GetDaysToPay(DateTime dueDate) {
+      var difOfDates = dueDate - DateTime.Today;
+
+      return difOfDates.Days;
     }
 
 
