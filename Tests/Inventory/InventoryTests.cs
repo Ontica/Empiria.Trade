@@ -30,13 +30,27 @@ namespace Empiria.Trade.Tests.Inventory {
         #region Facts
 
         [Fact]
-        public void GetInventoryOrderTest() {
+        public void GetInventoryOrderByParseTest() {
 
             var usecase = InventoryOrderUseCases.UseCaseInteractor();
 
             string inventoryUID = "gkr68735-af5c-4e49-85dc-4a177c82b852";
 
             InventoryOrderEntry sut = usecase.GetInventoryOrderParseUID(inventoryUID);
+
+            Assert.NotNull(sut);
+
+        }
+
+
+        [Fact]
+        public void GetInventoryOrderItemByParseTest() {
+
+            var usecase = InventoryOrderUseCases.UseCaseInteractor();
+
+            string itemUID = "kt5f6a19-9c40-454a-b02f-985bd8c518fk";
+
+            InventoryOrderItem sut = usecase.GetInventoryOrderItemParseUID(itemUID);
 
             Assert.NotNull(sut);
 

@@ -43,6 +43,27 @@ namespace Empiria.Trade.Inventory.Data {
 
         }
 
+        internal static void WriteInventoryEntry(InventoryOrderEntry inventoryOrder) {
+
+            var op = DataOperation.Parse("writeInventoryOrder", 
+                inventoryOrder.InventoryEntryId, inventoryOrder.InventoryEntryUID,
+                inventoryOrder.InventoryEntryName, inventoryOrder.InventoryType,
+                inventoryOrder.InventoryUserId, inventoryOrder.Keywords,
+                inventoryOrder.InventoryEntryDate);
+
+            DataWriter.Execute(op);
+        }
+
+        internal static void WriteInventoryItem(InventoryOrderItem item) {
+
+            var op = DataOperation.Parse("writeInventoryOrderItem",
+                item.InventoryItemId, item.InventoryItemUID,
+                item.InventoryEntry.InventoryEntryId,
+                item.VendorProduct.Id, item.WarehouseBin.Id);
+
+            DataWriter.Execute(op);
+        }
+
 
         #endregion Public methods
 

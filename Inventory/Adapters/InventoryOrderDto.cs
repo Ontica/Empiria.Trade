@@ -14,6 +14,7 @@ namespace Empiria.Trade.Inventory.Adapters {
     /// <summary>Output DTO used to return inventory data.</summary>
     public class InventoryOrderDto {
 
+
         public string InventoryEntryUID {
             get; set;
         }
@@ -24,9 +25,15 @@ namespace Empiria.Trade.Inventory.Adapters {
         }
 
 
-        public string InventoryEntryType {
+        public NamedEntityDto InventoryType {
             get; set;
-        }
+        } = new NamedEntityDto("", "");
+
+
+        public NamedEntityDto InventoryUser {
+            get; set;
+        } = new NamedEntityDto("", "");
+
 
     } // class InventoryOrderDto
 

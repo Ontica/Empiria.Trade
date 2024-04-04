@@ -9,6 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Linq;
+using Empiria.Trade.Inventory.Adapters;
 using Empiria.Trade.Inventory.Data;
 
 namespace Empiria.Trade.Inventory.Domain {
@@ -29,6 +30,29 @@ namespace Empiria.Trade.Inventory.Domain {
 
         #region Public methods
 
+        internal InventoryOrderEntry CreateInventoryOrder(InventoryOrderFields fields) {
+
+            var inventoryOrder = new InventoryOrderEntry(fields);
+            inventoryOrder.Save();
+
+            CreateInventoryOrderItems(inventoryOrder, fields.InventoryItemFields);
+
+            return inventoryOrder;
+        }
+
+
+        private void CreateInventoryOrderItems(InventoryOrderEntry inventoryOrder,
+            FixedList<InventoryOrderItemFields> inventoryItemFields) {
+
+            foreach (var item in inventoryItemFields) {
+
+                var inventoryItem = new InventoryOrderItem(inventoryOrder, item);
+                inventoryItem.Save();
+
+            }
+
+            throw new NotImplementedException();
+        }
 
         internal FixedList<InventoryOrderEntry> GetInventoryOrderList() {
 

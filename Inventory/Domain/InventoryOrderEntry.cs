@@ -8,6 +8,9 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using Empiria.Trade.Core;
+using Empiria.Trade.Inventory.Adapters;
+using Empiria.Trade.Inventory.Data;
 
 namespace Empiria.Trade.Inventory {
 
@@ -29,10 +32,9 @@ namespace Empiria.Trade.Inventory {
         static public InventoryOrderEntry Empty => ParseEmpty<InventoryOrderEntry>();
 
 
-        public InventoryOrderEntry(string uid) {
+        public InventoryOrderEntry(InventoryOrderFields fields) {
 
-            MapToInventoryOrderEntry();
-
+            MapToInventoryOrderEntry(fields);
         }
 
 
@@ -70,26 +72,57 @@ namespace Empiria.Trade.Inventory {
         }
 
 
-        [DataField("InventoryEntryKeywords")]
-        internal string Keywords {
-            get; set;
-        }
-
-
         [DataField("InventoryEntryDate")]
         internal DateTime InventoryEntryDate {
             get; set;
         }
 
 
+        internal FixedList<InventoryOrderItem> InventoryOrderItems {
+            get; set;
+        } = new FixedList<InventoryOrderItem>();
+
+
+        internal string Keywords {
+            get {
+                return EmpiriaString.BuildKeywords(
+
+                  InventoryEntryUID, InventoryEntryName
+                );
+            }
+        }
+
         #endregion Properties
 
 
         #region Private methods
 
-        private void MapToInventoryOrderEntry() {
+        protected override void OnSave() {
+
+            if (this.InventoryEntryId == 0) {
+
+                this.InventoryEntryId = this.Id;
+                this.InventoryEntryUID = this.UID;
+            }
+            InventoryOrderData.WriteInventoryEntry(this);
+        }
+
+
+        private void MapToInventoryOrderEntry(InventoryOrderFields fields) {
+
+            if (fields.InventoryEntryUID != string.Empty) {
+                this.InventoryEntryId = Parse(fields.InventoryEntryUID).InventoryEntryId;
+                this.InventoryEntryUID = fields.InventoryEntryUID;
+            }
+
+            this.InventoryType = -1; //TODO REGISTRAR TIPOS DE ORDEN DE INVENTARIOS
+            this.InventoryUserId = Party.Parse(fields.InventoryUserUID).Id;
+            this.InventoryEntryName = fields.InventoryEntryName;
+            this.InventoryEntryDate = DateTime.Now;
+
             throw new NotImplementedException();
         }
+
 
         #endregion Private methods
 

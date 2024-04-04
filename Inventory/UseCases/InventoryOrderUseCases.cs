@@ -33,6 +33,15 @@ namespace Empiria.Trade.Inventory.UseCases {
 
         #region Public methods
 
+        public InventoryOrderDto CreateInventoryOrder(InventoryOrderFields fields) {
+
+            var builder = new InventoryOrderBuilder();
+            var inventoryOrder = builder.CreateInventoryOrder(fields);
+
+            return InventoryOrderMapper.MapInventoryOrder(inventoryOrder);
+        }
+
+
         public FixedList<InventoryOrderDto> GetInventoryOrderList() {
 
             var builder = new InventoryOrderBuilder();
@@ -54,6 +63,11 @@ namespace Empiria.Trade.Inventory.UseCases {
         public InventoryOrderEntry GetInventoryOrderParseUID(string inventoryUID) {
             
             return InventoryOrderEntry.Parse(inventoryUID);
+        }
+
+        public InventoryOrderItem GetInventoryOrderItemParseUID(string itemUID) {
+
+            return InventoryOrderItem.Parse(itemUID);
         }
 
 
