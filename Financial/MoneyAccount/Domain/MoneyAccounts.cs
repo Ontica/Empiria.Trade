@@ -4,9 +4,10 @@
 *  Assembly : Empiria.Trade.Financial.dll                Pattern   : Partitioned Type / Information Holder   *
 *  Type     : MoneyAccount                               License   : Please read LICENSE.txt file            *
 *                                                                                                            *
-*  Summary  : Represents a MoneyAccount Transactions.                                                         *
+*  Summary  : Represents a MoneyAccount Transaction.                                                         *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
+
 using System;
 
 using Empiria.StateEnums;
@@ -14,34 +15,33 @@ using Empiria.Trade.Financial.Adapters;
 using Empiria.Trade.Financial.Data;
 
 namespace Empiria.Trade.Financial {
-  /// <summary>Represents a MoneyAccount Transactions. </summary>
-  public class MoneyAccount : BaseObject {
+  /// <summary>Represents a MoneyAccount Transaction. </summary>
+  public class MoneyAccounts : BaseObject {
 
     #region Constructors and parsers
-
-    public MoneyAccount() {
+    public MoneyAccounts() {
       //no-op
     }
 
-    public MoneyAccount(MoneyAccountFields fields) {
+    public MoneyAccounts(MoneyAccountFields fields) {
       Update(fields);
     }
 
-    static public MoneyAccount Empty => BaseObject.ParseEmpty<MoneyAccount>();
+    static public MoneyAccounts Empty => BaseObject.ParseEmpty<MoneyAccounts>();
 
-    static public MoneyAccount Parse(int id) {
-      return BaseObject.ParseId<MoneyAccount>(id);
+    static public MoneyAccounts Parse(int id) {
+      return BaseObject.ParseId<MoneyAccounts>(id);
     }
 
-    static public MoneyAccount Parse(string uid) {
-      return BaseObject.ParseKey<MoneyAccount>(uid);
+    static public MoneyAccounts Parse(string uid) {
+      return BaseObject.ParseKey<MoneyAccounts>(uid);
     }
 
     #endregion Constructors and parsers
 
     #region Public properties
 
-    [DataField("Description")]
+    [DataField("MoneyAccountDescription")]
     public string Description {
       get; internal set;
     }
@@ -56,7 +56,7 @@ namespace Empiria.Trade.Financial {
       get; private set;
     }
 
-    [DataField("ExData", Default = "")]
+    [DataField("ExtData", Default = "")]
     public string ExtData {
       get; private set;
     } = string.Empty;
@@ -79,7 +79,7 @@ namespace Empiria.Trade.Financial {
     [DataField("ToDate")]
     public DateTime ToDate {
       get; set;
-    } = new DateTime(2078,12,31);
+    } = new DateTime(2078, 12, 31);
 
 
     [DataField("CreditLimit")]
@@ -95,15 +95,16 @@ namespace Empiria.Trade.Financial {
     [DataField("Status", Default = EntityStatus.Active)]
     public EntityStatus Status {
       get; private set;
-    } = EntityStatus.Active;
-    
+    } 
+
     #endregion Public properties
 
     #region Public methods
-
+   
     protected override void OnSave() {
       MoneyAccountData.Write(this);
     }
+
 
     internal void Update(MoneyAccountFields fields) {
       this.Description = fields.Description;
@@ -119,9 +120,12 @@ namespace Empiria.Trade.Financial {
     #endregion Public methods
 
     #region Private methods
-   
+
 
     #endregion Private methods
-  }
 
-}
+
+
+  } // public class MoneyAccount
+
+} //  namespace Empiria.Trade.Financial

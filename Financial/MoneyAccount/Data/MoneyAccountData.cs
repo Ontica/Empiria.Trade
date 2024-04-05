@@ -17,7 +17,7 @@ namespace Empiria.Trade.Financial.Data {
 
     #region Public methods
 
-    static internal void Write(MoneyAccount o) {
+    static internal void Write(MoneyAccounts o) {
 
       var op = DataOperation.Parse("writeMoneyAccounts", o.Id, o.UID, o.Description, o.OwnerId, o.Notes, o.ExtData, o.PostedTime,
                                                          o.PostedById, o.FromDate, o.ToDate, o.CreditLimit, o.DaysToPay,
@@ -31,5 +31,6 @@ namespace Empiria.Trade.Financial.Data {
     #region Private methods
     #endregion Private methods
 
-  }
-}
+  } // class MoneyAccountData
+
+} // namespace Empiria.Trade.Financial.Data
