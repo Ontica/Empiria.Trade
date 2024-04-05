@@ -24,10 +24,28 @@ namespace Empiria.Trade.Tests.MoneyAccount {
 
       var fields = new MoneyAccountFields {
         Description = "Linea de Credito",
-        OwnerId = 5,
+        OwnerId = 6,
         Notes = "Monedero de prueba",
         CreditLimit = 50000,
         DaysToPay = 50
+      };
+
+      var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
+      var moneyAccount = moneyAccountUseCase.AddMoneyAccount(fields);
+
+      Assert.NotNull(moneyAccount);
+    }
+
+    [Fact]
+    public void ShouldAddNewMoneyAccountTransaction() {
+
+      var fields = new MoneyAccountTransactionFields {
+        MoneyAccountUID = "6760c864-3f14-46c5-a19f-dddccea6ee04",
+        Description = "Credito ",
+        TransactionAmount = 500,
+        PayableOrderId = 30,
+        TransactionTime = DateTime.Now,
+        Notes = "Esto es una prueba"
       };
 
       var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
@@ -36,6 +54,6 @@ namespace Empiria.Trade.Tests.MoneyAccount {
       Assert.NotNull(moneyAccount);
     }
 
-    } // class MoneyAccountTest
+  } // class MoneyAccountTest
 
 } // namespace Empiria.Trade.Tests.MoneyAccount
