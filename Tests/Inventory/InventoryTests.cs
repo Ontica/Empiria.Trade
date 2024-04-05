@@ -46,11 +46,57 @@ namespace Empiria.Trade.Tests.Inventory {
 
 
     [Fact]
+    public void DeleteInventoryOrderTest() {
+
+      var usecase = InventoryOrderUseCases.UseCaseInteractor();
+
+      string inventoryUID = "f2d2a10d-abb2-467d-9c4f-bdd2bc15d5c6";
+      usecase.DeleteInventoryOrderByUID(inventoryUID);
+      Assert.True(true);
+    }
+
+
+    [Fact]
+    public void DeleteInventoryItemByOrderUIDTest() {
+
+      var usecase = InventoryOrderUseCases.UseCaseInteractor();
+
+      string inventoryUID = "f2d2a10d-abb2-467d-9c4f-bdd2bc15d5c6";
+      InventoryOrderDto sut = usecase.DeleteInventoryItemByOrderUID(inventoryUID);
+      Assert.NotNull(sut);
+    }
+
+
+    [Fact]
+    public void DeleteInventoryItemByUIDTest() {
+
+      var usecase = InventoryOrderUseCases.UseCaseInteractor();
+
+      string inventoryUID = "f2d2a10d-abb2-467d-9c4f-bdd2bc15d5c6";
+      string inventoryItemUID = "b9be96b6-b404-4acc-889e-390199a7af32";
+      InventoryOrderDto sut = usecase.DeleteInventoryItemByUID(inventoryUID, inventoryItemUID);
+      Assert.NotNull(sut);
+    }
+
+
+    [Fact]
+    public void GetInventoryOrderListTest() {
+
+      var usecase = InventoryOrderUseCases.UseCaseInteractor();
+
+      FixedList<InventoryOrderDto> sut = usecase.GetInventoryOrderList();
+
+      Assert.NotNull(sut);
+
+    }
+
+
+    [Fact]
     public void GetInventoryOrderByParseTest() {
 
       var usecase = InventoryOrderUseCases.UseCaseInteractor();
 
-      string inventoryUID = "gkr68735-af5c-4e49-85dc-4a177c82b852";
+      string inventoryUID = "f2d2a10d-abb2-467d-9c4f-bdd2bc15d5c6";
 
       InventoryOrderEntry sut = usecase.GetInventoryOrderParseUID(inventoryUID);
 
@@ -83,11 +129,12 @@ namespace Empiria.Trade.Tests.Inventory {
         InventoryEntryUID = "f2d2a10d-abb2-467d-9c4f-bdd2bc15d5c6",
         InventoryUserUID = "a517e788-8ddf-4772-b6d2-adc3907e3905",
         InventoryTypeUID = "",
-        InventoryEntryName = "CONTEO DE INVENTARIO 001",
+        InventoryEntryName = "CONTEO DE INVENTARIO X001",
         InventoryItemFields = GetItemFields()
       };
       return fields;
     }
+
 
     private FixedList<InventoryOrderItemFields> GetItemFields() {
 
@@ -100,7 +147,7 @@ namespace Empiria.Trade.Tests.Inventory {
         WarehouseBinUID = "f06a2b16-e744-412e-bd94-82821a7b5cd9",
         VendorProductUID = "e0655909-8614-40c0-b63e-fe166a377c86",
         Quantity = 10,
-        Comments = "COMENTARIO 001",
+        Comments = "COMENTARIO X-001",
       };
       items.Add(item1);
       var item2 = new InventoryOrderItemFields() {
@@ -109,9 +156,18 @@ namespace Empiria.Trade.Tests.Inventory {
         WarehouseBinUID = "48605b90-52e1-43d0-aeab-7125805863aa",
         VendorProductUID = "1d47e4e5-ff97-4197-8bd1-b49df2780c32",
         Quantity = 20,
-        Comments = "COMENTARIO 002",
+        Comments = "COMENTARIO X-002",
       };
       items.Add(item2);
+      var item3 = new InventoryOrderItemFields() {
+        InventoryItemUID = "",
+        InventoryEntryUID = "f2d2a10d-abb2-467d-9c4f-bdd2bc15d5c6",
+        WarehouseBinUID = "48605b90-52e1-43d0-aeab-7125805863aa",
+        VendorProductUID = "1d47e4e5-ff97-4197-8bd1-b49df2780c32",
+        Quantity = 30,
+        Comments = "COMENTARIO X-003",
+      };
+      items.Add(item3);
       return items.ToFixedList();
     }
 

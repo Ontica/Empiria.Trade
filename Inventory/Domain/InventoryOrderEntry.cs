@@ -60,8 +60,8 @@ namespace Empiria.Trade.Inventory {
         }
 
 
-        [DataField("InventoryUserId")]
-        internal int InventoryUserId {
+        [DataField("InventoryAgentId")]
+        internal int InventoryAgentId {
             get; set;
         }
 
@@ -115,7 +115,7 @@ namespace Empiria.Trade.Inventory {
                 this.InventoryEntryUID = fields.InventoryEntryUID;
             }
 
-            this.InventoryUserId = Party.Parse(fields.InventoryUserUID).Id;
+            this.InventoryAgentId = Party.Parse(fields.InventoryUserUID).Id;
             this.InventoryType = -1; //TODO REGISTRAR TIPOS DE ORDEN DE INVENTARIOS
             this.InventoryEntryName = fields.InventoryEntryName;
             this.InventoryEntryDate = DateTime.Now;

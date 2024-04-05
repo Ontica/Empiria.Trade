@@ -10,71 +10,92 @@
 using System;
 using Empiria.Services;
 using Empiria.Trade.Inventory.Adapters;
+using Empiria.Trade.Inventory.Data;
 using Empiria.Trade.Inventory.Domain;
 
 namespace Empiria.Trade.Inventory.UseCases {
 
-    /// <summary>Use cases used to build Inventory order.</summary>
-    public class InventoryOrderUseCases : UseCase {
+  /// <summary>Use cases used to build Inventory order.</summary>
+  public class InventoryOrderUseCases : UseCase {
 
 
-        #region Constructors and parsers
+    #region Constructors and parsers
 
-        public InventoryOrderUseCases() {
-            // no-op
-        }
+    public InventoryOrderUseCases() {
+      // no-op
+    }
 
-        static public InventoryOrderUseCases UseCaseInteractor() {
-            return CreateInstance<InventoryOrderUseCases>();
-        }
-
-
-        #endregion Constructors and parsers
-
-        #region Public methods
+    static public InventoryOrderUseCases UseCaseInteractor() {
+      return CreateInstance<InventoryOrderUseCases>();
+    }
 
 
-        public InventoryOrderDto CreateInventoryOrder(InventoryOrderFields fields) {
+    #endregion Constructors and parsers
 
-            var builder = new InventoryOrderBuilder();
-            var inventoryOrder = builder.CreateInventoryOrder(fields);
-
-            return InventoryOrderMapper.MapInventoryOrder(inventoryOrder);
-        }
+    #region Public methods
 
 
-        public FixedList<InventoryOrderDto> GetInventoryOrderList() {
+    public InventoryOrderDto CreateInventoryOrder(InventoryOrderFields fields) {
 
-            var builder = new InventoryOrderBuilder();
-            var list = builder.GetInventoryOrderList();
-
-            return InventoryOrderMapper.MapInventoryList(list);
-        }
-
-
-        public InventoryOrderDto GetInventoryOrderByUID(string inventoryUID) {
-
-            var builder = new InventoryOrderBuilder();
-            var inventoryOrder = builder.GetInventoryOrderByUID(inventoryUID);
-
-            return InventoryOrderMapper.MapInventoryOrder(inventoryOrder);
-        }
+      var builder = new InventoryOrderBuilder();
+      var inventoryOrder = builder.CreateInventoryOrder(fields);
+      return GetInventoryOrderByUID(inventoryOrder.InventoryEntryUID);
+    }
 
 
-        public InventoryOrderEntry GetInventoryOrderParseUID(string inventoryUID) {
-            
-            return InventoryOrderEntry.Parse(inventoryUID);
-        }
+    public void DeleteInventoryOrderByUID(string inventoryUID) {
 
-        public InventoryOrderItem GetInventoryOrderItemParseUID(string itemUID) {
-
-            return InventoryOrderItem.Parse(itemUID);
-        }
+      InventoryOrderData.DeleteInventoryItemByOrderUID(inventoryUID);
+      InventoryOrderData.DeleteInventoryOrderByUID(inventoryUID);
+    }
 
 
+    public InventoryOrderDto DeleteInventoryItemByOrderUID(string inventoryUID) {
+      
+      InventoryOrderData.DeleteInventoryItemByOrderUID(inventoryUID);
+      return GetInventoryOrderByUID(inventoryUID);
+    }
 
-        #endregion Public methods
 
-    } // class InventoryOrderUseCases
+    public InventoryOrderDto DeleteInventoryItemByUID(string inventoryUID, string inventoryItemUID) {
+      
+      InventoryOrderData.DeleteInventoryItemByUID(inventoryItemUID);
+      return GetInventoryOrderByUID(inventoryUID);
+    }
+
+
+    public InventoryOrderDto GetInventoryOrderByUID(string inventoryUID) {
+
+      var builder = new InventoryOrderBuilder();
+      var inventoryOrder = builder.GetInventoryOrderByUID(inventoryUID);
+
+      return InventoryOrderMapper.MapInventoryOrder(inventoryOrder);
+    }
+
+
+    public FixedList<InventoryOrderDto> GetInventoryOrderList() {
+      //TODO CREAR QUERY PARA FILTRAR LISTA
+      var builder = new InventoryOrderBuilder();
+      var list = builder.GetInventoryOrderList();
+
+      return InventoryOrderMapper.MapInventoryList(list);
+    }
+
+
+    public InventoryOrderEntry GetInventoryOrderParseUID(string inventoryUID) {
+
+      return InventoryOrderEntry.Parse(inventoryUID);
+    }
+
+
+    public InventoryOrderItem GetInventoryOrderItemParseUID(string itemUID) {
+
+      return InventoryOrderItem.Parse(itemUID);
+    }
+
+    
+    #endregion Public methods
+
+  } // class InventoryOrderUseCases
 
 } // namespace Empiria.Trade.Inventory.UseCases

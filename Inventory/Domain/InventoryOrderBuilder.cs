@@ -14,58 +14,79 @@ using Empiria.Trade.Inventory.Data;
 
 namespace Empiria.Trade.Inventory.Domain {
 
-    /// <summary>Generate data for Inventory order.</summary>
-    internal class InventoryOrderBuilder {
+  /// <summary>Generate data for Inventory order.</summary>
+  internal class InventoryOrderBuilder {
 
 
-        #region Constructors and parsers
+    #region Constructors and parsers
 
-        public InventoryOrderBuilder() {
+    public InventoryOrderBuilder() {
 
-        }
-
-
-        #endregion Constructor and parsers
+    }
 
 
-        #region Public methods
-
-        internal InventoryOrderEntry CreateInventoryOrder(InventoryOrderFields fields) {
-
-            var inventoryOrder = new InventoryOrderEntry(fields);
-            inventoryOrder.Save();
-
-            CreateInventoryOrderItems(inventoryOrder, fields.InventoryItemFields);
-
-            return inventoryOrder;
-        }
+    #endregion Constructor and parsers
 
 
-        private void CreateInventoryOrderItems(InventoryOrderEntry inventoryOrder,
-            FixedList<InventoryOrderItemFields> inventoryItemFields) {
+    #region Public methods
 
-            foreach (var item in inventoryItemFields) {
+    internal InventoryOrderEntry CreateInventoryOrder(InventoryOrderFields fields) {
 
-                var inventoryItem = new InventoryOrderItem(inventoryOrder, item);
-                inventoryItem.Save();
-            }
-        }
+      var inventoryOrder = new InventoryOrderEntry(fields);
+      inventoryOrder.Save();
 
-        internal FixedList<InventoryOrderEntry> GetInventoryOrderList() {
+      CreateInventoryOrderItems(inventoryOrder, fields.InventoryItemFields);
 
-            return InventoryOrderData.GetInventoryOrderList();
-        }
+      return inventoryOrder;
+    }
 
 
-        internal InventoryOrderEntry GetInventoryOrderByUID(string inventoryUID) {
+    private void CreateInventoryOrderItems(InventoryOrderEntry inventoryOrder,
+        FixedList<InventoryOrderItemFields> inventoryItemFields) {
 
-            return InventoryOrderData.GetInventoryOrderByUID(inventoryUID).FirstOrDefault();
-        }
+      foreach (var item in inventoryItemFields) {
+
+        var inventoryItem = new InventoryOrderItem(inventoryOrder, item);
+        inventoryItem.Save();
+      }
+    }
 
 
-        #endregion Public methods
+    internal InventoryOrderEntry GetInventoryOrderByUID(string inventoryUID) {
+
+      var inventoryOrder = InventoryOrderEntry.Parse(inventoryUID);
+
+      GetInventoryItemsForOrder(inventoryOrder);
+
+      return inventoryOrder;
+    }
 
 
-    } // class InventoryOrderBuilder
+    internal FixedList<InventoryOrderEntry> GetInventoryOrderList() {
+
+      return InventoryOrderData.GetInventoryOrderList();
+    }
+
+
+    #endregion Public methods
+
+    #region Private methods
+
+
+    private void GetInventoryItemsForOrder(InventoryOrderEntry inventoryOrder) {
+
+      FixedList<InventoryOrderItem> items = 
+        InventoryOrderData.GetInventoryItemsByOrderUID(inventoryOrder.InventoryEntryUID);
+
+      if (items.Count>0) {
+        inventoryOrder.InventoryOrderItems = items;
+      }
+    }
+
+
+    #endregion Private methods
+
+
+  } // class InventoryOrderBuilder
 
 } // namespace Empiria.Trade.Inventory.Domain
