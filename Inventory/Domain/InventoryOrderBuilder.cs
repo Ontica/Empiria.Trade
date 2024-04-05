@@ -48,10 +48,7 @@ namespace Empiria.Trade.Inventory.Domain {
 
                 var inventoryItem = new InventoryOrderItem(inventoryOrder, item);
                 inventoryItem.Save();
-
             }
-
-            throw new NotImplementedException();
         }
 
         internal FixedList<InventoryOrderEntry> GetInventoryOrderList() {

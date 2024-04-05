@@ -71,6 +71,16 @@ namespace Empiria.Trade.Inventory {
         internal WarehouseBin WarehouseBin {
             get; set;
         }
+        
+        
+        public int Quantity {
+            get; set;
+        }
+
+
+        public string Comments {
+            get; set;
+        }
 
 
         #endregion Properties
@@ -98,10 +108,10 @@ namespace Empiria.Trade.Inventory {
             }
 
             this.InventoryEntry = inventoryOrder;
-            this.VendorProduct = VendorProduct.Parse(fields.VendorProductUID);
             this.WarehouseBin = WarehouseBin.Parse(fields.WarehouseBinUID);
-
-            throw new NotImplementedException();
+            this.VendorProduct = VendorProduct.Parse(fields.VendorProductUID);
+            this.Quantity = fields.Quantity;
+            this.Comments = fields.Comments;
         }
 
 

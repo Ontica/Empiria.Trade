@@ -33,6 +33,7 @@ namespace Empiria.Trade.Inventory.UseCases {
 
         #region Public methods
 
+
         public InventoryOrderDto CreateInventoryOrder(InventoryOrderFields fields) {
 
             var builder = new InventoryOrderBuilder();

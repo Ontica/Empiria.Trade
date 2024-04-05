@@ -16,22 +16,22 @@ namespace Empiria.Trade.Inventory.Adapters {
 
         public string InventoryEntryUID {
             get; set;
-        }
+        } = string.Empty;
 
 
         public string InventoryTypeUID {
             get; set;
-        }
+        } = string.Empty;
 
 
         public string InventoryUserUID {
             get; set;
-        }
+        } = string.Empty;
 
 
         public string InventoryEntryName {
             get; set;
-        }
+        } = string.Empty;
 
 
         public FixedList<InventoryOrderItemFields> InventoryItemFields {
@@ -47,22 +47,22 @@ namespace Empiria.Trade.Inventory.Adapters {
 
         public string InventoryItemUID {
             get; set;
-        }
+        } = string.Empty;
 
 
         public string InventoryEntryUID {
             get; set;
-        }
+        } = string.Empty;
 
 
-        public int VendorProductUID {
+        public string VendorProductUID {
             get; set;
-        }
+        } = string.Empty;
 
 
-        public int WarehouseBinUID {
+        public string WarehouseBinUID {
             get; set;
-        }
+        } = string.Empty;
 
 
         public int Quantity {
@@ -72,7 +72,7 @@ namespace Empiria.Trade.Inventory.Adapters {
 
         public string Comments {
             get; set;
-        }
+        } = string.Empty;
 
 
     } // class InventoryOrderItemFields

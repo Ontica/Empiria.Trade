@@ -35,6 +35,46 @@ namespace Empiria.Trade.Inventory.Adapters {
         } = new NamedEntityDto("", "");
 
 
+        public FixedList<InventoryOrderItemDto> InventoryItems {
+            get; set;
+        } = new FixedList<InventoryOrderItemDto>();
+
+
     } // class InventoryOrderDto
+
+
+    public class InventoryOrderItemDto {
+
+
+        public string InventoryItemUID {
+            get; set;
+        }
+
+
+        public string InventoryEntryUID {
+            get; set;
+        }
+
+
+        public string VendorProductUID {
+            get; set;
+        }
+
+
+        public string WarehouseBinUID {
+            get; set;
+        }
+
+
+        public int Quantity {
+            get; set;
+        }
+
+
+        public string Comments {
+            get; set;
+        }
+    }
+
 
 } // namespace Empiria.Trade.Inventory.Adapters
