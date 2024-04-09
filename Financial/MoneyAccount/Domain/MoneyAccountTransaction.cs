@@ -42,7 +42,7 @@ namespace Empiria.Trade.Financial {
     #region Public properties
 
     [DataField("MoneyAccountId")]
-    public MoneyAccounts MoneyAccount {
+    public CreditMoneyAccount MoneyAccount {
       get; private set;
     }
 
@@ -100,7 +100,7 @@ namespace Empiria.Trade.Financial {
     }
 
     internal void Update(MoneyAccountTransactionFields fields) {
-      this.MoneyAccount = MoneyAccounts.Parse(fields.MoneyAccountUID);
+      this.MoneyAccount = CreditMoneyAccount.Parse(fields.MoneyAccountUID);
       this.Description = fields.Description;
       this.Amount = fields.TransactionAmount;
       this.PayableOrderId = fields.PayableOrderId;
@@ -110,9 +110,38 @@ namespace Empiria.Trade.Financial {
       this.PostedById = ExecutionServer.CurrentUserId;
     }
 
+    public string MigarteCreditTransactionToMoneyAccountTransactions() {
+     var moneyAccounts = MoneyAccountData.GetMoneyAccounts();
+
+      foreach (var moneyAccount in moneyAccounts) {
+        var creditLineId = CrediLineData.GetCreditLineId(moneyAccount.OwnerId);
+        var transactions = CreditTransactionsData.GetCreditTrasantions(creditLineId);
+        AddCreditTransaction(moneyAccount, transactions);
+
+        }
+      return "ok";
+      }
+
     #endregion Public methods
 
     #region Private methods
+
+    private void AddCreditTransaction(CreditMoneyAccount moneyAccount, FixedList<CreditTransaction> transactions) {
+      foreach (var transaction in transactions) {
+        MoneyAccountTransaction moneyTransaction = new MoneyAccountTransaction();
+        moneyTransaction.MoneyAccount = moneyAccount;
+        moneyTransaction.Description = "Credito " + transaction.ExtData;
+        moneyTransaction.TransactionTime = transaction.TransactionTime;
+        moneyTransaction.Amount = transaction.CreditAmount;
+        moneyTransaction.PayableOrderId = transaction.PayableOrderId;
+        moneyTransaction.Notes = "";
+        moneyTransaction.ExtData = transaction.ExtData;
+        moneyTransaction.PostedTime = DateTime.Now;
+        moneyTransaction.PostedById = -1;
+
+        moneyTransaction.Save();
+      }
+    }
     #endregion Private methods
 
   } // class MoneyAccountTransaction

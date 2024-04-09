@@ -17,7 +17,16 @@ namespace Empiria.Trade.Financial.Data {
 
     #region Public methods
 
-    static internal void Write(MoneyAccounts o) {
+    static internal FixedList<CreditMoneyAccount> GetMoneyAccounts() {
+      string sql = "SELECT * FROM TRDMoneyAccounts " +
+                  $"WHERE MoneyAccountId > 0  AND Status <>  'X'";
+
+      var op = DataOperation.Parse(sql);
+
+      return DataReader.GetFixedList<CreditMoneyAccount>(op);
+    }
+
+    static internal void Write(CreditMoneyAccount o) {
 
       var op = DataOperation.Parse("writeMoneyAccounts", o.Id, o.UID, o.Description, o.OwnerId, o.Notes, o.ExtData, o.PostedTime,
                                                          o.PostedById, o.FromDate, o.ToDate, o.CreditLimit, o.DaysToPay,
@@ -25,6 +34,7 @@ namespace Empiria.Trade.Financial.Data {
 
       DataWriter.Execute(op);
     }
+
 
     #endregion Public methods
 

@@ -198,6 +198,15 @@ namespace Empiria.Trade.Tests.Sales {
       Assert.NotNull(x);
     }
 
+    [Fact]
+    public void ShouldAppyCredintInOrder() {
+
+      var salesOrderUseCase = SalesOrderUseCases.UseCaseInteractor();
+      var x = salesOrderUseCase.ApplySalesOrder("88f479bb-4c95-41c8-86d6-51f8df9cf833");
+
+      Assert.NotNull(x);
+    }
+
 
   } // public class SalesTest
 

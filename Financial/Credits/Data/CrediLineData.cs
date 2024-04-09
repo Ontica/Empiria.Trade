@@ -19,6 +19,15 @@ namespace Empiria.Trade.Financial.Data {
   /// <summary>Provides data for Customer Credit Lines.  </summary>
   static internal class CrediLineData {
 
+    static internal FixedList<CreditLine> GetCreditLines() {
+      string sql = "SELECT * FROM TRDCreditLines " +
+                  $"WHERE CustomerId = 1468 AND CreditLineStatus <>  'X'";
+
+      var op = DataOperation.Parse(sql);
+
+      return DataReader.GetFixedList<CreditLine>(op);
+    }
+
     static internal decimal GetCreditDebt(int customerId) {
       int creditLineId = GetCreditLineId(customerId);
 
@@ -67,6 +76,9 @@ namespace Empiria.Trade.Financial.Data {
 
       return creditCondition;
     }
+
+
+  
 
   } // class CrediLineData
 

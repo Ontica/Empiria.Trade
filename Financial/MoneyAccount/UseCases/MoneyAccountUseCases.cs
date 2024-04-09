@@ -11,6 +11,7 @@ using System;
 
 using Empiria.Services;
 using Empiria.Trade.Financial.Adapters;
+using Empiria.Trade.MoneyAccounts;
 
 namespace Empiria.Trade.Financial.UseCases {
   /// <summary>Use cases used to management MoneyAccount transactions.</summary>
@@ -30,10 +31,10 @@ namespace Empiria.Trade.Financial.UseCases {
 
     #region Public properties
 
-    public MoneyAccounts AddMoneyAccount(MoneyAccountFields fields) {
+    public CreditMoneyAccount AddMoneyAccount(MoneyAccountFields fields) {
       Assertion.Require(fields, "fields");
 
-      var moneyAccount = new MoneyAccounts(fields);
+      var moneyAccount = new CreditMoneyAccount(fields);
       moneyAccount.Save();
 
       return moneyAccount;

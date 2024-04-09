@@ -14,6 +14,7 @@ using Empiria.Trade.Financial.UseCases;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Financial.Adapters;
+using Empiria.Trade.Financial;
 
 namespace Empiria.Trade.Tests.MoneyAccount {
   /// <summary>Test cases for MoneyAccounts.  </summary>
@@ -53,6 +54,24 @@ namespace Empiria.Trade.Tests.MoneyAccount {
 
       Assert.NotNull(moneyAccount);
     }
+
+    //[Fact]
+    //public void ShouldMigrateCreditLinesToMoneyAccount() {
+
+
+    //  var moneyAccount = new MoneyAccounts();
+    //  var x = moneyAccount.MigrateCreditLineToMoneyAccount();
+    //  Assert.NotNull(x);
+    //}
+
+    //[Fact]
+    //public void ShouldMigrateCreditTransactionsToMoneyAccountTransasctions() {
+    //  var moneyAccountTransaction = new MoneyAccountTransaction();
+
+    //  var x = moneyAccountTransaction.MigarteCreditTransactionToMoneyAccountTransactions();
+
+    //  Assert.NotNull(x);
+    //}
 
   } // class MoneyAccountTest
 
