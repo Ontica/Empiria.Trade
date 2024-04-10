@@ -135,12 +135,23 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
         } = new DateTime();
 
 
-        public ShippingStatus Status {
-            get; set;
+        public string ShippingNumber {
+          get;
+          internal set;
         }
 
 
-    } // class ShippingEntryDto
+        public string DeliveryNumber {
+          get;
+          internal set;
+        }
+
+
+        public ShippingStatus Status {
+                get; set;
+        }
+    
+  } // class ShippingEntryDto
 
 
     /// <summary>Output DTO used to return the entries of shipping order item.</summary>

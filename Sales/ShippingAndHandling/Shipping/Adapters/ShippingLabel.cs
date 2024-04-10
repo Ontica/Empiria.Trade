@@ -31,8 +31,20 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
     }
 
 
-    public string ShippingNumber {
+    public string ShippingGuide {
       get; set;
+    }
+
+
+    public string ShippingNumber {
+      get;
+      internal set;
+    }
+
+
+    public string DeliveryNumber {
+      get;
+      internal set;
     }
 
 

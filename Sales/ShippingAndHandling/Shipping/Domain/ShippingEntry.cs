@@ -113,6 +113,16 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
     }
 
 
+    public string ShippingNumber {
+      get; set;
+    }
+
+
+    public string DeliveryNumber {
+      get; internal set;
+    }
+
+
     public decimal OrdersTotal {
       get; internal set;
     }
@@ -136,7 +146,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
     public INamedEntity Customer {
       get; internal set;
     } = new NamedEntity("","");
-
+    
 
     #endregion Properties
 

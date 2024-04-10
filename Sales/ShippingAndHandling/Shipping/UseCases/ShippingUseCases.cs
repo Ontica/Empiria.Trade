@@ -231,7 +231,9 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
 
 
-    public ShippingDto UpdateShippingPallet(string shippingUID, string shippingPalletUID, ShippingPalletFields fields) {
+    public ShippingDto UpdateShippingPallet(string shippingUID, string shippingPalletUID,
+      ShippingPalletFields fields) {
+
       Assertion.Require(shippingUID, nameof(shippingUID));
       Assertion.Require(shippingPalletUID, nameof(shippingPalletUID));
       Assertion.Require(fields, nameof(fields));

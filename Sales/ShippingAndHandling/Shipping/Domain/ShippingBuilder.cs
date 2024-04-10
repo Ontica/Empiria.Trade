@@ -175,6 +175,10 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       shippingList = shippingList.Where(x => x.ShippingOrderId > 0).ToList().ToFixedList();
 
+      foreach (var shipping in shippingList) {
+        helper.GetShippingNumber(shipping);
+      }
+      
       helper.GetOrdersForShippingByEntry(shippingList);
 
       return helper.GetOrderingShippingList(query, shippingList);
