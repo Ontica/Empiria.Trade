@@ -60,9 +60,14 @@ namespace Empiria.Trade.Sales.Data {
         string status = string.Empty;
 
         if (fields.Status != Orders.OrderStatus.Empty) {
-          status = $" AND (OrderAuthorizationStatus = '{(char) fields.Status}')";
+          if (fields.Status == OrderStatus.Suppled) {
+          status = " AND (OrderAuthorizationStatus = 'S')";
+          }
+          if (fields.Status == OrderStatus.ToSupply) {
+          status = " AND (OrderAuthorizationStatus = 'I')";
+        }
         } else {
-          status = " AND ((OrderAuthorizationStatus = 'I') or (OrderAuthorizationStatus = 'U') or (OrderAuthorizationStatus = 'Y'))";
+          status = " AND ((OrderAuthorizationStatus = 'I') or (OrderAuthorizationStatus = 'U') or (OrderAuthorizationStatus = 'S'))";
         }
 
       return GetOrders(fields, status);
