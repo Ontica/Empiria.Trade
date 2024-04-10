@@ -15,35 +15,35 @@
                     <br />
                 </div>
                 <br />
-                <h1>@billing.orderNumber</h1>
+                <h1>@billing.OrderNumber</h1>
                 <br />
                 <h1>FECHA: @DateTime.Now.ToString("dd/MM/yyyy")</h1>
                 <br />
                 <div>
-                    <h2>@billing.supplier</h2>
+                    <h2>@billing.Supplier</h2>
                     <h2>AV. SIGLO XXI 7801 LOS NEGRITOS</h2>
                     <h2>AGUASCALIENTES AGUASCALIENTES 20310</h2>
                     @* <h2>@billing.supplierAddress</h2>
                 <h2>@billing.supplierPhonoNumber</h2> *@
-                    <h3>AGENTE: @billing.salesAgent</h3>
+                    <h3>AGENTE: @billing.SalesAgent</h3>
 
                 </div>
                 <br />
                 <div>
                     <h2>CLIENTE:</h2>
-                    <h3>@billing.customer</h3>
-                    <h3>DIRECCION: @billing.customerAddress</h3>
-                    <h3>CONTACTO: @billing.customerContact</h3>
+                    <h3>@billing.Customer</h3>
+                    <h3>DIRECCION: @billing.CustomerAddress</h3>
+                    <h3>CONTACTO: @billing.CustomerContact</h3>
 
-                    @if (billing.customerPhone != string.Empty) {
-                        <h3>TELEFONO: @billing.customerPhone</h3>
+                    @if (billing.CustomerPhone != string.Empty) {
+                        <h3>TELEFONO: @billing.CustomerPhone</h3>
                     }
 
-                    <h5>Método de envío: @billing.shippingMethod</h5>
+                    <h5>Método de envío: @billing.ShippingMethod</h5>
                 </div>
                 <br />
                 <div>
-                    <h3>Contenido: @billing.itemsCount productos</h3>
+                    <h3>Contenido: @billing.ItemsCount productos</h3>
                     <table>
                         <tr>
                             <th>Producto</th>
@@ -56,17 +56,17 @@
                             <th>Descuento 2</th>
                             <th>Subtotal</th>
                         </tr>
-                        @foreach (var product in billing.billingItems) {
+                        @foreach (var product in billing.BillingItems) {
                             <tr>
-                                <td>@Html.DisplayFor(m => product.productCode) - @Html.DisplayFor(m => product.productPresentation)</td>
-                                <td>@Html.DisplayFor(m => product.productName)</td>
-                                <td>@Html.DisplayFor(m => product.quantity)</td>
-                                <td>@Html.DisplayFor(m => product.unitPrice)</td>
-                                <td>@Html.DisplayFor(m => product.salesPrice)</td>
-                                <td>@Html.DisplayFor(m => product.discountPolicy)</td>
-                                <td>@Html.DisplayFor(m => product.discount1)</td>
-                                <td>@Html.DisplayFor(m => product.discount2)</td>
-                                <td>@Html.DisplayFor(m => product.subtotal)</td>
+                                <td>@Html.DisplayFor(m => product.ProductCode) - @Html.DisplayFor(m => product.ProductPresentation)</td>
+                                <td>@Html.DisplayFor(m => product.ProductName)</td>
+                                <td>@Html.DisplayFor(m => product.Quantity)</td>
+                                <td>@Html.DisplayFor(m => product.UnitPrice)</td>
+                                <td>@Html.DisplayFor(m => product.SalesPrice)</td>
+                                <td>@Html.DisplayFor(m => product.DiscountPolicy)</td>
+                                <td>@Html.DisplayFor(m => product.Discount1)</td>
+                                <td>@Html.DisplayFor(m => product.Discount2)</td>
+                                <td>@Html.DisplayFor(m => product.Subtotal)</td>
                             </tr>
                         }
                     </table>
@@ -78,7 +78,7 @@
                         <h5>Notas: @billing.OrderNotes</h5>
                     }
 
-                    <h5>Condiciones de pago: @billing.paymentCondition</h5>
+                    <h5>Condiciones de pago: @billing.PaymentCondition</h5>
                 </div>
                 <br />
                 <div style="align-content:end">
@@ -90,10 +90,10 @@
                             <th>Importe total</th>
                         </tr>
                         <tr>
-                            <td>@billing.billingSubtotal</td>
-                            <td>@billing.shipmentTotal</td>
-                            <td>@billing.taxes</td>
-                            <td>@billing.billingTotal</td>
+                            <td>@billing.BillingSubtotal</td>
+                            <td>@billing.ShipmentTotal</td>
+                            <td>@billing.Taxes</td>
+                            <td>@billing.BillingTotal</td>
                         </tr>
                     </table>
                 </div>

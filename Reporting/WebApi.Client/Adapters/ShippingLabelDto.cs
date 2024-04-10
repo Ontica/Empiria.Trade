@@ -15,67 +15,67 @@ namespace Empiria.Trade.Reporting.WebApi.Client.Adapters {
     /// <summary>Output DTO used to return shipping label by pallet.</summary>
     public class ShippingLabelByPalletDto {
 
-        public string company {
+        public string Company {
             get; set;
         } = string.Empty;
 
 
-        public string companyAddress {
+        public string CompanyAddress {
             get; set;
         } = string.Empty;
 
 
-        public string shippingNumber {
+        public string ShippingNumber {
             get; set;
         } = string.Empty;
 
 
-        public string shippingType {
+        public string ShippingType {
             get; set;
         } = string.Empty;
 
 
-        public string parcelSupplier {
+        public string ParcelSupplier {
             get; set;
         } = string.Empty;
 
 
-        public string customer {
+        public string Customer {
             get; set;
         } = string.Empty;
 
 
-        public string customerAddress {
+        public string CustomerAddress {
             get; set;
         } = string.Empty;
 
 
-        public string customerPhoneNumber {
+        public string CustomerPhoneNumber {
             get; set;
         } = string.Empty;
 
 
-        public string packingName {
+        public string PackingName {
             get; set;
         } = string.Empty;
 
 
-        public string packingCount {
+        public string PackingCount {
             get; set;
         } = string.Empty;
 
 
-        public int packageQuantity {
+        public int PackageQuantity {
             get; set;
         }
 
 
-        public int tiedQuantity {
+        public int TiedQuantity {
             get; set;
         }
 
 
-        public int bagQuantity {
+        public int BagQuantity {
             get; set;
         }
 
@@ -83,7 +83,7 @@ namespace Empiria.Trade.Reporting.WebApi.Client.Adapters {
 
 
     /// <summary>Output DTO used to return shipping label.</summary>
-    public class SupplyLabeDto {
+    public class SupplyLabelDto {
 
 
         public string orderUID {

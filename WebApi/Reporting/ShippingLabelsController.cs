@@ -34,7 +34,7 @@ namespace Empiria.Trade.WebApi.Reporting {
 
             using (var usecases = ShippingLabelUseCases.UseCaseInteractor()) {
 
-                FixedList<SupplyLabe> shippingLabels = usecases.GetSupplyLabels(shippingUID);
+                FixedList<SupplyLabel> shippingLabels = usecases.GetSupplyLabels(shippingUID);
 
                 return new CollectionModel(this.Request, shippingLabels);
             }

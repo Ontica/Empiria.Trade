@@ -14,62 +14,62 @@ namespace Empiria.Trade.Reporting.WebApi.Client.Adapters {
     /// <summary>Output DTO used to return shipping billing report.</summary>
     public class ShippingBillingDto {
 
-        public string orderUID {
+        public string OrderUID {
             get; set;
         } = string.Empty;
 
 
-        public string orderNumber {
+        public string OrderNumber {
             get; set;
         } = string.Empty;
 
 
-        public string customer {
+        public string Customer {
             get; set;
         } = string.Empty;
 
 
-        public string customerAddress {
+        public string CustomerAddress {
             get; set;
         } = string.Empty;
 
 
-        public string customerContact {
+        public string CustomerContact {
             get; set;
         } = string.Empty;
 
 
-        public string customerPhone {
+        public string CustomerPhone {
             get; set;
         } = string.Empty;
 
 
-        public string supplier {
+        public string Supplier {
             get; set;
         } = string.Empty;
 
 
-        public string supplierAddress {
+        public string SupplierAddress {
             get; set;
         } = string.Empty;
 
 
-        public string supplierPhonoNumber {
+        public string SupplierPhonoNumber {
             get; set;
         } = string.Empty;
 
 
-        public string salesAgent {
+        public string SalesAgent {
             get; set;
         } = string.Empty;
 
 
-        public string paymentCondition {
+        public string PaymentCondition {
             get; set;
         } = string.Empty;
 
 
-        public string shippingMethod {
+        public string ShippingMethod {
             get; set;
         } = string.Empty;
 
@@ -79,32 +79,32 @@ namespace Empiria.Trade.Reporting.WebApi.Client.Adapters {
         } = string.Empty;
 
 
-        public int itemsCount {
+        public int ItemsCount {
             get; set;
         }
 
 
-        public decimal billingSubtotal {
+        public decimal BillingSubtotal {
             get; set;
         } // ItemsTotal
 
 
-        public decimal shipmentTotal {
+        public decimal ShipmentTotal {
             get; set;
         } // Shipment
 
 
-        public decimal taxes {
+        public decimal Taxes {
             get; set;
         }
 
 
-        public decimal billingTotal {
+        public decimal BillingTotal {
             get; set;
         } // orderTotal
 
 
-        public List<BillingItemDto> billingItems {
+        public List<BillingItemDto> BillingItems {
             get; set;
         } = new List<BillingItemDto>();
 
@@ -114,52 +114,52 @@ namespace Empiria.Trade.Reporting.WebApi.Client.Adapters {
     public class BillingItemDto {
 
 
-        public string productPresentation {
+        public string ProductPresentation {
             get; set;
         } = string.Empty;
 
 
-        public string productCode {
+        public string ProductCode {
             get; set;
         } = string.Empty;
 
 
-        public string productName {
+        public string ProductName {
             get; set;
         } = string.Empty;
 
 
-        public decimal quantity {
+        public decimal Quantity {
             get; set;
         }
 
 
-        public decimal unitPrice {
+        public decimal UnitPrice {
             get; set;
         }
 
 
-        public decimal salesPrice {
+        public decimal SalesPrice {
             get; set;
         }
 
 
-        public string discountPolicy {
+        public string DiscountPolicy {
             get; set;
         } = string.Empty;
 
 
-        public decimal discount1 {
+        public decimal Discount1 {
             get; set;
         }
 
 
-        public decimal discount2 {
+        public decimal Discount2 {
             get; set;
         }
 
 
-        public decimal subtotal {
+        public decimal Subtotal {
             get; set;
         }
 

@@ -173,13 +173,10 @@ namespace Empiria.Trade.Tests {
         public void GetShippingTest() {
 
             var usecase = ShippingUseCases.UseCaseInteractor();
-
             string shippingUID = "9ed68735-af5c-4e49-85dc-4a177c82b273";
 
             ShippingEntry sut = usecase.GetShippingByShippingUID(shippingUID);
-
             Assert.NotNull(sut);
-
         }
 
 
@@ -187,13 +184,10 @@ namespace Empiria.Trade.Tests {
         public void GetShippingLabelsTest() {
 
             var usecase = ShippingLabelUseCases.UseCaseInteractor();
-
             string shippingUID = "03de6c79-a76e-40bb-866b-acc64a65c755";
 
             FixedList<ShippingLabel> sut = usecase.GetShippingLabels(shippingUID);
-
             Assert.NotNull(sut);
-
         }
 
 
@@ -201,13 +195,10 @@ namespace Empiria.Trade.Tests {
         public void ChangeOrdersForShippingStatusTest() {
 
             var usecase = ShippingUseCases.UseCaseInteractor();
-
             string shippingUID = "5fcc47c4-ba69-4c7c-bbc3-324bcd25418e";
 
             ShippingDto sut = usecase.ChangeOrdersForShippingStatus(shippingUID);
-
             Assert.NotNull(sut);
-
         }
 
 

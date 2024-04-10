@@ -37,11 +37,9 @@ namespace Empiria.Trade.Tests.Inventory {
       var usecase = InventoryOrderUseCases.UseCaseInteractor();
 
       InventoryOrderFields fields = GetInventoryOrderFields();
-
       InventoryOrderDto sut = usecase.CreateInventoryOrder(fields);
 
       Assert.NotNull(sut);
-
     }
 
 
@@ -49,8 +47,8 @@ namespace Empiria.Trade.Tests.Inventory {
     public void DeleteInventoryOrderTest() {
 
       var usecase = InventoryOrderUseCases.UseCaseInteractor();
-
       string inventoryUID = "f2d2a10d-abb2-467d-9c4f-bdd2bc15d5c6";
+
       usecase.DeleteInventoryOrderByUID(inventoryUID);
       Assert.True(true);
     }
@@ -71,9 +69,9 @@ namespace Empiria.Trade.Tests.Inventory {
     public void DeleteInventoryItemByUIDTest() {
 
       var usecase = InventoryOrderUseCases.UseCaseInteractor();
-
       string inventoryUID = "f2d2a10d-abb2-467d-9c4f-bdd2bc15d5c6";
       string inventoryItemUID = "b9be96b6-b404-4acc-889e-390199a7af32";
+
       InventoryOrderDto sut = usecase.DeleteInventoryItemByUID(inventoryUID, inventoryItemUID);
       Assert.NotNull(sut);
     }
@@ -85,9 +83,7 @@ namespace Empiria.Trade.Tests.Inventory {
       var usecase = InventoryOrderUseCases.UseCaseInteractor();
 
       FixedList<InventoryOrderDto> sut = usecase.GetInventoryOrderList();
-
       Assert.NotNull(sut);
-
     }
 
 
@@ -95,13 +91,10 @@ namespace Empiria.Trade.Tests.Inventory {
     public void GetInventoryOrderByParseTest() {
 
       var usecase = InventoryOrderUseCases.UseCaseInteractor();
-
       string inventoryUID = "f2d2a10d-abb2-467d-9c4f-bdd2bc15d5c6";
 
       InventoryOrderEntry sut = usecase.GetInventoryOrderParseUID(inventoryUID);
-
       Assert.NotNull(sut);
-
     }
 
 
@@ -109,13 +102,10 @@ namespace Empiria.Trade.Tests.Inventory {
     public void GetInventoryOrderItemByParseTest() {
 
       var usecase = InventoryOrderUseCases.UseCaseInteractor();
-
       string itemUID = "kt5f6a19-9c40-454a-b02f-985bd8c518fk";
 
       InventoryOrderItem sut = usecase.GetInventoryOrderItemParseUID(itemUID);
-
       Assert.NotNull(sut);
-
     }
 
     #endregion Facts

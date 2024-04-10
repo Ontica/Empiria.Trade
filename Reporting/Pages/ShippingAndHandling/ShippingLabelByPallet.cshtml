@@ -25,30 +25,30 @@
                 <br />
                 <br />
                 <div>
-                    <h2>Tipo de Envío: @Html.DisplayFor(m => item.shippingType)</h2>
-                    <h1>@Html.DisplayFor(m => item.parcelSupplier)</h1>
+                    <h2>Tipo de Envío: @Html.DisplayFor(m => item.ShippingType)</h2>
+                    <h1>@Html.DisplayFor(m => item.ParcelSupplier)</h1>
                     <h3>Cliente.</h3>
-                    <h5>@Html.DisplayFor(m => item.customer)</h5>
+                    <h5>@Html.DisplayFor(m => item.Customer)</h5>
                     <h3>Dirección.</h3>
-                    <h5>@Html.DisplayFor(m => item.customerAddress)</h5>
-                    <h3>TELÉFONO: @Html.DisplayFor(m => item.customerPhoneNumber)</h3>
+                    <h5>@Html.DisplayFor(m => item.CustomerAddress)</h5>
+                    <h3>TELÉFONO: @Html.DisplayFor(m => item.CustomerPhoneNumber)</h3>
 
                 </div>
                 <br />
                 <br />
                 <div>
                     <h5>
-                        Tarima: @Html.DisplayFor(m => item.packingName)
-                        @Html.DisplayFor(m => item.packingCount)
+                        @Html.DisplayFor(m => item.PackingName)
+                        @Html.DisplayFor(m => item.PackingCount)
                     </h5>
                     <h3>Contenido.</h3>
                     <table>
                         <tr>
-                            <td style="border:solid">@Html.DisplayFor(m => item.packageQuantity) Cajas.</td>
+                            <td style="border:solid">@Html.DisplayFor(m => item.PackageQuantity) Cajas.</td>
 
-                            <td style="border:solid">@Html.DisplayFor(m => item.tiedQuantity) Atados.</td>
+                            <td style="border:solid">@Html.DisplayFor(m => item.TiedQuantity) Atados.</td>
 
-                            <td style="border:solid">@Html.DisplayFor(m => item.bagQuantity) Costales.</td>
+                            <td style="border:solid">@Html.DisplayFor(m => item.BagQuantity) Costales.</td>
                         </tr>
                     </table>
                 </div>
