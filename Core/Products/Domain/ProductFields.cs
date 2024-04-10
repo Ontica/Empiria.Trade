@@ -136,6 +136,12 @@ namespace Empiria.Trade.Products {
     }
 
 
+    [DataField("FragileProduct")]
+    public bool FragileProduct {
+      get; internal set;
+    }
+
+
     [DataField("ProductStatus", Default = StateEnums.EntityStatus.Active)]
     public StateEnums.EntityStatus Status {
       get; internal set;

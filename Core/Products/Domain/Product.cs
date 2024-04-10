@@ -14,12 +14,11 @@ using Empiria.Ontology;
 using Empiria.Trade.Core;
 using Empiria.Trade.Products.Adapters;
 
-namespace Empiria.Trade.Products
-{
+namespace Empiria.Trade.Products {
 
-    /// <summary>Represents a product.</summary>
-    //[PartitionedType(typeof(ProductType))]
-    public partial class Product : BaseObject {
+  /// <summary>Represents a product.</summary>
+  //[PartitionedType(typeof(ProductType))]
+  public partial class Product : BaseObject {
 
     #region Constructors and parsers
 
@@ -86,7 +85,7 @@ namespace Empiria.Trade.Products
       get; internal set;
     }
 
-    
+
     [DataField("PresentationId")]
     internal ProductPresentation ProductPresentation {
       get; private set;
@@ -153,11 +152,6 @@ namespace Empiria.Trade.Products
     }
 
 
-    internal decimal PriceList {
-      get; set;
-    }
-
-
     [DataField("PriceList1")]
     internal decimal PriceList1 {
       get; private set;
@@ -218,6 +212,11 @@ namespace Empiria.Trade.Products
     }
 
 
+    internal decimal PriceList {
+      get; set;
+    }
+
+
     [DataField("ProductWeight")]
     internal decimal Weight {
       get; private set;
@@ -230,7 +229,13 @@ namespace Empiria.Trade.Products
     }
 
 
-    [DataField("ProductStatus", Default= StateEnums.EntityStatus.Active)]
+    [DataField("FragileProduct")]
+    public bool FragileProduct {
+      get; internal set;
+    }
+
+
+    [DataField("ProductStatus", Default = StateEnums.EntityStatus.Active)]
     public StateEnums.EntityStatus Status {
       get; internal set;
     }

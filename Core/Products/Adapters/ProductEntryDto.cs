@@ -71,12 +71,15 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
-    public StateEnums.EntityStatus ProductStatus {
+    public bool FragileProduct {
       get; set;
     }
 
 
-
+    public StateEnums.EntityStatus ProductStatus {
+      get; set;
+    }
+    
   } // class ProductEntryDto
 
 

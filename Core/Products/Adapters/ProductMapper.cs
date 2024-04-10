@@ -61,6 +61,7 @@ namespace Empiria.Trade.Products.Adapters
       dto.Category = entry.Category;
       dto.ProductWeight = entry.ProductWeight;
       dto.ProductLength = entry.ProductLength;
+      dto.FragileProduct = entry.FragileProduct;
       dto.ProductStatus = entry.Status;
 
       return dto;
