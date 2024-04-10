@@ -22,11 +22,14 @@
 
                 </div>
                 <br />
+                <div>
+                    <h2>Folio de embarque: @Html.DisplayFor(m => item.DeliveryNumber)</h2>
+                </div>
                 <br />
                 <br />
                 <div>
                     <h2>Tipo de Envío: @Html.DisplayFor(m => item.ShippingType)</h2>
-                    <h1>@Html.DisplayFor(m => item.ParcelSupplier)</h1>
+                    <h1>@Html.DisplayFor(m => item.ParcelSupplier) - No. Guia: @Html.DisplayFor(m => item.ShippingGuide) </h1>
                     <h3>Cliente.</h3>
                     <h5>@Html.DisplayFor(m => item.Customer)</h5>
                     <h3>Dirección.</h3>
@@ -37,6 +40,7 @@
                 <br />
                 <br />
                 <div>
+                    <h3>Folio de surtido: @Html.DisplayFor(m => item.ShippingNumber)</h3>
                     <h5>
                         @Html.DisplayFor(m => item.PackingName)
                         @Html.DisplayFor(m => item.PackingCount)
