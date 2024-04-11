@@ -39,7 +39,7 @@ namespace Empiria.Trade.Products.Data
                 "SUBGROUPS.ProductSubgroupId, P.ProductCode, P.ProductUPC, P.ProductName, P.ProductDescription, P.Attributes, VP.SKU, " +
                 "PRICES.PriceList1, PRICES.PriceList2, PRICES.PriceList3, PRICES.PriceList4, PRICES.PriceList5, " +
                 "PRICES.PriceList6, PRICES.PriceList7, PRICES.PriceList8, PRICES.PriceList9, PRICES.PriceList10, " +
-                "P.ProductWeight, P.ProductLength, P.ProductStatus " +
+                "P.ProductWeight, P.ProductLength, P.FragileProduct, P.ProductStatus " +
                 "FROM TRDProducts P " +
                 "LEFT JOIN TRDProductGroups GROUPS ON P.ProductGroupId = GROUPS.ProductGroupId " +
                 "LEFT JOIN TRDProductSubgroups SUBGROUPS ON P.ProductSubgroupId = SUBGROUPS.ProductSubgroupId " +
