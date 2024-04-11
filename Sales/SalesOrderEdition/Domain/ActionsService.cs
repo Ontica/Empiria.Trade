@@ -76,7 +76,7 @@ namespace Empiria.Trade.Sales {
       Actions.Can.Update = ValidateUpdate(queryType, salesOrder);
       Actions.Can.Cancel = ValidateCancel(queryType, salesOrder);
       Actions.Can.Authorize = ValidateAuthorize(queryType, salesOrder);
-      Actions.Can.DeAuthorize = ValidateDeAuthorize(queryType, salesOrder);
+      Actions.Can.Deauthorize = ValidateDeauthorize(queryType, salesOrder);
       Actions.Can.EditPacking = ValidateEditPacking(queryType, salesOrder);
       Actions.Can.ClosePacking = ValidateEditClosePacking(queryType, salesOrder);
       Actions.Can.EditShipping = ValidateEditShipping(salesOrder);
@@ -106,7 +106,7 @@ namespace Empiria.Trade.Sales {
       return salesOrder.Status == OrderStatus.Applied && queryType == QueryType.SalesAuthorization && !OnAuthorizeEvent;
     }
 
-    private bool ValidateDeAuthorize(QueryType queryType, SalesOrder salesOrder) {
+    private bool ValidateDeauthorize(QueryType queryType, SalesOrder salesOrder) {
       return salesOrder.AuthorizationStatus == OrderAuthorizationStatus.Authorized && queryType == QueryType.SalesAuthorization;
     }
 

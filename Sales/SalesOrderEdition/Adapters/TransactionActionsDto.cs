@@ -44,7 +44,7 @@ namespace Empiria.Trade.Sales.Adapters {
       get; internal set;
     }
 
-    public Boolean DeAuthorize {
+    public Boolean Deauthorize {
       get; internal set;
     }
 

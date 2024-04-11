@@ -37,7 +37,7 @@ namespace Empiria.Trade.Sales.Adapters {
         Authorize = transactionActions.Can.Authorize,
         Cancel = transactionActions.Can.Cancel,
         ClosePacking = transactionActions.Can.ClosePacking,
-        DeAuthorize = transactionActions.Can.DeAuthorize,
+        Deauthorize = transactionActions.Can.Deauthorize,
         EditPacking = transactionActions.Can.EditPacking,
         EditShipping = transactionActions.Can.EditShipping,
         SendShipping = transactionActions.Can.SendShipping,

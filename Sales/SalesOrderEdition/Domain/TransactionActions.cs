@@ -65,7 +65,7 @@ namespace Empiria.Trade.Sales {
         get; set;
       } = false;
 
-      public Boolean DeAuthorize {
+      public Boolean Deauthorize {
         get; set;
       } = false;
 
