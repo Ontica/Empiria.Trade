@@ -55,20 +55,20 @@ namespace Empiria.Trade.Financial.UseCases {
       return CreditTransactionMapper.Map(creditTransaction);
     }
 
-    public CreditTransactionDto Cancel(string creditTransactionUID) {
+    public CreditTransactionDto Cancel(string creditTransactionUID, string notes) {
       Assertion.Require(creditTransactionUID, "creditTransactionUID");
 
       var creditTransaction = CreditTransaction.Parse(creditTransactionUID);
-      creditTransaction.Cancel();
+      creditTransaction.Cancel(notes);
       
       return CreditTransactionMapper.Map(creditTransaction);
     }
 
-    public CreditTransactionDto Cancel(int orderId) {
+    public CreditTransactionDto Cancel(int orderId, string notes) {
       Assertion.Require(orderId, "orderId");
 
       var creditTransaction = CreditTransaction.ParseByOrderId(orderId);
-      creditTransaction.Cancel();
+      creditTransaction.Cancel(notes);
 
       return CreditTransactionMapper.Map(creditTransaction);
     }

@@ -168,4 +168,12 @@ namespace Empiria.Trade.Sales.Adapters {
 
     } // class SearchOrderFields
 
-  } // namespace Empiria.Trade.Sales.Adapters
+  public class DeauthorizeFields {
+
+    public string Notes {
+      get; set;
+    } = String.Empty;
+
+  } //class DeauthorizeFields
+
+} // namespace Empiria.Trade.Sales.Adapters

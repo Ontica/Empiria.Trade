@@ -26,6 +26,7 @@ using Xunit.Abstractions;
 using Empiria.Trade.Orders;
 using System.Linq;
 using Empiria.Trade.Financial.UseCases;
+using TradeDataSchemaManager.Services;
 
 namespace Empiria.Trade.Tests.Sales {
 
@@ -36,17 +37,18 @@ namespace Empiria.Trade.Tests.Sales {
     public void ShouldGetOrderTest() {
 
       var fields = new SearchOrderFields {
-        QueryType = QueryType.Sales,
+        QueryType = QueryType.SalesPacking,
         Keywords = "",
         FromDate = Convert.ToDateTime("2023/01/10"),
         ToDate = Convert.ToDateTime("2024/12/28"),
-        ShippingMethod = ShippingMethods.Paqueteria
+        Status = OrderStatus.InProgress,
+        // ShippingMethod = ShippingMethods.Paqueteria
       };
 
 
       var salesOrdersHelper = new SalesOrderHelper();
-
-      var salesOrders = salesOrdersHelper.GetOrders(fields);
+      
+      var salesOrders = salesOrdersHelper.GetOrdersToPacking(fields);
 
       var x = SearchSealesOrderMapper.MapBaseSalesOrderPackingList(salesOrders);
 
@@ -141,8 +143,9 @@ namespace Empiria.Trade.Tests.Sales {
     [Fact]
     public void ShouldGetOrder() {
 
-     var order = SalesOrder.Parse("e4bb8386-0b33-42f7-b638-c621c81e19d2");
-     
+     var order = SalesOrder.Parse("68c0c501-89f7-4e04-ad08-e7e34f5cbb33");
+      order.CalculateSalesOrder(QueryType.SalesAuthorization);
+
 
       var orderDto = SalesOrderMapper.Map(order);
       Assert.NotNull(orderDto);
@@ -193,7 +196,7 @@ namespace Empiria.Trade.Tests.Sales {
     public void ShouldCancelCredintInOrder() {
 
       var salesOrderUseCase = SalesOrderUseCases.UseCaseInteractor();
-      var x =  salesOrderUseCase.CancelCreditInOrder("88f479bb-4c95-41c8-86d6-51f8df9cf833");
+      var x =  salesOrderUseCase.CancelCreditInOrder("68c0c501-89f7-4e04-ad08-e7e34f5cbb33", "cancel");
 
       Assert.NotNull(x);
     }

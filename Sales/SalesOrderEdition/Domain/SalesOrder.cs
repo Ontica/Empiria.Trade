@@ -117,7 +117,7 @@ namespace Empiria.Trade.Sales {
       this.AuthorizatedById = ExecutionServer.CurrentUserId;
 
       this.Status = OrderStatus.Packing;
-      AuthorizationStatus = OrderAuthorizationStatus.ToSupply;
+      //AuthorizationStatus = OrderAuthorizationStatus.ToSupply;
            
 
       SalesOrderData.Write(this);
@@ -128,6 +128,21 @@ namespace Empiria.Trade.Sales {
       actions.OnAuthorize();
       this.Actions = actions.SetActions(this, QueryType.SalesAuthorization);
     }
+
+    public void AuthorizePayment() {
+      this.Status = OrderStatus.Packing;
+      AuthorizationStatus = OrderAuthorizationStatus.ToSupply;
+
+      SalesOrderData.Write(this);
+
+      SetOrderValues();
+
+      var actions = ActionsService.Load();
+      actions.OnAuthorize();
+      this.Actions = actions.SetActions(this, QueryType.SalesAuthorization);
+    }
+
+
 
     public void Cancel() {
       Status = OrderStatus.Cancelled;

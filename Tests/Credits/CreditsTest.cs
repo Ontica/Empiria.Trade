@@ -80,7 +80,7 @@ namespace Empiria.Trade.Tests.Credits {
     public void ShouldCancelCreditTransaction() {
 
       var creditTransaction = CreditTransaction.Parse("d93c7e0d-48c5-415e-b5f5-f33f49760620");
-      creditTransaction.Cancel();
+      creditTransaction.Cancel("credito cancelado");
 
       Assert.NotNull(creditTransaction);
     }

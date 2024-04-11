@@ -168,7 +168,7 @@ namespace Empiria.Trade.Sales.UseCases {
       order.GetOrderTotal();
 
       switch (order.PaymentCondition) {
-        case "Contado": order.Authorize(); break;
+        case "Contado": order.AuthorizePayment(); break;
         case "Credito": SetCreditOrder(order); break;
       }
          
@@ -301,12 +301,12 @@ namespace Empiria.Trade.Sales.UseCases {
       return sut[0].Stock;
     }
 
-    public ISalesOrderDto CancelCreditInOrder(string orderUID) {
+    public ISalesOrderDto CancelCreditInOrder(string orderUID, string notes) {
 
       var order = SalesOrder.Parse(orderUID);
 
       var CreditsUseCase = CreditTransactionUseCases.UseCaseInteractor();
-      CreditsUseCase.Cancel(order.Id);
+      CreditsUseCase.Cancel(order.Id, notes);
 
       order.Apply();
       

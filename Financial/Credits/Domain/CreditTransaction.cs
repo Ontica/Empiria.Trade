@@ -132,9 +132,9 @@ namespace Empiria.Trade.Financial {
       this.Status = EntityStatus.Active;
     }
 
-    public void Cancel() {
-      Status = EntityStatus.Deleted;
-
+    public void Cancel(string notes) {
+      this.Status = EntityStatus.Deleted;
+      this.Notes = notes;
       this.Save();
     }
 
