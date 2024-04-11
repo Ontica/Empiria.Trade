@@ -81,34 +81,43 @@
                 </div> -->
 
                 <div class="row">
-                    <label>@Html.DisplayFor(m => item.PackingName) </label> @Html.DisplayFor(m => item.PackingCount)
+                    @if (item.WithPallets) {
+                        <label>@Html.DisplayFor(m => item.PackingName) </label> @Html.DisplayFor(m => item.PackingCount)
+                    } else {
+                        <label>Paquete: </label> @Html.DisplayFor(m => item.PackingCount) @Html.DisplayFor(m => item.PackingName)
+                    }
+
                 </div>
 
                 <br />
 
-                <div>
+                @if (item.WithPallets) {
 
-                    <label> Contenido: </label>
+                    <div>
+
+                        <label> Contenido: </label>
+
+                        <br />
+
+                        <table>
+
+                            <tr>
+
+                                <td>@Html.DisplayFor(m => item.PackageQuantity) <br />Cajas</td>
+
+                                <td>@Html.DisplayFor(m => item.TiedQuantity) <br />Atados</td>
+
+                                <td>@Html.DisplayFor(m => item.BagQuantity) <br />Costales.</td>
+
+                            </tr>
+
+                        </table>
+
+                    </div>
 
                     <br />
 
-                    <table>
-
-                        <tr>
-
-                            <td>@Html.DisplayFor(m => item.PackageQuantity) <br />Cajas</td>
-
-                            <td>@Html.DisplayFor(m => item.TiedQuantity) <br />Atados</td>
-
-                            <td>@Html.DisplayFor(m => item.BagQuantity) <br />Costales.</td>
-
-                        </tr>
-
-                    </table>
-
-                </div>
-
-                <br />
+                }
 
                 <label>Relación de documentos:</label><br /> -
 

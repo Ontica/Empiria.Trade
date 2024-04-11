@@ -12,133 +12,137 @@ using Empiria.Trade.Orders;
 
 namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
-  /// <summary>Output DTO used to return shipping label.</summary>
-  public class ShippingLabel {
+    /// <summary>Output DTO used to return shipping label.</summary>
+    public class ShippingLabel {
 
 
-    public string ShippingUID {
-      get; set;
+        public string ShippingUID {
+            get; set;
+        }
+
+
+        public string Company {
+            get; set;
+        }
+
+
+        public string CompanyAddress {
+            get; set;
+        }
+
+
+        public string ShippingGuide {
+            get; set;
+        }
+
+
+        public string ShippingNumber {
+            get;
+            internal set;
+        }
+
+
+        public string DeliveryNumber {
+            get;
+            internal set;
+        }
+
+
+        public ShippingMethods ShippingType {
+            get; set;
+        }
+
+
+        public string ParcelSupplier {
+            get; set;
+        }
+
+
+        public string Customer {
+            get; set;
+        }
+
+
+        public string CustomerAddress {
+            get; set;
+        }
+
+
+        public string CustomerPhoneNumber {
+            get; set;
+        }
+
+
+        public string PackingName {
+            get; set;
+        }
+
+
+        public string PackingCount {
+            get; set;
+        }
+
+
+        public int PackageQuantity {
+            get; set;
+        }
+
+
+        public int TiedQuantity {
+            get; set;
+        }
+
+
+        public int BagQuantity {
+            get; set;
+        }
+
+
+        public bool WithPallets {
+            get; set;
+        } = false;
+
     }
 
 
-    public string Company {
-      get; set;
-    }
+    public class SupplyLabel {
 
 
-    public string CompanyAddress {
-      get; set;
-    }
+        public string OrderUID {
+            get; set;
+        }
 
 
-    public string ShippingGuide {
-      get; set;
-    }
+        public string ProductCode {
+            get; set;
+        }
 
 
-    public string ShippingNumber {
-      get;
-      internal set;
-    }
+        public string ProductPresentation {
+            get; set;
+        }
 
 
-    public string DeliveryNumber {
-      get;
-      internal set;
-    }
+        public string Description {
+            get; set;
+        }
 
 
-    public ShippingMethods ShippingType {
-      get; set;
-    }
+        public string Comments {
+            get; set;
+        }
 
 
-    public string ParcelSupplier {
-      get; set;
-    }
+        public decimal Quantity {
+            get; set;
+        }
 
 
-    public string Customer {
-      get; set;
-    }
+        public string Ubication {
+            get; set;
+        }
 
-
-    public string CustomerAddress {
-      get; set;
-    }
-
-
-    public string CustomerPhoneNumber {
-      get; set;
-    }
-
-
-    public string PackingName {
-      get; set;
-    }
-
-
-    public string PackingCount {
-      get; set;
-    }
-
-
-    public int PackageQuantity {
-      get; set;
-    }
-
-
-    public int TiedQuantity {
-      get; set;
-    }
-
-
-    public int BagQuantity {
-      get; set;
-    }
-
-
-  }
-
-
-  public class SupplyLabel {
-
-
-    public string OrderUID {
-      get; set;
-    }
-
-
-    public string ProductCode {
-      get; set;
-    }
-
-
-    public string ProductPresentation {
-      get; set;
-    }
-
-
-    public string Description {
-      get; set;
-    }
-
-
-    public string Comments {
-      get; set;
-    }
-
-
-    public decimal Quantity {
-      get; set;
-    }
-
-
-    public string Ubication {
-      get; set;
-    }
-
-  } // class ShippingLabel
+    } // class ShippingLabel
 
 
 } // namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters

@@ -184,7 +184,7 @@ namespace Empiria.Trade.Tests {
         public void GetShippingLabelsTest() {
 
             var usecase = ShippingLabelUseCases.UseCaseInteractor();
-            string shippingUID = "03de6c79-a76e-40bb-866b-acc64a65c755";
+            string shippingUID = "6a52e473-e81e-4ea9-9c01-b3bacf903662";
 
             FixedList<ShippingLabel> sut = usecase.GetShippingLabels(shippingUID);
             Assert.NotNull(sut);

@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Core.Common;
 using Empiria.Trade.Orders;
@@ -72,9 +73,10 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
             helper.GetShippingNumber(shipping);
 
             FixedList<ShippingLabel> labelsByPallet = GetLabelsForPallets(shipping);
-            FixedList<ShippingLabel> labelsByOrders = GetLabelsForOrderItems(shipping, labelsByPallet);
+            FixedList<ShippingLabel> labelsByPackage = GetLabelsForPackages(shipping, labelsByPallet);
+            //FixedList<ShippingLabel> labelsByOrders = GetLabelsForOrderItems(shipping, labelsByPallet);
 
-            return labelsByOrders;
+            return labelsByPackage;
         }
 
 
@@ -102,6 +104,61 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
         #region Private methods
 
 
+        private FixedList<ShippingLabel> GetLabelsForPackages(ShippingEntry shipping,
+            FixedList<ShippingLabel> labelsByPallet) {
+
+            var labelsByItem = labelsByPallet.ToList();
+
+            FixedList<ShippingOrderItem> shippingItems =
+              ShippingData.GetOrdersForShippingByShippingId(shipping.ShippingUID);
+
+            
+            foreach (var item in shippingItems) {
+
+                var existPallet = labelsByPallet.FindAll(x => x.ShippingUID == item.ShippingOrder.ShippingUID);
+
+                if (existPallet.Count == 0) {
+
+                    labelsByItem.AddRange(GetPackagesDataForLabels(item, shipping));
+                }
+            }
+
+            return labelsByItem.ToFixedList();
+        }
+
+
+        private IEnumerable<ShippingLabel> GetPackagesDataForLabels(ShippingOrderItem item, ShippingEntry shipping) {
+
+            var packagings = PackagingData.GetPackagesForItemsByOrder(item.Order.UID);
+            var labels = new List<ShippingLabel>();
+
+            int packingCount = 0;
+            foreach (var packing in packagings) {
+
+                packingCount = packingCount + 1;
+                var packageType = PackageType.Parse(packing.PackageTypeId);
+
+                var label = new ShippingLabel();
+                label.ShippingUID = item.ShippingOrder.ShippingUID;
+                label.ShippingNumber = item.ShippingOrder.ShippingNumber;
+                label.DeliveryNumber = item.ShippingOrder.DeliveryNumber;
+                label.ParcelSupplier = SimpleObjectData.Parse(shipping.ParcelSupplierId).Name;
+                label.PackingName = $"{packing.PackageID} / {packageType.Name}";
+                label.PackingCount = $"({packingCount}/{packagings.Count}) ";
+                label.ShippingGuide = shipping.ShippingGuide;
+                label.ShippingType = item.Order.ShippingMethod;
+                label.Customer = item.Order.Customer.Name;
+                label.CustomerAddress = $"{item.Order.CustomerAddress.Address1} " +
+                                        $"CP. {item.Order.Customer.ZipCode}.";
+                label.CustomerPhoneNumber = item.Order.Customer.PhoneNumbers;
+
+                labels.Add(label);
+            }
+            
+            return labels.ToFixedList();
+        }
+
+
         private FixedList<ShippingLabel> GetLabelsForOrderItems(ShippingEntry shipping,
           FixedList<ShippingLabel> labelsByPallet) {
 
@@ -122,8 +179,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
                     label.ShippingNumber = item.ShippingOrder.ShippingNumber;
                     label.DeliveryNumber = item.ShippingOrder.DeliveryNumber;
                     label.ParcelSupplier = SimpleObjectData.Parse(shipping.ParcelSupplierId).Name;
-                    label.PackingName = $"Orden: {item.Order.OrderNumber}";
-                    label.PackingCount = $"({packingCount}/{shippingItems.Count})";
+                    label.PackingName = $"Orden: ";
+                    label.PackingCount = $"{item.Order.OrderNumber} ({packingCount}/{shippingItems.Count}) ";
                     label.ShippingGuide = shipping.ShippingGuide;
                     label.ShippingType = item.Order.ShippingMethod;
                     label.Customer = item.Order.Customer.Name;
@@ -157,8 +214,9 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
                 label.ShippingNumber = shipping.ShippingNumber;
                 label.DeliveryNumber = shipping.DeliveryNumber;
                 label.ParcelSupplier = SimpleObjectData.Parse(shipping.ParcelSupplierId).Name;
-                label.PackingName = $"Tarima: {shippingPallet.ShippingPalletName}";
-                label.PackingCount = $"({palletCount}/{shippingPallets.Count})";
+                label.PackingName = $"Tarima: ";
+                label.PackingCount = $"({palletCount}/{shippingPallets.Count}) "+
+                                     $"{shippingPallet.ShippingPalletName} ";
 
                 FixedList<ShippingPackage> shippingPackages =
                     ShippingData.GetShippingPackagesByPalletUID(shippingPallet.ShippingPalletUID);
@@ -169,7 +227,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
                 label.Customer = order.Customer.Name;
                 label.CustomerAddress = $"{order.CustomerAddress.Address1} CP. {order.Customer.ZipCode}.";
                 label.CustomerPhoneNumber = order.Customer.PhoneNumbers;
-
+                label.WithPallets = true;
                 GetPackingTypeCountByPallet(label, shippingPackages);
 
                 labelsByPallet.Add(label);
