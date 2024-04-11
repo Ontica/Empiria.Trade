@@ -28,10 +28,14 @@ namespace Empiria.Trade.Sales.Data {
       string status = string.Empty;
 
       if (fields.Status != Orders.OrderStatus.Empty) {
-          status = $" AND (OrderStatus = '{(char)fields.Status}')";
+        if (fields.Status == Orders.OrderStatus.Authorized) {
+          status = " AND (OrderAuthorizationStatus = 'A')";
         } else {
-          status = $" AND (OrderStatus <> '{(char) Orders.OrderStatus.Cancelled}')";
-       }
+          status = $" AND (OrderStatus = '{(char) fields.Status}')";
+        }
+      } else {
+         status = $" AND (OrderStatus <> '{(char) Orders.OrderStatus.Cancelled}')";
+      }
 
        return GetOrders(fields, status); 
         
