@@ -217,7 +217,7 @@ namespace Empiria.Trade.Sales.Adapters {
         case "Pending":
           return "Por Autorizar";
         default:
-          return "Por Autorizar";
+          return "Autorizado";
       }
 
     }
