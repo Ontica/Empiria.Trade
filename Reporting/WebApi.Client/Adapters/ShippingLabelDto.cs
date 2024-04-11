@@ -13,7 +13,7 @@ namespace Empiria.Trade.Reporting.WebApi.Client.Adapters {
 
 
   /// <summary>Output DTO used to return shipping label by pallet.</summary>
-  public class ShippingLabelByPalletDto {
+  public class ShippingLabelDto {
 
     public string Company {
       get; set;

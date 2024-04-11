@@ -5,12 +5,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Empiria.Trade.Reporting.Pages.ShippingAndHandling
 {
-    public class ShippingLabelByPalletModel : PageModel
+    public class ShippingLabelsModel : PageModel
     {
 
-        public IEnumerable<ShippingLabelByPalletDto> Labels {
+        public IEnumerable<ShippingLabelDto> Labels {
             get; set;
-        } = new List<ShippingLabelByPalletDto>();
+        } = new List<ShippingLabelDto>();
 
 
         public async Task OnGet(string shippingUID) {

@@ -1,0 +1,126 @@
+﻿@page
+@model Empiria.Trade.Reporting.Pages.ShippingAndHandling.ShippingLabelsModel
+@{
+}
+<link rel="stylesheet" href="~/css/to-print.css" type="text/css" />
+<br />
+<body>
+    @foreach (var item in Model.Labels) {
+
+        <div class="container">
+
+            <div class="row">
+
+                <div class="image-container">
+
+                    <img src="~/image/logo.png">
+
+                </div>
+
+                <div class="header">
+
+                    <h1 class="center padding-bottom">SUJETSA</h1>
+                    <h2 class="center padding-bottom">
+                        AV. SIGLO XXI 7801 LOS NEGRITOS <br> AGUASCALIENTES AGUASCALIENTES 20310
+                    </h2>
+                    <h4>ESTIMADO CLIENTE, LE ENVIAMOS FOTOGRAFIAS DE COMO SE EMBARCA SU MERCANCIA.</h4>
+                    <h3>
+                        EN CASO DE RECIBIR LA MERCANCIA DAÑADA O INCOMPLETA FAVOR DE ESPECIFICAR EN LA GUIA DE ENTREGA.
+                        POR SU ATENCION ¡GRACIAS!
+                    </h3>
+
+                </div>
+
+            </div>
+
+            <div class="row padding-bottom">
+
+                <div class="item">
+
+                    <h2 class="center">Tipo envío: @Html.DisplayFor(m => item.ShippingType)</h2>
+
+                    <h2 class="center highlight">@Html.DisplayFor(m => item.ParcelSupplier): @Html.DisplayFor(m => item.ShippingGuide)</h2>
+
+                </div>
+
+                <div class="item-right">
+
+                    <div class="row items-between">
+                        <label>No. embarque:</label> @Html.DisplayFor(m => item.DeliveryNumber)
+                    </div>
+
+                    <div class="row items-between">
+                        <label>No. surtido:</label> @Html.DisplayFor(m => item.ShippingNumber)
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="item">
+
+                    <div class="padding-bottom"><label>Cliente:</label><br> @Html.DisplayFor(m => item.Customer)</div>
+
+                    <div class="padding-bottom"><label>Dirección:</label><br> @Html.DisplayFor(m => item.CustomerAddress)</div>
+
+                    <div class="padding-bottom"><label>Teléfono:</label> @Html.DisplayFor(m => item.CustomerPhoneNumber)</div>
+
+                </div>
+
+                <div class="qr-code">
+                </div>
+
+            </div>
+
+            <div>
+
+                <!-- <div class="row">
+                  <label>Paquete:</label> C0001 (1/17)
+                </div> -->
+
+                <div class="row">
+                    <label>@Html.DisplayFor(m => item.PackingName) </label> @Html.DisplayFor(m => item.PackingCount)
+                </div>
+
+                <br />
+
+                <div>
+
+                    <label> Contenido: </label>
+
+                    <br />
+
+                    <table>
+
+                        <tr>
+
+                            <td>@Html.DisplayFor(m => item.PackageQuantity) <br />Cajas</td>
+
+                            <td>@Html.DisplayFor(m => item.TiedQuantity) <br />Atados</td>
+
+                            <td>@Html.DisplayFor(m => item.BagQuantity) <br />Costales.</td>
+
+                        </tr>
+
+                    </table>
+
+                </div>
+
+                <br />
+
+                <label>Relación de documentos:</label><br /> -
+
+            </div>
+
+            <div class="right">
+
+                <span>@DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss tt")</span>
+
+            </div>
+
+        </div>
+
+    }
+</body>

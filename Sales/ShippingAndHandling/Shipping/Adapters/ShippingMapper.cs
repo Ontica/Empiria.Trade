@@ -87,6 +87,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
                 ShippingUID = entry.ShippingOrderId == -1 ? "" : entry.ShippingUID,
                 ParcelSupplier = new NamedEntityDto(parcel.UID, parcelName),
                 ShippingGuide = entry.ShippingGuide,
+                ShippingNumber = entry.ShippingNumber,
+                DeliveryNumber = entry.DeliveryNumber,
                 ParcelAmount = entry.ParcelAmount,
                 CustomerAmount = entry.CustomerAmount,
                 ShippingDate = entry.ShippingDate,
@@ -95,13 +97,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
                 TotalPackages = entry.OrdersForShipping.Sum(x => x.TotalPackages),
                 TotalWeight = entry.OrdersForShipping.Sum(x => x.TotalWeight),
                 TotalVolume = entry.OrdersForShipping.Sum(x => x.TotalVolume),
-                ShippingNumber = entry.ShippingNumber,
-                DeliveryNumber = entry.DeliveryNumber,
                 Status = entry.Status,
 
                 ShippingLabelsMedia = new MediaData("text/html",
                     $"http://apps.sujetsa.com.mx:8080/reporting.api/ShippingAndHandling/" +
-                    $"ShippingLabelByPallet?shippingUID={entry.ShippingUID}"),
+                    $"ShippingLabels?shippingUID={entry.ShippingUID}"),
 
                 BillingsMedia = new MediaData("text/html",
                     $"http://apps.sujetsa.com.mx:8080/reporting.api/ShippingAndHandling/" +

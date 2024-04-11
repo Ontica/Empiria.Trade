@@ -1,0 +1,119 @@
+body {
+  font-family: Arial;
+  font-size: 12pt;
+  font-weight: normal;
+  color: #000000;
+  background-color: #ffffff;
+  margin: 0px 0px 0px 0px;
+}
+
+h1 {
+  font-family: Arial;
+  font-size: 20pt;
+  font-weight: bold;
+  margin: 0;
+}
+
+h2 {
+  font-family: Arial;
+  font-size: 14pt;
+  font-weight: bold;
+  margin: 0;
+}
+
+h3 {
+  font-family: Arial;
+  font-size: 10.5pt;
+  font-weight: bold;
+  margin: 0;
+}
+
+h4 {
+  font-family: Arial;
+  font-size: 9pt;
+  font-weight: normal;
+  margin: 0;
+}
+
+table {
+  border-collapse: collapse;
+  font-family: Arial;
+  font-size: 12pt;
+  margin: 0px;
+  text-align: center;
+}
+
+td {
+  border: 1px solid black;
+  padding: 1rem;
+}
+
+label {
+  font-weight: bold;
+  font-size: 12pt;
+}
+
+.container {
+  border: 1px solid black;
+  margin: 1rem;
+  padding: 1rem;
+}
+
+.row {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.image-container {
+  width: 100px;
+  height: auto;
+}
+
+.image-container img {
+  width: 100%;
+  height: auto;
+  background-size: contain;
+}
+
+.header {
+  flex: 1 1 ;
+  padding: 0 0 2rem 1rem;
+}
+
+.center {
+  text-align: center;
+}
+
+.right {
+  text-align: end;
+}
+
+.highlight {
+  background-color: #f0f0f0;
+  text-transform: uppercase;
+  padding: 0.25rem;
+}
+
+.padding-bottom {
+  padding-bottom: 0.5rem;
+}
+
+.item {
+  flex: 1 1;
+}
+
+.item-right {
+  width: 225px;
+  padding-left: 1rem;
+}
+
+.items-between {
+  justify-content: space-between;
+}
+
+.qr-code {
+  border: 1px solid black;
+  width: 223px;
+  height: 223px;
+  margin-left: 1rem;
+}
