@@ -308,10 +308,10 @@ namespace Empiria.Trade.Sales.UseCases {
       var CreditsUseCase = CreditTransactionUseCases.UseCaseInteractor();
       CreditsUseCase.Cancel(order.Id, notes);
 
-      order.Apply();
+      order.Deauthorize();
       
-      return SalesOrderMapper.Map(order);
-    //  throw new NotImplementedException();
+
+     return SalesOrderMapper.Map(order);
     }
 
     static private decimal GetCusomerCreditLimit(int customerId) {

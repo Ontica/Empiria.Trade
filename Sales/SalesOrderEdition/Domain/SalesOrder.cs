@@ -111,6 +111,7 @@ namespace Empiria.Trade.Sales {
       this.Actions = actions.SetActions(this, QueryType.Sales);
     }
 
+
     public void Authorize() {
       AuthorizationStatus = OrderAuthorizationStatus.Authorized;
       this.AuthorizationTime = DateTime.Now;
@@ -126,6 +127,19 @@ namespace Empiria.Trade.Sales {
 
       var actions = ActionsService.Load();
       actions.OnAuthorize();
+      this.Actions = actions.SetActions(this, QueryType.SalesAuthorization);
+    }
+
+    public void Deauthorize() {
+      Status = OrderStatus.Applied;
+      AuthorizationStatus = OrderAuthorizationStatus.Pending;
+
+      SalesOrderData.Write(this);
+
+      SetOrderValues();
+
+      var actions = ActionsService.Load();
+      actions.OnApply();
       this.Actions = actions.SetActions(this, QueryType.SalesAuthorization);
     }
 
