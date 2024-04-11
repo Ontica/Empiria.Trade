@@ -204,7 +204,7 @@ namespace Empiria.Trade.Sales.Adapters {
         Weight = GetWeightTotalPackageByOrder(order),
         TotalPackages = GetTotalPackageByOrder(order),
         Status = order.Status,
-        StatusName = MapOrderPackingStatus(order.AuthorizationStatus.ToString())
+        StatusName = MapOrderPackingStatus(order.Status.ToString())
       };
 
       return dto;
@@ -224,14 +224,8 @@ namespace Empiria.Trade.Sales.Adapters {
 
     static private string MapOrderPackingStatus(string status) {
       switch (status) {
-        case "ToSupply":
-          return "Por surtir";
-        case "InProgress":
-          return "En proceso";
-        case "Suppled":
-          return "Surtido";
-        default:
-          return "Por surtir";
+        case "Packing": return "Por surtir";
+        default: return "Surtido";
       }
 
     }
