@@ -9,6 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using Empiria.DataTypes;
+using Empiria.Trade.Orders;
 
 namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
@@ -147,11 +148,16 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
         }
 
 
+        public ShippingMethods ShippingMethod {
+            get; set;
+        }
+
+
         public ShippingStatus Status {
                 get; set;
         }
-    
-  } // class ShippingEntryDto
+        
+    } // class ShippingEntryDto
 
 
     /// <summary>Output DTO used to return the entries of shipping order item.</summary>

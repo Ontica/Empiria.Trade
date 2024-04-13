@@ -173,7 +173,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
         shipping.ShippingOrderId, shipping.ParcelSupplierId,
         shipping.ShippingUID, shipping.ShippingGuide, shipping.ParcelAmount,
         shipping.CustomerAmount, shipping.ShippingDate, shipping.DeliveryDate,
-        shipping.Keywords, (char)shipping.Status);
+        shipping.Keywords, (char)shipping.ShippingMethod, (char) shipping.Status);
 
       DataWriter.Execute(op);
     }

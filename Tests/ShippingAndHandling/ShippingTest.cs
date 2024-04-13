@@ -64,7 +64,6 @@ namespace Empiria.Trade.Tests {
             ShippingDto sut = usecase.CreateShippingOrder(GetShippingFields());
 
             Assert.NotNull(sut);
-
         }
 
 
@@ -344,9 +343,9 @@ namespace Empiria.Trade.Tests {
             ShippingDataFields dataFields = new ShippingDataFields() {
                 ShippingUID = "",
                 ParcelSupplierUID = "g5se58ab-75d0-4e8f-bed4-2305e5er2t55",
-                ShippingGuide = "GUIA CASTOR 0001",
-                ParcelAmount = 200,
-                CustomerAmount = 50
+                ShippingGuide = "GUIA CASTORSITO ABCD01",
+                ParcelAmount = 1,
+                CustomerAmount = 1
             };
 
             ShippingFields fields = new ShippingFields() {

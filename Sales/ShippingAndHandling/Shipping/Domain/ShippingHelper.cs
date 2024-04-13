@@ -126,10 +126,12 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
         internal void GetShippingNumber(ShippingEntry shipping) {
 
-            shipping.ShippingNumber = $"SP-{shipping.ShippingOrderId.ToString().PadLeft(9, '0')}";
+            shipping.ShippingNumber = $"S{shipping.ShippingMethod}-" +
+                                      $"{shipping.ShippingOrderId.ToString().PadLeft(9, '0')}";
 
             if (shipping.Status == ShippingStatus.EnProceso || shipping.Status == ShippingStatus.Cerrado) {
-                shipping.DeliveryNumber = $"EP-{shipping.ShippingOrderId.ToString().PadLeft(9, '0')}";
+                shipping.DeliveryNumber = $"E{shipping.ShippingMethod}-" +
+                                          $"{shipping.ShippingOrderId.ToString().PadLeft(9, '0')}";
             }
 
         }

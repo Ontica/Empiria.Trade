@@ -97,6 +97,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
                 TotalPackages = entry.OrdersForShipping.Sum(x => x.TotalPackages),
                 TotalWeight = entry.OrdersForShipping.Sum(x => x.TotalWeight),
                 TotalVolume = entry.OrdersForShipping.Sum(x => x.TotalVolume),
+                ShippingMethod = entry.ShippingMethod,
                 Status = entry.Status,
 
                 ShippingLabelsMedia = new MediaData("text/html",

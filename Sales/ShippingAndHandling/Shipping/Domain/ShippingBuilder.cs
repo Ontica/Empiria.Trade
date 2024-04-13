@@ -73,7 +73,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
             fields.ShippingData.Status = ShippingStatus.EnCaptura;
 
-            ShippingEntry shipping = CreateOrUpdateShipping(fields.ShippingData);
+            ShippingEntry shipping = CreateOrUpdateShipping(fields);
 
             CreateOrdersForShipping(shipping.ShippingUID, fields.Orders);
 
@@ -195,7 +195,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
             helper.ShippingValidations(helper.GetOrdersForShippingByOrders(fields.Orders));
 
-            return CreateOrUpdateShipping(fields.ShippingData);
+            return CreateOrUpdateShipping(fields);
         }
 
 
@@ -259,9 +259,9 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
         }
 
 
-        private ShippingEntry CreateOrUpdateShipping(ShippingDataFields shippingData) {
+        private ShippingEntry CreateOrUpdateShipping(ShippingFields fields) {
 
-            var shippingOrder = new ShippingEntry(shippingData);
+            var shippingOrder = new ShippingEntry(fields);
 
             shippingOrder.Save();
 
