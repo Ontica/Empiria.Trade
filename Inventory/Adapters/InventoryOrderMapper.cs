@@ -15,68 +15,82 @@ using Empiria.Trade.Inventory.Domain;
 namespace Empiria.Trade.Inventory.Adapters {
 
 
-  /// <summary>Methods used to map Inventory order.</summary>
-  static internal class InventoryOrderMapper {
+    /// <summary>Methods used to map Inventory order.</summary>
+    static internal class InventoryOrderMapper {
 
 
-    #region Public methods
+        #region Public methods
 
 
-    static internal FixedList<InventoryOrderDto> MapInventoryList(FixedList<InventoryOrderEntry> list) {
+        static internal FixedList<InventoryOrderDto> MapInventoryList(FixedList<InventoryOrderEntry> list) {
 
-      var mappedList = list.Select((x) => MapInventoryOrder(x));
+            var mappedList = list.Select((x) => MapInventoryOrder(x));
 
-      return new FixedList<InventoryOrderDto>(mappedList);
-    }
-
-
-    static internal InventoryOrderDto MapInventoryOrder(InventoryOrderEntry entry) {
-      var dto = new InventoryOrderDto();
-
-      var agent = Party.Parse(entry.ResponsibleId);
-
-      dto.InventoryOrderUID = entry.InventoryOrderUID;
-      dto.InventoryEntryName = entry.Notes;
-      dto.InventoryOrderType = new NamedEntityDto("", "Orden de conteo de inventario"); //TODO REGISTRSR INVENTORY TYPES EN SIMPLEOBJECTS
-      dto.InventoryUser = new NamedEntityDto(agent.UID, agent.Name);
-      dto.InventoryItems = MapInventoryItems(entry.InventoryOrderItems);
-      return dto;
-    }
+            return new FixedList<InventoryOrderDto>(mappedList);
+        }
 
 
-    #endregion Public methods
+        static internal InventoryOrderDto MapInventoryOrder(InventoryOrderEntry entry) {
+            var dto = new InventoryOrderDto();
 
-    #region Private methods
+            var responsible = Party.Parse(entry.ResponsibleId);
+            var assignedTo = Party.Parse(entry.AssignedToId);
+            var postedBy = Party.Parse(entry.PostedById);
 
-
-    static private InventoryOrderItemDto MapInventoryItem(InventoryOrderItem x) {
-      var dto = new InventoryOrderItemDto();
-
-      dto.InventoryItemUID = x.InventoryItemUID;
-      dto.InventoryEntryUID = x.InventoryEntry.InventoryOrderUID;
-      dto.VendorProductUID = x.VendorProduct.VendorProductUID;
-      dto.WarehouseBinUID = x.WarehouseBin.WarehouseBinUID;
-      dto.Quantity = x.Quantity;
-      dto.Comments = x.Comments;
-      return dto;
-    }
-
-
-    static private FixedList<InventoryOrderItemDto> MapInventoryItems(
-        FixedList<InventoryOrderItem> inventoryOrderItems) {
-
-      if (inventoryOrderItems.Count == 0) {
-        return new FixedList<InventoryOrderItemDto>();
-      }
-
-      var mappedItems = inventoryOrderItems.Select((x) => MapInventoryItem(x));
-
-      return new FixedList<InventoryOrderItemDto>(mappedItems);
-    }
-
-    #endregion Private methods
+            dto.InventoryOrderUID = entry.InventoryOrderUID;
+            dto.InventoryOrderType = new NamedEntityDto("", "Orden de conteo de inventario"); //TODO REGISTRSR INVENTORY TYPES EN TYPES
+            dto.InventoryOrderNo = entry.InventoryOrderNo;
+            dto.ExternalObjectReference = new NamedEntityDto("", "External reference"); //External.Parse(entry.ExternalObjectReferenceId).UID;
+            dto.Responsible = new NamedEntityDto(responsible.UID, responsible.Name);
+            dto.AssignedTo = new NamedEntityDto(assignedTo.UID, assignedTo.Name);
+            dto.Notes = entry.Notes;
+            dto.ClosingTime = entry.ClosingTime;
+            dto.PostingTime = entry.PostingTime;
+            dto.PostedBy = new NamedEntityDto(postedBy.UID, postedBy.Name);
+            dto.InventoryStatus = entry.Status;
+            
+            dto.InventoryItems = MapInventoryItems(entry.InventoryOrderItems);
+            return dto;
+        }
 
 
-  } // class InventoryOrderMapper
+        #endregion Public methods
+
+        #region Private methods
+
+
+        static private InventoryOrderItemDto MapInventoryItem(InventoryOrderItem x) {
+            var dto = new InventoryOrderItemDto();
+
+            dto.InventoryOrderItemUID = x.InventoryOrderItemUID;
+            dto.InventoryOrderUID = x.InventoryOrder.InventoryOrderUID;
+            dto.ExternalObjectItemReferenceUID = ""; //External.Parse(x.ExternalObjectItemReferenceId).UID;
+            dto.ItemNotes = x.ItemNotes;
+            dto.VendorProductUID = x.VendorProduct.VendorProductUID;
+            dto.WarehouseBinUID = x.WarehouseBin.WarehouseBinUID;
+            dto.Quantity = x.Quantity;
+            dto.InputQuantity = x.InputQuantity;
+            dto.OutputQuantity = x.OutputQuantity;
+            dto.ItemStatus = x.Status;
+            return dto;
+        }
+
+
+        static private FixedList<InventoryOrderItemDto> MapInventoryItems(
+            FixedList<InventoryOrderItem> inventoryOrderItems) {
+
+            if (inventoryOrderItems.Count == 0) {
+                return new FixedList<InventoryOrderItemDto>();
+            }
+
+            var mappedItems = inventoryOrderItems.Select((x) => MapInventoryItem(x));
+
+            return new FixedList<InventoryOrderItemDto>(mappedItems);
+        }
+
+        #endregion Private methods
+
+
+    } // class InventoryOrderMapper
 
 } // namespace Empiria.Trade.Inventory.Adapters

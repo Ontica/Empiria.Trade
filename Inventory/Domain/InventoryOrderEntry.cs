@@ -170,7 +170,8 @@ namespace Empiria.Trade.Inventory {
             this.AssignedToId = Party.Parse(fields.AssignedToUID).Id;
             this.Notes = fields.Notes;
             this.InventoryOrderExtData = "";
-            
+            this.Status = fields.Status;
+
             if (fields.Status == InventoryStatus.Abierto) {
                 this.PostedById = Party.Parse(fields.PostedByUID).Id;
                 this.PostingTime = DateTime.Now;
@@ -179,8 +180,6 @@ namespace Empiria.Trade.Inventory {
             if (fields.Status == InventoryStatus.Cerrado) {
                 this.ClosingTime = DateTime.Now;
             }
-            this.Status = fields.Status;
-            
         }
 
 

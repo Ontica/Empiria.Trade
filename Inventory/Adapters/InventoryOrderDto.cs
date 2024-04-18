@@ -20,25 +20,64 @@ namespace Empiria.Trade.Inventory.Adapters {
         }
 
 
-        public string InventoryEntryName {
-            get; set;
-        }
-
-
         public NamedEntityDto InventoryOrderType {
             get; set;
         } = new NamedEntityDto("", "");
 
 
-        public NamedEntityDto InventoryUser {
-            get; set;
+        public string InventoryOrderNo {
+            get;
+            internal set;
+        }
+
+
+        public NamedEntityDto ExternalObjectReference {
+            get;
+            internal set;
         } = new NamedEntityDto("", "");
+
+
+        public NamedEntityDto Responsible {
+            get;
+            internal set;
+        } = new NamedEntityDto("", "");
+
+
+        public NamedEntityDto AssignedTo {
+            get;
+            internal set;
+        } = new NamedEntityDto("", "");
+
+
+        public string Notes {
+            get; set;
+        }
+
+
+        public DateTime ClosingTime {
+            get; set;
+        }
+
+
+        public DateTime PostingTime {
+            get; set;
+        }
+
+
+        public NamedEntityDto PostedBy {
+            get;
+            internal set;
+        } = new NamedEntityDto("", "");
+
+
+        public InventoryStatus InventoryStatus {
+            get; set;
+        }
 
 
         public FixedList<InventoryOrderItemDto> InventoryItems {
             get; set;
         } = new FixedList<InventoryOrderItemDto>();
-
 
     } // class InventoryOrderDto
 
@@ -46,12 +85,22 @@ namespace Empiria.Trade.Inventory.Adapters {
     public class InventoryOrderItemDto {
 
 
-        public string InventoryItemUID {
+        public string InventoryOrderItemUID {
             get; set;
         }
 
 
-        public string InventoryEntryUID {
+        public string InventoryOrderUID {
+            get; set;
+        }
+
+
+        public string ExternalObjectItemReferenceUID {
+            get; set;
+        }
+
+
+        public string ItemNotes {
             get; set;
         }
 
@@ -66,14 +115,26 @@ namespace Empiria.Trade.Inventory.Adapters {
         }
 
 
-        public int Quantity {
+        public decimal Quantity {
             get; set;
         }
 
 
-        public string Comments {
+        public decimal InputQuantity {
             get; set;
         }
+
+
+        public decimal OutputQuantity {
+            get; set;
+        }
+
+
+        public InventoryStatus ItemStatus {
+            get; set;
+        }
+
+
     }
 
 
