@@ -39,7 +39,7 @@ namespace Empiria.Trade.Inventory.UseCases {
 
       var builder = new InventoryOrderBuilder();
       var inventoryOrder = builder.CreateInventoryOrder(fields);
-      return GetInventoryOrderByUID(inventoryOrder.InventoryEntryUID);
+      return GetInventoryOrderByUID(inventoryOrder.InventoryOrderUID);
     }
 
 

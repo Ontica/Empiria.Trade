@@ -42,40 +42,88 @@ namespace Empiria.Trade.Inventory {
 
         #region Properties
 
-        [DataField("InventoryEntryId")]
-        internal int InventoryEntryId {
+        [DataField("InventoryOrderId")]
+        internal int InventoryOrderId {
             get; set;
         }
 
 
-        [DataField("InventoryEntryUID")]
-        internal string InventoryEntryUID {
+        [DataField("InventoryOrderUID")]
+        internal string InventoryOrderUID {
             get; set;
         }
 
 
-        [DataField("InventoryTypeId")]
-        internal int InventoryType {
+        [DataField("InventoryOrderTypeId")]
+        internal int InventoryOrderTypeId {
             get; set;
         }
 
 
-        [DataField("InventoryAgentId")]
-        internal int InventoryAgentId {
+        [DataField("InventoryOrderNo")]
+        internal string InventoryOrderNo {
             get; set;
         }
 
 
-        [DataField("InventoryEntryName")]
-        internal string InventoryEntryName {
+        [DataField("ExternalObjectReferenceId")]
+        internal int ExternalObjectReferenceId {
             get; set;
         }
 
 
-        [DataField("InventoryEntryDate")]
-        internal DateTime InventoryEntryDate {
+        [DataField("ResponsibleId")]
+        internal int ResponsibleId {
             get; set;
         }
+
+
+        [DataField("AssignedToId")]
+        internal int AssignedToId {
+            get; set;
+        }
+
+
+        [DataField("InventoryOrderNotes")]
+        internal string Notes {
+            get; set;
+        }
+
+
+        [DataField("InventoryOrderExtData")]
+        internal string InventoryOrderExtData {
+            get; set;
+        }
+
+
+        [DataField("InventoryOrderKeywords")]
+        internal string InventoryOrderKeywords {
+            get; set;
+        }
+
+
+        [DataField("ClosingTime")]
+        internal DateTime ClosingTime {
+            get; set;
+        }
+
+
+        [DataField("PostingTime")]
+        internal DateTime PostingTime {
+            get; set;
+        }
+
+
+        [DataField("PostedById")]
+        internal int PostedById {
+            get; set;
+        }
+
+
+        [DataField("InventoryOrderStatus", Default = InventoryStatus.Abierto)]
+        internal InventoryStatus Status {
+            get; set;
+        } = InventoryStatus.Abierto;
 
 
         internal FixedList<InventoryOrderItem> InventoryOrderItems {
@@ -87,7 +135,7 @@ namespace Empiria.Trade.Inventory {
             get {
                 return EmpiriaString.BuildKeywords(
 
-                  InventoryEntryUID, InventoryEntryName
+                  InventoryOrderUID, InventoryOrderNo, Notes
                 );
             }
         }
@@ -99,10 +147,10 @@ namespace Empiria.Trade.Inventory {
 
         protected override void OnSave() {
 
-            if (this.InventoryEntryId == 0) {
+            if (this.InventoryOrderId == 0) {
 
-                this.InventoryEntryId = this.Id;
-                this.InventoryEntryUID = this.UID;
+                this.InventoryOrderId = this.Id;
+                this.InventoryOrderUID = this.UID;
             }
             InventoryOrderData.WriteInventoryEntry(this);
         }
@@ -110,15 +158,29 @@ namespace Empiria.Trade.Inventory {
 
         private void MapToInventoryOrderEntry(InventoryOrderFields fields) {
 
-            if (fields.InventoryEntryUID != string.Empty) {
-                this.InventoryEntryId = Parse(fields.InventoryEntryUID).InventoryEntryId;
-                this.InventoryEntryUID = fields.InventoryEntryUID;
+            if (fields.InventoryOrderUID != string.Empty) {
+                this.InventoryOrderId = Parse(fields.InventoryOrderUID).InventoryOrderId;
+                this.InventoryOrderUID = fields.InventoryOrderUID;
             }
 
-            this.InventoryAgentId = Party.Parse(fields.InventoryUserUID).Id;
-            this.InventoryType = -1; //TODO REGISTRAR TIPOS DE ORDEN DE INVENTARIOS
-            this.InventoryEntryName = fields.InventoryEntryName;
-            this.InventoryEntryDate = DateTime.Now;
+            this.InventoryOrderTypeId = -1; //TODO REGISTRAR TIPOS EN TABLA TYPES
+            this.InventoryOrderNo = $"OCI{this.InventoryOrderId.ToString().PadLeft(9,'0')}";
+            this.ExternalObjectReferenceId = -1;
+            this.ResponsibleId = Party.Parse(fields.ResponsibleUID).Id;
+            this.AssignedToId = Party.Parse(fields.AssignedToUID).Id;
+            this.Notes = fields.Notes;
+            this.InventoryOrderExtData = "";
+            
+            if (fields.Status == InventoryStatus.Abierto) {
+                this.PostedById = Party.Parse(fields.PostedByUID).Id;
+                this.PostingTime = DateTime.Now;
+                this.ClosingTime = DateTime.Now;
+            }
+            if (fields.Status == InventoryStatus.Cerrado) {
+                this.ClosingTime = DateTime.Now;
+            }
+            this.Status = fields.Status;
+            
         }
 
 

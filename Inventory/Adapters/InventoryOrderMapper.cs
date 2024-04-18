@@ -33,11 +33,11 @@ namespace Empiria.Trade.Inventory.Adapters {
     static internal InventoryOrderDto MapInventoryOrder(InventoryOrderEntry entry) {
       var dto = new InventoryOrderDto();
 
-      var agent = Party.Parse(entry.InventoryAgentId);
+      var agent = Party.Parse(entry.ResponsibleId);
 
-      dto.InventoryEntryUID = entry.InventoryEntryUID;
-      dto.InventoryEntryName = entry.InventoryEntryName;
-      dto.InventoryType = new NamedEntityDto("", "Orden de conteo de inventario"); //TODO REGISTRSR INVENTORY TYPES EN SIMPLEOBJECTS
+      dto.InventoryOrderUID = entry.InventoryOrderUID;
+      dto.InventoryEntryName = entry.Notes;
+      dto.InventoryOrderType = new NamedEntityDto("", "Orden de conteo de inventario"); //TODO REGISTRSR INVENTORY TYPES EN SIMPLEOBJECTS
       dto.InventoryUser = new NamedEntityDto(agent.UID, agent.Name);
       dto.InventoryItems = MapInventoryItems(entry.InventoryOrderItems);
       return dto;
@@ -53,7 +53,7 @@ namespace Empiria.Trade.Inventory.Adapters {
       var dto = new InventoryOrderItemDto();
 
       dto.InventoryItemUID = x.InventoryItemUID;
-      dto.InventoryEntryUID = x.InventoryEntry.InventoryEntryUID;
+      dto.InventoryEntryUID = x.InventoryEntry.InventoryOrderUID;
       dto.VendorProductUID = x.VendorProduct.VendorProductUID;
       dto.WarehouseBinUID = x.WarehouseBin.WarehouseBinUID;
       dto.Quantity = x.Quantity;

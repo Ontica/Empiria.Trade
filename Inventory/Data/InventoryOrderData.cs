@@ -94,13 +94,16 @@ namespace Empiria.Trade.Inventory.Data {
     }
 
 
-    internal static void WriteInventoryEntry(InventoryOrderEntry inventoryOrder) {
+    internal static void WriteInventoryEntry(InventoryOrderEntry entry) {
 
       var op = DataOperation.Parse("writeInventoryCountOrder",
-          inventoryOrder.InventoryEntryId, inventoryOrder.InventoryEntryUID,
-          inventoryOrder.InventoryAgentId, inventoryOrder.InventoryType,
-          inventoryOrder.InventoryEntryName, inventoryOrder.Keywords,
-          inventoryOrder.InventoryEntryDate);
+          entry.InventoryOrderId, entry.InventoryOrderUID,
+          entry.InventoryOrderTypeId, entry.InventoryOrderNo,
+          entry.ExternalObjectReferenceId, entry.ResponsibleId,
+          entry.AssignedToId, entry.Notes,
+          entry.InventoryOrderExtData, entry.Keywords,
+          entry.ClosingTime, entry.PostingTime,
+          entry.PostedById, entry.Status);
 
       DataWriter.Execute(op);
     }
@@ -110,7 +113,7 @@ namespace Empiria.Trade.Inventory.Data {
 
       var op = DataOperation.Parse("writeInventoryCountOrderItem",
           item.InventoryItemId, item.InventoryItemUID,
-          item.InventoryEntry.InventoryEntryId,
+          item.InventoryEntry.InventoryOrderId,
           item.WarehouseBin.Id, item.VendorProduct.Id,
           item.Quantity, item.Comments);
 

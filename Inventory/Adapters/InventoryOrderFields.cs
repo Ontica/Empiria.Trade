@@ -11,34 +11,68 @@ using System;
 
 namespace Empiria.Trade.Inventory.Adapters {
 
+
+    public enum InventoryStatus {
+
+        Todos = 'T',
+
+        Abierto = 'A',
+
+        EnProceso = 'E',
+
+        Cerrado = 'C'
+
+    }
+
+
     /// <summary>DTO used to manage inventory order fields.</summary>
     public class InventoryOrderFields {
 
-        public string InventoryEntryUID {
+        public string InventoryOrderUID {
             get; set;
         } = string.Empty;
 
 
-        public string InventoryTypeUID {
+        public string InventoryOrderTypeUID {
             get; set;
         } = string.Empty;
 
 
-        public string InventoryUserUID {
+        public string ExternalObjectReferenceUID {
             get; set;
         } = string.Empty;
 
 
-        public string InventoryEntryName {
+        public string ResponsibleUID {
             get; set;
         } = string.Empty;
+
+
+        public string AssignedToUID {
+            get; set;
+        } = string.Empty;
+
+
+        public string Notes {
+            get; set;
+        } = string.Empty;
+
+
+        public int PostedByUID {
+            get;
+            internal set;
+        }
+
+
+        public InventoryStatus Status {
+            get; set;
+        } = InventoryStatus.Abierto;
 
 
         public FixedList<InventoryOrderItemFields> InventoryItemFields {
             get; set;
         } = new FixedList<InventoryOrderItemFields>();
-
-
+        
     } // class InventoryOrderFields
 
 

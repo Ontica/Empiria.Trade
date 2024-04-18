@@ -116,10 +116,10 @@ namespace Empiria.Trade.Tests.Inventory {
     private InventoryOrderFields GetInventoryOrderFields() {
 
       var fields = new InventoryOrderFields() {
-        InventoryEntryUID = "f2d2a10d-abb2-467d-9c4f-bdd2bc15d5c6",
-        InventoryUserUID = "a517e788-8ddf-4772-b6d2-adc3907e3905",
-        InventoryTypeUID = "",
-        InventoryEntryName = "CONTEO DE INVENTARIO X001",
+        InventoryOrderUID = "f2d2a10d-abb2-467d-9c4f-bdd2bc15d5c6",
+        ResponsibleUID = "a517e788-8ddf-4772-b6d2-adc3907e3905",
+        InventoryOrderTypeUID = "",
+        Notes = "CONTEO DE INVENTARIO X001",
         InventoryItemFields = GetItemFields()
       };
       return fields;

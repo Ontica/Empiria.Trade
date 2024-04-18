@@ -76,7 +76,7 @@ namespace Empiria.Trade.Inventory.Domain {
     private void GetInventoryItemsForOrder(InventoryOrderEntry inventoryOrder) {
 
       FixedList<InventoryOrderItem> items = 
-        InventoryOrderData.GetInventoryItemsByOrderUID(inventoryOrder.InventoryEntryUID);
+        InventoryOrderData.GetInventoryItemsByOrderUID(inventoryOrder.InventoryOrderUID);
 
       if (items.Count>0) {
         inventoryOrder.InventoryOrderItems = items;

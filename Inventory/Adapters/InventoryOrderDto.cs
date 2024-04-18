@@ -15,7 +15,7 @@ namespace Empiria.Trade.Inventory.Adapters {
     public class InventoryOrderDto {
 
 
-        public string InventoryEntryUID {
+        public string InventoryOrderUID {
             get; set;
         }
 
@@ -25,7 +25,7 @@ namespace Empiria.Trade.Inventory.Adapters {
         }
 
 
-        public NamedEntityDto InventoryType {
+        public NamedEntityDto InventoryOrderType {
             get; set;
         } = new NamedEntityDto("", "");
 
