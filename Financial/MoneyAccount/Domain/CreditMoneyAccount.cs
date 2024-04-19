@@ -12,10 +12,11 @@ using Empiria.StateEnums;
 using Empiria.Trade.Financial.Adapters;
 using Empiria.Trade.Financial.Data;
 using Empiria.Trade.MoneyAccounts;
+using Empiria.Trade.Orders;
 
 namespace Empiria.Trade.Financial {
   /// <summary>Represents credit money account. </summary>
-  public class CreditMoneyAccount : Empiria.Trade.MoneyAccounts.MoneyAccount {
+  public class CreditMoneyAccount : BaseObject {
     #region Constructors and parsers
 
     public CreditMoneyAccount() {
@@ -26,16 +27,86 @@ namespace Empiria.Trade.Financial {
       Update(fields);
     }
 
+    static public  CreditMoneyAccount Empty => BaseObject.ParseEmpty<CreditMoneyAccount>();
 
-    static public new CreditMoneyAccount Parse(int id) {
+    public static CreditMoneyAccount Parse(int id) {
       return BaseObject.ParseId<CreditMoneyAccount>(id);
     }
 
-    static public new CreditMoneyAccount Parse(string uid) {
+    static public CreditMoneyAccount Parse(string uid) {
       return BaseObject.ParseKey<CreditMoneyAccount>(uid);
     }
 
+    static public CreditMoneyAccount ParseByOwnder(int ownerId) {
+      return MoneyAccountData.GetMoneyAccount(ownerId);
+    }
+
     #endregion Constructors and parsers
+
+    #region Public properties
+
+    [DataField("MoneyAccountTypeId")]
+    public int TypeId {
+      get; protected set;
+    } = 1;
+
+    [DataField("MoneyAccountDescription")]
+    public string Description {
+      get; protected set;
+    }
+
+    [DataField("OwnerId")]
+    public int OwnerId {
+      get; protected set;
+    }
+
+    [DataField("Notes")]
+    public string Notes {
+      get; protected set;
+    }
+
+    [DataField("ExtData", Default = "")]
+    public string ExtData {
+      get; protected set;
+    } = string.Empty;
+
+    [DataField("PostedTime")]
+    public DateTime PostedTime {
+      get; protected set;
+    }
+
+    [DataField("PostedById")]
+    public int PostedById {
+      get; protected set;
+    }
+
+    [DataField("FromDate")]
+    public DateTime FromDate {
+      get; protected set;
+    } = new DateTime(1980, 01, 01);
+
+    [DataField("ToDate")]
+    public DateTime ToDate {
+      get; protected set;
+    } = new DateTime(2078, 12, 31);
+
+
+    [DataField("CreditLimit")]
+    public decimal CreditLimit {
+      get; protected set;
+    } = 0m;
+
+    [DataField("DayToPay")]
+    public int DaysToPay {
+      get; protected set;
+    }
+
+    [DataField("Status", Default = EntityStatus.Active)]
+    public EntityStatus Status {
+      get; protected set;
+    } = EntityStatus.Active;
+
+    #endregion Public properties
 
 
     #region Public methods
@@ -43,7 +114,6 @@ namespace Empiria.Trade.Financial {
     protected override void OnSave() {
       MoneyAccountData.Write(this);
     }
-
 
     internal void Update(MoneyAccountFields fields) {
       this.Description = fields.Description;
@@ -54,8 +124,15 @@ namespace Empiria.Trade.Financial {
       this.FromDate = DateTime.Now;
       this.CreditLimit = fields.CreditLimit;
       this.DaysToPay = fields.DaysToPay;
+    }
 
 
+    public decimal GetDebit() {
+      return MoneyAccountTransactionData.GetMoneyAccountTotalDebt(this.Id);
+    }
+
+    public FixedList<MoneyAccountTransaction> GetTransactions() {
+      return MoneyAccountTransaction.GetTransactions(this.Id);
     }
 
     public string MigrateCreditLineToMoneyAccount() {
@@ -85,4 +162,5 @@ namespace Empiria.Trade.Financial {
     #endregion Public methods
 
   } // class MoneyAccountDebit
+
 } // namespace Empiria.Trade.Financial.MoneyAccount

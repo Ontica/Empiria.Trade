@@ -10,6 +10,7 @@
 
 using System;
 using Empiria.Data;
+using Empiria.Trade.Orders;
 
 
 namespace Empiria.Trade.Financial.Data {
@@ -19,12 +20,44 @@ namespace Empiria.Trade.Financial.Data {
 
     static internal void Write(MoneyAccountTransaction o) {
 
-      var op = DataOperation.Parse("writeMoneyAccountTransactions", o.Id, o.UID, o.MoneyAccount.Id, o.Description, o.Amount,
+      var op = DataOperation.Parse("writeMoneyAccountTransactions", o.Id, o.UID, o.MoneyAccount.Id, o.TransactionTypeId, o.ReferenceTypeId, o.ReferenceId,
+                                                                    o.Description, o.Credit, o.Debit,
                                                                     o.PayableOrderId,o.TransactionTime, o.Notes, o.ExtData, o.PostedTime,
                                                                     o.PostedById, (char) o.Status);
 
       DataWriter.Execute(op);
     }
+
+    static internal decimal GetMoneyAccountTotalDebt(int moneyAccountId) {
+     
+
+      var sql = "SELECT SUM(Credit) AS Debit FROM TRDMoneyAccountTransactions " +
+               $"WHERE MoneyAccountId = {moneyAccountId}";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      var debt = Empiria.Data.DataReader.GetScalar<decimal>(dataOperation);
+
+      return debt;
+    }
+
+    internal static FixedList<MoneyAccountTransaction> GetTransactions(int moneyAccountId) {
+      string sql = "SELECT * FROM  TRDMoneyAccountTransactions " +
+                  $" WHERE MoneyAccountId  = {moneyAccountId} AND MoneyAccountTransactionStatus <> 'X'";
+
+      var op = DataOperation.Parse(sql);
+
+      return DataReader.GetFixedList<MoneyAccountTransaction>(op);
+    }
+
+    internal static MoneyAccountTransaction GetMoneyAccountTransactionByReference(int referenceId) {
+      string sql = $"SELECT * FROM TRDMoneyAccountTransactions WHERE ReferenceId =  {referenceId} ";                  
+
+      var op = DataOperation.Parse(sql);
+
+      return DataReader.GetObject<MoneyAccountTransaction>(op);
+    }
+
 
     #endregion Public methods
 

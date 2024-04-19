@@ -44,7 +44,7 @@ namespace Empiria.Trade.Financial.Data {
       DataWriter.Execute(op);
     }
 
-
+    
   } // class Empiria.Trade.Sales.Data
 
 } //  namespace Empiria.Trade.Sales.Data 

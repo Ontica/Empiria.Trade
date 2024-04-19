@@ -36,6 +36,11 @@ namespace Empiria.Trade.MoneyAccounts {
 
     #region Public properties
 
+    [DataField("MoneyAccountTypeId")]
+    public int TypeId {
+      get; protected set;
+    } = 1;
+
     [DataField("MoneyAccountDescription")]
     public string Description {
       get; protected set;

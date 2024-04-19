@@ -37,23 +37,26 @@ namespace Empiria.Trade.Tests.Sales {
     public void ShouldGetOrderTest() {
 
       var fields = new SearchOrderFields {
-        QueryType = QueryType.SalesPacking,
+        QueryType = QueryType.Sales,
         Keywords = "",
         FromDate = Convert.ToDateTime("2023/01/10"),
         ToDate = Convert.ToDateTime("2024/12/28"),
-        Status = OrderStatus.InProgress,
+        Status = OrderStatus.Authorized,
         // ShippingMethod = ShippingMethods.Paqueteria
       };
 
+      var usecases = SalesOrderUseCases.UseCaseInteractor();
 
-      var salesOrdersHelper = new SalesOrderHelper();
-      
-      var salesOrders = salesOrdersHelper.GetOrdersToPacking(fields);
+        SearchSalesOrderDto salesOrders = usecases.GetOrders(fields);
+       
+      //var salesOrdersHelper = new SalesOrderHelper();
 
-      var x = SearchSealesOrderMapper.MapBaseSalesOrderPackingList(salesOrders);
+      //var salesOrders = salesOrdersHelper.GetOrders(fields);
+
+      //var x = SearchSealesOrderMapper.MapBaseSalesOrderPackingList(salesOrders);
 
 
-      Assert.NotNull(x);
+      Assert.NotNull(salesOrders);
     }
 
 

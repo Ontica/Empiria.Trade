@@ -132,30 +132,30 @@ namespace Empiria.Trade.Tests.Inventory {
       var items = new List<InventoryOrderItemFields>();
 
       var item1 = new InventoryOrderItemFields() {
-        InventoryItemUID = "f79c353f-b021-4e73-83ea-fcff7bf5da87",
-        InventoryEntryUID = "f2d2a10d-abb2-467d-9c4f-bdd2bc15d5c6",
+      //  InventoryItemUID = "f79c353f-b021-4e73-83ea-fcff7bf5da87",
+      //  InventoryEntryUID = "f2d2a10d-abb2-467d-9c4f-bdd2bc15d5c6",
         WarehouseBinUID = "f06a2b16-e744-412e-bd94-82821a7b5cd9",
         VendorProductUID = "e0655909-8614-40c0-b63e-fe166a377c86",
         Quantity = 10,
-        Comments = "COMENTARIO X-001",
+      //  Comments = "COMENTARIO X-001",
       };
       items.Add(item1);
       var item2 = new InventoryOrderItemFields() {
-        InventoryItemUID = "0fbcc7e9-9989-4ec3-813a-38acf2b6d4cd",
-        InventoryEntryUID = "f2d2a10d-abb2-467d-9c4f-bdd2bc15d5c6",
+        //InventoryItemUID = "0fbcc7e9-9989-4ec3-813a-38acf2b6d4cd",
+        //InventoryEntryUID = "f2d2a10d-abb2-467d-9c4f-bdd2bc15d5c6",
         WarehouseBinUID = "48605b90-52e1-43d0-aeab-7125805863aa",
         VendorProductUID = "1d47e4e5-ff97-4197-8bd1-b49df2780c32",
         Quantity = 20,
-        Comments = "COMENTARIO X-002",
+        //Comments = "COMENTARIO X-002",
       };
       items.Add(item2);
       var item3 = new InventoryOrderItemFields() {
-        InventoryItemUID = "",
-        InventoryEntryUID = "f2d2a10d-abb2-467d-9c4f-bdd2bc15d5c6",
+        //InventoryItemUID = "",
+        //InventoryEntryUID = "f2d2a10d-abb2-467d-9c4f-bdd2bc15d5c6",
         WarehouseBinUID = "48605b90-52e1-43d0-aeab-7125805863aa",
         VendorProductUID = "1d47e4e5-ff97-4197-8bd1-b49df2780c32",
         Quantity = 30,
-        Comments = "COMENTARIO X-003",
+        //Comments = "COMENTARIO X-003",
       };
       items.Add(item3);
       return items.ToFixedList();

@@ -11,7 +11,7 @@ using System;
 using Empiria.StateEnums;
 using Empiria.Trade.Financial.Adapters;
 using Empiria.Trade.Financial.Data;
-
+using Empiria.Trade.MoneyAccounts;
 
 namespace Empiria.Trade.Financial {
   /// <summary>Represents a MoneyAccount Transaction.</summary>
@@ -37,12 +37,32 @@ namespace Empiria.Trade.Financial {
       return BaseObject.ParseKey<MoneyAccountTransaction>(uid);
     }
 
+    static public MoneyAccountTransaction ParseByReferenceId(int referenceId) {
+      return MoneyAccountTransactionData.GetMoneyAccountTransactionByReference(referenceId);
+    }
+
+
     #endregion Constructors and parsers
 
     #region Public properties
 
     [DataField("MoneyAccountId")]
     public CreditMoneyAccount MoneyAccount {
+      get; private set;
+    } 
+
+    [DataField("MoneyAccountTransactionTypeId")]
+    public int TransactionTypeId {
+      get; private set;
+    } = 1;
+
+    [DataField("ReferenceTypeId")]
+    public int ReferenceTypeId {
+      get; private set;
+    } = 1;
+
+    [DataField("ReferenceId")]
+    public int ReferenceId {
       get; private set;
     }
 
@@ -51,8 +71,13 @@ namespace Empiria.Trade.Financial {
       get; private set;
     }
 
-    [DataField("MoneyAccountTransactionAmount")]
-    public decimal Amount {
+    [DataField("Credit")]
+    public decimal Credit {
+      get; private set;
+    } = 0m;
+
+    [DataField("Debit")]
+    public decimal Debit {
       get; private set;
     } = 0m;
 
@@ -102,12 +127,41 @@ namespace Empiria.Trade.Financial {
     internal void Update(MoneyAccountTransactionFields fields) {
       this.MoneyAccount = CreditMoneyAccount.Parse(fields.MoneyAccountUID);
       this.Description = fields.Description;
-      this.Amount = fields.TransactionAmount;
+      this.Credit = fields.TransactionAmount;
+      this.ReferenceId = fields.PayableOrderId;
       this.PayableOrderId = fields.PayableOrderId;
       this.TransactionTime = fields.TransactionTime;
       this.Notes = fields.Notes;
       this.PostedTime = DateTime.Now;
       this.PostedById = ExecutionServer.CurrentUserId;
+    }
+
+    
+    static public FixedList<MoneyAccountTransaction> GetTransactions(int moneyAccountId) {
+      return MoneyAccountTransactionData.GetTransactions(moneyAccountId);
+    }
+
+
+    public void Cancel(string notes) {
+      this.Status = EntityStatus.Deleted;
+      this.Notes = notes;
+      this.Save();
+    }
+
+    public void AddCreditTransactions(CreditMoneyAccount moneyAccount, CreditTransactionFields fields) {
+      MoneyAccountTransaction moneyTransaction = new MoneyAccountTransaction();
+      moneyTransaction.MoneyAccount = moneyAccount;
+      moneyTransaction.Description = "Credito " + fields.ExtData;
+      moneyTransaction.TransactionTime = fields.TransactionTime;
+      moneyTransaction.Credit = fields.CreditAmount;
+      moneyTransaction.ReferenceId = fields.PayableOrderId;
+      moneyTransaction.PayableOrderId = fields.PayableOrderId;
+      moneyTransaction.Notes = fields.Notes;
+      moneyTransaction.ExtData = fields.ExtData;
+      moneyTransaction.PostedTime = DateTime.Now;
+      moneyTransaction.PostedById = ExecutionServer.CurrentUserId;
+     
+      moneyTransaction.Save();
     }
 
     public string MigarteCreditTransactionToMoneyAccountTransactions() {
@@ -132,7 +186,7 @@ namespace Empiria.Trade.Financial {
         moneyTransaction.MoneyAccount = moneyAccount;
         moneyTransaction.Description = "Credito " + transaction.ExtData;
         moneyTransaction.TransactionTime = transaction.TransactionTime;
-        moneyTransaction.Amount = transaction.CreditAmount;
+        moneyTransaction.Credit = transaction.CreditAmount;
         moneyTransaction.PayableOrderId = transaction.PayableOrderId;
         moneyTransaction.Notes = "";
         moneyTransaction.ExtData = transaction.ExtData;
@@ -141,7 +195,10 @@ namespace Empiria.Trade.Financial {
 
         moneyTransaction.Save();
       }
+
     }
+
+    
     #endregion Private methods
 
   } // class MoneyAccountTransaction

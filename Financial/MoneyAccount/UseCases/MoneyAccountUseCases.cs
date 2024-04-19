@@ -41,15 +41,49 @@ namespace Empiria.Trade.Financial.UseCases {
     // return CreditTransactionMapper.Map(creditTransaction);
     }
 
-    public MoneyAccountTransaction AddTransaction(MoneyAccountTransactionFields fields) {
+    public MoneyAccountTransactionDto AddTransaction(MoneyAccountTransactionFields fields) {
       Assertion.Require(fields, "fields");
 
       var moneyAccountTransaction = new MoneyAccountTransaction(fields);
       moneyAccountTransaction.Save();
 
-      return moneyAccountTransaction;
-      // return CreditTransactionMapper.Map(creditTransaction);
+      
+      return MoneyAccountTransactionMapper.Map(moneyAccountTransaction);
     }
+
+ 
+
+    public MoneyAccountTransactionDto Cancel(int referenceId, string notes) {
+      Assertion.Require(referenceId, "moneyAccountTransactionId");
+
+      var transaction = MoneyAccountTransaction.ParseByReferenceId(referenceId);
+      transaction.Cancel(notes);
+
+      return MoneyAccountTransactionMapper.Map(transaction);
+    }
+
+    public decimal GetMoneyAccountTotalDebt(int ownerId) {
+      var moneyAccount = CreditMoneyAccount.ParseByOwnder(ownerId);
+
+      return moneyAccount.GetDebit();
+    }
+
+    public FixedList<MoneyAccountTransactionDto> GetCreditTransactions(int ownerId) {
+
+      var moneyAccount = CreditMoneyAccount.ParseByOwnder(ownerId);
+
+      var moneyAccountTransactions = moneyAccount.GetTransactions();
+
+      return MoneyAccountTransactionMapper.MapMoneyAccountTransactions(moneyAccountTransactions);
+
+    }
+
+    public decimal GetMoneyAccountCreditLimit(int ownerId) {
+      var moneyAccount = CreditMoneyAccount.ParseByOwnder(ownerId);
+
+      return moneyAccount.CreditLimit;
+    }
+
 
     #endregion Public properties
 

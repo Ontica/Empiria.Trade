@@ -21,7 +21,7 @@ namespace Empiria.Trade.Financial.Data {
 
     static internal FixedList<CreditLine> GetCreditLines() {
       string sql = "SELECT * FROM TRDCreditLines " +
-                  $"WHERE CustomerId = 1468 AND CreditLineStatus <>  'X'";
+                  $"WHERE customerId > 1468 and CreditLineStatus <>  'X'";
 
       var op = DataOperation.Parse(sql);
 

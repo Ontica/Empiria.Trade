@@ -26,9 +26,17 @@ namespace Empiria.Trade.Financial.Data {
       return DataReader.GetFixedList<CreditMoneyAccount>(op);
     }
 
+    static internal CreditMoneyAccount GetMoneyAccount(int ownerId) {
+      string sql = $"SELECT * FROM TRDMoneyAccounts WHERE  MoneyAccountId = {ownerId}";
+
+      var op = DataOperation.Parse(sql);
+
+      return DataReader.GetObject<CreditMoneyAccount>(op);
+    }
+
     static internal void Write(CreditMoneyAccount o) {
 
-      var op = DataOperation.Parse("writeMoneyAccounts", o.Id, o.UID, o.Description, o.OwnerId, o.Notes, o.ExtData, o.PostedTime,
+      var op = DataOperation.Parse("writeMoneyAccounts", o.Id, o.UID,o.TypeId, o.Description, o.OwnerId, o.Notes, o.ExtData, o.PostedTime,
                                                          o.PostedById, o.FromDate, o.ToDate, o.CreditLimit, o.DaysToPay,
                                                          (char) o.Status);
 

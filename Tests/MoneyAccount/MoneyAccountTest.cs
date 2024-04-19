@@ -55,23 +55,37 @@ namespace Empiria.Trade.Tests.MoneyAccount {
       Assert.NotNull(moneyAccount);
     }
 
-    //[Fact]
-    //public void ShouldMigrateCreditLinesToMoneyAccount() {
+    [Fact]
+    public void ShouldMigrateCreditLinesToMoneyAccount() {
 
 
-    //  var moneyAccount = new MoneyAccounts();
-    //  var x = moneyAccount.MigrateCreditLineToMoneyAccount();
-    //  Assert.NotNull(x);
-    //}
+      var moneyAccount = new CreditMoneyAccount();
+      var x = moneyAccount.MigrateCreditLineToMoneyAccount();
+      Assert.NotNull(x);
+    }
 
-    //[Fact]
-    //public void ShouldMigrateCreditTransactionsToMoneyAccountTransasctions() {
-    //  var moneyAccountTransaction = new MoneyAccountTransaction();
+    [Fact]
+    public void ShouldMigrateCreditTransactionsToMoneyAccountTransasctions() {
+      var moneyAccountTransaction = new MoneyAccountTransaction();
 
-    //  var x = moneyAccountTransaction.MigarteCreditTransactionToMoneyAccountTransactions();
+      var x = moneyAccountTransaction.MigarteCreditTransactionToMoneyAccountTransactions();
 
-    //  Assert.NotNull(x);
-    //}
+      Assert.NotNull(x);
+    }
+
+    [Fact]
+    public void ShouldGetTotalDebtByMoneyAccountOwnerId() {
+      var moneyAccount = CreditMoneyAccount.ParseByOwnder(1023);
+
+      var x = MoneyAccountTransaction.ParseByReferenceId(1000);
+      x.Cancel("Prueba");
+
+     
+
+      Assert.NotNull(x);
+    }
+
+    
 
   } // class MoneyAccountTest
 
