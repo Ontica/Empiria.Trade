@@ -58,10 +58,9 @@ namespace Empiria.Trade.Inventory.Adapters {
         } = string.Empty;
 
 
-        public int PostedByUID {
-            get;
-            internal set;
-        }
+        public string PostedByUID {
+            get; set;
+        } = string.Empty;
 
 
         public InventoryStatus Status {
@@ -134,7 +133,7 @@ namespace Empiria.Trade.Inventory.Adapters {
         }
 
 
-        public int PostedByUID {
+        public string PostedByUID {
             get; set;
         }
 
