@@ -18,9 +18,9 @@ namespace Empiria.Trade.Core.Catalogues
     internal class CataloguesData {
 
 
-    internal FixedList<SimpleObjectData> GetParcelSupplierList() {
+    internal FixedList<SimpleObjectData> GetSimpleObjectDataList(int objectTypeId) {
 
-      string sql = "SELECT * FROM SimpleObjects WHERE ObjectStatus = 'A' AND ObjectTypeId = 1063";
+      string sql = $"SELECT * FROM SimpleObjects WHERE ObjectStatus = 'A' AND ObjectTypeId = {objectTypeId}";
 
       var dataOperation = DataOperation.Parse(sql);
 
