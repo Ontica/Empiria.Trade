@@ -1,44 +1,45 @@
 ﻿/* Empiria Trade *********************************************************************************************
 *                                                                                                            *
 *  Module   : Money Account Management                   Component : Domain Layer                            *
-*  Assembly : Empiria.Trade.dll                Pattern   : Partitioned Type / Information Holder   *
+*  Assembly : Empiria.Trade.dll                          Pattern   : Partitioned Type / Information Holder   *
 *  Type     : credit Money Account                       License   : Please read LICENSE.txt file            *
 *                                                                                                            *
 *  Summary  : Represents credit money account.                                                               *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+
 using Empiria.StateEnums;
 using Empiria.Trade.Core;
+using Empiria.Trade.Core.Common;
 using Empiria.Trade.Financial.Adapters;
 using Empiria.Trade.Financial.Data;
-using Empiria.Trade.MoneyAccounts;
-using Empiria.Trade.Orders;
 
 namespace Empiria.Trade.Financial {
-  /// <summary>Represents credit money account. </summary>
-  public class CreditMoneyAccount : BaseObject {
+  ///Represents credit money account.
+  public class MoneyAccount : BaseObject {
+
     #region Constructors and parsers
 
-    public CreditMoneyAccount() {
+    public MoneyAccount() {
       //no-op
     }
 
-    public CreditMoneyAccount(MoneyAccountFields fields) {
+    public MoneyAccount(MoneyAccountFields fields) {
       Update(fields);
     }
 
-    static public  CreditMoneyAccount Empty => BaseObject.ParseEmpty<CreditMoneyAccount>();
+    static public MoneyAccount Empty => BaseObject.ParseEmpty<MoneyAccount>();
 
-    public static CreditMoneyAccount Parse(int id) {
-      return BaseObject.ParseId<CreditMoneyAccount>(id);
+    public static MoneyAccount Parse(int id) {
+      return BaseObject.ParseId<MoneyAccount>(id);
     }
 
-    static public CreditMoneyAccount Parse(string uid) {
-      return BaseObject.ParseKey<CreditMoneyAccount>(uid);
+    static public MoneyAccount Parse(string uid) {
+      return BaseObject.ParseKey<MoneyAccount>(uid);
     }
 
-    static public CreditMoneyAccount ParseByOwnder(int ownerId) {
+    static public MoneyAccount ParseByOwner(int ownerId) {
       return MoneyAccountData.GetMoneyAccount(ownerId);
     }
 
@@ -47,9 +48,9 @@ namespace Empiria.Trade.Financial {
     #region Public properties
 
     [DataField("MoneyAccountTypeId")]
-    public int TypeId {
+    public MoneyAccountType MoneyAccountType {
       get; protected set;
-    } = 1;
+    } 
 
     [DataField("MoneyAccountDescription")]
     public string Description {
@@ -62,7 +63,7 @@ namespace Empiria.Trade.Financial {
     }
 
     [DataField("OwnerId")]
-    public int OwnerId {
+    public Party Owner {
       get; protected set;
     }
 
@@ -71,9 +72,11 @@ namespace Empiria.Trade.Financial {
       get; protected set;
     }
 
-    [DataField("MoneyAccountKeywords")]
+    
     public string Keywords {
-      get; protected set;
+      get {
+        return EmpiriaString.BuildKeywords(Number, Owner.Name);
+      }
     }
 
     [DataField("ExtData", Default = "")]
@@ -119,7 +122,6 @@ namespace Empiria.Trade.Financial {
 
     #endregion Public properties
 
-
     #region Public methods
 
     protected override void OnSave() {
@@ -128,7 +130,7 @@ namespace Empiria.Trade.Financial {
 
     internal void Update(MoneyAccountFields fields) {
       this.Description = fields.Description;
-      this.OwnerId = fields.OwnerId;
+      this.Owner = Party.Parse(fields.OwnerId);
       this.Notes = fields.Notes;
       this.PostedTime = DateTime.Now;
       this.PostedById = ExecutionServer.CurrentUserId;
@@ -145,13 +147,14 @@ namespace Empiria.Trade.Financial {
     public FixedList<MoneyAccountTransaction> GetTransactions() {
       return MoneyAccountTransaction.GetTransactions(this.Id);
     }
-       
-    public FixedList<CreditMoneyAccount> Search(SearchMoneyAccountFields fields) {
+
+    public FixedList<MoneyAccount> Search(SearchMoneyAccountFields fields) {
       return MoneyAccountData.GetMoneyAccounts(fields);
     }
 
     #endregion Public methods
 
-  } // class MoneyAccountDebit
+  } // class MoneyAccount
 
-} // namespace Empiria.Trade.Financial.MoneyAccount
+} // namespace Empiria.Trade.Financial
+

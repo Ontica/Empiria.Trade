@@ -31,10 +31,10 @@ namespace Empiria.Trade.Financial.UseCases {
 
     #region Public properties
 
-    public CreditMoneyAccount AddMoneyAccount(MoneyAccountFields fields) {
+    public MoneyAccount AddMoneyAccount(MoneyAccountFields fields) {
       Assertion.Require(fields, "fields");
 
-      var moneyAccount = new CreditMoneyAccount(fields);
+      var moneyAccount = new MoneyAccount(fields);
       moneyAccount.Save();
 
       return moneyAccount;
@@ -63,14 +63,14 @@ namespace Empiria.Trade.Financial.UseCases {
     }
 
     public decimal GetMoneyAccountTotalDebt(int ownerId) {
-      var moneyAccount = CreditMoneyAccount.ParseByOwnder(ownerId);
+      var moneyAccount = MoneyAccount.ParseByOwner(ownerId);
 
       return moneyAccount.GetDebit();
     }
 
     public FixedList<MoneyAccountTransactionDto> GetCreditTransactions(int ownerId) {
 
-      var moneyAccount = CreditMoneyAccount.ParseByOwnder(ownerId);
+      var moneyAccount = MoneyAccount.ParseByOwner(ownerId);
 
       var moneyAccountTransactions = moneyAccount.GetTransactions();
 
@@ -79,7 +79,7 @@ namespace Empiria.Trade.Financial.UseCases {
     }
 
     public decimal GetMoneyAccountCreditLimit(int ownerId) {
-      var moneyAccount = CreditMoneyAccount.ParseByOwnder(ownerId);
+      var moneyAccount = MoneyAccount.ParseByOwner(ownerId);
 
       return moneyAccount.CreditLimit;
     }
@@ -88,12 +88,12 @@ namespace Empiria.Trade.Financial.UseCases {
     public SearchMoneyAccountDto SearchMoneyAccounts(SearchMoneyAccountFields fields) {
       Assertion.Require(fields, "fields");
 
-      var moneyAccount = new CreditMoneyAccount();
-      
-     return SearchMoneyAccountMapper.Map(fields, moneyAccount.Search(fields));
+      var moneyAccount = new MoneyAccount();
+
+      return SearchMoneyAccountMapper.Map(fields, moneyAccount.Search(fields));
     }
 
-    
+
 
     #endregion Public properties
 

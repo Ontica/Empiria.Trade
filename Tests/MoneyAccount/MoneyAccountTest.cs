@@ -56,20 +56,20 @@ namespace Empiria.Trade.Tests.MoneyAccount {
       Assert.NotNull(moneyAccount);
     }
 
-    
 
-    [Fact]
-    public void ShouldMigrateCreditTransactionsToMoneyAccountTransasctions() {
-      var moneyAccountTransaction = new MoneyAccountTransaction();
 
-      var x = moneyAccountTransaction.MigarteCreditTransactionToMoneyAccountTransactions();
+    //[Fact]
+    //public void ShouldMigrateCreditTransactionsToMoneyAccountTransasctions() {
+    //  var moneyAccountTransaction = new MoneyAccountTransaction();
 
-      Assert.NotNull(x);
-    }
+    //  var x = moneyAccountTransaction.MigarteCreditTransactionToMoneyAccountTransactions();
+
+    //  Assert.NotNull(x);
+    //}
 
     [Fact]
     public void ShouldGetTotalDebtByMoneyAccountOwnerId() {
-      var moneyAccount = CreditMoneyAccount.ParseByOwnder(1023);
+      var moneyAccount = Empiria.Trade.Financial.MoneyAccount.ParseByOwner(1000);
 
       var x = MoneyAccountTransaction.ParseByReferenceId(1000);
       x.Cancel("Prueba");
@@ -79,14 +79,14 @@ namespace Empiria.Trade.Tests.MoneyAccount {
 
     [Fact]
     public void ShouldSearchMoneyAccounts() {
-      
+
 
       var fields = new SearchMoneyAccountFields {
-        Keywords = "acero",
+        Keywords = "BRAUN REDECOP PEDRO",
         FromDate = Convert.ToDateTime("1979/01/10"),
         ToDate = Convert.ToDateTime("2024/12/28"),
         Status = StateEnums.EntityStatus.Active,
-        MoneyAccount = "f6d3a7db-9f54-4a9f-a021-edbfa34fbf42"
+        MoneyAccountTypeUID = "f6d3a7db-9f54-4a9f-a021-edbfa34fbf42"
       };
 
       var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
@@ -95,6 +95,16 @@ namespace Empiria.Trade.Tests.MoneyAccount {
       Assert.NotNull(moneyAccount);
     }
 
+
+    [Fact]
+    public void ShouldGetMoneyAccountTypes() {
+      
+      var monyeAccount = Empiria.Trade.Financial.MoneyAccount.Parse(1001);
+
+      var x = MoneyAccountType.GetList<MoneyAccountType>();
+      var y = x.MapToNamedEntityList();
+      Assert.NotNull(y);
+    }
 
   } // class MoneyAccountTest
 

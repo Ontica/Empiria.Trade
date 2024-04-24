@@ -9,7 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using Empiria.StateEnums;
-using Empiria.Trade.Orders;
+
 
 namespace Empiria.Trade.Financial.Adapters {
   /// <summary>Input DTO for MoneyAccount. </summary>
@@ -64,7 +64,7 @@ namespace Empiria.Trade.Financial.Adapters {
       get; set;
     } = string.Empty;
 
-    public string MoneyAccount {
+    public string MoneyAccountTypeUID {
       get; set;
     } = string.Empty;
 

@@ -11,8 +11,9 @@ using System;
 
 using Empiria.Data;
 using Empiria.StateEnums;
+
 using Empiria.Trade.Financial.Adapters;
-using Empiria.Trade.Orders;
+
 
 namespace Empiria.Trade.Financial.Data {
   /// <summary>Provides data for MoneyAccount Transactions. </summary>
@@ -20,33 +21,33 @@ namespace Empiria.Trade.Financial.Data {
 
     #region Public methods
 
-    static internal FixedList<CreditMoneyAccount> GetMoneyAccounts() {
+    static internal FixedList<MoneyAccount> GetMoneyAccounts() {
       string sql = "SELECT * FROM TRDMoneyAccounts " +
                   $"WHERE MoneyAccountId > 0  AND Status <>  'X'";
 
       var op = DataOperation.Parse(sql);
 
-      return DataReader.GetFixedList<CreditMoneyAccount>(op);
+      return DataReader.GetFixedList<MoneyAccount>(op);
     }
 
-    static internal CreditMoneyAccount GetMoneyAccount(int ownerId) {
+    static internal MoneyAccount GetMoneyAccount(int ownerId) {
       string sql = $"SELECT * FROM TRDMoneyAccounts WHERE  OwnerId = {ownerId}";
 
       var op = DataOperation.Parse(sql);
 
-      return DataReader.GetObject<CreditMoneyAccount>(op);
+      return DataReader.GetObject<MoneyAccount>(op);
     }
 
-    static internal void Write(CreditMoneyAccount o) {
+    static internal void Write(MoneyAccount o) {
 
-      var op = DataOperation.Parse("writeMoneyAccounts", o.Id, o.UID,o.TypeId, o.Description, o.Number, o.OwnerId, o.Notes, o.Keywords, o.ExtData, o.PostedTime,
+      var op = DataOperation.Parse("writeMoneyAccounts", o.Id, o.UID,o.MoneyAccountType.Id, o.Description, o.Number, o.Owner.Id, o.Notes, o.Keywords, o.ExtData, o.PostedTime,
                                                          o.PostedById, o.FromDate, o.ToDate, o.CreditLimit, o.DaysToPay,
                                                          (char) o.Status);
 
       DataWriter.Execute(op);
     }
 
-    internal static FixedList<CreditMoneyAccount> GetMoneyAccounts(SearchMoneyAccountFields fields) {
+    internal static FixedList<MoneyAccount> GetMoneyAccounts(SearchMoneyAccountFields fields) {
 
       string statusFilter = string.Empty;
 
@@ -75,8 +76,8 @@ namespace Empiria.Trade.Financial.Data {
         keywordsFilter = $" {SearchExpression.ParseAndLikeKeywords("MoneyAccountKeywords", fields.Keywords)} AND ";
       }
 
-      if (fields.MoneyAccount != string.Empty) {
-        var moneyAccountTypeId = GetMoneyAccountTypeId(fields.MoneyAccount);
+      if (fields.MoneyAccountTypeUID != string.Empty) {
+        var moneyAccountTypeId = GetMoneyAccountTypeId(fields.MoneyAccountTypeUID);
         moneyAccountTypeFilter = $" AND MoneyAccountTypeId ={moneyAccountTypeId} ";
       }
 
@@ -86,11 +87,8 @@ namespace Empiria.Trade.Financial.Data {
 
       var dataOperation = DataOperation.Parse(sql);
 
-      return DataReader.GetFixedList<CreditMoneyAccount>(dataOperation);
+      return DataReader.GetFixedList<MoneyAccount>(dataOperation);
     }
-
-
-
 
     #endregion Public methods
 

@@ -47,7 +47,7 @@ namespace Empiria.Trade.Financial {
     #region Public properties
 
     [DataField("MoneyAccountId")]
-    public CreditMoneyAccount MoneyAccount {
+    public MoneyAccount MoneyAccount {
       get; private set;
     } 
 
@@ -125,7 +125,7 @@ namespace Empiria.Trade.Financial {
     }
 
     internal void Update(MoneyAccountTransactionFields fields) {
-      this.MoneyAccount = CreditMoneyAccount.Parse(fields.MoneyAccountUID);
+      this.MoneyAccount = MoneyAccount.Parse(fields.MoneyAccountUID);
       this.Description = fields.Description;
       this.Credit = fields.TransactionAmount;
       this.ReferenceId = fields.PayableOrderId;
@@ -148,7 +148,7 @@ namespace Empiria.Trade.Financial {
       this.Save();
     }
 
-    public void AddCreditTransactions(CreditMoneyAccount moneyAccount, CreditTransactionFields fields) {
+    public void AddCreditTransactions(MoneyAccount moneyAccount, CreditTransactionFields fields) {
       MoneyAccountTransaction moneyTransaction = new MoneyAccountTransaction();
       moneyTransaction.MoneyAccount = moneyAccount;
       moneyTransaction.Description = "Credito " + fields.ExtData;
@@ -160,7 +160,7 @@ namespace Empiria.Trade.Financial {
       moneyTransaction.ExtData = fields.ExtData;
       moneyTransaction.PostedTime = DateTime.Now;
       moneyTransaction.PostedById = ExecutionServer.CurrentUserId;
-     
+
       moneyTransaction.Save();
     }
 
@@ -168,7 +168,7 @@ namespace Empiria.Trade.Financial {
      var moneyAccounts = MoneyAccountData.GetMoneyAccounts();
 
       foreach (var moneyAccount in moneyAccounts) {
-        var creditLineId = CrediLineData.GetCreditLineId(moneyAccount.OwnerId);
+        var creditLineId = CrediLineData.GetCreditLineId(moneyAccount.Owner.Id);
         var transactions = CreditTransactionsData.GetCreditTrasantions(creditLineId);
         AddCreditTransaction(moneyAccount, transactions);
 
@@ -180,7 +180,7 @@ namespace Empiria.Trade.Financial {
 
     #region Private methods
 
-    private void AddCreditTransaction(CreditMoneyAccount moneyAccount, FixedList<CreditTransaction> transactions) {
+    private void AddCreditTransaction(MoneyAccount moneyAccount, FixedList<CreditTransaction> transactions) {
       foreach (var transaction in transactions) {
         MoneyAccountTransaction moneyTransaction = new MoneyAccountTransaction();
         moneyTransaction.MoneyAccount = moneyAccount;
