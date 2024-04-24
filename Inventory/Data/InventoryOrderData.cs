@@ -10,123 +10,148 @@
 using System;
 using Empiria.Data;
 using Empiria.Trade.Core;
+using Empiria.Trade.Inventory.Adapters;
 using Empiria.Trade.Inventory.Domain;
 
 namespace Empiria.Trade.Inventory.Data {
 
 
-    /// <summary>Provides data read methods for inventory order.</summary>
-    internal class InventoryOrderData {
+  /// <summary>Provides data read methods for inventory order.</summary>
+  internal class InventoryOrderData {
 
 
-        #region Public methods
+    #region Public methods
 
-        static internal void DeleteInventoryItemByOrderUID(string inventoryUID) {
+    static internal void DeleteInventoryItemByOrderUID(string inventoryOrderUID) {
 
-            var inventoryId = InventoryOrderEntry.Parse(inventoryUID).Id;
+      var inventoryId = InventoryOrderEntry.Parse(inventoryOrderUID).Id;
 
-            string sql = $"DELETE FROM TRDInventoryOrderItems " +
-                         $"WHERE InventoryEntryId = '{inventoryId}' ";
+      string sql = $"DELETE FROM TRDInventoryOrderItems " +
+                   $"WHERE InventoryOrderId = '{inventoryId}' ";
 
-            var dataOperation = DataOperation.Parse(sql);
+      var dataOperation = DataOperation.Parse(sql);
 
-            DataWriter.Execute(dataOperation);
-        }
-
-
-        static internal void DeleteInventoryItemByUID(string inventoryItemUID) {
-
-            var itemId = InventoryOrderItem.Parse(inventoryItemUID).Id;
-
-            string sql = $"DELETE FROM TRDInventoryOrderItems " +
-                         $"WHERE InventoryItemId = '{itemId}' ";
-
-            var dataOperation = DataOperation.Parse(sql);
-
-            DataWriter.Execute(dataOperation);
-        }
+      DataWriter.Execute(dataOperation);
+    }
 
 
-        static internal void DeleteInventoryOrderByUID(string inventoryUID) {
+    static internal void DeleteInventoryItemByUID(string inventoryOrderItemUID) {
 
-            var inventoryId = InventoryOrderEntry.Parse(inventoryUID).Id;
+      var itemId = InventoryOrderItem.Parse(inventoryOrderItemUID).Id;
 
-            string sql = $"DELETE FROM TRDInventoryOrders " +
-                         $"WHERE InventoryEntryId = '{inventoryId}' ";
+      string sql = $"DELETE FROM TRDInventoryOrderItems " +
+                   $"WHERE InventoryOrderItemId = '{itemId}' ";
 
-            var dataOperation = DataOperation.Parse(sql);
+      var dataOperation = DataOperation.Parse(sql);
 
-            DataWriter.Execute(dataOperation);
-        }
-
-
-        static internal FixedList<InventoryOrderItem> GetInventoryItemsByOrderUID(string inventoryUID) {
-
-            var inventoryId = InventoryOrderEntry.Parse(inventoryUID).Id;
-
-            string sql = $"SELECT * FROM TRDInventoryOrderItems WHERE InventoryEntryId IN ({inventoryId})";
-
-            var dataOperation = DataOperation.Parse(sql);
-
-            return DataReader.GetPlainObjectFixedList<InventoryOrderItem>(dataOperation);
-        }
+      DataWriter.Execute(dataOperation);
+    }
 
 
-        static internal FixedList<InventoryOrderEntry> GetInventoryOrderList() {
+    static internal void DeleteInventoryOrderByUID(string inventoryOrderUID) {
 
-            string sql = $"SELECT * FROM TRDInventoryOrders ";
+      var inventoryId = InventoryOrderEntry.Parse(inventoryOrderUID).Id;
 
-            var dataOperation = DataOperation.Parse(sql);
+      string sql = $"DELETE FROM TRDInventoryOrders " +
+                   $"WHERE InventoryOrderId = '{inventoryId}' ";
 
-            return DataReader.GetPlainObjectFixedList<InventoryOrderEntry>(dataOperation);
+      var dataOperation = DataOperation.Parse(sql);
 
-        }
-
-
-        static internal FixedList<InventoryOrderEntry> GetInventoryOrderByUID(string inventoryUID) {
-
-            string sql = $"SELECT * FROM TRDInventoryOrders WHERE InventoryEntryUID IN ('{inventoryUID}')";
-
-            var dataOperation = DataOperation.Parse(sql);
-
-            return DataReader.GetPlainObjectFixedList<InventoryOrderEntry>(dataOperation);
-
-        }
+      DataWriter.Execute(dataOperation);
+    }
 
 
-        internal static void WriteInventoryEntry(InventoryOrderEntry entry) {
+    static internal FixedList<InventoryOrderItem> GetInventoryItemsByOrderUID(string inventoryOrderUID) {
 
-            var op = DataOperation.Parse("writeInventoryCountOrder",
-                entry.InventoryOrderId, entry.InventoryOrderUID,
-                entry.InventoryOrderTypeId, entry.InventoryOrderNo,
-                entry.ExternalObjectReferenceId, entry.ResponsibleId,
-                entry.AssignedToId, entry.Notes,
-                entry.InventoryOrderExtData, entry.Keywords,
-                entry.ClosingTime, entry.PostingTime,
-                entry.PostedById, (char) entry.Status);
+      var inventoryId = InventoryOrderEntry.Parse(inventoryOrderUID).Id;
 
-            DataWriter.Execute(op);
-        }
+      string sql = $"SELECT * FROM TRDInventoryOrderItems WHERE InventoryOrderId IN ({inventoryId})";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetPlainObjectFixedList<InventoryOrderItem>(dataOperation);
+    }
 
 
-        internal static void WriteInventoryItem(InventoryOrderItem item) {
+    static internal FixedList<InventoryOrderEntry> GetInventoryOrderList(InventoryOrderQuery query) {
 
-            var op = DataOperation.Parse("writeInventoryCountOrderItem",
-                item.InventoryOrderItemId, item.InventoryOrderItemUID,
-                item.InventoryOrder.InventoryOrderId, item.ExternalObjectItemReferenceId,
-                item.ItemNotes, item.VendorProduct.Id,
-                item.WarehouseBin.Id, item.Quantity,
-                item.InputQuantity, item.OutputQuantity,
-                item.ExtData, item.ClosingTime,
-                item.PostingTime, item.PostedById,
-                (char) item.Status);
+      string clauses = GetClausesFromQuery(query);
+      string sql = $"SELECT * FROM TRDInventoryOrders {clauses}";
+      var dataOperation = DataOperation.Parse(sql);
 
-            DataWriter.Execute(op);
-        }
-
-        #endregion Public methods
+      return DataReader.GetPlainObjectFixedList<InventoryOrderEntry>(dataOperation);
+    }
 
 
-    } // class InventoryOrderData
+    static internal FixedList<InventoryOrderEntry> GetInventoryOrderByUID(string inventoryOrderUID) {
+
+      string sql = $"SELECT * FROM TRDInventoryOrders WHERE InventoryEntryUID IN ('{inventoryOrderUID}')";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetPlainObjectFixedList<InventoryOrderEntry>(dataOperation);
+
+    }
+
+
+    internal static void WriteInventoryEntry(InventoryOrderEntry entry) {
+
+      var op = DataOperation.Parse("writeInventoryCountOrder",
+          entry.InventoryOrderId, entry.InventoryOrderUID,
+          entry.InventoryOrderTypeId, entry.InventoryOrderNo,
+          entry.ExternalObjectReferenceId, entry.ResponsibleId,
+          entry.AssignedToId, entry.Notes,
+          entry.InventoryOrderExtData, entry.Keywords,
+          entry.ClosingTime, entry.PostingTime,
+          entry.PostedById, (char) entry.Status);
+
+      DataWriter.Execute(op);
+    }
+
+
+    internal static void WriteInventoryItem(InventoryOrderItem item) {
+
+      var op = DataOperation.Parse("writeInventoryCountOrderItem",
+          item.InventoryOrderItemId, item.InventoryOrderItemUID,
+          item.InventoryOrder.InventoryOrderId, item.ExternalObjectItemReferenceId,
+          item.ItemNotes, item.VendorProduct.Id,
+          item.WarehouseBin.Id, item.Quantity,
+          item.InputQuantity, item.OutputQuantity,
+          item.ExtData, item.ClosingTime,
+          item.PostingTime, item.PostedById,
+          (char) item.Status);
+
+      DataWriter.Execute(op);
+    }
+
+    #endregion Public methods
+
+
+    #region Private methods
+
+    static private string GetClausesFromQuery(InventoryOrderQuery query) {
+      var orderType = string.Empty;
+
+      if (query.InventoryOrderTypeUID != string.Empty) {
+        var inventoryOrderTypeId = -1; //TODO CREAR REGISTROS EN TYPES Y PARSEAR;
+        orderType = $"InventoryOrderTypeId = {inventoryOrderTypeId}";
+      }
+
+      var filters = new Filter(orderType);
+
+      if (query.AssignedToUID != string.Empty) {
+        filters.AppendAnd($"AssignedToId = {Party.Parse(query.AssignedToUID).Id}");
+      }
+
+      if (query.Status != InventoryStatus.Todos) {
+        filters.AppendAnd($"InventoryOrderStatus = '{(char) query.Status}'");
+      }
+
+      return filters.ToString().Length > 0 ? $"WHERE {filters}" : "";
+    }
+
+    #endregion Private methods
+
+  } // class InventoryOrderData
 
 } // namespace Empiria.Trade.Inventory.Data

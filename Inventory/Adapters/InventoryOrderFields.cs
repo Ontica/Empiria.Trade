@@ -28,10 +28,6 @@ namespace Empiria.Trade.Inventory.Adapters {
     /// <summary>DTO used to manage inventory order fields.</summary>
     public class InventoryOrderFields {
 
-        public string InventoryOrderUID {
-            get; set;
-        } = string.Empty;
-
 
         public string InventoryOrderTypeUID {
             get; set;
@@ -79,11 +75,6 @@ namespace Empiria.Trade.Inventory.Adapters {
 
 
         public string InventoryOrderItemUID {
-            get; set;
-        } = string.Empty;
-
-
-        public string InventoryOrderUID {
             get; set;
         } = string.Empty;
 

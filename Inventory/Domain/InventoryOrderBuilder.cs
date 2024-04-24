@@ -30,9 +30,9 @@ namespace Empiria.Trade.Inventory.Domain {
 
     #region Public methods
 
-    internal InventoryOrderEntry CreateInventoryOrder(InventoryOrderFields fields) {
+    internal InventoryOrderEntry CreateInventoryOrder(InventoryOrderFields fields, string inventoryOrderUID) {
 
-      var inventoryOrder = new InventoryOrderEntry(fields);
+      var inventoryOrder = new InventoryOrderEntry(fields, inventoryOrderUID);
       inventoryOrder.Save();
 
       CreateInventoryOrderItems(inventoryOrder, fields.InventoryItemFields);
@@ -52,19 +52,13 @@ namespace Empiria.Trade.Inventory.Domain {
     }
 
 
-    internal InventoryOrderEntry GetInventoryOrderByUID(string inventoryUID) {
+    internal InventoryOrderEntry GetInventoryOrderByUID(string inventoryOrderUID) {
 
-      var inventoryOrder = InventoryOrderEntry.Parse(inventoryUID);
+      var inventoryOrder = InventoryOrderEntry.Parse(inventoryOrderUID);
 
       GetInventoryItemsForOrder(inventoryOrder);
 
       return inventoryOrder;
-    }
-
-
-    internal FixedList<InventoryOrderEntry> GetInventoryOrderList() {
-
-      return InventoryOrderData.GetInventoryOrderList();
     }
 
 
@@ -83,10 +77,15 @@ namespace Empiria.Trade.Inventory.Domain {
       }
     }
 
+        internal InventoryOrderEntry UpdateInventoryCountOrder(string inventoryOrderUID, InventoryOrderFields fields) {
+            
+            return CreateInventoryOrder(fields, inventoryOrderUID);
+        }
 
-    #endregion Private methods
+
+        #endregion Private methods
 
 
-  } // class InventoryOrderBuilder
+    } // class InventoryOrderBuilder
 
 } // namespace Empiria.Trade.Inventory.Domain

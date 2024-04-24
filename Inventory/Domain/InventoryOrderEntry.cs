@@ -32,9 +32,9 @@ namespace Empiria.Trade.Inventory {
         static public InventoryOrderEntry Empty => ParseEmpty<InventoryOrderEntry>();
 
 
-        public InventoryOrderEntry(InventoryOrderFields fields) {
+        public InventoryOrderEntry(InventoryOrderFields fields, string inventoryOrderUID) {
 
-            MapToInventoryOrderEntry(fields);
+            MapToInventoryOrderEntry(fields, inventoryOrderUID);
         }
 
 
@@ -93,7 +93,7 @@ namespace Empiria.Trade.Inventory {
         [DataField("InventoryOrderExtData")]
         internal string InventoryOrderExtData {
             get; set;
-        }
+        } = string.Empty;
 
 
         [DataField("InventoryOrderKeywords")]
@@ -151,20 +151,21 @@ namespace Empiria.Trade.Inventory {
 
                 this.InventoryOrderId = this.Id;
                 this.InventoryOrderUID = this.UID;
+                this.InventoryOrderNo = $"OCI{this.InventoryOrderId.ToString().PadLeft(9, '0')}";
             }
             InventoryOrderData.WriteInventoryEntry(this);
         }
 
 
-        private void MapToInventoryOrderEntry(InventoryOrderFields fields) {
+        private void MapToInventoryOrderEntry(InventoryOrderFields fields, string inventoryOrderUID) {
 
-            if (fields.InventoryOrderUID != string.Empty) {
-                this.InventoryOrderId = Parse(fields.InventoryOrderUID).InventoryOrderId;
-                this.InventoryOrderUID = fields.InventoryOrderUID;
+            if (inventoryOrderUID != string.Empty) {
+                this.InventoryOrderId = Parse(inventoryOrderUID).InventoryOrderId;
+                this.InventoryOrderUID = inventoryOrderUID;
+                this.InventoryOrderNo = $"OCI{this.InventoryOrderId.ToString().PadLeft(9, '0')}";
             }
 
             this.InventoryOrderTypeId = -1; //TODO REGISTRAR TIPOS EN TABLA TYPES
-            this.InventoryOrderNo = $"OCI{this.InventoryOrderId.ToString().PadLeft(9,'0')}";
             this.ExternalObjectReferenceId = -1;
             this.ResponsibleId = Party.Parse(fields.ResponsibleUID).Id;
             this.AssignedToId = Party.Parse(fields.AssignedToUID).Id;

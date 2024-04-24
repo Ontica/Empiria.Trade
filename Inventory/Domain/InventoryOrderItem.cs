@@ -68,7 +68,7 @@ namespace Empiria.Trade.Inventory {
         }
 
 
-        [DataField("InventoryOrderItemNote")]
+        [DataField("InventoryOrderItemNotes")]
         public string ItemNotes {
             get; set;
         } = string.Empty;
@@ -155,7 +155,7 @@ namespace Empiria.Trade.Inventory {
 
             if (fields.InventoryOrderItemUID != string.Empty) {
                 this.InventoryOrderItemId = Parse(fields.InventoryOrderItemUID).InventoryOrderItemId;
-                this.InventoryOrderItemUID = fields.InventoryOrderUID;
+                this.InventoryOrderItemUID = inventoryOrder.InventoryOrderUID;
             }
 
             this.InventoryOrder = inventoryOrder;
