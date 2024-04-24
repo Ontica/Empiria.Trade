@@ -96,37 +96,6 @@ namespace Empiria.Trade.Tests.Inventory {
 
 
     [Fact]
-    public void GetInventoryOrderTypeList() {
-
-      var usecase = InventoryOrderCataloguesUseCases.UseCaseInteractor();
-
-      var sut = usecase.GetInventoryOrderTypes();
-
-      Assert.NotNull(sut);
-    }
-
-
-    [Fact]
-    public void GetInventoryResponsibles() {
-
-      var usescase = PartyUseCases.UseCaseInteractor();
-        FixedList<NamedEntityDto> sut = usescase.GetSalesAgents();
-
-      Assert.NotNull(sut);
-    }
-
-
-    [Fact]
-    public void GetInventoryAssignedToList() {
-
-      var usescase = PartyUseCases.UseCaseInteractor();
-      FixedList<NamedEntityDto> sut = usescase.GetSalesAgents();
-
-      Assert.NotNull(sut);
-    }
-
-
-    [Fact]
     public void GetInventoryOrderByParseTest() {
 
       var usecase = InventoryOrderUseCases.UseCaseInteractor();

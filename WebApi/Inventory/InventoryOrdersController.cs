@@ -21,42 +21,6 @@ namespace Empiria.Trade.WebApi.Inventory {
   /// <summary>Query web API used to retrieve Inventory orders.</summary>
   public class InventoryOrdersController : WebApiController {
 
-    //TODO MOVER ESTOS 3 WEB SERVICES A OTRO CONTROLLER DE CATALOGOS (CREAR CONTROLLER)
-    //[HttpGet]
-    //[Route("v4/trade/inventory/orders/inventory-types")]
-    //public CollectionModel GetInventoryTypes() {
-
-    //  using (var usescase = InventoryOrderCataloguesUseCases.UseCaseInteractor()) {
-    //    FixedList<NamedEntityDto> inventoryTypes = usescase.GetInventoryOrderTypes();
-
-    //    return new CollectionModel(base.Request, inventoryTypes);
-    //  }
-    //}
-
-
-    //[HttpGet]
-    //[Route("v4/trade/contacts/inventory-supervisors")]
-    //public CollectionModel GetInventorySupervisors() {
-
-    //  using (var usescase = PartyUseCases.UseCaseInteractor()) {
-    //    FixedList<NamedEntityDto> responsibles = usescase.GetSalesAgents();
-
-    //    return new CollectionModel(base.Request, responsibles);
-    //  }
-    //}
-
-
-    //[HttpGet]
-    //[Route("v4/trade/contacts/warehousemen")]
-    //public CollectionModel GetWarehousemen() {
-
-    //  using (var usescase = PartyUseCases.UseCaseInteractor()) {
-    //    FixedList<NamedEntityDto> assignedToList = usescase.GetSalesAgents();
-
-    //    return new CollectionModel(base.Request, assignedToList);
-    //  }
-    //}
-
 
     [HttpPost]
     [Route("v4/trade/inventory/orders/")]
