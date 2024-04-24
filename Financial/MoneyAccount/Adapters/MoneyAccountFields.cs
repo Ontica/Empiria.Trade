@@ -8,6 +8,8 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using Empiria.StateEnums;
+using Empiria.Trade.Orders;
 
 namespace Empiria.Trade.Financial.Adapters {
   /// <summary>Input DTO for MoneyAccount. </summary>
@@ -54,8 +56,36 @@ namespace Empiria.Trade.Financial.Adapters {
 
 
     #endregion Public properties
-
-
   } //class MoneyAccountFields
+
+  public class SearchMoneyAccountFields {
+
+    public string Keywords {
+      get; set;
+    } = string.Empty;
+
+    public string MoneyAccount {
+      get; set;
+    } = string.Empty;
+
+    public DateTime FromDate {
+      get; set;
+    } = new DateTime(2020, 1, 1);
+
+    public DateTime ToDate {
+      get; set;
+    } = new DateTime(2049, 12, 31);
+
+    public EntityStatus Status {
+      get; set;
+    } = EntityStatus.Pending;
+
+    public string CustomerUID {
+      get; set;
+    } = String.Empty;
+
+
+  } // class SearchOrderFields
+
 
 } // namespace Empiria.Trade.Financial.Adapters

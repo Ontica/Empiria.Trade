@@ -9,6 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using Empiria.StateEnums;
+using Empiria.Trade.Core;
 using Empiria.Trade.Financial.Adapters;
 using Empiria.Trade.Financial.Data;
 using Empiria.Trade.MoneyAccounts;
@@ -55,6 +56,11 @@ namespace Empiria.Trade.Financial {
       get; protected set;
     }
 
+    [DataField("MoneyAccountNumber")]
+    public string Number {
+      get; protected set;
+    }
+
     [DataField("OwnerId")]
     public int OwnerId {
       get; protected set;
@@ -62,6 +68,11 @@ namespace Empiria.Trade.Financial {
 
     [DataField("Notes")]
     public string Notes {
+      get; protected set;
+    }
+
+    [DataField("MoneyAccountKeywords")]
+    public string Keywords {
       get; protected set;
     }
 
@@ -134,29 +145,9 @@ namespace Empiria.Trade.Financial {
     public FixedList<MoneyAccountTransaction> GetTransactions() {
       return MoneyAccountTransaction.GetTransactions(this.Id);
     }
-
-    public string MigrateCreditLineToMoneyAccount() {
-      var creditLines = CrediLineData.GetCreditLines();
-
-      int count = 0;
-      foreach (var creditLine in creditLines) {
-        CreditMoneyAccount moneyAccount = new CreditMoneyAccount {
-          Description = "Linea de Credito",
-          OwnerId = creditLine.CustomerId,
-          Notes = creditLine.CreditLineNotes,
-          PostedTime = Convert.ToDateTime("01-01-1980"),
-          PostedById = -1,
-          FromDate = Convert.ToDateTime("01-01-1980"),
-          ToDate = Convert.ToDateTime("31-12-2070"),
-          CreditLimit = creditLine.CreditLimit,
-          DaysToPay = Convert.ToInt32(creditLine.CreditConditions),
-          Status = EntityStatus.Active
-        };
-        moneyAccount.Save();
-
-        count++;
-      }
-      return count.ToString();
+       
+    public FixedList<CreditMoneyAccount> Search(SearchMoneyAccountFields fields) {
+      return MoneyAccountData.GetMoneyAccounts(fields);
     }
 
     #endregion Public methods

@@ -15,6 +15,7 @@ using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Financial.Adapters;
 using Empiria.Trade.Financial;
+using Empiria.Trade.Sales.UseCases;
 
 namespace Empiria.Trade.Tests.MoneyAccount {
   /// <summary>Test cases for MoneyAccounts.  </summary>
@@ -55,14 +56,7 @@ namespace Empiria.Trade.Tests.MoneyAccount {
       Assert.NotNull(moneyAccount);
     }
 
-    [Fact]
-    public void ShouldMigrateCreditLinesToMoneyAccount() {
-
-
-      var moneyAccount = new CreditMoneyAccount();
-      var x = moneyAccount.MigrateCreditLineToMoneyAccount();
-      Assert.NotNull(x);
-    }
+    
 
     [Fact]
     public void ShouldMigrateCreditTransactionsToMoneyAccountTransasctions() {
@@ -80,12 +74,27 @@ namespace Empiria.Trade.Tests.MoneyAccount {
       var x = MoneyAccountTransaction.ParseByReferenceId(1000);
       x.Cancel("Prueba");
 
-     
-
       Assert.NotNull(x);
     }
 
-    
+    [Fact]
+    public void ShouldSearchMoneyAccounts() {
+      
+
+      var fields = new SearchMoneyAccountFields {
+        Keywords = "acero",
+        FromDate = Convert.ToDateTime("1979/01/10"),
+        ToDate = Convert.ToDateTime("2024/12/28"),
+        Status = StateEnums.EntityStatus.Active,
+        MoneyAccount = "f6d3a7db-9f54-4a9f-a021-edbfa34fbf42"
+      };
+
+      var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
+      var moneyAccount = moneyAccountUseCase.SearchMoneyAccounts(fields);
+
+      Assert.NotNull(moneyAccount);
+    }
+
 
   } // class MoneyAccountTest
 

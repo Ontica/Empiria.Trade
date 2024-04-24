@@ -85,6 +85,16 @@ namespace Empiria.Trade.Financial.UseCases {
     }
 
 
+    public SearchMoneyAccountDto SearchMoneyAccounts(SearchMoneyAccountFields fields) {
+      Assertion.Require(fields, "fields");
+
+      var moneyAccount = new CreditMoneyAccount();
+      
+     return SearchMoneyAccountMapper.Map(fields, moneyAccount.Search(fields));
+    }
+
+    
+
     #endregion Public properties
 
     #region Public methods
