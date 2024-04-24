@@ -15,7 +15,7 @@ namespace Empiria.Trade.Inventory.Adapters {
     public class InventoryOrderDto {
 
 
-        public string InventoryOrderUID {
+        public string UID {
             get; set;
         }
 
@@ -90,7 +90,7 @@ namespace Empiria.Trade.Inventory.Adapters {
         }
 
 
-        public string InventoryOrderUID {
+        public string UID {
             get; set;
         }
 

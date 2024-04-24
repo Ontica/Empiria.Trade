@@ -15,6 +15,7 @@ using Empiria.Trade.Inventory.UseCases;
 using Empiria.Trade.Inventory;
 using Empiria.Trade.Inventory.Adapters;
 using System.Collections.Generic;
+using Empiria.Trade.Core.UsesCases;
 
 namespace Empiria.Trade.Tests.Inventory {
 
@@ -89,7 +90,38 @@ namespace Empiria.Trade.Tests.Inventory {
         Status = InventoryStatus.Abierto
       };
 
-      FixedList<InventoryOrderDto> sut = usecase.GetInventoryCountOrderList(query);
+      FixedList<InventoryOrderDescriptorDto> sut = usecase.GetInventoryCountOrderList(query);
+      Assert.NotNull(sut);
+    }
+
+
+    [Fact]
+    public void GetInventoryOrderTypeList() {
+
+      var usecase = InventoryOrderCataloguesUseCases.UseCaseInteractor();
+
+      var sut = usecase.GetInventoryOrderTypes();
+
+      Assert.NotNull(sut);
+    }
+
+
+    [Fact]
+    public void GetInventoryResponsibles() {
+
+      var usescase = PartyUseCases.UseCaseInteractor();
+        FixedList<NamedEntityDto> sut = usescase.GetSalesAgents();
+
+      Assert.NotNull(sut);
+    }
+
+
+    [Fact]
+    public void GetInventoryAssignedToList() {
+
+      var usescase = PartyUseCases.UseCaseInteractor();
+      FixedList<NamedEntityDto> sut = usescase.GetSalesAgents();
+
       Assert.NotNull(sut);
     }
 
