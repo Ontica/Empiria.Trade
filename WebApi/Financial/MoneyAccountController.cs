@@ -15,6 +15,7 @@ using Empiria.WebApi;
 
 using Empiria.Trade.Financial.Adapters;
 using Empiria.Trade.Financial.UseCases;
+using Empiria.Trade.Core.UsesCases;
 
 
 namespace Empiria.Trade.WebApi.Financial {
@@ -22,6 +23,16 @@ namespace Empiria.Trade.WebApi.Financial {
   /// Web API used to handle money account.
   public class MoneyAccountController : WebApiController {
 
+    [HttpGet]
+    [Route("v4/trade/financial/moneyaccounts/moneyaccount-types")]
+    public CollectionModel GetMoneyAccountTypes() {
+
+      using (var usecases = MoneyAccountUseCases.UseCaseInteractor()) {
+        FixedList<NamedEntityDto> moneyAccountTypes = usecases.GetMoneyAccountTypes();
+
+        return new CollectionModel(base.Request, moneyAccountTypes);
+      }
+    }
 
     [HttpPost]
     [Route("v4/trade/financial/moneyaccounts/search")]
@@ -29,10 +40,9 @@ namespace Empiria.Trade.WebApi.Financial {
 
       base.RequireBody(fields);
       using (var usecases = MoneyAccountUseCases.UseCaseInteractor()) {
-
         SearchMoneyAccountDto moneyAccounts = usecases.SearchMoneyAccounts(fields);
-        return new SingleObjectModel(base.Request, moneyAccounts);
 
+        return new SingleObjectModel(base.Request, moneyAccounts);
       } // using 
 
     }
