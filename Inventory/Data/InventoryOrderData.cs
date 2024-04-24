@@ -143,6 +143,10 @@ namespace Empiria.Trade.Inventory.Data {
         filters.AppendAnd($"AssignedToId = {Party.Parse(query.AssignedToUID).Id}");
       }
 
+      if (query.Keywords != string.Empty) {
+        filters.AppendAnd($"{SearchExpression.ParseAndLikeKeywords("InventoryOrderKeywords", query.Keywords)}");
+      }
+
       if (query.Status != InventoryStatus.Todos) {
         filters.AppendAnd($"InventoryOrderStatus = '{(char) query.Status}'");
       }

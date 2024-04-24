@@ -82,8 +82,31 @@ namespace Empiria.Trade.WebApi.Core {
       }
     }
 
-    #endregion Web Apis
 
+    [HttpGet]
+    [Route("v4/trade/contacts/inventory-supervisors")]
+    public CollectionModel GetInventorySupervisors() {
+
+      using (var usescase = PartyUseCases.UseCaseInteractor()) {
+        FixedList<NamedEntityDto> responsibles = usescase.GetSalesAgents();
+
+        return new CollectionModel(base.Request, responsibles);
+      }
+    }
+
+
+    [HttpGet]
+    [Route("v4/trade/contacts/warehousemen")]
+    public CollectionModel GetWarehousemen() {
+
+      using (var usescase = PartyUseCases.UseCaseInteractor()) {
+        FixedList<NamedEntityDto> assignedToList = usescase.GetSalesAgents();
+
+        return new CollectionModel(base.Request, assignedToList);
+      }
+    }
+
+    #endregion Web Apis
 
 
   }

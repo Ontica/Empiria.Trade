@@ -9,6 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Web.Http;
+using Empiria.Trade.Core.UsesCases;
 using Empiria.Trade.Inventory.Adapters;
 using Empiria.Trade.Inventory.UseCases;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
@@ -68,7 +69,8 @@ namespace Empiria.Trade.WebApi.Inventory {
 
       using (var usecases = InventoryOrderUseCases.UseCaseInteractor()) {
 
-        FixedList<InventoryOrderDto> inventoryOrderList = usecases.GetInventoryCountOrderList(query);
+        FixedList<InventoryOrderDescriptorDto> inventoryOrderList = 
+          usecases.GetInventoryCountOrderList(query);
 
         return new CollectionModel(this.Request, inventoryOrderList);
       }
