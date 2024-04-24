@@ -76,7 +76,7 @@ namespace Empiria.Trade.Inventory.Data {
     static internal FixedList<InventoryOrderEntry> GetInventoryOrderList(InventoryOrderQuery query) {
 
       string clauses = GetClausesFromQuery(query);
-      string sql = $"SELECT * FROM TRDInventoryOrders {clauses}";
+      string sql = $"SELECT * FROM TRDInventoryOrders WHERE InventoryOrderId > 0 {clauses}";
       var dataOperation = DataOperation.Parse(sql);
 
       return DataReader.GetPlainObjectFixedList<InventoryOrderEntry>(dataOperation);
@@ -147,7 +147,7 @@ namespace Empiria.Trade.Inventory.Data {
         filters.AppendAnd($"InventoryOrderStatus = '{(char) query.Status}'");
       }
 
-      return filters.ToString().Length > 0 ? $"WHERE {filters}" : "";
+      return filters.ToString().Length > 0 ? $"AND {filters}" : "";
     }
 
     #endregion Private methods
