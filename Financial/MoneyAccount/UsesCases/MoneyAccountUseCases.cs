@@ -8,8 +8,9 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-
+using System.Collections.Generic;
 using Empiria.Services;
+using Empiria.StateEnums;
 using Empiria.Trade.Financial.Adapters;
 using Empiria.Trade.MoneyAccounts;
 
@@ -97,6 +98,23 @@ namespace Empiria.Trade.Financial.UseCases {
     public FixedList<NamedEntityDto> GetMoneyAccountTypes() {
 
       return MoneyAccountType.GetList<MoneyAccountType>().MapToNamedEntityList();     
+    }
+
+    public FixedList<NamedEntityDto> GetStatusList() {
+            
+      var active = new NamedEntityDto("Active", "Activo");
+      var pending = new NamedEntityDto("Pending", "Pendiente");
+      var suspended = new NamedEntityDto("Suspended", "Suspendido");
+      var deleted = new NamedEntityDto("Deleted", "Cancelado");
+     
+
+      List<NamedEntityDto> orderSalesStatus = new List<NamedEntityDto>();
+      orderSalesStatus.Add(active);
+      orderSalesStatus.Add(pending);
+      orderSalesStatus.Add(suspended);
+      orderSalesStatus.Add(deleted);
+     
+      return orderSalesStatus.ToFixedList<NamedEntityDto>();
     }
 
 

@@ -16,6 +16,7 @@ using Empiria.WebApi;
 using Empiria.Trade.Financial.Adapters;
 using Empiria.Trade.Financial.UseCases;
 using Empiria.Trade.Core.UsesCases;
+using Empiria.Trade.Sales.UseCases;
 
 
 namespace Empiria.Trade.WebApi.Financial {
@@ -33,6 +34,20 @@ namespace Empiria.Trade.WebApi.Financial {
         return new CollectionModel(base.Request, moneyAccountTypes);
       }
     }
+
+
+    [HttpGet]
+    [Route("v4/trade/financial/moneyaccounts/status")]
+    public CollectionModel GetMoneyAccountStatus() {
+
+      using (var usecases = MoneyAccountUseCases.UseCaseInteractor()) {
+        FixedList<NamedEntityDto> statusList = usecases.GetStatusList();
+
+        return new CollectionModel(base.Request, statusList);
+      }
+
+    }
+
 
     [HttpPost]
     [Route("v4/trade/financial/moneyaccounts/search")]
