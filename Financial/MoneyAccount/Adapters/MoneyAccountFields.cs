@@ -70,7 +70,7 @@ namespace Empiria.Trade.Financial.Adapters {
 
     public DateTime FromDate {
       get; set;
-    } = new DateTime(2020, 1, 1);
+    } = new DateTime(1950, 1, 1);
 
     public DateTime ToDate {
       get; set;
