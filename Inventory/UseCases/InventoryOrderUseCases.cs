@@ -73,10 +73,10 @@ namespace Empiria.Trade.Inventory.UseCases {
         }
 
 
-        public FixedList<InventoryOrderDescriptorDto> GetInventoryCountOrderList(InventoryOrderQuery query) {
+        public InventoryOrderDataDto GetInventoryCountOrderList(InventoryOrderQuery query) {
 
             var list = InventoryOrderData.GetInventoryOrderList(query);
-            return InventoryOrderMapper.MapInventoryToDescriptorList(list);
+            return InventoryOrderMapper.MapList(list, query);
         }
 
 

@@ -165,7 +165,7 @@ namespace Empiria.Trade.Inventory {
                 this.InventoryOrderNo = $"OCI{this.InventoryOrderId.ToString().PadLeft(9, '0')}";
             }
 
-            this.InventoryOrderTypeId = -1; //TODO REGISTRAR TIPOS EN TABLA TYPES
+            this.InventoryOrderTypeId = GetInventoryOrderTypeId(fields.InventoryOrderTypeUID); //TODO REGISTRAR TIPOS EN TABLA TYPES
             this.ExternalObjectReferenceId = -1;
             this.ResponsibleId = Party.Parse(fields.ResponsibleUID).Id;
             this.AssignedToId = Party.Parse(fields.AssignedToUID).Id;
@@ -182,6 +182,23 @@ namespace Empiria.Trade.Inventory {
                 this.ClosingTime = DateTime.Now;
             }
         }
+
+
+    private int GetInventoryOrderTypeId(string uid) {
+
+      if (uid == "5851e71b-3a1f-40ab-836f-ac3d2c9408de") {
+        return 1;
+      } else if (uid == "ab8e950e-94e9-4ae5-943a-49abad514g52") {
+        return 2;
+      } else if (uid == "wered868-a7ec-47f5-b1b9-8c0f73b04kuk") {
+        return 3;
+      } else if (uid == "5851e71b-3a1f-40ab-836f-ac3d2c9408de") {
+        return 4;
+      } else {
+        return -1;
+      }
+
+    }
 
 
         #endregion Private methods

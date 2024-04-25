@@ -65,14 +65,13 @@ namespace Empiria.Trade.WebApi.Inventory {
 
     [HttpPost]
     [Route("v4/trade/inventory/orders/search")]
-    public CollectionModel GetInventoryOrderList([FromBody] InventoryOrderQuery query) {
+    public SingleObjectModel GetInventoryOrderList([FromBody] InventoryOrderQuery query) {
 
       using (var usecases = InventoryOrderUseCases.UseCaseInteractor()) {
 
-        FixedList<InventoryOrderDescriptorDto> inventoryOrderList = 
-          usecases.GetInventoryCountOrderList(query);
+        InventoryOrderDataDto inventoryOrderDto = usecases.GetInventoryCountOrderList(query);
 
-        return new CollectionModel(this.Request, inventoryOrderList);
+        return new SingleObjectModel(this.Request, inventoryOrderDto);
       }
     }
 

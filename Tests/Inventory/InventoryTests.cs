@@ -85,23 +85,23 @@ namespace Empiria.Trade.Tests.Inventory {
 
       InventoryOrderQuery query = new InventoryOrderQuery {
         InventoryOrderTypeUID = "",
-        AssignedToUID = "a517e788-8ddf-4772-b6d2-adc3907e3905",
-        Keywords = "oci000000002",
-        Status = InventoryStatus.Abierto
+        AssignedToUID = "",
+        Keywords = "",
+        Status = InventoryStatus.Todos
       };
 
-      FixedList<InventoryOrderDescriptorDto> sut = usecase.GetInventoryCountOrderList(query);
+      InventoryOrderDataDto sut = usecase.GetInventoryCountOrderList(query);
       Assert.NotNull(sut);
     }
 
 
     [Fact]
-    public void GetInventoryOrderByParseTest() {
+    public void GetInventoryOrderByUID() {
 
       var usecase = InventoryOrderUseCases.UseCaseInteractor();
-      string inventoryOrderUID = "f2d2a10d-abb2-467d-9c4f-bdd2bc15d5c6";
+      string inventoryOrderUID = "6f111e9d-91cf-4bbb-a6df-2b70ec2063b2";
 
-      InventoryOrderEntry sut = usecase.GetInventoryOrderParseUID(inventoryOrderUID);
+      InventoryOrderDto sut = usecase.GetInventoryCountOrderByUID(inventoryOrderUID);
       Assert.NotNull(sut);
     }
 
@@ -137,7 +137,7 @@ namespace Empiria.Trade.Tests.Inventory {
     private InventoryOrderFields GetInventoryOrderFields() {
 
       var fields = new InventoryOrderFields() {
-        InventoryOrderTypeUID = "",
+        InventoryOrderTypeUID = "ab8e950e-94e9-4ae5-943a-49abad514g52",
         ExternalObjectReferenceUID = "",
         ResponsibleUID = "c930a33a-e93b-43c9-9379-96bcb86c4e4d",
         AssignedToUID = "a517e788-8ddf-4772-b6d2-adc3907e3905",
@@ -164,8 +164,8 @@ namespace Empiria.Trade.Tests.Inventory {
         Quantity = 10,
         InputQuantity = 9,
         OutputQuantity = 8,
-        ClosingTime = DateTime.Now,
-        PostingTime = DateTime.Now,
+        //ClosingTime = DateTime.Now,
+        //PostingTime = DateTime.Now,
         PostedByUID = "a517e788-8ddf-4772-b6d2-adc3907e3905",
         ItemStatus = InventoryStatus.Abierto,
         //  Comments = "COMENTARIO X-001",
@@ -180,8 +180,8 @@ namespace Empiria.Trade.Tests.Inventory {
         Quantity = 20,
         InputQuantity = 9,
         OutputQuantity = 8,
-        ClosingTime = DateTime.Now,
-        PostingTime = DateTime.Now,
+        //ClosingTime = DateTime.Now,
+        //PostingTime = DateTime.Now,
         PostedByUID = "a517e788-8ddf-4772-b6d2-adc3907e3905",
         ItemStatus = InventoryStatus.Abierto,
       };
@@ -195,8 +195,8 @@ namespace Empiria.Trade.Tests.Inventory {
         Quantity = 30,
         InputQuantity = 9,
         OutputQuantity = 8,
-        ClosingTime = DateTime.Now,
-        PostingTime = DateTime.Now,
+        //ClosingTime = DateTime.Now,
+        //PostingTime = DateTime.Now,
         PostedByUID = "a517e788-8ddf-4772-b6d2-adc3907e3905",
         ItemStatus = InventoryStatus.Abierto,
       };

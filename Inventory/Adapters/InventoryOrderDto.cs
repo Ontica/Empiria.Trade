@@ -11,131 +11,196 @@ using System;
 
 namespace Empiria.Trade.Inventory.Adapters {
 
-    /// <summary>Output DTO used to return inventory data.</summary>
-    public class InventoryOrderDto {
+  /// <summary>Output DTO used to return inventory data.</summary>
+  public class InventoryOrderDto {
 
 
-        public string UID {
-            get; set;
-        }
-
-
-        public NamedEntityDto InventoryOrderType {
-            get; set;
-        } = new NamedEntityDto("", "");
-
-
-        public string InventoryOrderNo {
-            get;
-            internal set;
-        }
-
-
-        public NamedEntityDto ExternalObjectReference {
-            get;
-            internal set;
-        } = new NamedEntityDto("", "");
-
-
-        public NamedEntityDto Responsible {
-            get;
-            internal set;
-        } = new NamedEntityDto("", "");
-
-
-        public NamedEntityDto AssignedTo {
-            get;
-            internal set;
-        } = new NamedEntityDto("", "");
-
-
-        public string Notes {
-            get; set;
-        }
-
-
-        public DateTime ClosingTime {
-            get; set;
-        }
-
-
-        public DateTime PostingTime {
-            get; set;
-        }
-
-
-        public NamedEntityDto PostedBy {
-            get;
-            internal set;
-        } = new NamedEntityDto("", "");
-
-
-        public InventoryStatus InventoryStatus {
-            get; set;
-        }
-
-
-        public FixedList<InventoryOrderItemDto> InventoryItems {
-            get; set;
-        } = new FixedList<InventoryOrderItemDto>();
-
-    } // class InventoryOrderDto
-
-
-    public class InventoryOrderItemDto {
-
-
-        public string InventoryOrderItemUID {
-            get; set;
-        }
-
-
-        public string UID {
-            get; set;
-        }
-
-
-        public string ExternalObjectItemReferenceUID {
-            get; set;
-        }
-
-
-        public string ItemNotes {
-            get; set;
-        }
-
-
-        public string VendorProductUID {
-            get; set;
-        }
-
-
-        public string WarehouseBinUID {
-            get; set;
-        }
-
-
-        public decimal Quantity {
-            get; set;
-        }
-
-
-        public decimal InputQuantity {
-            get; set;
-        }
-
-
-        public decimal OutputQuantity {
-            get; set;
-        }
-
-
-        public InventoryStatus ItemStatus {
-            get; set;
-        }
-
-
+    public string UID {
+      get; set;
     }
 
 
+    public NamedEntityDto InventoryOrderType {
+      get; set;
+    } = new NamedEntityDto("", "");
+
+
+    public string InventoryOrderNo {
+      get;
+      internal set;
+    }
+
+
+    public NamedEntityDto ExternalObjectReference {
+      get;
+      internal set;
+    } = new NamedEntityDto("", "");
+
+
+    public NamedEntityDto Responsible {
+      get;
+      internal set;
+    } = new NamedEntityDto("", "");
+
+
+    public NamedEntityDto AssignedTo {
+      get;
+      internal set;
+    } = new NamedEntityDto("", "");
+
+
+    public string Notes {
+      get; set;
+    }
+
+
+    public DateTime ClosingTime {
+      get; set;
+    }
+
+
+    public DateTime PostingTime {
+      get; set;
+    }
+
+
+    public NamedEntityDto PostedBy {
+      get;
+      internal set;
+    } = new NamedEntityDto("", "");
+
+
+    public InventoryStatus Status {
+      get; set;
+    }
+
+
+    public FixedList<InventoryOrderItemDto> Items {
+      get; set;
+    } = new FixedList<InventoryOrderItemDto>();
+
+  } // class InventoryOrderDto
+
+
+  public class InventoryOrderItemDto {
+
+
+    public string UID {
+      get; set;
+    }
+
+
+    public string InventoryOrderUID {
+      get; set;
+    }
+
+
+    public string ExternalObjectItemReferenceUID {
+      get; set;
+    }
+
+
+    public string Notes {
+      get; set;
+    }
+
+
+    public NamedEntityDto VendorProductUID {
+      get; set;
+    } = new NamedEntityDto("", "");
+
+
+    public NamedEntityDto WarehouseBinUID {
+      get; set;
+    } = new NamedEntityDto("", "");
+
+
+    public decimal Quantity {
+      get; set;
+    }
+
+
+    public decimal InputQuantity {
+      get; set;
+    }
+
+
+    public decimal OutputQuantity {
+      get; set;
+    }
+
+
+    public InventoryStatus Status {
+      get; set;
+    }
+
+
+  }
+
+
+  /// <summary>Output DTO used to return inventory descriptor data.</summary>
+  public class InventoryOrderDescriptorDto : IInventoryOrderDto {
+
+
+    public string UID {
+      get; set;
+    }
+
+
+    public string InventoryOrderTypeName {
+      get; set;
+    } = string.Empty;
+
+
+    public string InventoryOrderNo {
+      get;
+      internal set;
+    }
+
+
+    public string ExternalObjectReferenceName {
+      get;
+      internal set;
+    } = string.Empty;
+
+
+    public string ResponsibleName {
+      get;
+      internal set;
+    } = string.Empty;
+
+
+    public string AssignedToName {
+      get;
+      internal set;
+    } = string.Empty;
+
+
+    public string Notes {
+      get; set;
+    }
+
+
+    public DateTime ClosingTime {
+      get; set;
+    }
+
+
+    public DateTime PostingTime {
+      get; set;
+    }
+
+
+    public string PostedByName {
+      get;
+      internal set;
+    } = string.Empty;
+
+
+    public InventoryStatus InventoryStatus {
+      get; set;
+    }
+
+
+  } // class InventoryOrderDescriptorDto
 } // namespace Empiria.Trade.Inventory.Adapters
