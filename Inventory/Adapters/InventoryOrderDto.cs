@@ -12,7 +12,7 @@ using System;
 namespace Empiria.Trade.Inventory.Adapters {
 
     /// <summary>Output DTO used to return inventory data.</summary>
-    public class InventoryOrderDto {
+    public class InventoryOrderEntryDto {
 
 
         public string UID {

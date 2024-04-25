@@ -8,11 +8,37 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using Empiria.Trade.Core.Common;
 
 namespace Empiria.Trade.Inventory.Adapters {
 
+
+  public interface IInventoryOrderDto {
+
+  }
+
+
+  public class InventoryOrderDto {
+
+    public InventoryOrderQuery Query {
+      get; set;
+    }
+
+
+    public FixedList<DataTableColumn> Columns {
+      get; set;
+    } = new FixedList<DataTableColumn>();
+
+
+    public FixedList<IInventoryOrderDto> Entries {
+      get; set;
+    } = new FixedList<IInventoryOrderDto>();
+
+  }
+
+
   /// <summary>Output DTO used to return inventory descriptor data.</summary>
-  public class InventoryOrderDescriptorDto {
+  public class InventoryOrderDescriptorDto : IInventoryOrderDto {
 
 
     public string UID {

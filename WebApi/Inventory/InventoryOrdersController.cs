@@ -28,7 +28,7 @@ namespace Empiria.Trade.WebApi.Inventory {
 
       using (var usecases = InventoryOrderUseCases.UseCaseInteractor()) {
 
-        InventoryOrderDto inventoryOrder = usecases.CreateInventoryCountOrder(fields);
+        InventoryOrderEntryDto inventoryOrder = usecases.CreateInventoryCountOrder(fields);
 
         return new SingleObjectModel(this.Request, inventoryOrder);
       }
@@ -55,7 +55,7 @@ namespace Empiria.Trade.WebApi.Inventory {
 
       using (var usecases = InventoryOrderUseCases.UseCaseInteractor()) {
 
-        InventoryOrderDto inventoryOrder = 
+        InventoryOrderEntryDto inventoryOrder = 
           usecases.DeleteInventoryItemByUID(inventoryOrderUID, inventoryOrderItemUID);
 
         return new SingleObjectModel(this.Request, inventoryOrder);
@@ -65,14 +65,13 @@ namespace Empiria.Trade.WebApi.Inventory {
 
     [HttpPost]
     [Route("v4/trade/inventory/orders/search")]
-    public CollectionModel GetInventoryOrderList([FromBody] InventoryOrderQuery query) {
+    public SingleObjectModel GetInventoryOrderList([FromBody] InventoryOrderQuery query) {
 
       using (var usecases = InventoryOrderUseCases.UseCaseInteractor()) {
 
-        FixedList<InventoryOrderDescriptorDto> inventoryOrderList = 
-          usecases.GetInventoryCountOrderList(query);
+        InventoryOrderDto inventoryOrderDto = usecases.GetInventoryCountOrderList(query);
 
-        return new CollectionModel(this.Request, inventoryOrderList);
+        return new SingleObjectModel(this.Request, inventoryOrderDto);
       }
     }
 
@@ -83,7 +82,7 @@ namespace Empiria.Trade.WebApi.Inventory {
 
       using (var usecases = InventoryOrderUseCases.UseCaseInteractor()) {
 
-        InventoryOrderDto inventoryOrder = usecases.GetInventoryCountOrderByUID(inventoryOrderUID);
+        InventoryOrderEntryDto inventoryOrder = usecases.GetInventoryCountOrderByUID(inventoryOrderUID);
 
         return new SingleObjectModel(this.Request, inventoryOrder);
       }
@@ -97,7 +96,7 @@ namespace Empiria.Trade.WebApi.Inventory {
 
       using (var usecases = InventoryOrderUseCases.UseCaseInteractor()) {
 
-        InventoryOrderDto shippingOrder = usecases.UpdateInventoryCountOrder(inventoryOrderUID, fields);
+        InventoryOrderEntryDto shippingOrder = usecases.UpdateInventoryCountOrder(inventoryOrderUID, fields);
 
         return new SingleObjectModel(this.Request, shippingOrder);
       }

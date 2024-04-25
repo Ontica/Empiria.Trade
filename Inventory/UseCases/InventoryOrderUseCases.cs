@@ -35,7 +35,7 @@ namespace Empiria.Trade.Inventory.UseCases {
         #region Public methods
 
 
-        public InventoryOrderDto CreateInventoryCountOrder(InventoryOrderFields fields) {
+        public InventoryOrderEntryDto CreateInventoryCountOrder(InventoryOrderFields fields) {
 
             var builder = new InventoryOrderBuilder();
             var inventoryOrder = builder.CreateInventoryOrder(fields, "");
@@ -50,21 +50,21 @@ namespace Empiria.Trade.Inventory.UseCases {
         }
 
 
-        public InventoryOrderDto DeleteInventoryItemByOrderUID(string inventoryOrderUID) {
+        public InventoryOrderEntryDto DeleteInventoryItemByOrderUID(string inventoryOrderUID) {
 
             InventoryOrderData.DeleteInventoryItemByOrderUID(inventoryOrderUID);
             return GetInventoryCountOrderByUID(inventoryOrderUID);
         }
 
 
-        public InventoryOrderDto DeleteInventoryItemByUID(string inventoryOrderUID, string inventoryOrderItemUID) {
+        public InventoryOrderEntryDto DeleteInventoryItemByUID(string inventoryOrderUID, string inventoryOrderItemUID) {
 
             InventoryOrderData.DeleteInventoryItemByUID(inventoryOrderItemUID);
             return GetInventoryCountOrderByUID(inventoryOrderUID);
         }
 
 
-        public InventoryOrderDto GetInventoryCountOrderByUID(string inventoryOrderUID) {
+        public InventoryOrderEntryDto GetInventoryCountOrderByUID(string inventoryOrderUID) {
 
             var builder = new InventoryOrderBuilder();
             var inventoryOrder = builder.GetInventoryOrderByUID(inventoryOrderUID);
@@ -73,10 +73,10 @@ namespace Empiria.Trade.Inventory.UseCases {
         }
 
 
-        public FixedList<InventoryOrderDescriptorDto> GetInventoryCountOrderList(InventoryOrderQuery query) {
+        public InventoryOrderDto GetInventoryCountOrderList(InventoryOrderQuery query) {
 
             var list = InventoryOrderData.GetInventoryOrderList(query);
-            return InventoryOrderMapper.MapInventoryToDescriptorList(list);
+            return InventoryOrderMapper.MapList(list, query);
         }
 
 
@@ -92,7 +92,7 @@ namespace Empiria.Trade.Inventory.UseCases {
         }
 
 
-        public InventoryOrderDto UpdateInventoryCountOrder(string inventoryOrderUID, InventoryOrderFields fields) {
+        public InventoryOrderEntryDto UpdateInventoryCountOrder(string inventoryOrderUID, InventoryOrderFields fields) {
             var builder = new InventoryOrderBuilder();
             var inventoryOrder = builder.UpdateInventoryCountOrder(inventoryOrderUID, fields);
 

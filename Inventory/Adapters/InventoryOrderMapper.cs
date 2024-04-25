@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using Empiria.Trade.Core;
+using Empiria.Trade.Core.Common;
 using Empiria.Trade.Inventory.Domain;
 
 namespace Empiria.Trade.Inventory.Adapters {
@@ -22,55 +23,43 @@ namespace Empiria.Trade.Inventory.Adapters {
     #region Public methods
 
 
-    static internal FixedList<InventoryOrderDto> MapInventoryList(FixedList<InventoryOrderEntry> list) {
+    static internal FixedList<InventoryOrderEntryDto> MapInventoryList(FixedList<InventoryOrderEntry> list) {
 
       var mappedList = list.Select((x) => MapInventoryOrder(x));
 
-      return new FixedList<InventoryOrderDto>(mappedList);
+      return new FixedList<InventoryOrderEntryDto>(mappedList);
     }
 
 
-    static public FixedList<InventoryOrderDescriptorDto> MapInventoryToDescriptorList(
+    static public InventoryOrderDto MapList(
+      FixedList<InventoryOrderEntry> list, InventoryOrderQuery query) {
+
+      return new InventoryOrderDto {
+        Query = query,
+        Columns = GetColumns(),
+        Entries = MapList(list)
+      };
+    }
+
+
+    static public FixedList<IInventoryOrderDto> MapList(
       FixedList<InventoryOrderEntry> list) {
 
       var mappedList = list.Select((x) => MapInventoryDescriptorList(x));
 
-      return new FixedList<InventoryOrderDescriptorDto>(mappedList);
+      return new FixedList<IInventoryOrderDto>(mappedList);
     }
 
 
-    private static InventoryOrderDescriptorDto MapInventoryDescriptorList(InventoryOrderEntry entry) {
-      var dto = new InventoryOrderDescriptorDto();
+    static internal InventoryOrderEntryDto MapInventoryOrder(InventoryOrderEntry entry) {
+      var dto = new InventoryOrderEntryDto();
 
       var responsible = Party.Parse(entry.ResponsibleId);
       var assignedTo = Party.Parse(entry.AssignedToId);
       var postedBy = Party.Parse(entry.PostedById);
 
       dto.UID = entry.InventoryOrderUID;
-      dto.InventoryOrderTypeName = "Orden de conteo de inventario"; //TODO REGISTRSR INVENTORY TYPES EN TYPES
-      dto.InventoryOrderNo = entry.InventoryOrderNo;
-      dto.ExternalObjectReferenceName = "External reference"; //External.Parse(entry.ExternalObjectReferenceId).UID;
-      dto.ResponsibleName = responsible.Name;
-      dto.AssignedToName = assignedTo.Name;
-      dto.Notes = entry.Notes;
-      dto.ClosingTime = entry.ClosingTime;
-      dto.PostingTime = entry.PostingTime;
-      dto.PostedByName = postedBy.Name;
-      dto.InventoryStatus = entry.Status;
-
-      return dto;
-    }
-
-
-    static internal InventoryOrderDto MapInventoryOrder(InventoryOrderEntry entry) {
-      var dto = new InventoryOrderDto();
-
-      var responsible = Party.Parse(entry.ResponsibleId);
-      var assignedTo = Party.Parse(entry.AssignedToId);
-      var postedBy = Party.Parse(entry.PostedById);
-
-      dto.UID = entry.InventoryOrderUID;
-      dto.InventoryOrderType = new NamedEntityDto("", "Orden de conteo de inventario"); //TODO REGISTRSR INVENTORY TYPES EN TYPES
+      dto.InventoryOrderType = new NamedEntityDto("ab8e950e-94e9-4ae5-943a-49abad514g52", "Orden de conteo físico mensual"); //TODO REGISTRSR INVENTORY TYPES EN TYPES
       dto.InventoryOrderNo = entry.InventoryOrderNo;
       dto.ExternalObjectReference = new NamedEntityDto("", "External reference"); //External.Parse(entry.ExternalObjectReferenceId).UID;
       dto.Responsible = new NamedEntityDto(responsible.UID, responsible.Name);
@@ -89,6 +78,44 @@ namespace Empiria.Trade.Inventory.Adapters {
     #endregion Public methods
 
     #region Private methods
+
+
+    static private FixedList<DataTableColumn> GetColumns() {
+
+      List<DataTableColumn> columns = new List<DataTableColumn>();
+
+      columns.Add(new DataTableColumn("inventoryOrderTypeName", "Tipo", "text"));
+      columns.Add(new DataTableColumn("inventoryOrderNo", "Número de orden", "text_link"));
+      columns.Add(new DataTableColumn("responsibleName", "Responsable", "text"));
+      columns.Add(new DataTableColumn("assignedToName", "Asignado a", "text"));
+      columns.Add(new DataTableColumn("postingTime", "Fecha registro", "date"));
+      columns.Add(new DataTableColumn("inventoryStatus", "Estatus", "text_tag"));
+
+      return columns.ToFixedList();
+    }
+
+
+    private static InventoryOrderDescriptorDto MapInventoryDescriptorList(InventoryOrderEntry entry) {
+      var dto = new InventoryOrderDescriptorDto();
+
+      var responsible = Party.Parse(entry.ResponsibleId);
+      var assignedTo = Party.Parse(entry.AssignedToId);
+      var postedBy = Party.Parse(entry.PostedById);
+
+      dto.UID = entry.InventoryOrderUID;
+      dto.InventoryOrderTypeName = "Orden de conteo físico mensual"; //TODO REGISTRSR INVENTORY TYPES EN TYPES
+      dto.InventoryOrderNo = entry.InventoryOrderNo;
+      dto.ExternalObjectReferenceName = "External reference"; //External.Parse(entry.ExternalObjectReferenceId).UID;
+      dto.ResponsibleName = responsible.Name;
+      dto.AssignedToName = assignedTo.Name;
+      dto.Notes = entry.Notes;
+      dto.ClosingTime = entry.ClosingTime;
+      dto.PostingTime = entry.PostingTime;
+      dto.PostedByName = postedBy.Name;
+      dto.InventoryStatus = entry.Status;
+
+      return dto;
+    }
 
 
     static private InventoryOrderItemDto MapInventoryItem(InventoryOrderItem x) {
@@ -119,6 +146,7 @@ namespace Empiria.Trade.Inventory.Adapters {
 
       return new FixedList<InventoryOrderItemDto>(mappedItems);
     }
+
 
     #endregion Private methods
 
