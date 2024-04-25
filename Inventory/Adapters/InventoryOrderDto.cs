@@ -105,12 +105,12 @@ namespace Empiria.Trade.Inventory.Adapters {
     }
 
 
-    public NamedEntityDto VendorProductUID {
+    public NamedEntityDto VendorProduct {
       get; set;
     } = new NamedEntityDto("", "");
 
 
-    public NamedEntityDto WarehouseBinUID {
+    public NamedEntityDto WarehouseBin {
       get; set;
     } = new NamedEntityDto("", "");
 

@@ -108,10 +108,10 @@ namespace Empiria.Trade.Inventory.Adapters {
       dto.InventoryOrderUID = x.InventoryOrder.InventoryOrderUID;
       dto.ExternalObjectItemReferenceUID = ""; //External.Parse(x.ExternalObjectItemReferenceId).UID;
       dto.Notes = x.ItemNotes;
-      dto.VendorProductUID = new NamedEntityDto(
+      dto.VendorProduct = new NamedEntityDto(
         x.VendorProduct.VendorProductUID,
         x.VendorProduct.ProductFields.ProductName);
-      dto.WarehouseBinUID = new NamedEntityDto(
+      dto.WarehouseBin = new NamedEntityDto(
         x.WarehouseBin.WarehouseBinUID,
         x.WarehouseBin.BinDescription);
       dto.Quantity = x.Quantity;
