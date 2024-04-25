@@ -149,12 +149,13 @@ namespace Empiria.Trade.Financial {
     }
 
     public FixedList<MoneyAccount> Search(SearchMoneyAccountFields fields) {
-      return MoneyAccountData.GetMoneyAccounts(fields);
+      return MoneyAccountData.GetMoneyAccounts(fields); 
     }
 
     #endregion Public methods
 
   } // class MoneyAccount
+   
 
 } // namespace Empiria.Trade.Financial
 

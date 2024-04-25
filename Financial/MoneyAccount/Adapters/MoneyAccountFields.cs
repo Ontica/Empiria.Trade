@@ -76,9 +76,9 @@ namespace Empiria.Trade.Financial.Adapters {
       get; set;
     } = new DateTime(2049, 12, 31);
 
-    public EntityStatus Status {
+    public string Status {
       get; set;
-    } = EntityStatus.Pending;
+    } = "All";
 
     public string CustomerUID {
       get; set;

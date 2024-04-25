@@ -50,9 +50,10 @@ namespace Empiria.Trade.Financial.Data {
     internal static FixedList<MoneyAccount> GetMoneyAccounts(SearchMoneyAccountFields fields) {
 
       string statusFilter = string.Empty;
+      EntityStatus status = ParceStatus(fields.Status);
 
-      if (fields.Status != StateEnums.EntityStatus.Pending) {
-        statusFilter = $" AND (Status = '{(char) fields.Status}')";
+      if (status != EntityStatus.All) {
+        statusFilter = $" AND (Status = '{(char) status}')";
       } else {
         statusFilter = $" AND (Status <> '{(char) EntityStatus.Deleted}')";
       }
@@ -104,6 +105,16 @@ namespace Empiria.Trade.Financial.Data {
       var debt = Empiria.Data.DataReader.GetScalar<int>(dataOperation);
 
       return debt;
+    }
+
+    static private EntityStatus ParceStatus(string status) {
+      if (String.IsNullOrEmpty(status)) {
+        return EntityStatus.All;
+      }
+
+      Enum.TryParse(status, out EntityStatus maStatus);
+
+      return maStatus;
     }
 
     #endregion Private methods

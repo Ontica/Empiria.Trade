@@ -16,6 +16,7 @@ using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Financial.Adapters;
 using Empiria.Trade.Financial;
 using Empiria.Trade.Sales.UseCases;
+using Empiria.StateEnums;
 
 namespace Empiria.Trade.Tests.MoneyAccount {
   /// <summary>Test cases for MoneyAccounts.  </summary>
@@ -82,10 +83,8 @@ namespace Empiria.Trade.Tests.MoneyAccount {
 
 
       var fields = new SearchMoneyAccountFields {
-        Keywords = "BRAUN REDECOP PEDRO",
-        FromDate = Convert.ToDateTime("1979/01/10"),
-        ToDate = Convert.ToDateTime("2024/12/28"),
-        Status = StateEnums.EntityStatus.Active,
+        Keywords = "BRAUN REDECOP PEDRO",        
+        Status = "",
         MoneyAccountTypeUID = "f6d3a7db-9f54-4a9f-a021-edbfa34fbf42"
       };
 
