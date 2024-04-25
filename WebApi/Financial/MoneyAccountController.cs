@@ -15,8 +15,7 @@ using Empiria.WebApi;
 
 using Empiria.Trade.Financial.Adapters;
 using Empiria.Trade.Financial.UseCases;
-using Empiria.Trade.Core.UsesCases;
-using Empiria.Trade.Sales.UseCases;
+
 
 
 namespace Empiria.Trade.WebApi.Financial {
@@ -25,7 +24,7 @@ namespace Empiria.Trade.WebApi.Financial {
   public class MoneyAccountController : WebApiController {
 
     [HttpGet]
-    [Route("v4/trade/financial/moneyaccounts/moneyaccount-types")]
+    [Route("v4/trade/financial/money-accounts/money-accounts-types")]
     public CollectionModel GetMoneyAccountTypes() {
 
       using (var usecases = MoneyAccountUseCases.UseCaseInteractor()) {
@@ -37,7 +36,7 @@ namespace Empiria.Trade.WebApi.Financial {
 
 
     [HttpGet]
-    [Route("v4/trade/financial/moneyaccounts/status")]
+    [Route("v4/trade/financial/money-accounts/status")]
     public CollectionModel GetMoneyAccountStatus() {
 
       using (var usecases = MoneyAccountUseCases.UseCaseInteractor()) {
@@ -50,7 +49,7 @@ namespace Empiria.Trade.WebApi.Financial {
 
 
     [HttpPost]
-    [Route("v4/trade/financial/moneyaccounts/search")]
+    [Route("v4/trade/financial/money-accounts/search")]
     public SingleObjectModel GetMoneyAccounts([FromBody] SearchMoneyAccountFields fields) {
 
       base.RequireBody(fields);
