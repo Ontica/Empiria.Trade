@@ -85,7 +85,7 @@ namespace Empiria.Trade.Inventory.Adapters {
       List<DataTableColumn> columns = new List<DataTableColumn>();
 
       columns.Add(new DataTableColumn("inventoryOrderTypeName", "Tipo", "text"));
-      columns.Add(new DataTableColumn("inventoryOrderNo", "Número de orden", "text_link"));
+      columns.Add(new DataTableColumn("inventoryOrderNo", "Número de orden", "text-link"));
       columns.Add(new DataTableColumn("responsibleName", "Responsable", "text"));
       columns.Add(new DataTableColumn("assignedToName", "Asignado a", "text"));
       columns.Add(new DataTableColumn("postingTime", "Fecha registro", "date"));
