@@ -114,14 +114,14 @@ namespace Empiria.Trade.Inventory.Adapters {
         }
 
 
-        public DateTime ClosingTime {
-            get; set;
-        }
+        //public DateTime ClosingTime {
+        //    get; set;
+        //}
 
 
-        public DateTime PostingTime {
-            get; set;
-        }
+        //public DateTime PostingTime {
+        //    get; set;
+        //}
 
 
         public string PostedByUID {

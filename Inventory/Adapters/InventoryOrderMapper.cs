@@ -23,36 +23,8 @@ namespace Empiria.Trade.Inventory.Adapters {
     #region Public methods
 
 
-    static internal FixedList<InventoryOrderEntryDto> MapInventoryList(FixedList<InventoryOrderEntry> list) {
-
-      var mappedList = list.Select((x) => MapInventoryOrder(x));
-
-      return new FixedList<InventoryOrderEntryDto>(mappedList);
-    }
-
-
-    static public InventoryOrderDto MapList(
-      FixedList<InventoryOrderEntry> list, InventoryOrderQuery query) {
-
-      return new InventoryOrderDto {
-        Query = query,
-        Columns = GetColumns(),
-        Entries = MapList(list)
-      };
-    }
-
-
-    static public FixedList<IInventoryOrderDto> MapList(
-      FixedList<InventoryOrderEntry> list) {
-
-      var mappedList = list.Select((x) => MapInventoryDescriptorList(x));
-
-      return new FixedList<IInventoryOrderDto>(mappedList);
-    }
-
-
-    static internal InventoryOrderEntryDto MapInventoryOrder(InventoryOrderEntry entry) {
-      var dto = new InventoryOrderEntryDto();
+    static internal InventoryOrderDto MapInventoryOrder(InventoryOrderEntry entry) {
+      var dto = new InventoryOrderDto();
 
       var responsible = Party.Parse(entry.ResponsibleId);
       var assignedTo = Party.Parse(entry.AssignedToId);
@@ -68,10 +40,21 @@ namespace Empiria.Trade.Inventory.Adapters {
       dto.ClosingTime = entry.ClosingTime;
       dto.PostingTime = entry.PostingTime;
       dto.PostedBy = new NamedEntityDto(postedBy.UID, postedBy.Name);
-      dto.InventoryStatus = entry.Status;
+      dto.Status = entry.Status;
 
-      dto.InventoryItems = MapInventoryItems(entry.InventoryOrderItems);
+      dto.Items = MapInventoryItems(entry.InventoryOrderItems);
       return dto;
+    }
+
+
+    static public InventoryOrderDataDto MapList(
+      FixedList<InventoryOrderEntry> list, InventoryOrderQuery query) {
+
+      return new InventoryOrderDataDto {
+        Query = query,
+        Columns = GetColumns(),
+        Entries = MapList(list)
+      };
     }
 
 
@@ -121,16 +104,20 @@ namespace Empiria.Trade.Inventory.Adapters {
     static private InventoryOrderItemDto MapInventoryItem(InventoryOrderItem x) {
       var dto = new InventoryOrderItemDto();
 
-      dto.InventoryOrderItemUID = x.InventoryOrderItemUID;
-      dto.UID = x.InventoryOrder.InventoryOrderUID;
+      dto.UID = x.InventoryOrderItemUID;
+      dto.InventoryOrderUID = x.InventoryOrder.InventoryOrderUID;
       dto.ExternalObjectItemReferenceUID = ""; //External.Parse(x.ExternalObjectItemReferenceId).UID;
-      dto.ItemNotes = x.ItemNotes;
-      dto.VendorProductUID = x.VendorProduct.VendorProductUID;
-      dto.WarehouseBinUID = x.WarehouseBin.WarehouseBinUID;
+      dto.Notes = x.ItemNotes;
+      dto.VendorProductUID = new NamedEntityDto(
+        x.VendorProduct.VendorProductUID,
+        x.VendorProduct.ProductFields.ProductName);
+      dto.WarehouseBinUID = new NamedEntityDto(
+        x.WarehouseBin.WarehouseBinUID,
+        x.WarehouseBin.BinDescription);
       dto.Quantity = x.Quantity;
       dto.InputQuantity = x.InputQuantity;
       dto.OutputQuantity = x.OutputQuantity;
-      dto.ItemStatus = x.Status;
+      dto.Status = x.Status;
       return dto;
     }
 
@@ -145,6 +132,15 @@ namespace Empiria.Trade.Inventory.Adapters {
       var mappedItems = inventoryOrderItems.Select((x) => MapInventoryItem(x));
 
       return new FixedList<InventoryOrderItemDto>(mappedItems);
+    }
+
+
+    static private FixedList<IInventoryOrderDto> MapList(
+      FixedList<InventoryOrderEntry> list) {
+
+      var mappedList = list.Select((x) => MapInventoryDescriptorList(x));
+
+      return new FixedList<IInventoryOrderDto>(mappedList);
     }
 
 

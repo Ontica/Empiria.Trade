@@ -28,7 +28,7 @@ namespace Empiria.Trade.WebApi.Inventory {
 
       using (var usecases = InventoryOrderUseCases.UseCaseInteractor()) {
 
-        InventoryOrderEntryDto inventoryOrder = usecases.CreateInventoryCountOrder(fields);
+        InventoryOrderDto inventoryOrder = usecases.CreateInventoryCountOrder(fields);
 
         return new SingleObjectModel(this.Request, inventoryOrder);
       }
@@ -55,7 +55,7 @@ namespace Empiria.Trade.WebApi.Inventory {
 
       using (var usecases = InventoryOrderUseCases.UseCaseInteractor()) {
 
-        InventoryOrderEntryDto inventoryOrder = 
+        InventoryOrderDto inventoryOrder = 
           usecases.DeleteInventoryItemByUID(inventoryOrderUID, inventoryOrderItemUID);
 
         return new SingleObjectModel(this.Request, inventoryOrder);
@@ -69,7 +69,7 @@ namespace Empiria.Trade.WebApi.Inventory {
 
       using (var usecases = InventoryOrderUseCases.UseCaseInteractor()) {
 
-        InventoryOrderDto inventoryOrderDto = usecases.GetInventoryCountOrderList(query);
+        InventoryOrderDataDto inventoryOrderDto = usecases.GetInventoryCountOrderList(query);
 
         return new SingleObjectModel(this.Request, inventoryOrderDto);
       }
@@ -82,7 +82,7 @@ namespace Empiria.Trade.WebApi.Inventory {
 
       using (var usecases = InventoryOrderUseCases.UseCaseInteractor()) {
 
-        InventoryOrderEntryDto inventoryOrder = usecases.GetInventoryCountOrderByUID(inventoryOrderUID);
+        InventoryOrderDto inventoryOrder = usecases.GetInventoryCountOrderByUID(inventoryOrderUID);
 
         return new SingleObjectModel(this.Request, inventoryOrder);
       }
@@ -96,7 +96,7 @@ namespace Empiria.Trade.WebApi.Inventory {
 
       using (var usecases = InventoryOrderUseCases.UseCaseInteractor()) {
 
-        InventoryOrderEntryDto shippingOrder = usecases.UpdateInventoryCountOrder(inventoryOrderUID, fields);
+        InventoryOrderDto shippingOrder = usecases.UpdateInventoryCountOrder(inventoryOrderUID, fields);
 
         return new SingleObjectModel(this.Request, shippingOrder);
       }

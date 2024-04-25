@@ -35,7 +35,7 @@ namespace Empiria.Trade.Inventory.UseCases {
         #region Public methods
 
 
-        public InventoryOrderEntryDto CreateInventoryCountOrder(InventoryOrderFields fields) {
+        public InventoryOrderDto CreateInventoryCountOrder(InventoryOrderFields fields) {
 
             var builder = new InventoryOrderBuilder();
             var inventoryOrder = builder.CreateInventoryOrder(fields, "");
@@ -50,21 +50,21 @@ namespace Empiria.Trade.Inventory.UseCases {
         }
 
 
-        public InventoryOrderEntryDto DeleteInventoryItemByOrderUID(string inventoryOrderUID) {
+        public InventoryOrderDto DeleteInventoryItemByOrderUID(string inventoryOrderUID) {
 
             InventoryOrderData.DeleteInventoryItemByOrderUID(inventoryOrderUID);
             return GetInventoryCountOrderByUID(inventoryOrderUID);
         }
 
 
-        public InventoryOrderEntryDto DeleteInventoryItemByUID(string inventoryOrderUID, string inventoryOrderItemUID) {
+        public InventoryOrderDto DeleteInventoryItemByUID(string inventoryOrderUID, string inventoryOrderItemUID) {
 
             InventoryOrderData.DeleteInventoryItemByUID(inventoryOrderItemUID);
             return GetInventoryCountOrderByUID(inventoryOrderUID);
         }
 
 
-        public InventoryOrderEntryDto GetInventoryCountOrderByUID(string inventoryOrderUID) {
+        public InventoryOrderDto GetInventoryCountOrderByUID(string inventoryOrderUID) {
 
             var builder = new InventoryOrderBuilder();
             var inventoryOrder = builder.GetInventoryOrderByUID(inventoryOrderUID);
@@ -73,7 +73,7 @@ namespace Empiria.Trade.Inventory.UseCases {
         }
 
 
-        public InventoryOrderDto GetInventoryCountOrderList(InventoryOrderQuery query) {
+        public InventoryOrderDataDto GetInventoryCountOrderList(InventoryOrderQuery query) {
 
             var list = InventoryOrderData.GetInventoryOrderList(query);
             return InventoryOrderMapper.MapList(list, query);
@@ -92,7 +92,7 @@ namespace Empiria.Trade.Inventory.UseCases {
         }
 
 
-        public InventoryOrderEntryDto UpdateInventoryCountOrder(string inventoryOrderUID, InventoryOrderFields fields) {
+        public InventoryOrderDto UpdateInventoryCountOrder(string inventoryOrderUID, InventoryOrderFields fields) {
             var builder = new InventoryOrderBuilder();
             var inventoryOrder = builder.UpdateInventoryCountOrder(inventoryOrderUID, fields);
 
