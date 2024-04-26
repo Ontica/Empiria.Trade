@@ -83,9 +83,9 @@ namespace Empiria.Trade.Tests.MoneyAccount {
 
 
       var fields = new SearchMoneyAccountFields {
-        Keywords = "BRAUN REDECOP PEDRO",
+        Keywords = "ASAFE",
         Status = "",
-        MoneyAccountTypeUID = "f6d3a7db-9f54-4a9f-a021-edbfa34fbf42"
+        
       };
 
       var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();

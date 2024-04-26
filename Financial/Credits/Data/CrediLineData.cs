@@ -31,6 +31,10 @@ namespace Empiria.Trade.Financial.Data {
     static internal decimal GetCreditDebt(int customerId) {
       int creditLineId = GetCreditLineId(customerId);
 
+      if (creditLineId == 0) {
+        creditLineId = -1;
+      }
+
       var sql = "SELECT SUM(debitAmount) AS Debit FROM TRDCreditTransactions " +
                $"WHERE CreditLineId = {creditLineId}";
       

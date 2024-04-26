@@ -18,7 +18,7 @@ namespace Empiria.Trade.Financial.Adapters {
     static public MoneyAccountTransactionDto Map(MoneyAccountTransaction transaction) {
       var dto = new MoneyAccountTransactionDto {
         OperationNumber = transaction.ExtData,
-        OperationType = "Credito Cliente",
+        OperationType = transaction.TransactionType.Name,
         TransactionDate = transaction.TransactionTime,
         CreditAmount = transaction.Credit,
         DebitAmount = transaction.Debit,

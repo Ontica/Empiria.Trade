@@ -52,9 +52,9 @@ namespace Empiria.Trade.Financial {
     } 
 
     [DataField("MoneyAccountTransactionTypeId")]
-    public int TransactionTypeId {
+    public MoneyAccountTransactionType TransactionType {
       get; private set;
-    } = 1;
+    } 
 
     [DataField("ReferenceTypeId")]
     public int ReferenceTypeId {
