@@ -84,7 +84,7 @@ namespace Empiria.Trade.Tests.Inventory {
       var usecase = InventoryOrderUseCases.UseCaseInteractor();
 
       InventoryOrderQuery query = new InventoryOrderQuery {
-        InventoryOrderTypeUID = "",
+        InventoryOrderTypeUID = "ab8e950e-94e9-4ae5-943a-49abad514g52",
         AssignedToUID = "",
         Keywords = "",
         Status = InventoryStatus.Todos

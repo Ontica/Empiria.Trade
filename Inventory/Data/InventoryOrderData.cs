@@ -133,7 +133,9 @@ namespace Empiria.Trade.Inventory.Data {
       var orderType = string.Empty;
 
       if (query.InventoryOrderTypeUID != string.Empty) {
-        var inventoryOrderTypeId = -1; //TODO CREAR REGISTROS EN TYPES Y PARSEAR;
+        var inventoryOrderTypeId = new InventoryOrderEntry()
+          .GetInventoryOrderTypeId(query.InventoryOrderTypeUID); //TODO CREAR REGISTROS EN TYPES Y PARSEAR;
+
         orderType = $"InventoryOrderTypeId = {inventoryOrderTypeId}";
       }
 
