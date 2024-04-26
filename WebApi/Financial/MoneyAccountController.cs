@@ -15,6 +15,8 @@ using Empiria.WebApi;
 
 using Empiria.Trade.Financial.Adapters;
 using Empiria.Trade.Financial.UseCases;
+using Empiria.Trade.Sales.Adapters;
+using Empiria.Trade.Sales.UseCases;
 
 
 
@@ -58,6 +60,22 @@ namespace Empiria.Trade.WebApi.Financial {
 
         return new SingleObjectModel(base.Request, moneyAccounts);
       } // using 
+
+    }
+
+
+    [HttpGet]
+    [Route("v4/trade/financial/money-accounts/{moneyaccountUID:guid}")]
+    public SingleObjectModel GetMoneyAccount([FromUri] string moneyAccountUID) {
+
+      base.RequireResource(moneyAccountUID, "orderUID");
+
+      using (var usecases = MoneyAccountUseCases.UseCaseInteractor()) {
+
+        var moneyAccountDto = usecases.GetMoneyAccount(moneyAccountUID);
+
+        return new SingleObjectModel(this.Request, moneyAccountDto);
+      }
 
     }
 

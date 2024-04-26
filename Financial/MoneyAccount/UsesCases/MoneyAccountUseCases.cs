@@ -116,6 +116,13 @@ namespace Empiria.Trade.Financial.UseCases {
       return orderSalesStatus.ToFixedList<NamedEntityDto>();
     }
 
+    public MoneyAccountDto GetMoneyAccount(string moneyAccountUID) {
+      var moneyAccount = MoneyAccount.Parse(moneyAccountUID);
+      moneyAccount.LoadMoneyAccountTransactions();
+
+      return  MoneyAccountMapper.Map(moneyAccount);
+    }
+
 
     #endregion Public properties
 

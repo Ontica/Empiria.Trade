@@ -83,7 +83,7 @@ namespace Empiria.Trade.Tests.MoneyAccount {
 
 
       var fields = new SearchMoneyAccountFields {
-        Keywords = "BRAUN REDECOP PEDRO",        
+        Keywords = "BRAUN REDECOP PEDRO",
         Status = "",
         MoneyAccountTypeUID = "f6d3a7db-9f54-4a9f-a021-edbfa34fbf42"
       };
@@ -97,12 +97,23 @@ namespace Empiria.Trade.Tests.MoneyAccount {
 
     [Fact]
     public void ShouldGetMoneyAccountTypes() {
-      
+
       var monyeAccount = Empiria.Trade.Financial.MoneyAccount.Parse(1001);
 
       var x = MoneyAccountType.GetList<MoneyAccountType>();
       var y = x.MapToNamedEntityList();
       Assert.NotNull(y);
+    }
+
+    [Fact]
+    public void ShouldGet() {
+
+      var moneyAccount = Empiria.Trade.Financial.MoneyAccount.Parse(1007);
+      moneyAccount.LoadMoneyAccountTransactions();
+
+      var x = MoneyAccountMapper.Map(moneyAccount);
+
+      Assert.NotNull(x);
     }
 
   } // class MoneyAccountTest

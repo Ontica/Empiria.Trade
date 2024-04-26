@@ -47,7 +47,7 @@ namespace Empiria.Trade.Financial {
     #region Public properties
 
     [DataField("MoneyAccountId")]
-    public MoneyAccount MoneyAccount {
+    public int MoneyAccount {
       get; private set;
     } 
 
@@ -125,7 +125,7 @@ namespace Empiria.Trade.Financial {
     }
 
     internal void Update(MoneyAccountTransactionFields fields) {
-      this.MoneyAccount = MoneyAccount.Parse(fields.MoneyAccountUID);
+      this.MoneyAccount = 3; //MoneyAccount.Parse(fields.MoneyAccountUID);
       this.Description = fields.Description;
       this.Credit = fields.TransactionAmount;
       this.ReferenceId = fields.PayableOrderId;
@@ -150,7 +150,7 @@ namespace Empiria.Trade.Financial {
 
     public void AddCreditTransactions(MoneyAccount moneyAccount, CreditTransactionFields fields) {
       MoneyAccountTransaction moneyTransaction = new MoneyAccountTransaction();
-      moneyTransaction.MoneyAccount = moneyAccount;
+      moneyTransaction.MoneyAccount = moneyAccount.Id;
       moneyTransaction.Description = "Credito " + fields.ExtData;
       moneyTransaction.TransactionTime = fields.TransactionTime;
       moneyTransaction.Credit = fields.CreditAmount;
@@ -183,7 +183,7 @@ namespace Empiria.Trade.Financial {
     private void AddCreditTransaction(MoneyAccount moneyAccount, FixedList<CreditTransaction> transactions) {
       foreach (var transaction in transactions) {
         MoneyAccountTransaction moneyTransaction = new MoneyAccountTransaction();
-        moneyTransaction.MoneyAccount = moneyAccount;
+        moneyTransaction.MoneyAccount = moneyAccount.Id;
         moneyTransaction.Description = "Credito " + transaction.ExtData;
         moneyTransaction.TransactionTime = transaction.TransactionTime;
         moneyTransaction.Credit = transaction.CreditAmount;

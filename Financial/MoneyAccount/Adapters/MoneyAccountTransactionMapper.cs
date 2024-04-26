@@ -17,12 +17,12 @@ namespace Empiria.Trade.Financial.Adapters {
 
     static public MoneyAccountTransactionDto Map(MoneyAccountTransaction transaction) {
       var dto = new MoneyAccountTransactionDto {
-        TicketNumber = transaction.ExtData,
+        OperationNumber = transaction.ExtData,
+        OperationType = "Credito Cliente",
         TransactionDate = transaction.TransactionTime,
         CreditAmount = transaction.Credit,
-        DebitAmount = transaction.Credit,
-        DueDate = transaction.TransactionTime.AddDays(transaction.MoneyAccount.DaysToPay),
-        DaysToPay = GetDaysToPay(transaction.TransactionTime.AddDays(transaction.MoneyAccount.DaysToPay))
+        DebitAmount = transaction.Debit,
+        
       };
       return dto;
     }

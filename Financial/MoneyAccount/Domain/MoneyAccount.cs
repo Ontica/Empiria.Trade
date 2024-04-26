@@ -120,6 +120,11 @@ namespace Empiria.Trade.Financial {
       get; protected set;
     } = EntityStatus.Active;
 
+    public FixedList<MoneyAccountTransaction> MoneyAccountTransactions {
+      get; private set;
+    } = new FixedList<MoneyAccountTransaction>();
+
+
     #endregion Public properties
 
     #region Public methods
@@ -151,6 +156,11 @@ namespace Empiria.Trade.Financial {
     public FixedList<MoneyAccount> Search(SearchMoneyAccountFields fields) {
       return MoneyAccountData.GetMoneyAccounts(fields); 
     }
+
+    public void LoadMoneyAccountTransactions() {
+      this.MoneyAccountTransactions = MoneyAccountTransactionData.GetTransactions(this.Id);
+    }
+
 
     #endregion Public methods
 
