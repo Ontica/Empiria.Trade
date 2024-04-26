@@ -34,9 +34,9 @@ namespace Empiria.Trade.Inventory.Adapters {
         } = string.Empty;
 
 
-        public string ExternalObjectReferenceUID {
-            get; set;
-        } = string.Empty;
+        //public string ExternalObjectReferenceUID {
+        //    get; set;
+        //} = string.Empty;
 
 
         public string ResponsibleUID {
@@ -64,7 +64,7 @@ namespace Empiria.Trade.Inventory.Adapters {
         } = InventoryStatus.Abierto;
 
 
-        public FixedList<InventoryOrderItemFields> InventoryItemFields {
+        public FixedList<InventoryOrderItemFields> ItemFields {
             get; set;
         } = new FixedList<InventoryOrderItemFields>();
 
@@ -74,17 +74,17 @@ namespace Empiria.Trade.Inventory.Adapters {
     public class InventoryOrderItemFields {
 
 
-        public string InventoryOrderItemUID {
+        public string UID {
             get; set;
         } = string.Empty;
 
 
-        public string ExternalObjectItemReferenceUID {
-            get; set;
-        } = string.Empty;
+        //public string ExternalObjectItemReferenceUID {
+        //    get; set;
+        //} = string.Empty;
 
 
-        public string ItemNotes {
+        public string Notes {
             get; set;
         } = string.Empty;
 
@@ -114,6 +114,16 @@ namespace Empiria.Trade.Inventory.Adapters {
         }
 
 
+        public string PostedByUID {
+          get; set;
+        }
+
+
+        public InventoryStatus Status {
+          get; set;
+        }
+
+
         //public DateTime ClosingTime {
         //    get; set;
         //}
@@ -124,16 +134,7 @@ namespace Empiria.Trade.Inventory.Adapters {
         //}
 
 
-        public string PostedByUID {
-            get; set;
-        }
 
-
-        public InventoryStatus ItemStatus {
-            get; set;
-        }
-
-
-    } // class InventoryOrderItemFields
+  } // class InventoryOrderItemFields
 
 } // namespace Empiria.Trade.Inventory.Adapters

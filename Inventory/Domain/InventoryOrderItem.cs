@@ -153,28 +153,28 @@ namespace Empiria.Trade.Inventory {
         private void MapToInventoryOrderItem(InventoryOrderEntry inventoryOrder,
                                              InventoryOrderItemFields fields) {
 
-            if (fields.InventoryOrderItemUID != string.Empty) {
-                this.InventoryOrderItemId = Parse(fields.InventoryOrderItemUID).InventoryOrderItemId;
+            if (fields.UID != string.Empty) {
+                this.InventoryOrderItemId = Parse(fields.UID).InventoryOrderItemId;
                 this.InventoryOrderItemUID = inventoryOrder.InventoryOrderUID;
             }
 
             this.InventoryOrder = inventoryOrder;
             this.ExternalObjectItemReferenceId = -1; //External.Parse(fields.ExternalObjectItemReferenceUID).Id;
-            this.ItemNotes = fields.ItemNotes;
+            this.ItemNotes = fields.Notes;
             this.VendorProduct = VendorProduct.Parse(fields.VendorProductUID);
             this.WarehouseBin = WarehouseBin.Parse(fields.WarehouseBinUID);
             this.Quantity = fields.Quantity;
             this.InputQuantity = fields.InputQuantity;
             this.OutputQuantity = fields.OutputQuantity;
             this.ExtData = "";
-            this.Status = fields.ItemStatus;
+            this.Status = fields.Status;
 
-            if (fields.ItemStatus == InventoryStatus.Abierto) {
+            if (fields.Status == InventoryStatus.Abierto) {
                 this.ClosingTime = new DateTime(2049,01,01);
                 this.PostingTime = DateTime.Now;
                 this.PostedById = Party.Parse(fields.PostedByUID).Id;
             }
-            if (fields.ItemStatus == InventoryStatus.Cerrado) {
+            if (fields.Status == InventoryStatus.Cerrado) {
                 this.ClosingTime = DateTime.Now;
             }
         }

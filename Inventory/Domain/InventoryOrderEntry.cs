@@ -15,173 +15,173 @@ using Empiria.Trade.Inventory.Data;
 namespace Empiria.Trade.Inventory {
 
 
-    /// <summary>Represents an inventory order entry.</summary>
-    public class InventoryOrderEntry : BaseObject {
+  /// <summary>Represents an inventory order entry.</summary>
+  public class InventoryOrderEntry : BaseObject {
 
-        #region Constructors and parsers
+    #region Constructors and parsers
 
-        public InventoryOrderEntry() {
-            //no-op
-        }
-
-
-        static public InventoryOrderEntry Parse(int id) => ParseId<InventoryOrderEntry>(id);
-
-        static public InventoryOrderEntry Parse(string uid) => ParseKey<InventoryOrderEntry>(uid);
-
-        static public InventoryOrderEntry Empty => ParseEmpty<InventoryOrderEntry>();
+    public InventoryOrderEntry() {
+      //no-op
+    }
 
 
-        public InventoryOrderEntry(InventoryOrderFields fields, string inventoryOrderUID) {
+    static public InventoryOrderEntry Parse(int id) => ParseId<InventoryOrderEntry>(id);
 
-            MapToInventoryOrderEntry(fields, inventoryOrderUID);
-        }
+    static public InventoryOrderEntry Parse(string uid) => ParseKey<InventoryOrderEntry>(uid);
 
-
-        #endregion Constructors and parsers
-
-        #region Properties
-
-        [DataField("InventoryOrderId")]
-        internal int InventoryOrderId {
-            get; set;
-        }
+    static public InventoryOrderEntry Empty => ParseEmpty<InventoryOrderEntry>();
 
 
-        [DataField("InventoryOrderUID")]
-        internal string InventoryOrderUID {
-            get; set;
-        }
+    public InventoryOrderEntry(InventoryOrderFields fields, string inventoryOrderUID) {
+
+      MapToInventoryOrderEntry(fields, inventoryOrderUID);
+    }
 
 
-        [DataField("InventoryOrderTypeId")]
-        internal int InventoryOrderTypeId {
-            get; set;
-        }
+    #endregion Constructors and parsers
+
+    #region Properties
+
+    [DataField("InventoryOrderId")]
+    internal int InventoryOrderId {
+      get; set;
+    }
 
 
-        [DataField("InventoryOrderNo")]
-        internal string InventoryOrderNo {
-            get; set;
-        }
+    [DataField("InventoryOrderUID")]
+    internal string InventoryOrderUID {
+      get; set;
+    }
 
 
-        [DataField("ExternalObjectReferenceId")]
-        internal int ExternalObjectReferenceId {
-            get; set;
-        }
+    [DataField("InventoryOrderTypeId")]
+    internal int InventoryOrderTypeId {
+      get; set;
+    }
 
 
-        [DataField("ResponsibleId")]
-        internal int ResponsibleId {
-            get; set;
-        }
+    [DataField("InventoryOrderNo")]
+    internal string InventoryOrderNo {
+      get; set;
+    }
 
 
-        [DataField("AssignedToId")]
-        internal int AssignedToId {
-            get; set;
-        }
+    [DataField("ExternalObjectReferenceId")]
+    internal int ExternalObjectReferenceId {
+      get; set;
+    }
 
 
-        [DataField("InventoryOrderNotes")]
-        internal string Notes {
-            get; set;
-        }
+    [DataField("ResponsibleId")]
+    internal int ResponsibleId {
+      get; set;
+    }
 
 
-        [DataField("InventoryOrderExtData")]
-        internal string InventoryOrderExtData {
-            get; set;
-        } = string.Empty;
+    [DataField("AssignedToId")]
+    internal int AssignedToId {
+      get; set;
+    }
 
 
-        [DataField("InventoryOrderKeywords")]
-        internal string InventoryOrderKeywords {
-            get; set;
-        }
+    [DataField("InventoryOrderNotes")]
+    internal string Notes {
+      get; set;
+    }
 
 
-        [DataField("ClosingTime")]
-        internal DateTime ClosingTime {
-            get; set;
-        }
+    [DataField("InventoryOrderExtData")]
+    internal string InventoryOrderExtData {
+      get; set;
+    } = string.Empty;
 
 
-        [DataField("PostingTime")]
-        internal DateTime PostingTime {
-            get; set;
-        }
+    [DataField("InventoryOrderKeywords")]
+    internal string InventoryOrderKeywords {
+      get; set;
+    }
 
 
-        [DataField("PostedById")]
-        internal int PostedById {
-            get; set;
-        }
+    [DataField("ClosingTime")]
+    internal DateTime ClosingTime {
+      get; set;
+    }
 
 
-        [DataField("InventoryOrderStatus", Default = InventoryStatus.Abierto)]
-        internal InventoryStatus Status {
-            get; set;
-        } = InventoryStatus.Abierto;
+    [DataField("PostingTime")]
+    internal DateTime PostingTime {
+      get; set;
+    }
 
 
-        internal FixedList<InventoryOrderItem> InventoryOrderItems {
-            get; set;
-        } = new FixedList<InventoryOrderItem>();
+    [DataField("PostedById")]
+    internal int PostedById {
+      get; set;
+    }
 
 
-        internal string Keywords {
-            get {
-                return EmpiriaString.BuildKeywords(
-
-                  InventoryOrderUID, InventoryOrderNo, Notes
-                );
-            }
-        }
-
-        #endregion Properties
+    [DataField("InventoryOrderStatus", Default = InventoryStatus.Abierto)]
+    internal InventoryStatus Status {
+      get; set;
+    } = InventoryStatus.Abierto;
 
 
-        #region Private methods
-
-        protected override void OnSave() {
-
-            if (this.InventoryOrderId == 0) {
-
-                this.InventoryOrderId = this.Id;
-                this.InventoryOrderUID = this.UID;
-                this.InventoryOrderNo = $"OCI{this.InventoryOrderId.ToString().PadLeft(9, '0')}";
-            }
-            InventoryOrderData.WriteInventoryEntry(this);
-        }
+    internal FixedList<InventoryOrderItem> InventoryOrderItems {
+      get; set;
+    } = new FixedList<InventoryOrderItem>();
 
 
-        private void MapToInventoryOrderEntry(InventoryOrderFields fields, string inventoryOrderUID) {
+    internal string Keywords {
+      get {
+        return EmpiriaString.BuildKeywords(
 
-            if (inventoryOrderUID != string.Empty) {
-                this.InventoryOrderId = Parse(inventoryOrderUID).InventoryOrderId;
-                this.InventoryOrderUID = inventoryOrderUID;
-                this.InventoryOrderNo = $"OCI{this.InventoryOrderId.ToString().PadLeft(9, '0')}";
-            }
+          InventoryOrderUID, InventoryOrderNo, Notes
+        );
+      }
+    }
 
-            this.InventoryOrderTypeId = GetInventoryOrderTypeId(fields.InventoryOrderTypeUID); //TODO REGISTRAR TIPOS EN TABLA TYPES
-            this.ExternalObjectReferenceId = -1;
-            this.ResponsibleId = Party.Parse(fields.ResponsibleUID).Id;
-            this.AssignedToId = Party.Parse(fields.AssignedToUID).Id;
-            this.Notes = fields.Notes;
-            this.InventoryOrderExtData = "";
-            this.Status = fields.Status;
+    #endregion Properties
 
-            if (fields.Status == InventoryStatus.Abierto) {
-                this.PostedById = Party.Parse(fields.PostedByUID).Id;
-                this.PostingTime = DateTime.Now;
-                this.ClosingTime = DateTime.Now;
-            }
-            if (fields.Status == InventoryStatus.Cerrado) {
-                this.ClosingTime = DateTime.Now;
-            }
-        }
+
+    #region Private methods
+
+    protected override void OnSave() {
+
+      if (this.InventoryOrderId == 0) {
+
+        this.InventoryOrderId = this.Id;
+        this.InventoryOrderUID = this.UID;
+        this.InventoryOrderNo = $"OCI{this.InventoryOrderId.ToString().PadLeft(9, '0')}";
+      }
+      InventoryOrderData.WriteInventoryEntry(this);
+    }
+
+
+    private void MapToInventoryOrderEntry(InventoryOrderFields fields, string inventoryOrderUID) {
+
+      if (inventoryOrderUID != string.Empty) {
+        this.InventoryOrderId = Parse(inventoryOrderUID).InventoryOrderId;
+        this.InventoryOrderUID = inventoryOrderUID;
+        this.InventoryOrderNo = $"OCI{this.InventoryOrderId.ToString().PadLeft(9, '0')}";
+      }
+
+      this.InventoryOrderTypeId = GetInventoryOrderTypeId(fields.InventoryOrderTypeUID); //TODO REGISTRAR TIPOS EN TABLA TYPES
+      this.ExternalObjectReferenceId = -1;
+      this.ResponsibleId = Party.Parse(fields.ResponsibleUID).Id;
+      this.AssignedToId = Party.Parse(fields.AssignedToUID).Id;
+      this.Notes = fields.Notes;
+      this.InventoryOrderExtData = "";
+      this.Status = fields.Status;
+
+      if (fields.Status == InventoryStatus.Abierto) {
+        this.PostedById = Party.Parse(fields.PostedByUID).Id;
+        this.PostingTime = DateTime.Now;
+        this.ClosingTime = DateTime.Now;
+      }
+      if (fields.Status == InventoryStatus.Cerrado) {
+        this.ClosingTime = DateTime.Now;
+      }
+    }
 
 
     private int GetInventoryOrderTypeId(string uid) {
@@ -200,10 +200,9 @@ namespace Empiria.Trade.Inventory {
 
     }
 
+    #endregion Private methods
 
-        #endregion Private methods
 
-
-    } // class InventoryOrderEntry
+  } // class InventoryOrderEntry
 
 } // namespace Empiria.Trade.Inventory.Domain

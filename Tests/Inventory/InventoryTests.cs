@@ -138,13 +138,13 @@ namespace Empiria.Trade.Tests.Inventory {
 
       var fields = new InventoryOrderFields() {
         InventoryOrderTypeUID = "ab8e950e-94e9-4ae5-943a-49abad514g52",
-        ExternalObjectReferenceUID = "",
+        //ExternalObjectReferenceUID = "",
         ResponsibleUID = "c930a33a-e93b-43c9-9379-96bcb86c4e4d",
         AssignedToUID = "a517e788-8ddf-4772-b6d2-adc3907e3905",
         Notes = "CONTEO X002",
         PostedByUID = "ccdd87c5-52f0-4074-8448-5233cc1a4a77",
         Status = InventoryStatus.Abierto,
-        InventoryItemFields = GetItemFields()
+        ItemFields = GetItemFields()
       };
       return fields;
     }
@@ -156,9 +156,9 @@ namespace Empiria.Trade.Tests.Inventory {
       var items = new List<InventoryOrderItemFields>();
 
       var item1 = new InventoryOrderItemFields() {
-        InventoryOrderItemUID = "516f36bc-535c-4a07-8475-3e6568ebbd23",
-        ExternalObjectItemReferenceUID = "",
-        ItemNotes = "NOTAS 1",
+        UID = "516f36bc-535c-4a07-8475-3e6568ebbd23",
+        //ExternalObjectItemReferenceUID = "",
+        Notes = "NOTAS 1",
         VendorProductUID = "e0655909-8614-40c0-b63e-fe166a377c86",
         WarehouseBinUID = "f06a2b16-e744-412e-bd94-82821a7b5cd9",
         Quantity = 10,
@@ -167,14 +167,14 @@ namespace Empiria.Trade.Tests.Inventory {
         //ClosingTime = DateTime.Now,
         //PostingTime = DateTime.Now,
         PostedByUID = "a517e788-8ddf-4772-b6d2-adc3907e3905",
-        ItemStatus = InventoryStatus.Abierto,
+        Status = InventoryStatus.Abierto,
         //  Comments = "COMENTARIO X-001",
       };
       items.Add(item1);
       var item2 = new InventoryOrderItemFields() {
-        InventoryOrderItemUID = "f53e0410-9fd0-4a1c-9c04-d3450ff47ec9",
-        ExternalObjectItemReferenceUID = "",
-        ItemNotes = "NOTAS 2",
+        UID = "f53e0410-9fd0-4a1c-9c04-d3450ff47ec9",
+        //ExternalObjectItemReferenceUID = "",
+        Notes = "NOTAS 2",
         VendorProductUID = "1d47e4e5-ff97-4197-8bd1-b49df2780c32",
         WarehouseBinUID = "48605b90-52e1-43d0-aeab-7125805863aa",
         Quantity = 20,
@@ -183,13 +183,13 @@ namespace Empiria.Trade.Tests.Inventory {
         //ClosingTime = DateTime.Now,
         //PostingTime = DateTime.Now,
         PostedByUID = "a517e788-8ddf-4772-b6d2-adc3907e3905",
-        ItemStatus = InventoryStatus.Abierto,
+        Status = InventoryStatus.Abierto,
       };
       items.Add(item2);
       var item3 = new InventoryOrderItemFields() {
-        InventoryOrderItemUID = "0f545ebd-d913-4b01-9b70-af72556c6cd3",
-        ExternalObjectItemReferenceUID = "",
-        ItemNotes = "NOTAS 3",
+        UID = "0f545ebd-d913-4b01-9b70-af72556c6cd3",
+        //ExternalObjectItemReferenceUID = "",
+        Notes = "NOTAS 3",
         VendorProductUID = "1d47e4e5-ff97-4197-8bd1-b49df2780c32",
         WarehouseBinUID = "48605b90-52e1-43d0-aeab-7125805863aa",
         Quantity = 30,
@@ -198,7 +198,7 @@ namespace Empiria.Trade.Tests.Inventory {
         //ClosingTime = DateTime.Now,
         //PostingTime = DateTime.Now,
         PostedByUID = "a517e788-8ddf-4772-b6d2-adc3907e3905",
-        ItemStatus = InventoryStatus.Abierto,
+        Status = InventoryStatus.Abierto,
       };
       items.Add(item3);
       return items.ToFixedList();

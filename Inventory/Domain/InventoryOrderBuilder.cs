@@ -35,7 +35,7 @@ namespace Empiria.Trade.Inventory.Domain {
       var inventoryOrder = new InventoryOrderEntry(fields, inventoryOrderUID);
       inventoryOrder.Save();
 
-      CreateInventoryOrderItems(inventoryOrder, fields.InventoryItemFields);
+      CreateInventoryOrderItems(inventoryOrder, fields.ItemFields);
 
       return inventoryOrder;
     }
