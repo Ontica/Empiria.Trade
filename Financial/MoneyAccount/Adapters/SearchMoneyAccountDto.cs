@@ -44,6 +44,10 @@ namespace Empiria.Trade.Financial.Adapters {
       get; internal set;
     }
 
+    public string MoneyAccountNumber {
+      get; internal set;
+    }
+
     public string Owner {
       get; internal set;
     }

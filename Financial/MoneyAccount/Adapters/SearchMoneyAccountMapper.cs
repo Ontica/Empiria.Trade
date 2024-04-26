@@ -33,6 +33,7 @@ namespace Empiria.Trade.Financial.Adapters {
       List<DataTableColumn> columns = new List<DataTableColumn>();
 
       columns.Add(new DataTableColumn("moneyAccountType", "Tipo de cuenta", "text-link"));
+      columns.Add(new DataTableColumn("moneyAccountNumber", "Numero", "text-link"));
       columns.Add(new DataTableColumn("owner", "Cliente", "text"));
       columns.Add(new DataTableColumn("balance", "Saldo", "decimal"));
       columns.Add(new DataTableColumn("status", "Estatus", "text-tag"));
@@ -55,6 +56,7 @@ namespace Empiria.Trade.Financial.Adapters {
       var dto = new SearchMoneyAccountEntriesDto {
         UID = moneyAccount.UID,
         MoneyAccountType = moneyAccount.MoneyAccountType.Name,
+        MoneyAccountNumber = moneyAccount.Number,
         Owner = moneyAccount.Owner.Name,
         Balance = GetBalance(moneyAccount.Owner.Id),
         Status = "Activo"
