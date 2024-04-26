@@ -32,8 +32,8 @@ namespace Empiria.Trade.Financial.Adapters {
     static private FixedList<DataTableColumn> DataColumns() {
       List<DataTableColumn> columns = new List<DataTableColumn>();
 
-      columns.Add(new DataTableColumn("moneyAccountType", "Tipo de cuenta", "text-link"));
-      columns.Add(new DataTableColumn("moneyAccountNumber", "Numero", "text-link"));
+      columns.Add(new DataTableColumn("moneyAccountType", "Tipo de cuenta", "text"));
+      columns.Add(new DataTableColumn("moneyAccountNumber", "Número", "text-link"));
       columns.Add(new DataTableColumn("owner", "Cliente", "text"));
       columns.Add(new DataTableColumn("balance", "Saldo", "decimal"));
       columns.Add(new DataTableColumn("status", "Estatus", "text-tag"));
