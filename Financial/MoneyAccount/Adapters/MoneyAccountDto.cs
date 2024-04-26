@@ -15,6 +15,11 @@ namespace Empiria.Trade.Financial.Adapters {
   ///  Output DTO used to returnmoney accounts info.  
   public class MoneyAccountDto {
 
+
+    public string UID {
+      get; internal set;
+    }
+
     public string MoneyAccountNumber {
       get; internal set;
     }

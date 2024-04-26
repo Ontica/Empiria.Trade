@@ -18,6 +18,7 @@ namespace Empiria.Trade.Financial.Adapters {
 
     static public MoneyAccountDto Map(MoneyAccount moneyAccount) {
       var dto = new MoneyAccountDto {
+        UID = moneyAccount.UID,
         MoneyAccountNumber = moneyAccount.Number,
         MoneyAccountType = moneyAccount.MoneyAccountType.Name,
         MoneyAccountOwner = moneyAccount.Owner.Name,

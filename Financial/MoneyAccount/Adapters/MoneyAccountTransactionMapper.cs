@@ -17,6 +17,7 @@ namespace Empiria.Trade.Financial.Adapters {
 
     static public MoneyAccountTransactionDto Map(MoneyAccountTransaction transaction) {
       var dto = new MoneyAccountTransactionDto {
+        UID = transaction.UID,
         OperationNumber = transaction.ExtData,
         OperationType = transaction.TransactionType.Name,
         TransactionDate = transaction.TransactionTime,
