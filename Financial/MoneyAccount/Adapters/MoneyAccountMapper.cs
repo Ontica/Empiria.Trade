@@ -20,8 +20,8 @@ namespace Empiria.Trade.Financial.Adapters {
       var dto = new MoneyAccountDto {
         UID = moneyAccount.UID,
         MoneyAccountNumber = moneyAccount.Number,
-        MoneyAccountType = moneyAccount.MoneyAccountType.Name,
-        MoneyAccountOwner = moneyAccount.Owner.Name,
+        MoneyAccountType = moneyAccount.MoneyAccountType.MapToNamedEntity(),
+        MoneyAccountOwner = moneyAccount.Owner.MapToNamedEntity(),
         MoneyAccountLimit = moneyAccount.CreditLimit,
         Balance = moneyAccount.GetDebit(),
         Status = ParseStatus(moneyAccount.Status),
@@ -30,19 +30,19 @@ namespace Empiria.Trade.Financial.Adapters {
       return dto;
     }
 
-    static private string ParseStatus(EntityStatus moneyAccountStatus) {
+    static private NamedEntityDto ParseStatus(EntityStatus moneyAccountStatus) {
       switch (moneyAccountStatus) {
-        case EntityStatus.Suspended:
-          return "Suspendido";
-        case EntityStatus.Active:
-          return "Activo";
+        case EntityStatus.Suspended: 
+         return new NamedEntityDto("Suspended", "Suspendido");
+       case EntityStatus.Active:
+          return new NamedEntityDto("Active", "Activo");
         case EntityStatus.Pending:
-          return "Pendiente";
+          return new NamedEntityDto("Pending","Pendiente");
         case EntityStatus.Deleted:
-          return "Cancelado";
+          return new NamedEntityDto("Deleted", "Cancelado");
 
         default:
-          return "Activo";
+          return new NamedEntityDto("Active", "Activo");
       }
     }
 

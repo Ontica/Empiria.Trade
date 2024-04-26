@@ -24,11 +24,11 @@ namespace Empiria.Trade.Financial.Adapters {
       get; internal set;
     }
 
-    public string MoneyAccountType {
+    public NamedEntityDto MoneyAccountType {
       get; internal set;
     }
 
-    public string MoneyAccountOwner {
+    public NamedEntityDto MoneyAccountOwner {
       get; internal set;
     }
 
@@ -40,7 +40,7 @@ namespace Empiria.Trade.Financial.Adapters {
       get; internal set;
     }
 
-    public string Status {
+    public NamedEntityDto Status {
       get; internal set;
     }
 
