@@ -112,7 +112,7 @@ namespace Empiria.Trade.Inventory.Adapters {
         x.VendorProduct.VendorProductUID,
         $"{x.VendorProduct.ProductFields.ProductCode} " +
         $"{x.VendorProduct.ProductPresentation.PresentationName}");
-      dto.ProductDescription = x.VendorProduct.ProductFields.ProductDescription;
+      dto.ProductDescription = x.VendorProduct.ProductFields.ProductName;
       dto.WarehouseBin = new NamedEntityDto(
         x.WarehouseBin.WarehouseBinUID,
         x.WarehouseBin.BinDescription);
