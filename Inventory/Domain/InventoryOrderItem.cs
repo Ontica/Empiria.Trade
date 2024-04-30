@@ -172,8 +172,8 @@ namespace Empiria.Trade.Inventory {
             if (fields.Status == InventoryStatus.Abierto) {
                 this.ClosingTime = new DateTime(2049,01,01);
                 this.PostingTime = DateTime.Now;
-                this.PostedById = Party.Parse(fields.PostedByUID).Id;
-            }
+                this.PostedById = ExecutionServer.CurrentUserId;
+      }
             if (fields.Status == InventoryStatus.Cerrado) {
                 this.ClosingTime = DateTime.Now;
             }

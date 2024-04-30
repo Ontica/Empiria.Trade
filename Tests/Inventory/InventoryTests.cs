@@ -58,7 +58,6 @@ namespace Empiria.Trade.Tests.Inventory {
         Quantity = 1,
         InputQuantity = 0,
         OutputQuantity = 0,
-        PostedByUID = "a517e788-8ddf-4772-b6d2-adc3907e3905",
         Status = InventoryStatus.Abierto
       };
 
@@ -166,7 +165,6 @@ namespace Empiria.Trade.Tests.Inventory {
         ResponsibleUID = "c930a33a-e93b-43c9-9379-96bcb86c4e4d",
         AssignedToUID = "a517e788-8ddf-4772-b6d2-adc3907e3905",
         Notes = "CONTEO ALMACEN Z",
-        PostedByUID = "ccdd87c5-52f0-4074-8448-5233cc1a4a77",
         Status = InventoryStatus.Abierto
         //ItemFields = GetItemFields()
       };
@@ -188,11 +186,7 @@ namespace Empiria.Trade.Tests.Inventory {
         Quantity = 10,
         InputQuantity = 9,
         OutputQuantity = 8,
-        //ClosingTime = DateTime.Now,
-        //PostingTime = DateTime.Now,
-        PostedByUID = "a517e788-8ddf-4772-b6d2-adc3907e3905",
         Status = InventoryStatus.Abierto,
-        //  Comments = "COMENTARIO X-001",
       };
       items.Add(item1);
       var item2 = new InventoryOrderItemFields() {
@@ -204,9 +198,6 @@ namespace Empiria.Trade.Tests.Inventory {
         Quantity = 20,
         InputQuantity = 9,
         OutputQuantity = 8,
-        //ClosingTime = DateTime.Now,
-        //PostingTime = DateTime.Now,
-        PostedByUID = "a517e788-8ddf-4772-b6d2-adc3907e3905",
         Status = InventoryStatus.Abierto,
       };
       items.Add(item2);
@@ -219,9 +210,6 @@ namespace Empiria.Trade.Tests.Inventory {
         Quantity = 30,
         InputQuantity = 9,
         OutputQuantity = 8,
-        //ClosingTime = DateTime.Now,
-        //PostingTime = DateTime.Now,
-        PostedByUID = "a517e788-8ddf-4772-b6d2-adc3907e3905",
         Status = InventoryStatus.Abierto,
       };
       items.Add(item3);

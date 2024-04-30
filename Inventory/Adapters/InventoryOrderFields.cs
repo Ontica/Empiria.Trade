@@ -54,11 +54,6 @@ namespace Empiria.Trade.Inventory.Adapters {
         } = string.Empty;
 
 
-        public string PostedByUID {
-            get; set;
-        } = string.Empty;
-
-
         public InventoryStatus Status {
             get; set;
         } = InventoryStatus.Abierto;
@@ -111,11 +106,6 @@ namespace Empiria.Trade.Inventory.Adapters {
 
         public decimal OutputQuantity {
             get; set;
-        }
-
-
-        public string PostedByUID {
-          get; set;
         }
 
 
