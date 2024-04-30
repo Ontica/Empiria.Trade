@@ -105,6 +105,12 @@ namespace Empiria.Trade.Inventory.Adapters {
     }
 
 
+    public string ProductDescription {
+      get;
+      internal set;
+    }
+
+
     public NamedEntityDto VendorProduct {
       get; set;
     } = new NamedEntityDto("", "");
@@ -133,8 +139,7 @@ namespace Empiria.Trade.Inventory.Adapters {
     public InventoryStatus Status {
       get; set;
     }
-
-
+    
   }
 
 
