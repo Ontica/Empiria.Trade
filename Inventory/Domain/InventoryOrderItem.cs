@@ -34,9 +34,9 @@ namespace Empiria.Trade.Inventory {
         static public InventoryOrderItem Empty => ParseEmpty<InventoryOrderItem>();
 
 
-        public InventoryOrderItem(InventoryOrderEntry inventoryOrder, InventoryOrderItemFields item) {
+        public InventoryOrderItem(string inventoryOrderUID, InventoryOrderItemFields item) {
 
-            MapToInventoryOrderItem(inventoryOrder, item);
+            MapToInventoryOrderItem(inventoryOrderUID, item);
         }
 
         #endregion Constructors and parsers
@@ -150,15 +150,15 @@ namespace Empiria.Trade.Inventory {
         }
 
 
-        private void MapToInventoryOrderItem(InventoryOrderEntry inventoryOrder,
+        private void MapToInventoryOrderItem(string inventoryOrderUID,
                                              InventoryOrderItemFields fields) {
 
             if (fields.UID != string.Empty) {
                 this.InventoryOrderItemId = Parse(fields.UID).InventoryOrderItemId;
-                this.InventoryOrderItemUID = inventoryOrder.InventoryOrderUID;
+                this.InventoryOrderItemUID = inventoryOrderUID;
             }
 
-            this.InventoryOrder = inventoryOrder;
+            this.InventoryOrder = InventoryOrderEntry.Parse(inventoryOrderUID);
             this.ExternalObjectItemReferenceId = -1; //External.Parse(fields.ExternalObjectItemReferenceUID).Id;
             this.ItemNotes = fields.Notes;
             this.VendorProduct = VendorProduct.Parse(fields.VendorProductUID);

@@ -35,6 +35,20 @@ namespace Empiria.Trade.WebApi.Inventory {
     }
 
 
+    [HttpPost]
+    [Route("v4/trade/inventory/orders/{inventoryOrderUID:guid}/item")]
+    public SingleObjectModel CreateInventoryOrderItem([FromUri] string inventoryOrderUID,
+      [FromBody] InventoryOrderItemFields fields) {
+
+      using (var usecases = InventoryOrderUseCases.UseCaseInteractor()) {
+
+        InventoryOrderDto inventoryOrder = usecases.CreateInventoryOrderItem(inventoryOrderUID, fields);
+
+        return new SingleObjectModel(this.Request, inventoryOrder);
+      }
+    }
+
+
     [HttpDelete]
     [Route("v4/trade/inventory/orders/{inventoryOrderUID:guid}")]
     public NoDataModel DeleteInventoryOrder([FromUri] string inventoryOrderUID) {

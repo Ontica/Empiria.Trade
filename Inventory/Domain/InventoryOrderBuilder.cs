@@ -30,25 +30,22 @@ namespace Empiria.Trade.Inventory.Domain {
 
     #region Public methods
 
-    internal InventoryOrderEntry CreateInventoryOrder(InventoryOrderFields fields, string inventoryOrderUID) {
+    internal InventoryOrderEntry CreateInventoryOrder(InventoryOrderFields fields,
+      string inventoryOrderUID) {
 
       var inventoryOrder = new InventoryOrderEntry(fields, inventoryOrderUID);
       inventoryOrder.Save();
 
-      CreateInventoryOrderItems(inventoryOrder, fields.ItemFields);
+      //CreateInventoryOrderItems(inventoryOrder, fields.ItemFields);
 
       return inventoryOrder;
     }
 
 
-    private void CreateInventoryOrderItems(InventoryOrderEntry inventoryOrder,
-        FixedList<InventoryOrderItemFields> inventoryItemFields) {
+    internal void CreateInventoryOrderItem(string inventoryOrderUID, InventoryOrderItemFields fields) {
 
-      foreach (var item in inventoryItemFields) {
-
-        var inventoryItem = new InventoryOrderItem(inventoryOrder, item);
+        var inventoryItem = new InventoryOrderItem(inventoryOrderUID, fields);
         inventoryItem.Save();
-      }
     }
 
 
@@ -69,23 +66,27 @@ namespace Empiria.Trade.Inventory.Domain {
 
     private void GetInventoryItemsForOrder(InventoryOrderEntry inventoryOrder) {
 
-      FixedList<InventoryOrderItem> items = 
+      FixedList<InventoryOrderItem> items =
         InventoryOrderData.GetInventoryItemsByOrderUID(inventoryOrder.InventoryOrderUID);
 
-      if (items.Count>0) {
+      if (items.Count > 0) {
         inventoryOrder.InventoryOrderItems = items;
       }
     }
 
-        internal InventoryOrderEntry UpdateInventoryCountOrder(string inventoryOrderUID, InventoryOrderFields fields) {
-            
-            return CreateInventoryOrder(fields, inventoryOrderUID);
-        }
+
+    internal InventoryOrderEntry UpdateInventoryCountOrder(string inventoryOrderUID,
+      InventoryOrderFields fields) {
+
+      return CreateInventoryOrder(fields, inventoryOrderUID);
+    }
 
 
-        #endregion Private methods
 
 
-    } // class InventoryOrderBuilder
+    #endregion Private methods
+
+
+  } // class InventoryOrderBuilder
 
 } // namespace Empiria.Trade.Inventory.Domain

@@ -15,93 +15,103 @@ using Empiria.Trade.Inventory.Domain;
 
 namespace Empiria.Trade.Inventory.UseCases {
 
-    /// <summary>Use cases used to build Inventory order.</summary>
-    public class InventoryOrderUseCases : UseCase {
+  /// <summary>Use cases used to build Inventory order.</summary>
+  public class InventoryOrderUseCases : UseCase {
 
 
-        #region Constructors and parsers
+    #region Constructors and parsers
 
-        public InventoryOrderUseCases() {
-            // no-op
-        }
+    public InventoryOrderUseCases() {
+      // no-op
+    }
 
-        static public InventoryOrderUseCases UseCaseInteractor() {
-            return CreateInstance<InventoryOrderUseCases>();
-        }
-
-
-        #endregion Constructors and parsers
-
-        #region Public methods
+    static public InventoryOrderUseCases UseCaseInteractor() {
+      return CreateInstance<InventoryOrderUseCases>();
+    }
 
 
-        public InventoryOrderDto CreateInventoryCountOrder(InventoryOrderFields fields) {
+    #endregion Constructors and parsers
 
-            var builder = new InventoryOrderBuilder();
-            var inventoryOrder = builder.CreateInventoryOrder(fields, "");
-            return GetInventoryCountOrderByUID(inventoryOrder.InventoryOrderUID);
-        }
+    #region Public methods
 
 
-        public void DeleteInventoryCountOrderByUID(string inventoryOrderUID) {
+    public InventoryOrderDto CreateInventoryCountOrder(InventoryOrderFields fields) {
 
-            InventoryOrderData.DeleteInventoryItemByOrderUID(inventoryOrderUID);
-            InventoryOrderData.DeleteInventoryOrderByUID(inventoryOrderUID);
-        }
-
-
-        public InventoryOrderDto DeleteInventoryItemByOrderUID(string inventoryOrderUID) {
-
-            InventoryOrderData.DeleteInventoryItemByOrderUID(inventoryOrderUID);
-            return GetInventoryCountOrderByUID(inventoryOrderUID);
-        }
+      var builder = new InventoryOrderBuilder();
+      var inventoryOrder = builder.CreateInventoryOrder(fields, "");
+      return GetInventoryCountOrderByUID(inventoryOrder.InventoryOrderUID);
+    }
 
 
-        public InventoryOrderDto DeleteInventoryItemByUID(string inventoryOrderUID, string inventoryOrderItemUID) {
+    public InventoryOrderDto CreateInventoryOrderItem(string inventoryOrderUID,
+      InventoryOrderItemFields fields) {
 
-            InventoryOrderData.DeleteInventoryItemByUID(inventoryOrderItemUID);
-            return GetInventoryCountOrderByUID(inventoryOrderUID);
-        }
-
-
-        public InventoryOrderDto GetInventoryCountOrderByUID(string inventoryOrderUID) {
-
-            var builder = new InventoryOrderBuilder();
-            var inventoryOrder = builder.GetInventoryOrderByUID(inventoryOrderUID);
-
-            return InventoryOrderMapper.MapInventoryOrder(inventoryOrder);
-        }
+      var builder = new InventoryOrderBuilder();
+      builder.CreateInventoryOrderItem(inventoryOrderUID, fields);
+      return GetInventoryCountOrderByUID(inventoryOrderUID);
+    }
 
 
-        public InventoryOrderDataDto GetInventoryCountOrderList(InventoryOrderQuery query) {
+    public void DeleteInventoryCountOrderByUID(string inventoryOrderUID) {
 
-            var list = InventoryOrderData.GetInventoryOrderList(query);
-            return InventoryOrderMapper.MapList(list, query);
-        }
-
-
-        public InventoryOrderEntry GetInventoryOrderParseUID(string inventoryOrderUID) {
-
-            return InventoryOrderEntry.Parse(inventoryOrderUID);
-        }
+      InventoryOrderData.DeleteInventoryItemByOrderUID(inventoryOrderUID);
+      InventoryOrderData.DeleteInventoryOrderByUID(inventoryOrderUID);
+    }
 
 
-        public InventoryOrderItem GetInventoryOrderItemParseUID(string itemUID) {
+    public InventoryOrderDto DeleteInventoryItemByOrderUID(string inventoryOrderUID) {
 
-            return InventoryOrderItem.Parse(itemUID);
-        }
-
-
-        public InventoryOrderDto UpdateInventoryCountOrder(string inventoryOrderUID, InventoryOrderFields fields) {
-            var builder = new InventoryOrderBuilder();
-            var inventoryOrder = builder.UpdateInventoryCountOrder(inventoryOrderUID, fields);
-
-            return GetInventoryCountOrderByUID(inventoryOrder.InventoryOrderUID);
-        }
+      InventoryOrderData.DeleteInventoryItemByOrderUID(inventoryOrderUID);
+      return GetInventoryCountOrderByUID(inventoryOrderUID);
+    }
 
 
-        #endregion Public methods
+    public InventoryOrderDto DeleteInventoryItemByUID(string inventoryOrderUID,
+      string inventoryOrderItemUID) {
 
-    } // class InventoryOrderUseCases
+      InventoryOrderData.DeleteInventoryItemByUID(inventoryOrderItemUID);
+      return GetInventoryCountOrderByUID(inventoryOrderUID);
+    }
+
+
+    public InventoryOrderDto GetInventoryCountOrderByUID(string inventoryOrderUID) {
+
+      var builder = new InventoryOrderBuilder();
+      var inventoryOrder = builder.GetInventoryOrderByUID(inventoryOrderUID);
+
+      return InventoryOrderMapper.MapInventoryOrder(inventoryOrder);
+    }
+
+
+    public InventoryOrderDataDto GetInventoryCountOrderList(InventoryOrderQuery query) {
+
+      var list = InventoryOrderData.GetInventoryOrderList(query);
+      return InventoryOrderMapper.MapList(list, query);
+    }
+
+
+    public InventoryOrderEntry GetInventoryOrderParseUID(string inventoryOrderUID) {
+
+      return InventoryOrderEntry.Parse(inventoryOrderUID);
+    }
+
+
+    public InventoryOrderItem GetInventoryOrderItemParseUID(string itemUID) {
+
+      return InventoryOrderItem.Parse(itemUID);
+    }
+
+
+    public InventoryOrderDto UpdateInventoryCountOrder(string inventoryOrderUID, InventoryOrderFields fields) {
+      var builder = new InventoryOrderBuilder();
+      var inventoryOrder = builder.UpdateInventoryCountOrder(inventoryOrderUID, fields);
+
+      return GetInventoryCountOrderByUID(inventoryOrder.InventoryOrderUID);
+    }
+
+
+    #endregion Public methods
+
+  } // class InventoryOrderUseCases
 
 } // namespace Empiria.Trade.Inventory.UseCases
