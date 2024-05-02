@@ -20,10 +20,11 @@ using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 using Empiria.Trade.Sales.ShippingAndHandling.UseCases;
 
 
-namespace Empiria.Trade.Sales.Adapters {
+namespace Empiria.Trade.Sales.Adapters
+{
 
-  /// <summary> Methods used to map Order. </summary>
-  static public class SalesOrderMapper {
+    /// <summary> Methods used to map Order. </summary>
+    static public class SalesOrderMapper {
 
     static public ISalesOrderDto Map(SalesOrder order) {
       var dto = new SalesOrderDto {
@@ -164,21 +165,21 @@ namespace Empiria.Trade.Sales.Adapters {
 
     static private decimal GetCustomerTotalDebt(int customerId) {
 
-      var CreditsUseCase = CreditTransactionUseCases.UseCaseInteractor();
+      var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
 
-      return CreditsUseCase.GetCustomerTotalDebt(customerId);
+      return moneyAccountUseCase.GetMoneyAccountTotalDebt(customerId);
     }
 
     static private decimal GetCusomerCreditLimit(int customerId) {
-      var CreditsUseCase = CreditTransactionUseCases.UseCaseInteractor();
+      var moneyAccountUseCases = MoneyAccountUseCases.UseCaseInteractor();
 
-      return CreditsUseCase.GetCusomerCreditLimit(customerId);
+      return moneyAccountUseCases.GetMoneyAccountCreditLimit(customerId);
     }
 
     static private FixedList<CreditTransactionDto> GetCreditTransactions(int customerId) {
-      var CreditsUseCase = CreditTransactionUseCases.UseCaseInteractor();
+      var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
 
-      return CreditsUseCase.GetCreditTransactions(customerId);      
+      return moneyAccountUseCase.GetCreditTransactions(customerId);      
     }
 
            

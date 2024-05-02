@@ -16,9 +16,10 @@ using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 
 
-namespace Empiria.Trade.Sales.Adapters {
+namespace Empiria.Trade.Sales.Adapters
+{
 
-  public interface ISalesOrderDto {
+    public interface ISalesOrderDto {
   }  // interface ISalesOrderDto
 
 

@@ -20,7 +20,7 @@ namespace Empiria.Trade.Financial.Data {
 
     static internal void Write(MoneyAccountTransaction o) {
 
-      var op = DataOperation.Parse("writeMoneyAccountTransactions", o.Id, o.UID, o.Id, o.TransactionType.Id, o.ReferenceTypeId, o.ReferenceId,
+      var op = DataOperation.Parse("writeMoneyAccountTransactions", o.Id, o.UID, o.MoneyAccount, o.TransactionType.Id, o.ReferenceTypeId, o.ReferenceId,
                                                                     o.Description, o.Credit, o.Debit,
                                                                     o.PayableOrderId,o.TransactionTime, o.Notes, o.ExtData, o.PostedTime,
                                                                     o.PostedById, (char) o.Status);
@@ -32,7 +32,7 @@ namespace Empiria.Trade.Financial.Data {
      
 
       var sql = "SELECT (SUM(Credit) - SUM(Debit)) AS Balance FROM TRDMoneyAccountTransactions " +
-               $"WHERE MoneyAccountId = {moneyAccountId}";
+               $"WHERE MoneyAccountId = {moneyAccountId} AND MoneyAccountTransactionStatus <> 'X' ";
 
       var dataOperation = DataOperation.Parse(sql);
 

@@ -253,9 +253,9 @@ namespace Empiria.Trade.Sales.Adapters {
     }
 
     static private decimal GetCustomerTotalDebt(int customerId) {
-      var CreditsUseCase = CreditTransactionUseCases.UseCaseInteractor();
+      var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
 
-      return CreditsUseCase.GetCustomerTotalDebt(customerId);
+      return moneyAccountUseCase.GetMoneyAccountTotalDebt(customerId);
     }
 
     static public decimal GetWeightTotalPackageByOrder(SalesOrder order) {

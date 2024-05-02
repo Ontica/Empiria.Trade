@@ -260,9 +260,9 @@ namespace Empiria.Trade.Sales.UseCases {
         PayableOrderId = order.Id,
         ExtData = order.OrderNumber
       };
-      var CreditsUseCase = CreditTransactionUseCases.UseCaseInteractor();
+      var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
 
-      CreditsUseCase.AddCustomerCreditTransaction(creditFields);
+      moneyAccountUseCase.AddCreditTransaction(creditFields);
     }
 
     private void SetCreditOrder(SalesOrder order) {
@@ -305,8 +305,8 @@ namespace Empiria.Trade.Sales.UseCases {
 
       var order = SalesOrder.Parse(orderUID);
 
-      var CreditsUseCase = CreditTransactionUseCases.UseCaseInteractor();
-      CreditsUseCase.Cancel(order.Id, notes);
+      var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
+      moneyAccountUseCase.CancelTransaction(order.Id, notes);
 
       order.Deauthorize();
       
@@ -315,16 +315,16 @@ namespace Empiria.Trade.Sales.UseCases {
     }
 
     static private decimal GetCusomerCreditLimit(int customerId) {
-      var CreditsUseCase = CreditTransactionUseCases.UseCaseInteractor();
+      var moneyAccountUseCases = MoneyAccountUseCases.UseCaseInteractor();
 
-      return CreditsUseCase.GetCusomerCreditLimit(customerId);
+      return moneyAccountUseCases.GetMoneyAccountCreditLimit(customerId);
     }
 
     static private decimal GetCustomerTotalDebt(int customerId) {
 
-      var CreditsUseCase = CreditTransactionUseCases.UseCaseInteractor();
+      var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
 
-      return CreditsUseCase.GetCustomerTotalDebt(customerId);
+      return moneyAccountUseCase.GetMoneyAccountTotalDebt(customerId);
     }
 
     #endregion Private methods

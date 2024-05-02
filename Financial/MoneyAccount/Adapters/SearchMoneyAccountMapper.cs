@@ -34,6 +34,7 @@ namespace Empiria.Trade.Financial.Adapters {
 
       columns.Add(new DataTableColumn("moneyAccountType", "Tipo de cuenta", "text"));
       columns.Add(new DataTableColumn("moneyAccountNumber", "Número", "text-link"));
+      
       columns.Add(new DataTableColumn("owner", "Cliente", "text"));
       columns.Add(new DataTableColumn("balance", "Saldo", "decimal"));
       columns.Add(new DataTableColumn("status", "Estatus", "text-tag"));
@@ -58,7 +59,7 @@ namespace Empiria.Trade.Financial.Adapters {
         MoneyAccountType = moneyAccount.MoneyAccountType.Name,
         MoneyAccountNumber = moneyAccount.Number,
         Owner = moneyAccount.Owner.Name,
-        Balance = GetBalance(moneyAccount.Owner.Id),
+        Balance = moneyAccount.GetDebit(),
         Status = "Activo"
       };
 
@@ -70,11 +71,7 @@ namespace Empiria.Trade.Financial.Adapters {
 
     #region Private methods
 
-    static private decimal GetBalance(int ownerId) {
-      return CreditTransaction.GetCustomerTotalDebt(ownerId);
-    
-    }
-
+  
     #endregion Private methods
 
   } // class SearchMoneyAccountMapper

@@ -97,4 +97,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Credits\" />
+  </ItemGroup>
 </Project>

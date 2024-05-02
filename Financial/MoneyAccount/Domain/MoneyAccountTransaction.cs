@@ -13,6 +13,7 @@ using Empiria.Trade.Financial.Adapters;
 using Empiria.Trade.Financial.Data;
 using Empiria.Trade.MoneyAccounts;
 
+
 namespace Empiria.Trade.Financial {
   /// <summary>Represents a MoneyAccount Transaction.</summary>
   public class MoneyAccountTransaction : BaseObject {
@@ -148,9 +149,10 @@ namespace Empiria.Trade.Financial {
       this.Save();
     }
 
-    public void AddCreditTransactions(MoneyAccount moneyAccount, CreditTransactionFields fields) {
+    public void AddCreditTransactions(MoneyAccount moneyAccount, CreditTrasnactionFields fields) {
       MoneyAccountTransaction moneyTransaction = new MoneyAccountTransaction();
       moneyTransaction.MoneyAccount = moneyAccount.Id;
+      moneyTransaction.TransactionType = MoneyAccountTransactionType.Parse(750);
       moneyTransaction.Description = "Credito " + fields.ExtData;
       moneyTransaction.TransactionTime = fields.TransactionTime;
       moneyTransaction.Credit = fields.CreditAmount;
@@ -164,39 +166,14 @@ namespace Empiria.Trade.Financial {
       moneyTransaction.Save();
     }
 
-    public string MigarteCreditTransactionToMoneyAccountTransactions() {
-     var moneyAccounts = MoneyAccountData.GetMoneyAccounts();
-
-      foreach (var moneyAccount in moneyAccounts) {
-        var creditLineId = CrediLineData.GetCreditLineId(moneyAccount.Owner.Id);
-        var transactions = CreditTransactionsData.GetCreditTrasantions(creditLineId);
-        AddCreditTransaction(moneyAccount, transactions);
-
-        }
-      return "ok";
-      }
 
     #endregion Public methods
 
     #region Private methods
 
-    private void AddCreditTransaction(MoneyAccount moneyAccount, FixedList<CreditTransaction> transactions) {
-      foreach (var transaction in transactions) {
-        MoneyAccountTransaction moneyTransaction = new MoneyAccountTransaction();
-        moneyTransaction.MoneyAccount = moneyAccount.Id;
-        moneyTransaction.Description = "Credito " + transaction.ExtData;
-        moneyTransaction.TransactionTime = transaction.TransactionTime;
-        moneyTransaction.Credit = transaction.CreditAmount;
-        moneyTransaction.PayableOrderId = transaction.PayableOrderId;
-        moneyTransaction.Notes = "";
-        moneyTransaction.ExtData = transaction.ExtData;
-        moneyTransaction.PostedTime = DateTime.Now;
-        moneyTransaction.PostedById = -1;
+    
 
-        moneyTransaction.Save();
-      }
-
-    }
+   
 
     
     #endregion Private methods

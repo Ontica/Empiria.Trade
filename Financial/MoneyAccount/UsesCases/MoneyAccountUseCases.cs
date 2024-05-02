@@ -14,9 +14,10 @@ using Empiria.StateEnums;
 using Empiria.Trade.Financial.Adapters;
 using Empiria.Trade.MoneyAccounts;
 
-namespace Empiria.Trade.Financial.UseCases {
-  /// <summary>Use cases used to management MoneyAccount transactions.</summary>
-  public class MoneyAccountUseCases : UseCase {
+namespace Empiria.Trade.Financial.UseCases
+{
+    /// <summary>Use cases used to management MoneyAccount transactions.</summary>
+    public class MoneyAccountUseCases : UseCase {
 
     #region Constructors and parsers
 
@@ -52,15 +53,24 @@ namespace Empiria.Trade.Financial.UseCases {
       return MoneyAccountTransactionMapper.Map(moneyAccountTransaction);
     }
 
- 
+    public CreditTransactionDto AddCreditTransaction(CreditTrasnactionFields fields) {
+      Assertion.Require(fields, "fields");
+      var moneyAccount = MoneyAccount.ParseByOwner(fields.CustomerId);
 
-    public MoneyAccountTransactionDto Cancel(int referenceId, string notes) {
-      Assertion.Require(referenceId, "moneyAccountTransactionId");
+      var moneyAccountTransaction = new MoneyAccountTransaction();
+      moneyAccountTransaction.AddCreditTransactions(moneyAccount, fields);
+     
+      return CreditTransactionMapper.Map(moneyAccountTransaction, moneyAccount.DaysToPay);
+    }
+
+
+    public CreditTransactionDto CancelTransaction(int referenceId, string notes) {
+      Assertion.Require(referenceId, "orderId");
 
       var transaction = MoneyAccountTransaction.ParseByReferenceId(referenceId);
       transaction.Cancel(notes);
 
-      return MoneyAccountTransactionMapper.Map(transaction);
+      return CreditTransactionMapper.Map(transaction, 10);
     }
 
     public decimal GetMoneyAccountTotalDebt(int ownerId) {
@@ -68,15 +78,15 @@ namespace Empiria.Trade.Financial.UseCases {
 
       return moneyAccount.GetDebit();
     }
+    
 
-    public FixedList<MoneyAccountTransactionDto> GetCreditTransactions(int ownerId) {
+    public FixedList<CreditTransactionDto> GetCreditTransactions(int customerId) {
 
-      var moneyAccount = MoneyAccount.ParseByOwner(ownerId);
+      var moneyAccount = MoneyAccount.ParseByOwner(customerId);
 
-      var moneyAccountTransactions = moneyAccount.GetTransactions();
+      moneyAccount.LoadMoneyAccountTransactions();
 
-      return MoneyAccountTransactionMapper.MapMoneyAccountTransactions(moneyAccountTransactions);
-
+      return CreditTransactionMapper.MapCreditTransactions(moneyAccount.MoneyAccountTransactions, moneyAccount.DaysToPay);
     }
 
     public decimal GetMoneyAccountCreditLimit(int ownerId) {

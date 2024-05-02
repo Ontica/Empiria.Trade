@@ -17,6 +17,8 @@ using Empiria.Trade.Financial.Adapters;
 using Empiria.Trade.Financial;
 using Empiria.Trade.Sales.UseCases;
 using Empiria.StateEnums;
+using Empiria.Trade.Core.Domain;
+using Empiria.Trade.MoneyAccounts;
 
 namespace Empiria.Trade.Tests.MoneyAccount {
   /// <summary>Test cases for MoneyAccounts.  </summary>
@@ -59,14 +61,28 @@ namespace Empiria.Trade.Tests.MoneyAccount {
 
 
 
-    //[Fact]
-    //public void ShouldMigrateCreditTransactionsToMoneyAccountTransasctions() {
-    //  var moneyAccountTransaction = new MoneyAccountTransaction();
+    [Fact]
+    public void ShouldAddCreditTransactionsToMoneyAccountTransasctions() {
 
-    //  var x = moneyAccountTransaction.MigarteCreditTransactionToMoneyAccountTransactions();
+      var creditTransactionFields = new CreditTrasnactionFields {
+        TypeId = 1,
+        CustomerId =  234,
+        CreditAmount = 100,
+        DebitAmount = Convert.ToDecimal(200),
+        PayableOrderId = 3,
+        DaysToPay = 9,
+        ExtData = "P949494",
+        TransactionTime = Convert.ToDateTime("2023/01/10"),
+        DueDate = Convert.ToDateTime("2023/01/10")
+      };
 
-    //  Assert.NotNull(x);
-    //}
+      var moneyAccount = Empiria.Trade.Financial.MoneyAccount.ParseByOwner(234);
+
+      var moneyAccountTransaction = new MoneyAccountTransaction();
+      moneyAccountTransaction.AddCreditTransactions(moneyAccount, creditTransactionFields);
+    
+      Assert.NotNull(moneyAccount);
+    }
 
     [Fact]
     public void ShouldGetTotalDebtByMoneyAccountOwnerId() {
@@ -108,8 +124,12 @@ namespace Empiria.Trade.Tests.MoneyAccount {
     [Fact]
     public void ShouldGet() {
 
-      var moneyAccount = Empiria.Trade.Financial.MoneyAccount.Parse(1007);
+      var moneyAccount = Empiria.Trade.Financial.MoneyAccount.ParseByOwner(153);
       moneyAccount.LoadMoneyAccountTransactions();
+
+      var y = moneyAccount.GetDebit();
+
+      
 
       var x = MoneyAccountMapper.Map(moneyAccount);
 
