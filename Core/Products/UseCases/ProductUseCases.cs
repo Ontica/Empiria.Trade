@@ -4,7 +4,7 @@
 *  Assembly : Empiria.Trade.Products.dll                 Pattern   : Use case interactor class               *
 *  Type     : ProductUseCases                            License   : Please read LICENSE.txt file            *
 *                                                                                                            *
-*  Summary  : Use cases used to build TRDProducts.                                                           *
+*  Summary  : Use cases used to build Products.                                                              *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
@@ -19,7 +19,7 @@ using Empiria.Trade.Products.Domain;
 namespace Empiria.Trade.Products.UseCases
 {
 
-    /// <summary>Use cases used to build TRDProducts.</summary>
+    /// <summary>Use cases used to build Products.</summary>
     public class ProductUseCases : UseCase {
 
 
