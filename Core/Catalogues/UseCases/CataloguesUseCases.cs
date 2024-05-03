@@ -122,11 +122,9 @@ namespace Empiria.Trade.Core.Catalogues {
     public async Task<string> UpdateGUID(TableQuery query) {
 
       try {
-
         return await Task.Run(() => CataloguesData.UpdateTableGUID(
                               query.TableName, query.IdName, query.UidName))
                               .ConfigureAwait(false);
-
       } catch (Exception ex) {
         throw new Exception(ex.Message, ex);
       }

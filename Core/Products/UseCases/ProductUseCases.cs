@@ -40,7 +40,7 @@ namespace Empiria.Trade.Products.UseCases
     #region Use cases
 
 
-    public IProductEntryDto GetTRDProduct(string productUID) {
+    public IProductEntryDto GetProductByUID(string productUID) {
       Assertion.Require(productUID, "productUID");
 
       var product = ProductFields.Parse(productUID);

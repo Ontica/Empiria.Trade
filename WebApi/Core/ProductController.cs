@@ -38,7 +38,7 @@ namespace Empiria.Trade.WebApi.Core
 
             using (var usecases = ProductUseCases.UseCaseInteractor())
             {
-                IProductEntryDto productDto = usecases.GetTRDProduct(productUID);
+                IProductEntryDto productDto = usecases.GetProductByUID(productUID);
                 return new SingleObjectModel(Request, productDto);
             }
         }
