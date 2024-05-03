@@ -28,11 +28,11 @@ namespace Empiria.Trade.Tests.MoneyAccount {
     public void ShouldAddNewMoneyAccount() {
 
       var fields = new MoneyAccountFields {
-        Description = "Linea de Credito",
-        OwnerId = 6,
+        TypeUID = "f6d3a7db-9f54-4a9f-a021-edbfa34fbf42",        
+        OwnerId = 234,
         Notes = "Monedero de prueba",
-        CreditLimit = 50000,
-        DaysToPay = 50
+        MoneyAccountLimit = 50000,
+        LimitDaysToPay = 50
       };
 
       var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();

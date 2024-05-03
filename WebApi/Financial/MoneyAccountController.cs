@@ -17,6 +17,7 @@ using Empiria.Trade.Financial.Adapters;
 using Empiria.Trade.Financial.UseCases;
 using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Sales.UseCases;
+using System.Runtime.InteropServices;
 
 
 
@@ -76,7 +77,20 @@ namespace Empiria.Trade.WebApi.Financial {
 
         return new SingleObjectModel(this.Request, moneyAccountDto);
       }
+    }
 
+    [HttpPost]
+    [Route("v4/trade/financial/money-accounts")]
+    public SingleObjectModel CreateMoneyAccount([FromBody] MoneyAccountFields fields) {
+
+      base.RequireBody(fields);
+
+      using (var usecases = MoneyAccountUseCases.UseCaseInteractor()) {
+
+         var moneyAccountDto = usecases.AddMoneyAccount(fields);
+
+        return new SingleObjectModel(this.Request, moneyAccountDto);
+      }
     }
 
   } // class MoneyAccountControler

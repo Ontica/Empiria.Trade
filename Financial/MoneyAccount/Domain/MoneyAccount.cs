@@ -14,6 +14,7 @@ using Empiria.Trade.Core;
 using Empiria.Trade.Core.Common;
 using Empiria.Trade.Financial.Adapters;
 using Empiria.Trade.Financial.Data;
+using Empiria.Trade.Orders;
 
 namespace Empiria.Trade.Financial {
   ///Represents credit money account.
@@ -130,18 +131,23 @@ namespace Empiria.Trade.Financial {
     #region Public methods
 
     protected override void OnSave() {
+      if (IsNew) {
+        Number = "MA-" + EmpiriaString.BuildRandomString(10).ToUpperInvariant();
+      }
+
       MoneyAccountData.Write(this);
     }
 
     internal void Update(MoneyAccountFields fields) {
-      this.Description = fields.Description;
-      this.Owner = Party.Parse(fields.OwnerId);
+      this.MoneyAccountType = MoneyAccountType.Parse(fields.TypeUID);
+      this.Description = this.MoneyAccountType.Name;
+      this.Owner = Party.Parse(fields.OwnerUID);
       this.Notes = fields.Notes;
       this.PostedTime = DateTime.Now;
       this.PostedById = ExecutionServer.CurrentUserId;
       this.FromDate = DateTime.Now;
-      this.CreditLimit = fields.CreditLimit;
-      this.DaysToPay = fields.DaysToPay;
+      this.CreditLimit = fields.MoneyAccountLimit;
+      this.DaysToPay = fields.LimitDaysToPay;
     }
 
 

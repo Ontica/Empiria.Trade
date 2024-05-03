@@ -33,14 +33,13 @@ namespace Empiria.Trade.Financial.UseCases
 
     #region Public properties
 
-    public MoneyAccount AddMoneyAccount(MoneyAccountFields fields) {
+    public MoneyAccountDto AddMoneyAccount(MoneyAccountFields fields) {
       Assertion.Require(fields, "fields");
 
       var moneyAccount = new MoneyAccount(fields);
       moneyAccount.Save();
-
-      return moneyAccount;
-    // return CreditTransactionMapper.Map(creditTransaction);
+     
+      return MoneyAccountMapper.Map(moneyAccount);
     }
 
     public MoneyAccountTransactionDto AddTransaction(MoneyAccountTransactionFields fields) {

@@ -29,7 +29,10 @@ namespace Empiria.Trade.Financial.Adapters {
       get; set;
     } = string.Empty;
 
-           
+    public string TypeUID {
+      get; set;
+    } = string.Empty;
+
     public string Notes {
       get; set;
     } = string.Empty;
@@ -37,20 +40,17 @@ namespace Empiria.Trade.Financial.Adapters {
     public char Status {
       get; set;
     } = 'A';
+       
 
-    public string Description {
+    public string OwnerUID {
       get; set;
     }
 
-    public int OwnerId {
+    public decimal MoneyAccountLimit {
       get; set;
     }
 
-    public decimal CreditLimit {
-      get; set;
-    }
-
-    public int DaysToPay {
+    public int LimitDaysToPay {
       get; set;
     }
 

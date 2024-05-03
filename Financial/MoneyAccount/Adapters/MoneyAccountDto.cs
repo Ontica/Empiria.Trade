@@ -38,7 +38,7 @@ namespace Empiria.Trade.Financial.Adapters {
 
     public decimal Balance {
       get; internal set;
-    }
+    } = 0;
 
     public NamedEntityDto Status {
       get; internal set;
@@ -46,7 +46,7 @@ namespace Empiria.Trade.Financial.Adapters {
 
     public FixedList<MoneyAccountTransactionDto> Transactions {
       get; internal set;
-    }
+    } = new FixedList<MoneyAccountTransactionDto>();
 
 
   } // class MoneyAccountDto
