@@ -13,6 +13,7 @@ using Empiria.Services;
 using Empiria.StateEnums;
 using Empiria.Trade.Financial.Adapters;
 using Empiria.Trade.MoneyAccounts;
+using Empiria.Trade.Orders;
 
 namespace Empiria.Trade.Financial.UseCases
 {
@@ -39,6 +40,16 @@ namespace Empiria.Trade.Financial.UseCases
       var moneyAccount = new MoneyAccount(fields);
       moneyAccount.Save();
      
+      return MoneyAccountMapper.Map(moneyAccount);
+    }
+
+    public MoneyAccountDto UpdateMoneyAccount(MoneyAccountFields fields, string moneyAccountUID) {
+      Assertion.Require(fields, "fields");
+
+      var moneyAccount = MoneyAccount.Parse(moneyAccountUID);
+      moneyAccount.Update(fields);
+      moneyAccount.Save();
+    
       return MoneyAccountMapper.Map(moneyAccount);
     }
 

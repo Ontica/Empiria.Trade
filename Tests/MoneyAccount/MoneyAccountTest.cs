@@ -29,7 +29,7 @@ namespace Empiria.Trade.Tests.MoneyAccount {
 
       var fields = new MoneyAccountFields {
         TypeUID = "f6d3a7db-9f54-4a9f-a021-edbfa34fbf42",        
-        OwnerId = 234,
+        OwnerUID = "057c1081-95e7-4b35-9bd0-b139bdf792d4",
         Notes = "Monedero de prueba",
         MoneyAccountLimit = 50000,
         LimitDaysToPay = 50

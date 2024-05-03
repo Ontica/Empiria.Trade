@@ -93,6 +93,23 @@ namespace Empiria.Trade.WebApi.Financial {
       }
     }
 
+    [HttpPut]
+    [Route("v4/trade/financial/money-accounts/{moneyAccountUID:guid}")]
+    public SingleObjectModel UpdateMoneyAccount([FromUri] string moneyAccountUID, [FromBody] MoneyAccountFields fields) {
+
+      base.RequireResource(moneyAccountUID, "moneyAccountUID");
+      base.RequireBody(fields);
+
+      using (var usecases = MoneyAccountUseCases.UseCaseInteractor()) {
+
+        var moneyAccountDto = usecases.UpdateMoneyAccount(fields, moneyAccountUID);
+
+        return new SingleObjectModel(this.Request, moneyAccountDto);
+      }
+
+    }
+
+
   } // class MoneyAccountControler
 
 } // namespace Empiria.Trade.WebApi.Financial
