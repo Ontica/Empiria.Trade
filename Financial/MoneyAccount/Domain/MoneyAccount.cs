@@ -155,6 +155,21 @@ namespace Empiria.Trade.Financial {
       MoneyAccountData.Write(this);
     }
 
+    public void Suspend() {
+      this.Status = EntityStatus.Suspended;
+      MoneyAccountData.Write(this);
+    }
+
+    public void Pending() {
+      this.Status = EntityStatus.Pending;
+      MoneyAccountData.Write(this);
+    }
+
+    public void Active() {
+      this.Status = EntityStatus.Active;
+      MoneyAccountData.Write(this);
+    }
+
     public decimal GetDebit() {
       return MoneyAccountTransactionData.GetMoneyAccountTotalDebt(this.Id);
     }

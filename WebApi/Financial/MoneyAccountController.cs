@@ -125,6 +125,52 @@ namespace Empiria.Trade.WebApi.Financial {
 
     }
 
+    [HttpPost]
+    [Route("v4/trade/financial/money-accounts/{moneyAccountUID:guid}/suspend")]
+    public SingleObjectModel SuspendMoneyOrder([FromUri] string moneyAccountUID) {
+
+      base.RequireResource(moneyAccountUID, "moneyAccountUID");
+
+      using (var usecases = MoneyAccountUseCases.UseCaseInteractor()) {
+
+        var moneyAccountDto = usecases.SuspendMoneyAccount(moneyAccountUID);
+
+        return new SingleObjectModel(this.Request, moneyAccountDto);
+      }
+
+    }
+
+
+    [HttpPost]
+    [Route("v4/trade/financial/money-accounts/{moneyAccountUID:guid}/pending")]
+    public SingleObjectModel PendingMoneyOrder([FromUri] string moneyAccountUID) {
+
+      base.RequireResource(moneyAccountUID, "moneyAccountUID");
+
+      using (var usecases = MoneyAccountUseCases.UseCaseInteractor()) {
+
+        var moneyAccountDto = usecases.PendingMoneyAccount(moneyAccountUID);
+
+        return new SingleObjectModel(this.Request, moneyAccountDto);
+      }
+
+    }
+
+    [HttpPost]
+    [Route("v4/trade/financial/money-accounts/{moneyAccountUID:guid}/active")]
+    public SingleObjectModel ActiveMoneyOrder([FromUri] string moneyAccountUID) {
+
+      base.RequireResource(moneyAccountUID, "moneyAccountUID");
+
+      using (var usecases = MoneyAccountUseCases.UseCaseInteractor()) {
+
+        var moneyAccountDto = usecases.ActiveMoneyAccount(moneyAccountUID);
+
+        return new SingleObjectModel(this.Request, moneyAccountDto);
+      }
+
+    }
+
 
   } // class MoneyAccountControler
 

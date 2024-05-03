@@ -62,6 +62,34 @@ namespace Empiria.Trade.Financial.UseCases
       return MoneyAccountMapper.Map(moneyAccount);
     }
 
+    public MoneyAccountDto SuspendMoneyAccount(string moneyAccountUID) {
+      Assertion.Require(moneyAccountUID, "moneyAccountUID");
+
+      var moneyAccount = MoneyAccount.Parse(moneyAccountUID);
+      moneyAccount.Suspend();
+
+      return MoneyAccountMapper.Map(moneyAccount);
+    }
+
+    public MoneyAccountDto PendingMoneyAccount(string moneyAccountUID) {
+      Assertion.Require(moneyAccountUID, "moneyAccountUID");
+
+      var moneyAccount = MoneyAccount.Parse(moneyAccountUID);
+      moneyAccount.Pending();
+
+      return MoneyAccountMapper.Map(moneyAccount);
+    }
+
+    public MoneyAccountDto ActiveMoneyAccount(string moneyAccountUID) {
+      Assertion.Require(moneyAccountUID, "moneyAccountUID");
+
+      var moneyAccount = MoneyAccount.Parse(moneyAccountUID);
+      moneyAccount.Active();
+
+      return MoneyAccountMapper.Map(moneyAccount);
+    }
+
+
     public MoneyAccountTransactionDto AddTransaction(MoneyAccountTransactionFields fields) {
       Assertion.Require(fields, "fields");
 
@@ -91,6 +119,8 @@ namespace Empiria.Trade.Financial.UseCases
 
       return CreditTransactionMapper.Map(transaction, 10);
     }
+
+
 
     public decimal GetMoneyAccountTotalDebt(int ownerId) {
       var moneyAccount = MoneyAccount.ParseByOwner(ownerId);
