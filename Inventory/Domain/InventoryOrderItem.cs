@@ -104,6 +104,18 @@ namespace Empiria.Trade.Inventory {
         }
 
 
+        [DataField("RackPosition")]
+        public int Position {
+          get; set;
+        }
+
+
+        [DataField("RackLevel")]
+        public int Level {
+          get; set;
+        }
+
+
         [DataField("InventoryOrderItemExtData")]
         public string ExtData {
             get; set;
@@ -166,18 +178,16 @@ namespace Empiria.Trade.Inventory {
             this.Quantity = fields.Quantity;
             this.InputQuantity = fields.InputQuantity;
             this.OutputQuantity = fields.OutputQuantity;
+            this.Position = fields.Position;
+            this.Level = fields.Level;
             this.ExtData = "";
-            this.Status = fields.Status;
+            this.Status = InventoryStatus.Abierto;
 
-            if (fields.Status == InventoryStatus.Abierto) {
-                this.ClosingTime = new DateTime(2049,01,01);
-                this.PostingTime = DateTime.Now;
-                this.PostedById = ExecutionServer.CurrentUserId;
-      }
-            if (fields.Status == InventoryStatus.Cerrado) {
-                this.ClosingTime = DateTime.Now;
-            }
-        }
+            this.ClosingTime = new DateTime(2049, 01, 01);
+            this.PostingTime = DateTime.Now;
+            this.PostedById = ExecutionServer.CurrentUserId;
+
+          }
 
 
         #endregion Private methods

@@ -90,12 +90,17 @@ namespace Empiria.Trade.Inventory.Adapters {
     }
 
 
-    public string InventoryOrderUID {
+    public InventoryProductDto Product {
       get; set;
-    }
+    } = new InventoryProductDto();
 
 
-    public string ExternalObjectItemReferenceUID {
+    public InventoryWarehouseBinDto WarehouseBin {
+      get; set;
+    } = new InventoryWarehouseBinDto();
+
+
+    public decimal Quantity {
       get; set;
     }
 
@@ -105,41 +110,25 @@ namespace Empiria.Trade.Inventory.Adapters {
     }
 
 
-    public string ProductDescription {
-      get;
-      internal set;
-    }
+    //public string ExternalObjectItemReferenceUID {
+    //  get; set;
+    //}
 
 
-    public NamedEntityDto VendorProduct {
-      get; set;
-    } = new NamedEntityDto("", "");
+    //public decimal InputQuantity {
+    //  get; set;
+    //}
 
 
-    public NamedEntityDto WarehouseBin {
-      get; set;
-    } = new NamedEntityDto("", "");
+    //public decimal OutputQuantity {
+    //  get; set;
+    //}
 
 
-    public decimal Quantity {
-      get; set;
-    }
+    //public InventoryStatus Status {
+    //  get; set;
+    //}
 
-
-    public decimal InputQuantity {
-      get; set;
-    }
-
-
-    public decimal OutputQuantity {
-      get; set;
-    }
-
-
-    public InventoryStatus Status {
-      get; set;
-    }
-    
   }
 
 

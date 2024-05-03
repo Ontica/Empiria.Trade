@@ -49,24 +49,14 @@ namespace Empiria.Trade.Tests.Inventory {
 
       var usecase = InventoryOrderUseCases.UseCaseInteractor();
 
-      string inventoryOrderUID = "96295bcd-fea9-4c0a-b9d3-5dfd9aeaa920";
-      var fields = new InventoryOrderItemFields() {
-        UID = "",
-        Notes = "NOTAS 0005 CONTEO ALMACEN Z",
-        VendorProductUID = "e0655909-8614-40c0-b63e-fe166a377c86",
-        WarehouseBinUID = "f06a2b16-e744-412e-bd94-82821a7b5cd9",
-        Quantity = 1,
-        InputQuantity = 0,
-        OutputQuantity = 0,
-        Status = InventoryStatus.Abierto
-      };
-
+      string inventoryOrderUID = "2e9eb67b-6474-4c66-97c5-1d4d3b1d70f6";
+      var fields = GetInventoryOrderItemFields();
       InventoryOrderDto sut = usecase.CreateInventoryOrderItem(inventoryOrderUID, fields);
 
       Assert.NotNull(sut);
     }
 
-
+    
     [Fact]
     public void DeleteInventoryOrderTest() {
 
@@ -164,57 +154,27 @@ namespace Empiria.Trade.Tests.Inventory {
         //ExternalObjectReferenceUID = "",
         ResponsibleUID = "c930a33a-e93b-43c9-9379-96bcb86c4e4d",
         AssignedToUID = "a517e788-8ddf-4772-b6d2-adc3907e3905",
-        Notes = "CONTEO ALMACEN Z",
-        Status = InventoryStatus.Abierto
+        Notes = "CONTEO ALMACEN Z"
         //ItemFields = GetItemFields()
       };
       return fields;
     }
 
 
-    private FixedList<InventoryOrderItemFields> GetItemFields() {
-
-
-      var items = new List<InventoryOrderItemFields>();
-
-      var item1 = new InventoryOrderItemFields() {
-        UID = "516f36bc-535c-4a07-8475-3e6568ebbd23",
-        //ExternalObjectItemReferenceUID = "",
-        Notes = "NOTAS 1",
+    private InventoryOrderItemFields GetInventoryOrderItemFields() {
+      return new InventoryOrderItemFields() {
+        UID = "",
+        Notes = "NOTAS 000101010 CONTEO ALMACEN Z",
         VendorProductUID = "e0655909-8614-40c0-b63e-fe166a377c86",
         WarehouseBinUID = "f06a2b16-e744-412e-bd94-82821a7b5cd9",
-        Quantity = 10,
-        InputQuantity = 9,
-        OutputQuantity = 8,
-        Status = InventoryStatus.Abierto,
+        Quantity = 1,
+        InputQuantity = 0,
+        OutputQuantity = 0,
+        Position = 1,
+        Level = 1
       };
-      items.Add(item1);
-      var item2 = new InventoryOrderItemFields() {
-        UID = "f53e0410-9fd0-4a1c-9c04-d3450ff47ec9",
-        //ExternalObjectItemReferenceUID = "",
-        Notes = "NOTAS 2",
-        VendorProductUID = "1d47e4e5-ff97-4197-8bd1-b49df2780c32",
-        WarehouseBinUID = "48605b90-52e1-43d0-aeab-7125805863aa",
-        Quantity = 20,
-        InputQuantity = 9,
-        OutputQuantity = 8,
-        Status = InventoryStatus.Abierto,
-      };
-      items.Add(item2);
-      var item3 = new InventoryOrderItemFields() {
-        UID = "0f545ebd-d913-4b01-9b70-af72556c6cd3",
-        //ExternalObjectItemReferenceUID = "",
-        Notes = "NOTAS 3",
-        VendorProductUID = "1d47e4e5-ff97-4197-8bd1-b49df2780c32",
-        WarehouseBinUID = "48605b90-52e1-43d0-aeab-7125805863aa",
-        Quantity = 30,
-        InputQuantity = 9,
-        OutputQuantity = 8,
-        Status = InventoryStatus.Abierto,
-      };
-      items.Add(item3);
-      return items.ToFixedList();
     }
+
 
     #endregion Private methods
   }

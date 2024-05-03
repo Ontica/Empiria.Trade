@@ -12,117 +12,106 @@ using System;
 namespace Empiria.Trade.Inventory.Adapters {
 
 
-    public enum InventoryStatus {
+  public enum InventoryStatus {
 
-        Todos = 'T',
+    Todos = 'T',
 
-        Abierto = 'A',
+    Abierto = 'A',
 
-        EnProceso = 'E',
+    EnProceso = 'E',
 
-        Cerrado = 'C'
+    Cerrado = 'C'
 
+  }
+
+
+  /// <summary>DTO used to manage inventory order fields.</summary>
+  public class InventoryOrderFields {
+
+
+    public string InventoryOrderTypeUID {
+      get; set;
+    } = string.Empty;
+
+
+    //public string ExternalObjectReferenceUID {
+    //    get; set;
+    //} = string.Empty;
+
+
+    public string ResponsibleUID {
+      get; set;
+    } = string.Empty;
+
+
+    public string AssignedToUID {
+      get; set;
+    } = string.Empty;
+
+
+    public string Notes {
+      get; set;
+    } = string.Empty;
+
+
+    //public FixedList<InventoryOrderItemFields> ItemFields {
+    //    get; set;
+    //} = new FixedList<InventoryOrderItemFields>();
+
+  } // class InventoryOrderFields
+
+
+  public class InventoryOrderItemFields {
+
+
+    public string UID {
+      get; set;
+    } = string.Empty;
+
+
+    public string Notes {
+      get; set;
+    } = string.Empty;
+
+
+    public string VendorProductUID {
+      get; set;
+    } = string.Empty;
+
+
+    public string WarehouseBinUID {
+      get; set;
+    } = string.Empty;
+
+
+    public decimal Quantity {
+      get; set;
     }
 
 
-    /// <summary>DTO used to manage inventory order fields.</summary>
-    public class InventoryOrderFields {
+    public decimal InputQuantity {
+      get; set;
+    }
 
 
-        public string InventoryOrderTypeUID {
-            get; set;
-        } = string.Empty;
+    public decimal OutputQuantity {
+      get; set;
+    }
 
 
-        //public string ExternalObjectReferenceUID {
-        //    get; set;
-        //} = string.Empty;
+    public int Position {
+      get; set;
+    }
 
 
-        public string ResponsibleUID {
-            get; set;
-        } = string.Empty;
+    public int Level {
+      get; set;
+    }
 
 
-        public string AssignedToUID {
-            get; set;
-        } = string.Empty;
-
-
-        public string Notes {
-            get; set;
-        } = string.Empty;
-
-
-        public InventoryStatus Status {
-            get; set;
-        } = InventoryStatus.Abierto;
-
-
-        //public FixedList<InventoryOrderItemFields> ItemFields {
-        //    get; set;
-        //} = new FixedList<InventoryOrderItemFields>();
-
-    } // class InventoryOrderFields
-
-
-    public class InventoryOrderItemFields {
-
-
-        public string UID {
-            get; set;
-        } = string.Empty;
-
-
-        //public string ExternalObjectItemReferenceUID {
-        //    get; set;
-        //} = string.Empty;
-
-
-        public string Notes {
-            get; set;
-        } = string.Empty;
-
-
-        public string VendorProductUID {
-            get; set;
-        } = string.Empty;
-
-
-        public string WarehouseBinUID {
-            get; set;
-        } = string.Empty;
-
-
-        public decimal Quantity {
-            get; set;
-        }
-
-
-        public decimal InputQuantity {
-            get; set;
-        }
-
-
-        public decimal OutputQuantity {
-            get; set;
-        }
-
-
-        public InventoryStatus Status {
-          get; set;
-        }
-
-
-        //public DateTime ClosingTime {
-        //    get; set;
-        //}
-
-
-        //public DateTime PostingTime {
-        //    get; set;
-        //}
-
+    //public string ExternalObjectItemReferenceUID {
+    //    get; set;
+    //} = string.Empty;
 
 
   } // class InventoryOrderItemFields

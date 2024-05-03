@@ -117,6 +117,7 @@ namespace Empiria.Trade.Inventory.Data {
           item.ItemNotes, item.VendorProduct.Id,
           item.WarehouseBin.Id, item.Quantity,
           item.InputQuantity, item.OutputQuantity,
+          item.Position, item.Level,
           item.ExtData, item.ClosingTime,
           item.PostingTime, item.PostedById,
           (char) item.Status);

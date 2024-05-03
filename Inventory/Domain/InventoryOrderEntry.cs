@@ -171,16 +171,12 @@ namespace Empiria.Trade.Inventory {
       this.AssignedToId = Party.Parse(fields.AssignedToUID).Id;
       this.Notes = fields.Notes;
       this.InventoryOrderExtData = "";
-      this.Status = fields.Status;
+      this.Status = InventoryStatus.Abierto;
 
-      if (fields.Status == InventoryStatus.Abierto) {
-        this.PostedById =  ExecutionServer.CurrentUserId;
-        this.PostingTime = DateTime.Now;
-        this.ClosingTime = DateTime.Now;
-      }
-      if (fields.Status == InventoryStatus.Cerrado) {
-        this.ClosingTime = DateTime.Now;
-      }
+      this.PostedById = ExecutionServer.CurrentUserId;
+      this.PostingTime = DateTime.Now;
+      this.ClosingTime = DateTime.Now;
+
     }
 
 
