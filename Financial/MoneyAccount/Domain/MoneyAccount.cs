@@ -150,6 +150,10 @@ namespace Empiria.Trade.Financial {
       this.DaysToPay = fields.LimitDaysToPay;
     }
 
+    public void Cancel() {
+      this.Status = EntityStatus.Deleted;
+      MoneyAccountData.Write(this);
+    }
 
     public decimal GetDebit() {
       return MoneyAccountTransactionData.GetMoneyAccountTotalDebt(this.Id);

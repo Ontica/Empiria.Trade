@@ -53,6 +53,15 @@ namespace Empiria.Trade.Financial.UseCases
       return MoneyAccountMapper.Map(moneyAccount);
     }
 
+    public MoneyAccountDto CancelMoneyAccount(string moneyAccountUID) {
+      Assertion.Require(moneyAccountUID, "moneyAccountUID");
+
+      var moneyAccount = MoneyAccount.Parse(moneyAccountUID);
+      moneyAccount.Cancel();
+
+      return MoneyAccountMapper.Map(moneyAccount);
+    }
+
     public MoneyAccountTransactionDto AddTransaction(MoneyAccountTransactionFields fields) {
       Assertion.Require(fields, "fields");
 

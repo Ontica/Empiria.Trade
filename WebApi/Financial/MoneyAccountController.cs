@@ -110,6 +110,22 @@ namespace Empiria.Trade.WebApi.Financial {
     }
 
 
+    [HttpDelete]
+    [Route("v4/trade/financial/money-accounts/{moneyAccountUID:guid}/cancel")]
+    public SingleObjectModel CancelMoneyAccount([FromUri] string moneyAccountUID) {
+
+      base.RequireResource(moneyAccountUID, "moneyAccountUID");
+
+      using (var usecases = MoneyAccountUseCases.UseCaseInteractor()) {
+
+        var moneyAccountDto = usecases.CancelMoneyAccount(moneyAccountUID);
+
+        return new SingleObjectModel(this.Request, moneyAccountDto);
+      }
+
+    }
+
+
   } // class MoneyAccountControler
 
 } // namespace Empiria.Trade.WebApi.Financial
