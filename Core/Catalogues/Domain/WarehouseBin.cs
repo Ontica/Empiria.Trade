@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using System.Collections.Generic;
 
 namespace Empiria.Trade.Core.Catalogues {
 
@@ -35,16 +36,15 @@ namespace Empiria.Trade.Core.Catalogues {
     #region Properties
 
 
-
-    [DataField("WarehouseId")]
-    public Warehouse Warehouse {
+    [DataField("WarehouseBinUID")]
+    public string WarehouseBinUID {
       get;
       internal set;
     }
 
 
-    [DataField("WarehouseBinUID")]
-    public string WarehouseBinUID {
+    [DataField("WarehouseId")]
+    public Warehouse Warehouse {
       get;
       internal set;
     }
@@ -85,8 +85,57 @@ namespace Empiria.Trade.Core.Catalogues {
     }
 
 
+    public string WarehouseName => $"Almacen {Warehouse.Code}";
+
+
+    public int[] Positions => GetPositions();
+
+
+    public int[] Levels => GetLevels();
+
+
     #endregion Properties
 
+
+    #region Public methods
+
+
+    private int[] GetPositions() {
+      if (PositionFrom < 1 && PositionUp < PositionFrom) {
+        return new int[0];
+      }
+
+      List<int> positions = new List<int>();
+      for (int i = PositionFrom; i <= PositionUp; i++) {
+        positions.Add(i);
+      }
+      return positions.ToArray();
+    }
+
+
+    private int[] GetLevels() {
+      if (RackLevel < 1) {
+        return new int[0];
+      }
+
+      List<int> levels = new List<int>();
+      for (int i = 1; i <= RackLevel; i++) {
+        levels.Add(i);
+      }
+      return levels.ToArray();
+    }
+
+
+    #endregion Public methods
+
+
+    #region Private methods
+
+
+
+
+
+    #endregion Private methods
 
   } // class WarehouseBin
 

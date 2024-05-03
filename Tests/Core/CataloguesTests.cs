@@ -80,7 +80,7 @@ namespace Empiria.Trade.Tests.Core
 
       var usecase = CataloguesUseCases.UseCaseInteractor();
 
-      string uid = "f06a2b16-e744-412e-bd94-82821a7b5cd9";
+      string uid = "48605b90-52e1-43d0-aeab-7125805863aa";
 
       WarehouseBin sut = usecase.GetWarehouseBin(uid);
 
@@ -98,6 +98,18 @@ namespace Empiria.Trade.Tests.Core
       string uid = "be68b023-202d-4bf3-b0b6-3726ed5be44f";
 
       WarehouseBinProduct sut = usecase.GetWarehouseBinProduct(uid);
+
+      Assert.NotNull(sut);
+
+    }
+
+
+    [Fact]
+    public void GetWarehouseBinsForInventory() {
+
+      var usecase = CataloguesUseCases.UseCaseInteractor();
+
+      var sut = usecase.GetWarehouseBinsForInventory();
 
       Assert.NotNull(sut);
 

@@ -11,120 +11,130 @@
 using System;
 using System.Threading.Tasks;
 using Empiria.Services;
+using Empiria.Trade.Core.Catalogues.Adapters;
 using Empiria.Trade.Products.Adapters;
 
 namespace Empiria.Trade.Core.Catalogues {
 
 
-    public class CataloguesUseCases : UseCase {
+  public class CataloguesUseCases : UseCase {
 
 
-        #region Constructors and parsers
+    #region Constructors and parsers
 
-        protected CataloguesUseCases() {
-            // no-op
-        }
+    protected CataloguesUseCases() {
+      // no-op
+    }
 
-        static public CataloguesUseCases UseCaseInteractor() {
-            return CreateInstance<CataloguesUseCases>();
-        }
-
-
-        #endregion Constructors and parsers
+    static public CataloguesUseCases UseCaseInteractor() {
+      return CreateInstance<CataloguesUseCases>();
+    }
 
 
-        #region Use cases
+    #endregion Constructors and parsers
 
 
-        internal InventoryEntry GetInventoryEntry(string inventoryEntryUid) {
-            Assertion.Require(inventoryEntryUid, "inventoryEntryUid");
-
-            return InventoryEntry.Parse(inventoryEntryUid);
-        }
+    #region Use cases
 
 
-        public FixedList<SalesInventoryStock> GetInventoryStockByVendorProduct(int vendorProductId) {
-            Assertion.Require(vendorProductId, "vendorProductId");
+    internal InventoryEntry GetInventoryEntry(string inventoryEntryUid) {
+      Assertion.Require(inventoryEntryUid, "inventoryEntryUid");
 
-            return InventoryBuilder.GetInventoryStockByVendorProduct(vendorProductId);
-        }
-
-
-        public PackageType GetPackageType(string packageTypeUid) {
-            Assertion.Require(packageTypeUid, "packageTypeUid");
-
-            PackageType packageType = PackageType.Parse(packageTypeUid);
-
-            packageType.GetVolumeAttributes();
-
-            return packageType;
-        }
+      return InventoryEntry.Parse(inventoryEntryUid);
+    }
 
 
-        public FixedList<INamedEntity> GetParcelSupplierList() {
+    public FixedList<SalesInventoryStock> GetInventoryStockByVendorProduct(int vendorProductId) {
+      Assertion.Require(vendorProductId, "vendorProductId");
 
-            var parcelSupplier = new SimpleObjects();
-
-            var simpleObjectList = parcelSupplier.GetParcelSupplierList();
-            return parcelSupplier.MergeSimpleObjectToNamedEntityDto(simpleObjectList);
-
-        }
+      return InventoryBuilder.GetInventoryStockByVendorProduct(vendorProductId);
+    }
 
 
-        public FixedList<INamedEntity> GetSimpleObjectListByObjectTypeId(int objectTypeId) {
+    public PackageType GetPackageType(string packageTypeUid) {
+      Assertion.Require(packageTypeUid, "packageTypeUid");
 
-            var parcelSupplier = new SimpleObjects();
+      PackageType packageType = PackageType.Parse(packageTypeUid);
 
-            var simpleObjectList = parcelSupplier.GetSimpleObjectDataList(objectTypeId);
+      packageType.GetVolumeAttributes();
 
-            return parcelSupplier.MergeSimpleObjectToNamedEntityDto(simpleObjectList);
-        }
-
-
-        public Warehouse GetWarehouse(string warehouseUid) {
-            Assertion.Require(warehouseUid, "warehouseUid");
-
-            return Warehouse.Parse(warehouseUid);
-        }
+      return packageType;
+    }
 
 
-        public WarehouseBin GetWarehouseBin(string warehouseBinUid) {
-            Assertion.Require(warehouseBinUid, "warehouseBinUid");
+    public FixedList<INamedEntity> GetParcelSupplierList() {
 
-            return WarehouseBin.Parse(warehouseBinUid);
-        }
+      var parcelSupplier = new SimpleObjects();
 
+      var simpleObjectList = parcelSupplier.GetParcelSupplierList();
+      return parcelSupplier.MergeSimpleObjectToNamedEntityDto(simpleObjectList);
 
-        public WarehouseBinProduct GetWarehouseBinProduct(string warehouseBinProductUID) {
-            Assertion.Require(warehouseBinProductUID, "warehouseBinProductUID");
-
-            return WarehouseBinProduct.Parse(warehouseBinProductUID);
-        }
+    }
 
 
-        static public WarehouseBinProduct GetWarehouseBinProductByVendorProduct(int vendorProductId) {
-            Assertion.Require(vendorProductId, nameof(vendorProductId));
+    public FixedList<INamedEntity> GetSimpleObjectListByObjectTypeId(int objectTypeId) {
 
-            return CataloguesData.GetWarehouseBinProductByVendorProduct(vendorProductId);
-        }
+      var parcelSupplier = new SimpleObjects();
 
+      var simpleObjectList = parcelSupplier.GetSimpleObjectDataList(objectTypeId);
 
-        public async Task<string> UpdateGUID(TableQuery query) {
-
-            try {
-
-                return await Task.Run(() => CataloguesData.UpdateTableGUID(
-                                      query.TableName, query.IdName, query.UidName))
-                                      .ConfigureAwait(false);
-
-            } catch (Exception ex) {
-                throw new Exception(ex.Message, ex);
-            }
-        }
+      return parcelSupplier.MergeSimpleObjectToNamedEntityDto(simpleObjectList);
+    }
 
 
-        #endregion Use cases
+    public Warehouse GetWarehouse(string warehouseUid) {
+      Assertion.Require(warehouseUid, "warehouseUid");
 
-    } // class CataloguesUseCases
+      return Warehouse.Parse(warehouseUid);
+    }
+
+
+    public WarehouseBin GetWarehouseBin(string warehouseBinUid) {
+      Assertion.Require(warehouseBinUid, "warehouseBinUid");
+
+      return WarehouseBin.Parse(warehouseBinUid);
+    }
+
+
+    public WarehouseBinProduct GetWarehouseBinProduct(string warehouseBinProductUID) {
+      Assertion.Require(warehouseBinProductUID, "warehouseBinProductUID");
+
+      return WarehouseBinProduct.Parse(warehouseBinProductUID);
+    }
+
+
+    static public WarehouseBinProduct GetWarehouseBinProductByVendorProduct(int vendorProductId) {
+      Assertion.Require(vendorProductId, nameof(vendorProductId));
+
+      return CataloguesData.GetWarehouseBinProductByVendorProduct(vendorProductId);
+    }
+
+
+    public FixedList<WarehouseBinForInventoryDto> GetWarehouseBinsForInventory() {
+
+      FixedList<WarehouseBin> warehouseBins = CataloguesData.GetWarehouseBinsForInventory();
+
+      return WarehouseMapper.MapWarehouseBins(warehouseBins);
+    }
+
+
+
+    public async Task<string> UpdateGUID(TableQuery query) {
+
+      try {
+
+        return await Task.Run(() => CataloguesData.UpdateTableGUID(
+                              query.TableName, query.IdName, query.UidName))
+                              .ConfigureAwait(false);
+
+      } catch (Exception ex) {
+        throw new Exception(ex.Message, ex);
+      }
+    }
+
+
+    #endregion Use cases
+
+  } // class CataloguesUseCases
 
 } // namespace Empiria.Trade.Core.Catalogues
