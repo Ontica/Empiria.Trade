@@ -23,17 +23,17 @@ namespace Empiria.Trade.Inventory.Adapters {
 
     public string ProductCode {
       get; set;
-    }
+    } = string.Empty;
 
 
     public string ProductDescription {
       get; set;
-    }
+    } = string.Empty;
 
 
     public string Presentation {
       get; set;
-    }
+    } = string.Empty;
 
   } // class InventoryProduct
 
@@ -42,20 +42,20 @@ namespace Empiria.Trade.Inventory.Adapters {
     
     public string Rack {
       get; set;
-    }
+    } = string.Empty;
 
 
     public string RackDescription {
       get; set;
-    }
+    } = string.Empty;
 
 
-    public string Position {
+    public int Position {
       get; set;
     }
 
 
-    public string Level {
+    public int Level {
       get; set;
     }
 
