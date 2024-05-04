@@ -83,13 +83,13 @@ namespace Empiria.Trade.Inventory.Data {
     }
 
 
-    static internal FixedList<InventoryOrderEntry> GetInventoryOrderByUID(string inventoryOrderUID) {
+    static internal InventoryOrderEntry GetInventoryOrderByUID(string inventoryOrderUID) {
 
-      string sql = $"SELECT * FROM TRDInventoryOrders WHERE InventoryEntryUID IN ('{inventoryOrderUID}')";
+      string sql = $"SELECT * FROM TRDInventoryOrders WHERE InventoryOrderUID IN ('{inventoryOrderUID}')";
 
       var dataOperation = DataOperation.Parse(sql);
 
-      return DataReader.GetPlainObjectFixedList<InventoryOrderEntry>(dataOperation);
+      return DataReader.GetPlainObject<InventoryOrderEntry>(dataOperation);
 
     }
 

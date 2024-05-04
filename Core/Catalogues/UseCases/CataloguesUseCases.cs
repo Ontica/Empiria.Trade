@@ -118,7 +118,6 @@ namespace Empiria.Trade.Core.Catalogues {
     }
 
 
-
     public async Task<string> UpdateGUID(TableQuery query) {
 
       try {

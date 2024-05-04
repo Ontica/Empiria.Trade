@@ -112,7 +112,7 @@ namespace Empiria.Trade.Tests.Inventory {
     public void GetInventoryOrderByUID() {
 
       var usecase = InventoryOrderUseCases.UseCaseInteractor();
-      string inventoryOrderUID = "2754c88e-ac72-4910-ae3f-e199b1b0391e";
+      string inventoryOrderUID = "4e890899-47d4-4ee3-97ee-5985cfc28253";
 
       InventoryOrderDto sut = usecase.GetInventoryCountOrderByUID(inventoryOrderUID);
       Assert.NotNull(sut);
@@ -134,7 +134,7 @@ namespace Empiria.Trade.Tests.Inventory {
     public void UpdateInventoryCountOrderTest() {
 
       var usecase = InventoryOrderUseCases.UseCaseInteractor();
-      string inventoryOrderUID = "6f111e9d-91cf-4bbb-a6df-2b70ec2063b2";
+      string inventoryOrderUID = "ccdd87c5-52f0-4074-8448-5233cc1a4a77";
       InventoryOrderFields fields = GetInventoryOrderFields();
       InventoryOrderDto sut = usecase.UpdateInventoryCountOrder(inventoryOrderUID, fields);
 
@@ -150,10 +150,10 @@ namespace Empiria.Trade.Tests.Inventory {
     private InventoryOrderFields GetInventoryOrderFields() {
 
       var fields = new InventoryOrderFields() {
-        InventoryOrderTypeUID = "ab8e950e-94e9-4ae5-943a-49abad514g52",
+        InventoryOrderTypeUID = "2vgf36bc-535c-4a07-8475-3e6568ebbopi",
         //ExternalObjectReferenceUID = "",
-        ResponsibleUID = "c930a33a-e93b-43c9-9379-96bcb86c4e4d",
-        AssignedToUID = "a517e788-8ddf-4772-b6d2-adc3907e3905",
+        ResponsibleUID = "8b1d6d37-8d6c-4983-a3a0-42ed6b867bbe",
+        AssignedToUID = "b08b3cd5-8797-454e-8811-afc27b819d41",
         Notes = "CONTEO ALMACEN Z"
         //ItemFields = GetItemFields()
       };

@@ -143,6 +143,28 @@ namespace Empiria.Trade.Inventory {
     #endregion Properties
 
 
+    #region Public methods
+
+
+
+    internal int GetInventoryOrderTypeId(string uid) {
+
+      if (uid == "5851e71b-3a1f-40ab-836f-ac3d2c9408de") {
+        return 1;
+      } else if (uid == "ab8e950e-94e9-4ae5-943a-49abad514g52") {
+        return 2;
+      } else if (uid == "wered868-a7ec-47f5-b1b9-8c0f73b04kuk") {
+        return 3;
+      } else if (uid == "2vgf36bc-535c-4a07-8475-3e6568ebbopi") {
+        return 4;
+      } else {
+        return -1;
+      }
+
+    }
+
+    #endregion
+
     #region Private methods
 
     protected override void OnSave() {
@@ -151,7 +173,7 @@ namespace Empiria.Trade.Inventory {
 
         this.InventoryOrderId = this.Id;
         this.InventoryOrderUID = this.UID;
-        this.InventoryOrderNo = $"OCI{this.InventoryOrderId.ToString().PadLeft(9, '0')}";
+        this.InventoryOrderNo = GenerateOrderNumber();
       }
       InventoryOrderData.WriteInventoryEntry(this);
     }
@@ -159,13 +181,14 @@ namespace Empiria.Trade.Inventory {
 
     private void MapToInventoryOrderEntry(InventoryOrderFields fields, string inventoryOrderUID) {
 
+      this.InventoryOrderTypeId = GetInventoryOrderTypeId(fields.InventoryOrderTypeUID); //TODO REGISTRAR TIPOS EN TABLA TYPES
+
       if (inventoryOrderUID != string.Empty) {
         this.InventoryOrderId = Parse(inventoryOrderUID).InventoryOrderId;
         this.InventoryOrderUID = inventoryOrderUID;
-        this.InventoryOrderNo = $"OCI{this.InventoryOrderId.ToString().PadLeft(9, '0')}";
+        this.InventoryOrderNo = GenerateOrderNumber();
       }
 
-      this.InventoryOrderTypeId = GetInventoryOrderTypeId(fields.InventoryOrderTypeUID); //TODO REGISTRAR TIPOS EN TABLA TYPES
       this.ExternalObjectReferenceId = -1;
       this.ResponsibleId = Party.Parse(fields.ResponsibleUID).Id;
       this.AssignedToId = Party.Parse(fields.AssignedToUID).Id;
@@ -180,20 +203,22 @@ namespace Empiria.Trade.Inventory {
     }
 
 
-    internal int GetInventoryOrderTypeId(string uid) {
+    private string GenerateOrderNumber() {
 
-      if (uid == "5851e71b-3a1f-40ab-836f-ac3d2c9408de") {
-        return 1;
-      } else if (uid == "ab8e950e-94e9-4ae5-943a-49abad514g52") {
-        return 2;
-      } else if (uid == "wered868-a7ec-47f5-b1b9-8c0f73b04kuk") {
-        return 3;
-      } else if (uid == "5851e71b-3a1f-40ab-836f-ac3d2c9408de") {
-        return 4;
+      string orderNumber = string.Empty;
+
+      if (this.InventoryOrderTypeId == 1) {
+        orderNumber = $"OCFI";
+      } else if (this.InventoryOrderTypeId == 2) {
+        orderNumber = $"OCFM";
+      } else if (this.InventoryOrderTypeId == 3) {
+        orderNumber = $"OCFA";
+      } else if (this.InventoryOrderTypeId == 4) {
+        orderNumber = $"OT";
       } else {
-        return -1;
+        return string.Empty;
       }
-
+      return $"{orderNumber}{this.InventoryOrderId.ToString().PadLeft(9, '0')}";
     }
 
     #endregion Private methods
