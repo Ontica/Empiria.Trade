@@ -80,6 +80,10 @@ namespace Empiria.Trade.Core.UsesCases {
       return PartyMapper.MapToMinimalPartyDto(internalSuppliersList);
     }
 
+    public FixedList<NamedEntityDto> GetAccountHolders(string keywords) {
+      return GetPartiesByRole(string.Empty, keywords);
+    }
+
     #endregion Use cases
 
     #region Private methods

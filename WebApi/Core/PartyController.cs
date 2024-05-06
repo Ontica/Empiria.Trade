@@ -24,6 +24,18 @@ namespace Empiria.Trade.WebApi.Core {
 
     #region Web Apis
 
+    [HttpGet]
+    [Route("v4/trade/contacts/account-holders")]
+    public CollectionModel GetAccountHolders([FromUri] string keywords) {
+
+      base.RequireResource(keywords, "keywords");
+
+      using (var usecases = PartyUseCases.UseCaseInteractor()) {
+        FixedList<NamedEntityDto> customers = usecases.GetAccountHolders(keywords);
+
+        return new CollectionModel(base.Request, customers);
+      }
+    }
 
     [HttpGet]
     [Route("v4/trade/contacts/customers")]
