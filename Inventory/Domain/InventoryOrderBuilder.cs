@@ -36,8 +36,6 @@ namespace Empiria.Trade.Inventory.Domain {
       var inventoryOrder = new InventoryOrderEntry(fields, inventoryOrderUID);
       inventoryOrder.Save();
 
-      //CreateInventoryOrderItems(inventoryOrder, fields.ItemFields);
-
       return inventoryOrder;
     }
 
@@ -51,8 +49,7 @@ namespace Empiria.Trade.Inventory.Domain {
 
     internal InventoryOrderEntry GetInventoryOrderByUID(string inventoryOrderUID) {
 
-      var inventoryOrder = InventoryOrderEntry.Parse(inventoryOrderUID);
-
+      var inventoryOrder = InventoryOrderData.GetInventoryOrderByUID(inventoryOrderUID);
       GetInventoryItemsForOrder(inventoryOrder);
 
       return inventoryOrder;
@@ -75,10 +72,10 @@ namespace Empiria.Trade.Inventory.Domain {
     }
 
 
-    internal InventoryOrderEntry UpdateInventoryCountOrder(string inventoryOrderUID,
+    internal void UpdateInventoryCountOrder(string inventoryOrderUID,
       InventoryOrderFields fields) {
 
-      return CreateInventoryOrder(fields, inventoryOrderUID);
+      CreateInventoryOrder(fields, inventoryOrderUID);
     }
 
 

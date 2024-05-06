@@ -78,6 +78,27 @@ namespace Empiria.Trade.Inventory.Adapters {
     }
 
 
+    static private InventoryProductDto GetInventoryProductData(InventoryOrderItem x) {
+      var dto = new InventoryProductDto();
+
+      dto.ProductCode = x.VendorProduct.ProductFields.ProductCode;
+      dto.ProductDescription = x.VendorProduct.ProductFields.ProductDescription;
+      dto.Presentation = x.VendorProduct.ProductPresentation.PresentationName;
+
+      return dto;
+    }
+
+
+    static private InventoryWarehouseBinDto GetInventoryWarehouseBinData(InventoryOrderItem x) {
+      var dto = new InventoryWarehouseBinDto();
+      dto.Rack = x.WarehouseBin.Rack;
+      dto.RackDescription = x.WarehouseBin.BinDescription;
+      dto.Position = x.Position;
+      dto.Level = x.Level;
+      return dto;
+    }
+
+
     private static InventoryOrderDescriptorDto MapInventoryDescriptorList(InventoryOrderEntry entry) {
       var dto = new InventoryOrderDescriptorDto();
 
@@ -105,21 +126,13 @@ namespace Empiria.Trade.Inventory.Adapters {
       var dto = new InventoryOrderItemDto();
 
       dto.UID = x.InventoryOrderItemUID;
-      dto.InventoryOrderUID = x.InventoryOrder.InventoryOrderUID;
-      dto.ExternalObjectItemReferenceUID = ""; //External.Parse(x.ExternalObjectItemReferenceId).UID;
-      dto.Notes = x.ItemNotes;
-      dto.VendorProduct = new NamedEntityDto(
-        x.VendorProduct.VendorProductUID,
-        $"{x.VendorProduct.ProductFields.ProductCode} " +
-        $"{x.VendorProduct.ProductPresentation.PresentationName}");
-      dto.ProductDescription = x.VendorProduct.ProductFields.ProductName;
-      dto.WarehouseBin = new NamedEntityDto(
-        x.WarehouseBin.WarehouseBinUID,
-        x.WarehouseBin.BinDescription);
+      dto.Product = GetInventoryProductData(x);
+      dto.WarehouseBin = GetInventoryWarehouseBinData(x);
       dto.Quantity = x.Quantity;
-      dto.InputQuantity = x.InputQuantity;
-      dto.OutputQuantity = x.OutputQuantity;
-      dto.Status = x.Status;
+      dto.Notes = x.ItemNotes;
+      //dto.InputQuantity = x.InputQuantity;
+      //dto.OutputQuantity = x.OutputQuantity;
+      //dto.Status = x.Status;
       return dto;
     }
 

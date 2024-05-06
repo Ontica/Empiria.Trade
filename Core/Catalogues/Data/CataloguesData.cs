@@ -50,6 +50,16 @@ namespace Empiria.Trade.Core.Catalogues
     }
 
 
+    static internal FixedList<WarehouseBin> GetWarehouseBinsForInventory() {
+
+      string sql = $"SELECT * FROM TRDWarehouseBins WHERE WarehouseBinId > 0 AND WarehouseId > 0";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetPlainObjectFixedList<WarehouseBin>(dataOperation);
+    }
+
+
     internal static string UpdateTableGUID(string tableName, string idName, string uidName) {
 
       try {

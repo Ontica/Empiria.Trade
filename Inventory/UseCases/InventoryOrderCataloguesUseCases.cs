@@ -44,6 +44,9 @@ namespace Empiria.Trade.Inventory.UseCases {
     }
 
 
+
+
+
     #endregion Public methods
 
   } // class InventoryOrderCataloguesUseCases

@@ -143,45 +143,8 @@ namespace Empiria.Trade.Inventory {
     #endregion Properties
 
 
-    #region Private methods
+    #region Public methods
 
-    protected override void OnSave() {
-
-      if (this.InventoryOrderId == 0) {
-
-        this.InventoryOrderId = this.Id;
-        this.InventoryOrderUID = this.UID;
-        this.InventoryOrderNo = $"OCI{this.InventoryOrderId.ToString().PadLeft(9, '0')}";
-      }
-      InventoryOrderData.WriteInventoryEntry(this);
-    }
-
-
-    private void MapToInventoryOrderEntry(InventoryOrderFields fields, string inventoryOrderUID) {
-
-      if (inventoryOrderUID != string.Empty) {
-        this.InventoryOrderId = Parse(inventoryOrderUID).InventoryOrderId;
-        this.InventoryOrderUID = inventoryOrderUID;
-        this.InventoryOrderNo = $"OCI{this.InventoryOrderId.ToString().PadLeft(9, '0')}";
-      }
-
-      this.InventoryOrderTypeId = GetInventoryOrderTypeId(fields.InventoryOrderTypeUID); //TODO REGISTRAR TIPOS EN TABLA TYPES
-      this.ExternalObjectReferenceId = -1;
-      this.ResponsibleId = Party.Parse(fields.ResponsibleUID).Id;
-      this.AssignedToId = Party.Parse(fields.AssignedToUID).Id;
-      this.Notes = fields.Notes;
-      this.InventoryOrderExtData = "";
-      this.Status = fields.Status;
-
-      if (fields.Status == InventoryStatus.Abierto) {
-        this.PostedById =  ExecutionServer.CurrentUserId;
-        this.PostingTime = DateTime.Now;
-        this.ClosingTime = DateTime.Now;
-      }
-      if (fields.Status == InventoryStatus.Cerrado) {
-        this.ClosingTime = DateTime.Now;
-      }
-    }
 
 
     internal int GetInventoryOrderTypeId(string uid) {
@@ -192,12 +155,70 @@ namespace Empiria.Trade.Inventory {
         return 2;
       } else if (uid == "wered868-a7ec-47f5-b1b9-8c0f73b04kuk") {
         return 3;
-      } else if (uid == "5851e71b-3a1f-40ab-836f-ac3d2c9408de") {
+      } else if (uid == "2vgf36bc-535c-4a07-8475-3e6568ebbopi") {
         return 4;
       } else {
         return -1;
       }
 
+    }
+
+    #endregion
+
+    #region Private methods
+
+    protected override void OnSave() {
+
+      if (this.InventoryOrderId == 0) {
+
+        this.InventoryOrderId = this.Id;
+        this.InventoryOrderUID = this.UID;
+        this.InventoryOrderNo = GenerateOrderNumber();
+      }
+      InventoryOrderData.WriteInventoryEntry(this);
+    }
+
+
+    private void MapToInventoryOrderEntry(InventoryOrderFields fields, string inventoryOrderUID) {
+
+      this.InventoryOrderTypeId = GetInventoryOrderTypeId(fields.InventoryOrderTypeUID); //TODO REGISTRAR TIPOS EN TABLA TYPES
+
+      if (inventoryOrderUID != string.Empty) {
+        this.InventoryOrderId = Parse(inventoryOrderUID).InventoryOrderId;
+        this.InventoryOrderUID = inventoryOrderUID;
+        this.InventoryOrderNo = GenerateOrderNumber();
+      }
+
+      this.ExternalObjectReferenceId = -1;
+      this.ResponsibleId = Party.Parse(fields.ResponsibleUID).Id;
+      this.AssignedToId = Party.Parse(fields.AssignedToUID).Id;
+      this.Notes = fields.Notes;
+      this.InventoryOrderExtData = "";
+      this.Status = InventoryStatus.Abierto;
+
+      this.PostedById = ExecutionServer.CurrentUserId;
+      this.PostingTime = DateTime.Now;
+      this.ClosingTime = DateTime.Now;
+
+    }
+
+
+    private string GenerateOrderNumber() {
+
+      string orderNumber = string.Empty;
+
+      if (this.InventoryOrderTypeId == 1) {
+        orderNumber = $"OCFI";
+      } else if (this.InventoryOrderTypeId == 2) {
+        orderNumber = $"OCFM";
+      } else if (this.InventoryOrderTypeId == 3) {
+        orderNumber = $"OCFA";
+      } else if (this.InventoryOrderTypeId == 4) {
+        orderNumber = $"OT";
+      } else {
+        return string.Empty;
+      }
+      return $"{orderNumber}{this.InventoryOrderId.ToString().PadLeft(9, '0')}";
     }
 
     #endregion Private methods

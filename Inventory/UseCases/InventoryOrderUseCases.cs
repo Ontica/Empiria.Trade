@@ -104,9 +104,9 @@ namespace Empiria.Trade.Inventory.UseCases {
 
     public InventoryOrderDto UpdateInventoryCountOrder(string inventoryOrderUID, InventoryOrderFields fields) {
       var builder = new InventoryOrderBuilder();
-      var inventoryOrder = builder.UpdateInventoryCountOrder(inventoryOrderUID, fields);
+      builder.UpdateInventoryCountOrder(inventoryOrderUID, fields);
 
-      return GetInventoryCountOrderByUID(inventoryOrder.InventoryOrderUID);
+      return GetInventoryCountOrderByUID(inventoryOrderUID);
     }
 
 

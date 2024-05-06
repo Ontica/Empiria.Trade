@@ -45,7 +45,7 @@ namespace Empiria.Trade.Tests.Core {
 
       string uid = "78be58ab-75d0-4e8f-bed4-2305e70101c8";
 
-      IProductEntryDto sut = usecase.GetTRDProduct(uid);
+      IProductEntryDto sut = usecase.GetProductByUID(uid);
 
       Assert.NotNull(sut);
 
