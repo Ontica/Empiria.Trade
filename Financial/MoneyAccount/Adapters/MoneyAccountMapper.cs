@@ -23,6 +23,8 @@ namespace Empiria.Trade.Financial.Adapters {
         MoneyAccountType = moneyAccount.MoneyAccountType.MapToNamedEntity(),
         MoneyAccountOwner = moneyAccount.Owner.MapToNamedEntity(),
         MoneyAccountLimit = moneyAccount.CreditLimit,
+        LimitDaysToPay = moneyAccount.DaysToPay,
+        Notes = moneyAccount.Notes,
         Balance = moneyAccount.GetDebit(),
         Status = ParseStatus(moneyAccount.Status),
         Transactions = MoneyAccountTransactionMapper.MapMoneyAccountTransactions(moneyAccount.MoneyAccountTransactions)

@@ -40,6 +40,14 @@ namespace Empiria.Trade.Financial.Adapters {
       get; internal set;
     } = 0;
 
+    public int LimitDaysToPay {
+      get; internal set;
+    } = 0;
+
+    public string Notes {
+      get; internal set;
+    } = string.Empty;
+
     public NamedEntityDto Status {
       get; internal set;
     }
