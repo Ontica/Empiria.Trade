@@ -48,8 +48,9 @@ namespace Empiria.Trade.Financial {
     #region Public properties
 
     [DataField("MoneyAccountId")]
-    public int MoneyAccount {
+    public int MoneyAccountId {
       get; private set;
+      
     } 
 
     [DataField("MoneyAccountTransactionTypeId")]
@@ -81,11 +82,6 @@ namespace Empiria.Trade.Financial {
     public decimal Debit {
       get; private set;
     } = 0m;
-
-    [DataField("PayableOrderId")]
-    public int PayableOrderId {
-      get; private set;
-    }
 
     [DataField("MoneyAccountTransactionTime")]
     public DateTime TransactionTime {
@@ -126,11 +122,10 @@ namespace Empiria.Trade.Financial {
     }
 
     internal void Update(MoneyAccountTransactionFields fields) {
-      this.MoneyAccount = 3; //MoneyAccount.Parse(fields.MoneyAccountUID);
+      this.MoneyAccountId = MoneyAccount.Parse(fields.MoneyAccountUID).Id;
       this.Description = fields.Description;
       this.Credit = fields.TransactionAmount;
       this.ReferenceId = fields.PayableOrderId;
-      this.PayableOrderId = fields.PayableOrderId;
       this.TransactionTime = fields.TransactionTime;
       this.Notes = fields.Notes;
       this.PostedTime = DateTime.Now;
@@ -143,7 +138,7 @@ namespace Empiria.Trade.Financial {
     }
 
 
-    public void Cancel(string notes) {
+    public void Cancel(string notes = "") {
       this.Status = EntityStatus.Deleted;
       this.Notes = notes;
       this.Save();
@@ -151,13 +146,12 @@ namespace Empiria.Trade.Financial {
 
     public void AddCreditTransactions(MoneyAccount moneyAccount, CreditTrasnactionFields fields) {
       MoneyAccountTransaction moneyTransaction = new MoneyAccountTransaction();
-      moneyTransaction.MoneyAccount = moneyAccount.Id;
+      moneyTransaction.MoneyAccountId = moneyAccount.Id;
       moneyTransaction.TransactionType = MoneyAccountTransactionType.Parse(750);
       moneyTransaction.Description = "Credito " + fields.ExtData;
       moneyTransaction.TransactionTime = fields.TransactionTime;
       moneyTransaction.Credit = fields.CreditAmount;
       moneyTransaction.ReferenceId = fields.PayableOrderId;
-      moneyTransaction.PayableOrderId = fields.PayableOrderId;
       moneyTransaction.Notes = fields.Notes;
       moneyTransaction.ExtData = fields.ExtData;
       moneyTransaction.PostedTime = DateTime.Now;
@@ -170,10 +164,6 @@ namespace Empiria.Trade.Financial {
     #endregion Public methods
 
     #region Private methods
-
-    
-
-   
 
     
     #endregion Private methods

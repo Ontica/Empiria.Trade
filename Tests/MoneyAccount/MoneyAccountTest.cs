@@ -45,21 +45,54 @@ namespace Empiria.Trade.Tests.MoneyAccount {
     public void ShouldAddNewMoneyAccountTransaction() {
 
       var fields = new MoneyAccountTransactionFields {
-        MoneyAccountUID = "6760c864-3f14-46c5-a19f-dddccea6ee04",
+        MoneyAccountUID = "934fd51e-50e8-4372-af97-eccf6b468f17",
         Description = "Credito ",
-        TransactionAmount = 500,
+        TransactionAmount = 595959,
         PayableOrderId = 30,
         TransactionTime = DateTime.Now,
         Notes = "Esto es una prueba"
       };
 
       var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
-      var moneyAccount = moneyAccountUseCase.AddTransaction(fields);
+      var moneyAccountTransaction = moneyAccountUseCase.AddTransaction(fields);
 
-      Assert.NotNull(moneyAccount);
+      Assert.NotNull(moneyAccountTransaction);
     }
 
+    [Fact]
+    public void ShouldUpdateMoneyAccountTransaction() {
 
+      var fields = new MoneyAccountTransactionFields {
+        UID = "5f7ebf30-3929-4d1a-9d81-b774082cbd69",
+        MoneyAccountUID = "934fd51e-50e8-4372-af97-eccf6b468f17",
+        Description = "Credito ",
+        TransactionAmount = 500,
+        PayableOrderId = 30,
+        TransactionTime = DateTime.Now,
+        Notes = "Modificacion"
+      };
+
+      var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
+      var moneyAccountTransaction = moneyAccountUseCase.UpdateTransaction(fields);
+
+      Assert.NotNull(moneyAccountTransaction);
+    }
+
+    [Fact]
+    public void ShouldCancelMoneyAccountTransaction() {
+
+
+      string UID = "ea0693b3-6df3-454c-85f8-e5f34ae17a36";
+       
+      var moneyAccountTransaction  = MoneyAccountTransaction.Parse(UID);
+
+     // var moneyAccount = Empiria.Trade.Financial.MoneyAccount.Parse(moneyAccountTransaction.MoneyAccount);
+
+      //var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
+      //var moneyAccount = moneyAccountUseCase.CancelTransaction(UID);
+
+      Assert.NotNull(moneyAccountTransaction);
+    }
 
     [Fact]
     public void ShouldAddCreditTransactionsToMoneyAccountTransasctions() {
