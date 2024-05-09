@@ -49,7 +49,7 @@ namespace Empiria.Trade.Tests.MoneyAccount {
         TransactionTypeUID = "eccd36f6-f326-4e56-ac28-89504f8ba588",
         Description = "Credito ",
         TransactionAmount = 3350.456m,
-        PayableOrderId = 30,
+        ReferenceId = 30,
         TransactionTime = DateTime.Now,
         Notes = "Esto es una prueba"
       };
@@ -64,18 +64,18 @@ namespace Empiria.Trade.Tests.MoneyAccount {
     public void ShouldUpdateMoneyAccountTransaction() {
 
       var fields = new MoneyAccountTransactionFields {
-        UID = "0fc825c6-ea44-42c0-b2f1-f8b04f7586ff",
+        UID = "38246295-08b8-4fac-84da-1a3a63b81850",
         MoneyAccountUID = "934fd51e-50e8-4372-af97-eccf6b468f17",
         TransactionTypeUID = "70c7e1cf-13a0-4b23-9044-1bf7ddbab5e2",
         Description = "Credito ",
         TransactionAmount = 500,
-        PayableOrderId = 30,
+        ReferenceId = 30,
         TransactionTime = DateTime.Now,
         Notes = "Modificacion"
       };
 
       var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
-      var moneyAccountTransaction = moneyAccountUseCase.UpdateTransaction(fields);
+      var moneyAccountTransaction = moneyAccountUseCase.UpdateTransaction(fields, fields.UID);
 
       Assert.NotNull(moneyAccountTransaction);
     }

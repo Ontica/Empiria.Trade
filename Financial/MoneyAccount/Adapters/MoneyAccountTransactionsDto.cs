@@ -9,6 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
 using System;
+using Empiria.StateEnums;
 
 
 namespace Empiria.Trade.Financial.Adapters {
@@ -42,7 +43,15 @@ namespace Empiria.Trade.Financial.Adapters {
     public DateTime DueDate {
       get; internal set;
     }
-        
+
+    public string Notes {
+      get; internal set;
+    }
+
+    public EntityStatus Status {
+      get; set;
+    } 
+
   } // class MoneyAccountTransactionsDto 
 
 } // namespace Empiria.Trade.Financial.Adapters 

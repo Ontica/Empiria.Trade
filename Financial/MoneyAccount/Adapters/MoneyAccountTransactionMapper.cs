@@ -23,7 +23,8 @@ namespace Empiria.Trade.Financial.Adapters {
         TransactionDate = transaction.TransactionTime,
         CreditAmount = transaction.Credit,
         DebitAmount = transaction.Debit,
-        
+        Notes = transaction.Notes,
+        Status = transaction.Status
       };
       return dto;
     }
@@ -38,11 +39,6 @@ namespace Empiria.Trade.Financial.Adapters {
       return creditTransactionList.ToFixedList();
     }
 
-    static private int GetDaysToPay(DateTime dueDate) {
-      var difOfDates = dueDate - DateTime.Today;
-
-      return difOfDates.Days;
-    }
 
 
   } //  class MoneyAccountTransactionMapper
