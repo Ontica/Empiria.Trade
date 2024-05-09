@@ -100,10 +100,10 @@ namespace Empiria.Trade.Financial.UseCases
       return MoneyAccountTransactionMapper.Map(moneyAccountTransaction);
     }
 
-    public MoneyAccountTransactionDto UpdateTransaction(MoneyAccountTransactionFields fields) {
+    public MoneyAccountTransactionDto UpdateTransaction(MoneyAccountTransactionFields fields, string moneyAccountTransactionUID) {
       Assertion.Require(fields, "fields");
 
-      var moneyAccountTransaction = MoneyAccountTransaction.Parse(fields.UID);
+      var moneyAccountTransaction = MoneyAccountTransaction.Parse(moneyAccountTransactionUID);
       moneyAccountTransaction.Update(fields);
       moneyAccountTransaction.Save();
 
@@ -122,6 +122,14 @@ namespace Empiria.Trade.Financial.UseCases
       return MoneyAccountTransactionMapper.Map(moneyAccountTransaction);
     }
 
+    public MoneyAccountTransactionDto GetTransaction(string moneyAccountTransactionUID) {
+      Assertion.Require(moneyAccountTransactionUID, "moneyAccountTransactionUID");
+
+      var moneyAccountTransaction = MoneyAccountTransaction.Parse(moneyAccountTransactionUID);
+
+
+      return MoneyAccountTransactionMapper.Map(moneyAccountTransaction);
+    }
 
     public CreditTransactionDto AddCreditTransaction(CreditTrasnactionFields fields) {
       Assertion.Require(fields, "fields");
@@ -142,8 +150,7 @@ namespace Empiria.Trade.Financial.UseCases
 
       return CreditTransactionMapper.Map(transaction, 10);
     }
-
-
+       
 
     public decimal GetMoneyAccountTotalDebt(int ownerId) {
       var moneyAccount = MoneyAccount.ParseByOwner(ownerId);

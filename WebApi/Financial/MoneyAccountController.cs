@@ -171,6 +171,65 @@ namespace Empiria.Trade.WebApi.Financial {
 
     }
 
+    [HttpPost]
+    [Route("v4/trade/financial/money-accounts-transaction")]
+    public SingleObjectModel AddMoneyAccountTransaction([FromBody] MoneyAccountTransactionFields fields) {
+
+      base.RequireBody(fields);
+
+      using (var usecases = MoneyAccountUseCases.UseCaseInteractor()) {
+
+        var moneyAccountTransactionDto = usecases.AddTransaction(fields);
+
+        return new SingleObjectModel(this.Request, moneyAccountTransactionDto);
+      }
+    }
+
+    [HttpPut]
+    [Route("v4/trade/financial/money-accounts-transaction/{moneyAccountTransactionUID:guid}")]
+    public SingleObjectModel UpdateMoneyAccountTransaction([FromUri] string moneyAccountTransactionUID, [FromBody] MoneyAccountTransactionFields fields) {
+
+      base.RequireResource(moneyAccountTransactionUID, "moneyAccountTransactionUID");
+      base.RequireBody(fields);
+
+      using (var usecases = MoneyAccountUseCases.UseCaseInteractor()) {
+
+        var moneyAccountTransactionDto = usecases.UpdateTransaction(fields, moneyAccountTransactionUID);
+
+        return new SingleObjectModel(this.Request, moneyAccountTransactionDto);
+      }
+
+    }
+
+    [HttpDelete]
+    [Route("v4/trade/financial/money-accounts-transaction/{moneyAccountTransactionUID:guid}/cancel")]
+    public SingleObjectModel CancelMoneyAccountTransaction([FromUri] string moneyAccountTransactionUID) {
+
+      base.RequireResource(moneyAccountTransactionUID, "moneyAccountTransactionUID");
+
+      using (var usecases = MoneyAccountUseCases.UseCaseInteractor()) {
+
+        var moneyAccountTransactionDto = usecases.CancelTransaction(moneyAccountTransactionUID);
+
+        return new SingleObjectModel(this.Request, moneyAccountTransactionDto);
+      }
+
+    }
+
+    [HttpGet]
+    [Route("v4/trade/financial/money-accounts-transaction/{moneyAccountTransactionUID:guid}")]
+    public SingleObjectModel GetMoneyAccountTransaction([FromUri] string moneyAccountTransactionUID) {
+
+      base.RequireResource(moneyAccountTransactionUID, "moneyAccountTransactionUID");
+
+      using (var usecases = MoneyAccountUseCases.UseCaseInteractor()) {
+
+        var moneyAccountTransactionDto = usecases.GetTransaction(moneyAccountTransactionUID);
+
+        return new SingleObjectModel(this.Request, moneyAccountTransactionDto);
+      }
+
+    }
 
   } // class MoneyAccountControler
 
