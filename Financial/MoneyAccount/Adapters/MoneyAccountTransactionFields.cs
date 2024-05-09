@@ -31,6 +31,10 @@ namespace Empiria.Trade.Financial.Adapters {
       get; set;
     }
 
+    public string TransactionTypeUID {
+      get; set;
+    }
+
     public string Description {
       get; set;
     }

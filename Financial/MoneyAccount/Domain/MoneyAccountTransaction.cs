@@ -123,6 +123,7 @@ namespace Empiria.Trade.Financial {
 
     internal void Update(MoneyAccountTransactionFields fields) {
       this.MoneyAccountId = MoneyAccount.Parse(fields.MoneyAccountUID).Id;
+      this.TransactionType = MoneyAccountTransactionType.Parse(fields.TransactionTypeUID);
       this.Description = fields.Description;
       this.Credit = fields.TransactionAmount;
       this.ReferenceId = fields.PayableOrderId;
