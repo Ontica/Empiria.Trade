@@ -71,7 +71,7 @@ namespace Empiria.Trade.Financial {
     [DataField("MoneyAccountTransactionDescription")]
     public string Description {
       get; private set;
-    }
+    } = string.Empty;
 
     [DataField("Credit")]
     public decimal Credit {
@@ -126,7 +126,7 @@ namespace Empiria.Trade.Financial {
       this.TransactionType = MoneyAccountTransactionType.Parse(fields.TransactionTypeUID);
       this.Description = fields.Description;
       this.Credit = fields.TransactionAmount;
-      this.ReferenceId = fields.PayableOrderId;
+      this.ReferenceId = fields.ReferenceId;
       this.TransactionTime = fields.TransactionTime;
       this.Notes = fields.Notes;
       this.PostedTime = DateTime.Now;

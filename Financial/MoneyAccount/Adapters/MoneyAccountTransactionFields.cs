@@ -37,13 +37,13 @@ namespace Empiria.Trade.Financial.Adapters {
 
     public string Description {
       get; set;
-    }
+    } = string.Empty;
 
     public Decimal TransactionAmount {
       get; set;
     } = 0m;
 
-    public int PayableOrderId {
+    public int ReferenceId {
       get; set;
     } = 0;
 
