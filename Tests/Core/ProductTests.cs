@@ -57,8 +57,8 @@ namespace Empiria.Trade.Tests.Core {
 
       var usecase = ProductUseCases.UseCaseInteractor();
       ProductQuery query = new ProductQuery {
-        Keywords = "tuerca hexagonal inserto de nylon",
-        OnStock= true
+        Keywords = "ABRAZADERA  OMEGA  GALVANIZADO ESTANDAR  1",
+        OnStock= false
       };
 
       FixedList<IProductEntryDto> sut = await usecase.GetProductsList(query).ConfigureAwait(false);

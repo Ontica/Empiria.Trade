@@ -33,6 +33,18 @@ namespace Empiria.Trade.Tests.Inventory {
     #region Facts
 
     [Fact]
+    public void CloseInventoryOrderStatusTest() {
+
+      var usecase = InventoryOrderUseCases.UseCaseInteractor();
+
+      string inventoryOrderUID = "4e890899-47d4-4ee3-97ee-5985cfc28253";
+      InventoryOrderDto sut = usecase.CloseInventoryOrderStatus(inventoryOrderUID);
+
+      Assert.NotNull(sut);
+    }
+
+
+    [Fact]
     public void CreateInventoryCountOrderTest() {
 
       var usecase = InventoryOrderUseCases.UseCaseInteractor();

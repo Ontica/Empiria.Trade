@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using System.Net.NetworkInformation;
 using Empiria.Data;
 using Empiria.Trade.Core;
 using Empiria.Trade.Inventory.Adapters;
@@ -155,6 +156,16 @@ namespace Empiria.Trade.Inventory.Data {
       }
 
       return filters.ToString().Length > 0 ? $"AND {filters}" : "";
+    }
+
+    static internal void UpdateInventoryOrderStatus(string inventoryOrderUID, InventoryStatus status) {
+      
+      string sql = $"UPDATE TRDInventoryOrders SET InventoryOrderStatus = '{(char) status}' " +
+                   $"WHERE InventoryOrderUID IN('{inventoryOrderUID}')";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      DataWriter.Execute(dataOperation);
     }
 
     #endregion Private methods

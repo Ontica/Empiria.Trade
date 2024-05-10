@@ -23,6 +23,19 @@ namespace Empiria.Trade.WebApi.Inventory {
 
 
     [HttpPost]
+    [Route("v4/trade/inventory/orders/{inventoryOrderUID:guid}/close-edition")]
+    public SingleObjectModel ChangeInventoryOrderStatus([FromUri] string inventoryOrderUID) {
+
+      using (var usecases = InventoryOrderUseCases.UseCaseInteractor()) {
+
+        InventoryOrderDto inventoryOrder = usecases.CloseInventoryOrderStatus(inventoryOrderUID);
+
+        return new SingleObjectModel(this.Request, inventoryOrder);
+      }
+    }
+
+
+    [HttpPost]
     [Route("v4/trade/inventory/orders/")]
     public SingleObjectModel CreateInventoryOrder([FromBody] InventoryOrderFields fields) {
 

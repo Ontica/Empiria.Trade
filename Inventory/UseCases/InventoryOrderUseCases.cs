@@ -35,6 +35,14 @@ namespace Empiria.Trade.Inventory.UseCases {
     #region Public methods
 
 
+    public InventoryOrderDto CloseInventoryOrderStatus(string inventoryOrderUID) {
+      Assertion.Require(inventoryOrderUID, nameof(inventoryOrderUID));
+
+      InventoryOrderData.UpdateInventoryOrderStatus(inventoryOrderUID, InventoryStatus.Cerrado);
+      return GetInventoryCountOrderByUID(inventoryOrderUID);
+    }
+
+
     public InventoryOrderDto CreateInventoryCountOrder(InventoryOrderFields fields) {
 
       var builder = new InventoryOrderBuilder();
