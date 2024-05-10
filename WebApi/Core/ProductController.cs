@@ -65,6 +65,8 @@ namespace Empiria.Trade.WebApi.Core
           RequireBody(query);
 
           using (var usecases = ProductUseCases.UseCaseInteractor()) {
+
+            query.OnStock = false;
             FixedList<IProductEntryDto> productDto = await usecases.GetProductsList(query)
                                                     .ConfigureAwait(false);
             return new CollectionModel(Request, productDto);
