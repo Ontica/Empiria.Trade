@@ -45,6 +45,7 @@ namespace Empiria.Trade.Inventory.UseCases {
 
 
     public InventoryOrderDto CreateInventoryCountOrder(InventoryOrderFields fields) {
+      Assertion.Require(fields, nameof(fields));
 
       var builder = new InventoryOrderBuilder();
       var inventoryOrder = builder.CreateInventoryOrder(fields, "");
@@ -54,6 +55,8 @@ namespace Empiria.Trade.Inventory.UseCases {
 
     public InventoryOrderDto CreateInventoryOrderItem(string inventoryOrderUID,
       InventoryOrderItemFields fields) {
+      Assertion.Require(inventoryOrderUID, nameof(inventoryOrderUID));
+      Assertion.Require(fields, nameof(fields));
 
       var builder = new InventoryOrderBuilder();
       builder.CreateInventoryOrderItem(inventoryOrderUID, fields);
@@ -62,6 +65,7 @@ namespace Empiria.Trade.Inventory.UseCases {
 
 
     public void DeleteInventoryCountOrderByUID(string inventoryOrderUID) {
+      Assertion.Require(inventoryOrderUID, nameof(inventoryOrderUID));
 
       InventoryOrderData.DeleteInventoryItemByOrderUID(inventoryOrderUID);
       InventoryOrderData.DeleteInventoryOrderByUID(inventoryOrderUID);
@@ -69,6 +73,7 @@ namespace Empiria.Trade.Inventory.UseCases {
 
 
     public InventoryOrderDto DeleteInventoryItemByOrderUID(string inventoryOrderUID) {
+      Assertion.Require(inventoryOrderUID, nameof(inventoryOrderUID));
 
       InventoryOrderData.DeleteInventoryItemByOrderUID(inventoryOrderUID);
       return GetInventoryCountOrderByUID(inventoryOrderUID);
@@ -77,13 +82,26 @@ namespace Empiria.Trade.Inventory.UseCases {
 
     public InventoryOrderDto DeleteInventoryItemByUID(string inventoryOrderUID,
       string inventoryOrderItemUID) {
+      Assertion.Require(inventoryOrderUID, nameof(inventoryOrderUID));
+      Assertion.Require(inventoryOrderItemUID, nameof(inventoryOrderItemUID));
 
       InventoryOrderData.DeleteInventoryItemByUID(inventoryOrderItemUID);
       return GetInventoryCountOrderByUID(inventoryOrderUID);
     }
 
 
+    internal InventoryOrderActions GetActions(InventoryOrderEntry inventoryOrder) {
+      Assertion.Require(inventoryOrder, nameof(inventoryOrder));
+
+      var builder = new InventoryOrderBuilder();
+      InventoryOrderActions actions = builder.GetActions(inventoryOrder);
+
+      return actions;
+    }
+
+
     public InventoryOrderDto GetInventoryCountOrderByUID(string inventoryOrderUID) {
+      Assertion.Require(inventoryOrderUID, nameof(inventoryOrderUID));
 
       var builder = new InventoryOrderBuilder();
       var inventoryOrder = builder.GetInventoryOrderByUID(inventoryOrderUID);
@@ -93,35 +111,19 @@ namespace Empiria.Trade.Inventory.UseCases {
     }
 
 
-    internal InventoryOrderActions GetActions(InventoryOrderEntry inventoryOrder) {
-
-      var builder = new InventoryOrderBuilder();
-      InventoryOrderActions actions = builder.GetActions(inventoryOrder);
-
-      return actions;
-    }
-
-
     public InventoryOrderDataDto GetInventoryCountOrderList(InventoryOrderQuery query) {
+      Assertion.Require(query, nameof(query));
 
       var list = InventoryOrderData.GetInventoryOrderList(query);
       return InventoryOrderMapper.MapList(list, query);
     }
 
 
-    public InventoryOrderEntry GetInventoryOrderParseUID(string inventoryOrderUID) {
+    public InventoryOrderDto UpdateInventoryCountOrder(string inventoryOrderUID,
+      InventoryOrderFields fields) {
+      Assertion.Require(inventoryOrderUID, nameof(inventoryOrderUID));
+      Assertion.Require(fields, nameof(fields));
 
-      return InventoryOrderEntry.Parse(inventoryOrderUID);
-    }
-
-
-    public InventoryOrderItem GetInventoryOrderItemParseUID(string itemUID) {
-
-      return InventoryOrderItem.Parse(itemUID);
-    }
-
-
-    public InventoryOrderDto UpdateInventoryCountOrder(string inventoryOrderUID, InventoryOrderFields fields) {
       var builder = new InventoryOrderBuilder();
       builder.UpdateInventoryCountOrder(inventoryOrderUID, fields);
 
