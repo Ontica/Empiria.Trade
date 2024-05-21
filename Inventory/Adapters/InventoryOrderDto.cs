@@ -26,26 +26,22 @@ namespace Empiria.Trade.Inventory.Adapters {
 
 
     public string InventoryOrderNo {
-      get;
-      internal set;
+      get; internal set;
     }
 
 
     public NamedEntityDto ExternalObjectReference {
-      get;
-      internal set;
+      get; internal set;
     } = new NamedEntityDto("", "");
 
 
     public NamedEntityDto Responsible {
-      get;
-      internal set;
+      get; internal set;
     } = new NamedEntityDto("", "");
 
 
     public NamedEntityDto AssignedTo {
-      get;
-      internal set;
+      get; internal set;
     } = new NamedEntityDto("", "");
 
 
@@ -65,8 +61,7 @@ namespace Empiria.Trade.Inventory.Adapters {
 
 
     public NamedEntityDto PostedBy {
-      get;
-      internal set;
+      get; internal set;
     } = new NamedEntityDto("", "");
 
 
@@ -78,6 +73,12 @@ namespace Empiria.Trade.Inventory.Adapters {
     public FixedList<InventoryOrderItemDto> Items {
       get; set;
     } = new FixedList<InventoryOrderItemDto>();
+
+
+    public InventoryOrderActions Actions {
+      get; set;
+    } = new InventoryOrderActions();
+
 
   } // class InventoryOrderDto
 
@@ -197,4 +198,36 @@ namespace Empiria.Trade.Inventory.Adapters {
 
 
   } // class InventoryOrderDescriptorDto
+
+
+  public class InventoryOrderActions {
+
+
+    public bool CanEdit {
+      get; set;
+    } = false;
+
+
+    public bool CanEditItems {
+      get; set;
+    } = false;
+
+
+    public bool CanDelete {
+      get; set;
+    } = false;
+
+
+    public bool CanClose {
+      get; set;
+    } = false;
+
+
+    public bool CanOpen {
+      get; set;
+    } = false;
+
+
+  } // class InventoryOrderActions
+
 } // namespace Empiria.Trade.Inventory.Adapters

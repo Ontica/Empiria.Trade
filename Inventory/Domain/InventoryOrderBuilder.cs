@@ -79,6 +79,38 @@ namespace Empiria.Trade.Inventory.Domain {
     }
 
 
+    internal InventoryOrderActions GetActions(InventoryOrderEntry inventoryOrder) {
+      
+      if (inventoryOrder.Status == InventoryStatus.Cerrado) {
+        return new InventoryOrderActions();
+      }
+      
+      var actions = new InventoryOrderActions();
+      actions.CanEdit = true;
+      actions.CanEditItems = true;
+      actions.CanDelete = true;
+      if (inventoryOrder.InventoryOrderItems.Count > 0) {
+        actions.CanClose = true;
+      }
+      //if (inventoryOrder.ResponsibleId == ExecutionServer.CurrentUserId ||
+      //    inventoryOrder.PostedById == ExecutionServer.CurrentUserId) {
+
+      //  actions.CanEdit = true;
+      //  actions.CanDelete = true;
+
+      //  if (inventoryOrder.InventoryOrderItems.Count > 0) {
+      //    actions.CanClose = true;
+      //  }
+      //}
+
+      //if (inventoryOrder.AssignedToId == ExecutionServer.CurrentUserId) {
+      //  actions.CanEditItem = true;
+      //}
+
+      return actions;
+    }
+
+
 
 
     #endregion Private methods

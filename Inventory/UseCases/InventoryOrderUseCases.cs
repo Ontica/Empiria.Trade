@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using System.Reflection;
 using Empiria.Services;
 using Empiria.Trade.Inventory.Adapters;
 using Empiria.Trade.Inventory.Data;
@@ -86,8 +87,18 @@ namespace Empiria.Trade.Inventory.UseCases {
 
       var builder = new InventoryOrderBuilder();
       var inventoryOrder = builder.GetInventoryOrderByUID(inventoryOrderUID);
+      InventoryOrderActions actions = GetActions(inventoryOrder);
 
-      return InventoryOrderMapper.MapInventoryOrder(inventoryOrder);
+      return InventoryOrderMapper.MapInventoryOrder(inventoryOrder, actions);
+    }
+
+
+    internal InventoryOrderActions GetActions(InventoryOrderEntry inventoryOrder) {
+
+      var builder = new InventoryOrderBuilder();
+      InventoryOrderActions actions = builder.GetActions(inventoryOrder);
+
+      return actions;
     }
 
 
