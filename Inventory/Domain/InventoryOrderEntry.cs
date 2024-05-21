@@ -66,8 +66,8 @@ namespace Empiria.Trade.Inventory {
     }
 
 
-    [DataField("ExternalObjectReferenceId")]
-    internal int ExternalObjectReferenceId {
+    [DataField("ReferenceId")]
+    internal int ReferenceId {
       get; set;
     }
 
@@ -98,6 +98,12 @@ namespace Empiria.Trade.Inventory {
 
     [DataField("InventoryOrderKeywords")]
     internal string InventoryOrderKeywords {
+      get; set;
+    }
+
+
+    [DataField("ScheduledTime")]
+    internal DateTime ScheduledTime {
       get; set;
     }
 
@@ -189,7 +195,7 @@ namespace Empiria.Trade.Inventory {
         this.InventoryOrderNo = GenerateOrderNumber();
       }
 
-      this.ExternalObjectReferenceId = -1;
+      this.ReferenceId = -1;
       this.ResponsibleId = Party.Parse(fields.ResponsibleUID).Id;
       this.AssignedToId = Party.Parse(fields.AssignedToUID).Id;
       this.Notes = fields.Notes;
@@ -199,6 +205,7 @@ namespace Empiria.Trade.Inventory {
       this.PostedById = ExecutionServer.CurrentUserId;
       this.PostingTime = DateTime.Now;
       this.ClosingTime = DateTime.Now;
+      this.ScheduledTime = DateTime.Now; //TODO ENVIAR FECHA PROGRAMADA
 
     }
 

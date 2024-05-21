@@ -97,12 +97,13 @@ namespace Empiria.Trade.Inventory.Data {
 
     internal static void WriteInventoryEntry(InventoryOrderEntry entry) {
 
-      var op = DataOperation.Parse("writeInventoryCountOrder",
+      var op = DataOperation.Parse("writeInventoryOrder",
           entry.InventoryOrderId, entry.InventoryOrderUID,
           entry.InventoryOrderTypeId, entry.InventoryOrderNo,
-          entry.ExternalObjectReferenceId, entry.ResponsibleId,
+          entry.ReferenceId, entry.ResponsibleId,
           entry.AssignedToId, entry.Notes,
           entry.InventoryOrderExtData, entry.Keywords,
+          entry.ScheduledTime,
           entry.ClosingTime, entry.PostingTime,
           entry.PostedById, (char) entry.Status);
 
