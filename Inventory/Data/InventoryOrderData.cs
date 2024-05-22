@@ -113,16 +113,20 @@ namespace Empiria.Trade.Inventory.Data {
 
     internal static void WriteInventoryItem(InventoryOrderItem item) {
 
-      var op = DataOperation.Parse("writeInventoryCountOrderItem",
+      var op = DataOperation.Parse("writeInventoryOrderItem",
           item.InventoryOrderItemId, item.InventoryOrderItemUID,
-          item.InventoryOrder.InventoryOrderId, item.ExternalObjectItemReferenceId,
-          item.ItemNotes, item.VendorProduct.Id,
-          item.WarehouseBin.Id, item.Quantity,
+          item.InventoryOrder.InventoryOrderId, item.InventoryOrderTypeItemId,
+          item.ItemReferenceId, item.ItemNotes,
+          item.VendorProduct.Id, item.WarehouseBin.Id,
+          item.CountingQuantity,
+          item.InProcessInputQuantity, item.InProcessOutputQuantity,
           item.InputQuantity, item.OutputQuantity,
-          item.Position, item.Level,
+          item.UnitId, item.InputCost, item.OutputCost,
+          item.CurrencyId,
           item.ExtData, item.ClosingTime,
           item.PostingTime, item.PostedById,
-          (char) item.Status);
+          (char) item.Status,
+          item.Position, item.Level);
 
       DataWriter.Execute(op);
     }

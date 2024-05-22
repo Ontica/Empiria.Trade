@@ -17,181 +17,229 @@ using Empiria.Trade.Products;
 namespace Empiria.Trade.Inventory {
 
 
-    /// <summary>Represents an inventory order item entry.</summary>
-    public class InventoryOrderItem : BaseObject {
+  /// <summary>Represents an inventory order item entry.</summary>
+  public class InventoryOrderItem : BaseObject {
 
-        #region Constructors and parsers
+    #region Constructors and parsers
 
-        public InventoryOrderItem() {
-            //no-op
-        }
-
-
-        static public InventoryOrderItem Parse(int id) => ParseId<InventoryOrderItem>(id);
-
-        static public InventoryOrderItem Parse(string uid) => ParseKey<InventoryOrderItem>(uid);
-
-        static public InventoryOrderItem Empty => ParseEmpty<InventoryOrderItem>();
+    public InventoryOrderItem() {
+      //no-op
+    }
 
 
-        public InventoryOrderItem(string inventoryOrderUID, InventoryOrderItemFields item) {
+    static public InventoryOrderItem Parse(int id) => ParseId<InventoryOrderItem>(id);
 
-            MapToInventoryOrderItem(inventoryOrderUID, item);
-        }
+    static public InventoryOrderItem Parse(string uid) => ParseKey<InventoryOrderItem>(uid);
 
-        #endregion Constructors and parsers
-
-        #region Properties
+    static public InventoryOrderItem Empty => ParseEmpty<InventoryOrderItem>();
 
 
-        [DataField("InventoryOrderItemId")]
-        internal int InventoryOrderItemId {
-            get; set;
-        }
+    public InventoryOrderItem(string inventoryOrderUID, InventoryOrderItemFields item) {
+
+      MapToInventoryOrderItem(inventoryOrderUID, item);
+    }
+
+    #endregion Constructors and parsers
+
+    #region Properties
 
 
-        [DataField("InventoryOrderItemUID")]
-        internal string InventoryOrderItemUID {
-            get; set;
-        }
+    [DataField("InventoryOrderItemId")]
+    internal int InventoryOrderItemId {
+      get; set;
+    }
 
 
-        [DataField("InventoryOrderId")]
-        internal InventoryOrderEntry InventoryOrder {
-            get; set;
-        }
+    [DataField("InventoryOrderItemUID")]
+    internal string InventoryOrderItemUID {
+      get; set;
+    }
 
 
-        [DataField("ExternalObjectItemReferenceId")]
-        internal int ExternalObjectItemReferenceId {
-            get; set;
-        }
+    [DataField("InventoryOrderId")]
+    internal InventoryOrderEntry InventoryOrder {
+      get; set;
+    }
 
 
-        [DataField("InventoryOrderItemNotes")]
-        public string ItemNotes {
-            get; set;
-        } = string.Empty;
+    [DataField("InventoryOrderTypeItemId")]
+    internal int InventoryOrderTypeItemId {
+      get; set;
+    }
 
 
-        [DataField("VendorProductId")]
-        internal VendorProduct VendorProduct {
-            get; set;
-        }
+    [DataField("ItemReferenceId")]
+    internal int ItemReferenceId {
+      get; set;
+    }
 
 
-        [DataField("WarehouseBinId")]
-        internal WarehouseBin WarehouseBin {
-            get; set;
-        }
+    [DataField("InventoryOrderItemNotes")]
+    public string ItemNotes {
+      get; set;
+    } = string.Empty;
 
 
-        [DataField("Quantity")]
-        public decimal Quantity {
-            get; set;
-        }
+    [DataField("VendorProductId")]
+    internal VendorProduct VendorProduct {
+      get; set;
+    }
 
 
-        [DataField("InputQuantity")]
-        public decimal InputQuantity {
-            get; set;
-        }
+    [DataField("WarehouseBinId")]
+    internal WarehouseBin WarehouseBin {
+      get; set;
+    }
 
 
-        [DataField("OutputQuantity")]
-        public decimal OutputQuantity {
-            get; set;
-        }
+    [DataField("CountingQuantity")]
+    public decimal CountingQuantity {
+      get; set;
+    }
 
 
-        [DataField("RackPosition")]
-        public int Position {
-          get; set;
-        }
+    [DataField("InProcessInputQuantity")]
+    public decimal InProcessInputQuantity {
+      get; set;
+    }
 
 
-        [DataField("RackLevel")]
-        public int Level {
-          get; set;
-        }
+    [DataField("InProcessOutputQuantity")]
+    public decimal InProcessOutputQuantity {
+      get; set;
+    }
 
 
-        [DataField("InventoryOrderItemExtData")]
-        public string ExtData {
-            get; set;
-        } = string.Empty;
+    [DataField("InputQuantity")]
+    public decimal InputQuantity {
+      get; set;
+    }
 
 
-        [DataField("ClosingTime")]
-        public DateTime ClosingTime {
-            get; set;
-        }
+    [DataField("OutputQuantity")]
+    public decimal OutputQuantity {
+      get; set;
+    }
 
 
-        [DataField("PostingTime")]
-        public DateTime PostingTime {
-            get; set;
-        }
+    [DataField("UnitId")]
+    internal int UnitId {
+      get; set;
+    }
 
 
-        [DataField("PostedById")]
-        internal int PostedById {
-            get; set;
-        }
+    [DataField("InputCost")]
+    public decimal InputCost {
+      get; set;
+    }
 
 
-        [DataField("InventoryOrderItemStatus", Default = InventoryStatus.Abierto)]
-        internal InventoryStatus Status {
-            get; set;
-        } = InventoryStatus.Abierto;
+    [DataField("OutputCost")]
+    public decimal OutputCost {
+      get; set;
+    }
 
 
-        #endregion Properties
+    [DataField("CurrencyId")]
+    internal int CurrencyId {
+      get; set;
+    }
 
 
-        #region Private methods
-
-        protected override void OnSave() {
-
-            if (this.InventoryOrderItemId == 0) {
-
-                this.InventoryOrderItemId = this.Id;
-                this.InventoryOrderItemUID = this.UID;
-            }
-            InventoryOrderData.WriteInventoryItem(this);
-        }
+    [DataField("InventoryOrderItemExtData")]
+    public string ExtData {
+      get; set;
+    } = string.Empty;
 
 
-        private void MapToInventoryOrderItem(string inventoryOrderUID,
-                                             InventoryOrderItemFields fields) {
-
-            if (fields.UID != string.Empty) {
-                this.InventoryOrderItemId = Parse(fields.UID).InventoryOrderItemId;
-                this.InventoryOrderItemUID = inventoryOrderUID;
-            }
-
-            this.InventoryOrder = InventoryOrderEntry.Parse(inventoryOrderUID);
-            this.ExternalObjectItemReferenceId = -1; //External.Parse(fields.ExternalObjectItemReferenceUID).Id;
-            this.ItemNotes = fields.Notes;
-            this.VendorProduct = VendorProduct.Parse(fields.VendorProductUID);
-            this.WarehouseBin = WarehouseBin.Parse(fields.WarehouseBinUID);
-            this.Quantity = fields.Quantity;
-            this.InputQuantity = fields.InputQuantity;
-            this.OutputQuantity = fields.OutputQuantity;
-            this.Position = fields.Position;
-            this.Level = fields.Level;
-            this.ExtData = "";
-            this.Status = InventoryStatus.Abierto;
-
-            this.ClosingTime = new DateTime(2049, 01, 01);
-            this.PostingTime = DateTime.Now;
-            this.PostedById = ExecutionServer.CurrentUserId;
-
-          }
+    [DataField("ClosingTime")]
+    public DateTime ClosingTime {
+      get; set;
+    }
 
 
-        #endregion Private methods
+    [DataField("PostingTime")]
+    public DateTime PostingTime {
+      get; set;
+    }
 
-    } // class InventoryOrderItem
+
+    [DataField("PostedById")]
+    internal int PostedById {
+      get; set;
+    }
+
+
+    [DataField("InventoryOrderItemStatus", Default = InventoryStatus.Abierto)]
+    internal InventoryStatus Status {
+      get; set;
+    } = InventoryStatus.Abierto;
+
+
+    [DataField("RackPosition")]
+    public int Position {
+      get; set;
+    }
+
+
+    [DataField("RackLevel")]
+    public int Level {
+      get; set;
+    }
+
+
+    #endregion Properties
+
+
+    #region Private methods
+
+    protected override void OnSave() {
+
+      if (this.InventoryOrderItemId == 0) {
+
+        this.InventoryOrderItemId = this.Id;
+        this.InventoryOrderItemUID = this.UID;
+      }
+      InventoryOrderData.WriteInventoryItem(this);
+    }
+
+
+    private void MapToInventoryOrderItem(string inventoryOrderUID,
+                                         InventoryOrderItemFields fields) {
+
+      if (fields.UID != string.Empty) {
+        this.InventoryOrderItemId = Parse(fields.UID).InventoryOrderItemId;
+        this.InventoryOrderItemUID = inventoryOrderUID;
+      }
+
+      this.InventoryOrder = InventoryOrderEntry.Parse(inventoryOrderUID);
+      this.InventoryOrderTypeItemId = -1; // TODO AGREGAR REFERENCIA
+      this.ItemReferenceId = -1; //External.Parse(fields.ExternalObjectItemReferenceUID).Id;
+      this.ItemNotes = fields.Notes;
+      this.VendorProduct = VendorProduct.Parse(fields.VendorProductUID);
+      this.WarehouseBin = WarehouseBin.Parse(fields.WarehouseBinUID);
+      this.CountingQuantity = fields.Quantity;
+      this.InProcessInputQuantity = fields.InProcessInputQuantity; // TODO AGREGAR REFERENCIA
+      this.InProcessOutputQuantity = fields.InProcessOutputQuantity; // TODO AGREGAR REFERENCIA
+      this.InputQuantity = fields.InputQuantity;
+      this.OutputQuantity = fields.OutputQuantity;
+      this.UnitId = fields.UnitId;
+      this.InputCost = fields.InputCost;
+      this.OutputCost = fields.OutputCost;
+      this.CurrencyId = fields.CurrencyId;
+      this.Position = fields.Position;
+      this.Level = fields.Level;
+      this.ExtData = "";
+      this.ClosingTime = new DateTime(2049, 01, 01); //TODO CAMBIA CUANDO SE CIERRA LA ORDEN
+      this.PostingTime = DateTime.Now;
+      this.PostedById = ExecutionServer.CurrentUserId;
+      this.Status = InventoryStatus.Abierto;
+
+    }
+
+
+    #endregion Private methods
+
+  } // class InventoryOrderItem
 
 } // namespace Empiria.Trade.Inventory.Domain

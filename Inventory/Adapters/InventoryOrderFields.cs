@@ -89,6 +89,16 @@ namespace Empiria.Trade.Inventory.Adapters {
     }
 
 
+    public decimal InProcessInputQuantity {
+      get; set;
+    }
+
+
+    public decimal InProcessOutputQuantity {
+      get; set;
+    }
+
+
     public decimal InputQuantity {
       get; set;
     }
@@ -97,6 +107,26 @@ namespace Empiria.Trade.Inventory.Adapters {
     public decimal OutputQuantity {
       get; set;
     }
+
+
+    public int UnitId {
+      get; set;
+    } = -1;
+
+
+    public decimal InputCost {
+      get; set;
+    }
+
+
+    public decimal OutputCost {
+      get; set;
+    }
+
+
+    public int CurrencyId {
+      get; set;
+    } = -1;
 
 
     public int Position {

@@ -141,7 +141,7 @@ namespace Empiria.Trade.Inventory.Adapters {
       dto.UID = x.InventoryOrderItemUID;
       dto.Product = GetInventoryProductData(x);
       dto.WarehouseBin = GetInventoryWarehouseBinData(x);
-      dto.Quantity = x.Quantity;
+      dto.Quantity = x.CountingQuantity;
       dto.Notes = x.ItemNotes;
       //dto.InputQuantity = x.InputQuantity;
       //dto.OutputQuantity = x.OutputQuantity;
