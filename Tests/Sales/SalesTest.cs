@@ -147,7 +147,7 @@ namespace Empiria.Trade.Tests.Sales {
     public void ShouldGetOrder() {
 
      var order = SalesOrder.Parse("1d4fb713-8cda-4e6f-a4a0-9bba2f49fa40");
-      order.CalculateSalesOrder(QueryType.SalesPacking);
+      order.CalculateSalesOrder();
 
 
       var orderDto = SalesOrderMapper.Map(order);

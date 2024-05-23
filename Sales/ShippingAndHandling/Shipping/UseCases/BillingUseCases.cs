@@ -41,7 +41,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
             SalesOrder order = SalesOrder.Parse(orderUID);
 
-            order.CalculateSalesOrder(QueryType.SalesShipping);
+            order.CalculateSalesOrder();
 
             var builder = new ShippingLabelBuilder();
 

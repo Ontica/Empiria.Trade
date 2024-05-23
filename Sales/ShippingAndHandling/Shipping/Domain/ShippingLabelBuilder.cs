@@ -55,7 +55,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
                 SalesOrder order = SalesOrder.Parse(item.Order.UID);
 
-                order.CalculateSalesOrder(QueryType.SalesShipping);
+                order.CalculateSalesOrder();
 
                 billingList.Add(MapSalesOrderToBilling(order));
             }

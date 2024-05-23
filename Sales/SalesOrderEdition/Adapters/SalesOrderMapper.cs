@@ -27,7 +27,6 @@ namespace Empiria.Trade.Sales.Adapters
     static public class SalesOrderMapper {
 
     static public ISalesOrderDto Map(SalesOrder order) {
-      TransactionActions actions = order.Actions;
       var dto = new SalesOrderDto {      
         OrderData = MapDataDto(order),
         Items = MapSalesOrderItems(order.SalesOrderItems),
@@ -35,7 +34,7 @@ namespace Empiria.Trade.Sales.Adapters
         CustomerCredit = MapCustomerCredit(order),
         Shipping = GetShipping(order.UID),
         Packing = GetPacking(order.UID),
-        Actions = TransactionActionsMapper.Map(actions),
+        Actions = TransactionActionsMapper.Map(order.Actions),
       };
 
       return dto;

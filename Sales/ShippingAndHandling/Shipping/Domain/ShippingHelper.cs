@@ -178,7 +178,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
                 if (packageInfo.OrderUID != string.Empty) {
 
                     var salesOrder = SalesOrder.Parse(order.Order.UID);
-                    salesOrder.CalculateSalesOrder(QueryType.SalesShipping);
+                    salesOrder.CalculateSalesOrder();
 
                     order.OrderTotal = salesOrder.OrderTotal;
                     order.TotalPackages = packageInfo.TotalPackages;

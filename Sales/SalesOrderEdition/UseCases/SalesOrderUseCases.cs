@@ -182,7 +182,9 @@ namespace Empiria.Trade.Sales.UseCases {
 
     public ISalesOrderDto GetSalesOrder(string orderUID, QueryType queryType) {
       var order = SalesOrder.Parse(orderUID);
-      order.CalculateSalesOrder(queryType);
+
+      order.CalculateSalesOrder();
+      order.SetOrderActions(queryType);
 
       return SalesOrderMapper.Map(order);
     }

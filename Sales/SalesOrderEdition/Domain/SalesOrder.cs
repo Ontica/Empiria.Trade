@@ -227,11 +227,13 @@ namespace Empiria.Trade.Sales {
     }
       
 
-    public void CalculateSalesOrder(QueryType queryType) {
-      this.SetOrderValues();      
-           
+    public void CalculateSalesOrder() {
+      this.SetOrderValues();
+    }
+
+    public void SetOrderActions(QueryType queryType) {
       var actions = ActionsService.Load();
-          
+
       this.Actions = actions.SetActions(this, queryType);
     }
        
