@@ -27,14 +27,15 @@ namespace Empiria.Trade.Sales.Adapters
     static public class SalesOrderMapper {
 
     static public ISalesOrderDto Map(SalesOrder order) {
-      var dto = new SalesOrderDto {
+      TransactionActions actions = order.Actions;
+      var dto = new SalesOrderDto {      
         OrderData = MapDataDto(order),
         Items = MapSalesOrderItems(order.SalesOrderItems),
         Authorization = MapAuthorizationDto(order),
         CustomerCredit = MapCustomerCredit(order),
         Shipping = GetShipping(order.UID),
         Packing = GetPacking(order.UID),
-        Actions = TransactionActionsMapper.Map(order.Actions)
+        Actions = TransactionActionsMapper.Map(actions),
       };
 
       return dto;
@@ -126,6 +127,7 @@ namespace Empiria.Trade.Sales.Adapters
       if (orderUID == "") {
         return new ShippingEntryDto();
       }
+        
 
       var shippingUseCase = ShippingUseCases.UseCaseInteractor();
       return shippingUseCase.GetShippingByOrderUID(orderUID);
