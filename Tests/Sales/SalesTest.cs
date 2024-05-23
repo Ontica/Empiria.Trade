@@ -195,6 +195,17 @@ namespace Empiria.Trade.Tests.Sales {
       Assert.NotNull(orderDto);
     }
 
+
+    [Fact]
+    public void ShouldSupplySalesOrder() {
+
+      var useCase = SalesOrderUseCases.UseCaseInteractor();
+      string orderUID = "999b56ab-7e63-4bed-bdff-666de817cb86";
+      var sut = useCase.SupplySalesOrder(orderUID);
+      Assert.NotNull(sut);
+    }
+
+
     [Fact]
     public void ShouldCancelCredintInOrder() {
 

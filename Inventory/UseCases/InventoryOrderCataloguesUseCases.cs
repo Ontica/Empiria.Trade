@@ -39,8 +39,9 @@ namespace Empiria.Trade.Inventory.UseCases {
       var type2 = new NamedEntityDto("ab8e950e-94e9-4ae5-943a-49abad514g52", "Orden de conteo físico mensual");
       var type3 = new NamedEntityDto("wered868-a7ec-47f5-b1b9-8c0f73b04kuk", "Orden de conteo físico anual");
       var type4 = new NamedEntityDto("2vgf36bc-535c-4a07-8475-3e6568ebbopi", "Orden de traspaso");
+      var type5 = new NamedEntityDto("2ft8y5h4-db55-48b3-aa78-63132a8d5e7f", "Orden de salida por venta");
 
-      return new List<NamedEntityDto> { type1, type2, type3, type4 }.ToFixedList();
+      return new List<NamedEntityDto> { type1, type2, type3, type4, type5 }.ToFixedList();
     }
 
 

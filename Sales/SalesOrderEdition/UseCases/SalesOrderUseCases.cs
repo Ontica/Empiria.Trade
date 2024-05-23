@@ -12,13 +12,17 @@ using System;
 using Empiria.Services;
 using Empiria.Trade.Core;
 using Empiria.Trade.Core.Catalogues;
+using Empiria.Trade.Core.Inventories.Adapters;
 using Empiria.Trade.Financial.Adapters;
 using Empiria.Trade.Financial.UseCases;
+using Empiria.Trade.Inventory.UseCases;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Products;
 using Empiria.Trade.Sales.Adapters;
 
 using Empiria.Trade.Sales.Data;
+using Empiria.Trade.Sales.ShippingAndHandling;
+using Empiria.Trade.Sales.ShippingAndHandling.Data;
 
 namespace Empiria.Trade.Sales.UseCases {
 
@@ -234,10 +238,12 @@ namespace Empiria.Trade.Sales.UseCases {
       }
 
       order.Supply();
-         
+
+      SalesOrderHelper helper = new SalesOrderHelper();
+      helper.CreateInventoryOrderBySale(order.Id, order.Supplier.UID);
+      
       return SalesOrderMapper.Map(order);
     }
-
 
     public FixedList<NamedEntityDto> GetAuthorizationStatusList() {
       return SalesOrderStatusService.GetAuthorizationStatusList();

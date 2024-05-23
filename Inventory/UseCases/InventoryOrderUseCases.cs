@@ -8,8 +8,10 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using System.Linq;
 using System.Reflection;
 using Empiria.Services;
+using Empiria.Trade.Core.Inventories.Adapters;
 using Empiria.Trade.Inventory.Adapters;
 using Empiria.Trade.Inventory.Data;
 using Empiria.Trade.Inventory.Domain;
@@ -36,20 +38,36 @@ namespace Empiria.Trade.Inventory.UseCases {
     #region Public methods
 
 
+    public void CreateInventoryOrderBySale(FixedList<InventoryItemsData> inventoryItemsData) {
+      Assertion.Require(inventoryItemsData, nameof(inventoryItemsData));
+
+      var builder = new InventoryOrderBuilder();
+      InventoryOrderEntry inventoryOrder = builder.CreateInventoryOrderBySale(inventoryItemsData.FirstOrDefault());
+
+      foreach (var inventoryItem in inventoryItemsData) {
+
+        InventoryOrderItemFields itemFields = builder.MapToInventoryOrderItemFields(inventoryItem);
+
+        builder.CreateInventoryOrderItem(inventoryOrder.InventoryOrderUID, itemFields);
+      }
+
+    }
+
+
     public InventoryOrderDto CloseInventoryOrderStatus(string inventoryOrderUID) {
       Assertion.Require(inventoryOrderUID, nameof(inventoryOrderUID));
 
       InventoryOrderData.UpdateInventoryOrderStatus(inventoryOrderUID, InventoryStatus.Cerrado);
-      return GetInventoryCountOrderByUID(inventoryOrderUID);
+      return GetInventoryOrderByUID(inventoryOrderUID);
     }
 
 
-    public InventoryOrderDto CreateInventoryCountOrder(InventoryOrderFields fields) {
+    public InventoryOrderDto CreateInventoryOrder(InventoryOrderFields fields) {
       Assertion.Require(fields, nameof(fields));
 
       var builder = new InventoryOrderBuilder();
       var inventoryOrder = builder.CreateInventoryOrder(fields, "");
-      return GetInventoryCountOrderByUID(inventoryOrder.InventoryOrderUID);
+      return GetInventoryOrderByUID(inventoryOrder.InventoryOrderUID);
     }
 
 
@@ -60,7 +78,7 @@ namespace Empiria.Trade.Inventory.UseCases {
 
       var builder = new InventoryOrderBuilder();
       builder.CreateInventoryOrderItem(inventoryOrderUID, fields);
-      return GetInventoryCountOrderByUID(inventoryOrderUID);
+      return GetInventoryOrderByUID(inventoryOrderUID);
     }
 
 
@@ -76,7 +94,7 @@ namespace Empiria.Trade.Inventory.UseCases {
       Assertion.Require(inventoryOrderUID, nameof(inventoryOrderUID));
 
       InventoryOrderData.DeleteInventoryItemByOrderUID(inventoryOrderUID);
-      return GetInventoryCountOrderByUID(inventoryOrderUID);
+      return GetInventoryOrderByUID(inventoryOrderUID);
     }
 
 
@@ -86,7 +104,7 @@ namespace Empiria.Trade.Inventory.UseCases {
       Assertion.Require(inventoryOrderItemUID, nameof(inventoryOrderItemUID));
 
       InventoryOrderData.DeleteInventoryItemByUID(inventoryOrderItemUID);
-      return GetInventoryCountOrderByUID(inventoryOrderUID);
+      return GetInventoryOrderByUID(inventoryOrderUID);
     }
 
 
@@ -100,7 +118,7 @@ namespace Empiria.Trade.Inventory.UseCases {
     }
 
 
-    public InventoryOrderDto GetInventoryCountOrderByUID(string inventoryOrderUID) {
+    public InventoryOrderDto GetInventoryOrderByUID(string inventoryOrderUID) {
       Assertion.Require(inventoryOrderUID, nameof(inventoryOrderUID));
 
       var builder = new InventoryOrderBuilder();
@@ -127,7 +145,7 @@ namespace Empiria.Trade.Inventory.UseCases {
       var builder = new InventoryOrderBuilder();
       builder.UpdateInventoryCountOrder(inventoryOrderUID, fields);
 
-      return GetInventoryCountOrderByUID(inventoryOrderUID);
+      return GetInventoryOrderByUID(inventoryOrderUID);
     }
 
 

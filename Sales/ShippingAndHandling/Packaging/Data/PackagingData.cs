@@ -84,6 +84,18 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data
     }
 
 
+    static internal FixedList<PackingOrderItem> GetPackingOrderItemsByOrder(int OrderId) {
+
+      string sql = $"SELECT * " +
+                   $"FROM TRDPackagingItems WHERE OrderId = {OrderId}";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetPlainObjectFixedList<PackingOrderItem>(dataOperation);
+
+    }
+
+
     static internal FixedList<PackingOrderItem> GetPackingOrderItem(string packingItemUID, string orderItemUID) {
 
       var orderPackingId = PackageForItem.Parse(packingItemUID).OrderPackingId;

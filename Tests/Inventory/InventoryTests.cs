@@ -50,7 +50,7 @@ namespace Empiria.Trade.Tests.Inventory {
       var usecase = InventoryOrderUseCases.UseCaseInteractor();
 
       InventoryOrderFields fields = GetInventoryOrderFields();
-      InventoryOrderDto sut = usecase.CreateInventoryCountOrder(fields);
+      InventoryOrderDto sut = usecase.CreateInventoryOrder(fields);
 
       Assert.NotNull(sut);
     }
@@ -126,7 +126,7 @@ namespace Empiria.Trade.Tests.Inventory {
       var usecase = InventoryOrderUseCases.UseCaseInteractor();
       string inventoryOrderUID = "4e890899-47d4-4ee3-97ee-5985cfc28253";
 
-      InventoryOrderDto sut = usecase.GetInventoryCountOrderByUID(inventoryOrderUID);
+      InventoryOrderDto sut = usecase.GetInventoryOrderByUID(inventoryOrderUID);
       Assert.NotNull(sut);
     }
 

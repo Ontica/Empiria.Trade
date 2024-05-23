@@ -8,8 +8,14 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
+using System;
+using Empiria.Trade.Core.Inventories.Adapters;
+using Empiria.Trade.Inventory.UseCases;
 using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Sales.Data;
+using Empiria.Trade.Sales.ShippingAndHandling.Data;
+using Empiria.Trade.Sales.ShippingAndHandling;
+using System.Collections.Generic;
 
 namespace Empiria.Trade.Sales {
 
@@ -20,6 +26,18 @@ namespace Empiria.Trade.Sales {
 
     }
     #region Public methods
+
+
+    internal void CreateInventoryOrderBySale(int orderId, string SupplierUID) {
+
+      FixedList<InventoryItemsData> dataForInventory = GetDataForInventoryOutput(orderId, SupplierUID);
+      
+      if (dataForInventory.Count>0) {
+
+        InventoryOrderUseCases inventoryOrderUseCases = new InventoryOrderUseCases();
+        inventoryOrderUseCases.CreateInventoryOrderBySale(dataForInventory);
+      }
+    }
 
 
     public FixedList<SalesOrder> GetOrders(SearchOrderFields fields) {
@@ -54,7 +72,28 @@ namespace Empiria.Trade.Sales {
     #endregion Public methods
 
     #region Private methods
-  
+
+
+    private FixedList<InventoryItemsData> GetDataForInventoryOutput(int orderId, string supplierUID) {
+
+      FixedList<PackingOrderItem> packings = PackagingData.GetPackingOrderItemsByOrder(orderId);
+
+      var dataForInventoryList = new List<InventoryItemsData>();
+
+      foreach (var packing in packings) {
+        var data = new InventoryItemsData();
+        data.OrderId = orderId;
+        data.OrderItemId = packing.OrderItemId;
+        data.VendorProductUID = SalesOrderItem.Parse(packing.OrderItemId).VendorProduct.VendorProductUID;
+        data.WarehouseBinUID = packing.WarehouseBin.WarehouseBinUID;
+        data.SupplierUID = supplierUID;
+        data.Quantity = packing.Quantity;
+        dataForInventoryList.Add(data);
+      }
+
+      return dataForInventoryList.ToFixedList();
+    }
+
 
     #endregion Private methods
 

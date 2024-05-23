@@ -39,6 +39,11 @@ namespace Empiria.Trade.Inventory.Adapters {
     //} = string.Empty;
 
 
+    public int ReferenceId {
+      get; internal set;
+    } = -1;
+
+
     public string ResponsibleUID {
       get; set;
     } = string.Empty;
@@ -82,6 +87,18 @@ namespace Empiria.Trade.Inventory.Adapters {
     public string WarehouseBinUID {
       get; set;
     } = string.Empty;
+
+
+    public int InventoryOrderTypeItemId {
+      get;
+      internal set;
+    } = -1;
+
+
+    public int ItemReferenceId {
+      get;
+      internal set;
+    } = -1;
 
 
     public decimal Quantity {
@@ -131,13 +148,13 @@ namespace Empiria.Trade.Inventory.Adapters {
 
     public int Position {
       get; set;
-    }
+    } = 1;
 
 
     public int Level {
       get; set;
-    }
-
+    } = 1;
+   
 
     //public string ExternalObjectItemReferenceUID {
     //    get; set;

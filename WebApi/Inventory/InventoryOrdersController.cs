@@ -41,7 +41,7 @@ namespace Empiria.Trade.WebApi.Inventory {
 
       using (var usecases = InventoryOrderUseCases.UseCaseInteractor()) {
 
-        InventoryOrderDto inventoryOrder = usecases.CreateInventoryCountOrder(fields);
+        InventoryOrderDto inventoryOrder = usecases.CreateInventoryOrder(fields);
 
         return new SingleObjectModel(this.Request, inventoryOrder);
       }
@@ -109,7 +109,7 @@ namespace Empiria.Trade.WebApi.Inventory {
 
       using (var usecases = InventoryOrderUseCases.UseCaseInteractor()) {
 
-        InventoryOrderDto inventoryOrder = usecases.GetInventoryCountOrderByUID(inventoryOrderUID);
+        InventoryOrderDto inventoryOrder = usecases.GetInventoryOrderByUID(inventoryOrderUID);
 
         return new SingleObjectModel(this.Request, inventoryOrder);
       }

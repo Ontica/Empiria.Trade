@@ -163,6 +163,8 @@ namespace Empiria.Trade.Inventory {
         return 3;
       } else if (uid == "2vgf36bc-535c-4a07-8475-3e6568ebbopi") {
         return 4;
+      } else if (uid == "2ft8y5h4-db55-48b3-aa78-63132a8d5e7f") {
+        return 5;
       } else {
         return -1;
       }
@@ -195,7 +197,7 @@ namespace Empiria.Trade.Inventory {
         this.InventoryOrderNo = GenerateOrderNumber();
       }
 
-      this.ReferenceId = -1;
+      this.ReferenceId = fields.ReferenceId;
       this.ResponsibleId = Party.Parse(fields.ResponsibleUID).Id;
       this.AssignedToId = Party.Parse(fields.AssignedToUID).Id;
       this.Notes = fields.Notes;
@@ -222,6 +224,8 @@ namespace Empiria.Trade.Inventory {
         orderNumber = $"OCFA";
       } else if (this.InventoryOrderTypeId == 4) {
         orderNumber = $"OT";
+      } else if (this.InventoryOrderTypeId == 5) {
+        orderNumber = $"OSV";
       } else {
         return string.Empty;
       }

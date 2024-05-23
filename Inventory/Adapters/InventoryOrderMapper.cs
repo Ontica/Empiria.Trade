@@ -173,6 +173,9 @@ namespace Empiria.Trade.Inventory.Adapters {
       } else if (typeId == 4) {
         return new NamedEntityDto("2vgf36bc-535c-4a07-8475-3e6568ebbopi", "Orden de traspaso");
 
+      } else if (typeId == 5) {
+        return new NamedEntityDto("2ft8y5h4-db55-48b3-aa78-63132a8d5e7f", "Orden de salida por venta");
+
       } else {
         return new NamedEntityDto("","");
       }

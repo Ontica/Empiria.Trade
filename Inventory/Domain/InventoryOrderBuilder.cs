@@ -9,6 +9,8 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Linq;
+using System.Reflection;
+using Empiria.Trade.Core.Inventories.Adapters;
 using Empiria.Trade.Inventory.Adapters;
 using Empiria.Trade.Inventory.Data;
 
@@ -81,7 +83,9 @@ namespace Empiria.Trade.Inventory.Domain {
 
     internal InventoryOrderActions GetActions(InventoryOrderEntry inventoryOrder) {
       
-      if (inventoryOrder.Status == InventoryStatus.Cerrado) {
+      if (inventoryOrder.Status == InventoryStatus.Cerrado ||
+          inventoryOrder.InventoryOrderTypeId == 5) {
+        
         return new InventoryOrderActions();
       }
       
@@ -108,6 +112,42 @@ namespace Empiria.Trade.Inventory.Domain {
       //}
 
       return actions;
+    }
+
+
+    internal InventoryOrderFields MapToInventoryOrderFields(InventoryItemsData inventoryItemData) {
+
+      InventoryOrderFields fields = new InventoryOrderFields();
+
+      fields.InventoryOrderTypeUID = "2ft8y5h4-db55-48b3-aa78-63132a8d5e7f"; // TODO referencia a tipo cuando se agregue a Types 
+      fields.ResponsibleUID = inventoryItemData.SupplierUID;
+      fields.AssignedToUID = inventoryItemData.SupplierUID;
+      fields.Notes = "";
+      fields.ReferenceId = inventoryItemData.OrderId;
+
+      return fields;
+    }
+
+    internal InventoryOrderEntry CreateInventoryOrderBySale(InventoryItemsData inventoryItemsData) {
+
+      InventoryOrderFields fields = MapToInventoryOrderFields(inventoryItemsData);
+
+      var inventoryOrder = new InventoryOrderEntry(fields, "");
+      inventoryOrder.Save();
+
+      return inventoryOrder;
+    }
+
+
+    internal InventoryOrderItemFields MapToInventoryOrderItemFields(InventoryItemsData inventoryItem) {
+
+      InventoryOrderItemFields fields = new InventoryOrderItemFields();
+      fields.InventoryOrderTypeItemId = 5;
+      fields.ItemReferenceId = inventoryItem.OrderItemId;
+      fields.VendorProductUID = inventoryItem.VendorProductUID;
+      fields.WarehouseBinUID = inventoryItem.WarehouseBinUID;
+      fields.InProcessOutputQuantity = inventoryItem.Quantity;
+      return fields;
     }
 
 

@@ -213,22 +213,22 @@ namespace Empiria.Trade.Inventory {
       }
 
       this.InventoryOrder = InventoryOrderEntry.Parse(inventoryOrderUID);
-      this.InventoryOrderTypeItemId = -1; // TODO AGREGAR REFERENCIA
-      this.ItemReferenceId = -1; //External.Parse(fields.ExternalObjectItemReferenceUID).Id;
+      this.InventoryOrderTypeItemId = 5; // TODO AGREGAR REFERENCIA (5 SALIDA POR VENTA)
+      this.ItemReferenceId = fields.ItemReferenceId; //External.Parse(fields.ItemReferenceUID).Id;
       this.ItemNotes = fields.Notes;
       this.VendorProduct = VendorProduct.Parse(fields.VendorProductUID);
       this.WarehouseBin = WarehouseBin.Parse(fields.WarehouseBinUID);
       this.CountingQuantity = fields.Quantity;
       this.InProcessInputQuantity = fields.InProcessInputQuantity; // TODO AGREGAR REFERENCIA
-      this.InProcessOutputQuantity = fields.InProcessOutputQuantity; // TODO AGREGAR REFERENCIA
+      this.InProcessOutputQuantity = fields.InProcessOutputQuantity; // REFERENCIA EN ORDEN DE SALIDA POR PEDIDO
       this.InputQuantity = fields.InputQuantity;
       this.OutputQuantity = fields.OutputQuantity;
       this.UnitId = fields.UnitId;
       this.InputCost = fields.InputCost;
-      this.OutputCost = fields.OutputCost;
+      this.OutputCost = fields.OutputCost; // TODO PREGUNTAR SI ES PRECIO DE VENTA EN PEDIDO
       this.CurrencyId = fields.CurrencyId;
-      this.Position = fields.Position;
-      this.Level = fields.Level;
+      this.Position = fields.Position; // TODO CAMBIAR, POR EL MOMENTO DE ORDEN POR DEFAULT=1
+      this.Level = fields.Level; // TODO CAMBIAR, POR EL MOMENTO DE ORDEN POR DEFAULT=1
       this.ExtData = "";
       this.ClosingTime = new DateTime(2049, 01, 01); //TODO CAMBIA CUANDO SE CIERRA LA ORDEN
       this.PostingTime = DateTime.Now;
