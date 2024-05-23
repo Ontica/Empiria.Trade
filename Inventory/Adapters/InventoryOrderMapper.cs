@@ -85,7 +85,7 @@ namespace Empiria.Trade.Inventory.Adapters {
       columns.Add(new DataTableColumn("responsibleName", "Responsable", "text"));
       columns.Add(new DataTableColumn("assignedToName", "Asignado a", "text"));
       columns.Add(new DataTableColumn("postingTime", "Fecha registro", "date"));
-      columns.Add(new DataTableColumn("inventoryStatus", "Estatus", "text_tag"));
+      columns.Add(new DataTableColumn("inventoryStatus", "Estatus", "text-tag"));
 
       return columns.ToFixedList();
     }

@@ -149,6 +149,22 @@ namespace Empiria.Trade.Inventory.UseCases {
     }
 
 
+    internal void UpdateInventoryOrderByTypeAndReferenceId(int inventoryOrderTypeId, int referenceId) {
+      
+      InventoryOrderData.UpdateInventoryOrderByTypeAndReferenceId(inventoryOrderTypeId, referenceId);
+    }
+
+
+    internal void UpdateInventoryOrderItemsByTypeAndReferenceId(
+      int inventoryOrderTypeId, int referenceId) {
+
+      InventoryOrderEntry inventoryOrder = 
+        InventoryOrderData.GetInventoryOrderByTypeAndReferenceId(inventoryOrderTypeId, referenceId);
+
+      InventoryOrderData.UpdateInventoryOrderItemsByOrder(inventoryOrder.InventoryOrderId);
+    }
+
+
     #endregion Public methods
 
   } // class InventoryOrderUseCases

@@ -84,6 +84,19 @@ namespace Empiria.Trade.Inventory.Data {
     }
 
 
+    internal static InventoryOrderEntry GetInventoryOrderByTypeAndReferenceId(
+      int inventoryOrderTypeId, int referenceId) {
+
+      string sql = $"SELECT * FROM TRDInventoryOrders " +
+                   $"WHERE InventoryOrderTypeId = {inventoryOrderTypeId} " +
+                   $"AND ReferenceId = {referenceId}";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetPlainObject<InventoryOrderEntry>(dataOperation);
+    }
+
+
     static internal InventoryOrderEntry GetInventoryOrderByUID(string inventoryOrderUID) {
 
       string sql = $"SELECT * FROM TRDInventoryOrders WHERE InventoryOrderUID IN ('{inventoryOrderUID}')";
@@ -91,7 +104,6 @@ namespace Empiria.Trade.Inventory.Data {
       var dataOperation = DataOperation.Parse(sql);
 
       return DataReader.GetPlainObject<InventoryOrderEntry>(dataOperation);
-
     }
 
 
@@ -163,6 +175,7 @@ namespace Empiria.Trade.Inventory.Data {
       return filters.ToString().Length > 0 ? $"AND {filters}" : "";
     }
 
+
     static internal void UpdateInventoryOrderStatus(string inventoryOrderUID, InventoryStatus status) {
       
       string sql = $"UPDATE TRDInventoryOrders SET InventoryOrderStatus = '{(char) status}' " +
@@ -172,6 +185,37 @@ namespace Empiria.Trade.Inventory.Data {
 
       DataWriter.Execute(dataOperation);
     }
+
+
+    static internal void UpdateInventoryOrderByTypeAndReferenceId(int inventoryOrderTypeId, int referenceId) {
+
+      string sql = $"UPDATE TRDInventoryOrders SET " +
+                   $"InventoryOrderStatus = '{(char) InventoryStatus.Cerrado}' " +
+                   //$",ClosingTime = '{new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day)}' " +
+                   $"WHERE InventoryOrderTypeId = {inventoryOrderTypeId} " +
+                   $"AND ReferenceId = {referenceId} ";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      DataWriter.Execute(dataOperation);
+    }
+
+
+    internal static void UpdateInventoryOrderItemsByOrder(int inventoryOrderId) {
+
+      string sql = $"UPDATE TRDInventoryOrderItems SET " +
+                   $"InventoryOrderItemStatus = '{(char) InventoryStatus.Cerrado}' " +
+                   $",CountingQuantity = InProcessOutputQuantity " +
+                   $",InProcessOutputQuantity = 0 " +
+                   //$",ClosingTime = '{new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day)}' " +
+                   $"WHERE InventoryOrderId = {inventoryOrderId} ";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      DataWriter.Execute(dataOperation);
+    }
+
+
 
     #endregion Private methods
 

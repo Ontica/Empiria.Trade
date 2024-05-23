@@ -8,7 +8,9 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using System.Linq;
 using Empiria.Services;
+using Empiria.Trade.Inventory.UseCases;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 using Empiria.Trade.Sales.ShippingAndHandling.Data;
 using Empiria.Trade.Sales.ShippingAndHandling.Domain;
@@ -61,10 +63,37 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
       ShippingData.UpdateShippingStatus(shippingOrderUID, ShippingStatus.Cerrado);
 
+      UpdateInventoryOrders(orders);
+     
       var shippingUseCase = new ShippingUseCases();
 
-      return shippingUseCase.GetShippingByUID(shippingOrderUID, ShippingQueryType.Delivery);
+      var shipping = shippingUseCase.GetShippingByUID(shippingOrderUID, ShippingQueryType.Delivery);
 
+      return shipping;
+    }
+
+
+    private void UpdateInventoryOrders(string[] orders) {
+
+      InventoryOrderUseCases inventoryUseCases = new InventoryOrderUseCases();
+      foreach (var orderUID in orders) {
+
+        int orderId = SalesOrder.Parse(orderUID).Id;
+
+        inventoryUseCases.UpdateInventoryOrderByTypeAndReferenceId(5, orderId);
+
+        UpdateInventoryOrderItemsByTypeAndReferenceId(5, orderId);
+
+      }
+    }
+
+    
+    private void UpdateInventoryOrderItemsByTypeAndReferenceId(int inventoryOrderTypeId, int orderId) {
+
+      InventoryOrderUseCases inventoryUseCases = new InventoryOrderUseCases();
+
+      inventoryUseCases.UpdateInventoryOrderItemsByTypeAndReferenceId(
+        inventoryOrderTypeId, orderId);
     }
 
 

@@ -147,6 +147,7 @@ namespace Empiria.Trade.Inventory.Domain {
       fields.VendorProductUID = inventoryItem.VendorProductUID;
       fields.WarehouseBinUID = inventoryItem.WarehouseBinUID;
       fields.InProcessOutputQuantity = inventoryItem.Quantity;
+      fields.Quantity = inventoryItem.Quantity; //TODO ESTE VALOR ES TEMPORAL PARA MOSTRAR EN PANTALLA
       return fields;
     }
 
