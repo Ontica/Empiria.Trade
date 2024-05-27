@@ -95,6 +95,15 @@ namespace Empiria.Trade.Tests.Core {
     }
 
 
+    [Fact]
+    public void ShouldGetWharehouseMan() {
+      var usecase = PartyUseCases.UseCaseInteractor();
+
+      var sut = usecase.GetWharehouseMan();
+
+      Assert.NotNull(sut);
+    }
+
     #endregion Facts
 
 

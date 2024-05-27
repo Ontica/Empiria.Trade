@@ -136,6 +136,10 @@ namespace Empiria.Trade.Core {
       return PartyData.GetPartyListByRole("salesAgent");
     }
 
+    internal static FixedList<Party> GetWharehouseMan() {
+      return PartyData.GetPartyListByRole("whareHouseMan");
+    }
+
     #endregion Public methos
 
     #region Private methods
