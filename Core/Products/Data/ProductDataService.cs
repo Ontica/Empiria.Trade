@@ -35,8 +35,10 @@ namespace Empiria.Trade.Products.Data
       }
 
       var sql = "SELECT " +
-                "P.ProductId, P.ProductUID, VP.VendorProductUID, PRESENT.PresentationId, VENDOR.PartyId VendorId, I.InventoryEntryId, GROUPS.ProductGroupId, " +
-                "SUBGROUPS.ProductSubgroupId, P.ProductCode, P.ProductUPC, P.ProductName, P.ProductDescription, P.Attributes, VP.SKU, " +
+                "P.ProductId, P.ProductUID, VP.VendorProductUID, PRESENT.PresentationId, VENDOR.PartyId VendorId, " +
+                "CASE WHEN I.InventoryOrderItemId = NULL THEN -1 ELSE I.InventoryOrderItemId END AS InventoryOrderItemId, " +
+                "GROUPS.ProductGroupId, SUBGROUPS.ProductSubgroupId, P.ProductCode, P.ProductUPC, " +
+                "P.ProductName, P.ProductDescription, P.Attributes, VP.SKU, " +
                 "PRICES.PriceList1, PRICES.PriceList2, PRICES.PriceList3, PRICES.PriceList4, PRICES.PriceList5, " +
                 "PRICES.PriceList6, PRICES.PriceList7, PRICES.PriceList8, PRICES.PriceList9, PRICES.PriceList10, " +
                 "P.ProductWeight, P.ProductLength, P.FragileProduct, P.ProductStatus " +
@@ -47,9 +49,8 @@ namespace Empiria.Trade.Products.Data
                 "LEFT JOIN TRDProductPresentations PRESENT ON VP.PresentationId = PRESENT.PresentationId " +
                 "LEFT JOIN TRDParties VENDOR ON VP.VendorId = VENDOR.PartyId " +
                 "LEFT JOIN TRDProductPrices PRICES ON VP.VendorProductId = PRICES.VendorProductId " +
-                "LEFT JOIN TRDInventory I ON VP.VendorProductId = I.VendorProductId " +
+                "LEFT JOIN TRDInventoryOrderItems I ON VP.VendorProductId = I.VendorProductId " +
                 $"{whereClauses}";
-
 
       var dataOperation = DataOperation.Parse(sql);
 

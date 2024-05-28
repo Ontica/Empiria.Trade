@@ -139,7 +139,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data
 
       var op = DataOperation.Parse("writePackagingItem",
         orderItem.PackingItemId, orderItem.UID, orderItem.OrderPacking.OrderPackingId, orderItem.OrderId,
-        orderItem.OrderItemId, orderItem.InventoryEntry.InventoryEntryId, orderItem.WarehouseBin.Id, orderItem.Quantity);
+        orderItem.OrderItemId, orderItem.InventoryEntry.InventoryOrderItemId, orderItem.WarehouseBin.Id, orderItem.Quantity);
 
       DataWriter.Execute(op);
     }

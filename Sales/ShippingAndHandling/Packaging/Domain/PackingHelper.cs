@@ -156,23 +156,12 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
 
     static private void GetWarehouses(PackingItem packingOrderItem, PackingOrderItem item) {
 
-      var inventory = item.InventoryEntry;//InventoryEntry.Parse(item.InventoryEntry);
-
-      if (inventory?.WarehouseId > 0) {
-
-        var warehouse = Warehouse.Parse(inventory.WarehouseId);
-        
-        var whForPacking = new WarehouseForPacking();
-        whForPacking.UID = warehouse.UID;
-        whForPacking.Code = warehouse.Code;
-        whForPacking.Name = warehouse.Name;
-        //whForPacking.Stock = //TODO SACAR STOCK DE INVENTARIO-WAREHOUSE
-        packingOrderItem.WarehouseForPacking = whForPacking;
-      }
+      var inventory = item.InventoryEntry;
 
       if (inventory?.WarehouseBinId > 0) {
 
         var warehouseBin = WarehouseBin.Parse(inventory.WarehouseBinId);
+
         var whBinForPacking = new WarehouseBinForPacking();
         whBinForPacking.UID = warehouseBin.UID;
         whBinForPacking.OrderItemUID = packingOrderItem.OrderItemUID;
@@ -180,6 +169,13 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
         whBinForPacking.WarehouseName = $"{warehouseBin.Warehouse.Code}";
         //whBinDto.Stock = //TODO SACAR STOCK DE INVENTARIO-WAREHOUSE
         packingOrderItem.WarehouseBinForPacking = whBinForPacking;
+
+        var whForPacking = new WarehouseForPacking();
+        whForPacking.UID = warehouseBin.Warehouse.UID;
+        whForPacking.Code = warehouseBin.Warehouse.Code;
+        whForPacking.Name = warehouseBin.Warehouse.Name;
+        //whForPacking.Stock = //TODO SACAR STOCK DE INVENTARIO-WAREHOUSE
+        packingOrderItem.WarehouseForPacking = whForPacking;
       }
     }
 

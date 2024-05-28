@@ -33,21 +33,14 @@ namespace Empiria.Trade.Core {
     #region Properties
 
 
-
-    [DataField("InventoryEntryId")]
-    public int InventoryEntryId {
+    [DataField("InventoryOrderItemId")]
+    public int InventoryOrderItemId {
       get; private set;
     }
 
 
-    [DataField("InventoryEntryUID")]
-    internal string InventoryEntryUID {
-      get; private set;
-    }
-
-
-    [DataField("WarehouseId")]
-    public int WarehouseId {
+    [DataField("InventoryOrderItemUID")]
+    internal string InventoryOrderItemUID {
       get; private set;
     }
 
@@ -64,26 +57,8 @@ namespace Empiria.Trade.Core {
     }
 
 
-    [DataField("InventoryEntryTypeId")]
-    internal int InventoryEntryTypeId {
-      get; private set;
-    }
-
-
-    [DataField("ReferenceId")]
-    internal int ReferenceId {
-      get; private set;
-    }
-
-
-    [DataField("PostedBy")]
-    internal int PostedBy {
-      get; private set;
-    }
-
-
-    [DataField("EntryTime")]
-    internal DateTime EntryTime {
+    [DataField("InventoryOrderTypeItemId")]
+    internal int InventoryOrderTypeItemId {
       get; private set;
     }
 
@@ -100,25 +75,25 @@ namespace Empiria.Trade.Core {
     }
 
 
-    [DataField("PulledAppartQuantity")]
-    public decimal PulledAppartQuantity {
-      get; private set;
-    }
+    //[DataField("PulledAppartQuantity")]
+    //public decimal PulledAppartQuantity {
+    //  get; private set;
+    //}
 
 
-    [DataField("InputCost")]
-    internal decimal InputCost {
-      get; private set;
-    }
+    //[DataField("InputCost")]
+    //internal decimal InputCost {
+    //  get; private set;
+    //}
 
 
-    [DataField("OutputCost")]
-    internal decimal OutputCost {
-      get; private set;
-    }
+    //[DataField("OutputCost")]
+    //internal decimal OutputCost {
+    //  get; private set;
+    //}
 
 
-    [DataField("EntryStatus", Default = StateEnums.EntityStatus.Active)]
+    [DataField("InventoryOrderItemStatus", Default = StateEnums.EntityStatus.Active)]
     public StateEnums.EntityStatus Status {
       get; internal set;
     }

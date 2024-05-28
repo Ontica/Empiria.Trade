@@ -75,10 +75,10 @@ namespace Empiria.Trade.Tests.Core {
       var usecase = ProductForOrderUseCases.UseCaseInteractor();
 
       ProductOrderQuery query = new ProductOrderQuery {
-        Keywords = "ed7bff14-9be7-4dba-87c3-08a0e4d86680",
+        Keywords = "PPBTA14X34-3500",
         OnStock = true,
         Order = {
-          CustomerUID = "4dc2c734-d190-4d1b-b34c-07156c11e516",
+          CustomerUID = "b251959f-2b7b-46af-bdf6-09171a6182ee",
           SalesAgentUID = "",
           SupplierUID = "",
 

@@ -92,7 +92,7 @@ namespace Empiria.Trade.Products {
     }
 
 
-    [DataField("InventoryEntryId")]
+    [DataField("InventoryOrderItemId")]
     internal InventoryEntry InventoryEntry {
       get; private set;
     }
