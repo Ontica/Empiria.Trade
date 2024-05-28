@@ -49,8 +49,9 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data
         warehouseBin = $" AND WarehouseBinId = " +
                               $"{WarehouseBin.Parse(warehouseBinUID).Id}";
       }
-      string sql = $"SELECT * FROM TRDInventory " +
-                   $"WHERE EntryStatus = 'A' AND VendorProductId = {vendorProductId} {warehouseBin}";
+      string sql = $"SELECT * FROM TRDInventoryOrderItems " +
+                   $"WHERE InventoryOrderItemStatus = 'A' " +
+                   $"AND VendorProductId = {vendorProductId} {warehouseBin}";
 
       var dataOperation = DataOperation.Parse(sql);
 

@@ -30,7 +30,7 @@ namespace Empiria.Trade.Core.Catalogues
 
     internal static InventoryEntry GetInventoryEntry(int vendorProductId) {
 
-      var sql = $"SELECT * FROM TRDInventory WHERE VendorProductId = {vendorProductId}";
+      var sql = $"SELECT * FROM TRDInventoryOrderItems WHERE VendorProductId = {vendorProductId}";
 
       var dataOperation = DataOperation.Parse(sql);
 
