@@ -8,7 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-
+using System.Linq;
 using Empiria.Services;
 using Empiria.Trade.Core;
 using Empiria.Trade.Core.Catalogues;
@@ -304,9 +304,9 @@ namespace Empiria.Trade.Sales.UseCases {
     private decimal GetItemExistence(int vendorProductId) {
 
       var usecase = CataloguesUseCases.UseCaseInteractor();
-      FixedList<SalesInventoryStock> sut = usecase.GetInventoryStockByVendorProduct(vendorProductId);
+      FixedList<SalesInventoryStock> inventoryStock = usecase.GetInventoryStockByVendorProduct(vendorProductId);
 
-      return sut[0].Stock;
+      return inventoryStock.Sum(x=>x.Stock);
     }
 
     public ISalesOrderDto CancelCreditInOrder(string orderUID, string notes) {
