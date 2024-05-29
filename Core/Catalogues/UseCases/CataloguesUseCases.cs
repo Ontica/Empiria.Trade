@@ -9,6 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Empiria.Services;
 using Empiria.Trade.Core.Catalogues.Adapters;
@@ -93,6 +94,15 @@ namespace Empiria.Trade.Core.Catalogues {
       Assertion.Require(warehouseBinUid, "warehouseBinUid");
 
       return WarehouseBin.Parse(warehouseBinUid);
+    }
+
+
+    public WarehouseBin GetWarehouseBinByVendorProduct(int vendorProductId) {
+      Assertion.Require(vendorProductId, "vendorProductId");
+
+      FixedList<SalesInventoryStock> stock = GetInventoryStockByVendorProduct(vendorProductId);
+
+      return stock.FirstOrDefault().WarehouseBin;
     }
 
 

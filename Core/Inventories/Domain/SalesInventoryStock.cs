@@ -8,6 +8,8 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using Empiria.Trade.Core.Catalogues;
+using Empiria.Trade.Products;
 
 namespace Empiria.Trade.Core {
 
@@ -30,7 +32,13 @@ namespace Empiria.Trade.Core {
 
 
     [DataField("VendorProductId")]
-    public int VendorProductId {
+    public VendorProduct VendorProduct {
+      get; private set;
+    }
+
+
+    [DataField("WarehouseBinId")]
+    public WarehouseBin WarehouseBin {
       get; private set;
     }
 

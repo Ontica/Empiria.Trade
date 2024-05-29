@@ -57,8 +57,8 @@ namespace Empiria.Trade.Tests.Core {
 
       var usecase = ProductUseCases.UseCaseInteractor();
       ProductQuery query = new ProductQuery {
-        Keywords = "ABRAZADERA  OMEGA  GALVANIZADO ESTANDAR  1",
-        OnStock= false
+        Keywords = "PPBTA14X34-3500",
+        OnStock= true
       };
 
       FixedList<IProductEntryDto> sut = await usecase.GetProductsList(query).ConfigureAwait(false);

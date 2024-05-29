@@ -16,6 +16,11 @@ using Empiria.Trade.Sales.Data;
 using Empiria.Trade.Sales.ShippingAndHandling.Data;
 using Empiria.Trade.Sales.ShippingAndHandling;
 using System.Collections.Generic;
+using Empiria.Services;
+using Empiria.Trade.Core;
+using Empiria.Trade.Products;
+using Empiria.Trade.Core.Catalogues;
+using System.Linq;
 
 namespace Empiria.Trade.Sales {
 
@@ -28,14 +33,14 @@ namespace Empiria.Trade.Sales {
     #region Public methods
 
 
-    internal void CreateInventoryOrderBySale(int orderId) {
+    internal void CreateInventoryOrderBySale(FixedList<SalesOrderItem> salesOrderItems) {
 
-      FixedList<InventoryItems> dataForInventory = GetDataForInventoryOutput(orderId);
+      FixedList<InventoryItems> inventoryItems = GetDataForInventoryOutput(salesOrderItems);
       
-      if (dataForInventory.Count>0) {
+      if (inventoryItems.Count>0) {
 
         InventoryOrderUseCases inventoryOrderUseCases = new InventoryOrderUseCases();
-        inventoryOrderUseCases.CreateInventoryOrderBySale(dataForInventory);
+        inventoryOrderUseCases.CreateInventoryOrderBySale(inventoryItems);
       }
     }
 
@@ -74,19 +79,21 @@ namespace Empiria.Trade.Sales {
     #region Private methods
 
 
-    private FixedList<InventoryItems> GetDataForInventoryOutput(int orderId) {
+    private FixedList<InventoryItems> GetDataForInventoryOutput(FixedList<SalesOrderItem> salesOrderItems) {
 
-      FixedList<SalesOrderItem> orderItems = SalesOrderItemsData.GetOrderItems(orderId);
       var dataForInventoryList = new List<InventoryItems>();
+      foreach (var item in salesOrderItems) {
 
-      foreach (var item in orderItems) {
+        var cataloguesUsecase = CataloguesUseCases.UseCaseInteractor();
 
         var data = new InventoryItems();
-        data.OrderId = orderId;
+        data.OrderId = item.Order.Id;
         data.OrderItemId = item.Id;
         data.VendorProductUID = item.VendorProduct.VendorProductUID;
-        data.WarehouseBinUID = "32ccf910-287d-4905-baf2-f41651927824"; //TODO EL ITEM NO SABE SOBRE EL PRODUCTO A NIVEL DE WAREHOUSEBIN
         data.Quantity = item.Quantity;
+        data.WarehouseBinUID = cataloguesUsecase.GetWarehouseBinByVendorProduct(
+                                item.VendorProduct.Id).WarehouseBinUID;
+        
         dataForInventoryList.Add(data);
       }
 

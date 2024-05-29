@@ -79,8 +79,8 @@ namespace Empiria.Trade.Core.UsesCases {
       return PartyMapper.MapToMinimalPartyDto(internalSuppliersList);
     }
 
-    public FixedList<NamedEntityDto> GetWharehouseMan() {
-      var wharehouseMan = Party.GetWharehouseMan();
+    public FixedList<NamedEntityDto> GetWharehouseMen() {
+      var wharehouseMan = Party.GetWharehouseMen();
 
       return PartyMapper.MapToMinimalPartyDto(wharehouseMan);
     }
