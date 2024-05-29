@@ -269,7 +269,6 @@ namespace Empiria.Trade.Products.Domain {
         vendor.Sku = vendorProduct.SKU;
         vendor.Stock = InventoryBuilder.GetInventoryStockByVendorProduct(vendorProduct.Id).Sum(x=>x.Stock);
         vendor.Price = product.PriceList;
-
         presentation.Vendors.Add(vendor);
       }
 
