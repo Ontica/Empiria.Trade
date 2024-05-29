@@ -11,7 +11,6 @@ using System;
 using System.Diagnostics;
 using System.Reflection.Emit;
 using System.Web.Http;
-using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 using Empiria.Trade.Sales.ShippingAndHandling.UseCases;
 using Empiria.WebApi;

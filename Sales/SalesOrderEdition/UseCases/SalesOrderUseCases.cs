@@ -63,13 +63,16 @@ namespace Empiria.Trade.Sales.UseCases {
 
     public ISalesOrderDto CreateSalesOrder(SalesOrderFields fields) {
       Assertion.Require(fields, "fields");
-
+       
       ValidateShippingMethod(fields);
       ValidateOrderItemsExistence(fields.Items);
 
       var order = new SalesOrder(fields);
 
       order.Save();
+
+      //SalesOrderHelper helper = new SalesOrderHelper();
+      //helper.CreateInventoryOrderBySale(order.Id);
 
       return SalesOrderMapper.Map(order); 
     }
@@ -241,9 +244,6 @@ namespace Empiria.Trade.Sales.UseCases {
 
       order.Supply();
 
-      SalesOrderHelper helper = new SalesOrderHelper();
-      helper.CreateInventoryOrderBySale(order.Id, order.Supplier.UID);
-      
       return SalesOrderMapper.Map(order);
     }
 

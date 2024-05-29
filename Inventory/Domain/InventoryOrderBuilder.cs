@@ -10,9 +10,9 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using Empiria.Trade.Core.Inventories.Adapters;
 using Empiria.Trade.Inventory.Adapters;
 using Empiria.Trade.Inventory.Data;
+using Empiria.Trade.Core.Inventories.Adapters;
 
 namespace Empiria.Trade.Inventory.Domain {
 
@@ -115,20 +115,21 @@ namespace Empiria.Trade.Inventory.Domain {
     }
 
 
-    internal InventoryOrderFields MapToInventoryOrderFields(InventoryItemsData inventoryItemData) {
+    internal InventoryOrderFields MapToInventoryOrderFields(InventoryItems inventoryItemData) {
 
       InventoryOrderFields fields = new InventoryOrderFields();
 
       fields.InventoryOrderTypeUID = "2ft8y5h4-db55-48b3-aa78-63132a8d5e7f"; // TODO referencia a tipo cuando se agregue a Types 
-      fields.ResponsibleUID = inventoryItemData.SupplierUID;
-      fields.AssignedToUID = inventoryItemData.SupplierUID;
+      fields.ResponsibleUID = "";
+      fields.AssignedToUID = "";
       fields.Notes = "";
       fields.ReferenceId = inventoryItemData.OrderId;
 
       return fields;
     }
 
-    internal InventoryOrderEntry CreateInventoryOrderBySale(InventoryItemsData inventoryItemsData) {
+
+    internal InventoryOrderEntry CreateInventoryOrderBySale(InventoryItems inventoryItemsData) {
 
       InventoryOrderFields fields = MapToInventoryOrderFields(inventoryItemsData);
 
@@ -139,7 +140,7 @@ namespace Empiria.Trade.Inventory.Domain {
     }
 
 
-    internal InventoryOrderItemFields MapToInventoryOrderItemFields(InventoryItemsData inventoryItem) {
+    internal InventoryOrderItemFields MapToInventoryOrderItemFields(InventoryItems inventoryItem) {
 
       InventoryOrderItemFields fields = new InventoryOrderItemFields();
       fields.InventoryOrderTypeItemId = 5;

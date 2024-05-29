@@ -10,11 +10,10 @@
 using System;
 
 using Empiria.StateEnums;
-using Empiria.Trade.Core;
-using Empiria.Trade.Core.Common;
 using Empiria.Trade.Financial.Adapters;
 using Empiria.Trade.Financial.Data;
 using Empiria.Trade.Orders;
+using Empiria.Trade.Core;
 
 namespace Empiria.Trade.Financial {
   ///Represents credit money account.

@@ -15,7 +15,6 @@ using Empiria.Trade.Inventory.UseCases;
 using Empiria.Trade.Inventory;
 using Empiria.Trade.Inventory.Adapters;
 using System.Collections.Generic;
-using Empiria.Trade.Core.UsesCases;
 
 namespace Empiria.Trade.Tests.Inventory {
 

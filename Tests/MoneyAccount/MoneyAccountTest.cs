@@ -17,7 +17,7 @@ using Empiria.Trade.Financial.Adapters;
 using Empiria.Trade.Financial;
 using Empiria.Trade.Sales.UseCases;
 using Empiria.StateEnums;
-using Empiria.Trade.Core.Domain;
+using Empiria.Trade.Inventory.Domain;
 using Empiria.Trade.MoneyAccounts;
 
 namespace Empiria.Trade.Tests.MoneyAccount {

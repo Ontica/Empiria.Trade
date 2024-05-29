@@ -11,7 +11,7 @@ using System;
 
 using Empiria.Data;
 using Empiria.DataTypes;
-using Empiria.Trade.Core;
+using Empiria.Trade.Inventory;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.Adapters;
 

@@ -14,7 +14,7 @@ using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.ShippingAndHandling.Data;
 using Empiria.Trade.Sales.ShippingAndHandling.Domain;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
-using Empiria.Trade.Core;
+using Empiria.Trade.Inventory;
 using System.Linq;
 
 namespace Empiria.Trade.Sales.ShippingAndHandling {

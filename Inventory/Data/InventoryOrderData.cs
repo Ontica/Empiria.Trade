@@ -11,6 +11,7 @@ using System;
 using System.Net.NetworkInformation;
 using Empiria.Data;
 using Empiria.Trade.Core;
+using Empiria.Trade.Inventory;
 using Empiria.Trade.Inventory.Adapters;
 using Empiria.Trade.Inventory.Domain;
 

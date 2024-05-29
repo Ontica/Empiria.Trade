@@ -38,13 +38,15 @@ namespace Empiria.Trade.Inventory.UseCases {
     #region Public methods
 
 
-    public void CreateInventoryOrderBySale(FixedList<InventoryItemsData> inventoryItemsData) {
-      Assertion.Require(inventoryItemsData, nameof(inventoryItemsData));
+    public void CreateInventoryOrderBySale(FixedList<InventoryItems> inventoryItems) {
+      Assertion.Require(inventoryItems, nameof(inventoryItems));
 
       var builder = new InventoryOrderBuilder();
-      InventoryOrderEntry inventoryOrder = builder.CreateInventoryOrderBySale(inventoryItemsData.FirstOrDefault());
+      
+      InventoryOrderEntry inventoryOrder = 
+        builder.CreateInventoryOrderBySale(inventoryItems.FirstOrDefault());
 
-      foreach (var inventoryItem in inventoryItemsData) {
+      foreach (var inventoryItem in inventoryItems) {
 
         InventoryOrderItemFields itemFields = builder.MapToInventoryOrderItemFields(inventoryItem);
 

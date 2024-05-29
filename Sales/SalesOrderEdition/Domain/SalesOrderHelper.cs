@@ -28,9 +28,9 @@ namespace Empiria.Trade.Sales {
     #region Public methods
 
 
-    internal void CreateInventoryOrderBySale(int orderId, string SupplierUID) {
+    internal void CreateInventoryOrderBySale(int orderId) {
 
-      FixedList<InventoryItemsData> dataForInventory = GetDataForInventoryOutput(orderId, SupplierUID);
+      FixedList<InventoryItems> dataForInventory = GetDataForInventoryOutput(orderId);
       
       if (dataForInventory.Count>0) {
 
@@ -74,20 +74,19 @@ namespace Empiria.Trade.Sales {
     #region Private methods
 
 
-    private FixedList<InventoryItemsData> GetDataForInventoryOutput(int orderId, string supplierUID) {
+    private FixedList<InventoryItems> GetDataForInventoryOutput(int orderId) {
 
-      FixedList<PackingOrderItem> packings = PackagingData.GetPackingOrderItemsByOrder(orderId);
+      FixedList<SalesOrderItem> orderItems = SalesOrderItemsData.GetOrderItems(orderId);
+      var dataForInventoryList = new List<InventoryItems>();
 
-      var dataForInventoryList = new List<InventoryItemsData>();
+      foreach (var item in orderItems) {
 
-      foreach (var packing in packings) {
-        var data = new InventoryItemsData();
+        var data = new InventoryItems();
         data.OrderId = orderId;
-        data.OrderItemId = packing.OrderItemId;
-        data.VendorProductUID = SalesOrderItem.Parse(packing.OrderItemId).VendorProduct.VendorProductUID;
-        data.WarehouseBinUID = packing.WarehouseBin.WarehouseBinUID;
-        data.SupplierUID = supplierUID;
-        data.Quantity = packing.Quantity;
+        data.OrderItemId = item.Id;
+        data.VendorProductUID = item.VendorProduct.VendorProductUID;
+        data.WarehouseBinUID = "32ccf910-287d-4905-baf2-f41651927824"; //TODO EL ITEM NO SABE SOBRE EL PRODUCTO A NIVEL DE WAREHOUSEBIN
+        data.Quantity = item.Quantity;
         dataForInventoryList.Add(data);
       }
 

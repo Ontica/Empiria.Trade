@@ -13,7 +13,7 @@ namespace Empiria.Trade.Core.Inventories.Adapters {
 
 
   /// <summary>Output DTO used to return the entries of packaging for inventory.</summary>
-  public class InventoryItemsData {
+  public class InventoryItems {
 
     public int OrderId {
       get; set;
@@ -35,9 +35,9 @@ namespace Empiria.Trade.Core.Inventories.Adapters {
     }
 
 
-    public string SupplierUID {
-      get; set;
-    }
+    //public string SupplierUID {
+    //  get; set;
+    //}
 
 
     public decimal Quantity {

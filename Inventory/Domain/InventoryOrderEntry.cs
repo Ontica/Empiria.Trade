@@ -9,6 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using Empiria.Trade.Core;
+using Empiria.Trade.Inventory;
 using Empiria.Trade.Inventory.Adapters;
 using Empiria.Trade.Inventory.Data;
 
@@ -198,8 +199,10 @@ namespace Empiria.Trade.Inventory {
       }
 
       this.ReferenceId = fields.ReferenceId;
-      this.ResponsibleId = Party.Parse(fields.ResponsibleUID).Id;
-      this.AssignedToId = Party.Parse(fields.AssignedToUID).Id;
+      this.ResponsibleId = fields.ResponsibleUID == string.Empty ? -1 :
+                           Party.Parse(fields.ResponsibleUID).Id;
+      this.AssignedToId = fields.AssignedToUID == string.Empty ? -1 :
+                          Party.Parse(fields.AssignedToUID).Id;
       this.Notes = fields.Notes;
       this.InventoryOrderExtData = "";
       this.Status = InventoryStatus.Abierto;
