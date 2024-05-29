@@ -59,7 +59,7 @@ namespace Empiria.Trade.Sales {
       this.Quantity = fields.Quantity;
       this.BasePrice = GetProductPrice(VendorProduct.Id);
       this.SalesPrice = GetSalesPrice();
-      this.DiscountPolicy = "10,6";
+      this.DiscountPolicy = GetDiscount().ToString();
       this.Discount = GetDiscount();
       this.AdditionalDiscount = fields.Discount2;
       this.SubTotal = GetSubtotal();
@@ -83,7 +83,7 @@ namespace Empiria.Trade.Sales {
     public static FixedList<SalesOrderItem> GetOrderItems(int orderId) {
       var orderItems = SalesOrderItemsData.GetOrderItems(orderId);
       foreach (SalesOrderItem orderItem in orderItems) {
-        orderItem.DiscountPolicy = "10";
+        orderItem.DiscountPolicy = "10"; 
         orderItem.SubTotal = CalculeSubtotal(orderItem);
       }
       return orderItems;
@@ -121,8 +121,7 @@ namespace Empiria.Trade.Sales {
     }
 
     private decimal GetDiscount() {
-      return 10m;
-      //return SalesDiscountData.GetCustomerDiscount(this.Order.Customer.Id);
+      return SalesDiscountData.GetCustomerDiscount(this.Order.Customer.Id);
     }
 
     private decimal GetAdditionalDiscount() {

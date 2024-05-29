@@ -48,7 +48,7 @@ namespace Empiria.Trade.Sales.Data {
 
     static internal decimal GetCustomerDiscount(int customerId) {   
       var sql = "SELECT DISCOUNT FROM TRDDiscounts " +
-            $"WHERE (DiscountTypeId = 1) AND (DiscountAppliedListId like '%{customerId}%')  " +
+            $"WHERE (DiscountTypeId = 1) AND (DiscountAppliedListId like '{customerId}')  " +
             $"AND DiscountStatus = 'A' ";
 
       var dataOperation = DataOperation.Parse(sql);
