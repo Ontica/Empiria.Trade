@@ -131,6 +131,12 @@ namespace Empiria.Trade.Financial.UseCases
       return MoneyAccountTransactionMapper.Map(moneyAccountTransaction);
     }
 
+    public FixedList<NamedEntityDto> GetMoneyAccountTransactionTypes(string moneyAccountUID) {
+
+      return MoneyAccountTransactionType.GetList<MoneyAccountTransactionType>().MapToNamedEntityList();
+    }
+
+
     public CreditTransactionDto AddCreditTransaction(CreditTrasnactionFields fields) {
       Assertion.Require(fields, "fields");
       var moneyAccount = MoneyAccount.ParseByOwner(fields.CustomerId);
@@ -212,6 +218,9 @@ namespace Empiria.Trade.Financial.UseCases
       return  MoneyAccountMapper.Map(moneyAccount);
     }
 
+    public FixedList<NamedEntityDto> GetPaymentTypes() {
+       return PaymentType.GetList<PaymentType>().MapToNamedEntityList();
+     }
 
     #endregion Public properties
 

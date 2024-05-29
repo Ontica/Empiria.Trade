@@ -11,14 +11,10 @@ using System;
 using Xunit;
 
 using Empiria.Trade.Financial.UseCases;
-using Empiria.Trade.Orders;
-using Empiria.Trade.Sales.Adapters;
+
 using Empiria.Trade.Financial.Adapters;
 using Empiria.Trade.Financial;
-using Empiria.Trade.Sales.UseCases;
-using Empiria.StateEnums;
-using Empiria.Trade.Inventory.Domain;
-using Empiria.Trade.MoneyAccounts;
+
 
 namespace Empiria.Trade.Tests.MoneyAccount {
   /// <summary>Test cases for MoneyAccounts.  </summary>
@@ -163,12 +159,18 @@ namespace Empiria.Trade.Tests.MoneyAccount {
       moneyAccount.LoadMoneyAccountTransactions();
 
       var y = moneyAccount.GetDebit();
-
       
-
       var x = MoneyAccountMapper.Map(moneyAccount);
 
       Assert.NotNull(x);
+    }
+
+    [Fact]
+    public void ShouldGetPaymentsTypes() {
+      var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
+      var paymentTypes = moneyAccountUseCase.GetPaymentTypes();
+
+      Assert.NotNull(paymentTypes);
     }
 
   } // class MoneyAccountTest
