@@ -136,7 +136,7 @@ namespace Empiria.Trade.Core {
       return PartyData.GetPartyListByRole("salesAgent");
     }
 
-    internal static FixedList<Party> GetWharehouseMan() {
+    internal static FixedList<Party> GetWharehouseMen() {
       return PartyData.GetPartyListByRole("whareHouseMan");
     }
 
