@@ -96,10 +96,10 @@ namespace Empiria.Trade.Tests.Core {
 
 
     [Fact]
-    public void ShouldGetWharehouseMan() {
+    public void ShouldGetWarehouseMan() {
       var usecase = PartyUseCases.UseCaseInteractor();
 
-      var sut = usecase.GetWharehouseMen();
+      var sut = usecase.GetWarehouseMen();
 
       Assert.NotNull(sut);
     }
