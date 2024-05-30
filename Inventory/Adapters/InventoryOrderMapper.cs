@@ -141,12 +141,38 @@ namespace Empiria.Trade.Inventory.Adapters {
       dto.UID = x.InventoryOrderItemUID;
       dto.Product = GetInventoryProductData(x);
       dto.WarehouseBin = GetInventoryWarehouseBinData(x);
-      dto.Quantity = x.CountingQuantity;
+      dto.Quantity = GetInventoryQuantity(x);
       dto.Notes = x.ItemNotes;
       //dto.InputQuantity = x.InputQuantity;
       //dto.OutputQuantity = x.OutputQuantity;
       //dto.Status = x.Status;
       return dto;
+    }
+
+
+    private static decimal GetInventoryQuantity(InventoryOrderItem x) {
+
+      decimal quantity = 0;
+      if (x.Status == InventoryStatus.Abierto) {
+
+        if (x.InventoryOrderTypeItemId == 5) {
+          quantity = x.InProcessOutputQuantity;
+        } else {
+          quantity = x.CountingQuantity;
+        }
+        
+      }
+      
+      if (x.Status == InventoryStatus.Cerrado) {
+        
+        if (x.InventoryOrderTypeItemId == 5) {
+          quantity = x.OutputQuantity;
+        } else {
+          quantity = x.InputQuantity;
+        }
+
+      }
+      return quantity;
     }
 
 

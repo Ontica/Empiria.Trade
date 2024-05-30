@@ -60,6 +60,12 @@ namespace Empiria.Trade.Inventory.UseCases {
       Assertion.Require(inventoryOrderUID, nameof(inventoryOrderUID));
 
       InventoryOrderData.UpdateInventoryOrderStatus(inventoryOrderUID, InventoryStatus.Cerrado);
+
+      var inventoryOrder = InventoryOrderEntry.Parse(inventoryOrderUID);
+
+      InventoryOrderData.UpdateInventoryOrderItemsStatusByOrder(
+                    inventoryOrder.InventoryOrderId, DateTime.Now);
+
       return GetInventoryOrderByUID(inventoryOrderUID);
     }
 
