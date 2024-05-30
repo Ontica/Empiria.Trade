@@ -24,8 +24,8 @@ namespace Empiria.Trade.Financial {
       //no-op
     }
 
-    public MoneyAccountTransactionItem(MoneyAccountTransactionItemFields fields, MoneyAccountTransaction moneyAccountTransaction) {
-      this.MoneyAccountTransaction = moneyAccountTransaction;
+    public MoneyAccountTransactionItem(MoneyAccountTransactionItemFields fields) {
+      this.MoneyAccountTransaction = MoneyAccountTransaction.Parse(fields.MoneyAccountTransactionUID);
       Update(fields);
     }
 

@@ -28,7 +28,11 @@ namespace Empiria.Trade.Financial {
     public string UID {
       get; set;
     } = string.Empty;
-   
+    
+    public string MoneyAccountTransactionUID {
+      get; set;
+    } 
+
     public string TransactionTypeUID {
       get; set;
     }

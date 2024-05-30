@@ -51,7 +51,7 @@ namespace Empiria.Trade.Tests.MoneyAccount {
       };
 
       var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
-      var moneyAccountTransaction = moneyAccountUseCase.AddTransaction(fields);
+      var moneyAccountTransaction = moneyAccountUseCase.AddMoneyAccountTransaction(fields);
 
       Assert.NotNull(moneyAccountTransaction);
     }
@@ -71,7 +71,7 @@ namespace Empiria.Trade.Tests.MoneyAccount {
       };
 
       var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
-      var moneyAccountTransaction = moneyAccountUseCase.UpdateTransaction(fields, fields.UID);
+      var moneyAccountTransaction = moneyAccountUseCase.UpdateMoneyAccountTransaction(fields, fields.UID);
 
       Assert.NotNull(moneyAccountTransaction);
     }
@@ -82,14 +82,10 @@ namespace Empiria.Trade.Tests.MoneyAccount {
 
       string UID = "ea0693b3-6df3-454c-85f8-e5f34ae17a36";
        
-      var moneyAccountTransaction  = MoneyAccountTransaction.Parse(UID);
+      var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
+      var moneyAccount = moneyAccountUseCase.CancelMoneyAccountTransaction(UID);
 
-     // var moneyAccount = Empiria.Trade.Financial.MoneyAccount.Parse(moneyAccountTransaction.MoneyAccount);
-
-      //var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
-      //var moneyAccount = moneyAccountUseCase.CancelTransaction(UID);
-
-      Assert.NotNull(moneyAccountTransaction);
+      Assert.NotNull(moneyAccount);
     }
 
     [Fact]
@@ -178,6 +174,7 @@ namespace Empiria.Trade.Tests.MoneyAccount {
 
       var fields = new MoneyAccountTransactionItemFields {
         UID = "",
+        MoneyAccountTransactionUID = "d9c3e83b-5409-4c14-b501-88f3613bed3a",
         TransactionTypeUID = "eccd36f6-f326-4e56-ac28-89504f8ba588",
         PaymentTypeUID = "36843e8f-0c79-419e-935c-bf814dd56871",
         Deposit = 3350.456m,
@@ -186,13 +183,13 @@ namespace Empiria.Trade.Tests.MoneyAccount {
         TransactionTime = DateTime.Now
       };
 
-      var moneyAcccountTransaction = MoneyAccountTransaction.Parse(1002);
+      //var maTransactionItem = new MoneyAccountTransactionItem(fields);
+      //maTransactionItem.Save();
 
-      var maTransactionItem = new MoneyAccountTransactionItem(fields, moneyAcccountTransaction);
+      var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
+      var moneyAccountTransactionItem = moneyAccountUseCase.AddMoneyAccountTransactionItem(fields);
 
-      maTransactionItem.Save();
-
-      Assert.NotNull(maTransactionItem);
+      Assert.NotNull(moneyAccountTransactionItem);
     }
 
     [Fact]

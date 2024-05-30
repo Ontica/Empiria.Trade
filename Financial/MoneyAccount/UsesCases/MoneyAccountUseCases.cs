@@ -122,7 +122,7 @@ namespace Empiria.Trade.Financial.UseCases
       return MoneyAccountTransactionMapper.Map(moneyAccountTransaction);
     }
 
-    public MoneyAccountTransactionDto GetTransaction(string moneyAccountTransactionUID) {
+    public MoneyAccountTransactionDto GetMoneyAccountTransaction(string moneyAccountTransactionUID) {
       Assertion.Require(moneyAccountTransactionUID, "moneyAccountTransactionUID");
 
       var moneyAccountTransaction = MoneyAccountTransaction.Parse(moneyAccountTransactionUID);
@@ -136,6 +136,15 @@ namespace Empiria.Trade.Financial.UseCases
       return MoneyAccountTransactionType.GetList<MoneyAccountTransactionType>().MapToNamedEntityList();
     }
 
+    public MoneyAccountTransactionItemDto AddMoneyAccountTransactionItem(MoneyAccountTransactionItemFields fields) {
+      Assertion.Require(fields, "fields");
+
+      var moneyAccountTransactionItem = new MoneyAccountTransactionItem(fields);
+      moneyAccountTransactionItem.Save();
+
+
+      return MoneyAccountTransactionItemMapper.Map(moneyAccountTransactionItem);
+    }
 
     public CreditTransactionDto AddCreditTransaction(CreditTrasnactionFields fields) {
       Assertion.Require(fields, "fields");
