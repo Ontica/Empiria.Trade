@@ -90,7 +90,7 @@ namespace Empiria.Trade.Financial.UseCases
     }
 
 
-    public MoneyAccountTransactionDto AddTransaction(MoneyAccountTransactionFields fields) {
+    public MoneyAccountTransactionDto AddMoneyAccountTransaction(MoneyAccountTransactionFields fields) {
       Assertion.Require(fields, "fields");
 
       var moneyAccountTransaction = new MoneyAccountTransaction(fields);
@@ -100,7 +100,7 @@ namespace Empiria.Trade.Financial.UseCases
       return MoneyAccountTransactionMapper.Map(moneyAccountTransaction);
     }
 
-    public MoneyAccountTransactionDto UpdateTransaction(MoneyAccountTransactionFields fields, string moneyAccountTransactionUID) {
+    public MoneyAccountTransactionDto UpdateMoneyAccountTransaction(MoneyAccountTransactionFields fields, string moneyAccountTransactionUID) {
       Assertion.Require(fields, "fields");
 
       var moneyAccountTransaction = MoneyAccountTransaction.Parse(moneyAccountTransactionUID);
@@ -112,7 +112,7 @@ namespace Empiria.Trade.Financial.UseCases
     }
 
 
-    public MoneyAccountTransactionDto CancelTransaction(string moneyAccountTransactionUID) {
+    public MoneyAccountTransactionDto CancelMoneyAccountTransaction(string moneyAccountTransactionUID) {
       Assertion.Require(moneyAccountTransactionUID, "moneyAccountTransactionUID");
 
       var moneyAccountTransaction = MoneyAccountTransaction.Parse(moneyAccountTransactionUID);

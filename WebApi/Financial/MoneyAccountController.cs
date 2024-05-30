@@ -172,21 +172,21 @@ namespace Empiria.Trade.WebApi.Financial {
     }
 
     [HttpPost]
-    [Route("v4/trade/financial/money-accounts-transaction")]
+    [Route("v4/trade/financial/money-accounts/money-accounts-transaction")]
     public SingleObjectModel AddMoneyAccountTransaction([FromBody] MoneyAccountTransactionFields fields) {
 
       base.RequireBody(fields);
 
       using (var usecases = MoneyAccountUseCases.UseCaseInteractor()) {
 
-        var moneyAccountTransactionDto = usecases.AddTransaction(fields);
+        var moneyAccountTransactionDto = usecases.AddMoneyAccountTransaction(fields);
 
         return new SingleObjectModel(this.Request, moneyAccountTransactionDto);
       }
     }
 
     [HttpPut]
-    [Route("v4/trade/financial/money-accounts-transaction/{moneyAccountTransactionUID:guid}")]
+    [Route("v4/trade/financial/money-accounts/money-accounts-transaction/{moneyAccountTransactionUID:guid}")]
     public SingleObjectModel UpdateMoneyAccountTransaction([FromUri] string moneyAccountTransactionUID, [FromBody] MoneyAccountTransactionFields fields) {
 
       base.RequireResource(moneyAccountTransactionUID, "moneyAccountTransactionUID");
@@ -194,7 +194,7 @@ namespace Empiria.Trade.WebApi.Financial {
 
       using (var usecases = MoneyAccountUseCases.UseCaseInteractor()) {
 
-        var moneyAccountTransactionDto = usecases.UpdateTransaction(fields, moneyAccountTransactionUID);
+        var moneyAccountTransactionDto = usecases.UpdateMoneyAccountTransaction(fields, moneyAccountTransactionUID);
 
         return new SingleObjectModel(this.Request, moneyAccountTransactionDto);
       }
@@ -202,14 +202,14 @@ namespace Empiria.Trade.WebApi.Financial {
     }
 
     [HttpDelete]
-    [Route("v4/trade/financial/money-accounts-transaction/{moneyAccountTransactionUID:guid}/cancel")]
+    [Route("v4/trade/financial/money-accounts/money-accounts-transaction/{moneyAccountTransactionUID:guid}/cancel")]
     public SingleObjectModel CancelMoneyAccountTransaction([FromUri] string moneyAccountTransactionUID) {
 
       base.RequireResource(moneyAccountTransactionUID, "moneyAccountTransactionUID");
 
       using (var usecases = MoneyAccountUseCases.UseCaseInteractor()) {
 
-        var moneyAccountTransactionDto = usecases.CancelTransaction(moneyAccountTransactionUID);
+        var moneyAccountTransactionDto = usecases.CancelMoneyAccountTransaction(moneyAccountTransactionUID);
 
         return new SingleObjectModel(this.Request, moneyAccountTransactionDto);
       }
@@ -217,7 +217,7 @@ namespace Empiria.Trade.WebApi.Financial {
     }
 
     [HttpGet]
-    [Route("v4/trade/financial/money-accounts-transaction/{moneyAccountTransactionUID:guid}")]
+    [Route("v4/trade/financial/money-accounts/money-accounts-transaction/{moneyAccountTransactionUID:guid}")]
     public SingleObjectModel GetMoneyAccountTransaction([FromUri] string moneyAccountTransactionUID) {
 
       base.RequireResource(moneyAccountTransactionUID, "moneyAccountTransactionUID");
@@ -230,6 +230,32 @@ namespace Empiria.Trade.WebApi.Financial {
       }
 
     }
+
+    //[HttpGet]
+    //[Route("v4/trade/financial/money-accounts-transaction-types/{moneyAccountUID:guid}")]
+    //public SingleObjectModel GetMoneyAccountTransactionTypes([FromUri] string moneyAccountUID) {
+
+    //  base.RequireResource(moneyAccountUID, "moneyAccountUID");
+
+    //  using (var usecases = MoneyAccountUseCases.UseCaseInteractor()) {
+
+    //    var moneyAccountTransactionDto = usecases.GetTransactionTypes();
+
+    //    return new SingleObjectModel(this.Request, moneyAccountTransactionDto);
+    //  }
+
+    //}
+
+    //[HttpGet]
+    //[Route("v4/trade/financial/money-accounts/money-accounts-types")]
+    //public CollectionModel GetMoneyAccountTypes() {
+
+    //  using (var usecases = MoneyAccountUseCases.UseCaseInteractor()) {
+    //    FixedList<NamedEntityDto> moneyAccountTypes = usecases.GetMoneyAccountTypes();
+
+    //    return new CollectionModel(base.Request, moneyAccountTypes);
+    //  }
+    //}
 
   } // class MoneyAccountControler
 
