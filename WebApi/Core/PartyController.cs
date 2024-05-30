@@ -112,7 +112,7 @@ namespace Empiria.Trade.WebApi.Core {
     public CollectionModel GetWarehousemen() {
 
       using (var usescase = PartyUseCases.UseCaseInteractor()) {
-        FixedList<NamedEntityDto> assignedToList = usescase.GetSalesAgents();
+        FixedList<NamedEntityDto> assignedToList = usescase.GetWarehouseMen();
 
         return new CollectionModel(base.Request, assignedToList);
       }

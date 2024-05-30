@@ -206,7 +206,7 @@ namespace Empiria.Trade.Sales.WebApi {
     [HttpPost]
     [Route("v4/trade/sales/orders/{orderUID:guid}/supply")]
     public SingleObjectModel SupplySalesOrder([FromUri] string orderUID) {
-
+      
       base.RequireResource(orderUID, "orderUID");
 
       using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {

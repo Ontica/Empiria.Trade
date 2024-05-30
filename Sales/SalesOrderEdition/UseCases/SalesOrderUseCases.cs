@@ -71,9 +71,6 @@ namespace Empiria.Trade.Sales.UseCases {
 
       order.Save();
 
-      SalesOrderHelper helper = new SalesOrderHelper();
-      helper.CreateInventoryOrderBySale(order.SalesOrderItems);
-
       return SalesOrderMapper.Map(order); 
     }
 
@@ -178,7 +175,10 @@ namespace Empiria.Trade.Sales.UseCases {
         case "Contado": order.AuthorizePayment(); break;
         case "Credito": SetCreditOrder(order); break;
       }
-         
+
+      SalesOrderHelper helper = new SalesOrderHelper();
+      helper.CreateInventoryOrderBySale(order.SalesOrderItems);
+
       return SalesOrderMapper.Map(order);
     }
        
@@ -234,6 +234,7 @@ namespace Empiria.Trade.Sales.UseCases {
       
 
     public ISalesOrderDto SupplySalesOrder(string orderUID) {
+
       Assertion.Require(orderUID, "orderUID");
 
       var order = SalesOrder.Parse(orderUID);
