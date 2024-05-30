@@ -8,34 +8,35 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+
 using Empiria.StateEnums;
-using Empiria.Trade.Core;
 using Empiria.Trade.Financial.Adapters;
 using Empiria.Trade.Financial.Data;
 
 
 namespace Empiria.Trade.Financial {
   ///Represents money account transaction item.
-  internal class MoneyAccountTransactionItems : BaseObject {
+  public class MoneyAccountTransactionItem : BaseObject {
 
     #region Constructors and parsers
 
-    public MoneyAccountTransactionItems() {
+    public MoneyAccountTransactionItem() {
       //no-op
     }
 
-    public MoneyAccountTransactionItems(MoneyAccountTransactionFields fields) {
-      //Update(fields);
+    public MoneyAccountTransactionItem(MoneyAccountTransactionItemFields fields, MoneyAccountTransaction moneyAccountTransaction) {
+      this.MoneyAccountTransaction = moneyAccountTransaction;
+      Update(fields);
     }
 
-    static public MoneyAccountTransactionItems Empty => BaseObject.ParseEmpty<MoneyAccountTransactionItems>();
+    static public MoneyAccountTransactionItem Empty => BaseObject.ParseEmpty<MoneyAccountTransactionItem>();
 
-    static public MoneyAccountTransactionItems Parse(int id) {
-      return BaseObject.ParseId<MoneyAccountTransactionItems>(id);
+    static public MoneyAccountTransactionItem Parse(int id) {
+      return BaseObject.ParseId<MoneyAccountTransactionItem>(id);
     }
 
-    static public MoneyAccountTransactionItems Parse(string uid) {
-      return BaseObject.ParseKey<MoneyAccountTransactionItems>(uid);
+    static public MoneyAccountTransactionItem Parse(string uid) {
+      return BaseObject.ParseKey<MoneyAccountTransactionItem>(uid);
     }
 
 
@@ -43,28 +44,18 @@ namespace Empiria.Trade.Financial {
 
     #region Public properties
 
-    [DataField("MoneyAccountTransactionItemId")] 
-    public int MoneyAccountTransactionItemId {
-      get; private set;
-    }
-
-    [DataField("MoneyAccountTransactionItemUID")]
-    public string MoneyAccountTransactionItemUID {
-      get; private set;
-    }
-
     [DataField("MoneyAccountTransactionId")]
-    public int MoneyAccountTransactionId {
+    public MoneyAccountTransaction MoneyAccountTransaction {
       get; private set;
     }
 
     [DataField("MoneyAccountTransactionItemTypeId")]
-    public int MoneyAccountTransactionItemTypeId {
+    public MoneyAccountTransactionType MoneyAccountTransactionItemType {
       get; private set;
     }
 
     [DataField("PaymentTypeId")]
-    public int PaymentTypeId {
+    public PaymentType PaymentType {
       get; private set;
     }
 
@@ -88,21 +79,47 @@ namespace Empiria.Trade.Financial {
       get; protected set;
     } = string.Empty;
 
-
-    public int AddedById {
+    [DataField("TransactionTime")]
+    public DateTime TransactionTime {
       get; private set;
-    } = 0;
+    }
 
-    [DataField("MoneyAccountTransactionItemStatus")]
+    [DataField("PostedTime")]
+    public DateTime PostedTime {
+      get; private set;
+    }
+
+    [DataField("PostedById")]
+    public int PostedById {
+      get; private set;
+    }
+
+    [DataField("MoneyAccountTransactionItemStatus", Default = EntityStatus.Active)]
     public EntityStatus MoneyAccountTransactionItemStatus {
       get; private set;
     } = EntityStatus.Active;
 
 
     #endregion Public properties     
-    
+
 
     #region Public methods
+
+    protected override void OnSave() {
+      MoneyAccountTransactionItemData.Write(this);
+    }
+
+    internal void Update(MoneyAccountTransactionItemFields fields) {
+      this.MoneyAccountTransactionItemType = MoneyAccountTransactionType.Parse(fields.TransactionTypeUID);
+      this.PaymentType = PaymentType.Parse(fields.PaymentTypeUID);
+      this.Deposit = fields.Deposit;
+      this.Withdrawal = fields.Withdrawal;
+      this.TransactionTime = fields.TransactionTime;
+      this.Notes = fields.Notes;
+      this.PostedTime = DateTime.Now;
+      this.PostedById = ExecutionServer.CurrentUserId;
+    }
+     
 
     #endregion Public methods
 

@@ -11,7 +11,7 @@ using System;
 
 namespace Empiria.Trade.Financial {
   /// Represents payment type.
-  internal class PaymentType :  GeneralObject  {
+  public class PaymentType :  GeneralObject  {
 
     #region Constructor and parsers
 

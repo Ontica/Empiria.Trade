@@ -15,7 +15,7 @@ using Empiria.Trade.MoneyAccounts;
 
 
 namespace Empiria.Trade.Financial {
-  /// <summary>Represents a MoneyAccount Transaction.</summary>
+  /// Represents a MoneyAccount Transaction.
   public class MoneyAccountTransaction : BaseObject {
 
     #region Constructors and parsers
@@ -50,7 +50,6 @@ namespace Empiria.Trade.Financial {
     [DataField("MoneyAccountId")]
     public int MoneyAccountId {
       get; private set;
-      
     } 
 
     [DataField("MoneyAccountTransactionTypeId")]
