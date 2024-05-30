@@ -109,7 +109,7 @@ namespace Empiria.Trade.Financial {
       MoneyAccountTransactionItemData.Write(this);
     }
 
-    internal void Update(MoneyAccountTransactionItemFields fields) {
+    public void Update(MoneyAccountTransactionItemFields fields) {
       this.MoneyAccountTransactionItemType = MoneyAccountTransactionType.Parse(fields.TransactionTypeUID);
       this.PaymentType = PaymentType.Parse(fields.PaymentTypeUID);
       this.Deposit = fields.Deposit;
@@ -118,6 +118,11 @@ namespace Empiria.Trade.Financial {
       this.Notes = fields.Notes;
       this.PostedTime = DateTime.Now;
       this.PostedById = ExecutionServer.CurrentUserId;
+    }
+
+    public void Cancel() {
+      this.MoneyAccountTransactionItemStatus = EntityStatus.Deleted;
+      this.Save();
     }
      
 

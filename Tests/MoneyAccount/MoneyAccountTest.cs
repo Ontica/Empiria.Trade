@@ -195,6 +195,36 @@ namespace Empiria.Trade.Tests.MoneyAccount {
       Assert.NotNull(maTransactionItem);
     }
 
+    [Fact]
+    public void ShouldUpdateMoneyAccountTransactionItem() {
+
+      var fields = new MoneyAccountTransactionItemFields {
+        UID = "",
+        TransactionTypeUID = "eccd36f6-f326-4e56-ac28-89504f8ba588",
+        PaymentTypeUID = "36843e8f-0c79-419e-935c-bf814dd56871",
+        Deposit = 0.0m,
+        Withdrawal = 2340.09m,
+        Notes = "Esto es cambio",
+        TransactionTime = DateTime.Now
+      };
+
+      var maTransactionItem = MoneyAccountTransactionItem.Parse(1001);
+
+      maTransactionItem.Update(fields);
+      maTransactionItem.Save();
+
+      Assert.NotNull(maTransactionItem);
+    }
+
+    [Fact]
+    public void ShouldDeleteMoneyAccountTransactionItem() {
+         
+      var maTransactionItem = MoneyAccountTransactionItem.Parse(1001);
+      maTransactionItem.Cancel();
+
+      Assert.NotNull(maTransactionItem);
+    }
+
   } // class MoneyAccountTest
 
 } // namespace Empiria.Trade.Tests.MoneyAccount
