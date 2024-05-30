@@ -104,6 +104,16 @@ namespace Empiria.Trade.Tests.Core {
       Assert.NotNull(sut);
     }
 
+
+    [Fact]
+    public void ShouldGetWarehouseResponsible() {
+      var usecase = PartyUseCases.UseCaseInteractor();
+
+      var sut = usecase.GetWarehouseResponsible();
+
+      Assert.NotNull(sut);
+    }
+
     #endregion Facts
 
 
