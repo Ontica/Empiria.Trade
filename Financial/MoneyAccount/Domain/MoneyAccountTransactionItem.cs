@@ -124,7 +124,10 @@ namespace Empiria.Trade.Financial {
       this.MoneyAccountTransactionItemStatus = EntityStatus.Deleted;
       this.Save();
     }
-     
+
+    static public FixedList<MoneyAccountTransactionItem> GetTransactionItems(int moneyAccountTransactionId) {
+      return MoneyAccountTransactionItemData.GetTransactionItems(moneyAccountTransactionId);
+    }
 
     #endregion Public methods
 

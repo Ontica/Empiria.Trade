@@ -27,6 +27,15 @@ namespace Empiria.Trade.Financial.Data {
       DataWriter.Execute(op);
     }
 
+    internal static FixedList<MoneyAccountTransactionItem> GetTransactionItems(int moneyAccountTransactionId) {
+      string sql = "SELECT * FROM TRDMoneyAccountTransactionItems " +
+                  $"WHERE MoneyAccountTransactionId  = {moneyAccountTransactionId} AND MoneyAccountTransactionItemStatus <> 'X' ";
+
+      var op = DataOperation.Parse(sql);
+
+      return DataReader.GetFixedList<MoneyAccountTransactionItem>(op);
+    }
+
     #endregion Public methods
 
   } // class MoneyAccountTransactionItemData

@@ -225,6 +225,13 @@ namespace Empiria.Trade.Tests.MoneyAccount {
       Assert.NotNull(maTransactionItem);
     }
 
+    [Fact]
+    public void ShouldGetMoneyAccountTransactionItem() {
+
+      var maTransactionItems = MoneyAccountTransactionItem.GetTransactionItems(1002);
+      Assert.NotNull(maTransactionItems);
+    }
+
   } // class MoneyAccountTest
 
 } // namespace Empiria.Trade.Tests.MoneyAccount
