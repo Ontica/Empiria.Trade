@@ -206,9 +206,24 @@ namespace Empiria.Trade.Inventory.Data {
 
       string sql = $"UPDATE TRDInventoryOrderItems SET " +
                    $"InventoryOrderItemStatus = '{(char) InventoryStatus.Cerrado}' " +
-                   $",CountingQuantity = InProcessOutputQuantity " +
+                   $",OutputQuantity = InProcessOutputQuantity " +
                    $",InProcessOutputQuantity = 0 " +
                    //$",ClosingTime = '{new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day)}' " +
+                   $"WHERE InventoryOrderId = {inventoryOrderId} ";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      DataWriter.Execute(dataOperation);
+    }
+
+
+    internal static void UpdateInventoryOrderItemsStatusByOrder(int inventoryOrderId, DateTime closingTime) {
+
+      string sql = $"UPDATE TRDInventoryOrderItems SET " +
+                   $"InventoryOrderItemStatus = '{(char) InventoryStatus.Cerrado}' " +
+                   $",InputQuantity = CountingQuantity " +
+                   $",CountingQuantity = 0 " +
+                   $",ClosingTime = '{closingTime}' " +
                    $"WHERE InventoryOrderId = {inventoryOrderId} ";
 
       var dataOperation = DataOperation.Parse(sql);
