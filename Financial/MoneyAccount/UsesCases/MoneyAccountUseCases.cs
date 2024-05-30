@@ -157,6 +157,16 @@ namespace Empiria.Trade.Financial.UseCases
       return MoneyAccountTransactionItemMapper.Map(moneyAccountTransactionItem);
     }
 
+    public MoneyAccountTransactionItemDto CancelMoneyAccountTransactionItem(string moneyAccountTransactionITemUID) {
+      Assertion.Require(moneyAccountTransactionITemUID, "moneyAccountTransactionUID");
+
+      var moneyAccountTransactionItem = MoneyAccountTransactionItem.Parse(moneyAccountTransactionITemUID);
+      moneyAccountTransactionItem.Cancel();
+
+
+      return MoneyAccountTransactionItemMapper.Map(moneyAccountTransactionItem);
+    }
+
     public CreditTransactionDto AddCreditTransaction(CreditTrasnactionFields fields) {
       Assertion.Require(fields, "fields");
       var moneyAccount = MoneyAccount.ParseByOwner(fields.CustomerId);

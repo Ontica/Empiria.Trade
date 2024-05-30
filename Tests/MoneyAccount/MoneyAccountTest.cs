@@ -212,9 +212,12 @@ namespace Empiria.Trade.Tests.MoneyAccount {
     public void ShouldDeleteMoneyAccountTransactionItem() {
          
       var maTransactionItem = MoneyAccountTransactionItem.Parse(1001);
-      maTransactionItem.Cancel();
 
-      Assert.NotNull(maTransactionItem);
+      var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
+      var moneyAccountTransactionItem = moneyAccountUseCase.CancelMoneyAccountTransactionItem(maTransactionItem.UID);
+      
+
+      Assert.NotNull(moneyAccountTransactionItem);
     }
 
     [Fact]
