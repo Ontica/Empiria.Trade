@@ -54,6 +54,16 @@ namespace Empiria.Trade.Financial {
       get; private set;
     }
 
+    [DataField("ReferenceTypeId")]
+    public int ReferenceTypeId {
+      get; private set;
+    } = 1;
+
+    [DataField("ReferenceId")]
+    public int ReferenceId {
+      get; private set;
+    } = -1;
+
     [DataField("PaymentTypeId")]
     public PaymentType PaymentType {
       get; private set;

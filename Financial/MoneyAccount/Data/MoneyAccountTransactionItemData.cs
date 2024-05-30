@@ -20,9 +20,10 @@ namespace Empiria.Trade.Financial.Data {
 
     static internal void Write(MoneyAccountTransactionItem o) {
 
-      var op = DataOperation.Parse("writeMoneyAccountTransactionItems", o.Id, o.UID, o.MoneyAccountTransaction.Id, o.MoneyAccountTransactionItemType.Id, o.PaymentType.Id, o.Deposit, o.Withdrawal,
-                                                                    o.Notes, o.ExtData, o.TransactionTime, o.PostedTime, o.PostedById,
-                                                                    (char) o.MoneyAccountTransactionItemStatus);
+      var op = DataOperation.Parse("writeMoneyAccountTransactionItems", o.Id, o.UID, o.MoneyAccountTransaction.Id, o.MoneyAccountTransactionItemType.Id,
+                                                                        o.ReferenceTypeId, o.ReferenceId, o.PaymentType.Id, o.Deposit, o.Withdrawal,
+                                                                        o.Notes, o.ExtData, o.TransactionTime, o.PostedTime, o.PostedById,
+                                                                        (char) o.MoneyAccountTransactionItemStatus);
 
       DataWriter.Execute(op);
     }
