@@ -183,9 +183,6 @@ namespace Empiria.Trade.Tests.MoneyAccount {
         TransactionTime = DateTime.Now
       };
 
-      //var maTransactionItem = new MoneyAccountTransactionItem(fields);
-      //maTransactionItem.Save();
-
       var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
       var moneyAccountTransactionItem = moneyAccountUseCase.AddMoneyAccountTransactionItem(fields);
 
@@ -196,21 +193,19 @@ namespace Empiria.Trade.Tests.MoneyAccount {
     public void ShouldUpdateMoneyAccountTransactionItem() {
 
       var fields = new MoneyAccountTransactionItemFields {
-        UID = "",
+        UID = "d5f02fd5-f8ae-4bf1-add3-1aed20074597",
         TransactionTypeUID = "eccd36f6-f326-4e56-ac28-89504f8ba588",
         PaymentTypeUID = "36843e8f-0c79-419e-935c-bf814dd56871",
         Deposit = 0.0m,
         Withdrawal = 2340.09m,
-        Notes = "Esto es cambio",
+        Notes = "CAMBIO",
         TransactionTime = DateTime.Now
       };
 
-      var maTransactionItem = MoneyAccountTransactionItem.Parse(1001);
+      var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
+      var moneyAccountTransactionItem = moneyAccountUseCase.UpdateMoneyAccountTransactionItem(fields, fields.UID);
 
-      maTransactionItem.Update(fields);
-      maTransactionItem.Save();
-
-      Assert.NotNull(maTransactionItem);
+      Assert.NotNull(moneyAccountTransactionItem);
     }
 
     [Fact]
