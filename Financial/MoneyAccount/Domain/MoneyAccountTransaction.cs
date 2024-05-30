@@ -55,7 +55,12 @@ namespace Empiria.Trade.Financial {
     [DataField("MoneyAccountTransactionTypeId")]
     public MoneyAccountTransactionType TransactionType {
       get; private set;
-    } 
+    }
+
+    [DataField("TransactionNumber")]
+    public string TransactionNumber {
+      get; private set;
+    }
 
     [DataField("ReferenceTypeId")]
     public int ReferenceTypeId {
@@ -117,6 +122,9 @@ namespace Empiria.Trade.Financial {
     #region Public methods
 
     protected override void OnSave() {
+      if (IsNew) {
+        TransactionNumber = "MAT-" + EmpiriaString.BuildRandomString(10).ToUpperInvariant();
+      }
       MoneyAccountTransactionData.Write(this);
     }
 
