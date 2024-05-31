@@ -15,9 +15,7 @@ using Empiria.WebApi;
 
 using Empiria.Trade.Financial.Adapters;
 using Empiria.Trade.Financial.UseCases;
-using Empiria.Trade.Sales.Adapters;
-using Empiria.Trade.Sales.UseCases;
-using System.Runtime.InteropServices;
+
 using Empiria.Trade.Financial;
 
 
@@ -173,7 +171,7 @@ namespace Empiria.Trade.WebApi.Financial {
     }
 
     [HttpPost]
-    [Route("v4/trade/financial/money-accounts/money-accounts-transaction")]
+    [Route("v4/trade/financial/money-accounts/transactions")]
     public SingleObjectModel AddMoneyAccountTransaction([FromBody] MoneyAccountTransactionFields fields) {
 
       base.RequireBody(fields);
@@ -187,7 +185,7 @@ namespace Empiria.Trade.WebApi.Financial {
     }
 
     [HttpPut]
-    [Route("v4/trade/financial/money-accounts/money-accounts-transaction/{moneyAccountTransactionUID:guid}")]
+    [Route("v4/trade/financial/money-accounts/transactions/{moneyAccountTransactionUID:guid}")]
     public SingleObjectModel UpdateMoneyAccountTransaction([FromUri] string moneyAccountTransactionUID, [FromBody] MoneyAccountTransactionFields fields) {
 
       base.RequireResource(moneyAccountTransactionUID, "moneyAccountTransactionUID");
@@ -203,7 +201,7 @@ namespace Empiria.Trade.WebApi.Financial {
     }
 
     [HttpDelete]
-    [Route("v4/trade/financial/money-accounts/money-accounts-transaction/{moneyAccountTransactionUID:guid}/cancel")]
+    [Route("v4/trade/financial/money-accounts/transactions/{moneyAccountTransactionUID:guid}/cancel")]
     public SingleObjectModel CancelMoneyAccountTransaction([FromUri] string moneyAccountTransactionUID) {
 
       base.RequireResource(moneyAccountTransactionUID, "moneyAccountTransactionUID");
