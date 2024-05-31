@@ -230,7 +230,17 @@ namespace Empiria.Trade.WebApi.Financial {
       }
 
     }
-       
+
+    [HttpGet]
+    [Route("v4/trade/financial/money-accounts/transactions/items-types")]
+    public CollectionModel GetMoneyAccountTransactionItemsTypes() {
+
+      using (var usecases = MoneyAccountUseCases.UseCaseInteractor()) {
+        var itemsTypes = usecases.GetMoneyAccountTransactionItemTypes();
+
+        return new CollectionModel(base.Request, itemsTypes);
+      }
+    }
 
     [HttpGet]
     [Route("v4/trade/financial/money-accounts/payment-types")]

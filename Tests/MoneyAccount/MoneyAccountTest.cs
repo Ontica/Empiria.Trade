@@ -170,6 +170,14 @@ namespace Empiria.Trade.Tests.MoneyAccount {
     }
 
     [Fact]
+    public void ShouldMoneyAccountTransactionItemTypes() {
+      var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
+      var matItemTypes = moneyAccountUseCase.GetMoneyAccountTransactionItemTypes();
+
+      Assert.NotNull(matItemTypes);
+    }
+
+    [Fact]
     public void ShouldAddNewMoneyAccountTransactionItem() {
 
       var fields = new MoneyAccountTransactionItemFields {
