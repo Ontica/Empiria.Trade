@@ -50,7 +50,7 @@ namespace Empiria.Trade.Financial {
     }
 
     [DataField("MoneyAccountTransactionItemTypeId")]
-    public MoneyAccountTransactionType MoneyAccountTransactionItemType {
+    public MoneyAccountTransactionItemType MoneyAccountTransactionItemType {          
       get; private set;
     }
 
@@ -120,7 +120,7 @@ namespace Empiria.Trade.Financial {
     }
 
     public void Update(MoneyAccountTransactionItemFields fields) {
-      this.MoneyAccountTransactionItemType = MoneyAccountTransactionType.Parse(fields.TransactionTypeUID);
+      this.MoneyAccountTransactionItemType = MoneyAccountTransactionItemType.Parse(fields.ItemTypeUID);
       this.PaymentType = PaymentType.Parse(fields.PaymentTypeUID);
       this.Deposit = fields.Deposit;
       this.Withdrawal = fields.Withdrawal;

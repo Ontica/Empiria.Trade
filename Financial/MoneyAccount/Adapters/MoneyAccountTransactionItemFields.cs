@@ -33,7 +33,7 @@ namespace Empiria.Trade.Financial {
       get; set;
     } 
 
-    public string TransactionTypeUID {
+    public string ItemTypeUID {
       get; set;
     }
 

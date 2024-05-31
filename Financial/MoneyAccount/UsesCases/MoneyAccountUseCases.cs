@@ -264,7 +264,7 @@ namespace Empiria.Trade.Financial.UseCases
     }
 
     public FixedList<NamedEntityDto> GetMoneyAccountTransactionItemTypes() {
-      return MoneyAcccountTransactionItemType.GetList<MoneyAcccountTransactionItemType>().MapToNamedEntityList();
+      return MoneyAccountTransactionItemType.GetList<MoneyAccountTransactionItemType>().MapToNamedEntityList();
     }
 
     #endregion Public properties

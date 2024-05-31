@@ -11,19 +11,19 @@ using System;
 
 namespace Empiria.Trade.Financial {
   /// Represents money account transaction item type.
-  internal class MoneyAcccountTransactionItemType : GeneralObject {
+  public class MoneyAccountTransactionItemType : GeneralObject {
     #region Constructor and parsers
 
 
-    public MoneyAcccountTransactionItemType() {
+    public MoneyAccountTransactionItemType() {
       //no-op
     }
 
-    static public MoneyAcccountTransactionItemType Parse(int id) => ParseId<MoneyAcccountTransactionItemType>(id);
+    static public MoneyAccountTransactionItemType Parse(int id) => ParseId<MoneyAccountTransactionItemType>(id);
 
-    static public MoneyAcccountTransactionItemType Parse(string uid) => ParseKey<MoneyAcccountTransactionItemType>(uid);
+    static public MoneyAccountTransactionItemType Parse(string uid) => ParseKey<MoneyAccountTransactionItemType>(uid);
 
-    static public MoneyAcccountTransactionItemType Empty => ParseEmpty<MoneyAcccountTransactionItemType>();
+    static public MoneyAccountTransactionItemType Empty => ParseEmpty<MoneyAccountTransactionItemType>();
 
 
     #endregion Constructor and parsers
