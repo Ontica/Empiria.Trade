@@ -18,6 +18,7 @@ using Empiria.Trade.Financial.UseCases;
 using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Sales.UseCases;
 using System.Runtime.InteropServices;
+using Empiria.Trade.Financial;
 
 
 
@@ -250,6 +251,20 @@ namespace Empiria.Trade.WebApi.Financial {
         var paymentTypes = usecases.GetPaymentTypes();
 
         return new CollectionModel(base.Request, paymentTypes);
+      }
+    }
+
+    [HttpPost]
+    [Route("v4/trade/financial/money-accounts/transactions/transaction-item")]
+    public SingleObjectModel AddMoneyAccountTransactionItem([FromBody] MoneyAccountTransactionItemFields fields) {
+
+      base.RequireBody(fields);
+
+      using (var usecases = MoneyAccountUseCases.UseCaseInteractor()) {
+
+        var moneyAccountTransactionItemDto = usecases.AddMoneyAccountTransactionItem(fields);
+
+        return new SingleObjectModel(this.Request, moneyAccountTransactionItemDto);
       }
     }
 

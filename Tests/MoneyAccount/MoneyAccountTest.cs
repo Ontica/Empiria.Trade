@@ -170,7 +170,7 @@ namespace Empiria.Trade.Tests.MoneyAccount {
     }
 
     [Fact]
-    public void ShouldMoneyAccountTransactionItemTypes() {
+    public void ShouldGetMoneyAccountTransactionItemTypes() {
       var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
       var matItemTypes = moneyAccountUseCase.GetMoneyAccountTransactionItemTypes();
 
@@ -183,7 +183,7 @@ namespace Empiria.Trade.Tests.MoneyAccount {
       var fields = new MoneyAccountTransactionItemFields {
         UID = "",
         MoneyAccountTransactionUID = "d9c3e83b-5409-4c14-b501-88f3613bed3a",
-        TransactionTypeUID = "eccd36f6-f326-4e56-ac28-89504f8ba588",
+        ItemTypeUID = "51adb2d1-2077-4750-872f-c68fa3891a9e",
         PaymentTypeUID = "36843e8f-0c79-419e-935c-bf814dd56871",
         Deposit = 3350.456m,
         Withdrawal = 30,        
@@ -202,7 +202,7 @@ namespace Empiria.Trade.Tests.MoneyAccount {
 
       var fields = new MoneyAccountTransactionItemFields {
         UID = "d5f02fd5-f8ae-4bf1-add3-1aed20074597",
-        TransactionTypeUID = "eccd36f6-f326-4e56-ac28-89504f8ba588",
+        ItemTypeUID = "eccd36f6-f326-4e56-ac28-89504f8ba588",
         PaymentTypeUID = "36843e8f-0c79-419e-935c-bf814dd56871",
         Deposit = 0.0m,
         Withdrawal = 2340.09m,
