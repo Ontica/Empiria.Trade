@@ -310,6 +310,22 @@ namespace Empiria.Trade.WebApi.Financial {
       }
     }
 
+
+    [HttpGet]
+    [Route("v4/trade/financial/money-accounts/transactions/transaction-types")]
+    public SingleObjectModel GetMoneyAccountTransactionTypes() {
+
+      using (var usecases = MoneyAccountUseCases.UseCaseInteractor()) {
+
+        var moneyAccountTransactionDto = usecases.GetMoneyAccountTransactionTypes();
+
+        return new SingleObjectModel(this.Request, moneyAccountTransactionDto);
+      }
+
+    }
+
+
+
   } // class MoneyAccountControler
 
 } // namespace Empiria.Trade.WebApi.Financial
