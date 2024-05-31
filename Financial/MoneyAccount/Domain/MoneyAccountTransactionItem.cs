@@ -79,7 +79,7 @@ namespace Empiria.Trade.Financial {
       get; protected set;
     } = 0m;
 
-
+    [DataField("Notes")]
     public string Notes {
       get; protected set;
     } = string.Empty;

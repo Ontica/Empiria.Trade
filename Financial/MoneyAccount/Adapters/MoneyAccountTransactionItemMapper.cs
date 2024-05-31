@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using System.Collections.Generic;
 
 
 namespace Empiria.Trade.Financial.Adapters {
@@ -26,6 +27,16 @@ namespace Empiria.Trade.Financial.Adapters {
         Status = moneyAccountTransactionItem.MoneyAccountTransactionItemStatus,
       };
       return dto;
+    }
+
+    static public FixedList<MoneyAccountTransactionItemDto> MapMoneyAccountTransactionItems(FixedList<MoneyAccountTransactionItem> moneyAccountTransactionItems) {
+      List<MoneyAccountTransactionItemDto> moneyAccountTransactionItemList = new List<MoneyAccountTransactionItemDto>();
+
+      foreach (var transactionItem in moneyAccountTransactionItems) {
+        moneyAccountTransactionItemList.Add(Map(transactionItem));
+      }
+
+      return moneyAccountTransactionItemList.ToFixedList();
     }
 
   } // class MoneyAccountTransactionItemMapper

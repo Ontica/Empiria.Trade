@@ -221,10 +221,14 @@ namespace Empiria.Trade.Tests.MoneyAccount {
     }
 
     [Fact]
-    public void ShouldGetMoneyAccountTransactionItem() {
+    public void ShouldGetMoneyAccountTransactionItems() {
 
-      var maTransactionItems = MoneyAccountTransactionItem.GetTransactionItems(1002);
-      Assert.NotNull(maTransactionItems);
+      var maTransaction= MoneyAccountTransaction.Parse(1002);
+
+      var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
+      var moneyAccountTransactionItems = moneyAccountUseCase.GetMoneyAccountTransactionItems(maTransaction.UID);
+
+      Assert.NotNull(moneyAccountTransactionItems);
     }
 
   } // class MoneyAccountTest
