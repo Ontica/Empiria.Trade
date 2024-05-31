@@ -176,6 +176,7 @@ namespace Empiria.Trade.Financial.UseCases
       
       return MoneyAccountTransactionItemMapper.MapMoneyAccountTransactionItems(moneyAccountTransactionItems);
     }
+     
 
     public CreditTransactionDto AddCreditTransaction(CreditTrasnactionFields fields) {
       Assertion.Require(fields, "fields");

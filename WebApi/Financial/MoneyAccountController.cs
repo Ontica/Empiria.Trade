@@ -224,38 +224,24 @@ namespace Empiria.Trade.WebApi.Financial {
 
       using (var usecases = MoneyAccountUseCases.UseCaseInteractor()) {
 
-        var moneyAccountTransactionDto = usecases.GetTransaction(moneyAccountTransactionUID);
+        var moneyAccountTransactionDto = usecases.GetMoneyAccountTransaction(moneyAccountTransactionUID);
 
         return new SingleObjectModel(this.Request, moneyAccountTransactionDto);
       }
 
     }
+       
 
-    //[HttpGet]
-    //[Route("v4/trade/financial/money-accounts-transaction-types/{moneyAccountUID:guid}")]
-    //public SingleObjectModel GetMoneyAccountTransactionTypes([FromUri] string moneyAccountUID) {
+    [HttpGet]
+    [Route("v4/trade/financial/money-accounts/payment-types")]
+    public CollectionModel GetPaymentTypes() {
 
-    //  base.RequireResource(moneyAccountUID, "moneyAccountUID");
+      using (var usecases = MoneyAccountUseCases.UseCaseInteractor()) {
+        var paymentTypes = usecases.GetPaymentTypes();
 
-    //  using (var usecases = MoneyAccountUseCases.UseCaseInteractor()) {
-
-    //    var moneyAccountTransactionDto = usecases.GetTransactionTypes();
-
-    //    return new SingleObjectModel(this.Request, moneyAccountTransactionDto);
-    //  }
-
-    //}
-
-    //[HttpGet]
-    //[Route("v4/trade/financial/money-accounts/money-accounts-types")]
-    //public CollectionModel GetMoneyAccountTypes() {
-
-    //  using (var usecases = MoneyAccountUseCases.UseCaseInteractor()) {
-    //    FixedList<NamedEntityDto> moneyAccountTypes = usecases.GetMoneyAccountTypes();
-
-    //    return new CollectionModel(base.Request, moneyAccountTypes);
-    //  }
-    //}
+        return new CollectionModel(base.Request, paymentTypes);
+      }
+    }
 
   } // class MoneyAccountControler
 
