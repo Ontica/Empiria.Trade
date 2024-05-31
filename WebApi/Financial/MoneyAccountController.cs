@@ -299,6 +299,19 @@ namespace Empiria.Trade.WebApi.Financial {
 
     }
 
+    [HttpGet]
+    [Route("v4/trade/financial/money-accounts/transactions/transaction-items/{moneyAccountTransactionUID:guid}")]
+    public CollectionModel GetMoneyAccountTransactionItems([FromUri] string moneyAccountTransactionUID) {
+
+      base.RequireResource(moneyAccountTransactionUID, "moneyAccountTransactionUID");
+
+      using (var usecases = MoneyAccountUseCases.UseCaseInteractor()) {
+        var moneyAccountTransactionItems = usecases.GetMoneyAccountTransactionItems(moneyAccountTransactionUID);
+
+        return new CollectionModel(base.Request, moneyAccountTransactionItems);
+      }
+    }
+
   } // class MoneyAccountControler
 
 } // namespace Empiria.Trade.WebApi.Financial
