@@ -20,6 +20,11 @@ namespace Empiria.Trade.Core.Catalogues.Adapters {
     }
 
 
+    public string Tag {
+      get; set;
+    }
+
+
     public string Name {
       get; set;
     }
@@ -30,12 +35,12 @@ namespace Empiria.Trade.Core.Catalogues.Adapters {
     }
 
 
-    public int[] Positions {
+    public int RackRow {
       get; set;
     }
 
 
-    public int[] Levels {
+    public int RackColumn {
       get; set;
     }
 

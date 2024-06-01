@@ -9,6 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Collections.Generic;
+using Empiria.StateEnums;
 
 namespace Empiria.Trade.Core.Catalogues {
 
@@ -38,48 +39,68 @@ namespace Empiria.Trade.Core.Catalogues {
 
     [DataField("WarehouseBinUID")]
     public string WarehouseBinUID {
-      get;
-      internal set;
+      get; internal set;
     }
 
 
     [DataField("WarehouseId")]
     public Warehouse Warehouse {
-      get;
-      internal set;
+      get; internal set;
+    }
+
+
+    [DataField("WarehouseBinTag")]
+    public string Tag {
+      get; internal set;
     }
 
 
     [DataField("Rack")]
     public string Rack {
+      get; internal set;
+    }
+
+
+    [DataField("RackRow")]
+    public int RackRow {
+      get; internal set;
+    }
+
+
+    [DataField("RackColumn")]
+    public int RackColumn {
+      get; internal set;
+    }
+
+
+    [DataField("WarehouseBinName")]
+    public string WarehouseBinName {
+      get; internal set;
+    }
+
+
+    [DataField("WarehouseBinStatus", Default = ActivityStatus.Active)]
+    public ActivityStatus WarehouseBinStatus {
+      get; internal set;
+    } = ActivityStatus.Active;
+
+
+    //[DataField("RackLevel")]
+    public int RackLevel {
       get;
       internal set;
     }
 
 
-    [DataField("PositionFrom")]
+    //[DataField("PositionFrom")]
     public int PositionFrom {
       get;
       internal set;
     }
 
 
-    [DataField("PositionUp")]
+    //[DataField("PositionUp")]
     public int PositionUp {
-      get;
-      internal set;
-    }
-
-
-    [DataField("BinDescription")]
-    public string BinDescription {
-      get;
-      internal set;
-    }
-
-
-    [DataField("RackLevel")]
-    public int RackLevel {
       get;
       internal set;
     }

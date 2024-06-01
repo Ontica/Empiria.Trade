@@ -19,6 +19,14 @@ namespace Empiria.Trade.Core.Catalogues.Adapters {
     #region Public methods
 
 
+    internal static FixedList<NamedEntityDto> MapToDto(FixedList<WarehouseBin> warehouseBins) {
+
+      var mappedList = warehouseBins.Select((x) => MapToNamedEntity(x));
+
+      return new FixedList<NamedEntityDto>(mappedList);
+    }
+
+    
     internal static FixedList<WarehouseBinForInventoryDto> MapWarehouseBins(
       FixedList<WarehouseBin> warehouseBins) {
 
@@ -31,15 +39,21 @@ namespace Empiria.Trade.Core.Catalogues.Adapters {
     #endregion Public methods
 
 
+    private static NamedEntityDto MapToNamedEntity(WarehouseBin x) {
+
+      return new NamedEntityDto(x.WarehouseBinUID, x.Tag);
+    }
+
 
     private static WarehouseBinForInventoryDto MapWarehouseBinList(WarehouseBin x) {
       
       return new WarehouseBinForInventoryDto() {
         UID = x.WarehouseBinUID,
-        Name = x.BinDescription,
-        Positions = x.Positions,
+        Tag = x.Tag,
+        Name = x.WarehouseBinName,
         WarehouseName = x.WarehouseName,
-        Levels = x.Levels
+        RackRow = x.RackRow,
+        RackColumn = x.RackColumn
       };
     }
   } // class WarehouseMapper

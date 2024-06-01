@@ -52,7 +52,25 @@ namespace Empiria.Trade.Core.Catalogues
 
     static internal FixedList<WarehouseBin> GetWarehouseBinsForInventory() {
 
-      string sql = $"SELECT * FROM TRDWarehouseBins WHERE WarehouseBinId > 0 AND WarehouseId > 0";
+      string sql = $"SELECT * FROM TRDWarehouseBinsTemp WHERE WarehouseBinId > 0 AND WarehouseId > 0";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetPlainObjectFixedList<WarehouseBin>(dataOperation);
+    }
+
+
+    static internal FixedList<WarehouseBin> GetWarehouseBinLocations(string keywords) {
+
+      var keywordsClauses = string.Empty;
+
+      if (keywords != string.Empty) {
+        keywordsClauses += $"AND WarehouseBinTag LIKE '%{keywords}%'";
+      }
+
+      string sql = $"SELECT * FROM TRDWarehouseBinsTemp " +
+                   $"WHERE WarehouseBinId > 0 AND WarehouseId > 0 " +
+                   $"{keywordsClauses} ";
 
       var dataOperation = DataOperation.Parse(sql);
 

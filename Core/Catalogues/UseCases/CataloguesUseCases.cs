@@ -128,6 +128,14 @@ namespace Empiria.Trade.Core.Catalogues {
     }
 
 
+    public FixedList<NamedEntityDto> GetWarehouseBinLocations(string keywords) {
+
+      FixedList<WarehouseBin> warehouseBins = CataloguesData.GetWarehouseBinLocations(keywords);
+
+      return WarehouseMapper.MapToDto(warehouseBins);
+    }
+
+
     public async Task<string> UpdateGUID(TableQuery query) {
 
       try {

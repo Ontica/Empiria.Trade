@@ -32,6 +32,18 @@ namespace Empiria.Trade.WebApi.Core {
     }
 
 
+    [HttpGet]
+    [Route("v4/trade/warehouse-bin/locations/search/{keywords}")]
+    public CollectionModel GetWarehouseBinLocations([FromUri] string keywords) {
+
+      using (var usescase = CataloguesUseCases.UseCaseInteractor()) {
+        FixedList<NamedEntityDto> inventoryTypes = usescase.GetWarehouseBinLocations(keywords);
+
+        return new CollectionModel(base.Request, inventoryTypes);
+      }
+    }
+
+
   } // class WarehouseController
 
 } // namespace Empiria.Trade.WebApi.Core

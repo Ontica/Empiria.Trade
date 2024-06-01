@@ -105,7 +105,7 @@ namespace Empiria.Trade.Inventory.Adapters {
     static private InventoryWarehouseBinDto GetInventoryWarehouseBinData(InventoryOrderItem x) {
       var dto = new InventoryWarehouseBinDto();
       dto.Rack = x.WarehouseBin.Rack;
-      dto.RackDescription = x.WarehouseBin.BinDescription;
+      dto.RackDescription = x.WarehouseBin.WarehouseBinName;
       dto.Position = x.Position;
       dto.Level = x.Level;
       return dto;
