@@ -133,7 +133,7 @@ namespace Empiria.Trade.Financial {
       this.TransactionType = MoneyAccountTransactionType.Parse(fields.TransactionTypeUID);
       this.Description = fields.Description;
       this.Credit = fields.TransactionAmount;
-      this.ReferenceId = fields.ReferenceId;
+      this.ExtData = fields.Reference;
       this.TransactionTime = fields.TransactionTime;
       this.Notes = fields.Notes;
       this.PostedTime = DateTime.Now;

@@ -21,8 +21,9 @@ namespace Empiria.Trade.Financial.Adapters {
         OperationNumber = transaction.ExtData,
         OperationType = transaction.TransactionType.Name,
         TransactionDate = transaction.TransactionTime,
-        CreditAmount = transaction.Credit,
-        DebitAmount = transaction.Debit,
+        Reference = transaction.ExtData,
+        TransactionAmount = transaction.Credit,
+        //DebitAmount = transaction.Debit,
         Notes = transaction.Notes,
         Status = transaction.Status
       };

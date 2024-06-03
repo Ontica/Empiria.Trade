@@ -43,9 +43,9 @@ namespace Empiria.Trade.Financial.Adapters {
       get; set;
     } = 0m;
 
-    public int ReferenceId {
+    public string Reference {
       get; set;
-    } = 0;
+    } = string.Empty;
 
     public DateTime TransactionTime {
       get; set;

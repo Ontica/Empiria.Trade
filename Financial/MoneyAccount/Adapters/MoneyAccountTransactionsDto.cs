@@ -32,13 +32,17 @@ namespace Empiria.Trade.Financial.Adapters {
       get; internal set;
     }
 
-    public decimal CreditAmount {
+    public string Reference {
       get; internal set;
     }
 
-    public decimal DebitAmount {
+    public decimal TransactionAmount {
       get; internal set;
     }
+
+    //public decimal DebitAmount {
+    //  get; internal set;
+    //}
 
     public DateTime DueDate {
       get; internal set;
