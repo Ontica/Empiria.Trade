@@ -41,6 +41,10 @@ namespace Empiria.Trade.Financial {
       get; set;
     }
 
+    public string Reference {
+      get; set;
+    } = string.Empty;
+
     public decimal Deposit {
       get; set;
     } = 0m;

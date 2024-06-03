@@ -19,7 +19,7 @@ namespace Empiria.Trade.Financial.Adapters {
       var dto = new MoneyAccountTransactionItemDto {
         UID = moneyAccountTransactionItem.UID,
         MoneyAccountTransactionItemType = moneyAccountTransactionItem.MoneyAccountTransactionItemType.Name,
-        Reference = moneyAccountTransactionItem.ReferenceId.ToString(),
+        Reference = moneyAccountTransactionItem.ExtData,
         PaymentType = moneyAccountTransactionItem.PaymentType.Name,
         Deposit = moneyAccountTransactionItem.Deposit,
         Withdrawal = moneyAccountTransactionItem.Withdrawal,

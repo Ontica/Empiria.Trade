@@ -123,6 +123,7 @@ namespace Empiria.Trade.Financial {
       this.MoneyAccountTransactionItemType = MoneyAccountTransactionItemType.Parse(fields.ItemTypeUID);
       this.PaymentType = PaymentType.Parse(fields.PaymentTypeUID);
       this.Deposit = fields.Deposit;
+      this.ExtData = fields.Reference;
       this.Withdrawal = fields.Withdrawal;
       this.TransactionTime = fields.TransactionTime;
       this.Notes = fields.Notes;
