@@ -80,9 +80,9 @@ namespace Empiria.Trade.Tests {
     public void GetPackagingForOrderTest() {
 
       var usecase = PackagingUseCases.UseCaseInteractor();
-      string uid = "0ec593e5-26d7-4c50-89ea-df15b2d86304";//"e1513326-ffa6-4a3d-af32-6e9d41316606";
+      string orderUid = "0ec593e5-26d7-4c50-89ea-df15b2d86304";//"e1513326-ffa6-4a3d-af32-6e9d41316606";
 
-      PackingDto sut = usecase.GetPackagingForOrder(uid);
+      PackingDto sut = usecase.GetPackagingForOrder(orderUid);
       
       Assert.NotNull(sut);
 

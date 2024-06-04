@@ -43,8 +43,14 @@ namespace Empiria.Trade.Core {
     }
 
 
-    [DataField("Stock")]
+    [DataField("AvailableStock")]
     public decimal Stock {
+      get; private set;
+    }
+
+
+    [DataField("RealStock")]
+    public decimal RealStock {
       get; private set;
     }
 
