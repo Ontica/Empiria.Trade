@@ -45,7 +45,7 @@ namespace Empiria.Trade.Tests.MoneyAccount {
         TransactionTypeUID = "eccd36f6-f326-4e56-ac28-89504f8ba588",
         Description = "Credito ",
         TransactionAmount = 3350.456m,
-        ReferenceId = 30,
+        Reference = "OC-E9399D93D",
         TransactionTime = DateTime.Now,
         Notes = "Esto es una prueba"
       };
@@ -65,7 +65,7 @@ namespace Empiria.Trade.Tests.MoneyAccount {
         TransactionTypeUID = "70c7e1cf-13a0-4b23-9044-1bf7ddbab5e2",
         Description = "Credito ",
         TransactionAmount = 500,
-        ReferenceId = 30,
+        Reference = "PEMA-30",
         TransactionTime = DateTime.Now,
         Notes = "Modificacion"
       };
