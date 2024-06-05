@@ -13,6 +13,7 @@ using System.Reflection;
 using Empiria.Trade.Inventory.Adapters;
 using Empiria.Trade.Inventory.Data;
 using Empiria.Trade.Core.Inventories.Adapters;
+using Empiria.Trade.Core.UsesCases;
 
 namespace Empiria.Trade.Inventory.Domain {
 
@@ -120,7 +121,7 @@ namespace Empiria.Trade.Inventory.Domain {
       InventoryOrderFields fields = new InventoryOrderFields();
 
       fields.InventoryOrderTypeUID = "2ft8y5h4-db55-48b3-aa78-63132a8d5e7f"; // TODO referencia a tipo cuando se agregue a Types 
-      fields.ResponsibleUID = "f3c61569-25f7-4296-a48d-f01735e27062";
+      fields.ResponsibleUID = PartyUseCases.GetWarehouseResponsible().UID;
       fields.AssignedToUID = "";
       fields.Notes = "";
       fields.ReferenceId = inventoryItemData.OrderId;

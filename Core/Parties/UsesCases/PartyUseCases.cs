@@ -85,7 +85,7 @@ namespace Empiria.Trade.Core.UsesCases {
       return PartyMapper.MapToMinimalPartyDto(wharehouseMan);
     }
 
-    public NamedEntityDto GetWarehouseResponsible() {
+    static public NamedEntityDto GetWarehouseResponsible() {
       var wharehouseResponsible = Party.GetWarehouseResponsible();
 
       return wharehouseResponsible.MapToNamedEntity();
