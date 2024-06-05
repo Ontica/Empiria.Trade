@@ -48,6 +48,10 @@ namespace Empiria.Trade.Sales.Adapters {
       get; internal set;
     }
 
+    public Boolean EditPicking {
+      get; internal set;
+    }
+
     public Boolean EditPacking {
       get; internal set;
     }
@@ -74,6 +78,10 @@ namespace Empiria.Trade.Sales.Adapters {
     }
 
     public Boolean CreditData {
+      get; internal set;
+    }
+
+    public Boolean PickingData {
       get; internal set;
     }
 

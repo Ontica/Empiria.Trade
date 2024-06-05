@@ -38,6 +38,7 @@ namespace Empiria.Trade.Sales.Adapters {
         Cancel = transactionActions.Can.Cancel,
         ClosePacking = transactionActions.Can.ClosePacking,
         Deauthorize = transactionActions.Can.Deauthorize,
+        EditPicking = transactionActions.Can.EditPicking,
         EditPacking = transactionActions.Can.EditPacking,
         EditShipping = transactionActions.Can.EditShipping,
         SendShipping = transactionActions.Can.SendShipping,
@@ -51,6 +52,7 @@ namespace Empiria.Trade.Sales.Adapters {
       var dto = new ShowDto {
         OrderData = transactionActions.Show.OrderData,
         CreditData = transactionActions.Show.CreditData,
+        PickingData = transactionActions.Show.PickingData,
         PackingData = transactionActions.Show.PackingData,
         ShippingData = transactionActions.Show.ShippingData,
         SendShippingData = transactionActions.Show.SendShippingData

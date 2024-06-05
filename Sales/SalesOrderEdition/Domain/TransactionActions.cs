@@ -69,6 +69,10 @@ namespace Empiria.Trade.Sales {
         get; set;
       } = false;
 
+      public Boolean EditPicking {
+        get; set;
+      } = false;
+
       public Boolean EditPacking {
         get; set;
       } = false;
@@ -94,6 +98,10 @@ namespace Empiria.Trade.Sales {
       } = false;
 
       public Boolean CreditData {
+        get; set;
+      } = false;
+
+      public Boolean PickingData {
         get; set;
       } = false;
 

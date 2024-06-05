@@ -67,6 +67,7 @@ namespace Empiria.Trade.Sales {
 
       Actions.Show.OrderData = ValidateShowOrderData(queryType);
       Actions.Show.CreditData = ValidateShowCreditEdtior(queryType);
+      Actions.Show.PickingData = ValidateShowPickingEditor(queryType);
       Actions.Show.PackingData = ValidateShowPackingEditor(queryType);
       Actions.Show.ShippingData = ValidateShippingEditor(queryType);
       Actions.Show.SendShippingData = ValidateSendShippingEditor(queryType);
@@ -77,6 +78,7 @@ namespace Empiria.Trade.Sales {
       Actions.Can.Cancel = ValidateCancel(queryType, salesOrder);
       Actions.Can.Authorize = ValidateAuthorize(queryType, salesOrder);
       Actions.Can.Deauthorize = ValidateDeauthorize(queryType, salesOrder);
+      Actions.Can.EditPicking = ValidateEditPicking(queryType, salesOrder);
       Actions.Can.EditPacking = ValidateEditPacking(queryType, salesOrder);
       Actions.Can.ClosePacking = ValidateEditClosePacking(queryType, salesOrder);
       Actions.Can.EditShipping = ValidateEditShipping(salesOrder);
@@ -129,7 +131,26 @@ namespace Empiria.Trade.Sales {
 
     }
 
-     private bool ValidateEditClosePacking(QueryType queryType, SalesOrder salesOrder) {
+    private bool ValidateEditPicking(QueryType queryType, SalesOrder salesOrder) {
+
+      if (salesOrder.Status != OrderStatus.Packing) {
+        return false;
+      }
+
+      if (queryType != QueryType.SalesPacking) {
+        return false;
+      }
+
+
+      if (OnSupplyEvent) {
+        return false;
+      }
+
+      return true;
+
+    }
+
+    private bool ValidateEditClosePacking(QueryType queryType, SalesOrder salesOrder) {
 
       if (salesOrder.Status != OrderStatus.Packing) {
         return false;
@@ -170,6 +191,10 @@ namespace Empiria.Trade.Sales {
 
     private bool ValidateShowCreditEdtior(QueryType queryType) {
       return queryType == QueryType.SalesAuthorization;
+    }
+
+    private bool ValidateShowPickingEditor(QueryType queryType) {
+      return queryType == QueryType.SalesPacking;
     }
 
     private bool ValidateShowPackingEditor(QueryType queryType) {
