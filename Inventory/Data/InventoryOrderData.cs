@@ -176,9 +176,11 @@ namespace Empiria.Trade.Inventory.Data {
     }
 
 
-    static internal void UpdateInventoryOrderStatus(string inventoryOrderUID, InventoryStatus status) {
+    static internal void UpdateInventoryOrderStatus(string inventoryOrderUID, DateTime closingTime, InventoryStatus status) {
       
-      string sql = $"UPDATE TRDInventoryOrders SET InventoryOrderStatus = '{(char) status}' " +
+      string sql = $"UPDATE TRDInventoryOrders SET " +
+                   $"InventoryOrderStatus = '{(char) status}' " +
+                   $"ClosingTime = '{closingTime}' " +
                    $"WHERE InventoryOrderUID IN('{inventoryOrderUID}')";
 
       var dataOperation = DataOperation.Parse(sql);
@@ -201,13 +203,13 @@ namespace Empiria.Trade.Inventory.Data {
     }
 
 
-    internal static void UpdateInventoryOrderItemsByOrder(int inventoryOrderId) {
+    internal static void UpdateInventoryOrderItemsByOrder(int inventoryOrderId, DateTime closingTime) {
 
       string sql = $"UPDATE TRDInventoryOrderItems SET " +
                    $"InventoryOrderItemStatus = '{(char) InventoryStatus.Cerrado}' " +
                    $",OutputQuantity = InProcessOutputQuantity " +
                    $",InProcessOutputQuantity = 0 " +
-                   //$",ClosingTime = '{new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day)}' " +
+                   $",ClosingTime = '{closingTime}' " +
                    $"WHERE InventoryOrderId = {inventoryOrderId} ";
 
       var dataOperation = DataOperation.Parse(sql);
@@ -216,18 +218,32 @@ namespace Empiria.Trade.Inventory.Data {
     }
 
 
-    internal static void UpdateInventoryOrderItemsStatusByOrder(int inventoryOrderId, DateTime closingTime) {
+    internal static void UpdateInventoryOrderItemsStatusByOrder(
+      int inventoryOrderItemId, decimal quantityDifference, DateTime closingTime) {
 
       string sql = $"UPDATE TRDInventoryOrderItems SET " +
                    $"InventoryOrderItemStatus = '{(char) InventoryStatus.Cerrado}' " +
-                   $",InputQuantity = CountingQuantity " +
-                   $",CountingQuantity = 0 " +
+                   $"{GetQuantityClauses(quantityDifference)} " +
                    $",ClosingTime = '{closingTime}' " +
-                   $"WHERE InventoryOrderId = {inventoryOrderId} ";
+                   $"WHERE InventoryOrderItemId = {inventoryOrderItemId} ";
 
       var dataOperation = DataOperation.Parse(sql);
 
       DataWriter.Execute(dataOperation);
+    }
+
+
+    private static object GetQuantityClauses(decimal quantityDifference) {
+
+      if (quantityDifference < 0) {
+        return $",OutputQuantity = {Math.Abs(quantityDifference)} ";
+
+      } else if (quantityDifference > 0) {
+        return $",InputQuantity = {quantityDifference} ";
+
+      } else {
+        return string.Empty;
+      }
     }
 
 

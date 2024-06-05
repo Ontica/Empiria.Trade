@@ -45,7 +45,7 @@ namespace Empiria.Trade.Core.Catalogues {
     }
 
 
-    public FixedList<SalesInventoryStock> GetInventoryStockByVendorProduct(int vendorProductId) {
+    static public FixedList<SalesInventoryStock> GetInventoryStockByVendorProduct(int vendorProductId) {
       Assertion.Require(vendorProductId, "vendorProductId");
 
       return InventoryBuilder.GetInventoryStockByVendorProduct(vendorProductId);

@@ -11,6 +11,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using Empiria.Services;
+using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Core.Inventories.Adapters;
 using Empiria.Trade.Inventory.Adapters;
 using Empiria.Trade.Inventory.Data;
@@ -65,13 +66,21 @@ namespace Empiria.Trade.Inventory.UseCases {
     public InventoryOrderDto CloseInventoryOrderStatus(string inventoryOrderUID) {
       Assertion.Require(inventoryOrderUID, nameof(inventoryOrderUID));
 
-      InventoryOrderData.UpdateInventoryOrderStatus(inventoryOrderUID, InventoryStatus.Cerrado);
+      InventoryOrderData.UpdateInventoryOrderStatus(
+        inventoryOrderUID, DateTime.Now, InventoryStatus.Cerrado);
 
-      var inventoryOrder = InventoryOrderEntry.Parse(inventoryOrderUID);
+      var inventoryOrderItems = InventoryOrderData.GetInventoryItemsByOrderUID(inventoryOrderUID);
 
-      InventoryOrderData.UpdateInventoryOrderItemsStatusByOrder(
-                    inventoryOrder.InventoryOrderId, DateTime.Now);
+      foreach (var item in inventoryOrderItems) {
 
+        var inventoryStock = CataloguesUseCases.GetInventoryStockByVendorProduct(item.VendorProduct.Id);
+
+        decimal quantityDifference = item.CountingQuantity - inventoryStock.Sum(x=>x.RealStock);
+
+        InventoryOrderData.UpdateInventoryOrderItemsStatusByOrder(
+                    item.InventoryOrderItemId, quantityDifference, DateTime.Now);
+      }
+      
       return GetInventoryOrderByUID(inventoryOrderUID);
     }
 
@@ -175,7 +184,7 @@ namespace Empiria.Trade.Inventory.UseCases {
       InventoryOrderEntry inventoryOrder = 
         InventoryOrderData.GetInventoryOrderByTypeAndReferenceId(inventoryOrderTypeId, referenceId);
 
-      InventoryOrderData.UpdateInventoryOrderItemsByOrder(inventoryOrder.InventoryOrderId);
+      InventoryOrderData.UpdateInventoryOrderItemsByOrder(inventoryOrder.InventoryOrderId, DateTime.Now);
     }
 
 

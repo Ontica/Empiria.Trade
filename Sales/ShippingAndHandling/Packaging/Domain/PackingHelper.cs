@@ -181,7 +181,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
 
 
     private void GetWarehousesByItem(MissingItem missing, int vendorProductId) {
-
+      //TODO OBTENER PRODUCTOS DE ORDEN DE INVENTARIO GENERADA EN PICKING
       var data = new PackagingData();
 
       FixedList<InventoryEntry> inventoryByVendorProduct = 

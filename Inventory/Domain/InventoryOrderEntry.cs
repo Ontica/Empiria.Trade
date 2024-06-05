@@ -209,8 +209,8 @@ namespace Empiria.Trade.Inventory {
 
       this.PostedById = ExecutionServer.CurrentUserId;
       this.PostingTime = DateTime.Now;
-      this.ClosingTime = DateTime.Now;
-      this.ScheduledTime = DateTime.Now; //TODO ENVIAR FECHA PROGRAMADA
+      this.ClosingTime = new DateTime(2049, 01, 01);
+      this.ScheduledTime = new DateTime(2049, 01, 01); //TODO ENVIAR FECHA PROGRAMADA
 
     }
 

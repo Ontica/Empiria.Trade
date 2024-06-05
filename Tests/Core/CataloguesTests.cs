@@ -38,9 +38,9 @@ namespace Empiria.Trade.Tests.Core
     [Fact]
     public void GetInventoryStockByVendorProductTest() {
 
-      var usecase = CataloguesUseCases.UseCaseInteractor();
       int vendorProductId = 36;
-      FixedList<SalesInventoryStock> sut = usecase.GetInventoryStockByVendorProduct(vendorProductId);
+      FixedList<SalesInventoryStock> sut = 
+        CataloguesUseCases.GetInventoryStockByVendorProduct(vendorProductId);
 
       Assert.NotNull(sut);
 
