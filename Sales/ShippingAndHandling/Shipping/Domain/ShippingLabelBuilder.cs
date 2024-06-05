@@ -295,7 +295,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
                     Description = item.VendorProduct.ProductFields.ProductDescription,
                     Comments = "",
                     Quantity = item.Quantity,
-                    Ubication = warehouse.Description
+                    Ubication = warehouse.Description // TODO RENAME FOR Location AND GET INFO FROM WAREHOUSEBIN
                 };
 
                 shippingLabels.Add(shippingLabel);

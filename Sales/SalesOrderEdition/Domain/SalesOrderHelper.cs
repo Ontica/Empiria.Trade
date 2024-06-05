@@ -84,15 +84,12 @@ namespace Empiria.Trade.Sales {
       var dataForInventoryList = new List<InventoryItems>();
       foreach (var item in salesOrderItems) {
 
-        var cataloguesUsecase = CataloguesUseCases.UseCaseInteractor();
-
         var data = new InventoryItems();
         data.OrderId = item.Order.Id;
         data.OrderItemId = item.Id;
         data.VendorProductUID = item.VendorProduct.VendorProductUID;
         data.Quantity = item.Quantity;
-        data.WarehouseBinUID = cataloguesUsecase.GetWarehouseBinByVendorProduct(
-                                item.VendorProduct.Id).WarehouseBinUID;
+        data.WarehouseBinUID = WarehouseBin.Parse(-1).WarehouseBinUID;
         
         dataForInventoryList.Add(data);
       }
