@@ -31,6 +31,17 @@ namespace Empiria.Trade.Tests.Inventory {
 
     #region Facts
 
+
+    [Fact]
+    public void GetInventoryOrderItemByUIDTest() {
+
+      var usecase = InventoryOrderUseCases.UseCaseInteractor();
+      var sut = usecase.GetInventoryOrderItemByUID("9444f6ea-0aa4-48b4-aed3-d49feac10c11");
+
+      Assert.NotNull(sut);
+    }
+
+
     [Fact]
     public void CloseInventoryOrderStatusTest() {
 
@@ -169,9 +180,7 @@ namespace Empiria.Trade.Tests.Inventory {
         WarehouseBinUID = "f06a2b16-e744-412e-bd94-82821a7b5cd9",
         Quantity = 1,
         InputQuantity = 0,
-        OutputQuantity = 0,
-        Position = 1,
-        Level = 1
+        OutputQuantity = 0
       };
     }
 

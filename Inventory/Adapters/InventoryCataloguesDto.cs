@@ -50,16 +50,6 @@ namespace Empiria.Trade.Inventory.Adapters {
     } = string.Empty;
 
 
-    public int Position {
-      get; set;
-    }
-
-
-    public int Level {
-      get; set;
-    }
-
-
   } // class InventoryWarehouseBin
 
 } // namespace Empiria.Trade.Inventory.Adapters

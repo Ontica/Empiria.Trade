@@ -138,8 +138,7 @@ namespace Empiria.Trade.Inventory.Data {
           item.CurrencyId,
           item.ExtData, item.ClosingTime,
           item.PostingTime, item.PostedById,
-          (char) item.Status,
-          item.Position, item.Level);
+          (char) item.Status);
 
       DataWriter.Execute(op);
     }

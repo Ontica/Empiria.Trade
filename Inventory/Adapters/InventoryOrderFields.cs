@@ -146,16 +146,6 @@ namespace Empiria.Trade.Inventory.Adapters {
     } = -1;
 
 
-    public int Position {
-      get; set;
-    } = 1;
-
-
-    public int Level {
-      get; set;
-    } = 1;
-   
-
     //public string ExternalObjectItemReferenceUID {
     //    get; set;
     //} = string.Empty;

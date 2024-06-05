@@ -38,6 +38,12 @@ namespace Empiria.Trade.Inventory.UseCases {
     #region Public methods
 
 
+    public InventoryOrderItem GetInventoryOrderItemByUID(string itemUID) {
+
+      return InventoryOrderItem.Parse(itemUID);
+    }
+
+
     public void CreateInventoryOrderBySale(FixedList<InventoryItems> inventoryItems) {
       Assertion.Require(inventoryItems, nameof(inventoryItems));
 
