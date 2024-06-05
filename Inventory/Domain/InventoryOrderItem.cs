@@ -201,7 +201,7 @@ namespace Empiria.Trade.Inventory {
       }
 
       this.InventoryOrder = InventoryOrderEntry.Parse(inventoryOrderUID);
-      this.InventoryOrderTypeItemId = 5; // TODO AGREGAR REFERENCIA (5 SALIDA POR VENTA)
+      this.InventoryOrderTypeItemId = fields.InventoryOrderTypeItemId;
       this.ItemReferenceId = fields.ItemReferenceId; //External.Parse(fields.ItemReferenceUID).Id;
       this.ItemNotes = fields.Notes;
       this.VendorProduct = VendorProduct.Parse(fields.VendorProductUID);

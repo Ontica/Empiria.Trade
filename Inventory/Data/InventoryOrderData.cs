@@ -233,7 +233,7 @@ namespace Empiria.Trade.Inventory.Data {
     }
 
 
-    private static object GetQuantityClauses(decimal quantityDifference) {
+    static private string GetQuantityClauses(decimal quantityDifference) {
 
       if (quantityDifference < 0) {
         return $",OutputQuantity = {Math.Abs(quantityDifference)} ";
