@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using System.Reflection;
 using Empiria.Services;
 using Empiria.Trade.Core.Catalogues;
+using Empiria.Trade.Inventory.Data;
+using Empiria.Trade.Inventory;
 using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 using Empiria.Trade.Sales.ShippingAndHandling.Data;
@@ -173,8 +175,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
 
     private PackingDto GetPackaging(string orderUid) {
-      var builder = new PackagingBuilder();
 
+      var builder = new PackagingBuilder();
       var packaging = builder.GetPackagesAndItemsForOrder(orderUid);
       
       return PackagingMapper.MapPackingDto(packaging);

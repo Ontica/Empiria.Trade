@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Empiria.Trade.Core;
 using Empiria.Trade.Core.Catalogues;
+using Empiria.Trade.Inventory;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.ShippingAndHandling.Data;
 using Newtonsoft.Json;
@@ -53,9 +54,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
 
       FixedList<PackageForItem> packsForItems = GetPackagesForItemsData(orderUid);
 
-      PackingEntry packingEntry = MergePackagesIntoPackingEntry(orderUid, packsForItems);
-
-      return packingEntry;
+      return MergePackagesIntoPackingEntry(orderUid, packsForItems);
     }
 
 
@@ -163,13 +162,18 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
 
       var helper = new PackingHelper();
 
+      PickingData pickingData = helper.GetPickingData(orderUID);
+
       FixedList<PackagedForItem> packagesForItems = helper.GetPackagesByOrder(orderUID, packsForItems);
 
       PackagedData packingData = helper.GetPackingData(orderUID, packagesForItems);
 
-      FixedList<MissingItem> missingItems = helper.GetMissingItems(orderUID, packagesForItems);
+      FixedList<MissingItem> missingItems = helper.GetMissingItems(
+        orderUID, packagesForItems, pickingData.AssignedToId);
 
       var packingEntry = new PackingEntry();
+
+      packingEntry.PickingData = pickingData;
       packingEntry.PackagedItems = packagesForItems;
       packingEntry.Data = packingData;
       packingEntry.MissingItems = missingItems;
@@ -184,7 +188,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
       
       var helper = new PackingHelper();
 
-      return helper.GetPackingItems(packageForItem.OrderPackingId, orderPackingUID);
+      return helper.GetPackingItems(packageForItem.OrderPackingId);
     }
 
 

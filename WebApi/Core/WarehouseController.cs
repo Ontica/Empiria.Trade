@@ -33,7 +33,7 @@ namespace Empiria.Trade.WebApi.Core {
 
 
     [HttpGet]
-    [Route("v4/trade/warehouse-bin/locations/search")]
+    [Route("v4/trade/warehouse-bin/search")]
     public CollectionModel GetWarehouseBinLocations([FromUri] string keywords) {
 
       using (var usescase = CataloguesUseCases.UseCaseInteractor()) {

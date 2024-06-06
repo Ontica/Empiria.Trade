@@ -18,10 +18,14 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
   internal class PackingEntry {
 
 
+    public PickingData PickingData {
+      get; set;
+    } = new PickingData();
+
+
     public PackagedData Data {
       get; set;
     } = new PackagedData();
-
 
     public FixedList<PackagedForItem> PackagedItems {
       get; set;
@@ -34,6 +38,37 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
 
 
   } // class PackingEntry
+
+
+  public class PickingData {
+
+
+    public string OrderUID {
+      get; set;
+    } = string.Empty;
+
+
+    public string InventoryOrderNo {
+      get; set;
+    } = string.Empty;
+
+
+    public int ResponsibleId {
+      get; set;
+    }
+
+
+    public int AssignedToId {
+      get; set;
+    }
+
+
+    public string Notes {
+      get; set;
+    } = string.Empty;
+
+
+  }
 
 
   public class PackagedData {
@@ -251,10 +286,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
 
       var orderItem = OrderItem.Parse(orderItemId);
       var vendorProduct = VendorProduct.Parse(orderItem.VendorProduct.Id);
-      //TODO QUITAR URL Y HACER VALIDACION DE IMAGEN EN SERVER
-      string url = "http://apps.sujetsa.com.mx:8080/imagenes-productos/";
-
-      this.ProductImageUrl = $"{url}{vendorProduct.ProductFields.ProductCode}.jpg";
+      
+      this.ProductImageUrl = orderItem.VendorProduct.ProductFields.ProductImageUrl;
       this.OrderItemUID = orderItem.UID;
       this.VendorProductId = orderItem.VendorProduct.Id;
       this.Product = vendorProduct.ProductFields;
