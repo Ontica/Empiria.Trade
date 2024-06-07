@@ -53,7 +53,7 @@ namespace Empiria.Trade.Core.Adapters {
     return dto;
     }
 
-    private static FixedList<CustomerShortAddressDto> MapCustomerAddresses(string UID) {
+    public static FixedList<CustomerShortAddressDto> MapCustomerAddresses(string UID) {
       using (var usescase = CustomerUseCases.UseCaseInteractor()) {
         var addresses = usescase.GetCustomerAddress(UID);
 
@@ -62,7 +62,7 @@ namespace Empiria.Trade.Core.Adapters {
 
     }
 
-    private static FixedList<CustomerContactDto> MapCustomerContacts(int customerId) {
+    public static FixedList<CustomerContactDto> MapCustomerContacts(int customerId) {
       using (var usescase = CustomerUseCases.UseCaseInteractor()) {
         var contacts = usescase.GetCustomerContacts(customerId);
 

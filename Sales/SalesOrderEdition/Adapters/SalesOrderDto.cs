@@ -90,6 +90,14 @@ namespace Empiria.Trade.Sales.Adapters
       get; internal set;
     }
 
+    public CustomerShortAddressDto CustomerAddress {
+      get; internal set;
+    }
+
+    public CustomerContactDto CustomerContact {
+      get; internal set;
+    }
+
     public string PriceList {
       get; internal set;
     }
