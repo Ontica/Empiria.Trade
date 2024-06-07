@@ -16,7 +16,7 @@ using Empiria.Trade.Core.UsesCases;
 namespace Empiria.Trade.Core.Adapters {
 
   /// <summary>Methods used to map Parties.   </summary>
-  static internal class PartyMapper {
+  public static  class PartyMapper {
 
 
     #region Public methods
@@ -42,7 +42,7 @@ namespace Empiria.Trade.Core.Adapters {
       return contacts.ToFixedList();
     }
 
-      internal static ContactDto MapToContact(Party party) {
+      public static ContactDto MapToContact(Party party) {
       var dto = new ContactDto {
         UID = party.UID,
         Name = party.Name,

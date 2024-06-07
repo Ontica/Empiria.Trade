@@ -86,15 +86,7 @@ namespace Empiria.Trade.Sales.Adapters
       get; internal set;
     }
 
-    public NamedEntityDto Customer {
-      get; internal set;
-    }
-
-    public CustomerShortAddressDto CustomerAddress {
-      get; internal set;
-    }
-
-    public CustomerContactDto CustomerContact {
+    public ContactDto Customer {
       get; internal set;
     }
 

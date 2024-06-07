@@ -23,11 +23,11 @@ using Empiria.Trade.Sales.ShippingAndHandling.UseCases;
 namespace Empiria.Trade.Sales.Adapters
 {
 
-    /// <summary> Methods used to map Order. </summary>
-    static public class SalesOrderMapper {
+  /// <summary> Methods used to map Order. </summary>
+  static public class SalesOrderMapper {
 
     static public ISalesOrderDto Map(SalesOrder order) {
-      var dto = new SalesOrderDto {      
+      var dto = new SalesOrderDto {
         OrderData = MapDataDto(order),
         Items = MapSalesOrderItems(order.SalesOrderItems),
         Authorization = MapAuthorizationDto(order),
@@ -93,9 +93,7 @@ namespace Empiria.Trade.Sales.Adapters
         Notes = order.Notes,
         Status = order.Status,
         StatusName = MapOrderStatus(order.Status.ToString()),
-        Customer = order.Customer.MapToNamedEntity(),
-        CustomerAddress = CustomerAddressMapper.MapShortAddress(order.CustomerAddress),
-        CustomerContact = CustomerConctacMapper.MapCustomerContact(order.CustomerContact),
+        Customer = MapCustomer(order.Customer),
         Supplier = order.Supplier.MapToNamedEntity(),
         SalesAgent = order.SalesAgent.MapToNamedEntity(),
         ShippingMethod = order.ShippingMethod,
@@ -109,6 +107,10 @@ namespace Empiria.Trade.Sales.Adapters
       };
 
       return dto;
+    }
+
+    private static ContactDto MapCustomer(Party customer) {
+      return PartyMapper.MapToContact(customer);
     }
 
     private static AuthorizationDto MapAuthorizationDto(SalesOrder order) {
