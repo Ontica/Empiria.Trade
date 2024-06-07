@@ -10,22 +10,24 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Empiria.Trade.Core;
 using Empiria.Trade.Core.Catalogues;
+using Empiria.Trade.Inventory.Data;
 using Empiria.Trade.Sales.ShippingAndHandling.Data;
 
-namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
-{
+namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
-    /// <summary>Helper methods to build packing structure.</summary>
-    internal class PackingHelper {
+  /// <summary>Helper methods to build packing structure.</summary>
+  internal class PackingHelper {
 
     #region Public methods
 
 
     public FixedList<MissingItem> GetMissingItems(string orderUid,
-                                        FixedList<PackagedForItem> packagesForItems) {
-
+                                        FixedList<PackagedForItem> packagesForItems,
+                                        int assignedToId) {
+      
       var missingItems = new List<MissingItem>();
 
       var data = new PackagingData();
@@ -73,7 +75,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
         package.PackageID = entry.PackageID;
         package.PackageTypeUID = packageType.ObjectKey;
         package.PackageTypeName = packageType.Name;
-        package.OrderItems = GetPackingItems(entry.OrderPackingId, entry.OrderPackingUID);
+        package.OrderItems = GetPackingItems(entry.OrderPackingId);
         package.PackageWeight = package.OrderItems.Sum(x => x.ItemWeight);
         package.PackageVolume = packageType.TotalVolume;
 
@@ -86,12 +88,13 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
 
 
     internal PackageType GetPackageTypeById(int packageTypeId) {
-      
+
       var packageType = PackageType.Parse(packageTypeId);
       packageType.GetVolumeAttributes();
       return packageType;
 
     }
+
 
     public PackagedData GetPackingData(string orderUid, FixedList<PackagedForItem> packageForItemsList) {
 
@@ -122,14 +125,32 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
     }
 
 
+    internal PickingData GetPickingData(string orderUID) {
+
+      var inventoryOrder = InventoryOrderData.GetInventoryOrdersByTypeAndReferenceId(
+        5, SalesOrder.Parse(orderUID).Id).FirstOrDefault();
+
+      if (inventoryOrder == null) {
+        return new PickingData();
+      }
+
+      var pickingData = new PickingData();
+      pickingData.OrderUID = orderUID;
+      pickingData.InventoryOrderNo = inventoryOrder.InventoryOrderNo;
+      pickingData.ResponsibleId = inventoryOrder.ResponsibleId;
+      pickingData.AssignedToId = inventoryOrder.AssignedToId;
+      pickingData.Notes = inventoryOrder.Notes;
+      return pickingData;
+    }
+
+
     #endregion Public methods
 
 
     #region Private methods
 
 
-    internal FixedList<PackingItem> GetPackingItems(int orderPackingId,
-                                                    string orderPackingUID) {
+    internal FixedList<PackingItem> GetPackingItems(int orderPackingId) {
 
       var data = new PackagingData();
       var packingItems = data.GetPackingOrderItems(orderPackingId);
@@ -141,7 +162,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
         packingOrderItem.MergeCommonFieldsData(item.OrderItemId);
 
         packingOrderItem.UID = item.PackingItemUID;
-        packingOrderItem.OrderPackingUID = orderPackingUID;
+        packingOrderItem.OrderPackingUID = item.OrderPacking.OrderPackingUID;
         packingOrderItem.Quantity = item.Quantity;
         packingOrderItem.ItemWeight = item.Quantity * packingOrderItem.Product.ProductWeight;
 
@@ -184,9 +205,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
       //TODO OBTENER PRODUCTOS DE ORDEN DE INVENTARIO GENERADA EN PICKING
       var data = new PackagingData();
 
-      FixedList<InventoryEntry> inventoryByVendorProduct = 
+      //var stockByVendorProduct = GetStockByWarehouseBinsForItem(vendorProductId, missing.OrderItemUID);
+
+      FixedList<InventoryEntry> inventoryByVendorProduct =
         data.GetInventoryByVendorProduct(vendorProductId, "");
-      
+
       var whBinForPacking = new List<WarehouseBinForPacking>();
 
       foreach (var inventory in inventoryByVendorProduct) {
@@ -196,7 +219,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
           x => x.UID == warehouseBin.UID && x.OrderItemUID == missing.OrderItemUID);
 
         if (exist == null) {
-          
+
           var input = inventoryByVendorProduct.Where(x => x.WarehouseBinId == warehouseBin.Id)
                                               .Sum(x => x.InputQuantity);
           var output = inventoryByVendorProduct.Where(x => x.WarehouseBinId == warehouseBin.Id)
@@ -214,6 +237,26 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
 
       }
       missing.WarehouseBins = whBinForPacking.ToFixedList();
+    }
+
+
+    private WarehouseBinForPacking GetStockByWarehouseBinsForItem(
+      int vendorProductId, string orderItemUID) {
+
+      var item = SalesOrderItem.Parse(orderItemUID);
+
+      var stockForVendorProduct = CataloguesUseCases.GetInventoryStockByVendorProduct(vendorProductId);
+
+      var warehouseBin = WarehouseBin.Parse(-1);
+
+      var whBinForPacking = new WarehouseBinForPacking();
+      whBinForPacking.UID = warehouseBin.UID;
+      whBinForPacking.OrderItemUID = orderItemUID;
+      whBinForPacking.Name = warehouseBin.WarehouseBinName;
+      whBinForPacking.WarehouseName = warehouseBin.Tag;
+      whBinForPacking.Stock = stockForVendorProduct.Sum(x => x.RealStock);
+
+      return whBinForPacking;
     }
 
 

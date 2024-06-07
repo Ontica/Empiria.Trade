@@ -30,11 +30,13 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
     internal static PackingDto MapPackingDto(PackingEntry packaging) {
 
+      var pickingData = MapPickingData(packaging.PickingData);
       var packagedItems = MapToPackagedItems(packaging);
       var packingData = MapPackingData(packaging.Data);
       var missingItems = MapToMissingItems_(packaging.MissingItems);
 
       return new PackingDto() {
+        Picking = pickingData,
         Data = packingData,
         PackagedItems = packagedItems,
         MissingItems = missingItems
@@ -153,6 +155,21 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
       data.TotalPackages = packagedData.TotalPackages;
 
       return data;
+    }
+
+
+    private static PickingDataDto MapPickingData(PickingData pickingData) {
+      var picking = new PickingDataDto();
+
+      var responsible = Party.Parse(pickingData.ResponsibleId);
+      var assignedTo = Party.Parse(pickingData.AssignedToId);
+
+      picking.OrderUID = pickingData.OrderUID;
+      picking.InventoryOrderNo = pickingData.InventoryOrderNo;
+      picking.Responsible = new NamedEntityDto(responsible.UID, responsible.Name);
+      picking.AssignedTo = new NamedEntityDto(assignedTo.UID, assignedTo.Name);
+      picking.Notes = pickingData.Notes;
+      return picking;
     }
 
 

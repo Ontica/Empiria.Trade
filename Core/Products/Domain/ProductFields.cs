@@ -147,6 +147,8 @@ namespace Empiria.Trade.Products {
       get; internal set;
     }
 
+    //TODO MIGRAR ENLACE A BD
+    public string ProductImageUrl => $"http://apps.sujetsa.com.mx:8080/imagenes-productos/{this.ProductCode}.jpg";
 
     #endregion Properties
 

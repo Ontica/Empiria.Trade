@@ -17,6 +17,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
   public class PackingDto : IShippingAndHandling {
 
 
+    public PickingDataDto Picking {
+      get; set;
+    } = new PickingDataDto();
+
+
     public PackagedDataDto Data {
       get; set;
     } = new PackagedDataDto();
@@ -33,6 +38,36 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
 
   } // class PackingDto
+
+
+  public class PickingDataDto {
+
+
+    public string OrderUID {
+      get; set;
+    } = string.Empty;
+
+
+    public string InventoryOrderNo {
+      get; set;
+    } = string.Empty;
+
+
+    public NamedEntityDto Responsible {
+      get; set;
+    } = new NamedEntityDto("", "");
+
+
+    public NamedEntityDto AssignedTo {
+      get; set;
+    } = new NamedEntityDto("", "");
+
+
+    public string Notes {
+      get; set;
+    } = string.Empty;
+
+  }
 
 
   public class PackagedDataDto {
@@ -176,7 +211,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
   public class CommonPackingItemFieldsDto {
 
-    
+
     public string OrderItemUID {
       get; set;
     }

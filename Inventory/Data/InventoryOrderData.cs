@@ -98,6 +98,20 @@ namespace Empiria.Trade.Inventory.Data {
     }
 
 
+    //TODO AL LIMPIAR TRDORDERS DE BD, USAR GetInventoryOrderByTypeAndReferenceId() Y NO ESTA FUNCION
+    internal static FixedList<InventoryOrderEntry> GetInventoryOrdersByTypeAndReferenceId(
+      int inventoryOrderTypeId, int referenceId) {
+
+      string sql = $"SELECT * FROM TRDInventoryOrders " +
+                   $"WHERE InventoryOrderTypeId = {inventoryOrderTypeId} " +
+                   $"AND ReferenceId = {referenceId}";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetPlainObjectFixedList<InventoryOrderEntry>(dataOperation);
+    }
+
+
     static internal InventoryOrderEntry GetInventoryOrderByUID(string inventoryOrderUID) {
 
       string sql = $"SELECT * FROM TRDInventoryOrders WHERE InventoryOrderUID IN ('{inventoryOrderUID}')";

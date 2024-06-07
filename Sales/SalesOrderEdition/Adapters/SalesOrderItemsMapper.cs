@@ -48,6 +48,7 @@ namespace Empiria.Trade.Sales.Adapters {
         ProductUID = orderItem.VendorProduct.ProductFields.ProductUID,
         ProductCode = orderItem.VendorProduct.ProductFields.ProductCode,
         Description = orderItem.VendorProduct.ProductFields.ProductName,
+        ProductImageUrl = orderItem.VendorProduct.ProductFields.ProductImageUrl,
         ProductType = MapProductType(orderItem)
       };
 
