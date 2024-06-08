@@ -183,7 +183,7 @@ namespace Empiria.Trade.Inventory.Adapters {
     }
 
 
-    static private NamedEntityDto GetInventoryOrderType(int typeId) {
+    static internal NamedEntityDto GetInventoryOrderType(int typeId) {
 
       if (typeId == 1) {
         return new NamedEntityDto("5851e71b-3a1f-40ab-836f-ac3d2c9408de", "Orden de conteo físico inicial");

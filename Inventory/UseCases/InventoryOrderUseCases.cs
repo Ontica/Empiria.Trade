@@ -49,8 +49,8 @@ namespace Empiria.Trade.Inventory.UseCases {
       Assertion.Require(inventoryItems, nameof(inventoryItems));
 
       var builder = new InventoryOrderBuilder();
-      
-      InventoryOrderEntry inventoryOrder = 
+
+      InventoryOrderEntry inventoryOrder =
         builder.CreateInventoryOrderBySale(inventoryItems.FirstOrDefault());
 
       foreach (var inventoryItem in inventoryItems) {
@@ -75,12 +75,12 @@ namespace Empiria.Trade.Inventory.UseCases {
 
         var inventoryStock = CataloguesUseCases.GetInventoryStockByVendorProduct(item.VendorProduct.Id);
 
-        decimal quantityDifference = item.CountingQuantity - inventoryStock.Sum(x=>x.RealStock);
+        decimal quantityDifference = item.CountingQuantity - inventoryStock.Sum(x => x.RealStock);
 
         InventoryOrderData.UpdateInventoryOrderItemsStatusByOrder(
                     item.InventoryOrderItemId, quantityDifference, DateTime.Now);
       }
-      
+
       return GetInventoryOrderByUID(inventoryOrderUID);
     }
 
@@ -160,20 +160,38 @@ namespace Empiria.Trade.Inventory.UseCases {
     }
 
 
-    public InventoryOrderDto UpdateInventoryCountOrder(string inventoryOrderUID,
+    public InventoryOrderDto UpdateInventoryOrder(string inventoryOrderUID,
       InventoryOrderFields fields) {
       Assertion.Require(inventoryOrderUID, nameof(inventoryOrderUID));
       Assertion.Require(fields, nameof(fields));
 
       var builder = new InventoryOrderBuilder();
-      builder.UpdateInventoryCountOrder(inventoryOrderUID, fields);
+      builder.UpdateInventoryOrder(inventoryOrderUID, fields);
 
       return GetInventoryOrderByUID(inventoryOrderUID);
     }
 
 
-    internal void UpdateInventoryOrderByTypeAndReferenceId(int inventoryOrderTypeId, int referenceId) {
+    public void UpdateInventoryOrderForPicking(InventoryOrderFields fields) {
+      Assertion.Require(fields, nameof(fields));
+
+      var builder = new InventoryOrderBuilder();
+
+      var inventoryOrder = InventoryOrderData.GetInventoryOrdersByTypeAndReferenceId(
+        5, fields.ReferenceId).FirstOrDefault();
+
+      if (inventoryOrder != null) {
+
+        //builder.CreateInventoryOrder(fields, inventoryOrder.InventoryOrderUID);
+        InventoryOrderHelper.CreateOrUpdateInventoryOrderItemsForPicking(inventoryOrder.InventoryOrderUID);
+      }
       
+    }
+
+
+
+    internal void UpdateInventoryOrderByTypeAndReferenceId(int inventoryOrderTypeId, int referenceId) {
+
       InventoryOrderData.UpdateInventoryOrderByTypeAndReferenceId(inventoryOrderTypeId, referenceId);
     }
 
@@ -181,7 +199,7 @@ namespace Empiria.Trade.Inventory.UseCases {
     internal void UpdateInventoryOrderItemsByTypeAndReferenceId(
       int inventoryOrderTypeId, int referenceId) {
 
-      InventoryOrderEntry inventoryOrder = 
+      InventoryOrderEntry inventoryOrder =
         InventoryOrderData.GetInventoryOrderByTypeAndReferenceId(inventoryOrderTypeId, referenceId);
 
       InventoryOrderData.UpdateInventoryOrderItemsByOrder(inventoryOrder.InventoryOrderId, DateTime.Now);

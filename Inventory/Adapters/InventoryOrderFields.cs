@@ -59,10 +59,6 @@ namespace Empiria.Trade.Inventory.Adapters {
     } = string.Empty;
 
 
-    //public FixedList<InventoryOrderItemFields> ItemFields {
-    //    get; set;
-    //} = new FixedList<InventoryOrderItemFields>();
-
   } // class InventoryOrderFields
 
 

@@ -67,7 +67,8 @@ namespace Empiria.Trade.Inventory.Data {
 
       var inventoryId = InventoryOrderEntry.Parse(inventoryOrderUID).Id;
 
-      string sql = $"SELECT * FROM TRDInventoryOrderItems WHERE InventoryOrderId IN ({inventoryId})";
+      string sql = $"SELECT * FROM TRDInventoryOrderItems WHERE " +
+                   $"InventoryOrderId IN ({inventoryId})";
 
       var dataOperation = DataOperation.Parse(sql);
 
@@ -85,7 +86,7 @@ namespace Empiria.Trade.Inventory.Data {
     }
 
 
-    internal static InventoryOrderEntry GetInventoryOrderByTypeAndReferenceId(
+    static internal InventoryOrderEntry GetInventoryOrderByTypeAndReferenceId(
       int inventoryOrderTypeId, int referenceId) {
 
       string sql = $"SELECT * FROM TRDInventoryOrders " +

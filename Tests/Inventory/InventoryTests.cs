@@ -147,7 +147,7 @@ namespace Empiria.Trade.Tests.Inventory {
       var usecase = InventoryOrderUseCases.UseCaseInteractor();
       string inventoryOrderUID = "7bb09f2b-5491-4304-bdf3-2e88fc41d33a";
       InventoryOrderFields fields = GetInventoryOrderFields();
-      InventoryOrderDto sut = usecase.UpdateInventoryCountOrder(inventoryOrderUID, fields);
+      InventoryOrderDto sut = usecase.UpdateInventoryOrder(inventoryOrderUID, fields);
 
       Assert.NotNull(sut);
     }

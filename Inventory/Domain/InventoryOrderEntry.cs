@@ -195,7 +195,9 @@ namespace Empiria.Trade.Inventory {
       if (inventoryOrderUID != string.Empty) {
         this.InventoryOrderId = Parse(inventoryOrderUID).InventoryOrderId;
         this.InventoryOrderUID = inventoryOrderUID;
-        this.InventoryOrderNo = GenerateOrderNumber();
+        //this.InventoryOrderNo = GenerateOrderNumber();
+      } else {
+        this.PostingTime = DateTime.Now;
       }
 
       this.ReferenceId = fields.ReferenceId;
@@ -208,7 +210,6 @@ namespace Empiria.Trade.Inventory {
       this.Status = InventoryStatus.Abierto;
 
       this.PostedById = ExecutionServer.CurrentUserId;
-      this.PostingTime = DateTime.Now;
       this.ClosingTime = new DateTime(2049, 01, 01);
       this.ScheduledTime = new DateTime(2049, 01, 01); //TODO ENVIAR FECHA PROGRAMADA
 
