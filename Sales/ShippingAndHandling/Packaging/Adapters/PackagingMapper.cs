@@ -14,6 +14,7 @@ using System.Linq;
 using System.Reflection.Emit;
 using Empiria.Trade.Core;
 using Empiria.Trade.Core.Catalogues;
+using Empiria.Trade.Inventory.Adapters;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Products;
 using Empiria.Trade.Products.Adapters;
@@ -160,12 +161,13 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
     private static PickingDataDto MapPickingData(PickingData pickingData) {
       var picking = new PickingDataDto();
-
+      var type = InventoryOrderMapper.GetInventoryOrderType(pickingData.InventoryOrderTypeId);
       var responsible = Party.Parse(pickingData.ResponsibleId);
       var assignedTo = Party.Parse(pickingData.AssignedToId);
-
+      
       picking.OrderUID = pickingData.OrderUID;
       picking.InventoryOrderNo = pickingData.InventoryOrderNo;
+      picking.InventoryOrderType = new NamedEntityDto(type.UID, type.Name);
       picking.Responsible = new NamedEntityDto(responsible.UID, responsible.Name);
       picking.AssignedTo = new NamedEntityDto(assignedTo.UID, assignedTo.Name);
       picking.Notes = pickingData.Notes;

@@ -122,7 +122,7 @@ namespace Empiria.Trade.WebApi.Inventory {
 
       using (var usecases = InventoryOrderUseCases.UseCaseInteractor()) {
 
-        InventoryOrderDto shippingOrder = usecases.UpdateInventoryCountOrder(inventoryOrderUID, fields);
+        InventoryOrderDto shippingOrder = usecases.UpdateInventoryOrder(inventoryOrderUID, fields);
 
         return new SingleObjectModel(this.Request, shippingOrder);
       }

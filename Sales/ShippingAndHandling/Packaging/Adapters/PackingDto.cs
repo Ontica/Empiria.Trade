@@ -66,7 +66,10 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
     public string Notes {
       get; set;
     } = string.Empty;
-
+    public NamedEntityDto InventoryOrderType {
+      get;
+      internal set;
+    }
   }
 
 

@@ -53,6 +53,12 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
     } = string.Empty;
 
 
+    public int InventoryOrderTypeId {
+      get;
+      internal set;
+    }
+
+
     public int ResponsibleId {
       get; set;
     }
@@ -66,8 +72,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
     public string Notes {
       get; set;
     } = string.Empty;
-
-
+    
   }
 
 

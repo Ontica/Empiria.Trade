@@ -13,6 +13,7 @@ using Empiria.WebApi;
 using Empiria.Trade.Sales.ShippingAndHandling.UseCases;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 using Empiria.Trade.Sales.Adapters;
+using Empiria.Trade.Inventory.Adapters;
 //using Empiria.Trade.Shipping.UseCases;
 
 namespace Empiria.Trade.WebApi.ShippingAndHandling {
@@ -77,6 +78,23 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
       using (var usecases = PackagingUseCases.UseCaseInteractor()) {
 
         ISalesOrderDto packingItem = usecases.UpdatePackageForItem(orderUID, packingItemUID, packingItemFields);
+
+        return new SingleObjectModel(this.Request, packingItem);
+      }
+    }
+
+
+    [HttpPut]
+    [Route("v4/trade/sales/packing/{orderUID:guid}/picking")]
+    public SingleObjectModel UpdateInventoryOrderForPicking(
+      [FromUri] string orderUID, [FromBody] InventoryOrderFields inventoryFields) {
+
+      base.RequireBody(inventoryFields);
+
+      using (var usecases = PackagingUseCases.UseCaseInteractor()) {
+
+        ISalesOrderDto packingItem =
+          usecases.UpdateInventoryOrderForPicking(orderUID, inventoryFields);
 
         return new SingleObjectModel(this.Request, packingItem);
       }

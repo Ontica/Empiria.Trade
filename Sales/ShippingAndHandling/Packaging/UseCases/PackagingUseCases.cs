@@ -19,6 +19,8 @@ using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 using Empiria.Trade.Sales.ShippingAndHandling.Data;
 using Empiria.Trade.Sales.ShippingAndHandling.Domain;
 using Empiria.Trade.Sales.UseCases;
+using Empiria.Trade.Inventory.Adapters;
+using Empiria.Trade.Inventory.UseCases;
 
 namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
@@ -124,6 +126,19 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
       var packagingOrder = new PackageForItem(orderUID, orderFields, packageForItemUID);
 
       PackagingData.WritePacking(packagingOrder);
+
+      return GetSalesOrder(orderUID);
+    }
+
+
+    public ISalesOrderDto UpdateInventoryOrderForPicking(
+      string orderUID, InventoryOrderFields fields) {
+
+      var usecases = InventoryOrderUseCases.UseCaseInteractor();
+
+      fields.ReferenceId = SalesOrder.Parse(orderUID).Id;
+
+      usecases.UpdateInventoryOrderForPicking(fields);
 
       return GetSalesOrder(orderUID);
     }
