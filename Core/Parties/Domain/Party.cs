@@ -140,8 +140,8 @@ namespace Empiria.Trade.Core {
       return PartyData.GetPartyListByRole("warehouseMan");
     }
 
-    internal static Party GetWarehouseResponsible() {
-      return PartyData.GetPartyListByRole("warehouseResponsible")[0];
+    internal static FixedList<Party> GetWarehouseResponsible() {
+      return PartyData.GetPartyListByRole("warehouseResponsible");
     }
 
     #endregion Public methos

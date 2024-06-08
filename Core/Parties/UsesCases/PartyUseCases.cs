@@ -85,10 +85,10 @@ namespace Empiria.Trade.Core.UsesCases {
       return PartyMapper.MapToMinimalPartyDto(wharehouseMan);
     }
 
-    static public NamedEntityDto GetWarehouseResponsible() {
+    static public FixedList<NamedEntityDto> GetWarehouseResponsible() {
       var wharehouseResponsible = Party.GetWarehouseResponsible();
 
-      return wharehouseResponsible.MapToNamedEntity();
+      return PartyMapper.MapToMinimalPartyDto(wharehouseResponsible);
     }
 
     public FixedList<NamedEntityDto> GetAccountHolders(string keywords) {

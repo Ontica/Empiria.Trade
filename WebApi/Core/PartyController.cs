@@ -100,7 +100,7 @@ namespace Empiria.Trade.WebApi.Core {
     public CollectionModel GetInventorySupervisors() {
 
       using (var usescase = PartyUseCases.UseCaseInteractor()) {
-        FixedList<NamedEntityDto> responsibles = usescase.GetSalesAgents();
+        FixedList<NamedEntityDto> responsibles = PartyUseCases.GetWarehouseResponsible();
 
         return new CollectionModel(base.Request, responsibles);
       }

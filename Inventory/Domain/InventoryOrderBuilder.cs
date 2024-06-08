@@ -75,7 +75,7 @@ namespace Empiria.Trade.Inventory.Domain {
     }
 
 
-    internal void UpdateInventoryCountOrder(string inventoryOrderUID,
+    internal void UpdateInventoryOrder(string inventoryOrderUID,
       InventoryOrderFields fields) {
 
       CreateInventoryOrder(fields, inventoryOrderUID);
@@ -121,7 +121,7 @@ namespace Empiria.Trade.Inventory.Domain {
       InventoryOrderFields fields = new InventoryOrderFields();
 
       fields.InventoryOrderTypeUID = "2ft8y5h4-db55-48b3-aa78-63132a8d5e7f"; // TODO referencia a tipo cuando se agregue a Types 
-      fields.ResponsibleUID = PartyUseCases.GetWarehouseResponsible().UID;
+      fields.ResponsibleUID = PartyUseCases.GetWarehouseResponsible().FirstOrDefault().UID;
       fields.AssignedToUID = "";
       fields.Notes = "";
       fields.ReferenceId = inventoryItemData.OrderId;
