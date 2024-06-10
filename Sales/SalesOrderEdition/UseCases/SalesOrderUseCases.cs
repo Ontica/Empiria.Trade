@@ -202,6 +202,14 @@ namespace Empiria.Trade.Sales.UseCases {
       return SalesOrderMapper.Map(order);
     }
 
+    public ISalesOrderDto GetSalesOrder(string orderNumber) {
+      SalesOrderHelper helper = new SalesOrderHelper();
+
+      var order = helper.GetSalesOrder(orderNumber);
+
+      return SalesOrderMapper.Map(order);
+    }
+
     public ISalesOrderDto UpdateSalesOrder(SalesOrderFields fields) {
       Assertion.Require(fields, "fields");
                   

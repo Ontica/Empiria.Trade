@@ -8,7 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-
+using System.Collections.Generic;
 using Empiria.Data;
 using Empiria.DataTypes;
 using Empiria.Trade.Inventory;
@@ -82,14 +82,22 @@ namespace Empiria.Trade.Sales.Data {
     }
 
     internal static FixedList<SalesOrder> GetSalesByCustomer(int customerId) {
-      var sql = $"select * from TRDOrders where CustomerId = {customerId} and OrderStatus <> 'X' ";
+      var sql = $"SELECT * FROM TRDOrders WHERE CustomerId = {customerId} AND OrderStatus <> 'X' ";
   
       var dataOperation = DataOperation.Parse(sql);
 
       return DataReader.GetFixedList<SalesOrder>(dataOperation);
     }
 
-      internal static void Write(SalesOrder o) {
+    internal static SalesOrder GetSalesOrder(string orderNumber) {
+      var sql = $"SELECT * FROM TRDOrders  WHERE orderNumber = '{orderNumber}' ";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetObject<SalesOrder>(dataOperation);
+    }
+
+    internal static void Write(SalesOrder o) {
         var op = DataOperation.Parse("writeOrder", o.Id, o.UID, o.OrderTypeId, o.Customer.Id, o.Supplier.Id,
                                     o.SalesAgent.Id,o.CustomerContact.Id, o.OrderNumber, o.OrderTime, o.Notes,
                                     o.Keywords, o.ExtData.ToString(), o.CustomerAddress.Id, (char)o.ShippingMethod, (char)o.Status, (char)o.AuthorizationStatus, 
@@ -132,6 +140,8 @@ namespace Empiria.Trade.Sales.Data {
 
       return DataReader.GetFixedList<SalesOrder>(dataOperation);
     }
+
+   
 
     #endregion Private methods
 
