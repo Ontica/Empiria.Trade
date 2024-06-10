@@ -81,6 +81,14 @@ namespace Empiria.Trade.Sales.Data {
 
     }
 
+    internal static FixedList<SalesOrder> GetSalesByCustomer(int customerId) {
+      var sql = $"select * from TRDOrders where CustomerId = {customerId} and OrderStatus <> 'X' ";
+  
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetFixedList<SalesOrder>(dataOperation);
+    }
+
       internal static void Write(SalesOrder o) {
         var op = DataOperation.Parse("writeOrder", o.Id, o.UID, o.OrderTypeId, o.Customer.Id, o.Supplier.Id,
                                     o.SalesAgent.Id,o.CustomerContact.Id, o.OrderNumber, o.OrderTime, o.Notes,

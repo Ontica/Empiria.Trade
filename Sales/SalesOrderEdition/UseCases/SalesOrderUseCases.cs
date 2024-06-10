@@ -9,6 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using Empiria.Services;
 using Empiria.Trade.Core;
 using Empiria.Trade.Core.Catalogues;
@@ -129,6 +130,15 @@ namespace Empiria.Trade.Sales.UseCases {
 
       } 
 
+    }
+
+    public FixedList<ISalesOrderDto> GetOrdersByCustomerUID(string customerUID) {
+      var helper = new SalesOrderHelper();
+      var customer = Party.Parse(customerUID);
+
+      FixedList<SalesOrder> salesOrders = helper.GetOrdersByCustomer(customer.Id);
+
+      return SearchSealesOrderMapper.MapBaseSalesOrders(salesOrders);
     }
 
     public FixedList<ISalesOrderDto> GetOrdersForShipping(SearchOrderFields fields) {
@@ -256,12 +266,12 @@ namespace Empiria.Trade.Sales.UseCases {
       return SalesOrderStatusService.GetPackingStatusList();
     }
 
-
+    
     #endregion Use cases
 
     #region Private methods
 
-    private void AddCredit(SalesOrder order) {
+    private  void AddCredit(SalesOrder order) {
       var creditFields = new CreditTrasnactionFields() {
         CustomerId = order.Customer.Id,
         TransactionTime = DateTime.Now,

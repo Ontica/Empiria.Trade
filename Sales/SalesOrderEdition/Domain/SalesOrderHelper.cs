@@ -97,6 +97,18 @@ namespace Empiria.Trade.Sales {
       return dataForInventoryList.ToFixedList();
     }
 
+    internal FixedList<SalesOrder> GetOrdersByCustomer(int customerId) {
+      var orders = SalesOrderData.GetSalesByCustomer(customerId);
+
+      foreach (var order in orders) {
+
+        order.GetOrderTotal();
+      }
+      return orders;
+    }
+
+
+
 
     #endregion Private methods
 

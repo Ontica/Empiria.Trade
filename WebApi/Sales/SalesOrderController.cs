@@ -135,6 +135,21 @@ namespace Empiria.Trade.Sales.WebApi {
     }
 
     [HttpGet]
+    [Route("v4/trade/sales/orders/customers/{customerUID:guid}")]
+    public CollectionModel GetSalesOrderByCustomer([FromUri] string customerUID) {
+
+      base.RequireResource(customerUID, "customerUID");
+
+      using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
+
+        var ordersDto = usecases.GetOrdersByCustomerUID(customerUID);
+
+        return new CollectionModel(this.Request, ordersDto);
+      }
+
+    }
+
+    [HttpGet]
     [Route("v4/trade/sales/orders/search-for-shipping")]
     public SingleObjectModel GetOrdersForShipping([FromUri] string keywords) {
       base.RequireResource(keywords, "keywords");
