@@ -216,7 +216,7 @@ namespace Empiria.Trade.WebApi.Financial {
     }
 
     [HttpGet]
-    [Route("v4/trade/financial/money-accounts/money-accounts-transaction/{moneyAccountTransactionUID:guid}")]
+    [Route("v4/trade/financial/money-accounts/transactions/{moneyAccountTransactionUID:guid}")]
     public SingleObjectModel GetMoneyAccountTransaction([FromUri] string moneyAccountTransactionUID) {
 
       base.RequireResource(moneyAccountTransactionUID, "moneyAccountTransactionUID");
