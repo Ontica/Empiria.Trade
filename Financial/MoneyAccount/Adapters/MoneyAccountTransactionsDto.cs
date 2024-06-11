@@ -20,6 +20,10 @@ namespace Empiria.Trade.Financial.Adapters {
       get; internal set;
     }
 
+    public string MoneyAccountUID {
+      get; internal set;
+    }
+
     public string OperationNumber {
       get; internal set;
     }

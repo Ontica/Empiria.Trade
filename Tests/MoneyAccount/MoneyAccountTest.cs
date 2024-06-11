@@ -159,6 +159,15 @@ namespace Empiria.Trade.Tests.MoneyAccount {
     }
 
     [Fact]
+    public void ShouldGetMoneyAccountTransaction() {
+
+      var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
+      var ma = moneyAccountUseCase.GetMoneyAccountTransaction("8c10c409-1438-48bf-8df7-66e6094f4096");
+
+      Assert.NotNull(ma);
+    }
+
+    [Fact]
     public void ShouldGet() {
 
       var moneyAccount = Empiria.Trade.Financial.MoneyAccount.ParseByOwner(153);

@@ -47,10 +47,11 @@ namespace Empiria.Trade.Financial {
 
     #region Public properties
 
+    
     [DataField("MoneyAccountId")]
-    public int MoneyAccountId {
+    public MoneyAccount MoneyAccount {
       get; private set;
-    } 
+    }
 
     [DataField("MoneyAccountTransactionTypeId")]
     public MoneyAccountTransactionType TransactionType {
@@ -129,7 +130,7 @@ namespace Empiria.Trade.Financial {
     }
 
     internal void Update(MoneyAccountTransactionFields fields) {
-      this.MoneyAccountId = MoneyAccount.Parse(fields.MoneyAccountUID).Id;
+      this.MoneyAccount = MoneyAccount.Parse(fields.MoneyAccountUID);
       this.TransactionType = MoneyAccountTransactionType.Parse(fields.TransactionTypeUID);
       this.Description = fields.Description;
       this.Credit = fields.TransactionAmount;
@@ -154,7 +155,7 @@ namespace Empiria.Trade.Financial {
 
     public void AddCreditTransactions(MoneyAccount moneyAccount, CreditTrasnactionFields fields) {
       MoneyAccountTransaction moneyTransaction = new MoneyAccountTransaction();
-      moneyTransaction.MoneyAccountId = moneyAccount.Id;
+      moneyTransaction.MoneyAccount = moneyAccount;
       moneyTransaction.TransactionType = MoneyAccountTransactionType.Parse(750);
       moneyTransaction.Description = "Credito " + fields.ExtData;
       moneyTransaction.TransactionTime = fields.TransactionTime;
