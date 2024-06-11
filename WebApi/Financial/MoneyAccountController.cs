@@ -186,9 +186,10 @@ namespace Empiria.Trade.WebApi.Financial {
     }
 
     [HttpPut]
-    [Route("v4/trade/financial/money-accounts/{moneyAccountTransactionUID:guid}/transactions")]
-    public SingleObjectModel UpdateMoneyAccountTransaction([FromUri] string moneyAccountTransactionUID, [FromBody] MoneyAccountTransactionFields fields) {
+    [Route("v4/trade/financial/money-accounts/{moneyAccountUID:guid}/transactions/{moneyAccountTransactionUID:guid}")]
+    public SingleObjectModel UpdateMoneyAccountTransaction([FromUri] string moneyAccountUID, [FromUri] string moneyAccountTransactionUID, [FromBody] MoneyAccountTransactionFields fields) {
 
+      base.RequireResource(moneyAccountUID, "moneyAccountUID");
       base.RequireResource(moneyAccountTransactionUID, "moneyAccountTransactionUID");
       base.RequireBody(fields);
 
@@ -202,9 +203,10 @@ namespace Empiria.Trade.WebApi.Financial {
     }
 
     [HttpDelete]
-    [Route("v4/trade/financial/money-accounts/transactions/{moneyAccountTransactionUID:guid}/cancel")]
-    public SingleObjectModel CancelMoneyAccountTransaction([FromUri] string moneyAccountTransactionUID) {
+    [Route("v4/trade/financial/money-accounts/{moneyAccountUID:guid}/transactions/{moneyAccountTransactionUID:guid}/cancel")]
+    public SingleObjectModel CancelMoneyAccountTransaction([FromUri] string moneyAccountUID, [FromUri] string moneyAccountTransactionUID) {
 
+      base.RequireResource(moneyAccountUID, "moneyAccountUID");
       base.RequireResource(moneyAccountTransactionUID, "moneyAccountTransactionUID");
 
       using (var usecases = MoneyAccountUseCases.UseCaseInteractor()) {
@@ -217,9 +219,10 @@ namespace Empiria.Trade.WebApi.Financial {
     }
 
     [HttpGet]
-    [Route("v4/trade/financial/money-accounts/transactions/{moneyAccountTransactionUID:guid}")]
-    public SingleObjectModel GetMoneyAccountTransaction([FromUri] string moneyAccountTransactionUID) {
+    [Route("v4/trade/financial/money-accounts/{moneyAccountUID}/transactions/{moneyAccountTransactionUID:guid}")]
+    public SingleObjectModel GetMoneyAccountTransaction([FromUri] string moneyAccountUID,[FromUri] string moneyAccountTransactionUID) {
 
+      base.RequireResource(moneyAccountUID, "moneyAccountUID");
       base.RequireResource(moneyAccountTransactionUID, "moneyAccountTransactionUID");
 
       using (var usecases = MoneyAccountUseCases.UseCaseInteractor()) {
