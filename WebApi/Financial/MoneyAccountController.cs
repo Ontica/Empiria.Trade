@@ -171,14 +171,15 @@ namespace Empiria.Trade.WebApi.Financial {
     }
 
     [HttpPost]
-    [Route("v4/trade/financial/money-accounts/transactions")]
-    public SingleObjectModel AddMoneyAccountTransaction([FromBody] MoneyAccountTransactionFields fields) {
+    [Route("v4/trade/financial/money-accounts/{moneyAccountUID:guid}/transactions/")]
+    public SingleObjectModel AddMoneyAccountTransaction([FromUri] string moneyAccountUID,[FromBody] MoneyAccountTransactionFields fields) {
 
+      base.RequireResource(moneyAccountUID, "moneyAccountUID");
       base.RequireBody(fields);
 
       using (var usecases = MoneyAccountUseCases.UseCaseInteractor()) {
 
-        var moneyAccountTransactionDto = usecases.AddMoneyAccountTransaction(fields);
+        var moneyAccountTransactionDto = usecases.AddMoneyAccountTransaction(moneyAccountUID,fields);
 
         return new SingleObjectModel(this.Request, moneyAccountTransactionDto);
       }

@@ -90,9 +90,10 @@ namespace Empiria.Trade.Financial.UseCases
     }
 
 
-    public MoneyAccountTransactionDto AddMoneyAccountTransaction(MoneyAccountTransactionFields fields) {
+    public MoneyAccountTransactionDto AddMoneyAccountTransaction(string moneyAccountUID, MoneyAccountTransactionFields fields) {
       Assertion.Require(fields, "fields");
 
+      fields.MoneyAccountUID = moneyAccountUID;
       var moneyAccountTransaction = new MoneyAccountTransaction(fields);
       moneyAccountTransaction.Save();
 
