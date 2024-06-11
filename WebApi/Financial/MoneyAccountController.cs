@@ -186,7 +186,7 @@ namespace Empiria.Trade.WebApi.Financial {
     }
 
     [HttpPut]
-    [Route("v4/trade/financial/money-accounts/transactions/{moneyAccountTransactionUID:guid}")]
+    [Route("v4/trade/financial/money-accounts/{moneyAccountTransactionUID:guid}/transactions")]
     public SingleObjectModel UpdateMoneyAccountTransaction([FromUri] string moneyAccountTransactionUID, [FromBody] MoneyAccountTransactionFields fields) {
 
       base.RequireResource(moneyAccountTransactionUID, "moneyAccountTransactionUID");

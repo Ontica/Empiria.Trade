@@ -148,6 +148,16 @@ namespace Empiria.Trade.Tests.MoneyAccount {
       Assert.NotNull(y);
     }
 
+
+    [Fact]
+    public void ShouldGetMoneyAccount() {
+
+      var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
+      var ma = moneyAccountUseCase.GetMoneyAccount("30ba6a80-dcfa-4ac8-aae3-d519e7ab8c61");
+
+      Assert.NotNull(ma);
+    }
+
     [Fact]
     public void ShouldGet() {
 

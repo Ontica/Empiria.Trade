@@ -56,6 +56,9 @@ namespace Empiria.Trade.Financial.Adapters {
       get; internal set;
     } = new FixedList<MoneyAccountTransactionDto>();
 
+    public MoneyAccountActionsDto Actions {
+      get; internal set;
+    } = new MoneyAccountActionsDto();
 
   } // class MoneyAccountDto
 } // namespace Empiria.Trade.Financial.Adapters
