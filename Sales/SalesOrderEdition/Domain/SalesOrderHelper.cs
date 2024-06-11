@@ -107,7 +107,13 @@ namespace Empiria.Trade.Sales {
       return orders;
     }
 
+    internal SalesOrder GetSalesOrder(string orderNumber) {
+      var order = SalesOrderData.GetSalesOrder(orderNumber);
 
+      order.GetOrderTotal();
+     
+      return order;
+    }
 
 
     #endregion Private methods

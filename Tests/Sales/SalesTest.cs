@@ -227,6 +227,15 @@ namespace Empiria.Trade.Tests.Sales {
     }
 
 
+    [Fact]
+    public void ShouldGetOrderByOrderNumber() {
+
+      var salesOrderUseCase = SalesOrderUseCases.UseCaseInteractor();
+      var x = salesOrderUseCase.GetSalesOrder("P-1CEDWUQUQ9");
+
+      Assert.NotNull(x);
+    }
+
   } // public class SalesTest
 
 } // namespace Empiria.Trade.Tests.Sales

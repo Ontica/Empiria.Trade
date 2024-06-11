@@ -51,7 +51,7 @@ namespace Empiria.Trade.Tests.MoneyAccount {
       };
 
       var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
-      var moneyAccountTransaction = moneyAccountUseCase.AddMoneyAccountTransaction(fields);
+      var moneyAccountTransaction = moneyAccountUseCase.AddMoneyAccountTransaction("934fd51e-50e8-4372-af97-eccf6b468f17",fields);
 
       Assert.NotNull(moneyAccountTransaction);
     }
