@@ -26,6 +26,7 @@ namespace Empiria.Trade.Financial.Adapters {
         TransactionAmount = transaction.Credit,
         //DebitAmount = transaction.Debit,
         Notes = transaction.Notes,
+        Items = MoneyAccountTransactionItemMapper.MapMoneyAccountTransactionItems(transaction.Items),
         Status = transaction.Status
       };
       return dto;

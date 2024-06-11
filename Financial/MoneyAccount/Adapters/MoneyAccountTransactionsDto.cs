@@ -60,6 +60,10 @@ namespace Empiria.Trade.Financial.Adapters {
       get; set;
     } 
 
+    public FixedList<MoneyAccountTransactionItemDto> Items {
+      get; set;
+    }
+
   } // class MoneyAccountTransactionsDto 
 
 } // namespace Empiria.Trade.Financial.Adapters 

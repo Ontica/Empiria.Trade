@@ -127,7 +127,7 @@ namespace Empiria.Trade.Financial.UseCases
       Assertion.Require(moneyAccountTransactionUID, "moneyAccountTransactionUID");
 
       var moneyAccountTransaction = MoneyAccountTransaction.Parse(moneyAccountTransactionUID);
-
+      moneyAccountTransaction.LoadItems();
 
       return MoneyAccountTransactionMapper.Map(moneyAccountTransaction);
     }

@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using System.Collections.Generic;
 using Empiria.StateEnums;
 using Empiria.Trade.Financial.Adapters;
 using Empiria.Trade.Financial.Data;
@@ -118,6 +119,10 @@ namespace Empiria.Trade.Financial {
       get; set;
     } = EntityStatus.Active;
 
+    public FixedList<MoneyAccountTransactionItem> Items {
+      get; private set;
+    } = new FixedList<MoneyAccountTransactionItem>();
+
     #endregion Public properties
 
     #region Public methods
@@ -139,17 +144,28 @@ namespace Empiria.Trade.Financial {
       this.Notes = fields.Notes;
       this.PostedTime = DateTime.Now;
       this.PostedById = ExecutionServer.CurrentUserId;
+      this.LoadItems();
     }
 
     
     static public FixedList<MoneyAccountTransaction> GetTransactions(int moneyAccountId) {
-      return MoneyAccountTransactionData.GetTransactions(moneyAccountId);
+      FixedList<MoneyAccountTransaction> maTransactions = MoneyAccountTransactionData.GetTransactions(moneyAccountId);
+      List<MoneyAccountTransaction> maTransactionList = new List<MoneyAccountTransaction>();
+
+      foreach (var transaction in maTransactions) {
+        transaction.LoadItems();
+        maTransactionList.Add(transaction);
+      }
+
+
+      return maTransactionList.ToFixedList<MoneyAccountTransaction>();
     }
 
 
     public void Cancel(string notes = "") {
       this.Status = EntityStatus.Deleted;
       this.Notes = notes;
+      this.LoadItems();
       this.Save();
     }
 
@@ -169,12 +185,14 @@ namespace Empiria.Trade.Financial {
       moneyTransaction.Save();
     }
 
+    public void LoadItems() {
+      this.Items =  MoneyAccountTransactionItem.GetTransactionItems(this.Id);
+    }
 
     #endregion Public methods
 
     #region Private methods
 
-    
     #endregion Private methods
 
   } // class MoneyAccountTransaction
