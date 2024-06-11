@@ -67,7 +67,6 @@ namespace Empiria.Trade.Inventory.Domain {
           inProcessOutputQuantity = itemQuantity;
           itemQuantity = 0;
         }
-
         CreateInventoryOrderItemForPicking(item, olderLocation, inProcessOutputQuantity, doUpdate);
         doUpdate = false;
       }

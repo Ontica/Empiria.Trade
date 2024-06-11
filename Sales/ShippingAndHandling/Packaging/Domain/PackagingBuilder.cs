@@ -169,7 +169,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
       PackagedData packingData = helper.GetPackingData(orderUID, packagesForItems);
 
       FixedList<MissingItem> missingItems = helper.GetMissingItems(
-        orderUID, packagesForItems, pickingData.AssignedToId);
+        orderUID, packagesForItems);
 
       var packingEntry = new PackingEntry();
 

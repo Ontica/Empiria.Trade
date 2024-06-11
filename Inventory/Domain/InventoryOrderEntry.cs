@@ -152,8 +152,6 @@ namespace Empiria.Trade.Inventory {
 
     #region Public methods
 
-
-
     internal int GetInventoryOrderTypeId(string uid) {
 
       if (uid == "5851e71b-3a1f-40ab-836f-ac3d2c9408de") {

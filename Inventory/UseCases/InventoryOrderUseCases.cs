@@ -181,7 +181,6 @@ namespace Empiria.Trade.Inventory.UseCases {
     }
 
 
-
     internal void UpdateInventoryOrderByTypeAndReferenceId(int inventoryOrderTypeId, int referenceId) {
 
       InventoryOrderData.UpdateInventoryOrderByTypeAndReferenceId(inventoryOrderTypeId, referenceId);

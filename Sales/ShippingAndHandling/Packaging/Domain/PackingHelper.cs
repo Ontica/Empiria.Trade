@@ -27,18 +27,16 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
 
     public FixedList<MissingItem> GetMissingItems(string orderUid,
-                                        FixedList<PackagedForItem> packagesForItems,
-                                        int assignedToId) {
-      
+                                        FixedList<PackagedForItem> packagesForItems) {
+
       var missingItems = new List<MissingItem>();
+
+      var inventoryOrder = InventoryOrderData.GetInventoryOrdersByTypeAndReferenceId(
+                            5, Order.Parse(orderUid).Id).FirstOrDefault();
 
       var data = new PackagingData();
       var orderItems = data.GetOrderItems(orderUid);
       var packingOrderItems = packagesForItems.SelectMany(x => x.OrderItems).ToList();
-      
-      //var inventoryOrder =
-      //  InventoryOrderData.GetInventoryOrdersByTypeAndReferenceId(5, Order.Parse(orderUid).Id)
-      //  .FirstOrDefault();
 
       foreach (var item in orderItems) {
         var quantityOrderItems = packingOrderItems
@@ -51,8 +49,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
           missing.Quantity = item.Quantity - quantityOrderItems;
           missing.MergeCommonFieldsData(item.OrderItemId);
           missing.ItemWeight = missing.Quantity * missing.Product.ProductWeight;
-          GetWarehousesByItem(missing, item.VendorProductId);
-          //GetWarehousesByItem_(missing, item, inventoryOrder);
+          missing.WarehouseBins = GetWarehousesByItem(missing.OrderItemUID, item, inventoryOrder);
 
           missingItems.Add(missing);
         }
@@ -209,96 +206,31 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     }
 
 
-    private void GetWarehousesByItem_(MissingItem missing, OrderItemTemp item,
-                                      InventoryOrderEntry inventoryOrder) {
-      //TODO OBTENER PRODUCTOS DE ORDEN DE INVENTARIO GENERADA EN PICKING
-      var data = new PackagingData();
+    private FixedList<WarehouseBinForPacking> GetWarehousesByItem(
+      string orderItemUID, OrderItemTemp item, InventoryOrderEntry inventoryOrder) {
 
+      var data = new PackagingData();
+      var whBinList = new List<WarehouseBinForPacking>();
       var inventoryItems = InventoryOrderData.GetInventoryItemsByOrderUID(inventoryOrder.InventoryOrderUID);
 
-      var whBinList = new List<WarehouseBinForPacking>();
-      
-      foreach (var inventoryItem in inventoryItems.Where(x=>x.VendorProduct.Id == item.VendorProductId)) {
+      foreach (var inventoryItem in inventoryItems.Where(x => x.VendorProduct.Id == item.VendorProductId)) {
 
         var inventoryWhBin = WarehouseBin.Parse(inventoryItem.WarehouseBin.Id);
 
         var exist = whBinList.Find(
-          x => x.UID == inventoryWhBin.UID && x.OrderItemUID == missing.OrderItemUID);
-
-        if (exist==null) {
-
-          var bin = new WarehouseBinForPacking();
-          bin.UID = inventoryWhBin.UID;
-          bin.OrderItemUID = missing.OrderItemUID;
-          bin.Name = inventoryWhBin.WarehouseBinName;
-          bin.WarehouseName = inventoryWhBin.Tag;
-          bin.Stock = inventoryItem.InProcessOutputQuantity;
-
-          whBinList.Add(bin);
-        }
-      }
-
-      missing.WarehouseBins = whBinList.ToFixedList();
-
-    }
-
-
-    private void GetWarehousesByItem(MissingItem missing, int vendorProductId) {
-      //TODO OBTENER PRODUCTOS DE ORDEN DE INVENTARIO GENERADA EN PICKING
-      var data = new PackagingData();
-
-      //var stockByVendorProduct = GetStockByWarehouseBinsForItem(vendorProductId, missing.OrderItemUID);
-
-      FixedList<InventoryEntry> inventoryByVendorProduct =
-        data.GetInventoryByVendorProduct(vendorProductId, "");
-
-      var whBinForPacking = new List<WarehouseBinForPacking>();
-
-      foreach (var inventory in inventoryByVendorProduct) {
-        var warehouseBin = WarehouseBin.Parse(inventory.WarehouseBinId);
-
-        var exist = whBinForPacking.Find(
-          x => x.UID == warehouseBin.UID && x.OrderItemUID == missing.OrderItemUID);
+          x => x.UID == inventoryWhBin.UID && x.OrderItemUID == orderItemUID);
 
         if (exist == null) {
-
-          var input = inventoryByVendorProduct.Where(x => x.WarehouseBinId == warehouseBin.Id)
-                                              .Sum(x => x.InputQuantity);
-          var output = inventoryByVendorProduct.Where(x => x.WarehouseBinId == warehouseBin.Id)
-                                               .Sum(x => x.OutputQuantity);
-
-          var bin = new WarehouseBinForPacking();
-          bin.UID = warehouseBin.UID;
-          bin.OrderItemUID = missing.OrderItemUID;
-          bin.Name = warehouseBin.WarehouseBinName;
-          bin.WarehouseName = $"Almacen {warehouseBin.Warehouse.Code}";
-          bin.Stock = input > output ? input - output : 0;
-
-          whBinForPacking.Add(bin);
+          var whBin = new WarehouseBinForPacking();
+          whBin.UID = inventoryWhBin.UID;
+          whBin.OrderItemUID = orderItemUID;
+          whBin.Name = inventoryWhBin.WarehouseBinName;
+          whBin.WarehouseName = inventoryWhBin.Tag;
+          whBin.Stock = inventoryItem.InProcessOutputQuantity;
+          whBinList.Add(whBin);
         }
-
       }
-      missing.WarehouseBins = whBinForPacking.ToFixedList();
-    }
-
-
-    private WarehouseBinForPacking GetStockByWarehouseBinsForItem(
-      int vendorProductId, string orderItemUID) {
-
-      var item = SalesOrderItem.Parse(orderItemUID);
-
-      var stockForVendorProduct = CataloguesUseCases.GetInventoryStockByVendorProduct(vendorProductId, "");
-
-      var warehouseBin = WarehouseBin.Parse(-1);
-
-      var whBinForPacking = new WarehouseBinForPacking();
-      whBinForPacking.UID = warehouseBin.UID;
-      whBinForPacking.OrderItemUID = orderItemUID;
-      whBinForPacking.Name = warehouseBin.WarehouseBinName;
-      whBinForPacking.WarehouseName = warehouseBin.Tag;
-      whBinForPacking.Stock = stockForVendorProduct.Sum(x => x.RealStock);
-
-      return whBinForPacking;
+      return whBinList.ToFixedList();
     }
 
 
