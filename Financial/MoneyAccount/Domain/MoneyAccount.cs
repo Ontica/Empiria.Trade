@@ -183,7 +183,7 @@ namespace Empiria.Trade.Financial {
     }
 
     public void LoadMoneyAccountTransactions() {
-      this.MoneyAccountTransactions = MoneyAccountTransaction.GetTransactions(this.Id);//MoneyAccountTransactionData.GetTransactions(this.Id);
+      this.MoneyAccountTransactions = MoneyAccountTransaction.GetTransactions(this.Id);
     }
 
 

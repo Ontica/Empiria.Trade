@@ -25,8 +25,8 @@ namespace Empiria.Trade.Financial {
       //no-op
     }
 
-    public MoneyAccountTransaction(MoneyAccountTransactionFields fields) {
-      Update(fields);
+    public MoneyAccountTransaction(string moneyAccountUID, MoneyAccountTransactionFields fields) {
+      Update(moneyAccountUID, fields);
     }
 
     static public MoneyAccountTransaction Empty => BaseObject.ParseEmpty<MoneyAccountTransaction>();
@@ -134,11 +134,10 @@ namespace Empiria.Trade.Financial {
       MoneyAccountTransactionData.Write(this);
     }
 
-    internal void Update(MoneyAccountTransactionFields fields) {
-      this.MoneyAccount = MoneyAccount.Parse(fields.MoneyAccountUID);
+    internal void Update(string moneyAccountUID, MoneyAccountTransactionFields fields) {
+      this.MoneyAccount = MoneyAccount.Parse(moneyAccountUID);
       this.TransactionType = MoneyAccountTransactionType.Parse(fields.TransactionTypeUID);
-      this.Description = fields.Description;
-      this.Credit = fields.TransactionAmount;
+       this.Credit = fields.TransactionAmount;
       this.ExtData = fields.Reference;
       this.TransactionTime = fields.TransactionTime;
       this.Notes = fields.Notes;

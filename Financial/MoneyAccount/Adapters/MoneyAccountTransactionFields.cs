@@ -27,18 +27,11 @@ namespace Empiria.Trade.Financial.Adapters {
       get; set;
     } = string.Empty;
 
-    public string MoneyAccountUID {
-      get; set;
-    }
-
+   
     public string TransactionTypeUID {
       get; set;
     }
-
-    public string Description {
-      get; set;
-    } = string.Empty;
-
+      
     public Decimal TransactionAmount {
       get; set;
     } = 0m;

@@ -41,9 +41,7 @@ namespace Empiria.Trade.Tests.MoneyAccount {
     public void ShouldAddNewMoneyAccountTransaction() {
 
       var fields = new MoneyAccountTransactionFields {
-        MoneyAccountUID = "934fd51e-50e8-4372-af97-eccf6b468f17",
         TransactionTypeUID = "eccd36f6-f326-4e56-ac28-89504f8ba588",
-        Description = "Credito ",
         TransactionAmount = 3350.456m,
         Reference = "OC-E9399D93D",
         TransactionTime = DateTime.Now,
@@ -61,9 +59,7 @@ namespace Empiria.Trade.Tests.MoneyAccount {
 
       var fields = new MoneyAccountTransactionFields {
         UID = "38246295-08b8-4fac-84da-1a3a63b81850",
-        MoneyAccountUID = "934fd51e-50e8-4372-af97-eccf6b468f17",
         TransactionTypeUID = "70c7e1cf-13a0-4b23-9044-1bf7ddbab5e2",
-        Description = "Credito ",
         TransactionAmount = 500,
         Reference = "PEMA-30",
         TransactionTime = DateTime.Now,

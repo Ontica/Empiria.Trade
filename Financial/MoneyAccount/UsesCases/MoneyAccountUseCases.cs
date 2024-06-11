@@ -92,9 +92,8 @@ namespace Empiria.Trade.Financial.UseCases
 
     public MoneyAccountTransactionDto AddMoneyAccountTransaction(string moneyAccountUID, MoneyAccountTransactionFields fields) {
       Assertion.Require(fields, "fields");
-
-      fields.MoneyAccountUID = moneyAccountUID;
-      var moneyAccountTransaction = new MoneyAccountTransaction(fields);
+            
+      var moneyAccountTransaction = new MoneyAccountTransaction(moneyAccountUID,fields);
       moneyAccountTransaction.Save();
 
       
@@ -105,7 +104,7 @@ namespace Empiria.Trade.Financial.UseCases
       Assertion.Require(fields, "fields");
 
       var moneyAccountTransaction = MoneyAccountTransaction.Parse(moneyAccountTransactionUID);
-      moneyAccountTransaction.Update(fields);
+      moneyAccountTransaction.Update(moneyAccountTransaction.MoneyAccount.UID, fields);
       moneyAccountTransaction.Save();
 
 
