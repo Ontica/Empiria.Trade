@@ -316,7 +316,7 @@ namespace Empiria.Trade.Sales.UseCases {
 
       var usecase = CataloguesUseCases.UseCaseInteractor();
       FixedList<SalesInventoryStock> inventoryStock = 
-        CataloguesUseCases.GetInventoryStockByVendorProduct(vendorProductId);
+        CataloguesUseCases.GetInventoryStockByVendorProduct(vendorProductId, "");
 
       return inventoryStock.Sum(x=>x.Stock);
     }

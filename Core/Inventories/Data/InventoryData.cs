@@ -18,10 +18,15 @@ namespace Empiria.Trade.Core {
 
 
     static internal FixedList<SalesInventoryStock> GetInventoryStockByVendorProduct(
-                                        int vendorProductId) {
+                                        int vendorProductId, string warehouseBinClauses) {
+
+      if (warehouseBinClauses != string.Empty) {
+        warehouseBinClauses = $"AND WarehouseBinId NOT IN ({warehouseBinClauses})";
+      }
 
       string sql = $"SELECT * FROM vwSalesInventoryStock " +
-                   $"WHERE VendorProductId = {vendorProductId}";
+                   $"WHERE VendorProductId = {vendorProductId} " +
+                   $"{warehouseBinClauses} ";
 
       var dataOperation = DataOperation.Parse(sql);
 

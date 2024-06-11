@@ -50,8 +50,9 @@ namespace Empiria.Trade.Inventory.UseCases {
 
       var builder = new InventoryOrderBuilder();
 
-      InventoryOrderEntry inventoryOrder =
-        builder.CreateInventoryOrderBySale(inventoryItems.FirstOrDefault());
+      var fields = builder.MapToInventoryOrderFields(inventoryItems.FirstOrDefault());
+
+      InventoryOrderEntry inventoryOrder = builder.CreateInventoryOrder(fields, "");
 
       foreach (var inventoryItem in inventoryItems) {
 
@@ -73,7 +74,7 @@ namespace Empiria.Trade.Inventory.UseCases {
 
       foreach (var item in inventoryOrderItems) {
 
-        var inventoryStock = CataloguesUseCases.GetInventoryStockByVendorProduct(item.VendorProduct.Id);
+        var inventoryStock = CataloguesUseCases.GetInventoryStockByVendorProduct(item.VendorProduct.Id, "");
 
         decimal quantityDifference = item.CountingQuantity - inventoryStock.Sum(x => x.RealStock);
 
@@ -176,16 +177,7 @@ namespace Empiria.Trade.Inventory.UseCases {
       Assertion.Require(fields, nameof(fields));
 
       var builder = new InventoryOrderBuilder();
-
-      var inventoryOrder = InventoryOrderData.GetInventoryOrdersByTypeAndReferenceId(
-        5, fields.ReferenceId).FirstOrDefault();
-
-      if (inventoryOrder != null) {
-
-        //builder.CreateInventoryOrder(fields, inventoryOrder.InventoryOrderUID);
-        InventoryOrderHelper.CreateOrUpdateInventoryOrderItemsForPicking(inventoryOrder.InventoryOrderUID);
-      }
-      
+      builder.UpdateInventoryOrderForPicking(fields);
     }
 
 

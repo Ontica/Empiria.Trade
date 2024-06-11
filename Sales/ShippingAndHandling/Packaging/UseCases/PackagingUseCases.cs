@@ -134,9 +134,9 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
     public ISalesOrderDto UpdateInventoryOrderForPicking(
       string orderUID, InventoryOrderFields fields) {
 
-      var usecases = InventoryOrderUseCases.UseCaseInteractor();
-
       fields.ReferenceId = SalesOrder.Parse(orderUID).Id;
+
+      var usecases = InventoryOrderUseCases.UseCaseInteractor();
 
       usecases.UpdateInventoryOrderForPicking(fields);
 

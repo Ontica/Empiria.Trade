@@ -50,46 +50,14 @@ namespace Empiria.Trade.Inventory.Domain {
     }
 
 
-    internal InventoryOrderEntry GetInventoryOrderByUID(string inventoryOrderUID) {
-
-      var inventoryOrder = InventoryOrderData.GetInventoryOrderByUID(inventoryOrderUID);
-      GetInventoryItemsForOrder(inventoryOrder);
-
-      return inventoryOrder;
-    }
-
-
-    #endregion Public methods
-
-    #region Private methods
-
-
-    private void GetInventoryItemsForOrder(InventoryOrderEntry inventoryOrder) {
-
-      FixedList<InventoryOrderItem> items =
-        InventoryOrderData.GetInventoryItemsByOrderUID(inventoryOrder.InventoryOrderUID);
-
-      if (items.Count > 0) {
-        inventoryOrder.InventoryOrderItems = items;
-      }
-    }
-
-
-    internal void UpdateInventoryOrder(string inventoryOrderUID,
-      InventoryOrderFields fields) {
-
-      CreateInventoryOrder(fields, inventoryOrderUID);
-    }
-
-
     internal InventoryOrderActions GetActions(InventoryOrderEntry inventoryOrder) {
-      
+
       if (inventoryOrder.Status == InventoryStatus.Cerrado ||
           inventoryOrder.InventoryOrderTypeId == 5) {
-        
+
         return new InventoryOrderActions();
       }
-      
+
       var actions = new InventoryOrderActions();
       actions.CanEdit = true;
       actions.CanEditItems = true;
@@ -116,6 +84,54 @@ namespace Empiria.Trade.Inventory.Domain {
     }
 
 
+    private void GetInventoryItemsForOrder(InventoryOrderEntry inventoryOrder) {
+
+      FixedList<InventoryOrderItem> items =
+        InventoryOrderData.GetInventoryItemsByOrderUID(inventoryOrder.InventoryOrderUID);
+
+      if (items.Count > 0) {
+        inventoryOrder.InventoryOrderItems = items;
+      }
+    }
+
+
+    internal InventoryOrderEntry GetInventoryOrderByUID(string inventoryOrderUID) {
+
+      var inventoryOrder = InventoryOrderData.GetInventoryOrderByUID(inventoryOrderUID);
+      GetInventoryItemsForOrder(inventoryOrder);
+
+      return inventoryOrder;
+    }
+
+
+    internal void UpdateInventoryOrder(string inventoryOrderUID,
+      InventoryOrderFields fields) {
+
+      CreateInventoryOrder(fields, inventoryOrderUID);
+    }
+
+
+    internal void UpdateInventoryOrderForPicking(InventoryOrderFields fields) {
+
+      var inventoryOrder = InventoryOrderData.GetInventoryOrdersByTypeAndReferenceId(
+        5, fields.ReferenceId).FirstOrDefault();
+
+      if (inventoryOrder != null) {
+
+        var inventoryUpdated = CreateInventoryOrder(fields, inventoryOrder.InventoryOrderUID);
+
+        InventoryOrderHelper.CreateOrUpdateInventoryOrderItemsForPicking(inventoryUpdated);
+      }
+    }
+
+    #endregion Public methods
+
+    #region Private methods
+
+
+
+
+
     internal InventoryOrderFields MapToInventoryOrderFields(InventoryItems inventoryItemData) {
 
       InventoryOrderFields fields = new InventoryOrderFields();
@@ -130,16 +146,6 @@ namespace Empiria.Trade.Inventory.Domain {
     }
 
 
-    internal InventoryOrderEntry CreateInventoryOrderBySale(InventoryItems inventoryItemsData) {
-
-      InventoryOrderFields fields = MapToInventoryOrderFields(inventoryItemsData);
-
-      var inventoryOrder = new InventoryOrderEntry(fields, "");
-      inventoryOrder.Save();
-
-      return inventoryOrder;
-    }
-
 
     internal InventoryOrderItemFields MapToInventoryOrderItemFields(InventoryItems inventoryItem) {
 
@@ -151,8 +157,6 @@ namespace Empiria.Trade.Inventory.Domain {
       fields.InProcessOutputQuantity = inventoryItem.Quantity;
       return fields;
     }
-
-
 
 
     #endregion Private methods

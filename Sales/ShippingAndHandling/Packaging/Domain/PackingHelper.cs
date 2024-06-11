@@ -287,7 +287,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       var item = SalesOrderItem.Parse(orderItemUID);
 
-      var stockForVendorProduct = CataloguesUseCases.GetInventoryStockByVendorProduct(vendorProductId);
+      var stockForVendorProduct = CataloguesUseCases.GetInventoryStockByVendorProduct(vendorProductId, "");
 
       var warehouseBin = WarehouseBin.Parse(-1);
 
