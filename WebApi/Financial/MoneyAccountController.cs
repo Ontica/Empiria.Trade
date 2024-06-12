@@ -311,13 +311,14 @@ namespace Empiria.Trade.WebApi.Financial {
     }
 
     [HttpGet]
-    [Route("v4/trade/financial/money-accounts/transactions/transaction-items/{moneyAccountTransactionUID:guid}")]
-    public CollectionModel GetMoneyAccountTransactionItems([FromUri] string moneyAccountTransactionUID) {
-
-      base.RequireResource(moneyAccountTransactionUID, "moneyAccountTransactionUID");
+    [Route("v4/trade/financial/money-accounts/{moneyAccountUID:guid}/transactions/{transactionUID:guid}/items")]
+    public CollectionModel GetMoneyAccountTransactionItems([FromUri] string moneyAccountUID, [FromUri] string transactionUID) {
+      
+      base.RequireResource(moneyAccountUID, "moneyAccountUID");
+      base.RequireResource(transactionUID, "moneyAccountTransactionUID");
 
       using (var usecases = MoneyAccountUseCases.UseCaseInteractor()) {
-        var moneyAccountTransactionItems = usecases.GetMoneyAccountTransactionItems(moneyAccountTransactionUID);
+        var moneyAccountTransactionItems = usecases.GetMoneyAccountTransactionItems(transactionUID);
 
         return new CollectionModel(base.Request, moneyAccountTransactionItems);
       }
