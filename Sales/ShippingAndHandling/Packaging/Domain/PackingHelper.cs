@@ -33,6 +33,10 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       var inventoryOrder = InventoryOrderData.GetInventoryOrdersByTypeAndReferenceId(
                             5, Order.Parse(orderUid).Id).FirstOrDefault();
+      
+      if (inventoryOrder == null) {
+        return new FixedList<MissingItem>();
+      }
 
       var data = new PackagingData();
       var orderItems = data.GetOrderItems(orderUid);
