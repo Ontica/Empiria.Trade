@@ -18,9 +18,9 @@ namespace Empiria.Trade.Financial.Adapters {
     static public MoneyAccountTransactionItemDto Map(MoneyAccountTransactionItem moneyAccountTransactionItem) {
       var dto = new MoneyAccountTransactionItemDto {
         UID = moneyAccountTransactionItem.UID,
-        MoneyAccountTransactionItemType = moneyAccountTransactionItem.MoneyAccountTransactionItemType.Name,
+        ItemType = moneyAccountTransactionItem.MoneyAccountTransactionItemType.MapToNamedEntity(),
         Reference = moneyAccountTransactionItem.ExtData,
-        PaymentType = moneyAccountTransactionItem.PaymentType.Name,
+        PaymentType = moneyAccountTransactionItem.PaymentType.MapToNamedEntity(),
         Deposit = moneyAccountTransactionItem.Deposit,
         Withdrawal = moneyAccountTransactionItem.Withdrawal,
         Notes = moneyAccountTransactionItem.Notes,

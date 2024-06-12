@@ -19,7 +19,7 @@ namespace Empiria.Trade.Financial.Adapters {
       get; internal set;
     }
 
-    public string MoneyAccountTransactionItemType {
+    public NamedEntityDto ItemType {
       get; internal set;
     }
 
@@ -27,7 +27,7 @@ namespace Empiria.Trade.Financial.Adapters {
       get; internal set;
     }
 
-    public string PaymentType {
+    public NamedEntityDto PaymentType {
       get; internal set;
     }
 
