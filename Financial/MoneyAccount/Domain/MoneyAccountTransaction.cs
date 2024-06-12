@@ -132,12 +132,13 @@ namespace Empiria.Trade.Financial {
         TransactionNumber = "MAT-" + EmpiriaString.BuildRandomString(10).ToUpperInvariant();
       }
       MoneyAccountTransactionData.Write(this);
+            
     }
 
     internal void Update(string moneyAccountUID, MoneyAccountTransactionFields fields) {
       this.MoneyAccount = MoneyAccount.Parse(moneyAccountUID);
       this.TransactionType = MoneyAccountTransactionType.Parse(fields.TransactionTypeUID);
-       this.Credit = fields.TransactionAmount;
+      this.Credit = fields.TransactionAmount;
       this.ExtData = fields.Reference;
       this.TransactionTime = fields.TransactionTime;
       this.Notes = fields.Notes;

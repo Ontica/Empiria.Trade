@@ -27,7 +27,7 @@ namespace Empiria.Trade.Financial.Adapters {
         Notes = moneyAccount.Notes,
         Balance = moneyAccount.GetDebit(),
         Status = ParseStatus(moneyAccount.Status),
-        Transactions = MoneyAccountTransactionMapper.MapMoneyAccountTransactions(moneyAccount.MoneyAccountTransactions),
+        Transactions = MoneyAccountTransactionMapper.MapMoneyAccountTransactionsDescriptor(moneyAccount.MoneyAccountTransactions),
         Actions = MoneyAccountActionsMapper.Map(moneyAccount)
       };
       return dto;

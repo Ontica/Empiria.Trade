@@ -52,9 +52,9 @@ namespace Empiria.Trade.Financial.Adapters {
       get; internal set;
     }
 
-    public FixedList<MoneyAccountTransactionDto> Transactions {
+    public FixedList<MoneyAccountTransactionDescriptorDto> Transactions {
       get; internal set;
-    } = new FixedList<MoneyAccountTransactionDto>();
+    } = new FixedList<MoneyAccountTransactionDescriptorDto>();
 
     public MoneyAccountActionsDto Actions {
       get; internal set;

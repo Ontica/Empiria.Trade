@@ -66,4 +66,51 @@ namespace Empiria.Trade.Financial.Adapters {
 
   } // class MoneyAccountTransactionsDto 
 
+  public class MoneyAccountTransactionDescriptorDto {
+
+    public string UID {
+      get; internal set;
+    }
+
+    public string MoneyAccountUID {
+      get; internal set;
+    }
+
+    public string TransactionNumber {
+      get; internal set;
+    }
+
+    public string TransactionType {
+      get; internal set;
+    }
+
+    public DateTime TransactionDate {
+      get; internal set;
+    }
+
+    public string Reference {
+      get; internal set;
+    }
+
+    public decimal TransactionAmount {
+      get; internal set;
+    }
+
+   
+
+    public DateTime DueDate {
+      get; internal set;
+    }
+
+    public string Notes {
+      get; internal set;
+    }
+
+    public EntityStatus Status {
+      get; set;
+    }
+
+   
+  } // class MoneyAccountTransactionsDto
+
 } // namespace Empiria.Trade.Financial.Adapters 

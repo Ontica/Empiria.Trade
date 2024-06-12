@@ -95,8 +95,8 @@ namespace Empiria.Trade.Financial.UseCases
             
       var moneyAccountTransaction = new MoneyAccountTransaction(moneyAccountUID,fields);
       moneyAccountTransaction.Save();
+           
 
-      
       return MoneyAccountTransactionMapper.Map(moneyAccountTransaction);
     }
 
@@ -142,8 +142,15 @@ namespace Empiria.Trade.Financial.UseCases
 
       var moneyAccountTransactionItem = new MoneyAccountTransactionItem(moneyAccountTransactionUID, fields);
       moneyAccountTransactionItem.Save();
-
+      
       moneyAccountTransactionItem.MoneyAccountTransaction.LoadItems();
+
+
+      var deposit = fields.Deposit;
+      fields.Deposit = fields.Withdrawal;
+      fields.Withdrawal = deposit;
+      var mATransactionItem = new MoneyAccountTransactionItem("ba965162-8a0a-48d0-9874-9174cb08d9e9", fields);
+      mATransactionItem.Save();
 
       return MoneyAccountTransactionMapper.Map(moneyAccountTransactionItem.MoneyAccountTransaction);
     }

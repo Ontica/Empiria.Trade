@@ -19,7 +19,7 @@ namespace Empiria.Trade.Financial.Adapters {
       var dto = new MoneyAccountTransactionDto {
         UID = transaction.UID,
         MoneyAccountUID = transaction.MoneyAccount.UID,
-        TransactionNumber = transaction.ExtData,
+        TransactionNumber = transaction.TransactionNumber,
         TransactionType = transaction.TransactionType.MapToNamedEntity(),
         TransactionDate = transaction.TransactionTime,
         Reference = transaction.ExtData,
@@ -37,6 +37,31 @@ namespace Empiria.Trade.Financial.Adapters {
 
       foreach (var transaction in transactions) {
         creditTransactionList.Add(Map(transaction));
+      }
+
+      return creditTransactionList.ToFixedList();
+    }
+
+    static public MoneyAccountTransactionDescriptorDto MapDescriptor(MoneyAccountTransaction transaction) {
+      var dto = new MoneyAccountTransactionDescriptorDto {
+        UID = transaction.UID,
+        MoneyAccountUID = transaction.MoneyAccount.UID,
+        TransactionNumber = transaction.TransactionNumber,
+        TransactionType = transaction.TransactionType.Name,
+        TransactionDate = transaction.TransactionTime,
+        Reference = transaction.ExtData,
+        TransactionAmount = transaction.Credit,
+        Notes = transaction.Notes,
+        Status = transaction.Status
+      };
+      return dto;
+    }
+
+    static public FixedList<MoneyAccountTransactionDescriptorDto> MapMoneyAccountTransactionsDescriptor(FixedList<MoneyAccountTransaction> transactions) {
+      List<MoneyAccountTransactionDescriptorDto> creditTransactionList = new List<MoneyAccountTransactionDescriptorDto>();
+
+      foreach (var transaction in transactions) {
+        creditTransactionList.Add(MapDescriptor(transaction));
       }
 
       return creditTransactionList.ToFixedList();
