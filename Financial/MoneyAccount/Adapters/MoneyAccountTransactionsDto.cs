@@ -80,7 +80,7 @@ namespace Empiria.Trade.Financial.Adapters {
       get; internal set;
     }
 
-    public string TransactionType {
+    public string TransactionTypeName {
       get; internal set;
     }
 
