@@ -293,14 +293,17 @@ namespace Empiria.Trade.WebApi.Financial {
     }
 
     [HttpDelete]
-    [Route("v4/trade/financial/money-accounts/transactions/transaction-item/{moneyAccountTransactionItemUID:guid}/cancel")]
-    public SingleObjectModel CancelMoneyAccountTransactionItem([FromUri] string moneyAccountTransactionItemUID) {
+    [Route("v4/trade/financial/money-accounts/{moneyAccountUID:guid}/transactions/{transactionUID:guid}/items/{itemUID:guid}/cancel")]
+    public SingleObjectModel CancelMoneyAccountTransactionItem([FromUri] string moneyAccountUID, [FromUri] string transactionUID,
+                                                              [FromUri] string itemUID) {
 
-      base.RequireResource(moneyAccountTransactionItemUID, "moneyAccountTransactionItemUID");
+      base.RequireResource(moneyAccountUID, "moneyAccountUID");
+      base.RequireResource(transactionUID, "transactionUID");
+      base.RequireResource(itemUID, "itemUID");
 
       using (var usecases = MoneyAccountUseCases.UseCaseInteractor()) {
 
-        var moneyAccountTransactionItemDto = usecases.CancelMoneyAccountTransactionItem(moneyAccountTransactionItemUID);
+        var moneyAccountTransactionItemDto = usecases.CancelMoneyAccountTransactionItem(itemUID);
 
         return new SingleObjectModel(this.Request, moneyAccountTransactionItemDto);
       }
