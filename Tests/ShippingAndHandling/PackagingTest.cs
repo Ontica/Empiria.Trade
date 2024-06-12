@@ -86,7 +86,6 @@ namespace Empiria.Trade.Tests {
       PackingDto sut = usecase.GetPackagingForOrder(orderUid);
       
       Assert.NotNull(sut);
-
     }
 
 
