@@ -35,6 +35,20 @@ namespace Empiria.Trade.Core {
     }
 
 
+    static internal FixedList<SalesInventoryStock> GetInventoryStockByVendorProductAndWarehouseBin(
+                                        int vendorProductId, int warehouseBinId) {
+
+      string sql = $"SELECT * FROM vwSalesInventoryStock " +
+                   $"WHERE VendorProductId = {vendorProductId} " +
+                   $"AND WarehouseBinId IN ({warehouseBinId}) ";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetPlainObjectFixedList<SalesInventoryStock>(dataOperation);
+
+    }
+
+
   } // class InventoryData
 
 } // namespace Empiria.Trade.Core

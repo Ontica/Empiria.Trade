@@ -53,6 +53,14 @@ namespace Empiria.Trade.Core.Catalogues {
     }
 
 
+    static public FixedList<SalesInventoryStock> GetInventoryStockByVendorProductAndWarehouseBin(
+      int vendorProductId, int warehouseBinId) {
+      Assertion.Require(vendorProductId, "vendorProductId");
+
+      return InventoryData.GetInventoryStockByVendorProductAndWarehouseBin(vendorProductId, warehouseBinId);
+    }
+
+
     public PackageType GetPackageType(string packageTypeUid) {
       Assertion.Require(packageTypeUid, "packageTypeUid");
 

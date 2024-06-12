@@ -74,9 +74,12 @@ namespace Empiria.Trade.Inventory.UseCases {
 
       foreach (var item in inventoryOrderItems) {
 
-        var inventoryStock = CataloguesUseCases.GetInventoryStockByVendorProduct(item.VendorProduct.Id, "");
+        var inventoryStock = CataloguesUseCases.GetInventoryStockByVendorProductAndWarehouseBin(
+          item.VendorProduct.Id, item.WarehouseBin.Id);
 
-        decimal quantityDifference = item.CountingQuantity - inventoryStock.Sum(x => x.RealStock);
+        var realStock = inventoryStock.Sum(x => x.RealStock);
+
+        decimal quantityDifference = item.CountingQuantity - realStock;
 
         InventoryOrderData.UpdateInventoryOrderItemsStatusByOrder(
                     item.InventoryOrderItemId, quantityDifference, DateTime.Now);
