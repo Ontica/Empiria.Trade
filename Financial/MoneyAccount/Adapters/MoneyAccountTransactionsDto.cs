@@ -28,7 +28,7 @@ namespace Empiria.Trade.Financial.Adapters {
       get; internal set;
     }
 
-    public string OperationType {
+    public NamedEntityDto TransactionType {
       get; internal set;
     }
 

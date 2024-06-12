@@ -20,7 +20,7 @@ namespace Empiria.Trade.Financial.Adapters {
         UID = transaction.UID,
         MoneyAccountUID = transaction.MoneyAccount.UID,
         OperationNumber = transaction.ExtData,
-        OperationType = transaction.TransactionType.Name,
+        TransactionType = transaction.TransactionType.MapToNamedEntity(),
         TransactionDate = transaction.TransactionTime,
         Reference = transaction.ExtData,
         TransactionAmount = transaction.Credit,
