@@ -214,21 +214,22 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       foreach (var inventoryItem in inventoryItems.Where(x => x.VendorProduct.Id == item.VendorProductId)) {
 
         var inventoryWhBin = WarehouseBin.Parse(inventoryItem.WarehouseBin.Id);
-        
+
+        var packingItemsQuantity = data.GetPackingOrderItemByOrderItemAndWarehouseBin(
+            item.OrderItemId, inventoryWhBin.Id).Sum(x => x.Quantity);
+
+        var inventoryStock = inventoryItem.InProcessOutputQuantity - packingItemsQuantity;
+
         var exist = whBinList.Find(
           x => x.UID == inventoryWhBin.UID && x.OrderItemUID == orderItemUID);
 
-        if (exist == null) {
-
-          var packingItemsQuantity = data.GetPackingOrderItemByOrderItemAndWarehouseBin(
-            item.OrderItemId, inventoryWhBin.Id).Sum(x=>x.Quantity);
-
+        if (exist == null && inventoryStock > 0) {
           var whBin = new WarehouseBinForPacking();
           whBin.UID = inventoryWhBin.UID;
           whBin.OrderItemUID = orderItemUID;
           whBin.Name = inventoryWhBin.WarehouseBinName;
           whBin.WarehouseName = inventoryWhBin.Tag;
-          whBin.Stock = inventoryItem.InProcessOutputQuantity - packingItemsQuantity;
+          whBin.Stock = inventoryStock;
           whBinList.Add(whBin);
         }
       }
