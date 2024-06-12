@@ -125,7 +125,7 @@ namespace Empiria.Trade.Financial {
       this.Deposit = fields.Deposit;
       this.ExtData = fields.Reference;
       this.Withdrawal = fields.Withdrawal;
-      this.TransactionTime = fields.TransactionTime;
+      this.TransactionTime = fields.PostedTime;
       this.Notes = fields.Notes;
       this.PostedTime = DateTime.Now;
       this.PostedById = ExecutionServer.CurrentUserId;

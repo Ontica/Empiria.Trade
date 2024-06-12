@@ -24,6 +24,7 @@ namespace Empiria.Trade.Financial.Adapters {
         Deposit = moneyAccountTransactionItem.Deposit,
         Withdrawal = moneyAccountTransactionItem.Withdrawal,
         Notes = moneyAccountTransactionItem.Notes,
+        PostedTime = moneyAccountTransactionItem.TransactionTime,
         Status = moneyAccountTransactionItem.MoneyAccountTransactionItemStatus,
       };
       return dto;

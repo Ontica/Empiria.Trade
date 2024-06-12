@@ -49,7 +49,7 @@ namespace Empiria.Trade.Financial {
       get; set;
     } = string.Empty;
 
-    public DateTime TransactionTime {
+    public DateTime PostedTime {
       get; set;
     }
 
