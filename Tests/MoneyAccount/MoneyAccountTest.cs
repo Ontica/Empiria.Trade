@@ -201,7 +201,7 @@ namespace Empiria.Trade.Tests.MoneyAccount {
         Deposit = 3350.456m,
         Withdrawal = 30,        
         Notes = "Esto es una prueba",
-        TransactionTime = DateTime.Now
+        PostedTime = DateTime.Now
       };
 
       var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
@@ -219,7 +219,7 @@ namespace Empiria.Trade.Tests.MoneyAccount {
         Deposit = 0.0m,
         Withdrawal = 2340.09m,
         Notes = "CAMBIO",
-        TransactionTime = DateTime.Now
+        PostedTime = DateTime.Now
       };
 
       var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
