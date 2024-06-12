@@ -183,7 +183,6 @@ namespace Empiria.Trade.Tests {
                                   orderUID, packingOrderUID, missingItemFields);
 
       Assert.NotNull(sut);
-
     }
 
 
