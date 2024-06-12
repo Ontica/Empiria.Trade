@@ -257,9 +257,12 @@ namespace Empiria.Trade.WebApi.Financial {
     }
 
     [HttpPost]
-    [Route("v4/trade/financial/money-accounts/transactions/transaction-item")]
-    public SingleObjectModel AddMoneyAccountTransactionItem([FromBody] MoneyAccountTransactionItemFields fields) {
+    [Route("v4/trade/financial/money-accounts/{moneyAccountUID:guid}/transactions/{transactionUID:guid}/items")]
+    public SingleObjectModel AddMoneyAccountTransactionItem([FromUri] string moneyAccountUID, [FromUri] string transactionUID,
+                                                            [FromBody] MoneyAccountTransactionItemFields fields) {
 
+      base.RequireResource(moneyAccountUID, "moneyAccountUID");
+      base.RequireResource(transactionUID, "transactionUID");
       base.RequireBody(fields);
 
       using (var usecases = MoneyAccountUseCases.UseCaseInteractor()) {
@@ -271,15 +274,18 @@ namespace Empiria.Trade.WebApi.Financial {
     }
 
     [HttpPut]
-    [Route("v4/trade/financial/money-accounts/transactions/transaction-item/{moneyAccountTransactionItemUID:guid}")]
-    public SingleObjectModel UpdateMoneyAccountTransactionItem([FromUri] string moneyAccountTransactionItemUID, [FromBody] MoneyAccountTransactionItemFields fields) {
+    [Route("v4/trade/financial/money-accounts/{moneyAccountUID:guid}/transactions/{transactionUID:guid}/items/{itemUID:guid}")]
+    public SingleObjectModel UpdateMoneyAccountTransactionItem([FromUri] string moneyAccountUID, [FromUri] string transactionUID,
+                                                               [FromUri] string itemUID, [FromBody] MoneyAccountTransactionItemFields fields) {
 
-      base.RequireResource(moneyAccountTransactionItemUID, "moneyAccountTransactionItemUID");
+      base.RequireResource(moneyAccountUID, "moneyAccountUID");
+      base.RequireResource(transactionUID, "transactionUID");
+      base.RequireResource(itemUID, "itemUID");
       base.RequireBody(fields);
 
       using (var usecases = MoneyAccountUseCases.UseCaseInteractor()) {
 
-        var moneyAccountTransactionItemDto = usecases.UpdateMoneyAccountTransactionItem(fields, moneyAccountTransactionItemUID);
+        var moneyAccountTransactionItemDto = usecases.UpdateMoneyAccountTransactionItem(fields, itemUID);
 
         return new SingleObjectModel(this.Request, moneyAccountTransactionItemDto);
       }
