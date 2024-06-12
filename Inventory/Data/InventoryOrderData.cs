@@ -224,6 +224,7 @@ namespace Empiria.Trade.Inventory.Data {
                    $"InventoryOrderItemStatus = '{(char) InventoryStatus.Cerrado}' " +
                    $",OutputQuantity = InProcessOutputQuantity " +
                    $",InProcessOutputQuantity = 0 " +
+                   $",InventoryOrderItemNotes = 'APLICADO' " +
                    $",ClosingTime = '{closingTime}' " +
                    $"WHERE InventoryOrderId = {inventoryOrderId} ";
 
@@ -239,7 +240,6 @@ namespace Empiria.Trade.Inventory.Data {
       string sql = $"UPDATE TRDInventoryOrderItems SET " +
                    $"InventoryOrderItemStatus = '{(char) InventoryStatus.Cerrado}' " +
                    $"{GetQuantityClauses(quantityDifference)} " +
-                   $",InventoryOrderItemNotes = 'APLICADO' " +
                    $",ClosingTime = '{closingTime}' " +
                    $"WHERE InventoryOrderItemId = {inventoryOrderItemId} ";
 
