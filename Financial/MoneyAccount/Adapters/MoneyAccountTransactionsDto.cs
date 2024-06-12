@@ -24,7 +24,7 @@ namespace Empiria.Trade.Financial.Adapters {
       get; internal set;
     }
 
-    public string OperationNumber {
+    public string TransactionNumber {
       get; internal set;
     }
 

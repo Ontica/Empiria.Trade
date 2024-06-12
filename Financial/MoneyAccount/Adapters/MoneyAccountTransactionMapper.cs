@@ -19,7 +19,7 @@ namespace Empiria.Trade.Financial.Adapters {
       var dto = new MoneyAccountTransactionDto {
         UID = transaction.UID,
         MoneyAccountUID = transaction.MoneyAccount.UID,
-        OperationNumber = transaction.ExtData,
+        TransactionNumber = transaction.ExtData,
         TransactionType = transaction.TransactionType.MapToNamedEntity(),
         TransactionDate = transaction.TransactionTime,
         Reference = transaction.ExtData,
