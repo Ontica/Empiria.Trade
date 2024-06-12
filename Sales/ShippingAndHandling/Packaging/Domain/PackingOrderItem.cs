@@ -124,9 +124,12 @@ namespace Empiria.Trade.Sales.ShippingAndHandling
     private void MapToPackagingOrderItem(string orderUID, string packingItemUID,
                   InventoryEntry inventory, MissingItemField missingItemFields) {
 
+      var warehouseBin = WarehouseBin.Parse(missingItemFields.WarehouseBinUID);
       var orderItem = OrderItem.Parse(missingItemFields.orderItemUID);
+      
       var existPackingItem = PackagingData.GetPackingOrderItem(
-                              packingItemUID, missingItemFields.orderItemUID);
+                              packingItemUID, missingItemFields.orderItemUID,
+                              warehouseBin.Id);
       
       if (existPackingItem.Count > 0) {
         this.PackingItemId = existPackingItem.First().PackingItemId;
@@ -138,10 +141,10 @@ namespace Empiria.Trade.Sales.ShippingAndHandling
       }
       
       this.OrderPacking = PackageForItem.Parse(packingItemUID);
-      this.OrderId = Order.Parse(orderUID).Id;
+      this.OrderId = orderItem.Order.Id;
       this.OrderItemId = orderItem.Id;
       this.InventoryEntry = inventory;
-      this.WarehouseBin = WarehouseBin.Parse(missingItemFields.WarehouseBinUID);
+      this.WarehouseBin = warehouseBin;
     }
 
 

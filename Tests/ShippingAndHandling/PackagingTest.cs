@@ -169,14 +169,14 @@ namespace Empiria.Trade.Tests {
 
       var usecase = PackagingUseCases.UseCaseInteractor();
 
-      string orderUID = "1d4fb713-8cda-4e6f-a4a0-9bba2f49fa40";
-      string packingOrderUID = "ee99917b-b008-4eb0-b240-9835f8994051";
+      string orderUID = "542e49eb-e7bb-459b-991f-d1856a615fc0";
+      string packingOrderUID = "1f8d3bb4-a172-4c17-b46e-568dee824b2f";
 
       var missingItemFields = new MissingItemField {
-        orderItemUID = "6549eeac-29ea-47a7-8ac1-0a0afc3a25fd",
-        WarehouseUID = "2f6dfb0d-137b-4309-94ac-c5f7b8fbc9df",
-        WarehouseBinUID = "48605b90-52e1-43d0-aeab-7125805863aa",
-        Quantity = 2
+        orderItemUID = "b7db3feb-ae09-4358-b0ce-56cb09448ff8",
+        //WarehouseUID = "2f6dfb0d-137b-4309-94ac-c5f7b8fbc9df",
+        WarehouseBinUID = "30b307d4-8e0b-4185-a1d2-ab13e3d47fac",
+        Quantity = 5
       };
 
       ISalesOrderDto sut = usecase.CreatePackingOrderItemFields(

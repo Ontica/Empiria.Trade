@@ -41,17 +41,10 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data
 
 
     internal FixedList<InventoryEntry> GetInventoryByVendorProduct(
-                                        int vendorProductId, string warehouseBinUID) {
+                                        int orderItemId, int warehouseBinId) {
 
-      var warehouseBin = string.Empty;
-
-      if (warehouseBinUID != string.Empty) {
-        warehouseBin = $" AND WarehouseBinId = " +
-                              $"{WarehouseBin.Parse(warehouseBinUID).Id}";
-      }
       string sql = $"SELECT * FROM TRDInventoryOrderItems " +
-                   $"WHERE InventoryOrderItemStatus = 'A' " +
-                   $"AND VendorProductId = {vendorProductId} {warehouseBin}";
+                   $"WHERE ItemReferenceId = {orderItemId} AND WarehouseBinId = {warehouseBinId} ";
 
       var dataOperation = DataOperation.Parse(sql);
 
@@ -97,14 +90,16 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data
     }
 
 
-    static internal FixedList<PackingOrderItem> GetPackingOrderItem(string packingItemUID, string orderItemUID) {
+    static internal FixedList<PackingOrderItem> GetPackingOrderItem(string packingItemUID, string orderItemUID, int warehouseBinId) {
 
       var orderPackingId = PackageForItem.Parse(packingItemUID).OrderPackingId;
       var orderItemId = OrderItem.Parse(orderItemUID).Id;
 
       string sql = $"SELECT * " +
                    $"FROM TRDPackagingItems " +
-                   $"WHERE OrderPackingId = {orderPackingId} AND OrderItemId = {orderItemId}";
+                   $"WHERE OrderPackingId = {orderPackingId} " +
+                   $"AND OrderItemId = {orderItemId} " +
+                   $"AND WarehouseBinId = {warehouseBinId} ";
 
       var dataOperation = DataOperation.Parse(sql);
 
