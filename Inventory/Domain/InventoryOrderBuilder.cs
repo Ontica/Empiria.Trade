@@ -155,6 +155,7 @@ namespace Empiria.Trade.Inventory.Domain {
       fields.VendorProductUID = inventoryItem.VendorProductUID;
       fields.WarehouseBinUID = inventoryItem.WarehouseBinUID;
       fields.InProcessOutputQuantity = inventoryItem.Quantity;
+      fields.Notes = "APARTADO";
       return fields;
     }
 

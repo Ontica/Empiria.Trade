@@ -239,6 +239,7 @@ namespace Empiria.Trade.Inventory.Data {
       string sql = $"UPDATE TRDInventoryOrderItems SET " +
                    $"InventoryOrderItemStatus = '{(char) InventoryStatus.Cerrado}' " +
                    $"{GetQuantityClauses(quantityDifference)} " +
+                   $",InventoryOrderItemNotes = 'APLICADO' " +
                    $",ClosingTime = '{closingTime}' " +
                    $"WHERE InventoryOrderItemId = {inventoryOrderItemId} ";
 
