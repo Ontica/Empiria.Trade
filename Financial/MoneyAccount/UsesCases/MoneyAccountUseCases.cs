@@ -136,10 +136,11 @@ namespace Empiria.Trade.Financial.UseCases
       return MoneyAccountTransactionType.GetList<MoneyAccountTransactionType>().MapToNamedEntityList();
     }
 
-    public MoneyAccountTransactionItemDto AddMoneyAccountTransactionItem(MoneyAccountTransactionItemFields fields) {
+    public MoneyAccountTransactionItemDto AddMoneyAccountTransactionItem(string moneyAccountTransactionUID, 
+                                                                         MoneyAccountTransactionItemFields fields) {
       Assertion.Require(fields, "fields");
 
-      var moneyAccountTransactionItem = new MoneyAccountTransactionItem(fields);
+      var moneyAccountTransactionItem = new MoneyAccountTransactionItem(moneyAccountTransactionUID, fields);
       moneyAccountTransactionItem.Save();
 
 

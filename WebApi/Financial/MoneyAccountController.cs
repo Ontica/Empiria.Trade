@@ -267,7 +267,7 @@ namespace Empiria.Trade.WebApi.Financial {
 
       using (var usecases = MoneyAccountUseCases.UseCaseInteractor()) {
 
-        var moneyAccountTransactionItemDto = usecases.AddMoneyAccountTransactionItem(fields);
+        var moneyAccountTransactionItemDto = usecases.AddMoneyAccountTransactionItem(transactionUID,fields);
 
         return new SingleObjectModel(this.Request, moneyAccountTransactionItemDto);
       }

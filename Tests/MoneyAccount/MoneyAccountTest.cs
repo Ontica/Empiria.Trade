@@ -41,7 +41,7 @@ namespace Empiria.Trade.Tests.MoneyAccount {
     public void ShouldAddNewMoneyAccountTransaction() {
 
       var fields = new MoneyAccountTransactionFields {
-        TransactionTypeUID = "eccd36f6-f326-4e56-ac28-89504f8ba588",
+        //TransactionTypeUID = "eccd36f6-f326-4e56-ac28-89504f8ba588",
         TransactionAmount = 3350.456m,
         Reference = "OC-E9399D93D",
         TransactionTime = DateTime.Now,
@@ -58,7 +58,7 @@ namespace Empiria.Trade.Tests.MoneyAccount {
     public void ShouldUpdateMoneyAccountTransaction() {
 
       var fields = new MoneyAccountTransactionFields {
-        UID = "38246295-08b8-4fac-84da-1a3a63b81850",
+        //UID = "38246295-08b8-4fac-84da-1a3a63b81850",
         TransactionTypeUID = "70c7e1cf-13a0-4b23-9044-1bf7ddbab5e2",
         TransactionAmount = 500,
         Reference = "PEMA-30",
@@ -67,7 +67,7 @@ namespace Empiria.Trade.Tests.MoneyAccount {
       };
 
       var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
-      var moneyAccountTransaction = moneyAccountUseCase.UpdateMoneyAccountTransaction(fields, fields.UID);
+      var moneyAccountTransaction = moneyAccountUseCase.UpdateMoneyAccountTransaction(fields, "38246295-08b8-4fac-84da-1a3a63b81850");
 
       Assert.NotNull(moneyAccountTransaction);
     }
@@ -196,8 +196,6 @@ namespace Empiria.Trade.Tests.MoneyAccount {
     public void ShouldAddNewMoneyAccountTransactionItem() {
 
       var fields = new MoneyAccountTransactionItemFields {
-        UID = "",
-        MoneyAccountTransactionUID = "d9c3e83b-5409-4c14-b501-88f3613bed3a",
         ItemTypeUID = "51adb2d1-2077-4750-872f-c68fa3891a9e",
         PaymentTypeUID = "36843e8f-0c79-419e-935c-bf814dd56871",
         Deposit = 3350.456m,
@@ -207,7 +205,7 @@ namespace Empiria.Trade.Tests.MoneyAccount {
       };
 
       var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
-      var moneyAccountTransactionItem = moneyAccountUseCase.AddMoneyAccountTransactionItem(fields);
+      var moneyAccountTransactionItem = moneyAccountUseCase.AddMoneyAccountTransactionItem("d9c3e83b-5409-4c14-b501-88f3613bed3a",fields);
 
       Assert.NotNull(moneyAccountTransactionItem);
     }
@@ -216,7 +214,6 @@ namespace Empiria.Trade.Tests.MoneyAccount {
     public void ShouldUpdateMoneyAccountTransactionItem() {
 
       var fields = new MoneyAccountTransactionItemFields {
-        UID = "d5f02fd5-f8ae-4bf1-add3-1aed20074597",
         ItemTypeUID = "eccd36f6-f326-4e56-ac28-89504f8ba588",
         PaymentTypeUID = "36843e8f-0c79-419e-935c-bf814dd56871",
         Deposit = 0.0m,
@@ -226,7 +223,7 @@ namespace Empiria.Trade.Tests.MoneyAccount {
       };
 
       var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
-      var moneyAccountTransactionItem = moneyAccountUseCase.UpdateMoneyAccountTransactionItem(fields, fields.UID);
+      var moneyAccountTransactionItem = moneyAccountUseCase.UpdateMoneyAccountTransactionItem(fields, "d5f02fd5-f8ae-4bf1-add3-1aed20074597");
 
       Assert.NotNull(moneyAccountTransactionItem);
     }

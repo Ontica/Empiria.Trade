@@ -23,15 +23,10 @@ namespace Empiria.Trade.Financial.Adapters {
 
     #region Public properties
 
-    public string UID {
-      get; set;
-    } = string.Empty;
-
-   
     public string TransactionTypeUID {
       get; set;
     }
-      
+
     public Decimal TransactionAmount {
       get; set;
     } = 0m;

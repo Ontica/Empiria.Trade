@@ -25,14 +25,6 @@ namespace Empiria.Trade.Financial {
 
     #region Public properties
 
-    public string UID {
-      get; set;
-    } = string.Empty;
-    
-    public string MoneyAccountTransactionUID {
-      get; set;
-    } 
-
     public string ItemTypeUID {
       get; set;
     }
