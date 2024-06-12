@@ -194,7 +194,7 @@ namespace Empiria.Trade.Inventory.Data {
     static internal void UpdateInventoryOrderStatus(string inventoryOrderUID, DateTime closingTime, InventoryStatus status) {
       
       string sql = $"UPDATE TRDInventoryOrders SET " +
-                   $"InventoryOrderStatus = '{(char) status}' " +
+                   $"InventoryOrderStatus = '{(char) status}', " +
                    $"ClosingTime = '{closingTime}' " +
                    $"WHERE InventoryOrderUID IN('{inventoryOrderUID}')";
 
