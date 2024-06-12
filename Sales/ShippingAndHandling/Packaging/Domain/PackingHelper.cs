@@ -68,9 +68,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       var packagesList = new List<PackagedForItem>();
 
       foreach (var entry in packItems) {
-        //var packageType = PackageType.Parse(entry.PackageTypeId);
-        //packageType.GetVolumeAttributes();
-
+        
         PackageType packageType = GetPackageTypeById(entry.PackageTypeId);
 
         var package = new PackagedForItem();
@@ -216,17 +214,21 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       foreach (var inventoryItem in inventoryItems.Where(x => x.VendorProduct.Id == item.VendorProductId)) {
 
         var inventoryWhBin = WarehouseBin.Parse(inventoryItem.WarehouseBin.Id);
-
+        
         var exist = whBinList.Find(
           x => x.UID == inventoryWhBin.UID && x.OrderItemUID == orderItemUID);
 
         if (exist == null) {
+
+          var packingItemsQuantity = data.GetPackingOrderItemByOrderItemAndWarehouseBin(
+            item.OrderItemId, inventoryWhBin.Id).Sum(x=>x.Quantity);
+
           var whBin = new WarehouseBinForPacking();
           whBin.UID = inventoryWhBin.UID;
           whBin.OrderItemUID = orderItemUID;
           whBin.Name = inventoryWhBin.WarehouseBinName;
           whBin.WarehouseName = inventoryWhBin.Tag;
-          whBin.Stock = inventoryItem.InProcessOutputQuantity;
+          whBin.Stock = inventoryItem.InProcessOutputQuantity - packingItemsQuantity;
           whBinList.Add(whBin);
         }
       }

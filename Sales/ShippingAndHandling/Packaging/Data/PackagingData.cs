@@ -113,6 +113,19 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data
     }
 
 
+    internal FixedList<PackingOrderItem> GetPackingOrderItemByOrderItemAndWarehouseBin(int orderItemId, int warehouseBinId) {
+
+      string sql = $"SELECT * " +
+                   $"FROM TRDPackagingItems " +
+                   $"WHERE OrderItemId = {orderItemId} AND WarehouseBinId IN ({warehouseBinId})";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetPlainObjectFixedList<PackingOrderItem>(dataOperation);
+
+    }
+
+
     internal FixedList<OrderItemTemp> GetOrderItems(string orderUid) {
 
       int orderId = Order.Parse(orderUid).Id;
