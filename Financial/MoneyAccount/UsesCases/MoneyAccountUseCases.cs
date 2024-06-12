@@ -136,36 +136,39 @@ namespace Empiria.Trade.Financial.UseCases
       return MoneyAccountTransactionType.GetList<MoneyAccountTransactionType>().MapToNamedEntityList();
     }
 
-    public MoneyAccountTransactionItemDto AddMoneyAccountTransactionItem(string moneyAccountTransactionUID, 
+    public MoneyAccountTransactionDto AddMoneyAccountTransactionItem(string moneyAccountTransactionUID, 
                                                                          MoneyAccountTransactionItemFields fields) {
       Assertion.Require(fields, "fields");
 
       var moneyAccountTransactionItem = new MoneyAccountTransactionItem(moneyAccountTransactionUID, fields);
       moneyAccountTransactionItem.Save();
 
+      moneyAccountTransactionItem.MoneyAccountTransaction.LoadItems();
 
-      return MoneyAccountTransactionItemMapper.Map(moneyAccountTransactionItem);
+      return MoneyAccountTransactionMapper.Map(moneyAccountTransactionItem.MoneyAccountTransaction);
     }
 
-    public MoneyAccountTransactionItemDto UpdateMoneyAccountTransactionItem(MoneyAccountTransactionItemFields fields, string moneyAccountTransactionItemUID) {
+    public MoneyAccountTransactionDto UpdateMoneyAccountTransactionItem(MoneyAccountTransactionItemFields fields, string moneyAccountTransactionItemUID) {
       Assertion.Require(fields, "fields");
 
       var moneyAccountTransactionItem = MoneyAccountTransactionItem.Parse(moneyAccountTransactionItemUID);
       moneyAccountTransactionItem.Update(fields);
       moneyAccountTransactionItem.Save();
 
+      moneyAccountTransactionItem.MoneyAccountTransaction.LoadItems();
 
-      return MoneyAccountTransactionItemMapper.Map(moneyAccountTransactionItem);
+      return MoneyAccountTransactionMapper.Map(moneyAccountTransactionItem.MoneyAccountTransaction);
     }
 
-    public MoneyAccountTransactionItemDto CancelMoneyAccountTransactionItem(string moneyAccountTransactionITemUID) {
+    public MoneyAccountTransactionDto CancelMoneyAccountTransactionItem(string moneyAccountTransactionITemUID) {
       Assertion.Require(moneyAccountTransactionITemUID, "moneyAccountTransactionUID");
 
       var moneyAccountTransactionItem = MoneyAccountTransactionItem.Parse(moneyAccountTransactionITemUID);
       moneyAccountTransactionItem.Cancel();
 
+      moneyAccountTransactionItem.MoneyAccountTransaction.LoadItems();
 
-      return MoneyAccountTransactionItemMapper.Map(moneyAccountTransactionItem);
+      return MoneyAccountTransactionMapper.Map(moneyAccountTransactionItem.MoneyAccountTransaction);
     }
 
     public FixedList<MoneyAccountTransactionItemDto> GetMoneyAccountTransactionItems(string moneyAccountTransactionUID) {
