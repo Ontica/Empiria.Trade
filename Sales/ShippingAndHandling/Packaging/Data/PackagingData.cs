@@ -108,7 +108,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data
     }
 
 
-    internal FixedList<PackingOrderItem> GetPackingOrderItemByOrderItemAndWarehouseBin(int orderItemId, int warehouseBinId) {
+    internal FixedList<PackingOrderItem> GetPackingItemByOrderItemAndWarehouseBin(int orderItemId, int warehouseBinId) {
 
       string sql = $"SELECT * " +
                    $"FROM TRDPackagingItems " +

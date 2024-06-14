@@ -31,8 +31,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       var missingItems = new List<MissingItem>();
 
-      var inventoryOrder = InventoryOrderData.GetInventoryOrdersByTypeAndReferenceId(
-                            5, Order.Parse(orderUid).Id).FirstOrDefault();
+      var inventoryOrder = InventoryOrderData.GetInventoryOrderBySaleOrder(5, Order.Parse(orderUid).Id);
       
       if (inventoryOrder == null) {
         return new FixedList<MissingItem>();
@@ -133,8 +132,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
     internal PickingData GetPickingData(string orderUID) {
 
-      var inventoryOrder = InventoryOrderData.GetInventoryOrdersByTypeAndReferenceId(
-        5, SalesOrder.Parse(orderUID).Id).FirstOrDefault();
+      var inventoryOrder = InventoryOrderData.GetInventoryOrderBySaleOrder(5, SalesOrder.Parse(orderUID).Id);
 
       if (inventoryOrder == null) {
         return new PickingData();
@@ -213,13 +211,14 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       var data = new PackagingData();
       var whBinList = new List<WarehouseBinForPacking>();
-      var inventoryItems = InventoryOrderData.GetInventoryItemsByOrderUID(inventoryOrder.InventoryOrderUID);
+      var inventoryItems = 
+        InventoryOrderData.GetInventoryItemsByInventoryOrderUID(inventoryOrder.InventoryOrderUID);
 
       foreach (var inventoryItem in inventoryItems.Where(x => x.VendorProduct.Id == item.VendorProductId)) {
 
         var inventoryWhBin = WarehouseBin.Parse(inventoryItem.WarehouseBin.Id);
 
-        var packingItemsQuantity = data.GetPackingOrderItemByOrderItemAndWarehouseBin(
+        var packingItemsQuantity = data.GetPackingItemByOrderItemAndWarehouseBin(
             item.OrderItemId, inventoryWhBin.Id).Sum(x => x.Quantity);
 
         var inventoryStock = inventoryItem.InProcessOutputQuantity - packingItemsQuantity;

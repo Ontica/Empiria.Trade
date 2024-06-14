@@ -9,6 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using Empiria.Trade.Core.Catalogues;
+using Empiria.Trade.Inventory.Adapters;
 using Empiria.Trade.Products.Adapters;
 
 namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
@@ -40,7 +41,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
   } // class PackingDto
 
 
-  public class PickingDataDto {
+  public class PickingDataDto : InventoryOrderDto {
 
 
     public string OrderUID {
@@ -48,28 +49,30 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
     } = string.Empty;
 
 
-    public string InventoryOrderNo {
-      get; set;
-    } = string.Empty;
+    //public NamedEntityDto InventoryOrderType {
+    //  get; internal set;
+    //} = new NamedEntityDto("", "");
 
 
-    public NamedEntityDto Responsible {
-      get; set;
-    } = new NamedEntityDto("", "");
+    //public string InventoryOrderNo {
+    //  get; set;
+    //} = string.Empty;
 
 
-    public NamedEntityDto AssignedTo {
-      get; set;
-    } = new NamedEntityDto("", "");
+    //public NamedEntityDto Responsible {
+    //  get; set;
+    //} = new NamedEntityDto("", "");
 
 
-    public string Notes {
-      get; set;
-    } = string.Empty;
-    public NamedEntityDto InventoryOrderType {
-      get;
-      internal set;
-    }
+    //public NamedEntityDto AssignedTo {
+    //  get; set;
+    //} = new NamedEntityDto("", "");
+
+
+    //public string Notes {
+    //  get; set;
+    //} = string.Empty;
+    
   }
 
 
