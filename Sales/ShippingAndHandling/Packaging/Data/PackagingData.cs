@@ -40,19 +40,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data
     }
 
 
-    internal FixedList<InventoryEntry> GetInventoryByVendorProduct(
-                                        int orderItemId, int warehouseBinId) {
-
-      string sql = $"SELECT * FROM TRDInventoryOrderItems " +
-                   $"WHERE ItemReferenceId = {orderItemId} AND WarehouseBinId = {warehouseBinId} ";
-
-      var dataOperation = DataOperation.Parse(sql);
-
-      return DataReader.GetPlainObjectFixedList<InventoryEntry>(dataOperation);
-
-    }
-
-
     static internal FixedList<PackageForItem> GetPackagesForItemsByOrder(string orderUid) {
 
       int orderId = Order.Parse(orderUid).Id;
@@ -90,7 +77,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data
     }
 
 
-    static internal FixedList<PackingOrderItem> GetPackingOrderItem(string packingItemUID, string orderItemUID, int warehouseBinId) {
+    static internal FixedList<PackingOrderItem> GetPackingOrderItem(
+      string packingItemUID, string orderItemUID, int warehouseBinId) {
 
       var orderPackingId = PackageForItem.Parse(packingItemUID).OrderPackingId;
       var orderItemId = OrderItem.Parse(orderItemUID).Id;
@@ -108,7 +96,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data
     }
 
 
-    internal FixedList<PackingOrderItem> GetPackingItemByOrderItemAndWarehouseBin(int orderItemId, int warehouseBinId) {
+    internal FixedList<PackingOrderItem> GetPackingItemByOrderItemAndWarehouseBin(
+      int orderItemId, int warehouseBinId) {
 
       string sql = $"SELECT * " +
                    $"FROM TRDPackagingItems " +
@@ -147,8 +136,9 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data
     internal static void WritePackingOrderItem(PackingOrderItem orderItem) {
 
       var op = DataOperation.Parse("writePackagingItem",
-        orderItem.PackingItemId, orderItem.UID, orderItem.OrderPacking.OrderPackingId, orderItem.OrderId,
-        orderItem.OrderItemId, orderItem.InventoryEntry.InventoryOrderItemId, orderItem.WarehouseBin.Id, orderItem.Quantity);
+        orderItem.PackingItemId, orderItem.UID, orderItem.OrderPacking.OrderPackingId,
+        orderItem.OrderId, orderItem.OrderItemId, orderItem.InventoryEntry.InventoryOrderItemId,
+        orderItem.WarehouseBin.Id, orderItem.Quantity);
 
       DataWriter.Execute(op);
     }

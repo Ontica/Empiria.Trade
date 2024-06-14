@@ -49,30 +49,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
     } = string.Empty;
 
 
-    //public NamedEntityDto InventoryOrderType {
-    //  get; internal set;
-    //} = new NamedEntityDto("", "");
-
-
-    //public string InventoryOrderNo {
-    //  get; set;
-    //} = string.Empty;
-
-
-    //public NamedEntityDto Responsible {
-    //  get; set;
-    //} = new NamedEntityDto("", "");
-
-
-    //public NamedEntityDto AssignedTo {
-    //  get; set;
-    //} = new NamedEntityDto("", "");
-
-
-    //public string Notes {
-    //  get; set;
-    //} = string.Empty;
-    
   }
 
 

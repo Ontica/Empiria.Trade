@@ -65,6 +65,8 @@ namespace Empiria.Trade.Inventory.Domain {
       if (inventoryOrder.InventoryOrderItems.Count > 0) {
         actions.CanClose = true;
       }
+      // TODO HABILITAR CUANDO EXISTAN USUARIOS DE ALMACEN
+
       //if (inventoryOrder.ResponsibleId == ExecutionServer.CurrentUserId ||
       //    inventoryOrder.PostedById == ExecutionServer.CurrentUserId) {
 
@@ -113,7 +115,7 @@ namespace Empiria.Trade.Inventory.Domain {
 
     internal void UpdateInventoryOrderForPicking(InventoryOrderFields fields) {
 
-      var inventoryOrder = InventoryOrderData.GetInventoryOrderBySaleOrder(5, fields.ReferenceId);
+      var inventoryOrder = InventoryOrderData.GetInventoryOrderBySalesOrder(5, fields.ReferenceId);
 
       if (inventoryOrder != null) {
 

@@ -202,13 +202,13 @@ namespace Empiria.Trade.Inventory {
 
       this.InventoryOrder = InventoryOrderEntry.Parse(inventoryOrderUID);
       this.InventoryOrderTypeItemId = fields.InventoryOrderTypeItemId;
-      this.ItemReferenceId = fields.ItemReferenceId; //External.Parse(fields.ItemReferenceUID).Id;
+      this.ItemReferenceId = fields.ItemReferenceId;
       this.ItemNotes = fields.Notes;
       this.VendorProduct = VendorProduct.Parse(fields.VendorProductUID);
       this.WarehouseBin = WarehouseBin.Parse(fields.WarehouseBinUID);
       this.CountingQuantity = fields.Quantity;
-      this.InProcessInputQuantity = fields.InProcessInputQuantity; // TODO AGREGAR REFERENCIA
-      this.InProcessOutputQuantity = fields.InProcessOutputQuantity; // REFERENCIA EN ORDEN DE SALIDA POR PEDIDO
+      this.InProcessInputQuantity = fields.InProcessInputQuantity;
+      this.InProcessOutputQuantity = fields.InProcessOutputQuantity;
       this.InputQuantity = fields.InputQuantity;
       this.OutputQuantity = fields.OutputQuantity;
       this.UnitId = fields.UnitId;
@@ -216,7 +216,7 @@ namespace Empiria.Trade.Inventory {
       this.OutputCost = fields.OutputCost; // TODO PREGUNTAR SI ES PRECIO DE VENTA EN PEDIDO
       this.CurrencyId = fields.CurrencyId;
       this.ExtData = "";
-      this.ClosingTime = new DateTime(2049, 01, 01); //TODO CAMBIA CUANDO SE CIERRA LA ORDEN
+      this.ClosingTime = new DateTime(2049, 01, 01);
       this.PostingTime = DateTime.Now;
       this.PostedById = ExecutionServer.CurrentUserId;
       this.Status = InventoryStatus.Abierto;

@@ -193,7 +193,6 @@ namespace Empiria.Trade.Inventory {
       if (inventoryOrderUID != string.Empty) {
         this.InventoryOrderId = Parse(inventoryOrderUID).InventoryOrderId;
         this.InventoryOrderUID = inventoryOrderUID;
-        //this.InventoryOrderNo = GenerateOrderNumber();
       } else {
         this.PostingTime = DateTime.Now;
       }

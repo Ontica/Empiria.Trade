@@ -13,6 +13,7 @@ using System.Linq;
 using Empiria.Trade.Core;
 using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Inventory;
+using Empiria.Trade.Inventory.Data;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.ShippingAndHandling.Data;
 using Newtonsoft.Json;
@@ -45,7 +46,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
       var orderItem = OrderItem.Parse(orderItemUID);
       var warehouseBinId = WarehouseBin.Parse(warehouseBinUID).Id;
 
-      FixedList<InventoryEntry> inventories = data.GetInventoryByVendorProduct(
+      FixedList<InventoryEntry> inventories = InventoryOrderData.GetInventoryItemsBySalesOrderAndWhBin(
                                               orderItem.Id, warehouseBinId);
       var inventory = inventories.Last();
       return inventory;
@@ -62,11 +63,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
 
     public PackagedData GetPackagedData(string orderUID) {
 
-      //FixedList<PackageForItem> packsForItems = GetPackagesForItemsData(orderUID);
-
       var helper = new PackingHelper();
-
-      //FixedList<PackagedForItem> packagesForItems = helper.GetPackagesByOrder(orderUID, packsForItems);
 
       FixedList<PackagedForItem> packagesForItems = GetPackagedForItemList(orderUID);
 
@@ -131,7 +128,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
       foreach (var packageType in packageTypes) {
 
         packageType.GetVolumeAttributes();
-        //packageType.GetTotalVolume();
       }
     }
 

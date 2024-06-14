@@ -44,10 +44,6 @@ namespace Empiria.Trade.Inventory.UseCases {
       return new List<NamedEntityDto> { type1, type2, type3, type4, type5 }.ToFixedList();
     }
 
-
-
-
-
     #endregion Public methods
 
   } // class InventoryOrderCataloguesUseCases

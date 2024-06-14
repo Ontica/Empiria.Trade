@@ -87,7 +87,7 @@ namespace Empiria.Trade.Inventory.Data {
     }
 
 
-    static internal InventoryOrderEntry GetInventoryOrderBySaleOrder(
+    static internal InventoryOrderEntry GetInventoryOrderBySalesOrder(
       int inventoryOrderTypeId, int referenceId) {
 
       string sql = $"SELECT * FROM TRDInventoryOrders " +
@@ -107,6 +107,18 @@ namespace Empiria.Trade.Inventory.Data {
       var dataOperation = DataOperation.Parse(sql);
 
       return DataReader.GetPlainObject<InventoryOrderEntry>(dataOperation);
+    }
+
+
+    static internal FixedList<InventoryEntry> GetInventoryItemsBySalesOrderAndWhBin(
+                                        int orderItemId, int warehouseBinId) {
+
+      string sql = $"SELECT * FROM TRDInventoryOrderItems " +
+                   $"WHERE ItemReferenceId = {orderItemId} AND WarehouseBinId = {warehouseBinId} ";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetPlainObjectFixedList<InventoryEntry>(dataOperation);
     }
 
 

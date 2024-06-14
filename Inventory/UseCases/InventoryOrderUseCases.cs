@@ -198,7 +198,7 @@ namespace Empiria.Trade.Inventory.UseCases {
       int inventoryOrderTypeId, int referenceId) {
 
       InventoryOrderEntry inventoryOrder =
-        InventoryOrderData.GetInventoryOrderBySaleOrder(inventoryOrderTypeId, referenceId);
+        InventoryOrderData.GetInventoryOrderBySalesOrder(inventoryOrderTypeId, referenceId);
 
       InventoryOrderData.UpdateInventoryOrderItemsByOrder(inventoryOrder.InventoryOrderId, DateTime.Now);
     }
