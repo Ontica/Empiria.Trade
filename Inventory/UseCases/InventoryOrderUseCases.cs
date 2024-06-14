@@ -43,8 +43,6 @@ namespace Empiria.Trade.Inventory.UseCases {
     public InventoryOrderDto CloseInventoryOrderStatus(string inventoryOrderUID) {
       Assertion.Require(inventoryOrderUID, nameof(inventoryOrderUID));
 
-
-
       InventoryOrderData.UpdateInventoryOrderStatus(
         inventoryOrderUID, DateTime.Now, InventoryStatus.Cerrado);
 
@@ -189,8 +187,7 @@ namespace Empiria.Trade.Inventory.UseCases {
 
     internal void UpdateInventoryOrdersForSales(int inventoryOrderTypeId, int referenceId) {
 
-      DateTime closingTime = DateTime.Now;
-      InventoryOrderData.UpdateInventoryOrdersForSales(inventoryOrderTypeId, referenceId, closingTime);
+      InventoryOrderData.UpdateInventoryOrdersForSales(inventoryOrderTypeId, referenceId);
     }
 
 
@@ -200,7 +197,7 @@ namespace Empiria.Trade.Inventory.UseCases {
       InventoryOrderEntry inventoryOrder =
         InventoryOrderData.GetInventoryOrderBySalesOrder(inventoryOrderTypeId, referenceId);
 
-      InventoryOrderData.UpdateInventoryOrderItemsByOrder(inventoryOrder.InventoryOrderId, DateTime.Now);
+      InventoryOrderData.UpdateInventoryOrderItemsByOrder(inventoryOrder.InventoryOrderId);
     }
 
 

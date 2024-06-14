@@ -47,7 +47,7 @@ namespace Empiria.Trade.Tests.Inventory {
 
       var usecase = InventoryOrderUseCases.UseCaseInteractor();
 
-      string inventoryOrderUID = "bed5c575-0641-474e-abf0-05a3191d9446";
+      string inventoryOrderUID = "12a7f9eb-d93b-415b-84af-7c0f7f782b40";
       InventoryOrderDto sut = usecase.CloseInventoryOrderStatus(inventoryOrderUID);
 
       Assert.NotNull(sut);

@@ -205,7 +205,7 @@ namespace Empiria.Trade.Tests {
     public void UpdateShippingStatusTest() {
 
       var usecase = DeliveryUseCase.UseCaseInteractor();
-      string shippingUID = "fe0e2910-44b8-4f08-855c-de456c86bd97";
+      string shippingUID = "71200bf7-5a31-4ea2-b125-e5c638187736";
 
       ShippingDto sut = usecase.UpdateShippingStatus(shippingUID);
       Assert.NotNull(sut);

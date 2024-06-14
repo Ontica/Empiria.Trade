@@ -194,7 +194,7 @@ namespace Empiria.Trade.Inventory.Data {
       
       string sql = $"UPDATE TRDInventoryOrders SET " +
                    $"InventoryOrderStatus = '{(char) status}', " +
-                   $"ClosingTime = '{closingTime}' " +
+                   $"ClosingTime = '{ConvertDateTimeToString()}' " +
                    $"WHERE InventoryOrderUID IN('{inventoryOrderUID}')";
 
       var dataOperation = DataOperation.Parse(sql);
@@ -203,11 +203,11 @@ namespace Empiria.Trade.Inventory.Data {
     }
 
 
-    static internal void UpdateInventoryOrdersForSales(int inventoryOrderTypeId, int referenceId, DateTime closingTime) {
+    static internal void UpdateInventoryOrdersForSales(int inventoryOrderTypeId, int referenceId) {
 
       string sql = $"UPDATE TRDInventoryOrders SET " +
                    $"InventoryOrderStatus = '{(char) InventoryStatus.Cerrado}' " +
-                   $",ClosingTime = '{closingTime}' " +
+                   $",ClosingTime = '{ConvertDateTimeToString()}' " +
                    $"WHERE InventoryOrderTypeId = {inventoryOrderTypeId} " +
                    $"AND ReferenceId = {referenceId} ";
 
@@ -217,14 +217,14 @@ namespace Empiria.Trade.Inventory.Data {
     }
 
 
-    internal static void UpdateInventoryOrderItemsByOrder(int inventoryOrderId, DateTime closingTime) {
+    internal static void UpdateInventoryOrderItemsByOrder(int inventoryOrderId) {
 
       string sql = $"UPDATE TRDInventoryOrderItems SET " +
                    $"InventoryOrderItemStatus = '{(char) InventoryStatus.Cerrado}' " +
                    $",OutputQuantity = InProcessOutputQuantity " +
                    $",InProcessOutputQuantity = 0 " +
                    $",InventoryOrderItemNotes = 'APLICADO' " +
-                   $",ClosingTime = '{closingTime}' " +
+                   $",ClosingTime = '{ConvertDateTimeToString()}' " +
                    $"WHERE InventoryOrderId = {inventoryOrderId} ";
 
       var dataOperation = DataOperation.Parse(sql);
@@ -232,14 +232,14 @@ namespace Empiria.Trade.Inventory.Data {
       DataWriter.Execute(dataOperation);
     }
 
-
+    
     internal static void UpdateInventoryOrderItemsStatusByOrder(
       int inventoryOrderItemId, decimal quantityDifference, DateTime closingTime) {
 
       string sql = $"UPDATE TRDInventoryOrderItems SET " +
                    $"InventoryOrderItemStatus = '{(char) InventoryStatus.Cerrado}' " +
                    $"{GetQuantityClauses(quantityDifference)} " +
-                   $",ClosingTime = '{closingTime}' " +
+                   $",ClosingTime = '{ConvertDateTimeToString()}' " +
                    $"WHERE InventoryOrderItemId = {inventoryOrderItemId} ";
 
       var dataOperation = DataOperation.Parse(sql);
@@ -262,6 +262,11 @@ namespace Empiria.Trade.Inventory.Data {
     }
 
 
+    static private string ConvertDateTimeToString() {
+
+      return $"{DateTime.Now.Year}/{DateTime.Now.Day}/{DateTime.Now.Month} " +
+             $"{DateTime.Now.Hour}:{DateTime.Now.Minute}:{DateTime.Now.Second}";
+    }
 
     #endregion Private methods
 

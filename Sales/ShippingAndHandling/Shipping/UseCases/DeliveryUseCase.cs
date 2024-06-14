@@ -83,7 +83,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
         inventoryUseCases.UpdateInventoryOrdersForSales(5, orderId);
 
         UpdateInventoryOrderItemsForSales(5, orderId);
-
       }
     }
 
