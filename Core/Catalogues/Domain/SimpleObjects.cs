@@ -15,55 +15,69 @@ using Empiria.Trade.Core.Common;
 namespace Empiria.Trade.Core.Catalogues {
 
 
-    /// <summary>Represents a simple object.</summary>
-    public class SimpleObjects {
+  /// <summary>Represents a simple object.</summary>
+  public class SimpleObjects {
 
 
-        #region Public methods
+    #region Public methods
 
 
-        public FixedList<SimpleObjectData> GetParcelSupplierList() {
-            
-            return GetSimpleObjectDataList(1063);
+    public FixedList<SimpleObjectData> GetParcelSupplierList() {
 
-        }
+      return GetSimpleObjectDataList(1063);
 
-
-        public FixedList<SimpleObjectData> GetSimpleObjectDataList(int objectTypeId) {
-            var data = new CataloguesData();
-
-            var simpleObjectList = data.GetSimpleObjectDataList(objectTypeId);
-
-            return simpleObjectList;
-        }
+    }
 
 
-        public FixedList<INamedEntity> MergeSimpleObjectToNamedEntityDto(FixedList<SimpleObjectData> simpleObjectList) {
+    public FixedList<SimpleObjectData> GetSimpleObjectDataList(int objectTypeId) {
+      var data = new CataloguesData();
 
-            var returnedNamed = new List<INamedEntity>();
+      var simpleObjectList = data.GetSimpleObjectDataList(objectTypeId);
 
-            foreach (var simpleObject in simpleObjectList) {
-
-                var namedDto = new NamedEntity(simpleObject.ObjectKey, simpleObject.Name);
-
-                returnedNamed.Add(namedDto);
-            }
-
-            return returnedNamed.ToFixedList();
-        }
+      return simpleObjectList;
+    }
 
 
-        #endregion Public methods
+    public FixedList<INamedEntity> MergeSimpleObjectToNamedEntityDto(FixedList<SimpleObjectData> simpleObjectList) {
+
+      var returnedNamed = new List<INamedEntity>();
+
+      foreach (var simpleObject in simpleObjectList) {
+
+        var namedDto = new NamedEntity(simpleObject.ObjectKey, simpleObject.Name);
+
+        returnedNamed.Add(namedDto);
+      }
+
+      return returnedNamed.ToFixedList();
+    }
 
 
-        #region Private methods
+    static public string ConcatIntListIntoString(List<int> intList) {
+
+      if (intList.Count == 0) {
+        return string.Empty;
+      }
+
+      string stringList = "";
+      foreach (var id in intList) {
+        stringList += $"{id},";
+      }
+
+      return stringList.Remove(stringList.Length - 1, 1);
+    }
+
+    #endregion Public methods
+
+
+    #region Private methods
 
 
 
 
-        #endregion Private methods
+    #endregion Private methods
 
 
-    } // class SimpleObjects
+  } // class SimpleObjects
 
 } // namespace Empiria.Trade.Core.Catalogues
