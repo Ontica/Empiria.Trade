@@ -87,7 +87,7 @@ namespace Empiria.Trade.Inventory.Domain {
     private void GetInventoryItemsForOrder(InventoryOrderEntry inventoryOrder) {
 
       FixedList<InventoryOrderItem> items =
-        InventoryOrderData.GetInventoryItemsByOrderUID(inventoryOrder.InventoryOrderUID);
+        InventoryOrderData.GetInventoryItemsByInventoryOrderUID(inventoryOrder.InventoryOrderUID);
 
       if (items.Count > 0) {
         inventoryOrder.InventoryOrderItems = items;
@@ -113,14 +113,13 @@ namespace Empiria.Trade.Inventory.Domain {
 
     internal void UpdateInventoryOrderForPicking(InventoryOrderFields fields) {
 
-      var inventoryOrder = InventoryOrderData.GetInventoryOrdersByTypeAndReferenceId(
-        5, fields.ReferenceId).FirstOrDefault();
+      var inventoryOrder = InventoryOrderData.GetInventoryOrderBySaleOrder(5, fields.ReferenceId);
 
       if (inventoryOrder != null) {
 
         var inventoryUpdated = CreateInventoryOrder(fields, inventoryOrder.InventoryOrderUID);
 
-        InventoryOrderHelper.CreateOrUpdateInventoryOrderItemsForPicking(inventoryUpdated);
+        InventoryOrderHelper.CreateOrUpdateInventoryItemsForPicking(inventoryUpdated.InventoryOrderUID);
       }
     }
 

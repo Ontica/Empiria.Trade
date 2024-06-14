@@ -39,38 +39,16 @@ namespace Empiria.Trade.Inventory.UseCases {
     #region Public methods
 
 
-    public InventoryOrderItem GetInventoryOrderItemByUID(string itemUID) {
-
-      return InventoryOrderItem.Parse(itemUID);
-    }
-
-
-    public void CreateInventoryOrderBySale(FixedList<InventoryItems> inventoryItems) {
-      Assertion.Require(inventoryItems, nameof(inventoryItems));
-
-      var builder = new InventoryOrderBuilder();
-
-      var fields = builder.MapToInventoryOrderFields(inventoryItems.FirstOrDefault());
-
-      InventoryOrderEntry inventoryOrder = builder.CreateInventoryOrder(fields, "");
-
-      foreach (var inventoryItem in inventoryItems) {
-
-        InventoryOrderItemFields itemFields = builder.MapToInventoryOrderItemFields(inventoryItem);
-
-        builder.CreateInventoryOrderItem(inventoryOrder.InventoryOrderUID, itemFields);
-      }
-
-    }
-
 
     public InventoryOrderDto CloseInventoryOrderStatus(string inventoryOrderUID) {
       Assertion.Require(inventoryOrderUID, nameof(inventoryOrderUID));
 
+
+
       InventoryOrderData.UpdateInventoryOrderStatus(
         inventoryOrderUID, DateTime.Now, InventoryStatus.Cerrado);
 
-      var inventoryOrderItems = InventoryOrderData.GetInventoryItemsByOrderUID(inventoryOrderUID);
+      var inventoryOrderItems = InventoryOrderData.GetInventoryItemsByInventoryOrderUID(inventoryOrderUID);
 
       foreach (var item in inventoryOrderItems) {
 
@@ -98,6 +76,25 @@ namespace Empiria.Trade.Inventory.UseCases {
     }
 
 
+    public void CreateInventoryOrderBySale(FixedList<InventoryItems> inventoryItems) {
+      Assertion.Require(inventoryItems, nameof(inventoryItems));
+
+      var builder = new InventoryOrderBuilder();
+
+      var fields = builder.MapToInventoryOrderFields(inventoryItems.FirstOrDefault());
+
+      InventoryOrderEntry inventoryOrder = builder.CreateInventoryOrder(fields, "");
+
+      foreach (var inventoryItem in inventoryItems) {
+
+        InventoryOrderItemFields itemFields = builder.MapToInventoryOrderItemFields(inventoryItem);
+
+        builder.CreateInventoryOrderItem(inventoryOrder.InventoryOrderUID, itemFields);
+      }
+
+    }
+
+
     public InventoryOrderDto CreateInventoryOrderItem(string inventoryOrderUID,
       InventoryOrderItemFields fields) {
       Assertion.Require(inventoryOrderUID, nameof(inventoryOrderUID));
@@ -106,6 +103,12 @@ namespace Empiria.Trade.Inventory.UseCases {
       var builder = new InventoryOrderBuilder();
       builder.CreateInventoryOrderItem(inventoryOrderUID, fields);
       return GetInventoryOrderByUID(inventoryOrderUID);
+    }
+
+
+    public InventoryOrderItem GetInventoryOrderItemByUID(string itemUID) {
+
+      return InventoryOrderItem.Parse(itemUID);
     }
 
 
@@ -156,7 +159,7 @@ namespace Empiria.Trade.Inventory.UseCases {
     }
 
 
-    public InventoryOrderDataDto GetInventoryCountOrderList(InventoryOrderQuery query) {
+    public InventoryOrderDataDto GetInventoryOrderList(InventoryOrderQuery query) {
       Assertion.Require(query, nameof(query));
 
       var list = InventoryOrderData.GetInventoryOrderList(query);
@@ -184,17 +187,18 @@ namespace Empiria.Trade.Inventory.UseCases {
     }
 
 
-    internal void UpdateInventoryOrderByTypeAndReferenceId(int inventoryOrderTypeId, int referenceId) {
+    internal void UpdateInventoryOrdersForSales(int inventoryOrderTypeId, int referenceId) {
 
-      InventoryOrderData.UpdateInventoryOrderByTypeAndReferenceId(inventoryOrderTypeId, referenceId);
+      DateTime closingTime = DateTime.Now;
+      InventoryOrderData.UpdateInventoryOrdersForSales(inventoryOrderTypeId, referenceId, closingTime);
     }
 
 
-    internal void UpdateInventoryOrderItemsByTypeAndReferenceId(
+    internal void UpdateInventoryOrderItemsForSales(
       int inventoryOrderTypeId, int referenceId) {
 
       InventoryOrderEntry inventoryOrder =
-        InventoryOrderData.GetInventoryOrderByTypeAndReferenceId(inventoryOrderTypeId, referenceId);
+        InventoryOrderData.GetInventoryOrderBySaleOrder(inventoryOrderTypeId, referenceId);
 
       InventoryOrderData.UpdateInventoryOrderItemsByOrder(inventoryOrder.InventoryOrderId, DateTime.Now);
     }

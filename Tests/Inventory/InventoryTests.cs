@@ -125,7 +125,7 @@ namespace Empiria.Trade.Tests.Inventory {
         Status = InventoryStatus.Todos
       };
 
-      InventoryOrderDataDto sut = usecase.GetInventoryCountOrderList(query);
+      InventoryOrderDataDto sut = usecase.GetInventoryOrderList(query);
       Assert.NotNull(sut);
     }
 

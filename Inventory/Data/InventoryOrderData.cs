@@ -63,7 +63,8 @@ namespace Empiria.Trade.Inventory.Data {
     }
 
 
-    static internal FixedList<InventoryOrderItem> GetInventoryItemsByOrderUID(string inventoryOrderUID) {
+    static internal FixedList<InventoryOrderItem> GetInventoryItemsByInventoryOrderUID(
+      string inventoryOrderUID) {
 
       var inventoryId = InventoryOrderEntry.Parse(inventoryOrderUID).Id;
 
@@ -86,7 +87,7 @@ namespace Empiria.Trade.Inventory.Data {
     }
 
 
-    static internal InventoryOrderEntry GetInventoryOrderByTypeAndReferenceId(
+    static internal InventoryOrderEntry GetInventoryOrderBySaleOrder(
       int inventoryOrderTypeId, int referenceId) {
 
       string sql = $"SELECT * FROM TRDInventoryOrders " +
@@ -96,20 +97,6 @@ namespace Empiria.Trade.Inventory.Data {
       var dataOperation = DataOperation.Parse(sql);
 
       return DataReader.GetPlainObject<InventoryOrderEntry>(dataOperation);
-    }
-
-
-    //TODO AL LIMPIAR TRDORDERS DE BD, USAR GetInventoryOrderByTypeAndReferenceId() Y NO ESTA FUNCION
-    internal static FixedList<InventoryOrderEntry> GetInventoryOrdersByTypeAndReferenceId(
-      int inventoryOrderTypeId, int referenceId) {
-
-      string sql = $"SELECT * FROM TRDInventoryOrders " +
-                   $"WHERE InventoryOrderTypeId = {inventoryOrderTypeId} " +
-                   $"AND ReferenceId = {referenceId}";
-
-      var dataOperation = DataOperation.Parse(sql);
-
-      return DataReader.GetPlainObjectFixedList<InventoryOrderEntry>(dataOperation);
     }
 
 
@@ -204,11 +191,11 @@ namespace Empiria.Trade.Inventory.Data {
     }
 
 
-    static internal void UpdateInventoryOrderByTypeAndReferenceId(int inventoryOrderTypeId, int referenceId) {
+    static internal void UpdateInventoryOrdersForSales(int inventoryOrderTypeId, int referenceId, DateTime closingTime) {
 
       string sql = $"UPDATE TRDInventoryOrders SET " +
                    $"InventoryOrderStatus = '{(char) InventoryStatus.Cerrado}' " +
-                   //$",ClosingTime = '{new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day)}' " +
+                   $",ClosingTime = '{closingTime}' " +
                    $"WHERE InventoryOrderTypeId = {inventoryOrderTypeId} " +
                    $"AND ReferenceId = {referenceId} ";
 

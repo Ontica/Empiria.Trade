@@ -95,7 +95,7 @@ namespace Empiria.Trade.WebApi.Inventory {
 
       using (var usecases = InventoryOrderUseCases.UseCaseInteractor()) {
 
-        InventoryOrderDataDto inventoryOrderDto = usecases.GetInventoryCountOrderList(query);
+        InventoryOrderDataDto inventoryOrderDto = usecases.GetInventoryOrderList(query);
 
         return new SingleObjectModel(this.Request, inventoryOrderDto);
       }

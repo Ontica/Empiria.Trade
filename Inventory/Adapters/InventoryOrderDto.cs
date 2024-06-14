@@ -27,7 +27,7 @@ namespace Empiria.Trade.Inventory.Adapters {
 
     public string InventoryOrderNo {
       get; internal set;
-    }
+    } = string.Empty;
 
 
     public NamedEntityDto ExternalObjectReference {

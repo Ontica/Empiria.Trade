@@ -23,29 +23,30 @@ namespace Empiria.Trade.Inventory.Domain {
   internal class InventoryOrderHelper {
 
 
-    static internal void CreateOrUpdateInventoryOrderItemsForPicking(InventoryOrderEntry inventoryOrder) {
+    static internal void CreateOrUpdateInventoryItemsForPicking(string inventoryOrderUID) {
 
-      var inventoryItems = InventoryOrderData.GetInventoryItemsByOrderUID(inventoryOrder.InventoryOrderUID);
+      var inventoryItems = 
+        InventoryOrderData.GetInventoryItemsByInventoryOrderUID(inventoryOrderUID);
 
       foreach (var item in inventoryItems.Where(x => x.WarehouseBin.Id == -1)) {
 
-        GenerateInventoryItemFields(item);
+        GenerateInventoryItem(item);
       }
 
     }
 
 
-    static private void GenerateInventoryItemFields(InventoryOrderItem item) {
+    static private void GenerateInventoryItem(InventoryOrderItem item) {
 
       decimal itemQuantity = item.InProcessOutputQuantity;
       bool doUpdate = true;
-      List<int> ignoreWarehouseBinId = new List<int>();
+      List<int> ignoredWhBinId = new List<int>();
 
       while (itemQuantity > 0) {
 
         //TODO PREGUNTAR QUE HACER AL NO HABER EXISTENCIAS, GUARDAR? MOSTRAR MSJ Y CANCELAR?
 
-        var olderLocation = GetFirstLocationFinded(item.VendorProduct.Id, ignoreWarehouseBinId);
+        var olderLocation = GetFirstLocationFinded(item.VendorProduct.Id, ignoredWhBinId);
         var stockLocations = GetOlderLocationList(olderLocation);
 
         if (stockLocations.Count == 0) {
@@ -57,7 +58,7 @@ namespace Empiria.Trade.Inventory.Domain {
 
         if (olderRealStock < itemQuantity && itemQuantity > 0) {
           
-          ignoreWarehouseBinId.Add(olderLocation.WarehouseBin.Id);
+          ignoredWhBinId.Add(olderLocation.WarehouseBin.Id);
 
           inProcessOutputQuantity = olderRealStock;
           itemQuantity = itemQuantity - olderRealStock;
@@ -67,20 +68,17 @@ namespace Empiria.Trade.Inventory.Domain {
           inProcessOutputQuantity = itemQuantity;
           itemQuantity = 0;
         }
-        CreateInventoryOrderItemForPicking(item, olderLocation, inProcessOutputQuantity, doUpdate);
+
+        var fields = GenerateInventoryItemFields(item, olderLocation, inProcessOutputQuantity, doUpdate);
+        CreateInventoryOrderItemForPicking(item.InventoryOrder.InventoryOrderUID, fields);
         doUpdate = false;
       }
-
     }
 
-
-    #region Private methods
-
-    static private void CreateInventoryOrderItemForPicking(
-      InventoryOrderItem item, SalesInventoryStock olderLocation,
-      decimal inProcessOutputQuantity, bool doUpdate) {
-
-      InventoryOrderItemFields fields = new InventoryOrderItemFields {
+    static private InventoryOrderItemFields GenerateInventoryItemFields(InventoryOrderItem item,
+      SalesInventoryStock olderLocation, decimal inProcessOutputQuantity, bool doUpdate) {
+      
+      return new InventoryOrderItemFields {
         UID = doUpdate ? item.InventoryOrderItemUID : "",
         InventoryOrderTypeItemId = item.InventoryOrderTypeItemId,
         ItemReferenceId = item.ItemReferenceId,
@@ -89,32 +87,28 @@ namespace Empiria.Trade.Inventory.Domain {
         InProcessOutputQuantity = inProcessOutputQuantity
       };
 
+    }
+
+
+    #region Private methods
+
+    static private void CreateInventoryOrderItemForPicking(
+      string inventoryOrderUID, InventoryOrderItemFields fields) {
+
       var builder = new InventoryOrderBuilder();
-      builder.CreateInventoryOrderItem(item.InventoryOrder.InventoryOrderUID, fields);
+      builder.CreateInventoryOrderItem(inventoryOrderUID, fields);
     }
 
 
     static private SalesInventoryStock GetFirstLocationFinded(int vendorProductId,
       List<int> ignoreWarehouseBinId) {
 
-      var warehouseBinClauses = GetStringIdList(ignoreWarehouseBinId);
+      var warehouseBinClauses = SimpleObjects.ConcatIntListIntoString(ignoreWarehouseBinId);
 
       var inventoryStock = CataloguesUseCases.GetInventoryStockByVendorProduct(
         vendorProductId, warehouseBinClauses);
 
       return inventoryStock.Where(x => x.WarehouseBin.Id > 0 && x.RealStock > 0).FirstOrDefault();
-    }
-
-
-    static private string GetStringIdList(List<int> arrayList) {
-      if (arrayList.Count == 0) {
-        return string.Empty;
-      }
-      string stringList = "";
-      foreach (var intData in arrayList) {
-        stringList += $"{intData},";
-      }
-      return stringList.Remove(stringList.Length - 1, 1);
     }
 
 
