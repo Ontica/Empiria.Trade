@@ -115,7 +115,8 @@ namespace Empiria.Trade.Inventory.Domain {
 
     internal void UpdateInventoryOrderForPicking(InventoryOrderFields fields) {
 
-      var inventoryOrder = InventoryOrderData.GetInventoryOrderBySalesOrder(5, fields.ReferenceId);
+      var inventoryOrder = InventoryOrderData.GetInventoryOrderBySalesOrder(
+        5, fields.ReferenceId).FirstOrDefault();
 
       if (inventoryOrder != null) {
 

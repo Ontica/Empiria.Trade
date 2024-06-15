@@ -221,7 +221,7 @@ namespace Empiria.Trade.Tests.Sales {
     public void ShouldAppyCredintInOrder() {
 
       var salesOrderUseCase = SalesOrderUseCases.UseCaseInteractor();
-      var x = salesOrderUseCase.ApplySalesOrder("88f479bb-4c95-41c8-86d6-51f8df9cf833");
+      var x = salesOrderUseCase.ApplySalesOrder("fa0a1c09-abbb-42be-a141-3eaff172f688");
 
       Assert.NotNull(x);
     }

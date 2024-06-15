@@ -31,7 +31,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       var missingItems = new List<MissingItem>();
 
-      var inventoryOrder = InventoryOrderData.GetInventoryOrderBySalesOrder(5, Order.Parse(orderUid).Id);
+      var inventoryOrder = InventoryOrderData.GetInventoryOrderBySalesOrder(
+        5, Order.Parse(orderUid).Id).FirstOrDefault();
       
       if (inventoryOrder == null) {
         return new FixedList<MissingItem>();
@@ -132,7 +133,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
     internal PickingData GetPickingData(string orderUID) {
 
-      var inventoryOrder = InventoryOrderData.GetInventoryOrderBySalesOrder(5, SalesOrder.Parse(orderUID).Id);
+      var inventoryOrder = InventoryOrderData.GetInventoryOrderBySalesOrder(
+        5, SalesOrder.Parse(orderUID).Id).FirstOrDefault();
 
       if (inventoryOrder == null) {
         return new PickingData();
