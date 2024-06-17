@@ -45,11 +45,13 @@ namespace Empiria.Trade.Orders {
       protected set;
     } 
 
+
     [DataField("OrderItemTypeId")]
     public int OrderItemTypeId {
       get;
       protected set;
     }
+
 
     [DataField("VendorProductId")]
     public VendorProduct VendorProduct {
@@ -57,11 +59,19 @@ namespace Empiria.Trade.Orders {
       protected set;
     }
 
+
     [DataField("Quantity")]
     public decimal Quantity {
       get;
       protected set;
     }
+
+
+    [DataField("ReceivedQty")]
+    public decimal ReceivedQty {
+      get; internal set;
+    }
+
 
     [DataField("ProductPriceId")]
     public int ProductPriceId {
@@ -69,11 +79,13 @@ namespace Empiria.Trade.Orders {
       protected set;
     }
 
+
     [DataField("PriceListNumber")]
     public int PriceListNumber {
       get;
       protected set;
     }
+
 
     [DataField("BasePrice")]
     public decimal BasePrice {
@@ -81,11 +93,13 @@ namespace Empiria.Trade.Orders {
       protected set;
     }
 
+
     [DataField("SalesPrice")]
     public decimal SalesPrice {
       get;
       protected set;
     }
+
 
     [DataField("Discount")]
     public decimal Discount {
@@ -93,11 +107,13 @@ namespace Empiria.Trade.Orders {
       protected set;
     }
 
+
     [DataField("AdditionalDiscount")]
     public decimal AdditionalDiscount {
       get;
       protected set;
     }
+
 
     [DataField("Shipment")]
     public decimal Shipment {
@@ -105,11 +121,13 @@ namespace Empiria.Trade.Orders {
       protected set;
     }
 
+
     [DataField("TaxesIVA")]
     public decimal TaxesIVA {
       get;
       protected set;
     }
+
 
     [DataField("TaxesIEPS")]
     public decimal TaxesIEPS {
@@ -117,17 +135,41 @@ namespace Empiria.Trade.Orders {
       protected set;
     } = 0;
 
+
     [DataField("Total")]
     public decimal Total {
       get;
       protected set;
     }
 
+
     [DataField("OrderItemNotes", Default ="")]
     public string Notes {
       get;
       protected set;
     } = String.Empty;
+
+
+    [DataField("ScheduledTime")]
+    public DateTime ScheduledTime {
+      get;
+      internal set;
+    }
+
+
+    [DataField("ReceptionTime")]
+    public DateTime ReceptionTime {
+      get;
+      internal set;
+    }
+
+
+    [DataField("Reviewed")]
+    public string Reviewed {
+      get;
+      protected set;
+    }
+
 
     [DataField("OrderItemStatus", Default = EntityStatus.Active)]
     public EntityStatus Status {

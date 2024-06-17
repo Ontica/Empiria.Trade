@@ -44,11 +44,13 @@ namespace Empiria.Trade.Orders {
       protected set;
     }
 
+
     [DataField("CustomerId")]
     public Party Customer {
       get;
       protected set;
     }
+
 
     [DataField("SupplierId")]
     public Party Supplier {
@@ -56,11 +58,13 @@ namespace Empiria.Trade.Orders {
       protected set;
     }
 
+
     [DataField("SalesAgentId")]
     public Party SalesAgent {
       get;
       protected set;
     }
+
 
     [DataField("OrderNumber")]
     public string OrderNumber {
@@ -68,17 +72,48 @@ namespace Empiria.Trade.Orders {
       protected set;
     }
 
+
     [DataField("OrderTime")]
     public DateTime OrderTime {
       get;
       protected set;
     }
 
+
     [DataField("OrderNotes")]
     public string Notes {
       get;
       protected set;
     }
+
+
+    [DataField("ScheduledTime")]
+    public DateTime ScheduledTime {
+      get;
+      protected set;
+    }
+
+
+    [DataField("ReceptionTime")]
+    public DateTime ReceptionTime {
+      get;
+      internal set;
+    }
+
+
+    [DataField("ImportFormalEntry")]
+    public string PedimentoImportacion {
+      get;
+      internal set;
+    }
+
+
+    [DataField("BillOfLading")]
+    public string CartaPorte {
+      get;
+      protected set;
+    }
+
 
     public virtual string Keywords {
       get {
@@ -151,11 +186,11 @@ namespace Empiria.Trade.Orders {
     #endregion Public properties
 
   }  // class Order
-  
+
 
   public enum OrderStatus {
     Captured = 'C',
-    Applied = 'A',   
+    Applied = 'A',
     Authorized = 'O',
     Packing = 'P',
     Shipping = 'S',
@@ -181,13 +216,13 @@ namespace Empiria.Trade.Orders {
   } // enum AutorizationStatus
 
   public enum ShippingMethods {
-    RutaLocal = 'L', 
+    RutaLocal = 'L',
     RutaForanea = 'F',
     Ocurre = 'O',
     Paqueteria = 'P',
     None = 'N'
   }
 
-  
+
 
 }  // namespace Empiria.Trade.Orders
