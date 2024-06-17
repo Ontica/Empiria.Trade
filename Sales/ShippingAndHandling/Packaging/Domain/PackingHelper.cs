@@ -213,8 +213,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       var data = new PackagingData();
       var whBinList = new List<WarehouseBinForPacking>();
-      var inventoryItems = 
-        InventoryOrderData.GetInventoryItemsByInventoryOrderUID(inventoryOrder.InventoryOrderUID);
+      var inventoryItems =
+        InventoryOrderData.GetInventoryItemsByInventoryOrder(inventoryOrder.InventoryOrderId);
 
       foreach (var inventoryItem in inventoryItems.Where(x => x.VendorProduct.Id == item.VendorProductId)) {
 

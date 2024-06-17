@@ -25,8 +25,8 @@ namespace Empiria.Trade.Inventory.Domain {
 
     static internal void CreateOrUpdateInventoryItemsForPicking(string inventoryOrderUID) {
 
-      var inventoryItems = 
-        InventoryOrderData.GetInventoryItemsByInventoryOrderUID(inventoryOrderUID);
+      var inventoryOrderId = InventoryOrderEntry.Parse(inventoryOrderUID).InventoryOrderId;
+      var inventoryItems = InventoryOrderData.GetInventoryItemsByInventoryOrder(inventoryOrderId);
 
       foreach (var item in inventoryItems.Where(x => x.WarehouseBin.Id == -1)) {
 

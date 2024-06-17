@@ -63,7 +63,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
       ShippingData.UpdateShippingStatus(shippingOrderUID, ShippingStatus.Cerrado);
 
-      UpdateInventoryOrdersForSales(orders);
+      CloseInventoryOrdersForSales(orders);
      
       var shippingUseCase = new ShippingUseCases();
 
@@ -73,25 +73,25 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
     }
 
 
-    private void UpdateInventoryOrdersForSales(string[] orders) {
+    private void CloseInventoryOrdersForSales(string[] orders) {
 
       InventoryOrderUseCases inventoryUseCases = new InventoryOrderUseCases();
       foreach (var orderUID in orders) {
 
         int orderId = SalesOrder.Parse(orderUID).Id;
 
-        inventoryUseCases.UpdateInventoryOrdersForSales(5, orderId);
+        inventoryUseCases.CloseInventoryOrderForSalesOrder(5, orderId);
 
-        UpdateInventoryOrderItemsForSales(5, orderId);
+        CloseInventoryOrderItemsForSales(5, orderId);
       }
     }
 
     
-    private void UpdateInventoryOrderItemsForSales(int inventoryOrderTypeId, int orderId) {
+    private void CloseInventoryOrderItemsForSales(int inventoryOrderTypeId, int orderId) {
 
       InventoryOrderUseCases inventoryUseCases = new InventoryOrderUseCases();
 
-      inventoryUseCases.UpdateInventoryOrderItemsForSales(
+      inventoryUseCases.CloseInventoryOrderItemsForSales(
         inventoryOrderTypeId, orderId);
     }
 

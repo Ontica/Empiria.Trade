@@ -40,25 +40,26 @@ namespace Empiria.Trade.Inventory.UseCases {
 
 
 
-    public InventoryOrderDto CloseInventoryOrderStatus(string inventoryOrderUID) {
+    public InventoryOrderDto CloseInventoryOrder(string inventoryOrderUID) {
       Assertion.Require(inventoryOrderUID, nameof(inventoryOrderUID));
 
-      InventoryOrderData.UpdateInventoryOrderStatus(
-        inventoryOrderUID, DateTime.Now, InventoryStatus.Cerrado);
+      var inventoryOrderId = InventoryOrderEntry.Parse(inventoryOrderUID).Id;
 
-      var inventoryOrderItems = InventoryOrderData.GetInventoryItemsByInventoryOrderUID(inventoryOrderUID);
+      InventoryOrderData.CloseInventoryOrder(
+        inventoryOrderId, InventoryStatus.Cerrado);
 
-      foreach (var item in inventoryOrderItems) {
+      var inventoryItems = InventoryOrderData.GetInventoryItemsByInventoryOrder(inventoryOrderId);
+
+      foreach (var item in inventoryItems) {
 
         var inventoryStock = CataloguesUseCases.GetInventoryStockByVendorProductAndWarehouseBin(
           item.VendorProduct.Id, item.WarehouseBin.Id);
 
         var realStock = inventoryStock.Sum(x => x.RealStock);
 
-        decimal quantityDifference = item.CountingQuantity - realStock;
+        decimal quantityDiff = item.CountingQuantity - realStock;
 
-        InventoryOrderData.UpdateInventoryOrderItemsStatusByOrder(
-                    item.InventoryOrderItemId, quantityDifference, DateTime.Now);
+        InventoryOrderData.CloseInventoryItemForInventoryOrder(item.InventoryOrderItemId, quantityDiff);
       }
 
       return GetInventoryOrderByUID(inventoryOrderUID);
@@ -185,19 +186,19 @@ namespace Empiria.Trade.Inventory.UseCases {
     }
 
 
-    internal void UpdateInventoryOrdersForSales(int inventoryOrderTypeId, int referenceId) {
+    internal void CloseInventoryOrderForSalesOrder(int inventoryOrderTypeId, int referenceId) {
 
-      InventoryOrderData.UpdateInventoryOrdersForSales(inventoryOrderTypeId, referenceId);
+      InventoryOrderData.CloseInventoryOrderForSalesOrder(inventoryOrderTypeId, referenceId);
     }
 
 
-    internal void UpdateInventoryOrderItemsForSales(
+    internal void CloseInventoryOrderItemsForSales(
       int inventoryOrderTypeId, int referenceId) {
 
       InventoryOrderEntry inventoryOrder = InventoryOrderData.GetInventoryOrderBySalesOrder(
         inventoryOrderTypeId, referenceId).FirstOrDefault();
 
-      InventoryOrderData.UpdateInventoryOrderItemsByOrder(inventoryOrder.InventoryOrderId);
+      InventoryOrderData.CloseInventoryOrderItemsForSales(inventoryOrder.InventoryOrderId);
     }
 
 

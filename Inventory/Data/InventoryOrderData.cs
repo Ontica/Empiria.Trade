@@ -63,17 +63,27 @@ namespace Empiria.Trade.Inventory.Data {
     }
 
 
-    static internal FixedList<InventoryOrderItem> GetInventoryItemsByInventoryOrderUID(
-      string inventoryOrderUID) {
-
-      var inventoryId = InventoryOrderEntry.Parse(inventoryOrderUID).Id;
+    static internal FixedList<InventoryOrderItem> GetInventoryItemsByInventoryOrder(
+      int inventoryOrderId) {
 
       string sql = $"SELECT * FROM TRDInventoryOrderItems WHERE " +
-                   $"InventoryOrderId IN ({inventoryId})";
+                   $"InventoryOrderId IN ({inventoryOrderId})";
 
       var dataOperation = DataOperation.Parse(sql);
 
       return DataReader.GetPlainObjectFixedList<InventoryOrderItem>(dataOperation);
+    }
+
+
+    static internal FixedList<InventoryEntry> GetInventoryItemsBySalesOrderAndWhBin(
+                                        int orderItemId, int warehouseBinId) {
+
+      string sql = $"SELECT * FROM TRDInventoryOrderItems " +
+                   $"WHERE ItemReferenceId = {orderItemId} AND WarehouseBinId = {warehouseBinId} ";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetPlainObjectFixedList<InventoryEntry>(dataOperation);
     }
 
 
@@ -107,18 +117,6 @@ namespace Empiria.Trade.Inventory.Data {
       var dataOperation = DataOperation.Parse(sql);
 
       return DataReader.GetPlainObject<InventoryOrderEntry>(dataOperation);
-    }
-
-
-    static internal FixedList<InventoryEntry> GetInventoryItemsBySalesOrderAndWhBin(
-                                        int orderItemId, int warehouseBinId) {
-
-      string sql = $"SELECT * FROM TRDInventoryOrderItems " +
-                   $"WHERE ItemReferenceId = {orderItemId} AND WarehouseBinId = {warehouseBinId} ";
-
-      var dataOperation = DataOperation.Parse(sql);
-
-      return DataReader.GetPlainObjectFixedList<InventoryEntry>(dataOperation);
     }
 
 
@@ -190,12 +188,12 @@ namespace Empiria.Trade.Inventory.Data {
     }
 
 
-    static internal void UpdateInventoryOrderStatus(string inventoryOrderUID, DateTime closingTime, InventoryStatus status) {
+    static internal void CloseInventoryOrder(int inventoryOrderId, InventoryStatus status) {
       
       string sql = $"UPDATE TRDInventoryOrders SET " +
                    $"InventoryOrderStatus = '{(char) status}', " +
                    $"ClosingTime = '{ConvertDateTimeToString()}' " +
-                   $"WHERE InventoryOrderUID IN('{inventoryOrderUID}')";
+                   $"WHERE InventoryOrderId IN('{inventoryOrderId}')";
 
       var dataOperation = DataOperation.Parse(sql);
 
@@ -203,7 +201,7 @@ namespace Empiria.Trade.Inventory.Data {
     }
 
 
-    static internal void UpdateInventoryOrdersForSales(int inventoryOrderTypeId, int referenceId) {
+    static internal void CloseInventoryOrderForSalesOrder(int inventoryOrderTypeId, int referenceId) {
 
       string sql = $"UPDATE TRDInventoryOrders SET " +
                    $"InventoryOrderStatus = '{(char) InventoryStatus.Cerrado}' " +
@@ -217,7 +215,7 @@ namespace Empiria.Trade.Inventory.Data {
     }
 
 
-    internal static void UpdateInventoryOrderItemsByOrder(int inventoryOrderId) {
+    internal static void CloseInventoryOrderItemsForSales(int inventoryOrderId) {
 
       string sql = $"UPDATE TRDInventoryOrderItems SET " +
                    $"InventoryOrderItemStatus = '{(char) InventoryStatus.Cerrado}' " +
@@ -233,8 +231,8 @@ namespace Empiria.Trade.Inventory.Data {
     }
 
     
-    internal static void UpdateInventoryOrderItemsStatusByOrder(
-      int inventoryOrderItemId, decimal quantityDifference, DateTime closingTime) {
+    internal static void CloseInventoryItemForInventoryOrder(
+      int inventoryOrderItemId, decimal quantityDifference) {
 
       string sql = $"UPDATE TRDInventoryOrderItems SET " +
                    $"InventoryOrderItemStatus = '{(char) InventoryStatus.Cerrado}' " +
