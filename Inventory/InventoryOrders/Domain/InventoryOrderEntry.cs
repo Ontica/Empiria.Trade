@@ -2,7 +2,7 @@
 *                                                                                                            *
 *  Module   : Inventory Management                       Component : Domain Layer                            *
 *  Assembly : Empiria.Trade.Inventory.dll                Pattern   : Information Holder                      *
-*  Type     : Inventory                                  License   : Please read LICENSE.txt file            *
+*  Type     : InventoryOrderEntry                        License   : Please read LICENSE.txt file            *
 *                                                                                                            *
 *  Summary  : Represents an inventory order entry.                                                           *
 *                                                                                                            *

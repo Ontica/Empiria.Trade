@@ -2,7 +2,7 @@
 *                                                                                                            *
 *  Module   : Trade Core                                 Component : Data Layer                              *
 *  Assembly : Empiria.Trade.Core.dll                     Pattern   : Data Service                            *
-*  Type     : InventoryData                              License   : Please read LICENSE.txt file            *
+*  Type     : InventoryOrderData                         License   : Please read LICENSE.txt file            *
 *                                                                                                            *
 *  Summary  : Provides data read methods for inventory order.                                                *
 *                                                                                                            *

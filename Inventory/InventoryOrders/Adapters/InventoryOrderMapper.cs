@@ -1,7 +1,7 @@
 ﻿/* Empiria Trade *********************************************************************************************
 *                                                                                                            *
 *  Module   : Inventory Management                       Component : Interface adapters                      *
-*  Assembly : Empiria.Trade.ShippingAndHandling.dll      Pattern   : Mapper class                            *
+*  Assembly : Empiria.Trade.Inventory.dll                Pattern   : Mapper class                            *
 *  Type     : InventoryOrderMapper                       License   : Please read LICENSE.txt file            *
 *                                                                                                            *
 *  Summary  : Methods used to map Inventory order.                                                           *

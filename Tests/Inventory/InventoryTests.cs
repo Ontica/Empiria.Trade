@@ -1,10 +1,10 @@
 ﻿/* Empiria Trade *********************************************************************************************
 *                                                                                                            *
-*  Module   : Shipping and handling Management           Component : Test cases                              *
-*  Assembly : Empiria.Trade.Shipping.dll                 Pattern   : Use cases tests                         *
-*  Type     : ShippingTest                               License   : Please read LICENSE.txt file            *
+*  Module   : Inventory and handling Management          Component : Test cases                              *
+*  Assembly : Empiria.Trade.Inventory.dll                Pattern   : Use cases tests                         *
+*  Type     : InventoryTests                             License   : Please read LICENSE.txt file            *
 *                                                                                                            *
-*  Summary  : Test cases for shipping.                                                                       *
+*  Summary  : Test cases for inventory order.                                                                *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
