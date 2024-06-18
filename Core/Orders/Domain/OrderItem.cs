@@ -69,7 +69,7 @@ namespace Empiria.Trade.Orders {
 
     [DataField("ReceivedQty")]
     public decimal ReceivedQty {
-      get; internal set;
+      get; protected set;
     }
 
 
@@ -153,14 +153,14 @@ namespace Empiria.Trade.Orders {
     [DataField("ScheduledTime")]
     public DateTime ScheduledTime {
       get;
-      internal set;
+      protected set;
     }
 
 
     [DataField("ReceptionTime")]
     public DateTime ReceptionTime {
       get;
-      internal set;
+      protected set;
     }
 
 

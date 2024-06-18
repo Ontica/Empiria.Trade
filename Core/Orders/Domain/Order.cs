@@ -97,14 +97,14 @@ namespace Empiria.Trade.Orders {
     [DataField("ReceptionTime")]
     public DateTime ReceptionTime {
       get;
-      internal set;
+      protected set;
     }
 
 
     [DataField("ImportFormalEntry")]
     public string PedimentoImportacion {
       get;
-      internal set;
+      protected set;
     }
 
 

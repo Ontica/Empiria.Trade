@@ -218,7 +218,12 @@ namespace Empiria.Trade.Sales {
       this.PaymentCondition = fields.PaymentCondition;
       this.PriceList = GetPriceList();
       this.SalesOrderItems = LoadSalesOrderItems(fields.Items);
-            
+      this.ScheduledTime = ExecutionServer.DateMaxValue;
+      this.ReceptionTime = ExecutionServer.DateMaxValue;
+      this.PedimentoImportacion = string.Empty;
+      this.CartaPorte = string.Empty;
+
+
       SetOrderTotals();
 
       var actions = ActionsService.Load();

@@ -66,6 +66,10 @@ namespace Empiria.Trade.Sales {
       this.Shipment = 0;
       this.TaxesIVA = GetTaxesIva();
       this.Total = GetTotal();
+      this.ReceivedQty = 0;
+      this.ScheduledTime = ExecutionServer.DateMaxValue;
+      this.ReceptionTime = ExecutionServer.DateMaxValue;
+      this.Reviewed = string.Empty;
     }
 
     public static void SaveSalesOrderItems(FixedList<SalesOrderItem> orderItems, int orderId) {

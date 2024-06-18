@@ -26,7 +26,6 @@ using Xunit.Abstractions;
 using Empiria.Trade.Orders;
 using System.Linq;
 using Empiria.Trade.Financial.UseCases;
-using TradeDataSchemaManager.Services;
 
 namespace Empiria.Trade.Tests.Sales {
 
