@@ -143,7 +143,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       var pickingData = new PickingData();
       pickingData.OrderUID = orderUID;
       pickingData.InventoryOrderNo = inventoryOrder.InventoryOrderNo;
-      pickingData.InventoryOrderTypeId = inventoryOrder.InventoryOrderTypeId;
+      pickingData.InventoryOrderTypeId = inventoryOrder.InventoryOrderType.Id;
       pickingData.ResponsibleId = inventoryOrder.ResponsibleId;
       pickingData.AssignedToId = inventoryOrder.AssignedToId;
       pickingData.Notes = inventoryOrder.Notes;

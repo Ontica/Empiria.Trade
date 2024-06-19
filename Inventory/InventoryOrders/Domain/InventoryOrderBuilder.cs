@@ -14,6 +14,7 @@ using Empiria.Trade.Inventory.Adapters;
 using Empiria.Trade.Inventory.Data;
 using Empiria.Trade.Core.Inventories.Adapters;
 using Empiria.Trade.Core.UsesCases;
+using System.Security.Cryptography;
 
 namespace Empiria.Trade.Inventory.Domain {
 
@@ -53,7 +54,7 @@ namespace Empiria.Trade.Inventory.Domain {
     internal InventoryOrderActions GetActions(InventoryOrderEntry inventoryOrder) {
 
       if (inventoryOrder.Status == InventoryStatus.Cerrado ||
-          inventoryOrder.InventoryOrderTypeId == 5) {
+          inventoryOrder.InventoryOrderType.Id == 504) { // TODO CAMBIAR VALIDACION
 
         return new InventoryOrderActions();
       }
@@ -138,7 +139,7 @@ namespace Empiria.Trade.Inventory.Domain {
 
       InventoryOrderFields fields = new InventoryOrderFields();
 
-      fields.InventoryOrderTypeUID = "2ft8y5h4-db55-48b3-aa78-63132a8d5e7f"; // TODO referencia a tipo cuando se agregue a Types 
+      fields.InventoryOrderTypeUID = InventoryOrderType.Parse(504).UID; // TODO cambiar metodo de referencia
       fields.ResponsibleUID = PartyUseCases.GetWarehouseResponsible().FirstOrDefault().UID;
       fields.AssignedToUID = "";
       fields.Notes = "";
@@ -149,10 +150,11 @@ namespace Empiria.Trade.Inventory.Domain {
 
 
 
-    internal InventoryOrderItemFields MapToInventoryOrderItemFields(InventoryItems inventoryItem) {
+    internal InventoryOrderItemFields MapToInventoryOrderItemFields(
+      InventoryItems inventoryItem, int InventoryOrderTypeId) {
 
       InventoryOrderItemFields fields = new InventoryOrderItemFields();
-      fields.InventoryOrderTypeItemId = 5; // TODO AGREGAR REFERENCIA (5 SALIDA POR VENTA)
+      fields.InventoryOrderTypeItemId = InventoryOrderTypeId;
       fields.ItemReferenceId = inventoryItem.OrderItemId;
       fields.VendorProductUID = inventoryItem.VendorProductUID;
       fields.WarehouseBinUID = inventoryItem.WarehouseBinUID;

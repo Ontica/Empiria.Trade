@@ -86,7 +86,8 @@ namespace Empiria.Trade.Inventory.UseCases {
 
       foreach (var inventoryItem in inventoryItems) {
 
-        InventoryOrderItemFields itemFields = builder.MapToInventoryOrderItemFields(inventoryItem);
+        InventoryOrderItemFields itemFields = 
+          builder.MapToInventoryOrderItemFields(inventoryItem, inventoryOrder.InventoryOrderType.Id);
 
         builder.CreateInventoryOrderItem(inventoryOrder.InventoryOrderUID, itemFields);
       }

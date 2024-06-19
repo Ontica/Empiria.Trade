@@ -124,7 +124,7 @@ namespace Empiria.Trade.Inventory.Data {
 
       var op = DataOperation.Parse("writeInventoryOrder",
           entry.InventoryOrderId, entry.InventoryOrderUID,
-          entry.InventoryOrderTypeId, entry.InventoryOrderNo,
+          entry.InventoryOrderType.Id, entry.InventoryOrderNo,
           entry.ReferenceId, entry.ResponsibleId,
           entry.AssignedToId, entry.Notes,
           entry.InventoryOrderExtData, entry.Keywords,
@@ -160,14 +160,13 @@ namespace Empiria.Trade.Inventory.Data {
 
     #region Private methods
 
+
     static private string GetClausesFromQuery(InventoryOrderQuery query) {
       var orderType = string.Empty;
 
       if (query.InventoryOrderTypeUID != string.Empty) {
-        var inventoryOrderTypeId = new InventoryOrderEntry()
-          .GetInventoryOrderTypeId(query.InventoryOrderTypeUID); //TODO CREAR REGISTROS EN TYPES Y PARSEAR;
 
-        orderType = $"InventoryOrderTypeId = {inventoryOrderTypeId}";
+        orderType = $"InventoryOrderTypeId = {InventoryOrderType.Parse(query.InventoryOrderTypeUID).Id}";
       }
 
       var filters = new Filter(orderType);

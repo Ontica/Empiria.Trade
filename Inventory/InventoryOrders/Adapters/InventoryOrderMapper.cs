@@ -44,7 +44,8 @@ namespace Empiria.Trade.Inventory.Adapters {
       var postedBy = Party.Parse(entry.PostedById);
       
       dto.UID = entry.InventoryOrderUID;
-      dto.InventoryOrderType = GetInventoryOrderType(entry.InventoryOrderTypeId); //TODO REGISTRSR INVENTORY TYPES EN TYPES
+      dto.InventoryOrderType = 
+        new NamedEntityDto(entry.InventoryOrderType.UID, entry.InventoryOrderType.Name);
       dto.InventoryOrderNo = entry.InventoryOrderNo;
       dto.ExternalObjectReference = new NamedEntityDto("", "External reference"); //External.Parse(entry.ExternalObjectReferenceId).UID;
       dto.Responsible = new NamedEntityDto(responsible.UID, responsible.Name);
@@ -118,7 +119,7 @@ namespace Empiria.Trade.Inventory.Adapters {
       var postedBy = Party.Parse(entry.PostedById);
 
       dto.UID = entry.InventoryOrderUID;
-      dto.InventoryOrderTypeName = GetInventoryOrderType(entry.InventoryOrderTypeId).Name; //TODO REGISTRSR INVENTORY TYPES EN TYPES
+      dto.InventoryOrderTypeName = entry.InventoryOrderType.Name;
       dto.InventoryOrderNo = entry.InventoryOrderNo;
       dto.ExternalObjectReferenceName = "External reference"; //External.Parse(entry.ExternalObjectReferenceId).UID;
       dto.ResponsibleName = responsible.Name;
@@ -182,29 +183,6 @@ namespace Empiria.Trade.Inventory.Adapters {
       return new FixedList<IInventoryOrderDto>(mappedList);
     }
 
-
-    static internal NamedEntityDto GetInventoryOrderType(int typeId) {
-
-      if (typeId == 1) {
-        return new NamedEntityDto("5851e71b-3a1f-40ab-836f-ac3d2c9408de", "Orden de conteo físico inicial");
-
-      } else if (typeId == 2) {
-        return new NamedEntityDto("ab8e950e-94e9-4ae5-943a-49abad514g52", "Orden de conteo físico mensual");
-
-      } else if (typeId == 3) {
-        return new NamedEntityDto("wered868-a7ec-47f5-b1b9-8c0f73b04kuk", "Orden de conteo físico anual");
-
-      } else if (typeId == 4) {
-        return new NamedEntityDto("2vgf36bc-535c-4a07-8475-3e6568ebbopi", "Orden de traspaso");
-
-      } else if (typeId == 5) {
-        return new NamedEntityDto("2ft8y5h4-db55-48b3-aa78-63132a8d5e7f", "Orden de salida por venta");
-
-      } else {
-        return new NamedEntityDto("","");
-      }
-
-    }
 
     #endregion Private methods
 

@@ -47,7 +47,7 @@ namespace Empiria.Trade.Tests.Inventory {
 
       var usecase = InventoryOrderUseCases.UseCaseInteractor();
 
-      string inventoryOrderUID = "12a7f9eb-d93b-415b-84af-7c0f7f782b40";
+      string inventoryOrderUID = "64b96507-37b5-45d5-9a4c-40ef8099a6db";
       InventoryOrderDto sut = usecase.CloseInventoryOrder(inventoryOrderUID);
 
       Assert.NotNull(sut);
@@ -148,6 +148,26 @@ namespace Empiria.Trade.Tests.Inventory {
       string inventoryOrderUID = "7bb09f2b-5491-4304-bdf3-2e88fc41d33a";
       InventoryOrderFields fields = GetInventoryOrderFields();
       InventoryOrderDto sut = usecase.UpdateInventoryOrder(inventoryOrderUID, fields);
+
+      Assert.NotNull(sut);
+    }
+
+
+    [Fact]
+    public void GetInventoryOrderTypeTest() {
+
+      var usecase = InventoryOrderCataloguesUseCases.UseCaseInteractor();
+      var sut = usecase.GetInventoryOrderTypeByUID("5851e71b-3a1f-40ab-836f-ac3d2c9408de");
+
+      Assert.NotNull(sut);
+    }
+
+
+    [Fact]
+    public void GetInventoryOrderTypeListTest() {
+
+      var usecase = InventoryOrderCataloguesUseCases.UseCaseInteractor();
+      var sut = usecase.GetInventoryOrderTypesNamedEntity();
 
       Assert.NotNull(sut);
     }

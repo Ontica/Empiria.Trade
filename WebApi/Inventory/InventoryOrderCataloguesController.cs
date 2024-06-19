@@ -23,7 +23,7 @@ namespace Empiria.Trade.WebApi.Inventory {
     public CollectionModel GetInventoryTypes() {
 
       using (var usescase = InventoryOrderCataloguesUseCases.UseCaseInteractor()) {
-        FixedList<NamedEntityDto> inventoryTypes = usescase.GetInventoryOrderTypes();
+        FixedList<NamedEntityDto> inventoryTypes = usescase.GetInventoryOrderTypesNamedEntity();
 
         return new CollectionModel(base.Request, inventoryTypes);
       }

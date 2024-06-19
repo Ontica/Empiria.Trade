@@ -56,7 +56,7 @@ namespace Empiria.Trade.Inventory {
 
 
     [DataField("InventoryOrderTypeId")]
-    internal int InventoryOrderTypeId {
+    internal InventoryOrderType InventoryOrderType {
       get; set;
     }
 
@@ -152,23 +152,7 @@ namespace Empiria.Trade.Inventory {
 
     #region Public methods
 
-    internal int GetInventoryOrderTypeId(string uid) {
-
-      if (uid == "5851e71b-3a1f-40ab-836f-ac3d2c9408de") {
-        return 1;
-      } else if (uid == "ab8e950e-94e9-4ae5-943a-49abad514g52") {
-        return 2;
-      } else if (uid == "wered868-a7ec-47f5-b1b9-8c0f73b04kuk") {
-        return 3;
-      } else if (uid == "2vgf36bc-535c-4a07-8475-3e6568ebbopi") {
-        return 4;
-      } else if (uid == "2ft8y5h4-db55-48b3-aa78-63132a8d5e7f") {
-        return 5;
-      } else {
-        return -1;
-      }
-
-    }
+    
 
     #endregion
 
@@ -188,7 +172,7 @@ namespace Empiria.Trade.Inventory {
 
     private void MapToInventoryOrderEntry(InventoryOrderFields fields, string inventoryOrderUID) {
 
-      this.InventoryOrderTypeId = GetInventoryOrderTypeId(fields.InventoryOrderTypeUID); //TODO REGISTRAR TIPOS EN TABLA TYPES
+      this.InventoryOrderType = InventoryOrderType.Parse(fields.InventoryOrderTypeUID);
 
       if (inventoryOrderUID != string.Empty) {
         this.InventoryOrderId = Parse(inventoryOrderUID).InventoryOrderId;
@@ -215,22 +199,13 @@ namespace Empiria.Trade.Inventory {
 
     private string GenerateOrderNumber() {
 
-      string orderNumber = string.Empty;
-
-      if (this.InventoryOrderTypeId == 1) {
-        orderNumber = $"OCFI";
-      } else if (this.InventoryOrderTypeId == 2) {
-        orderNumber = $"OCFM";
-      } else if (this.InventoryOrderTypeId == 3) {
-        orderNumber = $"OCFA";
-      } else if (this.InventoryOrderTypeId == 4) {
-        orderNumber = $"OT";
-      } else if (this.InventoryOrderTypeId == 5) {
-        orderNumber = $"OSV";
-      } else {
-        return string.Empty;
+      string orderNumber = this.InventoryOrderType.InventoryOrderTypeCode.Name;
+      
+      if (orderNumber != string.Empty) {
+        return $"{orderNumber}{this.InventoryOrderId.ToString().PadLeft(9, '0')}";
       }
-      return $"{orderNumber}{this.InventoryOrderId.ToString().PadLeft(9, '0')}";
+
+      return string.Empty;
     }
 
     #endregion Private methods
