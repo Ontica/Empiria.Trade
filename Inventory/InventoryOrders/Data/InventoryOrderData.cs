@@ -265,6 +265,7 @@ namespace Empiria.Trade.Inventory.Data {
              $"{DateTime.Now.Hour}:{DateTime.Now.Minute}:{DateTime.Now.Second}";
     }
 
+
     #endregion Private methods
 
   } // class InventoryOrderData

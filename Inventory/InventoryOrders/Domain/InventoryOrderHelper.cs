@@ -75,6 +75,7 @@ namespace Empiria.Trade.Inventory.Domain {
       }
     }
 
+
     static private InventoryOrderItemFields GenerateInventoryItemFields(InventoryOrderItem item,
       SalesInventoryStock olderLocation, decimal inProcessOutputQuantity, bool doUpdate) {
       
@@ -87,6 +88,23 @@ namespace Empiria.Trade.Inventory.Domain {
         InProcessOutputQuantity = inProcessOutputQuantity
       };
 
+    }
+
+
+    static internal string GetInventoryOrderItemUIDByVendorProductLocation(
+      string inventoryOrderUID, string vendorProductUID, string warehouseBinUID) {
+
+      var inventoryOrder = InventoryOrderEntry.Parse(inventoryOrderUID);
+      var items = InventoryOrderData.GetInventoryItemsByInventoryOrder(inventoryOrder.Id);
+
+      var itemByVendorProductLocation = items.Where(x =>
+                                          x.VendorProduct.UID == vendorProductUID &&
+                                          x.WarehouseBin.UID == warehouseBinUID).FirstOrDefault();
+
+      if (itemByVendorProductLocation is null) {
+        return string.Empty;
+      }
+      return itemByVendorProductLocation.InventoryOrderItemUID;
     }
 
 
@@ -118,6 +136,7 @@ namespace Empiria.Trade.Inventory.Domain {
 
       return inventoryStock.Where(x => x.WarehouseBin.Id == olderLocation.WarehouseBin.Id).ToList();
     }
+
 
     #endregion Private methods
   } // class InventoryOrderHelper

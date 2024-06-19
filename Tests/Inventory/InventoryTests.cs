@@ -71,7 +71,7 @@ namespace Empiria.Trade.Tests.Inventory {
 
       var usecase = InventoryOrderUseCases.UseCaseInteractor();
 
-      string inventoryOrderUID = "2e9eb67b-6474-4c66-97c5-1d4d3b1d70f6";
+      string inventoryOrderUID = "bc39e761-90ff-4a5c-8971-34c39cc6af21";
       var fields = GetInventoryOrderItemFields();
       InventoryOrderDto sut = usecase.CreateInventoryOrderItem(inventoryOrderUID, fields);
 
@@ -195,10 +195,10 @@ namespace Empiria.Trade.Tests.Inventory {
     private InventoryOrderItemFields GetInventoryOrderItemFields() {
       return new InventoryOrderItemFields() {
         UID = "",
-        Notes = "NOTAS 000101010 CONTEO ALMACEN Z",
-        VendorProductUID = "e0655909-8614-40c0-b63e-fe166a377c86",
-        WarehouseBinUID = "f06a2b16-e744-412e-bd94-82821a7b5cd9",
-        Quantity = 1,
+        Notes = "NOTA 101010 TRASPASO ALMACEN X",
+        VendorProductUID = "0f3b01a8-15b3-45ce-8d55-a5f46d1e2545",
+        WarehouseBinUID = "0b334d35-0014-400e-8530-e611858a0932",
+        Quantity = 10,
         InputQuantity = 0,
         OutputQuantity = 0
       };

@@ -86,7 +86,7 @@ namespace Empiria.Trade.Inventory.UseCases {
 
       foreach (var inventoryItem in inventoryItems) {
 
-        InventoryOrderItemFields itemFields = 
+        InventoryOrderItemFields itemFields =
           builder.MapToInventoryOrderItemFields(inventoryItem, inventoryOrder.InventoryOrderType.Id);
 
         builder.CreateInventoryOrderItem(inventoryOrder.InventoryOrderUID, itemFields);
@@ -99,6 +99,9 @@ namespace Empiria.Trade.Inventory.UseCases {
       InventoryOrderItemFields fields) {
       Assertion.Require(inventoryOrderUID, nameof(inventoryOrderUID));
       Assertion.Require(fields, nameof(fields));
+
+      fields.UID = InventoryOrderHelper.GetInventoryOrderItemUIDByVendorProductLocation(
+        inventoryOrderUID, fields.VendorProductUID, fields.WarehouseBinUID);
 
       var builder = new InventoryOrderBuilder();
       builder.CreateInventoryOrderItem(inventoryOrderUID, fields);
@@ -204,6 +207,12 @@ namespace Empiria.Trade.Inventory.UseCases {
 
 
     #endregion Public methods
+
+    #region Private methods
+
+
+
+    #endregion Private methods
 
   } // class InventoryOrderUseCases
 
