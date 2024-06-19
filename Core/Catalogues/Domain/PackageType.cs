@@ -86,7 +86,7 @@ namespace Empiria.Trade.Core.Catalogues {
 
     public void GetVolumeAttributes() {
 
-      this.Attributes = new Attributes().GetAttributes(ObjectExtData);
+      this.Attributes = new Attributes().GetAttributesList(ObjectExtData);
 
       foreach (var attr in this.Attributes) {
 

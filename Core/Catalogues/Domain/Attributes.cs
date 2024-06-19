@@ -26,7 +26,7 @@ namespace Empiria.Trade.Core.Catalogues {
     } = string.Empty;
 
 
-    public FixedList<Attributes> GetAttributes(string attributes) {
+    public FixedList<Attributes> GetAttributesList(string attributes) {
 
       AttributesList attrs = new AttributesList();
 

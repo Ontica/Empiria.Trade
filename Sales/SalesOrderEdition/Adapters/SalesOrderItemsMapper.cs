@@ -59,7 +59,7 @@ namespace Empiria.Trade.Sales.Adapters {
       var dto = new ProductTypeDto {
         ProductTypeUID = "ddddd-dc17-49f5-b378-aa692dc21cdd",
         Name = orderItem.VendorProduct.ProductFields.ProductGroup.Name,
-        Attributes = new Attributes().GetAttributes(orderItem.VendorProduct.ProductFields.Attributes) 
+        Attributes = new Attributes().GetAttributesList(orderItem.VendorProduct.ProductFields.Attributes) 
       };
 
       return dto;
