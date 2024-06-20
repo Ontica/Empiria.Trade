@@ -56,7 +56,7 @@ namespace Empiria.Trade.Tests {
     public void GetPackingOrderItemTest() {
 
       var usecase = PackagingUseCases.UseCaseInteractor();
-      string uid = "f0e6e2fc-5466-4d05-8ee9-738c31857283";
+      string uid = "63e22d5b-0a2d-49a5-8aa8-64b97e46a283";
       PackingOrderItem sut = usecase.GetPackingOrderItemByUID(uid);
 
       Assert.NotNull(sut);

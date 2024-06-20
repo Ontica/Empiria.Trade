@@ -39,17 +39,14 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
     #region Public methods
 
 
-    internal InventoryEntry GetInventoryEntries(string orderItemUID, string warehouseBinUID) {
-
-      var data = new PackagingData();
+    internal InventoryOrderItem GetInventoryEntries(string orderItemUID, string warehouseBinUID) {
 
       var orderItem = OrderItem.Parse(orderItemUID);
       var warehouseBinId = WarehouseBin.Parse(warehouseBinUID).Id;
 
-      FixedList<InventoryEntry> inventories = InventoryOrderData.GetInventoryItemsBySalesOrderAndWhBin(
-                                              orderItem.Id, warehouseBinId);
-      var inventory = inventories.Last();
-      return inventory;
+      var inventories = InventoryOrderData.GetInventoryItemsBySalesOrderAndWhBin(
+                                              orderItem.Id, warehouseBinId, 0);
+      return inventories.Last();
     }
 
 

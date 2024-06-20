@@ -14,6 +14,7 @@ using Empiria.Trade.Core;
 using Empiria.Trade.Inventory;
 using Empiria.Trade.Inventory.Adapters;
 using Empiria.Trade.Inventory.Domain;
+using Empiria.Trade.Products;
 
 namespace Empiria.Trade.Inventory.Data {
 
@@ -75,15 +76,27 @@ namespace Empiria.Trade.Inventory.Data {
     }
 
 
-    static internal FixedList<InventoryEntry> GetInventoryItemsBySalesOrderAndWhBin(
-                                        int orderItemId, int warehouseBinId) {
+    static internal FixedList<InventoryOrderItem> GetInventoryItemsBySalesOrderAndWhBin(
+                                        int orderItemId, int warehouseBinId, int vendorProductId) {
+      
+      string whBinClauses = string.Empty, vendorProductClauses = string.Empty;
+
+      if (warehouseBinId > 0) {
+        whBinClauses = $"AND WarehouseBinId = {warehouseBinId}";
+      }
+
+      if (vendorProductId > 0) {
+        vendorProductClauses = $"AND VendorProductId = {vendorProductId}";
+      }
 
       string sql = $"SELECT * FROM TRDInventoryOrderItems " +
-                   $"WHERE ItemReferenceId = {orderItemId} AND WarehouseBinId = {warehouseBinId} ";
+                   $"WHERE ItemReferenceId = {orderItemId} " +
+                   $"{whBinClauses} " +
+                   $"{vendorProductClauses} ";
 
       var dataOperation = DataOperation.Parse(sql);
 
-      return DataReader.GetPlainObjectFixedList<InventoryEntry>(dataOperation);
+      return DataReader.GetPlainObjectFixedList<InventoryOrderItem>(dataOperation);
     }
 
 
