@@ -133,7 +133,7 @@ namespace Empiria.Trade.Sales.Data {
       }
 
       var sql = $"SELECT * FROM TRDOrders {customerFilter} " +
-                 $" {keywordsFilter}  (orderTime >= CONVERT(SMALLDATETIME, '{fromDate}') AND " +
+                 $" (OrderTypeId = 1025) AND {keywordsFilter}  (orderTime >= CONVERT(SMALLDATETIME, '{fromDate}') AND " +
                  $"orderTime <= CONVERT(SMALLDATETIME,'{toDate}')) {statusFilter} {shippingMethodFilter}";
 
       var dataOperation = DataOperation.Parse(sql);
