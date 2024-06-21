@@ -100,8 +100,7 @@ namespace Empiria.Trade.Core.UsesCases {
     #region Private methods
 
     private FixedList<NamedEntityDto> GetPartiesByRole(string role, string keywords) {
-      Assertion.Require(keywords, "keywords");
-
+      
       var partyList = Party.GetPartiesByRole(role, keywords);
 
       return PartyMapper.MapToMinimalPartyDto(partyList);

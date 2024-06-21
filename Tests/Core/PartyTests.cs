@@ -80,7 +80,7 @@ namespace Empiria.Trade.Tests.Core {
     public void ShouldGetSuppliers() {
       var usecase = PartyUseCases.UseCaseInteractor();
 
-      var sut = usecase.GetSuppliers("abc");
+      var sut = usecase.GetSuppliers("");
 
       Assert.NotNull(sut);
     }
