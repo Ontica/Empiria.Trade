@@ -9,9 +9,8 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using Empiria.Trade.Core.Common;
-using Empiria.Trade.Inventory.Adapters;
 
-namespace Empiria.Trade.Inventory.PurchaseOrders.Adapters {
+namespace Empiria.Trade.Procurement.PurchaseOrders.Adapters {
 
 
   /// <summary>Output DTO used to return purchase descriptor data.</summary>

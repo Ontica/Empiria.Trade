@@ -8,11 +8,11 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-using Empiria.Trade.Inventory.PurchaseOrders.Adapters;
-using Empiria.Trade.Inventory.PurchaseOrders.UseCases;
+using Empiria.Trade.Procurement.PurchaseOrders.Adapters;
+using Empiria.Trade.Procurement.PurchaseOrders.UseCases;
 using Xunit;
 
-namespace Empiria.Trade.Tests.Inventory {
+namespace Empiria.Trade.Tests.Procurement {
 
 
   /// <summary>Test cases for purchase order.</summary>

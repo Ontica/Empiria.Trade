@@ -9,7 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 
-namespace Empiria.Trade.Inventory.PurchaseOrders.Domain {
+namespace Empiria.Trade.Procurement.PurchaseOrders.Domain {
 
 
   /// <summary>Represents a purchase order entry.</summary>
