@@ -10,7 +10,7 @@
 using System;
 using Empiria.Trade.Core.Common;
 
-namespace Empiria.Trade.Procurement.PurchaseOrders.Adapters {
+namespace Empiria.Trade.Procurement.Adapters {
 
 
   /// <summary>Output DTO used to return purchase descriptor data.</summary>

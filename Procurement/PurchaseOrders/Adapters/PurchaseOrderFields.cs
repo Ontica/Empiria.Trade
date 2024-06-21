@@ -9,16 +9,27 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 
-namespace Empiria.Trade.Procurement.PurchaseOrders.Adapters {
+namespace Empiria.Trade.Procurement.Adapters {
 
 
   /// <summary>DTO used to manage purchase order fields.</summary>
-  internal class PurchaseOrderFields {
+  public class PurchaseOrderFields {
 
 
 
 
 
   } // class PurchaseOrderFields
+
+
+  /// <summary>DTO used to manage purchase order item fields.</summary>
+  public class PurchaseOrderItemFields {
+
+
+
+
+
+  } // class PurchaseOrderItemFields
+
 
 } // namespace Empiria.Trade.Inventory.PurchaseOrders.Adapters

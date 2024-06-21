@@ -2,48 +2,47 @@
 *                                                                                                            *
 *  Module   : Inventory Management                       Component : Domain Layer                            *
 *  Assembly : Empiria.Trade.Inventory.dll                Pattern   : Information Holder                      *
-*  Type     : PurchaseOrderEntry                         License   : Please read LICENSE.txt file            *
+*  Type     : PurchaseOrderItem                          License   : Please read LICENSE.txt file            *
 *                                                                                                            *
-*  Summary  : Represents a purchase order entry.                                                             *
+*  Summary  : Represents a purchase order item.                                                              *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-using Empiria.Trade.Core;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Procurement.Adapters;
 
 namespace Empiria.Trade.Procurement {
 
 
-  /// <summary>Represents a purchase order entry.</summary>
-  public class PurchaseOrderEntry : Order {
+  /// <summary>Represents a purchase order item.</summary>
+  public class PurchaseOrderItem : OrderItem {
 
 
     #region Constructors and parsers
 
 
-    public PurchaseOrderEntry() {
+    public PurchaseOrderItem() {
       // no-op
     }
 
 
-    public PurchaseOrderEntry(PurchaseOrderFields fields) {
-      MapToPurchaseOrder(fields);
+    public PurchaseOrderItem(PurchaseOrderItemFields fields) {
+      MapToPurchaseOrderItem(fields);
+    }
+
+    
+    static public new PurchaseOrderItem Parse(int id) {
+      return BaseObject.ParseId<PurchaseOrderItem>(id);
     }
 
 
-    static public new PurchaseOrderEntry Parse(int id) {
-      return BaseObject.ParseId<PurchaseOrderEntry>(id);
+    static public new PurchaseOrderItem Parse(string uid) {
+      return BaseObject.ParseKey<PurchaseOrderItem>(uid);
     }
 
 
-    static public new PurchaseOrderEntry Parse(string uid) {
-      return BaseObject.ParseKey<PurchaseOrderEntry>(uid);
-    }
-
-
-    static public PurchaseOrderEntry ParseEmpty() {
-      return new PurchaseOrderEntry();
+    static public PurchaseOrderItem ParseEmpty() {
+      return new PurchaseOrderItem();
     }
 
 
@@ -53,14 +52,7 @@ namespace Empiria.Trade.Procurement {
     #region Properties
 
 
-    public decimal Total {
-      get; internal set;
-    }
 
-
-    public FixedList<PurchaseOrderItem> Items {
-      get; internal set;
-    } = new FixedList<PurchaseOrderItem>();
 
 
     #endregion Properties
@@ -69,13 +61,13 @@ namespace Empiria.Trade.Procurement {
     #region Private methods
 
 
-    private void MapToPurchaseOrder(PurchaseOrderFields fields) {
+    private void MapToPurchaseOrderItem(PurchaseOrderItemFields fields) {
       throw new NotImplementedException();
     }
 
 
     #endregion Private methods
 
-  } // class PurchaseOrderEntry
+  } // class PurchaseOrderItem
 
-} // namespace Empiria.Trade.Inventory.PurchaseOrders.Domain
+} // namespace Empiria.Trade.Procurement.PurchaseOrders.Domain

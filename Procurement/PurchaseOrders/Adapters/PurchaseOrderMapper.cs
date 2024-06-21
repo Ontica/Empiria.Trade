@@ -10,9 +10,9 @@
 using System;
 using System.Collections.Generic;
 using Empiria.Trade.Core.Common;
-using Empiria.Trade.Procurement.PurchaseOrders.Domain;
+using Empiria.Trade.Procurement.Domain;
 
-namespace Empiria.Trade.Procurement.PurchaseOrders.Adapters {
+namespace Empiria.Trade.Procurement.Adapters {
 
 
   /// <summary>Methods used to map purchase order.</summary>

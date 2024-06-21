@@ -8,10 +8,10 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-using Empiria.Trade.Procurement.PurchaseOrders.Adapters;
-using Empiria.Trade.Procurement.PurchaseOrders.Data;
+using Empiria.Trade.Procurement.Adapters;
+using Empiria.Trade.Procurement.Data;
 
-namespace Empiria.Trade.Procurement.PurchaseOrders.Domain {
+namespace Empiria.Trade.Procurement.Domain {
 
 
   /// <summary>Generate data for purchase order.</summary>
