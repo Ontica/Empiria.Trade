@@ -2,23 +2,21 @@
 *                                                                                                            *
 *  Module   : Inventory Management                       Component : Interface adapters                      *
 *  Assembly : Empiria.Trade.Inventory.dll                Pattern   : Data Transfer Object                    *
-*  Type     : PurchaseOrderFields                        License   : Please read LICENSE.txt file            *
+*  Type     : PurchaseOrderQuery                         License   : Please read LICENSE.txt file            *
 *                                                                                                            *
-*  Summary  : DTO used to manage purchase order fields.                                                      *
+*  Summary  : Query used to get purchase orders.                                                             *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 
-namespace Empiria.Trade.Inventory.PurchaseOrders.Adapters {
-
-
-  /// <summary>DTO used to manage purchase order fields.</summary>
-  internal class PurchaseOrderFields {
-
-
+namespace Empiria.Trade.Procurement.Adapters {
+  
+  
+  /// <summary></summary>
+  public class PurchaseOrderQuery {
 
 
 
-  } // class PurchaseOrderFields
+  } // class PurchaseOrderQuery
 
 } // namespace Empiria.Trade.Inventory.PurchaseOrders.Adapters

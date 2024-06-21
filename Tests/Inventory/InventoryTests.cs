@@ -16,7 +16,7 @@ using Empiria.Trade.Inventory;
 using Empiria.Trade.Inventory.Adapters;
 using System.Collections.Generic;
 
-namespace Empiria.Trade.Tests.Inventory {
+namespace Empiria.Trade.Tests.Procurement {
 
 
   public class InventoryTests {

@@ -115,20 +115,6 @@ namespace Empiria.Trade.Core.Catalogues {
     }
 
 
-    public WarehouseBinProduct GetWarehouseBinProduct(string warehouseBinProductUID) {
-      Assertion.Require(warehouseBinProductUID, "warehouseBinProductUID");
-
-      return WarehouseBinProduct.Parse(warehouseBinProductUID);
-    }
-
-
-    static public WarehouseBinProduct GetWarehouseBinProductByVendorProduct(int vendorProductId) {
-      Assertion.Require(vendorProductId, nameof(vendorProductId));
-
-      return CataloguesData.GetWarehouseBinProductByVendorProduct(vendorProductId);
-    }
-
-
     public FixedList<WarehouseBinForInventoryDto> GetWarehouseBinsForInventory() {
 
       FixedList<WarehouseBin> warehouseBins = CataloguesData.GetWarehouseBinsForInventory();

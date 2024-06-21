@@ -8,11 +8,12 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-using Empiria.Trade.Inventory.PurchaseOrders.Adapters;
-using Empiria.Trade.Inventory.PurchaseOrders.UseCases;
+using Empiria.Trade.Procurement;
+using Empiria.Trade.Procurement.Adapters;
+using Empiria.Trade.Procurement.UseCases;
 using Xunit;
 
-namespace Empiria.Trade.Tests.Inventory {
+namespace Empiria.Trade.Tests.Procurement {
 
 
   /// <summary>Test cases for purchase order.</summary>
@@ -29,6 +30,41 @@ namespace Empiria.Trade.Tests.Inventory {
 
 
     #region Facts
+
+
+
+    [Fact]
+    public void GetPurchaseOrderTest() {
+
+      var usecase = PurchaseOrderUseCases.UseCaseInteractor();
+
+      string purchaseOrderUID = "d80a0d16-c28b-44f9-8862-056aa31d9b7d";
+      var sut = usecase.GetPurchaseOrder(purchaseOrderUID);
+      Assert.NotNull(sut);
+    }
+
+
+    [Fact]
+    public void GetPurchaseOrderItemTest() {
+
+      var usecase = PurchaseOrderUseCases.UseCaseInteractor();
+
+      string purchaseOrderItemUID = "lokijue7-ba78-4efb-9753-18eb86poiuyt";
+      var sut = usecase.GetPurchaseOrderItem(purchaseOrderItemUID);
+      Assert.NotNull(sut);
+    }
+
+
+    [Fact]
+    public void GetPurchaseOrderListTest() {
+
+      var usecase = PurchaseOrderUseCases.UseCaseInteractor();
+
+      PurchaseOrderQuery query = new PurchaseOrderQuery { };
+
+      FixedList<PurchaseOrderEntry> sut = usecase.GetPurchaseOrderList_(query);
+      Assert.NotNull(sut);
+    }
 
 
     [Fact]

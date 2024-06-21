@@ -8,12 +8,15 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using Empiria.Trade.Core;
+using Empiria.Trade.Orders;
+using Empiria.Trade.Procurement.Adapters;
 
-namespace Empiria.Trade.Inventory.PurchaseOrders.Domain {
+namespace Empiria.Trade.Procurement {
 
 
   /// <summary>Represents a purchase order entry.</summary>
-  internal class PurchaseOrderEntry {
+  public class PurchaseOrderEntry : Order {
 
 
     #region Constructors and parsers
@@ -24,17 +27,54 @@ namespace Empiria.Trade.Inventory.PurchaseOrders.Domain {
     }
 
 
+    public PurchaseOrderEntry(PurchaseOrderFields fields) {
+      MapToPurchaseOrder(fields);
+    }
+
+
+    static public new PurchaseOrderEntry Parse(int id) {
+      return BaseObject.ParseId<PurchaseOrderEntry>(id);
+    }
+
+
+    static public new PurchaseOrderEntry Parse(string uid) {
+      return BaseObject.ParseKey<PurchaseOrderEntry>(uid);
+    }
+
+
+    static public PurchaseOrderEntry ParseEmpty() {
+      return new PurchaseOrderEntry();
+    }
+
+
     #endregion Constructors and parsers
 
 
     #region Properties
 
 
+    public decimal Total {
+      get; internal set;
+    }
 
+
+    public FixedList<PurchaseOrderItem> Items {
+      get; internal set;
+    } = new FixedList<PurchaseOrderItem>();
 
 
     #endregion Properties
 
+
+    #region Private methods
+
+
+    private void MapToPurchaseOrder(PurchaseOrderFields fields) {
+      throw new NotImplementedException();
+    }
+
+
+    #endregion Private methods
 
   } // class PurchaseOrderEntry
 

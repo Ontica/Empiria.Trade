@@ -64,9 +64,17 @@
     <ProjectReference Include="..\Core\Empiria.Trade.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Adapters\" />
-    <Folder Include="Data\" />
-    <Folder Include="Domain\" />
-    <Folder Include="UseCases\" />
+    <Compile Remove="Adapters\**" />
+    <Compile Remove="Data\**" />
+    <Compile Remove="Domain\**" />
+    <Compile Remove="UseCases\**" />
+    <EmbeddedResource Remove="Adapters\**" />
+    <EmbeddedResource Remove="Data\**" />
+    <EmbeddedResource Remove="Domain\**" />
+    <EmbeddedResource Remove="UseCases\**" />
+    <None Remove="Adapters\**" />
+    <None Remove="Data\**" />
+    <None Remove="Domain\**" />
+    <None Remove="UseCases\**" />
   </ItemGroup>
 </Project>
