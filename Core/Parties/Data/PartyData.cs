@@ -22,26 +22,18 @@ namespace Empiria.Trade.Core.Data {
    
 
     internal static FixedList<Party> GetPartyListByRole(string role, string keywords = "") {
-      string roleCondition = string.Empty;
-
-      if (keywords != string.Empty) {
-        keywords = SearchExpression.ParseOrLikeKeywords("PartyKeywords", keywords);
-
-        keywords = "AND " + keywords;
-      }
-
-      if (role != string.Empty) {
-        roleCondition = $"PartyRoles like '%{role}%' AND ";
-      }
-            
       
+      if (keywords != string.Empty) {
+        keywords = $"AND {SearchExpression.ParseOrLikeKeywords("PartyKeywords", keywords)} ";
+      }
+
       var sql = "SELECT * " +
                 "FROM TRDParties " +
-               $"WHERE {roleCondition}  PartyStatus = 'A' {keywords} ";
+               $"WHERE PartyStatus = 'A' " +
+               $"AND PartyRoles like '%{role}%' " +
+               $"{keywords} ";
                                    
       var dataOperation = DataOperation.Parse(sql);
-
-    
       return DataReader.GetFixedList<Party>(dataOperation);      
     }
 
