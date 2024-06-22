@@ -9,6 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using Empiria.Trade.Core.Common;
+using Empiria.Trade.Orders;
 
 namespace Empiria.Trade.Procurement.Adapters {
 
@@ -36,6 +37,43 @@ namespace Empiria.Trade.Procurement.Adapters {
 
 
   public class PurchaseOrderDescriptorDto {
+
+
+    public string OrderNo {
+      get; internal set;
+    }
+
+
+    public string Supplier {
+      get; internal set;
+    }
+
+
+    public string Customer {
+      get; internal set;
+    }
+
+
+    public DateTime OrderTime {
+      get; internal set;
+    }
+
+
+    public DateTime ScheduledTime {
+      get; internal set;
+    }
+
+
+    public OrderStatus OrderStatus {
+      get; internal set;
+    }
+
+
+    public decimal OrderTotal {
+      get;
+      internal set;
+    }
+
 
   } // class PurchaseOrderDescriptorDto
 

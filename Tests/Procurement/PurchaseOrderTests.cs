@@ -62,7 +62,7 @@ namespace Empiria.Trade.Tests.Procurement {
 
       PurchaseOrderQuery query = new PurchaseOrderQuery { };
 
-      FixedList<PurchaseOrderEntry> sut = usecase.GetPurchaseOrderList_(query);
+      FixedList<PurchaseOrderEntry> sut = usecase.GetPurchaseOrderList(query);
       Assert.NotNull(sut);
     }
 
@@ -72,9 +72,13 @@ namespace Empiria.Trade.Tests.Procurement {
 
       var usecase = PurchaseOrderUseCases.UseCaseInteractor();
 
-      PurchaseOrderQuery query = new PurchaseOrderQuery {};
+      PurchaseOrderQuery query = new PurchaseOrderQuery {
+        SupplierUID = "adb85aa4-0de4-4f99-ab9f-ed9dd07a113a",
+        Keywords = "c a000000001",
+        Status = Orders.OrderStatus.Empty
+      };
 
-      PurchaseOrderDataDto sut = usecase.GetPurchaseOrderList(query);
+      PurchaseOrderDataDto sut = usecase.GetPurchaseOrderDescriptor(query);
       Assert.NotNull(sut);
     }
 

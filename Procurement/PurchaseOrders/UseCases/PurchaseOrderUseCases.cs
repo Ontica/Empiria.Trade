@@ -46,16 +46,16 @@ namespace Empiria.Trade.Procurement.UseCases {
     }
 
 
-    public PurchaseOrderDataDto GetPurchaseOrderList(PurchaseOrderQuery query) {
-      var purchaseOrderList = PurchaseOrderBuilder.GetPurchaseOrderList(query);
+    public PurchaseOrderDataDto GetPurchaseOrderDescriptor(PurchaseOrderQuery query) {
+      var purchaseOrderEntries = PurchaseOrderBuilder.GetPurchaseOrderEntries(query);
 
-      return PurchaseOrderMapper.MapDescriptorList(purchaseOrderList, query);
+      return PurchaseOrderMapper.MapDescriptorList(purchaseOrderEntries, query);
     }
 
 
-    public FixedList<PurchaseOrderEntry> GetPurchaseOrderList_(PurchaseOrderQuery query) {
+    public FixedList<PurchaseOrderEntry> GetPurchaseOrderList(PurchaseOrderQuery query) {
       
-      return PurchaseOrderBuilder.GetPurchaseOrderList(query);
+      return PurchaseOrderBuilder.GetPurchaseOrderEntries(query);
     }
 
     #endregion Public methods

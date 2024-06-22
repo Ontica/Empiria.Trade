@@ -22,13 +22,13 @@ namespace Empiria.Trade.Procurement.Adapters {
     #region Public methods
 
 
-    static public PurchaseOrderDataDto MapDescriptorList(FixedList<PurchaseOrderEntry> list,
+    static public PurchaseOrderDataDto MapDescriptorList(FixedList<PurchaseOrderEntry> entries,
       PurchaseOrderQuery query) {
 
       return new PurchaseOrderDataDto {
         Query = query,
         Columns = GetColumns(),
-        Entries = MapList(list)
+        Entries = MapList(entries)
       };
     }
 
@@ -43,27 +43,43 @@ namespace Empiria.Trade.Procurement.Adapters {
     private static FixedList<DataTableColumn> GetColumns() {
       List<DataTableColumn> columns = new List<DataTableColumn>();
 
-      columns.Add(new DataTableColumn("orderTypeName", "Tipo", "text"));
       columns.Add(new DataTableColumn("orderNo", "Número de orden", "text-link"));
+      columns.Add(new DataTableColumn("supplier", "Proveedor", "text"));
       columns.Add(new DataTableColumn("customer", "Cliente", "text"));
+      //columns.Add(new DataTableColumn("orderType", "Tipo", "text"));
+      //columns.Add(new DataTableColumn("currency", "Moneda", "text"));
       columns.Add(new DataTableColumn("orderTime", "Fecha registro", "date"));
+      columns.Add(new DataTableColumn("ScheduledTime", "Fecha programada", "date"));
       columns.Add(new DataTableColumn("orderStatus", "Estatus", "text-tag"));
+      columns.Add(new DataTableColumn("orderTotal", "Total", "decimal"));
 
       return columns.ToFixedList();
     }
 
 
     static private FixedList<PurchaseOrderDescriptorDto> MapList(
-      FixedList<PurchaseOrderEntry> list) {
+      FixedList<PurchaseOrderEntry> entries) {
 
-      var mappedList = list.Select((x) => MapPurchaseDescriptorList(x));
+      var mappedList = entries.Select((x) => MapPurchaseDescriptorList(x));
 
       return new FixedList<PurchaseOrderDescriptorDto>(mappedList);
     }
 
 
     static private PurchaseOrderDescriptorDto MapPurchaseDescriptorList(PurchaseOrderEntry x) {
-      throw new NotImplementedException();
+      PurchaseOrderDescriptorDto dto = new PurchaseOrderDescriptorDto();
+
+      dto.OrderNo = x.OrderNumber;
+      dto.Supplier = x.Supplier.ShortName;
+      dto.Customer = x.Customer.ShortName;
+      //dto.OrderType = x.OrderType.Name;
+      //dto.Currency = x.Currency.ShortName;
+      dto.OrderTime = x.OrderTime;
+      dto.ScheduledTime = x.ScheduledTime;
+      dto.OrderStatus = x.Status;
+      dto.OrderTotal = x.Total;
+
+      return dto;
     }
 
 
