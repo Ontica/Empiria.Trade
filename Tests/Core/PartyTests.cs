@@ -35,7 +35,7 @@ namespace Empiria.Trade.Tests.Core {
 
       var usecase = PartyUseCases.UseCaseInteractor();
                 
-      var sut = usecase.GetParty("20120c0a-cc8a-4e12-a73a-490f418fc99f");
+      var sut = usecase.GetParty("adb85aa4-0de4-4f99-ab9f-ed9dd07a113a");
           
       Assert.NotNull(sut);
     }
