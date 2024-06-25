@@ -46,8 +46,8 @@ namespace Empiria.Trade.Inventory.Domain {
 
     internal void CreateInventoryOrderItem(string inventoryOrderUID, InventoryOrderItemFields fields) {
 
-        var inventoryItem = new InventoryOrderItem(inventoryOrderUID, fields);
-        inventoryItem.Save();
+      var inventoryItem = new InventoryOrderItem(inventoryOrderUID, fields);
+      inventoryItem.Save();
     }
 
 
@@ -100,8 +100,15 @@ namespace Empiria.Trade.Inventory.Domain {
 
     internal InventoryOrderEntry GetInventoryOrderByUID(string inventoryOrderUID) {
 
-      var inventoryOrder = InventoryOrderData.GetInventoryOrderByUID(inventoryOrderUID);
-      GetInventoryItemsForOrder(inventoryOrder);
+      var clauses = InventoryOrderQueryClauses.CreateClausesForInventoryOrder(
+        new InventoryQueryClauses(inventoryOrderUID));
+
+      var inventoryOrder = InventoryOrderData.GetInventoryOrderList(clauses).FirstOrDefault();
+
+      if (inventoryOrder != null) {
+
+        GetInventoryItemsForOrder(inventoryOrder);
+      }
 
       return inventoryOrder;
     }
@@ -116,9 +123,11 @@ namespace Empiria.Trade.Inventory.Domain {
 
     internal void UpdateInventoryOrderForPicking(InventoryOrderFields fields) {
 
-      var inventoryOrder = InventoryOrderData.GetInventoryOrderBySalesOrder(
-        5, fields.ReferenceId).FirstOrDefault();
+      var clauses = InventoryOrderQueryClauses.CreateClausesForInventoryOrder(
+        new InventoryQueryClauses("", 504, fields.ReferenceId));
 
+      var inventoryOrder = InventoryOrderData.GetInventoryOrderList(clauses).FirstOrDefault();
+      
       if (inventoryOrder != null) {
 
         var inventoryUpdated = CreateInventoryOrder(fields, inventoryOrder.InventoryOrderUID);

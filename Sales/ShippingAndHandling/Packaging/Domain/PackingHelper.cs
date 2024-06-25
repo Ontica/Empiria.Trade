@@ -31,8 +31,10 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       var missingItems = new List<MissingItem>();
 
-      var inventoryOrder = InventoryOrderData.GetInventoryOrderBySalesOrder(
-        5, Order.Parse(orderUid).Id).FirstOrDefault();
+      var clauses = InventoryOrderQueryClauses.CreateClausesForInventoryOrder(
+        new InventoryQueryClauses("", 504, Order.Parse(orderUid).Id));
+
+      var inventoryOrder = InventoryOrderData.GetInventoryOrderList(clauses).FirstOrDefault();
       
       if (inventoryOrder == null) {
         return new FixedList<MissingItem>();
@@ -133,8 +135,10 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
     internal PickingData GetPickingData(string orderUID) {
 
-      var inventoryOrder = InventoryOrderData.GetInventoryOrderBySalesOrder(
-        5, SalesOrder.Parse(orderUID).Id).FirstOrDefault();
+      var clauses = InventoryOrderQueryClauses.CreateClausesForInventoryOrder(
+        new InventoryQueryClauses("", 504, SalesOrder.Parse(orderUID).Id));
+
+      var inventoryOrder = InventoryOrderData.GetInventoryOrderList(clauses).FirstOrDefault();
 
       if (inventoryOrder == null) {
         return new PickingData();

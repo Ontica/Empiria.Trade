@@ -160,41 +160,12 @@ namespace Empiria.Trade.Inventory.Data {
     }
 
 
-    static internal FixedList<InventoryOrderEntry> GetInventoryOrderList(InventoryOrderQuery query) {
+    static internal FixedList<InventoryOrderEntry> GetInventoryOrderList(string clauses) {
       
-      var queryToClauses = InventoryOrderQueryClauses.GetClausesForInventoryOrder(query);
-      string clauses = InventoryOrderQueryClauses.CreateClausesForInventoryOrder(queryToClauses);
-
       string sql = $"SELECT * FROM TRDInventoryOrders {clauses}";
       var dataOperation = DataOperation.Parse(sql);
 
       return DataReader.GetPlainObjectFixedList<InventoryOrderEntry>(dataOperation);
-    }
-
-
-    static internal FixedList<InventoryOrderEntry> GetInventoryOrderBySalesOrder(
-      int inventoryOrderTypeId, int referenceId) {
-
-      string sql = $"SELECT * FROM TRDInventoryOrders " +
-                   $"WHERE InventoryOrderTypeId = {inventoryOrderTypeId} " +
-                   $"AND ReferenceId = {referenceId}";
-
-      var dataOperation = DataOperation.Parse(sql);
-
-      return DataReader.GetPlainObjectFixedList<InventoryOrderEntry>(dataOperation);
-    }
-
-
-    static internal InventoryOrderEntry GetInventoryOrderByUID(string inventoryOrderUID) {
-
-      var inventoryOrderId = InventoryOrderEntry.Parse(inventoryOrderUID).Id;
-
-      string sql = $"SELECT * FROM TRDInventoryOrders " +
-                   $"WHERE InventoryOrderId = {inventoryOrderId}";
-
-      var dataOperation = DataOperation.Parse(sql);
-
-      return DataReader.GetPlainObject<InventoryOrderEntry>(dataOperation);
     }
 
 

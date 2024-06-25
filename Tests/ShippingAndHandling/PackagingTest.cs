@@ -134,7 +134,7 @@ namespace Empiria.Trade.Tests {
 
       var usecase = PackagingUseCases.UseCaseInteractor();
 
-      string orderUID = "542e49eb-e7bb-459b-991f-d1856a615fc0";
+      string orderUID = "f75b0e0e-74a6-4191-a895-23672f38b358";
       var fields = new InventoryOrderFields() {
         InventoryOrderTypeUID = "2ft8y5h4-db55-48b3-aa78-63132a8d5e7f",
         ResponsibleUID = "f3c61569-25f7-4296-a48d-f01735e27062",

@@ -156,8 +156,12 @@ namespace Empiria.Trade.Inventory.UseCases {
 
       var builder = new InventoryOrderBuilder();
       var inventoryOrder = builder.GetInventoryOrderByUID(inventoryOrderUID);
-      InventoryOrderActions actions = GetActions(inventoryOrder);
+      
+      if (inventoryOrder == null) {
+        return new InventoryOrderDto();
+      }
 
+      InventoryOrderActions actions = GetActions(inventoryOrder);
       return InventoryOrderMapper.MapInventoryOrder(inventoryOrder, actions);
     }
 
@@ -165,7 +169,10 @@ namespace Empiria.Trade.Inventory.UseCases {
     public InventoryOrderDataDto GetInventoryOrderList(InventoryOrderQuery query) {
       Assertion.Require(query, nameof(query));
 
-      var list = InventoryOrderData.GetInventoryOrderList(query);
+      var clauses =
+        InventoryOrderQueryClauses.CreateClausesForInventoryOrder(new InventoryQueryClauses(query));
+      var list = InventoryOrderData.GetInventoryOrderList(clauses);
+
       return InventoryOrderMapper.MapList(list, query);
     }
 
@@ -199,8 +206,11 @@ namespace Empiria.Trade.Inventory.UseCases {
     internal void CloseInventoryOrderItemsForSales(
       int inventoryOrderTypeId, int referenceId) {
 
-      InventoryOrderEntry inventoryOrder = InventoryOrderData.GetInventoryOrderBySalesOrder(
-        inventoryOrderTypeId, referenceId).FirstOrDefault();
+      var clauses = InventoryOrderQueryClauses.CreateClausesForInventoryOrder(
+        new InventoryQueryClauses("", inventoryOrderTypeId, referenceId));
+
+      InventoryOrderEntry inventoryOrder =
+        InventoryOrderData.GetInventoryOrderList(clauses).FirstOrDefault();
 
       InventoryOrderData.CloseInventoryOrderItemsForSales(inventoryOrder.InventoryOrderId);
     }

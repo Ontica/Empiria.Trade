@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using Empiria.Trade.Core;
 using Empiria.Trade.Inventory.Adapters;
 
 namespace Empiria.Trade.Inventory.Data {
@@ -16,6 +17,26 @@ namespace Empiria.Trade.Inventory.Data {
   /// <summary>Provides query data clauses for inventory order.</summary>
   internal class InventoryQueryClauses {
 
+
+    internal InventoryQueryClauses() {
+
+    }
+
+
+    internal InventoryQueryClauses(string inventoryOrderUID = "",
+                                   int inventoryOrderTypeId = 0, int referenceId = 0) {
+
+      if (inventoryOrderUID != string.Empty) {
+        this.InventoryOrderId = InventoryOrderEntry.Parse(inventoryOrderUID).Id;
+      }
+      this.InventoryOrderTypeId = inventoryOrderTypeId;
+      this.ReferenceId = referenceId;
+    }
+
+
+    internal InventoryQueryClauses(InventoryOrderQuery query) {
+      GetClausesForInventoryOrder(query);
+    }
 
     internal int InventoryOrderId {
       get; set;
@@ -45,6 +66,29 @@ namespace Empiria.Trade.Inventory.Data {
     internal InventoryStatus InventoryOrderStatus {
       get; set;
     } = InventoryStatus.Todos;
+
+
+    #region Public methods
+
+
+    private void GetClausesForInventoryOrder(InventoryOrderQuery query) {
+
+      if (query.InventoryOrderTypeUID != string.Empty) {
+        this.InventoryOrderTypeId = InventoryOrderType.Parse(query.InventoryOrderTypeUID).Id;
+      }
+      if (query.AssignedToUID != string.Empty) {
+        this.AssignedToId = Party.Parse(query.AssignedToUID).Id;
+      }
+      if (query.Keywords != string.Empty) {
+        this.Keywords = query.Keywords;
+      }
+      if (query.Status != InventoryStatus.Todos) {
+        this.InventoryOrderStatus = query.Status;
+      }
+    }
+
+
+    #endregion Public methods
 
 
   } // class InventoryQueryClauses

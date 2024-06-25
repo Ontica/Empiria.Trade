@@ -21,27 +21,6 @@ namespace Empiria.Trade.Inventory.Data {
     #region Public methods
 
 
-    static internal InventoryQueryClauses GetClausesForInventoryOrder(InventoryOrderQuery query) {
-
-      var clauses = new InventoryQueryClauses();
-
-      if (query.InventoryOrderTypeUID != string.Empty) {
-        clauses.InventoryOrderTypeId = InventoryOrderType.Parse(query.InventoryOrderTypeUID).Id;
-      }
-      if (query.AssignedToUID != string.Empty) {
-        clauses.AssignedToId = Party.Parse(query.AssignedToUID).Id;
-      }
-      if (query.Keywords != string.Empty) {
-        clauses.Keywords = query.Keywords;
-      }
-      if (query.Status != InventoryStatus.Todos) {
-        clauses.InventoryOrderStatus = query.Status;
-      }
-
-      return clauses;
-    }
-
-
     static internal string CreateClausesForInventoryOrder(InventoryQueryClauses clauses) {
 
       var filters = new Filter("InventoryOrderId > 0");
