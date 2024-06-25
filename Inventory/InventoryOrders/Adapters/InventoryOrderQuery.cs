@@ -21,11 +21,6 @@ namespace Empiria.Trade.Inventory.Adapters {
     } = string.Empty;
 
 
-    //public string ExternalObjectReferenceUID {
-    //    get; set;
-    //} = string.Empty;
-
-
     public string AssignedToUID {
       get; set;
     } = string.Empty;

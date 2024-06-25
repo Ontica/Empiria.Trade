@@ -25,6 +25,66 @@ namespace Empiria.Trade.Inventory.Data {
 
     #region Public methods
 
+
+    static internal void CloseInventoryOrder(int inventoryOrderId, InventoryStatus status) {
+
+      string sql = $"UPDATE TRDInventoryOrders SET " +
+                   $"InventoryOrderStatus = '{(char) status}', " +
+                   $"ClosingTime = '{ConvertDateTimeToString()}' " +
+                   $"WHERE InventoryOrderId IN('{inventoryOrderId}')";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      DataWriter.Execute(dataOperation);
+    }
+
+
+    static internal void CloseInventoryOrderForSalesOrder(int inventoryOrderTypeId, int referenceId) {
+
+      string sql = $"UPDATE TRDInventoryOrders SET " +
+                   $"InventoryOrderStatus = '{(char) InventoryStatus.Cerrado}' " +
+                   $",ClosingTime = '{ConvertDateTimeToString()}' " +
+                   $"WHERE InventoryOrderTypeId = {inventoryOrderTypeId} " +
+                   $"AND ReferenceId = {referenceId} ";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      DataWriter.Execute(dataOperation);
+    }
+
+
+    internal static void CloseInventoryOrderItemsForSales(int inventoryOrderId) {
+
+      string sql = $"UPDATE TRDInventoryOrderItems SET " +
+                   $"InventoryOrderItemStatus = '{(char) InventoryStatus.Cerrado}' " +
+                   $",OutputQuantity = InProcessOutputQuantity " +
+                   $",InProcessOutputQuantity = 0 " +
+                   $",InventoryOrderItemNotes = 'APLICADO' " +
+                   $",ClosingTime = '{ConvertDateTimeToString()}' " +
+                   $"WHERE InventoryOrderId = {inventoryOrderId} ";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      DataWriter.Execute(dataOperation);
+    }
+
+
+    internal static void CloseInventoryItemForInventoryOrder(
+      int inventoryOrderItemId, decimal quantityDifference) {
+
+      string sql = $"UPDATE TRDInventoryOrderItems SET " +
+                   $"InventoryOrderItemStatus = '{(char) InventoryStatus.Cerrado}' " +
+                   $"{GetQuantityClauses(quantityDifference)} " +
+                   $",ClosingTime = '{ConvertDateTimeToString()}' " +
+                   $"WHERE InventoryOrderItemId = {inventoryOrderItemId} ";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      DataWriter.Execute(dataOperation);
+    }
+
+
+
     static internal void DeleteInventoryItemByOrderUID(string inventoryOrderUID) {
 
       var inventoryId = InventoryOrderEntry.Parse(inventoryOrderUID).Id;
@@ -101,9 +161,11 @@ namespace Empiria.Trade.Inventory.Data {
 
 
     static internal FixedList<InventoryOrderEntry> GetInventoryOrderList(InventoryOrderQuery query) {
+      
+      var queryToClauses = InventoryOrderQueryClauses.GetClausesForInventoryOrder(query);
+      string clauses = InventoryOrderQueryClauses.CreateClausesForInventoryOrder(queryToClauses);
 
-      string clauses = GetClausesFromQuery(query);
-      string sql = $"SELECT * FROM TRDInventoryOrders WHERE InventoryOrderId > 0 {clauses}";
+      string sql = $"SELECT * FROM TRDInventoryOrders {clauses}";
       var dataOperation = DataOperation.Parse(sql);
 
       return DataReader.GetPlainObjectFixedList<InventoryOrderEntry>(dataOperation);
@@ -125,7 +187,10 @@ namespace Empiria.Trade.Inventory.Data {
 
     static internal InventoryOrderEntry GetInventoryOrderByUID(string inventoryOrderUID) {
 
-      string sql = $"SELECT * FROM TRDInventoryOrders WHERE InventoryOrderUID IN ('{inventoryOrderUID}')";
+      var inventoryOrderId = InventoryOrderEntry.Parse(inventoryOrderUID).Id;
+
+      string sql = $"SELECT * FROM TRDInventoryOrders " +
+                   $"WHERE InventoryOrderId = {inventoryOrderId}";
 
       var dataOperation = DataOperation.Parse(sql);
 
@@ -172,90 +237,6 @@ namespace Empiria.Trade.Inventory.Data {
 
 
     #region Private methods
-
-
-    static private string GetClausesFromQuery(InventoryOrderQuery query) {
-      var orderType = string.Empty;
-
-      if (query.InventoryOrderTypeUID != string.Empty) {
-
-        orderType = $"InventoryOrderTypeId = {InventoryOrderType.Parse(query.InventoryOrderTypeUID).Id}";
-      }
-
-      var filters = new Filter(orderType);
-
-      if (query.AssignedToUID != string.Empty) {
-        filters.AppendAnd($"AssignedToId = {Party.Parse(query.AssignedToUID).Id}");
-      }
-
-      if (query.Keywords != string.Empty) {
-        filters.AppendAnd($"{SearchExpression.ParseAndLikeKeywords("InventoryOrderKeywords", query.Keywords)}");
-      }
-
-      if (query.Status != InventoryStatus.Todos) {
-        filters.AppendAnd($"InventoryOrderStatus = '{(char) query.Status}'");
-      }
-
-      return filters.ToString().Length > 0 ? $"AND {filters}" : "";
-    }
-
-
-    static internal void CloseInventoryOrder(int inventoryOrderId, InventoryStatus status) {
-      
-      string sql = $"UPDATE TRDInventoryOrders SET " +
-                   $"InventoryOrderStatus = '{(char) status}', " +
-                   $"ClosingTime = '{ConvertDateTimeToString()}' " +
-                   $"WHERE InventoryOrderId IN('{inventoryOrderId}')";
-
-      var dataOperation = DataOperation.Parse(sql);
-
-      DataWriter.Execute(dataOperation);
-    }
-
-
-    static internal void CloseInventoryOrderForSalesOrder(int inventoryOrderTypeId, int referenceId) {
-
-      string sql = $"UPDATE TRDInventoryOrders SET " +
-                   $"InventoryOrderStatus = '{(char) InventoryStatus.Cerrado}' " +
-                   $",ClosingTime = '{ConvertDateTimeToString()}' " +
-                   $"WHERE InventoryOrderTypeId = {inventoryOrderTypeId} " +
-                   $"AND ReferenceId = {referenceId} ";
-
-      var dataOperation = DataOperation.Parse(sql);
-
-      DataWriter.Execute(dataOperation);
-    }
-
-
-    internal static void CloseInventoryOrderItemsForSales(int inventoryOrderId) {
-
-      string sql = $"UPDATE TRDInventoryOrderItems SET " +
-                   $"InventoryOrderItemStatus = '{(char) InventoryStatus.Cerrado}' " +
-                   $",OutputQuantity = InProcessOutputQuantity " +
-                   $",InProcessOutputQuantity = 0 " +
-                   $",InventoryOrderItemNotes = 'APLICADO' " +
-                   $",ClosingTime = '{ConvertDateTimeToString()}' " +
-                   $"WHERE InventoryOrderId = {inventoryOrderId} ";
-
-      var dataOperation = DataOperation.Parse(sql);
-
-      DataWriter.Execute(dataOperation);
-    }
-
-    
-    internal static void CloseInventoryItemForInventoryOrder(
-      int inventoryOrderItemId, decimal quantityDifference) {
-
-      string sql = $"UPDATE TRDInventoryOrderItems SET " +
-                   $"InventoryOrderItemStatus = '{(char) InventoryStatus.Cerrado}' " +
-                   $"{GetQuantityClauses(quantityDifference)} " +
-                   $",ClosingTime = '{ConvertDateTimeToString()}' " +
-                   $"WHERE InventoryOrderItemId = {inventoryOrderItemId} ";
-
-      var dataOperation = DataOperation.Parse(sql);
-
-      DataWriter.Execute(dataOperation);
-    }
 
 
     static private string GetQuantityClauses(decimal quantityDifference) {

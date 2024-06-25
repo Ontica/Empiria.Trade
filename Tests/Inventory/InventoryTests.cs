@@ -119,10 +119,10 @@ namespace Empiria.Trade.Tests.Procurement {
       var usecase = InventoryOrderUseCases.UseCaseInteractor();
 
       InventoryOrderQuery query = new InventoryOrderQuery {
-        InventoryOrderTypeUID = "ab8e950e-94e9-4ae5-943a-49abad514g52",
+        InventoryOrderTypeUID = "5851e71b-3a1f-40ab-836f-ac3d2c9408de",
         AssignedToUID = "",
-        Keywords = "",
-        Status = InventoryStatus.Todos
+        Keywords = "OCFI000000008",
+        Status = InventoryStatus.Cerrado
       };
 
       InventoryOrderDataDto sut = usecase.GetInventoryOrderList(query);
@@ -134,7 +134,7 @@ namespace Empiria.Trade.Tests.Procurement {
     public void GetInventoryOrderByUID() {
 
       var usecase = InventoryOrderUseCases.UseCaseInteractor();
-      string inventoryOrderUID = "4e890899-47d4-4ee3-97ee-5985cfc28253";
+      string inventoryOrderUID = "64b96507-37b5-45d5-9a4c-40ef8099a6db";
 
       InventoryOrderDto sut = usecase.GetInventoryOrderByUID(inventoryOrderUID);
       Assert.NotNull(sut);
