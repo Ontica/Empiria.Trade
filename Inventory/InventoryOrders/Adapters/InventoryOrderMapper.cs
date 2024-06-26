@@ -154,7 +154,7 @@ namespace Empiria.Trade.Inventory.Adapters {
       decimal quantity = 0;
       if (x.Status == InventoryStatus.Abierto) {
 
-        if (x.InventoryOrderTypeItemId == 5) {
+        if (x.InventoryOrderTypeItemId == 504) {
           quantity = x.InProcessOutputQuantity;
         } else {
           quantity = x.CountingQuantity;
@@ -164,7 +164,7 @@ namespace Empiria.Trade.Inventory.Adapters {
       
       if (x.Status == InventoryStatus.Cerrado) {
         
-        if (x.InventoryOrderTypeItemId == 5) {
+        if (x.InventoryOrderTypeItemId == 504) {
           quantity = x.OutputQuantity;
         } else {
           quantity = x.InputQuantity;

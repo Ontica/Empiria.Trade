@@ -34,9 +34,9 @@ namespace Empiria.Trade.Inventory {
     static public InventoryOrderItem Empty => ParseEmpty<InventoryOrderItem>();
 
 
-    public InventoryOrderItem(string inventoryOrderUID, InventoryOrderItemFields item) {
+    public InventoryOrderItem(string inventoryOrderUID, InventoryOrderItemFields fields) {
 
-      MapToInventoryOrderItem(inventoryOrderUID, item);
+      MapToInventoryOrderItem(inventoryOrderUID, fields);
     }
 
     #endregion Constructors and parsers
