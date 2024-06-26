@@ -53,11 +53,13 @@ namespace Empiria.Trade.Core.Catalogues {
     }
 
 
-    static public FixedList<SalesInventoryStock> GetInventoryStockByVendorProductAndWarehouseBin(
+    static public FixedList<SalesInventoryStock> GetInventoryStockByClauses(
       int vendorProductId, int warehouseBinId) {
       Assertion.Require(vendorProductId, "vendorProductId");
+      Assertion.Require(warehouseBinId, "warehouseBinId");
 
-      return InventoryData.GetInventoryStockByVendorProductAndWarehouseBin(vendorProductId, warehouseBinId);
+      var clauses = InventoryData.GetInventoryStockClauses(vendorProductId, warehouseBinId);
+      return InventoryData.GetInventoryStockByClauses(clauses);
     }
 
 

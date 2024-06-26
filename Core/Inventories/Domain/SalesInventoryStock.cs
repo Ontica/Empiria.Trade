@@ -21,8 +21,8 @@ namespace Empiria.Trade.Core {
     #region Constructors and parsers
 
 
-    internal SalesInventoryStock() {
-
+    public SalesInventoryStock() {
+      // no-op
     }
 
 

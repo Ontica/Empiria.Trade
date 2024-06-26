@@ -52,7 +52,7 @@ namespace Empiria.Trade.Inventory.UseCases {
 
       foreach (var item in inventoryItems) {
 
-        var inventoryStock = CataloguesUseCases.GetInventoryStockByVendorProductAndWarehouseBin(
+        var inventoryStock = CataloguesUseCases.GetInventoryStockByClauses(
           item.VendorProduct.Id, item.WarehouseBin.Id);
 
         var realStock = inventoryStock.Sum(x => x.RealStock);
