@@ -127,7 +127,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
 
         public string DeliveryNumber {
             get; internal set;
-        }
+        }=string.Empty;
 
 
         public decimal OrdersTotal {
