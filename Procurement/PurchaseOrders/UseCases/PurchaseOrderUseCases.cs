@@ -47,18 +47,22 @@ namespace Empiria.Trade.Procurement.UseCases {
 
 
     public PurchaseOrderDataDto GetPurchaseOrderDescriptor(PurchaseOrderQuery query) {
-      var purchaseOrderEntries = PurchaseOrderBuilder.GetPurchaseOrderEntries(query);
+      var purchaseOrderEntries = GetPurchaseOrderList(query);
 
       return PurchaseOrderMapper.MapDescriptorList(purchaseOrderEntries, query);
     }
 
 
+    #endregion Public methods
+
+    #region Private methods
+
     public FixedList<PurchaseOrderEntry> GetPurchaseOrderList(PurchaseOrderQuery query) {
-      
+
       return PurchaseOrderBuilder.GetPurchaseOrderEntries(query);
     }
 
-    #endregion Public methods
+    #endregion Private methods
 
   } // class PurchaseOrderUseCases 
 

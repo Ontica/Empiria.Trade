@@ -53,6 +53,17 @@ namespace Empiria.Trade.Procurement {
     #region Properties
 
 
+    [DataField("OrderId")]
+    public int OrderId {
+      get; internal set;
+    }
+
+
+    [DataField("OrderUID")]
+    public string OrderUID {
+      get; internal set;
+    }
+
     public decimal Total {
       get; internal set;
     }

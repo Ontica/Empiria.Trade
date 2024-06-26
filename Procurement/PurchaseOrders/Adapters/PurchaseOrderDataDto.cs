@@ -38,6 +38,12 @@ namespace Empiria.Trade.Procurement.Adapters {
 
   public class PurchaseOrderDescriptorDto {
 
+    
+    public string UID {
+      get;
+      internal set;
+    }
+
 
     public string OrderNo {
       get; internal set;
@@ -70,11 +76,9 @@ namespace Empiria.Trade.Procurement.Adapters {
 
 
     public decimal OrderTotal {
-      get;
-      internal set;
+      get; internal set;
     }
-
-
+    
   } // class PurchaseOrderDescriptorDto
 
 } // namespace Empiria.Trade.Inventory.PurchaseOrders.Adapters
