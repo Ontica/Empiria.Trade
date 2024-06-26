@@ -14,6 +14,7 @@ using Empiria.Services;
 using Empiria.Trade.Core;
 using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Core.Inventories.Adapters;
+using Empiria.Trade.Core.UsesCases;
 using Empiria.Trade.Financial.Adapters;
 using Empiria.Trade.Financial.UseCases;
 using Empiria.Trade.Inventory.UseCases;
@@ -49,6 +50,7 @@ namespace Empiria.Trade.Sales.UseCases {
 
       SalesOrder order;
 
+      ValidateCustomerAddress(fields.CustomerUID, fields.CustomerAddressUID);
       ValidateOrderItemsExistence(fields.Items);
 
       if (fields.UID.Length != 0) {
@@ -64,10 +66,11 @@ namespace Empiria.Trade.Sales.UseCases {
 
     public ISalesOrderDto CreateSalesOrder(SalesOrderFields fields) {
       Assertion.Require(fields, "fields");
-       
+
+      ValidateCustomerAddress(fields.CustomerUID, fields.CustomerAddressUID);
       ValidateShippingMethod(fields);
       ValidateOrderItemsExistence(fields.Items);
-
+            
       var order = new SalesOrder(fields);
 
       order.Save();
@@ -195,7 +198,7 @@ namespace Empiria.Trade.Sales.UseCases {
 
     public ISalesOrderDto GetSalesOrder(string orderUID, QueryType queryType) {
       var order = SalesOrder.Parse(orderUID);
-
+    
       order.CalculateSalesOrder();
       order.SetOrderActions(queryType);
 
@@ -217,6 +220,7 @@ namespace Empiria.Trade.Sales.UseCases {
         Assertion.RequireFail($"It is only possible to update orders in the Captured status your order status is:{fields.Status}");
       }
 
+      ValidateCustomerAddress(fields.CustomerUID, fields.CustomerAddressUID);
       ValidateOrderItemsExistence(fields.Items);
 
       var order = SalesOrder.Parse(fields.UID);
@@ -303,7 +307,7 @@ namespace Empiria.Trade.Sales.UseCases {
     }
 
     private void ValidateShippingMethod(SalesOrderFields fields) {
-      if ((fields.ShippingMethod != Orders.ShippingMethods.Ocurre) && (fields.customerAddressUID == String.Empty)) {
+      if ((fields.ShippingMethod != Orders.ShippingMethods.Ocurre) && (fields.CustomerAddressUID == String.Empty)) {
         throw Assertion.EnsureNoReachThisCode($"It is customer address is mandatory.");
       }
     }
@@ -318,6 +322,15 @@ namespace Empiria.Trade.Sales.UseCases {
         }
       }
 
+    }
+
+    private void ValidateCustomerAddress(string customerUID, string customerAddressUID) {
+      var usescase = CustomerUseCases.UseCaseInteractor();
+      var addresses = usescase.GetCustomerAddress(customerUID);
+
+      if (addresses.Contains(x => x.UID == customerAddressUID) == false) {
+        throw Assertion.EnsureNoReachThisCode($"El Cliente no tiene registrada la dirección seleccionada");
+      }
     }
 
     private decimal GetItemExistence(int vendorProductId) {

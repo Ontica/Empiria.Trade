@@ -36,7 +36,7 @@ namespace Empiria.Trade.Tests.Sales {
     public void ShouldGetOrderTest() {
 
       var fields = new SearchOrderFields {
-        QueryType = QueryType.SalesPacking,
+        QueryType = QueryType.Sales,
         Keywords = "",
         FromDate = Convert.ToDateTime("2023/01/10"),
         ToDate = Convert.ToDateTime("2024/12/28"),
@@ -91,7 +91,7 @@ namespace Empiria.Trade.Tests.Sales {
     
       var item = new SalesOrderItemsFields {
       OrderItemUID = "",
-      VendorProductUID = "56214e92-2cb0-49fd-943e-0a1c5df51a10",
+      VendorProductUID = "4d3d6aa9-3e11-4620-bf02-3f2f39e1eb2a",
       Quantity = 1,
       UnitPrice = 100,
       SalesPrice = 0,
@@ -112,21 +112,21 @@ namespace Empiria.Trade.Tests.Sales {
         //OrderNumber = "P-EY2DDRfrr2",
         OrderTime = DateTime.Now,
         Status = Orders.OrderStatus.Captured,
-        CustomerUID = "97c3b0b7-6f7d-4700-a329-9825a60440c1",
+        CustomerUID = "ab8c4f29-5cf9-4def-9903-afa407a25c56",
 
         CustomerContactUID = "",
         SupplierUID = "45ff9d31-cb77-4fd5-9dea-7bcbc4cbe292",
         SalesAgentUID = "8b1d6d37-8d6c-4983-a3a0-42ed6b867bbe",
         PaymentCondition = "1 Mes",
         ShippingMethod = ShippingMethods.Paqueteria,
-        Items = items.ToFixedList()
+        Items = items.ToFixedList(),
+        CustomerAddressUID = "769b1781-8c46-439d-86d2-53a3fcfa7c63"
       };
 
-        var salesOrder = new SalesOrder(order);
-      salesOrder.Save();
-      var map = SalesOrderMapper.Map(salesOrder);
-        Assert.NotNull(map);
-
+      var useCase = SalesOrderUseCases.UseCaseInteractor();
+      var sut =  useCase.CreateSalesOrder(order);
+      
+      Assert.NotNull(sut);
       }
 
   
@@ -230,7 +230,7 @@ namespace Empiria.Trade.Tests.Sales {
     public void ShouldGetOrderByOrderNumber() {
 
       var salesOrderUseCase = SalesOrderUseCases.UseCaseInteractor();
-      var x = salesOrderUseCase.GetSalesOrder("P-1CEDWUQUQ9");
+      var x = salesOrderUseCase.GetSalesOrder("P-TYN9NOZ37B");
 
       Assert.NotNull(x);
     }

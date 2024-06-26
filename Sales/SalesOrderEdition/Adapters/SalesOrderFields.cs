@@ -91,7 +91,7 @@ namespace Empiria.Trade.Sales.Adapters {
       get; set;
     }
 
-    public string customerAddressUID {
+    public string CustomerAddressUID {
       get; set;
     } = "Empty";
 
@@ -116,7 +116,7 @@ namespace Empiria.Trade.Sales.Adapters {
         return CustomerAddress.Empty;
       }
 
-      return CustomerAddress.Parse(this.customerAddressUID);
+      return CustomerAddress.Parse(this.CustomerAddressUID);
     }
 
     internal CustomerContact GetCustomerContact() {
