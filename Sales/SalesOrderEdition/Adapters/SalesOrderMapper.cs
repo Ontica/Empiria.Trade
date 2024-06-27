@@ -60,9 +60,9 @@ namespace Empiria.Trade.Sales.Adapters
         case "Authorized":
           return "Autorizada";
         case "Packing":
-          return "Surtiendose";
+          return "Surtiéndose";
         case "Shipping":
-          return "Envio";
+          return "Envío";
         case "Delivery":
           return "Entrega";
         case "Closed":
