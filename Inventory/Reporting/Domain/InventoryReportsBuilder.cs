@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using Empiria.Trade.Inventory.Adapters;
 
 namespace Empiria.Trade.Inventory.Domain {
 
@@ -19,11 +20,19 @@ namespace Empiria.Trade.Inventory.Domain {
     #region Public methods
 
 
-    internal FixedList<InventoryStockEntry> GetInventoryStock() {
+    internal FixedList<IInventoryReport> GenerateInventoryStock(InventoryReportQuery query) {
+
+      var list = new FixedList<InventoryStockEntry>();
+
+      return new FixedList<IInventoryReport>(list.Select(x=>(IInventoryReport) x));
+    }
 
 
+    internal FixedList<IInventoryReport> GenerateInventoryReport(InventoryReportQuery query) {
 
-      return new FixedList<InventoryStockEntry>();
+      var list = new FixedList<InventoryReportEntry>();
+
+      return new FixedList<IInventoryReport>(list.Select(x => (IInventoryReport) x));
     }
 
 
