@@ -14,6 +14,7 @@ using System.Xml.Linq;
 using Empiria.DataTypes;
 using Empiria.Services;
 using Empiria.Trade.Products.Adapters;
+using Empiria.Trade.Products.Data;
 using Empiria.Trade.Products.Domain;
 
 namespace Empiria.Trade.Products.UseCases
@@ -100,7 +101,13 @@ namespace Empiria.Trade.Products.UseCases
       return builder.GetStockAndAddToVendorProduct(vendorProduct);
     }
 
-    
+
+    static public FixedList<VendorProduct> GetVendorProductByProduct(int productId) {
+      
+      return ProductDataService.GetVendorProductByProduct(productId);
+    }
+
+
     #endregion Use cases
 
 
