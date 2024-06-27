@@ -34,27 +34,9 @@ namespace Empiria.Trade.Core.Adapters {
     }
 
     static public FixedList<CustomerShortAddressDto> MapToShortAddresses(FixedList<CustomerAddress> addresses) {
-      List<CustomerShortAddressDto> CustomerAddressDtoList = new List<CustomerShortAddressDto>();
+      
+      return addresses.Select(x => MapShortAddress(x)).ToFixedList();
 
-      int count = 0;
-
-      foreach (var address in addresses) {
-        if (count == 0) {
-          CustomerAddressDtoList.Add(MapShortAddress(address));
-        } else {
-          var dto = new CustomerShortAddressDto {
-            UID = address.UID,
-            Name = "Sucursal " +  address.Description,
-            Description = address.Address1 + ", " + address.Address2 + " " + address.City + ", " + address.State, 
-          };
-
-          CustomerAddressDtoList.Add(dto);
-        }
-        
-        count++;
-      }      
-
-      return CustomerAddressDtoList.ToFixedList();
     }
 
     static public CustomerShortAddressDto MapShortAddress(CustomerAddress address) {
