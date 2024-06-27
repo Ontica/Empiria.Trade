@@ -21,8 +21,8 @@ namespace Empiria.Trade.Sales {
       var captured = new NamedEntityDto("Captured", "Capturada");
       var applied = new NamedEntityDto("Applied", "Aplicada");
       var authorized = new NamedEntityDto("Authorized", "Autorizada");
-      var packing = new NamedEntityDto("Packing", "Surtiendose");
-      var shipping = new NamedEntityDto("Shipping", "Envio");
+      var packing = new NamedEntityDto("Packing", "Surtiéndose");
+      var shipping = new NamedEntityDto("Shipping", "Envío");
       var delivery = new NamedEntityDto("Delivery", "Entrega");
       var closed = new NamedEntityDto("Closed", "Cerrada");
       var cancelled = new NamedEntityDto("Cancelled", "Cancelada");
