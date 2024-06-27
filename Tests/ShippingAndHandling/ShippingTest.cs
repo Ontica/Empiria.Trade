@@ -267,7 +267,6 @@ namespace Empiria.Trade.Tests {
         "57cf33fb-a47f-4466-a1a5-1a473ed60288", ShippingQueryType.Shipping);
 
       Assert.NotNull(sut);
-
     }
 
 

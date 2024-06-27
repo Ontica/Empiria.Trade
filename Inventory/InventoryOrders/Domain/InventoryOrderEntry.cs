@@ -164,8 +164,10 @@ namespace Empiria.Trade.Inventory {
 
         this.InventoryOrderId = this.Id;
         this.InventoryOrderUID = this.UID;
-        this.InventoryOrderNo = GenerateOrderNumber();
       }
+
+      this.InventoryOrderNo = GenerateOrderNumber();
+
       InventoryOrderData.WriteInventoryEntry(this);
     }
 

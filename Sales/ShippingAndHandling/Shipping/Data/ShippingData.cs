@@ -155,8 +155,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
 
       if (shippingUID != string.Empty) {
 
-        var shippingId = ShippingEntry.Parse(shippingUID).ShippingOrderId;
-        clauses = $"WHERE ShippingOrderId IN ({shippingId})";
+        clauses = $"WHERE ShippingUID = '{shippingUID}'";
       }
 
       string sql = $"SELECT * FROM TRDShipping {clauses}";
