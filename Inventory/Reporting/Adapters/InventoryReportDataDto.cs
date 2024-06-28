@@ -22,7 +22,7 @@ namespace Empiria.Trade.Inventory.Adapters {
   public class InventoryReportDataDto {
 
 
-    public InventoryReportQuery Query {
+    public ReportQuery Query {
       get; set;
     }
 

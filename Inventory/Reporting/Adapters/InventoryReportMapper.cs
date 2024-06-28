@@ -11,6 +11,7 @@ using System;
 using Empiria.Trade.Core.Common;
 using System.Collections.Generic;
 using System.Collections;
+using Empiria.Trade.Inventory.Domain;
 
 namespace Empiria.Trade.Inventory.Adapters {
 
@@ -23,11 +24,11 @@ namespace Empiria.Trade.Inventory.Adapters {
 
 
     static public InventoryReportDataDto Map(
-      FixedList<IInventoryReport> list, InventoryReportQuery query) {
+      FixedList<IInventoryReport> list, ReportQuery query) {
 
       return new InventoryReportDataDto {
         Query = query,
-        Columns = GetColumns(),
+        Columns = ReportColumnBuilder.GetColumns(query),
         Entries = MapList(query, list)
       };
     }
@@ -52,14 +53,14 @@ namespace Empiria.Trade.Inventory.Adapters {
     }
 
 
-    private static InventoryReportDescriptorDto MapInventoryReport(InventoryReportEntry x) {
+    private static InventoryReportDescriptorDto MapStocksByLocation(InventoryReportEntry x) {
       var dto = new InventoryReportDescriptorDto();
 
       return dto;
     }
 
 
-    private static InventoryStockDescriptorDto MapInventoryStock(InventoryStockEntry x) {
+    private static InventoryStockDescriptorDto MapStocksByProduct(InventoryStockEntry x) {
       var dto = new InventoryStockDescriptorDto();
 
       return dto;
@@ -67,23 +68,23 @@ namespace Empiria.Trade.Inventory.Adapters {
 
 
     static private FixedList<IInventoryReportDto> MapList(
-      InventoryReportQuery query, FixedList<IInventoryReport> list) {
+      ReportQuery query, FixedList<IInventoryReport> list) {
 
-      switch (query.InventoryReportType) {
+      switch (query.ReportType) {
 
-        case InventoryReportType.InventoryStockReport:
+        case ReportType.StocksByProduct:
 
-          var inventoryStock = list.Select((x) => MapInventoryStock((InventoryStockEntry) x));
+          var inventoryStock = list.Select((x) => MapStocksByProduct((InventoryStockEntry) x));
           return new FixedList<IInventoryReportDto>(inventoryStock);
 
-        case InventoryReportType.InventoryReport:
+        case ReportType.StocksByLocation:
 
-          var inventoryReport = list.Select((x) => MapInventoryReport((InventoryReportEntry) x));
+          var inventoryReport = list.Select((x) => MapStocksByLocation((InventoryReportEntry) x));
           return new FixedList<IInventoryReportDto>(inventoryReport);
 
         default:
           throw Assertion.EnsureNoReachThisCode(
-                $"Unhandled inventory report type {query.InventoryReportType}.");
+                $"Unhandled inventory report type {query.ReportType}.");
       }
 
     }

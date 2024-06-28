@@ -44,7 +44,7 @@ namespace Empiria.Trade.Core {
     }
 
 
-    static internal string GetInventoryStockClauses(int vendorProductId, int warehouseBinId) {
+    static internal string GetInventoryStockClauses(int vendorProductId, int warehouseBinId = 0) {
       var filters = new Filter();
 
       if (vendorProductId > 0) {

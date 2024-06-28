@@ -17,7 +17,7 @@ namespace Empiria.Trade.Inventory.UseCases {
 
 
   /// <summary>Use cases used to build Inventory reports.</summary>
-  internal class InventoryReportsUseCases : UseCase {
+  public class InventoryReportsUseCases : UseCase {
 
 
     #region Constructors and parsers
@@ -37,24 +37,24 @@ namespace Empiria.Trade.Inventory.UseCases {
     #region Public methods
 
 
-    public InventoryReportDataDto BuildInventoryReport(InventoryReportQuery query) {
+    public InventoryReportDataDto BuildInventoryReport(ReportQuery query) {
 
       var builder = new InventoryReportsBuilder();
 
-      switch (query.InventoryReportType) {
-        case InventoryReportType.InventoryStockReport:
+      switch (query.ReportType) {
+        case ReportType.StocksByProduct:
 
-          var stock = builder.GenerateInventoryStock(query);
+          var stock = builder.GenerateStocksByProduct(query);
           return InventoryReportMapper.Map(stock, query);
 
-        case InventoryReportType.InventoryReport:
+        case ReportType.StocksByLocation:
           
-          var report = builder.GenerateInventoryReport(query);
+          var report = builder.GenerateStocksByLocation(query);
           return InventoryReportMapper.Map(report, query);
 
         default:
           throw Assertion.EnsureNoReachThisCode(
-                $"Unhandled inventory report type {query.InventoryReportType}.");
+                $"Unhandled inventory report type {query.ReportType}.");
       }
 
     }

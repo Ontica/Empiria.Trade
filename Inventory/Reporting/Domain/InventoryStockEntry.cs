@@ -33,6 +33,8 @@ namespace Empiria.Trade.Inventory {
 
 
 
+
+
     #endregion Properties
 
   } // class InventoryStockEntry

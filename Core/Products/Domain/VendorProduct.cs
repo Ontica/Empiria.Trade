@@ -36,8 +36,14 @@ namespace Empiria.Trade.Products {
     #region Properties
 
 
-    
-      [DataField("VendorProductUID")]
+    [DataField("VendorProductId")]
+    public int VendorProductId {
+      get;
+      internal set;
+    }
+
+
+    [DataField("VendorProductUID")]
     public string VendorProductUID {
       get;
       internal set;

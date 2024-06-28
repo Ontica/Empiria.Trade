@@ -33,25 +33,25 @@ namespace Empiria.Trade.Core {
 
     [DataField("VendorProductId")]
     public VendorProduct VendorProduct {
-      get; private set;
+      get; set;
     }
 
 
     [DataField("WarehouseBinId")]
     public WarehouseBin WarehouseBin {
-      get; private set;
+      get; set;
     }
 
 
     [DataField("AvailableStock")]
     public decimal Stock {
-      get; private set;
+      get; set;
     }
 
 
     [DataField("RealStock")]
     public decimal RealStock {
-      get; private set;
+      get; set;
     }
 
 

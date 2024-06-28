@@ -13,22 +13,32 @@ namespace Empiria.Trade.Inventory.Adapters {
 
 
   /// <summary>Enum with inventory report types </summary>
-  public enum InventoryReportType {
+  public enum ReportType {
 
-    InventoryStockReport,
+    StocksByProduct,
 
-    InventoryReport
+    StocksByLocation
 
   }
 
 
   /// <summary>Query used to get inventory reports.</summary>
-  public class InventoryReportQuery {
+  public class ReportQuery {
 
 
-    public InventoryReportType InventoryReportType {
+    public ReportType ReportType {
       get; set;
-    } = InventoryReportType.InventoryStockReport;
+    } = ReportType.StocksByProduct;
+
+
+    public string ProductUID {
+      get; set;
+    } = string.Empty;
+
+
+    public string WarehouseBinUID {
+      get; set;
+    } = string.Empty;
 
 
   }
