@@ -40,23 +40,24 @@ namespace Empiria.Trade.Inventory.UseCases {
     public InventoryReportDataDto BuildInventoryReport(ReportQuery query) {
 
       var builder = new InventoryReportsBuilder();
-
+      
       switch (query.ReportType) {
         case ReportType.StocksByProduct:
 
-          var stock = builder.GenerateStocksByProduct(query);
-          return InventoryReportMapper.Map(stock, query);
+          return InventoryReportMapper.Map(builder.GenerateStocksByProduct(query), query);
 
         case ReportType.StocksByLocation:
-          
-          var report = builder.GenerateStocksByLocation(query);
-          return InventoryReportMapper.Map(report, query);
+
+          return InventoryReportMapper.Map(builder.GenerateStocksByLocation(query), query);
+
+        case ReportType.PurchasingReport:
+
+          return InventoryReportMapper.Map(builder.GeneratePurchasingReport(query), query);
 
         default:
           throw Assertion.EnsureNoReachThisCode(
                 $"Unhandled inventory report type {query.ReportType}.");
       }
-
     }
 
 

@@ -53,16 +53,34 @@ namespace Empiria.Trade.Inventory.Adapters {
     }
 
 
-    private static InventoryReportDescriptorDto MapStocksByLocation(InventoryReportEntry x) {
-      var dto = new InventoryReportDescriptorDto();
+    static private IInventoryReportDto MapPurchasingReport(InventoryReportEntry x) {
+      var dto = new InventoryStockDescriptorDto();
 
       return dto;
     }
 
 
-    private static InventoryStockDescriptorDto MapStocksByProduct(InventoryStockEntry x) {
+    static private IInventoryReportDto MapStocksByLocation(InventoryStockEntry x) {
       var dto = new InventoryStockDescriptorDto();
 
+      return dto;
+    }
+
+
+    static private IInventoryReportDto MapStocksByProduct(InventoryStockEntry x) {
+      var dto = new InventoryStockDescriptorDto();
+
+      dto.VendorProductUID = x.VendorProduct.VendorProductUID;
+      dto.Name = x.VendorProduct.ProductFields.ProductName;
+      dto.Code = x.VendorProduct.ProductFields.ProductCode;
+      dto.Presentation = x.VendorProduct.ProductPresentation.PresentationName;
+      dto.WarehouseBinTag = x.WarehouseBin.Tag;
+      dto.WarehouseName = x.WarehouseBin.Warehouse.Name;
+      dto.Rack = x.WarehouseBin.Name;
+      dto.Stock = x.Stock;
+      dto.RealStock = x.RealStock;
+      dto.StockInProcess = x.StockInProcess;
+      dto.ItemType = x.ItemType;
       return dto;
     }
 
@@ -74,13 +92,18 @@ namespace Empiria.Trade.Inventory.Adapters {
 
         case ReportType.StocksByProduct:
 
-          var inventoryStock = list.Select((x) => MapStocksByProduct((InventoryStockEntry) x));
-          return new FixedList<IInventoryReportDto>(inventoryStock);
+          var stocksByProduct = list.Select((x) => MapStocksByProduct((InventoryStockEntry) x));
+          return new FixedList<IInventoryReportDto>(stocksByProduct);
 
         case ReportType.StocksByLocation:
 
-          var inventoryReport = list.Select((x) => MapStocksByLocation((InventoryReportEntry) x));
-          return new FixedList<IInventoryReportDto>(inventoryReport);
+          var stocksByLocation = list.Select((x) => MapStocksByLocation((InventoryStockEntry) x));
+          return new FixedList<IInventoryReportDto>(stocksByLocation);
+
+        case ReportType.PurchasingReport:
+
+          var purchasingReport = list.Select((x) => MapPurchasingReport((InventoryReportEntry) x));
+          return new FixedList<IInventoryReportDto>(purchasingReport);
 
         default:
           throw Assertion.EnsureNoReachThisCode(

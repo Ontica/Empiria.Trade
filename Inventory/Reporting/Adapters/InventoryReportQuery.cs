@@ -17,7 +17,9 @@ namespace Empiria.Trade.Inventory.Adapters {
 
     StocksByProduct,
 
-    StocksByLocation
+    StocksByLocation,
+
+    PurchasingReport
 
   }
 

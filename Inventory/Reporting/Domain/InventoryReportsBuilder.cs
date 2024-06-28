@@ -26,23 +26,33 @@ namespace Empiria.Trade.Inventory.Domain {
     #region Public methods
 
 
+    internal FixedList<IInventoryReport> GeneratePurchasingReport(ReportQuery query) {
+
+      var list = new FixedList<InventoryReportEntry>();
+
+      return new FixedList<IInventoryReport>(list.Select(x => (IInventoryReport) x));
+    }
+
+
     internal FixedList<IInventoryReport> GenerateStocksByProduct(ReportQuery query) {
 
       var product = ProductFields.Parse(query.ProductUID);
 
       var vendorProducts = ProductUseCases.GetVendorProductByProduct(product.ProductId);
 
-      var stockByVendorProduct = GetStockByVendorProduct(vendorProducts);
+      var helper = new ReportHelper(query);
+      var stockByVendorProduct = helper.GetStockByVendorProduct(vendorProducts);
 
-      FixedList<InventoryStockEntry> list = MapToInventoryStockEntries(stockByVendorProduct);
+      FixedList<InventoryStockEntry> stockHeaders = helper.MapToStockHeaders(stockByVendorProduct);
 
-      return new FixedList<IInventoryReport>(list.Select(x => (IInventoryReport) x));
+      FixedList<InventoryStockEntry> stockLocations = helper.MapToStockLocations(stockByVendorProduct);
+      return new FixedList<IInventoryReport>(stockHeaders.Select(x => (IInventoryReport) x));
     }
 
 
     internal FixedList<IInventoryReport> GenerateStocksByLocation(ReportQuery query) {
 
-      var list = new FixedList<InventoryReportEntry>();
+      var list = new FixedList<InventoryStockEntry>();
 
       return new FixedList<IInventoryReport>(list.Select(x => (IInventoryReport) x));
     }
@@ -53,49 +63,7 @@ namespace Empiria.Trade.Inventory.Domain {
 
     #region Private methods
 
-    private FixedList<SalesInventoryStock> GetStockByVendorProduct(FixedList<VendorProduct> vendorProducts) {
-
-      var list = new List<SalesInventoryStock>();
-      foreach (var vendorProduct in vendorProducts) {
-
-        var stockByVendorProduct = CataloguesUseCases.GetInventoryStockByClauses(
-          vendorProduct.VendorProductId, 0);
-
-        list.AddRange(stockByVendorProduct);
-      }
-
-      return list.ToFixedList();
-    }
-
-
-    private FixedList<InventoryStockEntry> MapToInventoryStockEntries(
-      FixedList<SalesInventoryStock> stockByVendorProduct) {
-
-      var list = new List<InventoryStockEntry>();
-
-      foreach (var stock in stockByVendorProduct) {
-        var entry = new InventoryStockEntry();
-
-        var exist = list
-          .Where(x => x.VendorProduct.VendorProductId == stock.VendorProduct.VendorProductId)
-          .FirstOrDefault();
-        if (exist == null) {
-
-          entry.VendorProduct = stock.VendorProduct;
-          entry.WarehouseBin = stock.WarehouseBin;
-          entry.Stock = stockByVendorProduct
-            .Where(x => x.VendorProduct.VendorProductId == stock.VendorProduct.VendorProductId)
-            .Sum(x => x.Stock);
-          entry.RealStock = stockByVendorProduct
-            .Where(x => x.VendorProduct.VendorProductId == stock.VendorProduct.VendorProductId)
-            .Sum(x => x.RealStock);
-
-          list.Add(entry);
-        }
-      }
-
-      return list.ToFixedList();
-    }
+    
 
     #endregion Private methods
 

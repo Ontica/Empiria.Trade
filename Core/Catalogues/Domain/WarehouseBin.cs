@@ -74,7 +74,7 @@ namespace Empiria.Trade.Core.Catalogues {
 
 
     [DataField("WarehouseBinName")]
-    public string WarehouseBinName {
+    public string Name {
       get; internal set;
     }
 

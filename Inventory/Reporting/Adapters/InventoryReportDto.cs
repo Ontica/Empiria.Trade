@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using Empiria.Trade.Core;
 
 namespace Empiria.Trade.Inventory.Adapters {
 
@@ -28,6 +29,64 @@ namespace Empiria.Trade.Inventory.Adapters {
 
   /// <summary>Output DTO used to return inventory stock descriptor data.</summary>
   internal class InventoryStockDescriptorDto : IInventoryReportDto {
+
+
+    public string VendorProductUID {
+      get; set;
+    } = string.Empty;
+
+
+    public string Name {
+      get; set;
+    } = string.Empty;
+
+
+    public string Code {
+      get; set;
+    } = string.Empty;
+
+
+    public string Presentation {
+      get; set;
+    } = string.Empty;
+
+
+    public string WarehouseName {
+      get;
+      internal set;
+    }
+
+
+    public string Rack {
+      get;
+      internal set;
+    }
+
+
+    public string WarehouseBinTag {
+      get; set;
+    } = string.Empty;
+
+
+    public decimal Stock {
+      get; set;
+    }
+
+
+    public decimal RealStock {
+      get; set;
+    }
+
+
+    public decimal StockInProcess {
+      get; set;
+    }
+
+
+    public ReportItemType ItemType {
+      get;
+      internal set;
+    } = ReportItemType.Entry;
 
 
   } // class InventoryStockDescriptorDto

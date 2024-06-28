@@ -32,7 +32,9 @@ namespace Empiria.Trade.Inventory {
     #region Properties
 
 
-
+    public ReportItemType ItemType {
+      get; set;
+    } = ReportItemType.Entry;
 
 
     #endregion Properties

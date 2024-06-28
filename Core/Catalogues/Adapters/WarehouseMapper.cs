@@ -50,7 +50,7 @@ namespace Empiria.Trade.Core.Catalogues.Adapters {
       return new WarehouseBinForInventoryDto() {
         UID = x.WarehouseBinUID,
         Tag = x.Tag,
-        Name = x.WarehouseBinName,
+        Name = x.Name,
         WarehouseName = x.WarehouseName,
         RackRow = x.RackRow,
         RackColumn = x.RackColumn

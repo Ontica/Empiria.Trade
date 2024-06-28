@@ -33,7 +33,7 @@ namespace Empiria.Trade.Tests.Procurement {
 
 
     [Fact]
-    public void GetInventoryOrderListTest() {
+    public void GetStocksByProductReportTest() {
 
       var usecase = InventoryReportsUseCases.UseCaseInteractor();
 

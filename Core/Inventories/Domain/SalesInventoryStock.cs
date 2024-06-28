@@ -55,6 +55,12 @@ namespace Empiria.Trade.Core {
     }
 
 
+    [DataField("StockInProcess")]
+    public decimal StockInProcess {
+      get; set;
+    }
+
+
     #endregion
 
   } // class SalesInventoryStock
