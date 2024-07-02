@@ -2,7 +2,7 @@
 *                                                                                                            *
 *  Module   : Inventory Management                       Component : Use cases Layer                         *
 *  Assembly : Empiria.Trade.Inventory.dll                Pattern   : Use case interactor class               *
-*  Type     : InventoryReportsUseCases                   License   : Please read LICENSE.txt file            *
+*  Type     : ReportGeneratorUseCases                    License   : Please read LICENSE.txt file            *
 *                                                                                                            *
 *  Summary  : Use cases used to build Inventory reports.                                                     *
 *                                                                                                            *
@@ -17,17 +17,17 @@ namespace Empiria.Trade.Inventory.UseCases {
 
 
   /// <summary>Use cases used to build Inventory reports.</summary>
-  public class InventoryReportsUseCases : UseCase {
+  public class ReportGeneratorUseCases : UseCase {
 
 
     #region Constructors and parsers
 
-    public InventoryReportsUseCases() {
+    public ReportGeneratorUseCases() {
       // no-op
     }
 
-    static public InventoryReportsUseCases UseCaseInteractor() {
-      return CreateInstance<InventoryReportsUseCases>();
+    static public ReportGeneratorUseCases UseCaseInteractor() {
+      return CreateInstance<ReportGeneratorUseCases>();
     }
 
 
@@ -37,26 +37,26 @@ namespace Empiria.Trade.Inventory.UseCases {
     #region Public methods
 
 
-    public InventoryReportDataDto BuildInventoryReport(ReportQuery query) {
+    public ReportDataDto BuildReport(ReportQuery query) {
 
-      var builder = new InventoryReportsBuilder();
+      var builder = new ReportBuilder(query);
       
       switch (query.ReportType) {
         case ReportType.StocksByProduct:
 
-          return InventoryReportMapper.Map(builder.GenerateStocksByProduct(query), query);
+          return ReportMapper.Map(builder.GenerateStocksByProduct(), query);
 
         case ReportType.StocksByLocation:
 
-          return InventoryReportMapper.Map(builder.GenerateStocksByLocation(query), query);
+          return ReportMapper.Map(builder.GenerateStocksByLocation(), query);
 
         case ReportType.PurchasingReport:
 
-          return InventoryReportMapper.Map(builder.GeneratePurchasingReport(query), query);
+          return ReportMapper.Map(builder.GeneratePurchasingReport(), query);
 
         default:
           throw Assertion.EnsureNoReachThisCode(
-                $"Unhandled inventory report type {query.ReportType}.");
+                $"Unhandled report type {query.ReportType}.");
       }
     }
 
@@ -64,6 +64,6 @@ namespace Empiria.Trade.Inventory.UseCases {
     #endregion Public methods
 
 
-  } // class InventoryReportsUseCases
+  } // class ReportGeneratorUseCases
 
 } // namespace Empiria.Trade.Inventory.Reporting.UseCases

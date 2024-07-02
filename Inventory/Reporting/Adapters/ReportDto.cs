@@ -2,9 +2,9 @@
 *                                                                                                            *
 *  Module   : Inventory Management                       Component : Interface adapters                      *
 *  Assembly : Empiria.Trade.Inventory.dll                Pattern   : Data Transfer Object                    *
-*  Type     : InventoryOrderDto                          License   : Please read LICENSE.txt file            *
+*  Type     : ReportDto                                  License   : Please read LICENSE.txt file            *
 *                                                                                                            *
-*  Summary  : Output DTO used to return inventory report data.                                               *
+*  Summary  : Output DTO used to return report data.                                                         *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
@@ -13,22 +13,22 @@ using Empiria.Trade.Core;
 namespace Empiria.Trade.Inventory.Adapters {
 
 
-  /// <summary>Output DTO used to return inventory report data.</summary>
-  public class InventoryReportDto {
+  /// <summary>Output DTO used to return report data.</summary>
+  public class ReportDto {
 
 
-  } // class InventoryReportDto
+  } // class ReportDto
 
 
   /// <summary>Output DTO used to return inventory report descriptor data.</summary>
-  internal class InventoryReportDescriptorDto : IInventoryReportDto {
+  internal class ReportDescriptorDto : IReportDto {
 
 
   } // class InventoryReportDescriptorDto
 
 
   /// <summary>Output DTO used to return inventory stock descriptor data.</summary>
-  internal class InventoryStockDescriptorDto : IInventoryReportDto {
+  internal class InventoryStockDescriptorDto : IReportDto {
 
 
     public string VendorProductUID {

@@ -2,7 +2,7 @@
 *                                                                                                            *
 *  Module   : Inventory Management                       Component : Interface adapters                      *
 *  Assembly : Empiria.Trade.Inventory.dll                Pattern   : Mapper class                            *
-*  Type     : InventoryReportMapper                      License   : Please read LICENSE.txt file            *
+*  Type     : ReportMapper                               License   : Please read LICENSE.txt file            *
 *                                                                                                            *
 *  Summary  : Methods used to map inventory reports.                                                         *
 *                                                                                                            *
@@ -17,16 +17,16 @@ namespace Empiria.Trade.Inventory.Adapters {
 
 
   /// <summary>Methods used to map inventory reports.</summary>
-  static internal class InventoryReportMapper {
+  static internal class ReportMapper {
 
 
     #region Public methods
 
 
-    static public InventoryReportDataDto Map(
-      FixedList<IInventoryReport> list, ReportQuery query) {
+    static public ReportDataDto Map(
+      FixedList<IReportEntry> list, ReportQuery query) {
 
-      return new InventoryReportDataDto {
+      return new ReportDataDto {
         Query = query,
         Columns = ReportColumnBuilder.GetColumns(query),
         Entries = MapList(query, list)
@@ -53,30 +53,30 @@ namespace Empiria.Trade.Inventory.Adapters {
     }
 
 
-    static private IInventoryReportDto MapPurchasingReport(InventoryReportEntry x) {
+    static private IReportDto MapPurchasingReport(ReportEntry x) {
       var dto = new InventoryStockDescriptorDto();
 
       return dto;
     }
 
 
-    static private IInventoryReportDto MapStocksByLocation(InventoryStockEntry x) {
+    static private IReportDto MapStocksByLocation(InventoryStockEntry x) {
       var dto = new InventoryStockDescriptorDto();
 
       return dto;
     }
 
 
-    static private IInventoryReportDto MapStocksByProduct(InventoryStockEntry x) {
+    static private IReportDto MapStocksByProduct(InventoryStockEntry x) {
       var dto = new InventoryStockDescriptorDto();
 
       dto.VendorProductUID = x.VendorProduct.VendorProductUID;
       dto.Name = x.VendorProduct.ProductFields.ProductName;
       dto.Code = x.VendorProduct.ProductFields.ProductCode;
       dto.Presentation = x.VendorProduct.ProductPresentation.PresentationName;
-      dto.WarehouseBinTag = x.WarehouseBin.Tag;
-      dto.WarehouseName = x.WarehouseBin.Warehouse.Name;
-      dto.Rack = x.WarehouseBin.Name;
+      dto.WarehouseBinTag = $"{x.WarehouseBin.Tag} - {x.WarehouseBin.Name}";
+      //dto.WarehouseName = x.WarehouseBin.Warehouse.Name;
+      //dto.Rack = x.WarehouseBin.Name;
       dto.Stock = x.Stock;
       dto.RealStock = x.RealStock;
       dto.StockInProcess = x.StockInProcess;
@@ -85,25 +85,25 @@ namespace Empiria.Trade.Inventory.Adapters {
     }
 
 
-    static private FixedList<IInventoryReportDto> MapList(
-      ReportQuery query, FixedList<IInventoryReport> list) {
+    static private FixedList<IReportDto> MapList(
+      ReportQuery query, FixedList<IReportEntry> list) {
 
       switch (query.ReportType) {
 
         case ReportType.StocksByProduct:
 
           var stocksByProduct = list.Select((x) => MapStocksByProduct((InventoryStockEntry) x));
-          return new FixedList<IInventoryReportDto>(stocksByProduct);
+          return new FixedList<IReportDto>(stocksByProduct);
 
         case ReportType.StocksByLocation:
 
           var stocksByLocation = list.Select((x) => MapStocksByLocation((InventoryStockEntry) x));
-          return new FixedList<IInventoryReportDto>(stocksByLocation);
+          return new FixedList<IReportDto>(stocksByLocation);
 
         case ReportType.PurchasingReport:
 
-          var purchasingReport = list.Select((x) => MapPurchasingReport((InventoryReportEntry) x));
-          return new FixedList<IInventoryReportDto>(purchasingReport);
+          var purchasingReport = list.Select((x) => MapPurchasingReport((ReportEntry) x));
+          return new FixedList<IReportDto>(purchasingReport);
 
         default:
           throw Assertion.EnsureNoReachThisCode(
@@ -116,6 +116,6 @@ namespace Empiria.Trade.Inventory.Adapters {
     #endregion Private methods
 
 
-  } // class InventoryReportMapper
+  } // class ReportMapper
 
 } // namespace Empiria.Trade.Inventory.Adapters

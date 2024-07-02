@@ -2,41 +2,47 @@
 *                                                                                                            *
 *  Module   : Inventory Management                       Component : Interface adapters                      *
 *  Assembly : Empiria.Trade.Inventory.dll                Pattern   : Data Transfer Object                    *
-*  Type     : InventoryReportDto                         License   : Please read LICENSE.txt file            *
+*  Type     : ReportQuery                                License   : Please read LICENSE.txt file            *
 *                                                                                                            *
-*  Summary  : Output DTO used to return inventory reports data.                                              *
+*  Summary  : Query used to get reports.                                                                     *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-using Empiria.Trade.Core.Common;
 
 namespace Empiria.Trade.Inventory.Adapters {
 
 
-  public interface IInventoryReportDto {
+  /// <summary>Enum with report types.</summary>
+  public enum ReportType {
 
-  } // interface IInventoryReportDto
+    StocksByProduct,
+
+    StocksByLocation,
+
+    PurchasingReport
+
+  } // enum ReportType
 
 
-  /// <summary>Output DTO used to return inventory reports data.</summary>
-  public class InventoryReportDataDto {
+  /// <summary>Query used to get reports.</summary>
+  public class ReportQuery {
 
 
-    public ReportQuery Query {
+    public ReportType ReportType {
       get; set;
-    }
+    } = ReportType.StocksByProduct;
 
 
-    public FixedList<DataTableColumn> Columns {
+    public string ProductUID {
       get; set;
-    } = new FixedList<DataTableColumn>();
+    } = string.Empty;
 
 
-    public FixedList<IInventoryReportDto> Entries {
+    public string WarehouseBinUID {
       get; set;
-    } = new FixedList<IInventoryReportDto>();
+    } = string.Empty;
 
 
-  } // class InventoryReportDataDto
+  } // class ReportQuery
 
 } // namespace Empiria.Trade.Inventory.Adapters
