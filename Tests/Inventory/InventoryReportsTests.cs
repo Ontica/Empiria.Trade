@@ -35,14 +35,14 @@ namespace Empiria.Trade.Tests.Procurement {
     [Fact]
     public void GetStocksByProductReportTest() {
 
-      var usecase = InventoryReportsUseCases.UseCaseInteractor();
+      var usecase = ReportGeneratorUseCases.UseCaseInteractor();
 
       var query = new ReportQuery {
         ReportType = ReportType.StocksByProduct,
         ProductUID = "2a30449f-cf61-468c-b52e-544cda8602ab"
       };
 
-      InventoryReportDataDto sut = usecase.BuildInventoryReport(query);
+      ReportDataDto sut = usecase.BuildReport(query);
       Assert.NotNull(sut);
     }
 

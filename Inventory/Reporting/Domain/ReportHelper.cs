@@ -52,7 +52,7 @@ namespace Empiria.Trade.Inventory.Domain {
     }
 
 
-    internal FixedList<InventoryStockEntry> MapToStockHeaders(
+    internal FixedList<InventoryStockEntry> MapToStockHeadersByProduct(
       FixedList<SalesInventoryStock> stockByVendorProduct) {
 
       var list = new List<InventoryStockEntry>();

@@ -64,12 +64,15 @@ namespace Empiria.Trade.Inventory.Domain {
     private static FixedList<DataTableColumn> GetColumnsStocksByProduct() {
 
       List<DataTableColumn> columns = new List<DataTableColumn>();
-
-      columns.Add(new DataTableColumn("property", "name", "text"));
-      columns.Add(new DataTableColumn("property", "name", "text-link"));
-      columns.Add(new DataTableColumn("property", "name", "date"));
-      columns.Add(new DataTableColumn("property", "name", "text-tag"));
-
+      columns.Add(new DataTableColumn("code", "Código", "text-link"));
+      columns.Add(new DataTableColumn("name", "Nombre", "text"));
+      columns.Add(new DataTableColumn("presentation", "Presentación", "text-tag"));
+      columns.Add(new DataTableColumn("warehouseBinTag", "Localización", "text"));
+      columns.Add(new DataTableColumn("stock", "Stock disponible", "decimal"));
+      columns.Add(new DataTableColumn("realStock", "Stock real", "decimal"));
+      columns.Add(new DataTableColumn("stockInProcess", "Stock entrante", "decimal"));
+      //columns.Add(new DataTableColumn("property", "name", "date"));
+      
       return columns.ToFixedList();
     }
 
