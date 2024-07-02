@@ -15,7 +15,7 @@ using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 using Empiria.Trade.Sales.ShippingAndHandling.UseCases;
 using Empiria.WebApi;
 
-namespace Empiria.Trade.WebApi.Reporting {
+namespace Empiria.Trade.WebApi.Pages {
 
 
     /// <summary>Query web API used to manage shippings labels.</summary>
