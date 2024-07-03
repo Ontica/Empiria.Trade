@@ -12,12 +12,28 @@ using Empiria.WebApi;
 using System.Web.Http;
 using Empiria.Trade.Procurement.UseCases;
 using Empiria.Trade.Procurement.Adapters;
+using Empiria.Trade.Inventory.Adapters;
+using Empiria.Trade.Inventory.UseCases;
 
 namespace Empiria.Trade.WebApi.Procurement {
 
 
   /// <summary>Query web API used to retrieve purchase orders.</summary>
   public class PurchaseOrderController : WebApiController {
+
+
+    [HttpPost]
+    [Route("v4/trade/procurement/purchase-orders")]
+    //[Route("v4/trade/procurement/purchase-orders/orders/")]
+    public SingleObjectModel CreatePurchaseOrder([FromBody] PurchaseOrderFields fields) {
+
+      using (var usecases = PurchaseOrderUseCases.UseCaseInteractor()) {
+
+        PurchaseOrderDto inventoryOrder = usecases.CreatePurchaseOrder(fields);
+
+        return new SingleObjectModel(this.Request, inventoryOrder);
+      }
+    }
 
 
     [HttpPost]
