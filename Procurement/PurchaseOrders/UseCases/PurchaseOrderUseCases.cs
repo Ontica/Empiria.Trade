@@ -36,6 +36,14 @@ namespace Empiria.Trade.Procurement.UseCases {
     #region Public methods
 
 
+    public PurchaseOrderDto CreatePurchaseOrder(PurchaseOrderFields fields) {
+
+      var order = new PurchaseOrderEntry();
+
+      return PurchaseOrderMapper.MapOrder(order);
+    }
+
+
     public PurchaseOrderEntry GetPurchaseOrder(string purchaseOrderUID) {
       return PurchaseOrderEntry.Parse(purchaseOrderUID);
     }
@@ -61,6 +69,7 @@ namespace Empiria.Trade.Procurement.UseCases {
 
       return PurchaseOrderBuilder.GetPurchaseOrderEntries(query);
     }
+
 
     #endregion Private methods
 

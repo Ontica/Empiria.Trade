@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using Empiria.Trade.Orders;
 
 namespace Empiria.Trade.Procurement.Adapters {
 
@@ -16,7 +17,52 @@ namespace Empiria.Trade.Procurement.Adapters {
   public class PurchaseOrderFields {
 
 
+    public int SupplierUID {
+      get; internal set;
+    }
 
+
+    public int CustomerUID {
+      get; internal set;
+    }
+
+
+    public int CustomerAddressUID {
+      get; internal set;
+    }
+
+
+    public int CustomerContactUID {
+      get;
+      internal set;
+    }
+
+
+    public int SalesAgentUID {
+      get; internal set;
+    }
+
+
+    public string Notes {
+      get; internal set;
+    }
+
+
+    //public OrderAuthorizationStatus OrderAuthorizationStatus {
+    //  get; internal set;
+    //} = OrderAuthorizationStatus.Empty;
+
+
+    public DateTime ScheduledTime {
+      get;
+      internal set;
+    } = DateTime.MaxValue;
+
+
+    public DateTime ReceptionTime {
+      get;
+      internal set;
+    } = DateTime.MaxValue;
 
 
   } // class PurchaseOrderFields

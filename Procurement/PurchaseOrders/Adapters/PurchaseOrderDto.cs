@@ -13,7 +13,7 @@ namespace Empiria.Trade.Procurement.Adapters {
 
 
   /// <summary>Output DTO used to return purchase order data.</summary>
-  internal class PurchaseOrderDto {
+  public class PurchaseOrderDto {
 
 
 

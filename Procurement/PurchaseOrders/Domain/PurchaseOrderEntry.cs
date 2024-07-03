@@ -11,6 +11,7 @@ using System;
 using Empiria.Trade.Core;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Procurement.Adapters;
+using Empiria.Trade.Procurement.Data;
 
 namespace Empiria.Trade.Procurement {
 
@@ -80,8 +81,39 @@ namespace Empiria.Trade.Procurement {
     #region Private methods
 
 
+    protected override void OnSave() {
+
+      if (IsNew) {
+
+        this.OrderId = this.Id;
+        this.OrderUID = this.UID;
+        OrderNumber = "OC-" + EmpiriaString.BuildRandomString(10).ToUpperInvariant();
+        OrderTime = DateTime.Now;
+        Status = OrderStatus.Captured;
+      }
+
+      PurchaseOrderData.WritePurchaseOrder(this);
+    }
+
+
     private void MapToPurchaseOrder(PurchaseOrderFields fields) {
-      throw new NotImplementedException();
+
+      this.OrderTypeId = 1030;
+      this.Supplier = Party.Parse(fields.SupplierUID);
+      this.Customer = Party.Parse(fields.CustomerUID);
+      this.CustomerAddress = CustomerAddress.Parse(fields.CustomerAddressUID);
+      this.CustomerContact = CustomerContact.Parse(fields.CustomerContactUID);
+      this.SalesAgent = Party.Parse(fields.SalesAgentUID);
+      this.Notes = fields.Notes;
+      this.PedimentoImportacion = ""; // ImportFormalEntry
+      this.CartaPorte = ""; // BillOfLading
+      //this.AuthorizationStatus = fields.OrderAuthorizationStatus;
+      //this.AuthorizationTime = DateTime.MaxValue;
+      this.AuthorizatedById = -1;
+      this.ScheduledTime = fields.ScheduledTime;
+      this.ReceptionTime = fields.ReceptionTime;
+      
+
     }
 
 

@@ -36,6 +36,10 @@ namespace Empiria.Trade.Procurement.Data {
       return DataReader.GetPlainObjectFixedList<PurchaseOrderEntry>(dataOperation);
     }
 
+    internal static void WritePurchaseOrder(PurchaseOrderEntry purchaseOrderEntry) {
+      throw new NotImplementedException();
+    }
+
 
     #endregion Public methods
 

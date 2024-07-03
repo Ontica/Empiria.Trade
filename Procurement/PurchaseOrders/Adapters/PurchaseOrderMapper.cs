@@ -22,7 +22,7 @@ namespace Empiria.Trade.Procurement.Adapters {
     #region Public methods
 
 
-    static public PurchaseOrderDataDto MapDescriptorList(FixedList<PurchaseOrderEntry> entries,
+    static internal PurchaseOrderDataDto MapDescriptorList(FixedList<PurchaseOrderEntry> entries,
       PurchaseOrderQuery query) {
 
       return new PurchaseOrderDataDto {
@@ -30,6 +30,14 @@ namespace Empiria.Trade.Procurement.Adapters {
         Columns = GetColumns(),
         Entries = MapList(entries)
       };
+    }
+
+
+    static internal PurchaseOrderDto MapOrder(PurchaseOrderEntry order) {
+
+      var dto = new PurchaseOrderDto();
+
+      return dto;
     }
 
 
