@@ -63,7 +63,7 @@ namespace Empiria.Trade.Inventory.Adapters {
     }
 
 
-    public string WarehouseBinTag {
+    public string Tag {
       get; set;
     } = string.Empty;
 

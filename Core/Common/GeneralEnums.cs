@@ -20,8 +20,6 @@ namespace Empiria.Trade.Core {
   /// <summary>Enums to assing item type for reports elements.</summary>
   public enum ReportItemType {
 
-    Header,
-
     Entry,
 
     Summary,

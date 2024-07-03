@@ -65,7 +65,7 @@ namespace Empiria.Trade.Inventory.Domain {
           .FirstOrDefault();
         if (exist == null) {
 
-          entry.ItemType = ReportItemType.Header;
+          entry.ItemType = ReportItemType.Group;
           entry.VendorProduct = stock.VendorProduct;
           entry.WarehouseBin = stock.WarehouseBin;
           entry.Stock = stockByVendorProduct

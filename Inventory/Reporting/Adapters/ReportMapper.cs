@@ -12,6 +12,7 @@ using Empiria.Trade.Core.Common;
 using System.Collections.Generic;
 using System.Collections;
 using Empiria.Trade.Inventory.Domain;
+using Empiria.Trade.Core;
 
 namespace Empiria.Trade.Inventory.Adapters {
 
@@ -70,17 +71,20 @@ namespace Empiria.Trade.Inventory.Adapters {
     static private IReportDto MapStocksByProduct(InventoryStockEntry x) {
       var dto = new InventoryStockDescriptorDto();
 
-      dto.VendorProductUID = x.VendorProduct.VendorProductUID;
+      //dto.VendorProductUID = x.VendorProduct.VendorProductUID;
       dto.Name = x.VendorProduct.ProductFields.ProductName;
       dto.Code = x.VendorProduct.ProductFields.ProductCode;
-      dto.Presentation = x.VendorProduct.ProductPresentation.PresentationName;
-      dto.WarehouseBinTag = $"{x.WarehouseBin.Tag} - {x.WarehouseBin.Name}";
       //dto.WarehouseName = x.WarehouseBin.Warehouse.Name;
       //dto.Rack = x.WarehouseBin.Name;
       dto.Stock = x.Stock;
       dto.RealStock = x.RealStock;
       dto.StockInProcess = x.StockInProcess;
       dto.ItemType = x.ItemType;
+      if (x.ItemType == ReportItemType.Group) {
+        dto.Presentation = x.VendorProduct.ProductPresentation.PresentationName;
+      } else {
+        dto.Tag = $"{x.WarehouseBin.Tag} ({x.WarehouseBin.Name})";
+      }
       return dto;
     }
 
