@@ -36,8 +36,34 @@ namespace Empiria.Trade.Procurement.Data {
       return DataReader.GetPlainObjectFixedList<PurchaseOrderEntry>(dataOperation);
     }
 
-    internal static void WritePurchaseOrder(PurchaseOrderEntry purchaseOrderEntry) {
-      throw new NotImplementedException();
+
+    static internal void WritePurchaseOrder(PurchaseOrderEntry entry) {
+      
+      var op = DataOperation.Parse("writePurchaseOrder",
+        entry.OrderId, entry.OrderUID, entry.OrderTypeId,
+        entry.Supplier.Id, entry.Customer.Id, entry.CustomerAddress.Id,
+        entry.CustomerContact.Id, entry.SalesAgent.Id, entry.OrderNumber,
+        entry.Notes, entry.PedimentoImportacion, entry.CartaPorte,
+        entry.OrderTime, (char)entry.AuthorizationStatus, entry.AuthorizationTime,
+        entry.AuthorizatedById, entry.ScheduledTime, entry.ReceptionTime,
+        entry.ShippingMethod, entry.Keywords, (char) entry.Status);
+
+      DataWriter.Execute(op);
+    }
+
+
+    static internal void WritePurchaseOrderItem(PurchaseOrderItem item) {
+      
+      var op = DataOperation.Parse("writePurchaseOrderItem",
+        item.OrderItemId, item.OrderItemUID, item.Order.Id,
+        item.OrderItemTypeId, item.VendorProduct.Id, item.Quantity,
+        item. ReceivedQty, item.ProductPriceId, item.PriceListNumber,
+        item.BasePrice, item.SalesPrice, item.Discount,
+        item.Shipment, item.TaxesIVA, item.Total,
+        item.Notes, item.ScheduledTime, item.ReceptionTime,
+        item.Reviewed, (char) item.Status);
+
+      DataWriter.Execute(op);
     }
 
 

@@ -72,7 +72,64 @@ namespace Empiria.Trade.Procurement.Adapters {
   public class PurchaseOrderItemFields {
 
 
+    public string UID {
+      get; internal set;
+    } = string.Empty;
 
+
+    public string VendorProductUID {
+      get; internal set;
+    } = string.Empty;
+
+
+    public decimal Quantity {
+      get; internal set;
+    }
+
+
+    public decimal BasePrice {
+      get; internal set;
+    }
+
+
+    public decimal SalesPrice {
+      get; internal set;
+    }
+
+
+    public decimal Discount {
+      get; internal set;
+    }
+
+
+    public decimal Taxes {
+      get; internal set;
+    }
+
+
+    public decimal Total {
+      get; internal set;
+    }
+
+
+    public string Notes {
+      get; internal set;
+    } = string.Empty;
+
+
+    public DateTime ScheduledTime {
+      get; internal set;
+    } = ExecutionServer.DateMaxValue;
+
+
+    public DateTime ReceptionTime {
+      get; internal set;
+    } = ExecutionServer.DateMaxValue;
+
+
+    public string Reviewed {
+      get; internal set;
+    } = string.Empty;
 
 
   } // class PurchaseOrderItemFields
