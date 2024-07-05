@@ -66,6 +66,11 @@ namespace Empiria.Trade.Procurement {
     }
 
 
+    public string StatusName {
+      get; private set;
+    }
+
+
     public int ItemsCount {
       get; private set;
     } = 0;

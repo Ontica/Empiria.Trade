@@ -59,6 +59,7 @@ namespace Empiria.Trade.Tests.Procurement {
       return fields;
     }
 
+
     [Fact]
     public void GetPurchaseOrderTest() {
 

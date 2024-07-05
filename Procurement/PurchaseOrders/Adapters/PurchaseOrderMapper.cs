@@ -9,7 +9,9 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using Empiria.Trade.Core.Common;
+using Empiria.Trade.Orders;
 using Empiria.Trade.Procurement.Domain;
 
 namespace Empiria.Trade.Procurement.Adapters {
@@ -35,6 +37,8 @@ namespace Empiria.Trade.Procurement.Adapters {
 
     static internal PurchaseOrderDto MapOrder(PurchaseOrderEntry order) {
 
+      var statusName = OrderStatusEnumExtensions.GetOrderStatusName(order.Status);
+
       var dto = new PurchaseOrderDto();
       dto.OrderNumber = order.OrderNumber;
       dto.Supplier = new NamedEntityDto(order.Supplier);
@@ -47,6 +51,7 @@ namespace Empiria.Trade.Procurement.Adapters {
       dto.ReceptionTime = order.ReceptionTime;
       dto.Items = MapItems(order);
       dto.Totals = MapTotals(order);
+      dto.Status = new NamedEntityDto(order.Status.ToString(), statusName);
       //dto.Contact = new NamedEntityDto(order.CustomerContact.UID, order.CustomerContact.Name);
       //dto.SalesAgent = new NamedEntityDto(order.SalesAgent);
       //dto.Currency = new NamedEntityDto("", "");

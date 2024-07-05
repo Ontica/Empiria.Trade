@@ -41,7 +41,7 @@ namespace Empiria.Trade.Procurement.UseCases {
       var order = new PurchaseOrderEntry(fields);
       order.Save();
 
-      return PurchaseOrderMapper.MapOrder(order);
+      return GetPurchaseOrder(order.OrderUID);
     }
 
 
