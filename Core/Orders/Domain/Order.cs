@@ -213,43 +213,43 @@ namespace Empiria.Trade.Orders {
       
       switch (status) {
         case OrderStatus.Captured:
-          return "";
+          return "Capturada";
          
         case OrderStatus.Applied:
-          return "";
+          return "Aplicada";
 
         case OrderStatus.Authorized:
-          return "";
+          return "Autorizada";
 
         case OrderStatus.Packing:
-          return "";
+          return "Surtiendo";
 
         case OrderStatus.Shipping:
-          return "";
+          return "Envío";
 
         case OrderStatus.Delivery:
-          return "";
+          return "Entregada";
 
         case OrderStatus.Closed:
-          return "";
+          return "cerrada";
 
         case OrderStatus.Cancelled:
-          return "";
+          return "Cancelada";
 
         case OrderStatus.Empty:
-          return "";
+          return "Empty";
 
         case OrderStatus.Pending:
-          return "";
+          return "Pendiente";
 
         case OrderStatus.ToSupply:
-          return "";
+          return "Por surtir";
 
         case OrderStatus.InProgress:
-          return "";
+          return "En proceso";
 
         case OrderStatus.Suppled:
-          return "";
+          return "Surtida";
 
         default:
           throw Assertion.EnsureNoReachThisCode($"Unrecognized status {status}");
