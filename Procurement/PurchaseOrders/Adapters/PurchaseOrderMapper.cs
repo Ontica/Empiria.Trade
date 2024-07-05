@@ -22,10 +22,10 @@ namespace Empiria.Trade.Procurement.Adapters {
     #region Public methods
 
 
-    static internal PurchaseOrderDataDto MapDescriptorList(FixedList<PurchaseOrderEntry> entries,
+    static internal PurchaseOrdersDataDto MapDataDto(FixedList<PurchaseOrderEntry> entries,
       PurchaseOrderQuery query) {
 
-      return new PurchaseOrderDataDto {
+      return new PurchaseOrdersDataDto {
         Query = query,
         Columns = GetColumns(),
         Entries = MapList(entries)
@@ -36,8 +36,36 @@ namespace Empiria.Trade.Procurement.Adapters {
     static internal PurchaseOrderDto MapOrder(PurchaseOrderEntry order) {
 
       var dto = new PurchaseOrderDto();
-
+      dto.OrderNumber = order.OrderNumber;
+      dto.Supplier = new NamedEntityDto(order.Supplier);
+      dto.Customer = new NamedEntityDto(order.Customer);
+      dto.Notes = order.Notes;
+      dto.PaymentCondition = order.PaymentCondition;
+      dto.ShippingMethod = order.ShippingMethod;
+      dto.OrderTime = order.OrderTime;
+      dto.ScheduledTime = order.ScheduledTime;
+      dto.ReceptionTime = order.ReceptionTime;
+      dto.Items = MapItems(order);
+      dto.Totals = MapTotals(order);
+      //dto.Contact = new NamedEntityDto(order.CustomerContact.UID, order.CustomerContact.Name);
+      //dto.SalesAgent = new NamedEntityDto(order.SalesAgent);
+      //dto.Currency = new NamedEntityDto("", "");
       return dto;
+    }
+
+    private static PurchaseOrderTotal MapTotals(PurchaseOrderEntry order) {
+      var totals = new PurchaseOrderTotal();
+      totals.ItemsTotal = order.ItemsTotal;
+      totals.ShipmentTotal = order.ShipmentTotal;
+      totals.Discount = order.Discount;
+      totals.Taxes = order.OrderTotal;
+      totals.OrderTotal = order.OrderTotal;
+      return totals;
+    }
+
+    static internal FixedList<PurchaseOrderItemDto> MapItems(PurchaseOrderEntry order) {
+
+      return new FixedList<PurchaseOrderItemDto>();
     }
 
 
@@ -53,7 +81,7 @@ namespace Empiria.Trade.Procurement.Adapters {
 
       columns.Add(new DataTableColumn("orderNo", "Número de orden", "text-link"));
       columns.Add(new DataTableColumn("supplier", "Proveedor", "text"));
-      columns.Add(new DataTableColumn("customer", "Cliente", "text"));
+      //columns.Add(new DataTableColumn("customer", "Cliente", "text"));
       //columns.Add(new DataTableColumn("orderType", "Tipo", "text"));
       //columns.Add(new DataTableColumn("currency", "Moneda", "text"));
       columns.Add(new DataTableColumn("orderTime", "Fecha registro", "date"));
@@ -86,7 +114,7 @@ namespace Empiria.Trade.Procurement.Adapters {
       dto.OrderTime = x.OrderTime;
       dto.ScheduledTime = x.ScheduledTime;
       dto.OrderStatus = x.Status;
-      dto.OrderTotal = x.Total;
+      dto.OrderTotal = x.OrderTotal;
 
       return dto;
     }

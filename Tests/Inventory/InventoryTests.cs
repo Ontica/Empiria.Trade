@@ -55,7 +55,7 @@ namespace Empiria.Trade.Tests.Procurement {
 
 
     [Fact]
-    public void CreateInventoryCountOrderTest() {
+    public void CreateInventoryOrderTest() {
 
       var usecase = InventoryOrderUseCases.UseCaseInteractor();
 

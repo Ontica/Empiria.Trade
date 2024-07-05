@@ -65,8 +65,34 @@ namespace Empiria.Trade.Procurement {
       get; internal set;
     }
 
-    public decimal Total {
-      get; internal set;
+
+    public int ItemsCount {
+      get; private set;
+    } = 0;
+
+
+    public decimal ItemsTotal {
+      get; private set;
+    }
+
+
+    public decimal ShipmentTotal {
+      get; private set;
+    }
+
+
+    public decimal Discount {
+      get; private set;
+    }
+
+
+    public decimal Taxes {
+      get; private set;
+    }
+
+
+    public decimal OrderTotal {
+      get; private set;
     }
 
 
@@ -100,19 +126,36 @@ namespace Empiria.Trade.Procurement {
 
       this.OrderTypeId = 1030;
       this.Supplier = Party.Parse(fields.SupplierUID);
-      this.Customer = Party.Parse(fields.CustomerUID);
-      this.CustomerAddress = CustomerAddress.Parse(fields.CustomerAddressUID);
-      this.CustomerContact = CustomerContact.Parse(fields.CustomerContactUID);
-      this.SalesAgent = Party.Parse(fields.SalesAgentUID);
+      this.Customer = Party.Parse(3); // Fastener Fijación S de RL de CV
+      this.CustomerAddress = CustomerAddress.Parse(-1); // no definido
+      this.CustomerContact = CustomerContact.Parse(-1); // no definido
+      this.SalesAgent = Party.Parse(-1);
       this.Notes = fields.Notes;
-      this.PedimentoImportacion = ""; // ImportFormalEntry
-      this.CartaPorte = ""; // BillOfLading
       //this.AuthorizationStatus = fields.OrderAuthorizationStatus;
       //this.AuthorizationTime = DateTime.MaxValue;
       this.AuthorizatedById = -1;
       this.ScheduledTime = fields.ScheduledTime;
       this.ReceptionTime = fields.ReceptionTime;
+      this.PaymentCondition = fields.PaymentCondition;
+      this.ShippingMethod = fields.ShippingMethod;
       
+      SetTotals();
+    }
+
+
+    private void SetTotals() {
+      this.OrderTotal = 0;
+      this.ItemsTotal = 0;
+      this.Taxes = 0;
+      this.ItemsCount = this.Items.Count;
+
+      foreach (var item in this.Items) {
+        this.ItemsTotal += item.SubTotal;
+        this.ShipmentTotal += item.Shipment;
+        this.Discount += item.Discount;
+        this.Taxes += item.TaxesIVA;
+        this.OrderTotal += item.Total;
+      }
 
     }
 

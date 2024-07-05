@@ -46,7 +46,7 @@ namespace Empiria.Trade.Procurement.Data {
         entry.Notes, entry.PedimentoImportacion, entry.CartaPorte,
         entry.OrderTime, (char)entry.AuthorizationStatus, entry.AuthorizationTime,
         entry.AuthorizatedById, entry.ScheduledTime, entry.ReceptionTime,
-        entry.ShippingMethod, entry.Keywords, (char) entry.Status);
+        entry.ShippingMethod, entry.Keywords, (char) entry.Status, entry.ExtData.ToString());
 
       DataWriter.Execute(op);
     }

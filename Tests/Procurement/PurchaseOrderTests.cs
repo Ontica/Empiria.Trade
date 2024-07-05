@@ -8,6 +8,9 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using Empiria.Trade.Inventory.Adapters;
+using Empiria.Trade.Inventory.UseCases;
+using Empiria.Trade.Orders;
 using Empiria.Trade.Procurement;
 using Empiria.Trade.Procurement.Adapters;
 using Empiria.Trade.Procurement.UseCases;
@@ -34,11 +37,34 @@ namespace Empiria.Trade.Tests.Procurement {
 
 
     [Fact]
+    public void CreateInventoryOrderTest() {
+
+      var usecase = PurchaseOrderUseCases.UseCaseInteractor();
+
+      PurchaseOrderFields fields = GetPurchaseOrderFields();
+      PurchaseOrderDto sut = usecase.CreatePurchaseOrder(fields);
+
+      Assert.NotNull(sut);
+    }
+
+    private PurchaseOrderFields GetPurchaseOrderFields() {
+
+      var fields = new PurchaseOrderFields {
+        SupplierUID = "1db9f53f-caf1-4e37-9626-ae68a89b42a5",
+        Notes = "PRUEBA DE COMPRA",
+        PaymentCondition ="Credito",
+        ShippingMethod= ShippingMethods.Paqueteria
+      };
+
+      return fields;
+    }
+
+    [Fact]
     public void GetPurchaseOrderTest() {
 
       var usecase = PurchaseOrderUseCases.UseCaseInteractor();
 
-      string purchaseOrderUID = "d80a0d16-c28b-44f9-8862-056aa31d9b7d";
+      string purchaseOrderUID = "fb1e2de6-e39e-4189-893b-ac9b74adb232";
       var sut = usecase.GetPurchaseOrder(purchaseOrderUID);
       Assert.NotNull(sut);
     }
@@ -78,7 +104,7 @@ namespace Empiria.Trade.Tests.Procurement {
         Status = Orders.OrderStatus.Empty
       };
 
-      PurchaseOrderDataDto sut = usecase.GetPurchaseOrderDescriptor(query);
+      PurchaseOrdersDataDto sut = usecase.GetPurchaseOrderDescriptor(query);
       Assert.NotNull(sut);
     }
 

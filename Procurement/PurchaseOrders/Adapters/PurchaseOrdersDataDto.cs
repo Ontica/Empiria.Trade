@@ -2,7 +2,7 @@
 *                                                                                                            *
 *  Module   : Inventory Management                       Component : Interface adapters                      *
 *  Assembly : Empiria.Trade.Inventory.dll                Pattern   : Data Transfer Object                    *
-*  Type     : PurchaseOrderDataDto                       License   : Please read LICENSE.txt file            *
+*  Type     : PurchaseOrdersDataDto                      License   : Please read LICENSE.txt file            *
 *                                                                                                            *
 *  Summary  : Output DTO used to return purchase descriptor data.                                            *
 *                                                                                                            *
@@ -15,7 +15,7 @@ namespace Empiria.Trade.Procurement.Adapters {
 
 
   /// <summary>Output DTO used to return purchase descriptor data.</summary>
-  public class PurchaseOrderDataDto {
+  public class PurchaseOrdersDataDto {
 
 
     public PurchaseOrderQuery Query {
@@ -33,7 +33,7 @@ namespace Empiria.Trade.Procurement.Adapters {
     } = new FixedList<PurchaseOrderDescriptorDto>();
 
 
-  } // class PurchaseOrderDataDto
+  } // class PurchaseOrdersDataDto
 
 
   public class PurchaseOrderDescriptorDto {

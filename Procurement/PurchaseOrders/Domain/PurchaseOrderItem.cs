@@ -65,6 +65,11 @@ namespace Empiria.Trade.Procurement {
     }
 
 
+    public decimal SubTotal {
+      get; internal set;
+    }
+
+
     #endregion Properties
 
 
@@ -89,7 +94,7 @@ namespace Empiria.Trade.Procurement {
         this.OrderItemId = OrderItem.Parse(fields.UID).Id;
         this.OrderItemUID = fields.UID;
       }
-
+      
       this.Order = Order.Parse(orderUID);
       this.OrderItemTypeId = 1031;
       this.VendorProduct = Products.VendorProduct.Parse(fields.VendorProductUID);

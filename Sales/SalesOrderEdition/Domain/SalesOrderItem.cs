@@ -64,8 +64,8 @@ namespace Empiria.Trade.Sales {
       this.AdditionalDiscount = fields.Discount2;
       this.SubTotal = GetSubtotal();
       this.Shipment = 0;
-      this.TaxesIVA = GetTaxesIva();
-      this.Total = GetTotal();
+      this.TaxesIVA = GetTaxesIva(this.SubTotal);
+      this.Total = GetTotal(this.SubTotal);
       this.ReceivedQty = 0;
       this.ScheduledTime = ExecutionServer.DateMaxValue;
       this.ReceptionTime = ExecutionServer.DateMaxValue;
@@ -108,15 +108,6 @@ namespace Empiria.Trade.Sales {
 
       return Convert.ToDecimal(productPriceRow[1]);
     }
-
-    private decimal GetTaxesIva() {
-      return this.SubTotal * 0.16m;
-    }
-
-    private decimal GetTotal() {
-      return this.SubTotal + this.TaxesIVA + this.Shipment;
-    }
-
 
     private FixedList<VendorPrices> GetCustomerPriceList() {
       var pricesList = CustomerPrices.GetVendorPrices(this.Order.Customer.Id);

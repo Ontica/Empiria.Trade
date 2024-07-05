@@ -38,14 +38,17 @@ namespace Empiria.Trade.Procurement.UseCases {
 
     public PurchaseOrderDto CreatePurchaseOrder(PurchaseOrderFields fields) {
 
-      var order = new PurchaseOrderEntry();
+      var order = new PurchaseOrderEntry(fields);
+      order.Save();
 
       return PurchaseOrderMapper.MapOrder(order);
     }
 
 
-    public PurchaseOrderEntry GetPurchaseOrder(string purchaseOrderUID) {
-      return PurchaseOrderEntry.Parse(purchaseOrderUID);
+    public PurchaseOrderDto GetPurchaseOrder(string purchaseOrderUID) {
+
+      var order = PurchaseOrderEntry.Parse(purchaseOrderUID);
+      return PurchaseOrderMapper.MapOrder(order);
     }
 
 
@@ -54,10 +57,10 @@ namespace Empiria.Trade.Procurement.UseCases {
     }
 
 
-    public PurchaseOrderDataDto GetPurchaseOrderDescriptor(PurchaseOrderQuery query) {
+    public PurchaseOrdersDataDto GetPurchaseOrderDescriptor(PurchaseOrderQuery query) {
       var purchaseOrderEntries = GetPurchaseOrderList(query);
 
-      return PurchaseOrderMapper.MapDescriptorList(purchaseOrderEntries, query);
+      return PurchaseOrderMapper.MapDataDto(purchaseOrderEntries, query);
     }
 
 

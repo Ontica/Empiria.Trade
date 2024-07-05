@@ -17,35 +17,55 @@ namespace Empiria.Trade.Procurement.Adapters {
   public class PurchaseOrderFields {
 
 
-    public int SupplierUID {
-      get; internal set;
-    }
-
-
-    public int CustomerUID {
-      get; internal set;
-    }
-
-
-    public int CustomerAddressUID {
-      get; internal set;
-    }
-
-
-    public int CustomerContactUID {
-      get;
-      internal set;
-    }
-
-
-    public int SalesAgentUID {
-      get; internal set;
-    }
+    public string SupplierUID {
+      get; set;
+    } = string.Empty;
 
 
     public string Notes {
-      get; internal set;
-    }
+      get; set;
+    } = string.Empty;
+
+
+    public string PaymentCondition {
+      get; set;
+    } = string.Empty;
+
+
+    public ShippingMethods ShippingMethod {
+      get; set;
+    } = ShippingMethods.None;
+
+
+    public DateTime ScheduledTime {
+      get; set;
+    } = ExecutionServer.DateMaxValue;
+
+
+    public DateTime ReceptionTime {
+      get; set;
+    } = ExecutionServer.DateMaxValue;
+
+
+    //public string CustomerUID {
+    //  get; internal set;
+    //} = string.Empty;
+
+
+    //public string CustomerAddressUID {
+    //  get; internal set;
+    //} = string.Empty;
+
+
+    //public string CustomerContactUID {
+    //  get;
+    //  internal set;
+    //} = string.Empty;
+
+
+    //public string SalesAgentUID {
+    //  get; internal set;
+    //} = string.Empty;
 
 
     //public OrderAuthorizationStatus OrderAuthorizationStatus {
@@ -53,16 +73,14 @@ namespace Empiria.Trade.Procurement.Adapters {
     //} = OrderAuthorizationStatus.Empty;
 
 
-    public DateTime ScheduledTime {
-      get;
-      internal set;
-    } = DateTime.MaxValue;
+    //public string ImportFormalEntry {
+    //  get; internal set;
+    //} = string.Empty;
 
 
-    public DateTime ReceptionTime {
-      get;
-      internal set;
-    } = DateTime.MaxValue;
+    //public string BillOfLading {
+    //  get; internal set;
+    //} = string.Empty;
 
 
   } // class PurchaseOrderFields
