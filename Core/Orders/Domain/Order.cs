@@ -105,14 +105,14 @@ namespace Empiria.Trade.Orders {
     public string PedimentoImportacion {
       get;
       protected set;
-    }
+    } = string.Empty;
 
 
     [DataField("BillOfLading")]
     public string CartaPorte {
       get;
       protected set;
-    }
+    } = string.Empty;
 
 
     public virtual string Keywords {
@@ -205,6 +205,59 @@ namespace Empiria.Trade.Orders {
     Suppled = 'Y'
 
   } // enum OrderStatus
+
+
+  static public class OrderStatusEnumExtensions {
+
+    static public string GetOrderStatusName(this OrderStatus status) {
+      
+      switch (status) {
+        case OrderStatus.Captured:
+          return "";
+         
+        case OrderStatus.Applied:
+          return "";
+
+        case OrderStatus.Authorized:
+          return "";
+
+        case OrderStatus.Packing:
+          return "";
+
+        case OrderStatus.Shipping:
+          return "";
+
+        case OrderStatus.Delivery:
+          return "";
+
+        case OrderStatus.Closed:
+          return "";
+
+        case OrderStatus.Cancelled:
+          return "";
+
+        case OrderStatus.Empty:
+          return "";
+
+        case OrderStatus.Pending:
+          return "";
+
+        case OrderStatus.ToSupply:
+          return "";
+
+        case OrderStatus.InProgress:
+          return "";
+
+        case OrderStatus.Suppled:
+          return "";
+
+        default:
+          throw Assertion.EnsureNoReachThisCode($"Unrecognized status {status}");
+      }
+    }
+
+  } // class OrderStatusEnumExtensions
+
 
   public enum OrderAuthorizationStatus {
     Authorized = 'A',

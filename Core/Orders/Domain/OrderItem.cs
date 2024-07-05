@@ -179,6 +179,23 @@ namespace Empiria.Trade.Orders {
 
     #endregion Public properties
 
+
+    #region public methods
+
+
+    public decimal GetTaxesIva(decimal subTotal) {
+      return subTotal * 0.16m;
+    }
+
+
+    public decimal GetTotal(decimal subTotal) {
+      return subTotal + this.TaxesIVA + this.Shipment;
+    }
+
+
+    #endregion public methods
+
+
   } // class OrderItems
 
 } //  namespace Empiria.Trade.Orders
