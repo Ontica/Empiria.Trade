@@ -28,8 +28,8 @@ namespace Empiria.Trade.Procurement {
     }
 
 
-    public PurchaseOrderEntry(PurchaseOrderFields fields) {
-      MapToPurchaseOrder(fields);
+    public PurchaseOrderEntry(PurchaseOrderFields fields, string purchaseOrderUID) {
+      MapToPurchaseOrder(fields, purchaseOrderUID);
     }
 
 
@@ -114,11 +114,11 @@ namespace Empiria.Trade.Procurement {
 
     protected override void OnSave() {
 
-      if (IsNew) {
+      if (this.OrderId == 0) {
 
         this.OrderId = this.Id;
         this.OrderUID = this.UID;
-        OrderNumber = "OC-" + EmpiriaString.BuildRandomString(10).ToUpperInvariant();
+        this.OrderNumber = "OC-" + EmpiriaString.BuildRandomString(10).ToUpperInvariant();
         OrderTime = DateTime.Now;
         Status = OrderStatus.Captured;
       }
@@ -127,8 +127,14 @@ namespace Empiria.Trade.Procurement {
     }
 
 
-    private void MapToPurchaseOrder(PurchaseOrderFields fields) {
+    private void MapToPurchaseOrder(PurchaseOrderFields fields, string purchaseOrderUID) {
 
+      if (purchaseOrderUID != string.Empty) {
+        var order = Order.Parse(purchaseOrderUID);
+        this.OrderId = order.Id;
+        this.OrderUID = purchaseOrderUID;
+        this.OrderNumber = order.OrderNumber;
+      }
       this.OrderTypeId = 1030;
       this.Supplier = Party.Parse(fields.SupplierUID);
       this.Customer = Party.Parse(3); // Fastener Fijación S de RL de CV

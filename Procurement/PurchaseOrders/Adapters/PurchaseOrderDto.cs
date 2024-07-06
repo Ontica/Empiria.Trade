@@ -79,7 +79,7 @@ namespace Empiria.Trade.Procurement.Adapters {
 
 
     public FixedList<PurchaseOrderItemDto> Items {
-      get; internal set;
+      get; set;
     } = new FixedList<PurchaseOrderItemDto>();
 
 
@@ -99,26 +99,62 @@ namespace Empiria.Trade.Procurement.Adapters {
   public class PurchaseOrderItemDto {
 
 
-    public NamedEntityDto MyProperty {
-      get; set;
-    } = new NamedEntityDto("", "");
+    public string UID {
+      get; internal set;
+    } = string.Empty;
 
 
-    public NamedEntityDto MyProperty2 {
-      get; set;
-    } = new NamedEntityDto("", "");
+    public string ProductCode {
+      get; internal set;
+    } = string.Empty;
 
 
-    public NamedEntityDto MyProperty3 {
-      get; set;
-    } = new NamedEntityDto("", "");
+    public string ProductName {
+      get; internal set;
+    } = string.Empty;
 
 
-    public NamedEntityDto MyProperty4 {
-      get; set;
-    } = new NamedEntityDto("", "");
+    public decimal Quantity {
+      get;
+      internal set;
+    }
 
 
+    public decimal ReceivedQuantity {
+      get;
+      internal set;
+    }
+
+
+    public decimal Weight {
+      get; internal set;
+    }
+
+
+    public decimal ProductPrice {
+      get; internal set;
+    }
+
+
+    //public NamedEntityDto MyProperty {
+    //  get; set;
+    //} = new NamedEntityDto("", "");
+
+
+    //public NamedEntityDto MyProperty2 {
+    //  get; set;
+    //} = new NamedEntityDto("", "");
+
+
+    //public NamedEntityDto MyProperty3 {
+    //  get; set;
+    //} = new NamedEntityDto("", "");
+
+
+    //public NamedEntityDto MyProperty4 {
+    //  get; set;
+    //} = new NamedEntityDto("", "");
+    
   } // class PurchaseOrderItemDto
 
 
@@ -157,6 +193,33 @@ namespace Empiria.Trade.Procurement.Adapters {
 
 
   public class PurchaseOrderActions {
+
+
+    public bool CanEdit {
+      get; set;
+    } = true;
+
+
+    public bool CanEditItems {
+      get; set;
+    } = true;
+
+
+    public bool CanDelete {
+      get; set;
+    } = true;
+
+
+    public bool CanClose {
+      get; set;
+    } = true;
+
+
+    public bool CanOpen {
+      get; set;
+    } = true;
+
+
   }
 
 

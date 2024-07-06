@@ -22,7 +22,7 @@ namespace Empiria.Trade.Procurement.Domain {
 
     internal static FixedList<PurchaseOrderEntry> GetPurchaseOrderEntries(PurchaseOrderQuery query) {
       
-      return PurchaseOrderData.GetPurchaseOrderList(query);
+      return PurchaseOrderData.GetPurchaseOrders(query);
     }
 
     #endregion Public methods

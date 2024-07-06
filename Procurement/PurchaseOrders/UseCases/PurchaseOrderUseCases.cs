@@ -9,7 +9,9 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using Empiria.Services;
+using Empiria.Trade.Orders;
 using Empiria.Trade.Procurement.Adapters;
+using Empiria.Trade.Procurement.Data;
 using Empiria.Trade.Procurement.Domain;
 
 namespace Empiria.Trade.Procurement.UseCases {
@@ -38,22 +40,36 @@ namespace Empiria.Trade.Procurement.UseCases {
 
     public PurchaseOrderDto CreatePurchaseOrder(PurchaseOrderFields fields) {
 
-      var order = new PurchaseOrderEntry(fields);
+      var order = new PurchaseOrderEntry(fields, "");
       order.Save();
 
       return GetPurchaseOrder(order.OrderUID);
     }
 
 
+    public void DeletePurchaseOrder(string purchaseOrderUID) {
+      var order = PurchaseOrderEntry.Parse(purchaseOrderUID);
+
+      PurchaseOrderData.DeletePurchaseOrder(order.Id);
+    }
+
+
     public PurchaseOrderDto GetPurchaseOrder(string purchaseOrderUID) {
 
       var order = PurchaseOrderEntry.Parse(purchaseOrderUID);
+      order.Items = GetPurchaseOrderItems(order.Id);
+
       return PurchaseOrderMapper.MapOrder(order);
     }
 
 
     public PurchaseOrderItem GetPurchaseOrderItem(string purchaseOrderItemUID) {
       return PurchaseOrderItem.Parse(purchaseOrderItemUID);
+    }
+
+
+    public FixedList<PurchaseOrderItem> GetPurchaseOrderItems(int orderId) {
+      return PurchaseOrderData.GetPurchaseOrderItems(orderId);
     }
 
 
@@ -64,11 +80,20 @@ namespace Empiria.Trade.Procurement.UseCases {
     }
 
 
+    public PurchaseOrderDto UpdatePurchaseOrder(string purchaseOrderUID, PurchaseOrderFields fields) {
+
+      var order = new PurchaseOrderEntry(fields, purchaseOrderUID);
+      order.Save();
+
+      return GetPurchaseOrder(order.OrderUID);
+    }
+
+
     #endregion Public methods
 
     #region Private methods
 
-    public FixedList<PurchaseOrderEntry> GetPurchaseOrderList(PurchaseOrderQuery query) {
+    private FixedList<PurchaseOrderEntry> GetPurchaseOrderList(PurchaseOrderQuery query) {
 
       return PurchaseOrderBuilder.GetPurchaseOrderEntries(query);
     }

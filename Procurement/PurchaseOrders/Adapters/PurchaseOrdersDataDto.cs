@@ -70,7 +70,7 @@ namespace Empiria.Trade.Procurement.Adapters {
     }
 
 
-    public OrderStatus OrderStatus {
+    public string OrderStatus {
       get; internal set;
     }
 

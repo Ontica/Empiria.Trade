@@ -23,7 +23,7 @@ namespace Empiria.Trade.Procurement.Data {
     #region Public methods
 
 
-    internal static FixedList<PurchaseOrderEntry> GetPurchaseOrderList(PurchaseOrderQuery query) {
+    internal static FixedList<PurchaseOrderEntry> GetPurchaseOrders(PurchaseOrderQuery query) {
 
       var queryClauses = GetQueryClauses(query);
 
@@ -34,6 +34,16 @@ namespace Empiria.Trade.Procurement.Data {
       var dataOperation = DataOperation.Parse(sql);
 
       return DataReader.GetPlainObjectFixedList<PurchaseOrderEntry>(dataOperation);
+    }
+
+
+    internal static FixedList<PurchaseOrderItem> GetPurchaseOrderItems(int purchaseOrderId) {
+      string sql = $"SELECT * FROM TRDOrderItems " +
+                   $"WHERE OrderId = {purchaseOrderId} and OrderItemStatus <> 'X'";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetFixedList<PurchaseOrderItem>(dataOperation);
     }
 
 
@@ -57,7 +67,7 @@ namespace Empiria.Trade.Procurement.Data {
       var op = DataOperation.Parse("writePurchaseOrderItem",
         item.OrderItemId, item.OrderItemUID, item.Order.Id,
         item.OrderItemTypeId, item.VendorProduct.Id, item.Quantity,
-        item. ReceivedQty, item.ProductPriceId, item.PriceListNumber,
+        item.ReceivedQty, item.ProductPriceId, item.PriceListNumber,
         item.BasePrice, item.SalesPrice, item.Discount,
         item.Shipment, item.TaxesIVA, item.Total,
         item.Notes, item.ScheduledTime, item.ReceptionTime,
@@ -87,9 +97,23 @@ namespace Empiria.Trade.Procurement.Data {
 
       if (query.Status != OrderStatus.Empty) {
         filters.AppendAnd($"OrderStatus = '{(char) query.Status}'");
+      } else {
+        filters.AppendAnd($"OrderStatus != '{(char) OrderStatus.Cancelled}'");
       }
 
       return filters.ToString().Length > 0 ? $"AND {filters}" : "";
+    }
+
+
+    internal static void DeletePurchaseOrder(int orderId) {
+
+      string sql = $"UPDATE TRDOrders " +
+                   $"SET OrderStatus = '{(char) OrderStatus.Cancelled}' " +
+                   $"WHERE OrderId = {orderId}";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      DataWriter.Execute(dataOperation);
     }
 
 

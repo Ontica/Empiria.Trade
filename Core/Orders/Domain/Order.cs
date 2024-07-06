@@ -118,7 +118,7 @@ namespace Empiria.Trade.Orders {
     public virtual string Keywords {
       get {
         return EmpiriaString.BuildKeywords(
-          OrderNumber, Customer.Name, SalesAgent.Name, PedimentoImportacion, CartaPorte);
+          OrderNumber, Supplier.Name, Customer.Name, SalesAgent.Name);
       }
     }
 

@@ -36,6 +36,19 @@ namespace Empiria.Trade.WebApi.Procurement {
     }
 
 
+    [HttpDelete]
+    [Route("v4/trade/procurement/purchase-orders/{purchaseOrderUID:guid}")]
+    public NoDataModel DeletePurchaseOrder([FromUri] string purchaseOrderUID) {
+
+      using (var usecases = PurchaseOrderUseCases.UseCaseInteractor()) {
+
+        usecases.DeletePurchaseOrder(purchaseOrderUID);
+
+        return new NoDataModel(this.Request);
+      }
+    }
+
+
     [HttpGet]
     [Route("v4/trade/procurement/purchase-orders/{purchaseOrderUID:guid}")]
     public SingleObjectModel GetPurchaseOrder([FromUri] string purchaseOrderUID) {
@@ -58,6 +71,20 @@ namespace Empiria.Trade.WebApi.Procurement {
         PurchaseOrdersDataDto purchaseOrderDescriptor = usecases.GetPurchaseOrderDescriptor(query);
 
         return new SingleObjectModel(this.Request, purchaseOrderDescriptor);
+      }
+    }
+
+
+    [HttpPut]
+    [Route("v4/trade/procurement/purchase-orders/{purchaseOrderUID:guid}")]
+    public SingleObjectModel UpdatePurchaseOrder([FromUri] string purchaseOrderUID,
+                                                 [FromBody] PurchaseOrderFields fields) {
+
+      using (var usecases = PurchaseOrderUseCases.UseCaseInteractor()) {
+
+        PurchaseOrderDto shippingOrder = usecases.UpdatePurchaseOrder(purchaseOrderUID, fields);
+
+        return new SingleObjectModel(this.Request, shippingOrder);
       }
     }
 
