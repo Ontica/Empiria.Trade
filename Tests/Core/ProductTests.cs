@@ -48,7 +48,6 @@ namespace Empiria.Trade.Tests.Core {
       IProductEntryDto sut = usecase.GetProductByUID(uid);
 
       Assert.NotNull(sut);
-
     }
 
 
@@ -65,7 +64,22 @@ namespace Empiria.Trade.Tests.Core {
 
       Assert.NotNull(sut);
       Assert.NotEmpty(sut);
+    }
 
+
+    [Fact]
+    public async Task GetProductListForPurchaseOrderTest() {
+
+      var usecase = ProductUseCases.UseCaseInteractor();
+      ProductQuery query = new ProductQuery {
+        Keywords = "PPBTA14X34-3500",
+        OnStock = true
+      };
+
+      FixedList<IProductEntryDto> sut = await usecase.GetProductsForPurchaseOrder(query).ConfigureAwait(false);
+
+      Assert.NotNull(sut);
+      Assert.NotEmpty(sut);
     }
 
 
@@ -89,7 +103,6 @@ namespace Empiria.Trade.Tests.Core {
 
       Assert.NotNull(sut);
       Assert.NotEmpty(sut);
-
     }
 
 
@@ -103,7 +116,6 @@ namespace Empiria.Trade.Tests.Core {
       ProductPresentation sut = usecase.GetProductPresentation(uid);
 
       Assert.NotNull(sut);
-
     }
 
 
@@ -117,7 +129,6 @@ namespace Empiria.Trade.Tests.Core {
       VendorProduct sut = usecase.GetVendorProduct(uid);
 
       Assert.NotNull(sut);
-
     }
 
 
@@ -131,7 +142,6 @@ namespace Empiria.Trade.Tests.Core {
       ProductGroup sut = usecase.GetProductGroup(uid);
 
       Assert.NotNull(sut);
-
     }
 
 
@@ -145,7 +155,6 @@ namespace Empiria.Trade.Tests.Core {
       ProductSubgroup sut = usecase.GetProductSubgroup(uid);
 
       Assert.NotNull(sut);
-
     }
 
 

@@ -26,6 +26,7 @@ namespace Empiria.Trade.Products {
 
     static public ProductPresentation Empty => ParseEmpty<ProductPresentation>();
 
+    static public FixedList<ProductPresentation> List() => GetList<ProductPresentation>().ToFixedList();
 
     #endregion Constructors and parsers
 

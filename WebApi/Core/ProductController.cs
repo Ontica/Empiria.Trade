@@ -19,93 +19,98 @@ using Empiria.Trade.Sales.UseCases;
 using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Core.Catalogues;
 
-namespace Empiria.Trade.WebApi.Core
-{
+namespace Empiria.Trade.WebApi.Core {
 
-    /// <summary>Query web API used to retrieve Products.</summary>
-    public class ProductController : WebApiController
-    {
+  /// <summary>Query web API used to retrieve Products.</summary>
+  public class ProductController : WebApiController {
 
 
-        #region Web Apis
+    #region Web Apis
 
 
-        [HttpGet]
-        [Route("v4/trade/products/product/{productUID}")]
-        public SingleObjectModel GetProduct([FromUri] string productUID)
-        {
-            RequireBody(productUID);
+    [HttpGet]
+    [Route("v4/trade/products/product/{productUID}")]
+    public SingleObjectModel GetProduct([FromUri] string productUID) {
+      RequireBody(productUID);
 
-            using (var usecases = ProductUseCases.UseCaseInteractor())
-            {
-                IProductEntryDto productDto = usecases.GetProductByUID(productUID);
-                return new SingleObjectModel(Request, productDto);
-            }
-        }
+      using (var usecases = ProductUseCases.UseCaseInteractor()) {
+        IProductEntryDto productDto = usecases.GetProductByUID(productUID);
+        return new SingleObjectModel(Request, productDto);
+      }
+    }
 
 
-        [HttpPost]
-        [Route("v4/trade/products/search-products")]
-        public async Task<CollectionModel> GetProductsDto([FromBody] ProductQuery query)
-        {
-            RequireBody(query);
+    [HttpPost]
+    [Route("v4/trade/products/search-products")]
+    public async Task<CollectionModel> GetProductsDto([FromBody] ProductQuery query) {
+      RequireBody(query);
 
-            using (var usecases = ProductUseCases.UseCaseInteractor())
-            {
-                FixedList<IProductEntryDto> productDto = await usecases.GetProductsList(query)
-                                                        .ConfigureAwait(false);
-                return new CollectionModel(Request, productDto);
-            }
-        }
+      using (var usecases = ProductUseCases.UseCaseInteractor()) {
+        FixedList<IProductEntryDto> productDto = await usecases.GetProductsList(query)
+                                                .ConfigureAwait(false);
+        return new CollectionModel(Request, productDto);
+      }
+    }
 
 
-        [HttpPost]
-        [Route("v4/trade/products/search-products-for-inventory")]
-        public async Task<CollectionModel> GetProductsForInventory([FromBody] ProductQuery query) {
-          RequireBody(query);
+    [HttpPost]
+    [Route("v4/trade/products/search-products-for-inventory")]
+    public async Task<CollectionModel> GetProductsForInventory([FromBody] ProductQuery query) {
+      RequireBody(query);
 
-          using (var usecases = ProductUseCases.UseCaseInteractor()) {
+      using (var usecases = ProductUseCases.UseCaseInteractor()) {
 
-            query.OnStock = false;
-            FixedList<IProductEntryDto> productDto = await usecases.GetProductsList(query)
-                                                    .ConfigureAwait(false);
-            return new CollectionModel(Request, productDto);
-          }
-        }
-
-
-        [HttpPost]
-        [Route("v4/trade/products/search-products-for-order")]
-        public async Task<CollectionModel> GetProductsByCustomer([FromBody] ProductOrderQuery query)
-        {
-            RequireBody(query);
-
-            using (var usecases = ProductForOrderUseCases.UseCaseInteractor())
-            {
-                FixedList<IProductEntryDto> productDto = await usecases.GetProductsForOrder(query)
-                                                        .ConfigureAwait(false);
-                return new CollectionModel(Request, productDto);
-            }
-        }
+        query.OnStock = false;
+        FixedList<IProductEntryDto> productDto = await usecases.GetProductsList(query)
+                                                .ConfigureAwait(false);
+        return new CollectionModel(Request, productDto);
+      }
+    }
 
 
-        [HttpPost]
-        [Route("v4/trade/catalogues/update-uid")]
-        public async Task<SingleObjectModel> UpdateTableUID([FromBody] TableQuery query)
-        {
-            RequireBody(query);
+    [HttpPost]
+    [Route("v4/trade/products/search-products-for-purchase-order")]
+    public async Task<CollectionModel> GetProductsForPurchaseOrder([FromBody] ProductQuery query) {
+      RequireBody(query);
 
-            using (var usecases = CataloguesUseCases.UseCaseInteractor())
-            {
-                string msj = await usecases.UpdateGUID(query).ConfigureAwait(false);
-                return new SingleObjectModel(Request, msj);
-            }
-        }
+      using (var usecases = ProductUseCases.UseCaseInteractor()) {
 
-
-        #endregion Web Apis
+        query.OnStock = false;
+        FixedList<IProductEntryDto> productDto = await usecases.GetProductsForPurchaseOrder(query)
+                                                .ConfigureAwait(false);
+        return new CollectionModel(Request, productDto);
+      }
+    }
 
 
-    } // class TRDProductController
+    [HttpPost]
+    [Route("v4/trade/products/search-products-for-order")]
+    public async Task<CollectionModel> GetProductsByCustomer([FromBody] ProductOrderQuery query) {
+      RequireBody(query);
+
+      using (var usecases = ProductForOrderUseCases.UseCaseInteractor()) {
+        FixedList<IProductEntryDto> productDto = await usecases.GetProductsForOrder(query)
+                                                .ConfigureAwait(false);
+        return new CollectionModel(Request, productDto);
+      }
+    }
+
+
+    [HttpPost]
+    [Route("v4/trade/catalogues/update-uid")]
+    public async Task<SingleObjectModel> UpdateTableUID([FromBody] TableQuery query) {
+      RequireBody(query);
+
+      using (var usecases = CataloguesUseCases.UseCaseInteractor()) {
+        string msj = await usecases.UpdateGUID(query).ConfigureAwait(false);
+        return new SingleObjectModel(Request, msj);
+      }
+    }
+
+
+    #endregion Web Apis
+
+
+  } // class TRDProductController
 
 } // namespace Empiria.Trade.WebApi.Inventory

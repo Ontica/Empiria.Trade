@@ -59,6 +59,22 @@ namespace Empiria.Trade.Products.Domain {
     }
 
 
+    internal FixedList<Product> GetProductsForPurchaseOrder(ProductQuery query) {
+
+      FixedList<Product> products = ProductDataService.GetProductsList(query.Keywords);
+
+      var helper = new ProductHelper(query);
+
+      FixedList<Product> productsByStock = helper.GetProductsByStock(products);
+
+      FixedList<Product> productsByCode = helper.GetProductsByCodeForPurchaseOrder(productsByStock);
+
+      FixedList<Product> orderedProducts = helper.GetProductsOrderBy(productsByCode);
+
+      return orderedProducts;
+    }
+    
+
     internal FixedList<Product> GetProductsList(ProductQuery query) {
 
       FixedList<Product> products = ProductDataService.GetProductsList(query.Keywords);

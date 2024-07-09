@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -60,6 +61,16 @@ namespace Empiria.Trade.Products.UseCases
     }
 
 
+    public async Task<FixedList<IProductEntryDto>> GetProductsForPurchaseOrder(ProductQuery query) {
+      var builder = new ProductBuilder();
+
+      FixedList<Product> products = await Task.Run(() => builder.GetProductsForPurchaseOrder(query))
+                                            .ConfigureAwait(false);
+
+      return ProductMapper.MapToEntriesDto(products);
+    }
+
+    
     public async Task<FixedList<IProductEntryDto>> GetProductsForOrder(ProductQuery query) {
       var builder = new ProductBuilder();
 
@@ -88,6 +99,13 @@ namespace Empiria.Trade.Products.UseCases
       Assertion.Require(presentationUid, "presentationUid");
 
       return ProductPresentation.Parse(presentationUid);
+    }
+
+
+    static internal FixedList<ProductPresentation> GetProductPresentations() {
+
+      var presentations = ProductPresentation.List().Where(x=>x.Id>0).ToList();
+      return presentations.ToFixedList();
     }
 
 

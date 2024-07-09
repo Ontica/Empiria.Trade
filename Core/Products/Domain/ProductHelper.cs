@@ -18,6 +18,7 @@ using Empiria.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
+using Empiria.Trade.Products.UseCases;
 
 namespace Empiria.Trade.Products.Domain {
 
@@ -61,16 +62,26 @@ namespace Empiria.Trade.Products.Domain {
     }
 
 
+    internal FixedList<Product> GetProductsByCodeForPurchaseOrder(FixedList<Product> products) {
+
+      var hashProducts = new EmpiriaHashTable<Product>();
+
+      foreach (var product in products) {
+
+        AssingHashProductByCodeForPurchaseOrder(hashProducts, product);
+      }
+
+      return hashProducts.ToFixedList();
+    }
+
+
     internal FixedList<Product> GetProductsByCode(FixedList<Product> products) {
 
       var hashProducts = new EmpiriaHashTable<Product>();
 
       foreach (var product in products) {
-        //TODO QUITAR URL Y HACER VALIDACION DE IMAGEN EN SERVER
-        string url = "http://apps.sujetsa.com.mx:8080/imagenes-productos/";
-        product.ProductImageUrl = $"{url}{product.Code}.jpg";
-        AssingProductPresentations(hashProducts, product);
-
+        
+        AssingHashProductByCode(hashProducts, product);
       }
 
       return hashProducts.ToFixedList();
@@ -84,8 +95,8 @@ namespace Empiria.Trade.Products.Domain {
       }
 
       return productsByCode.OrderBy(p => p.Code)
-                                          .ThenBy(p => p.ProductName)
-                                          .ToList().ToFixedList();
+                           .ThenBy(p => p.ProductName)
+                           .ToList().ToFixedList();
     }
 
 
@@ -104,14 +115,13 @@ namespace Empiria.Trade.Products.Domain {
     #region Private methods
 
 
-    private void AssingProductPresentations(EmpiriaHashTable<Product> hashProducts, Product product) {
+    private void AssingHashProductByCode(EmpiriaHashTable<Product> hashProducts, Product product) {
 
       string hash = $"{product.Code}";
 
       Product productEntry;
 
       hashProducts.TryGetValue(hash, out productEntry);
-
 
       if (productEntry == null) {
 
@@ -124,6 +134,28 @@ namespace Empiria.Trade.Products.Domain {
       } else {
 
         GetProductPresentations(productEntry, product);
+      }
+
+    }
+
+
+    private void AssingHashProductByCodeForPurchaseOrder(
+      EmpiriaHashTable<Product> hashProducts, Product product) {
+
+      string hash = $"{product.Code}";
+
+      Product productEntry;
+
+      hashProducts.TryGetValue(hash, out productEntry);
+
+      if (productEntry == null) {
+
+        productEntry = product;
+
+        GetProductPresentationsForPurchaseOrder(productEntry);
+
+        hashProducts.Insert(hash, productEntry);
+
       }
 
     }
@@ -250,6 +282,22 @@ namespace Empiria.Trade.Products.Domain {
 
         productEntry.Presentations.Add(presentation);
 
+      }
+    }
+
+
+    private void GetProductPresentationsForPurchaseOrder(Product productEntry) {
+
+      var presentations = ProductUseCases.GetProductPresentations();
+
+      foreach (var present in presentations) {
+        var presentation = new ProductPresentationForSeach();
+        presentation.PresentationUID = present.PresentationUID;
+        presentation.Description = present.PresentationDescription;
+        presentation.Units = present.QuantityAmount;
+        presentation.Vendors = new List<VendorDto>();
+
+        productEntry.Presentations.Add(presentation);
       }
     }
 

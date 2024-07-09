@@ -241,10 +241,8 @@ namespace Empiria.Trade.Products {
     }
 
 
-    public string ProductImageUrl {
-      get; set;
-    }
-
+    public string ProductImageUrl => $"http://apps.sujetsa.com.mx:8080/imagenes-productos/{this.Code}.jpg";
+    
 
     public List<ProductPresentationForSeach> Presentations {
       get; set;
