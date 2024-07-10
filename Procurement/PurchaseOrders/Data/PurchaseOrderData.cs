@@ -9,6 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using Empiria.Data;
+using Empiria.StateEnums;
 using Empiria.Trade.Core;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Procurement.Adapters;
@@ -65,13 +66,15 @@ namespace Empiria.Trade.Procurement.Data {
     static internal void WritePurchaseOrderItem(PurchaseOrderItem item) {
       
       var op = DataOperation.Parse("writePurchaseOrderItem",
-        item.OrderItemId, item.OrderItemUID, item.Order.Id,
+        item.OrderItemId, item.OrderItemUID.ToString(), item.Order.Id,
         item.OrderItemTypeId, item.VendorProduct.Id, item.Quantity,
         item.ReceivedQty, item.ProductPriceId, item.PriceListNumber,
         item.BasePrice, item.SalesPrice, item.Discount,
-        item.Shipment, item.TaxesIVA, item.Total,
-        item.Notes, item.ScheduledTime, item.ReceptionTime,
-        item.Reviewed, (char) item.Status);
+        item.AdditionalDiscount, item.Shipment, item.TaxesIVA,
+        item.TaxesIEPS, item.Total, item.Notes.ToString(),
+        item.ScheduledTime, item.ReceptionTime, //ConvertDateTimeToString(item.ScheduledTime), ConvertDateTimeToString(item.ReceptionTime),
+        item.Reviewed.ToString(),
+        (char) item.Status, item.ItemWeight);
 
       DataWriter.Execute(op);
     }
@@ -81,7 +84,11 @@ namespace Empiria.Trade.Procurement.Data {
 
 
     #region Private methods
+    static private string ConvertDateTimeToString(DateTime dateTime) {
 
+      return $"{dateTime.Year}/{dateTime.Day}/{dateTime.Month} " +
+             $"{dateTime.Hour}:{dateTime.Minute}:{dateTime.Second}";
+    }
 
     static private string GetQueryClauses(PurchaseOrderQuery query) {
 
@@ -110,6 +117,17 @@ namespace Empiria.Trade.Procurement.Data {
       string sql = $"UPDATE TRDOrders " +
                    $"SET OrderStatus = '{(char) OrderStatus.Cancelled}' " +
                    $"WHERE OrderId = {orderId}";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      DataWriter.Execute(dataOperation);
+    }
+
+
+    internal static void DeletePurchaseOrderItem(string purchaseOrderItemUID) {
+      string sql = $"UPDATE TRDOrderItems " +
+                   $"SET OrderItemStatus = '{(char) EntityStatus.Deleted}' " +
+                   $"WHERE OrderItemUID = '{purchaseOrderItemUID}'";
 
       var dataOperation = DataOperation.Parse(sql);
 

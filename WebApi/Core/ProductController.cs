@@ -76,7 +76,7 @@ namespace Empiria.Trade.WebApi.Core {
       using (var usecases = ProductUseCases.UseCaseInteractor()) {
 
         query.OnStock = false;
-        FixedList<IProductEntryDto> productDto = await usecases.GetProductsForPurchaseOrder(query)
+        FixedList<IProductEntryDto> productDto = await usecases.GetProductsList(query)
                                                 .ConfigureAwait(false);
         return new CollectionModel(Request, productDto);
       }
@@ -84,7 +84,7 @@ namespace Empiria.Trade.WebApi.Core {
 
 
     [HttpPost]
-    [Route("v4/trade/products/search-products-for-order")]
+    [Route("v4/trade/products/search-products-for-sale-order")]
     public async Task<CollectionModel> GetProductsByCustomer([FromBody] ProductOrderQuery query) {
       RequireBody(query);
 

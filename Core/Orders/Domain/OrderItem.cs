@@ -101,6 +101,13 @@ namespace Empiria.Trade.Orders {
     }
 
 
+    [DataField("ItemWeight")]
+    public decimal ItemWeight {
+      get;
+      protected set;
+    }
+    
+
     [DataField("Discount")]
     public decimal Discount {
       get;

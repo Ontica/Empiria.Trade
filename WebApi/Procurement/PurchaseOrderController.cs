@@ -36,6 +36,20 @@ namespace Empiria.Trade.WebApi.Procurement {
     }
 
 
+    [HttpPost]
+    [Route("v4/trade/procurement/purchase-orders/{purchaseOrderUID:guid}/item")]
+    public SingleObjectModel CreatePurchaseOrderItem([FromUri] string purchaseOrderUID,
+                                                     [FromBody] PurchaseOrderItemFields fields) {
+
+      using (var usecases = PurchaseOrderUseCases.UseCaseInteractor()) {
+
+        PurchaseOrderDto shippingOrder = usecases.CreatePurchaseOrderItem(purchaseOrderUID, fields);
+
+        return new SingleObjectModel(this.Request, shippingOrder);
+      }
+    }
+
+
     [HttpDelete]
     [Route("v4/trade/procurement/purchase-orders/{purchaseOrderUID:guid}")]
     public NoDataModel DeletePurchaseOrder([FromUri] string purchaseOrderUID) {
@@ -45,6 +59,21 @@ namespace Empiria.Trade.WebApi.Procurement {
         usecases.DeletePurchaseOrder(purchaseOrderUID);
 
         return new NoDataModel(this.Request);
+      }
+    }
+
+
+    [HttpDelete]
+    [Route("v4/trade/procurement/purchase-orders/{purchaseOrderUID:guid}/item/{purchaseOrderItemUID:guid}")]
+    public SingleObjectModel DeletePurchaseOrderItem([FromUri] string purchaseOrderUID,
+                                                     [FromUri] string purchaseOrderItemUID) {
+
+      using (var usecases = PurchaseOrderUseCases.UseCaseInteractor()) {
+
+        PurchaseOrderDto shippingOrder =
+          usecases.DeletePurchaseOrderItem(purchaseOrderUID, purchaseOrderItemUID);
+
+        return new SingleObjectModel(this.Request, shippingOrder);
       }
     }
 
@@ -88,6 +117,21 @@ namespace Empiria.Trade.WebApi.Procurement {
       }
     }
 
+
+    [HttpPut]
+    [Route("v4/trade/procurement/purchase-orders/{purchaseOrderUID:guid}/item/{purchaseOrderItemUID:guid}")]
+    public SingleObjectModel UpdatePurchaseOrderItem([FromUri] string purchaseOrderUID,
+                                                     [FromUri] string purchaseOrderItemUID,
+                                                     [FromBody] PurchaseOrderItemFields fields) {
+
+      using (var usecases = PurchaseOrderUseCases.UseCaseInteractor()) {
+
+        PurchaseOrderDto shippingOrder =
+          usecases.UpdatePurchaseOrderItem(purchaseOrderUID, purchaseOrderItemUID, fields);
+
+        return new SingleObjectModel(this.Request, shippingOrder);
+      }
+    }
 
   } // class PurchaseOrderController
 

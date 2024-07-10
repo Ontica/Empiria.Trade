@@ -13,6 +13,7 @@ using Empiria.Trade.Orders;
 using Empiria.Trade.Procurement.Adapters;
 using Empiria.Trade.Procurement.Data;
 using Empiria.Trade.Procurement.Domain;
+using Empiria.Trade.Products;
 
 namespace Empiria.Trade.Procurement.UseCases {
 
@@ -47,10 +48,39 @@ namespace Empiria.Trade.Procurement.UseCases {
     }
 
 
+    public PurchaseOrderDto CreatePurchaseOrderItem(
+      string purchaseOrderUID, PurchaseOrderItemFields fields) {
+
+      Assertion.Require(purchaseOrderUID, nameof(purchaseOrderUID));
+      Assertion.Require(fields, nameof(fields));
+
+      ValidationsForItem(fields);
+
+      var orderItem = new PurchaseOrderItem(purchaseOrderUID, fields);
+      orderItem.Save();
+
+      return GetPurchaseOrder(purchaseOrderUID);
+    }
+
+
     public void DeletePurchaseOrder(string purchaseOrderUID) {
       var order = PurchaseOrderEntry.Parse(purchaseOrderUID);
 
+      order.Items = GetPurchaseOrderItems(order.Id);
+      
+      foreach (var item in order.Items) {
+        PurchaseOrderData.DeletePurchaseOrderItem(item.UID);
+      }
+      
       PurchaseOrderData.DeletePurchaseOrder(order.Id);
+    }
+
+
+    public PurchaseOrderDto DeletePurchaseOrderItem(string purchaseOrderUID, string purchaseOrderItemUID) {
+
+      PurchaseOrderData.DeletePurchaseOrderItem(purchaseOrderItemUID);
+
+      return GetPurchaseOrder(purchaseOrderUID);
     }
 
 
@@ -58,7 +88,7 @@ namespace Empiria.Trade.Procurement.UseCases {
 
       var order = PurchaseOrderEntry.Parse(purchaseOrderUID);
       order.Items = GetPurchaseOrderItems(order.Id);
-
+      order.SetTotals();
       return PurchaseOrderMapper.MapOrder(order);
     }
 
@@ -89,6 +119,17 @@ namespace Empiria.Trade.Procurement.UseCases {
     }
 
 
+    public PurchaseOrderDto UpdatePurchaseOrderItem(string purchaseOrderUID, string purchaseOrderItemUID,
+                                                    PurchaseOrderItemFields fields) {
+      Assertion.Require(purchaseOrderUID, nameof(purchaseOrderUID));
+      Assertion.Require(fields, nameof(fields));
+
+      fields.UID = purchaseOrderItemUID;
+
+      return CreatePurchaseOrderItem(purchaseOrderUID, fields);
+    }
+
+
     #endregion Public methods
 
     #region Private methods
@@ -96,6 +137,22 @@ namespace Empiria.Trade.Procurement.UseCases {
     private FixedList<PurchaseOrderEntry> GetPurchaseOrderList(PurchaseOrderQuery query) {
 
       return PurchaseOrderBuilder.GetPurchaseOrderEntries(query);
+    }
+
+
+    private void ValidationsForItem(PurchaseOrderItemFields fields) {
+
+      if (fields.VendorProductUID == string.Empty) {
+
+        Assertion.EnsureFailed($"Por favor especifique un producto.");
+      }
+
+      if (fields.Quantity <= 0) {
+        var item = VendorProduct.Parse(fields.VendorProductUID);
+        Assertion.EnsureFailed($"La cantidad para el producto " +
+          $"{item.ProductFields.ProductCode} " +
+          $"({item.ProductPresentation.PresentationName}) debe ser mayor a 0.");
+      }
     }
 
 

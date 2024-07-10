@@ -29,8 +29,8 @@ namespace Empiria.Trade.Procurement {
     }
 
 
-    public PurchaseOrderItem(string orderUID, PurchaseOrderItemFields fields) {
-      MapToPurchaseOrderItem(orderUID, fields);
+    public PurchaseOrderItem(string purchaseOrderUID, PurchaseOrderItemFields fields) {
+      MapToPurchaseOrderItem(purchaseOrderUID, fields);
     }
 
 
@@ -78,9 +78,9 @@ namespace Empiria.Trade.Procurement {
 
     protected override void OnSave() {
 
-      if (IsNew) {
-        OrderItemId = this.Id;
-        OrderItemUID = this.UID;
+      if (this.OrderItemId == 0) {
+        this.OrderItemId = this.Id;
+        this.OrderItemUID = this.UID;
         Status = EntityStatus.Active;
       }
 
@@ -88,31 +88,32 @@ namespace Empiria.Trade.Procurement {
     }
 
 
-    private void MapToPurchaseOrderItem(string orderUID, PurchaseOrderItemFields fields) {
+    private void MapToPurchaseOrderItem(string purchaseOrderUID, PurchaseOrderItemFields fields) {
 
       if (fields.UID != string.Empty) {
         this.OrderItemId = OrderItem.Parse(fields.UID).Id;
         this.OrderItemUID = fields.UID;
       }
       
-      this.Order = Order.Parse(orderUID);
+      this.Order = Order.Parse(purchaseOrderUID);
       this.OrderItemTypeId = 1031;
       this.VendorProduct = Products.VendorProduct.Parse(fields.VendorProductUID);
       this.Quantity = fields.Quantity;
       this.ReceivedQty = 0;
       this.ProductPriceId = -1;
       this.PriceListNumber = 1;
-      this.BasePrice = fields.BasePrice;
+      this.BasePrice = fields.Price;
       this.SalesPrice = fields.SalesPrice;
       this.Discount = fields.Discount;
       this.Shipment = 0;
       this.TaxesIVA = fields.Taxes;
-      this.Total = fields.Total;
+      this.Total = fields.Quantity * fields.Price;
       this.Notes = fields.Notes;
       this.ScheduledTime = fields.ScheduledTime;
       this.ReceptionTime = fields.ReceptionTime;
       this.Reviewed = fields.Reviewed;
-      
+      this.ItemWeight = fields.Weight;
+
     }
 
 

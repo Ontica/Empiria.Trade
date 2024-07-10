@@ -104,6 +104,11 @@ namespace Empiria.Trade.Procurement.Adapters {
     } = string.Empty;
 
 
+    public string VendorProductUID {
+      get; internal set;
+    }
+
+
     public string ProductCode {
       get; internal set;
     } = string.Empty;
@@ -114,15 +119,18 @@ namespace Empiria.Trade.Procurement.Adapters {
     } = string.Empty;
 
 
+    public string PresentationName {
+      get; internal set;
+    }
+
+
     public decimal Quantity {
-      get;
-      internal set;
+      get; internal set;
     }
 
 
     public decimal ReceivedQuantity {
-      get;
-      internal set;
+      get; internal set;
     }
 
 
@@ -131,10 +139,20 @@ namespace Empiria.Trade.Procurement.Adapters {
     }
 
 
-    public decimal ProductPrice {
+    public decimal Price {
       get; internal set;
     }
 
+
+    public decimal Total {
+      get; internal set;
+    }
+
+
+    public string Notes {
+      get; internal set;
+    }
+    
 
     //public NamedEntityDto MyProperty {
     //  get; set;
@@ -154,7 +172,7 @@ namespace Empiria.Trade.Procurement.Adapters {
     //public NamedEntityDto MyProperty4 {
     //  get; set;
     //} = new NamedEntityDto("", "");
-    
+
   } // class PurchaseOrderItemDto
 
 

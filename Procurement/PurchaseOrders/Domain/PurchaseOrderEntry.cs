@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using System.Linq;
 using Empiria.Trade.Core;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Procurement.Adapters;
@@ -154,20 +155,12 @@ namespace Empiria.Trade.Procurement {
     }
 
 
-    private void SetTotals() {
-      this.OrderTotal = 0;
-      this.ItemsTotal = 0;
-      this.Taxes = 0;
+    internal void SetTotals() {
+      this.OrderTotal = this.Items.Sum(x=>x.Total);
+      this.ItemsTotal = this.Items.Sum(x => x.SubTotal);
+      this.Taxes = this.Items.Sum(x => x.TaxesIVA);
+      this.ShipmentTotal = this.Items.Sum(x => x.Shipment);
       this.ItemsCount = this.Items.Count;
-
-      foreach (var item in this.Items) {
-        this.ItemsTotal += item.SubTotal;
-        this.ShipmentTotal += item.Shipment;
-        this.Discount += item.Discount;
-        this.Taxes += item.TaxesIVA;
-        this.OrderTotal += item.Total;
-      }
-
     }
 
 

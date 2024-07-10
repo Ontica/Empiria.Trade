@@ -96,42 +96,47 @@ namespace Empiria.Trade.Procurement.Adapters {
 
 
     public string VendorProductUID {
-      get; internal set;
+      get; set;
     } = string.Empty;
 
 
     public decimal Quantity {
-      get; internal set;
+      get; set;
     }
 
 
-    public decimal BasePrice {
-      get; internal set;
+    public decimal Price {
+      get; set;
+    }
+
+
+    public decimal Weight {
+      get; set;
     }
 
 
     public decimal SalesPrice {
-      get; internal set;
+      get; set;
     }
 
 
     public decimal Discount {
-      get; internal set;
+      get; set;
     }
 
 
     public decimal Taxes {
-      get; internal set;
+      get; set;
     }
 
 
     public decimal Total {
-      get; internal set;
+      get; set;
     }
 
 
     public string Notes {
-      get; internal set;
+      get; set;
     } = string.Empty;
 
 

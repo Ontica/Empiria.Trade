@@ -122,12 +122,17 @@ namespace Empiria.Trade.Procurement.Adapters {
       var items = new PurchaseOrderItemDto();
 
       items.UID = x.UID;
+      items.VendorProductUID = x.VendorProduct.VendorProductUID;
       items.ProductCode = x.VendorProduct.ProductFields.ProductCode;
       items.ProductName = x.VendorProduct.ProductFields.ProductName;
+      items.PresentationName = x.VendorProduct.ProductPresentation.PresentationName;
       items.Quantity = x.Quantity;
-      items.ReceivedQuantity = x.ReceivedQty;
-      items.Weight = x.VendorProduct.ProductFields.ProductWeight * x.Quantity; // SACAR PESO DE OC
-      items.ProductPrice = x.BasePrice;
+      items.Price = x.BasePrice;
+      items.Weight = x.ItemWeight; //x.VendorProduct.ProductFields.ProductWeight * x.Quantity;
+      items.Total = x.Total;
+      items.Notes = x.Notes;
+      //items.ReceivedQuantity = x.ReceivedQty;
+      
 
       return items;
     }
@@ -138,7 +143,7 @@ namespace Empiria.Trade.Procurement.Adapters {
       totals.ItemsTotal = order.ItemsTotal;
       totals.ShipmentTotal = order.ShipmentTotal;
       totals.Discount = order.Discount;
-      totals.Taxes = order.OrderTotal;
+      totals.Taxes = order.Taxes;
       totals.OrderTotal = order.OrderTotal;
       return totals;
     }

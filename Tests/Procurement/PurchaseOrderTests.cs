@@ -47,6 +47,45 @@ namespace Empiria.Trade.Tests.Procurement {
 
 
     [Fact]
+    public void CreatePurchaseOrderItemTest() {
+
+      var usecase = PurchaseOrderUseCases.UseCaseInteractor();
+
+      string purchaseOrderUID = "fb1e2de6-e39e-4189-893b-ac9b74adb232";
+      PurchaseOrderItemFields fields = GetPurchaseOrderItemFields();
+      PurchaseOrderDto sut = usecase.CreatePurchaseOrderItem(purchaseOrderUID, fields);
+
+      Assert.NotNull(sut);
+    }
+
+
+    [Fact]
+    public void UpdatePurchaseOrderItemTest() {
+
+      var usecase = PurchaseOrderUseCases.UseCaseInteractor();
+
+      string purchaseOrderUID = "fb1e2de6-e39e-4189-893b-ac9b74adb232";
+      string purchaseOrderItemUID = "iykijue7-ba78-4efb-9753-18eb86poiurt";
+      PurchaseOrderItemFields fields = GetPurchaseOrderItemFields();
+      PurchaseOrderDto sut = usecase.UpdatePurchaseOrderItem(purchaseOrderUID, purchaseOrderItemUID, fields);
+
+      Assert.NotNull(sut);
+    }
+
+
+    private PurchaseOrderItemFields GetPurchaseOrderItemFields() {
+
+      var fields = new PurchaseOrderItemFields {
+        VendorProductUID = "22c278bb-2e61-4b37-b3a7-76f40950fc49",
+        Quantity = 90,
+        Price = 2,
+        Weight = 1,
+        Notes = "X"
+      };
+      return fields;
+    }
+
+    [Fact]
     public void DeletePurchaseOrder() {
 
       var usecase = PurchaseOrderUseCases.UseCaseInteractor();
@@ -86,7 +125,7 @@ namespace Empiria.Trade.Tests.Procurement {
 
       PurchaseOrderQuery query = new PurchaseOrderQuery {
         SupplierUID = "",
-        Keywords = "OC-UKRWICY00U",
+        Keywords = "OC-4JKBI1W5BY",
         Status = Orders.OrderStatus.Captured
       };
 
