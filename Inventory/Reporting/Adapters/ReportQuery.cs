@@ -33,6 +33,21 @@ namespace Empiria.Trade.Inventory.Adapters {
     } = ReportType.StocksByProduct;
 
 
+    public string[] Products {
+      get; set;
+    } = new string[0];
+
+
+    public string[] WarehouseBins {
+      get; set;
+    } = new string[0];
+
+
+    public string Keywords {
+      get; set;
+    } = string.Empty;
+
+
     public string ProductUID {
       get; set;
     } = string.Empty;

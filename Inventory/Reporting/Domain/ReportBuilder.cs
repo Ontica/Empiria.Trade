@@ -48,25 +48,33 @@ namespace Empiria.Trade.Inventory.Domain {
 
     internal FixedList<IReportEntry> GenerateStocksByProduct() {
 
-      var product = ProductFields.Parse(query.ProductUID);
-
-      var vendorProducts = ProductUseCases.GetVendorProductByProduct(product.ProductId);
-
+      var stockByVendorProduct = GetStockByVendorProduct();
       var helper = new ReportHelper(query);
-      var stockByVendorProduct = helper.GetStockByVendorProduct(vendorProducts);
 
-      FixedList<InventoryStockEntry> stockHeaders = helper.MapToStockHeadersByProduct(stockByVendorProduct);
+      FixedList<InventoryStockEntry> stockHeaders = helper.GetHeadersByProduct(stockByVendorProduct);
 
-      FixedList<InventoryStockEntry> stockLocations = helper.MapToStockLocations(stockByVendorProduct);
-      return new FixedList<IReportEntry>(stockHeaders.Select(x => (IReportEntry) x));
+      FixedList<InventoryStockEntry> stockEntries = 
+        helper.GetStockLocationsByProduct(stockByVendorProduct, stockHeaders);
+
+      return new FixedList<IReportEntry>(stockEntries.Select(x => (IReportEntry) x));
     }
 
 
     internal FixedList<IReportEntry> GenerateStocksByLocation() {
 
-      var list = new FixedList<InventoryStockEntry>();
+      var warehouseBin = WarehouseBin.Parse(query.WarehouseBinUID);
 
-      return new FixedList<IReportEntry>(list.Select(x => (IReportEntry) x));
+      var stockByVendorProduct = CataloguesUseCases.GetInventoryStockByClauses(
+          0, warehouseBin.Id);
+
+      var helper = new ReportHelper(query);
+
+      FixedList<InventoryStockEntry> stockHeaders = helper.GetHeadersByLocation(stockByVendorProduct);
+
+      FixedList<InventoryStockEntry> stockEntries =
+        helper.GetStockByProductForLocations(stockByVendorProduct, stockHeaders);
+
+      return new FixedList<IReportEntry>(stockEntries.Select(x => (IReportEntry) x));
     }
 
 
@@ -75,11 +83,19 @@ namespace Empiria.Trade.Inventory.Domain {
 
     #region Private methods
 
+    private FixedList<SalesInventoryStock> GetStockByVendorProduct() {
+
+      var product = ProductFields.Parse(query.ProductUID);
+
+      var vendorProducts = ProductUseCases.GetVendorProductByProduct(product.ProductId);
+
+      var helper = new ReportHelper(query);
+      return helper.GetStockByVendorProduct(vendorProducts);
+    }
+
+      #endregion Private methods
 
 
-    #endregion Private methods
-
-
-  } // class ReportBuilder
+    } // class ReportBuilder
 
 } // namespace Empiria.Trade.Inventory.Domain

@@ -64,16 +64,7 @@ namespace Empiria.Trade.Inventory.Adapters {
     static private IReportDto MapStocksByLocation(InventoryStockEntry x) {
       var dto = new InventoryStockDescriptorDto();
 
-      return dto;
-    }
-
-
-    static private IReportDto MapStocksByProduct(InventoryStockEntry x) {
-      var dto = new InventoryStockDescriptorDto();
-
-      //dto.VendorProductUID = x.VendorProduct.VendorProductUID;
-      dto.Name = x.VendorProduct.ProductFields.ProductName;
-      dto.Code = x.VendorProduct.ProductFields.ProductCode;
+      dto.UID = x.VendorProduct.VendorProductUID;
       //dto.WarehouseName = x.WarehouseBin.Warehouse.Name;
       //dto.Rack = x.WarehouseBin.Name;
       dto.Stock = x.Stock;
@@ -81,9 +72,37 @@ namespace Empiria.Trade.Inventory.Adapters {
       dto.StockInProcess = x.StockInProcess;
       dto.ItemType = x.ItemType;
       if (x.ItemType == ReportItemType.Group) {
+        var tag = x.WarehouseBin.Id == -1 ? "PROCESO DE SALIDA" :
+                  $"{x.WarehouseBin.Tag} ({x.WarehouseBin.Name})";
+        dto.Tag = tag;
+      } else {
+
+        dto.Code = x.VendorProduct.ProductFields.ProductCode;
+        dto.Name = x.VendorProduct.ProductFields.ProductName;
+        dto.Presentation = x.VendorProduct.ProductPresentation.PresentationName;
+      }
+      return dto;
+    }
+
+
+    static private IReportDto MapStocksByProduct(InventoryStockEntry x) {
+      var dto = new InventoryStockDescriptorDto();
+
+      dto.UID = x.VendorProduct.VendorProductUID;
+      dto.Name = x.VendorProduct.ProductFields.ProductName;
+      //dto.WarehouseName = x.WarehouseBin.Warehouse.Name;
+      //dto.Rack = x.WarehouseBin.Name;
+      dto.Stock = x.Stock;
+      dto.RealStock = x.RealStock;
+      dto.StockInProcess = x.StockInProcess;
+      dto.ItemType = x.ItemType;
+      if (x.ItemType == ReportItemType.Group) {
+        dto.Code = x.VendorProduct.ProductFields.ProductCode;
         dto.Presentation = x.VendorProduct.ProductPresentation.PresentationName;
       } else {
-        dto.Tag = $"{x.WarehouseBin.Tag} ({x.WarehouseBin.Name})";
+        var tag = x.WarehouseBin.Id == -1 ? "PROCESO DE SALIDA" :
+                  $"{x.WarehouseBin.Tag} ({x.WarehouseBin.Name})";
+        dto.Tag = tag;
       }
       return dto;
     }

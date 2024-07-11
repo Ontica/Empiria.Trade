@@ -31,7 +31,7 @@ namespace Empiria.Trade.Inventory.Adapters {
   internal class InventoryStockDescriptorDto : IReportDto {
 
 
-    public string VendorProductUID {
+    public string UID {
       get; set;
     } = string.Empty;
 

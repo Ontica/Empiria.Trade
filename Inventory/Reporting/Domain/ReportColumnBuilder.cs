@@ -31,7 +31,8 @@ namespace Empiria.Trade.Inventory.Domain {
 
         case ReportType.StocksByLocation:
 
-          return GetColumnsStocksByLocation();
+          return GetColumnsStocksByProduct();
+          //return GetColumnsStocksByLocation();
 
         default:
           throw Assertion.EnsureNoReachThisCode(
@@ -66,8 +67,8 @@ namespace Empiria.Trade.Inventory.Domain {
       List<DataTableColumn> columns = new List<DataTableColumn>();
       columns.Add(new DataTableColumn("code", "Código", "text-link"));
       columns.Add(new DataTableColumn("name", "Nombre", "text"));
-      columns.Add(new DataTableColumn("presentation", "Presentación", "text-tag"));
-      columns.Add(new DataTableColumn("warehouseBinTag", "Localización", "text"));
+      columns.Add(new DataTableColumn("presentation", "Presentación", "text"));
+      columns.Add(new DataTableColumn("tag", "Localización", "text-nowrap"));
       columns.Add(new DataTableColumn("stock", "Stock disponible", "decimal"));
       columns.Add(new DataTableColumn("realStock", "Stock real", "decimal"));
       columns.Add(new DataTableColumn("stockInProcess", "Stock entrante", "decimal"));

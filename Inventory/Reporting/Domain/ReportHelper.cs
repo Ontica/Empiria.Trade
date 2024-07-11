@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using Empiria.Trade.Inventory.Adapters;
 using Empiria.Trade.Products;
 using System.Linq;
+using System.Collections;
 
 namespace Empiria.Trade.Inventory.Domain {
 
@@ -52,7 +53,7 @@ namespace Empiria.Trade.Inventory.Domain {
     }
 
 
-    internal FixedList<InventoryStockEntry> MapToStockHeadersByProduct(
+    internal FixedList<InventoryStockEntry> GetHeadersByProduct(
       FixedList<SalesInventoryStock> stockByVendorProduct) {
 
       var list = new List<InventoryStockEntry>();
@@ -86,11 +87,113 @@ namespace Empiria.Trade.Inventory.Domain {
     }
 
 
-    internal FixedList<InventoryStockEntry> MapToStockLocations(
+    internal FixedList<InventoryStockEntry> GetStockLocationsByProduct(
+      FixedList<SalesInventoryStock> stockByVendorProduct, FixedList<InventoryStockEntry> stockHeaders) {
+
+      var list = new List<InventoryStockEntry>();
+
+      foreach (var header in stockHeaders) {
+        
+        var entries = stockByVendorProduct.Where(
+              x => x.VendorProduct.VendorProductUID == header.VendorProduct.VendorProductUID)
+          .ToList();
+
+        list.Add(header);
+        list.AddRange(MapToEntriesByProduct(entries));
+      }
+      return list.OrderBy(x => x.VendorProduct.ProductPresentation.Id).ToFixedList();
+    }
+
+
+    internal FixedList<InventoryStockEntry> GetStockByProductForLocations(
+      FixedList<SalesInventoryStock> stockByVendorProduct, FixedList<InventoryStockEntry> stockHeaders) {
+
+      var list = new List<InventoryStockEntry>();
+
+      foreach (var header in stockHeaders) {
+
+        var entries = stockByVendorProduct.Where(
+              x => x.WarehouseBin.Id == header.WarehouseBin.Id)
+          .ToList();
+
+        list.Add(header);
+        list.AddRange(MapToEntriesByLocation(entries));
+      }
+      return list.ToFixedList();
+    }
+
+
+    private IEnumerable<InventoryStockEntry> MapToEntriesByLocation(List<SalesInventoryStock> salesEntries) {
+
+      var returnedList = new List<InventoryStockEntry>();
+      foreach (var stock in salesEntries) {
+
+        var entry = new InventoryStockEntry();
+        entry.ItemType = ReportItemType.Entry;
+        entry.VendorProduct = stock.VendorProduct;
+        entry.WarehouseBin = stock.WarehouseBin;
+        entry.Stock = stock.Stock;
+        entry.RealStock = stock.RealStock;
+        entry.StockInProcess = stock.StockInProcess;
+        returnedList.Add(entry);
+      }
+      return returnedList.OrderBy(x => x.VendorProduct.Id)
+                         .ThenBy(x => x.VendorProduct.ProductPresentation.Id).ToList();
+    }
+
+
+    private IEnumerable<InventoryStockEntry> MapToEntriesByProduct(List<SalesInventoryStock> salesEntries) {
+
+      var returnedList = new List<InventoryStockEntry>();
+      foreach (var stock in salesEntries) {
+        
+        var entry = new InventoryStockEntry();
+        entry.ItemType = ReportItemType.Entry;
+        entry.VendorProduct = stock.VendorProduct;
+        entry.WarehouseBin = stock.WarehouseBin;
+        entry.Stock = stock.Stock;
+        entry.RealStock = stock.RealStock;
+        entry.StockInProcess = stock.StockInProcess;
+        returnedList.Add(entry);
+      }
+      return returnedList;
+    }
+
+
+    internal FixedList<InventoryStockEntry> GetHeadersByLocation(
       FixedList<SalesInventoryStock> stockByVendorProduct) {
 
-      return new FixedList<InventoryStockEntry>();
+      var list = new List<InventoryStockEntry>();
+
+      foreach (var stock in stockByVendorProduct) {
+        var entry = new InventoryStockEntry();
+
+        var exist = list
+          .Where(x => x.WarehouseBin.Id == stock.WarehouseBin.Id)
+          .FirstOrDefault();
+        if (exist == null) {
+
+          entry.ItemType = ReportItemType.Group;
+          entry.VendorProduct = stock.VendorProduct;
+          entry.WarehouseBin = stock.WarehouseBin;
+          entry.Stock = stockByVendorProduct
+            .Where(x => x.WarehouseBin.Id == stock.WarehouseBin.Id)
+            .Sum(x => x.Stock);
+          entry.RealStock = stockByVendorProduct
+            .Where(x => x.WarehouseBin.Id == stock.WarehouseBin.Id)
+            .Sum(x => x.RealStock);
+          entry.StockInProcess = stockByVendorProduct
+            .Where(x => x.WarehouseBin.Id == stock.WarehouseBin.Id)
+            .Sum(x => x.StockInProcess);
+
+          list.Add(entry);
+        }
+      }
+
+      return list.OrderBy(x => x.WarehouseBin.Id)
+                 .ThenBy(x => x.VendorProduct.ProductPresentation.Id).ToFixedList();
     }
+
 
     #endregion Public methods
 
