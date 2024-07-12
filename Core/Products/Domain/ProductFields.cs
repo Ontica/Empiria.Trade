@@ -41,6 +41,7 @@ namespace Empiria.Trade.Products {
 
     static public ProductFields Empty => ParseEmpty<ProductFields>();
 
+    static public FixedList<int> ParseIdList(string[] uids) => GetIdList(uids);
 
     #endregion Constructors and parsers
 
@@ -162,14 +163,10 @@ namespace Empiria.Trade.Products {
     }
 
 
-    static public List<int> GetIdList(string[] products) {
-      
+    static private FixedList<int> GetIdList(string[] uids) {
       var list = new List<int>();
-      foreach (var uid in products) {
-
-        list.Add(Parse(uid).ProductId);
-      }
-      return list;
+      Array.ForEach(uids, uid => list.Add(Parse(uid).Id));
+      return list.ToFixedList();
     }
 
     #endregion Methods

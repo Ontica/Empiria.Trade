@@ -78,7 +78,7 @@ namespace Empiria.Trade.Core.Catalogues {
     }
 
 
-    static public FixedList<SalesInventoryStock> GetInventoryStockForList(
+    static public FixedList<SalesInventoryStock> GetStockByUIDList(
       List<int> vendorProducts, List<int> warehouseBins) {
 
       var clauses = InventoryData.GetInventoryStockClauses(

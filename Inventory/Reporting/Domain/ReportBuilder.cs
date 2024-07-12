@@ -62,9 +62,9 @@ namespace Empiria.Trade.Inventory.Domain {
 
     internal FixedList<IReportEntry> GenerateStocksByLocation() {
 
-      var warehouseBins = WarehouseBin.GetIdList(query.WarehouseBins);
+      var warehouseBins = WarehouseBin.ParseIdList(query.WarehouseBins).ToList();
 
-      var stockByVendorProduct = CataloguesUseCases.GetInventoryStockForList(
+      var stockByVendorProduct = CataloguesUseCases.GetStockByUIDList(
           new List<int>(), warehouseBins);
 
       var helper = new ReportHelper(query);
@@ -86,7 +86,8 @@ namespace Empiria.Trade.Inventory.Domain {
 
     private FixedList<SalesInventoryStock> GetStockByVendorProduct() {
 
-      var products = SimpleObjects.ConcatIntsToString(ProductFields.GetIdList(query.Products));
+      var products = SimpleObjects.ConcatIntsToString(
+        ProductFields.ParseIdList(query.Products).ToList());
 
       var vendorProducts = ProductUseCases.GetVendorProductByProduct(products);
 

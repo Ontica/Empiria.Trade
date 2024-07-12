@@ -43,6 +43,7 @@ namespace Empiria.Trade.Inventory.Domain {
       FixedList<VendorProduct> vendorProducts) {
 
       var list = new List<SalesInventoryStock>();
+
       foreach (var vendorProduct in vendorProducts) {
 
         var stockByVendorProduct = CataloguesUseCases.GetInventoryStockByClauses(

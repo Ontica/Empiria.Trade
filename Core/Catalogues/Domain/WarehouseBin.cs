@@ -30,6 +30,7 @@ namespace Empiria.Trade.Core.Catalogues {
 
     static public WarehouseBin Empty => ParseEmpty<WarehouseBin>();
 
+    static public FixedList<int> ParseIdList(string[] uids) => GetIdList(uids);
 
     #endregion Constructors and parsers
 
@@ -121,14 +122,11 @@ namespace Empiria.Trade.Core.Catalogues {
     #region Public methods
 
 
-    static public List<int> GetIdList(string[] uids) {
-
+    static private FixedList<int> GetIdList(string[] uids) {
+      
       var list = new List<int>();
-      foreach (var uid in uids) {
-
-        list.Add(Parse(uid).Id);
-      }
-      return list;
+      Array.ForEach(uids, uid => list.Add(Parse(uid).Id));
+      return list.ToFixedList();
     }
 
 
