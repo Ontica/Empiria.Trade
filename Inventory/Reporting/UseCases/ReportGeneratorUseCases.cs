@@ -43,11 +43,19 @@ namespace Empiria.Trade.Inventory.UseCases {
       
       switch (query.ReportType) {
         case ReportType.StocksByProduct:
-
+          
+          if (query.Products.Length == 0) {
+            Assertion.EnsureFailed($"Por favor especifique mínimo un producto.");
+          }
+          
           return ReportMapper.Map(builder.GenerateStocksByProduct(), query);
 
         case ReportType.StocksByLocation:
 
+          if (query.WarehouseBins.Length == 0) {
+            Assertion.EnsureFailed($"Por favor especifique mínimo una ubicación.");
+          }
+          
           return ReportMapper.Map(builder.GenerateStocksByLocation(), query);
 
         case ReportType.PurchasingReport:

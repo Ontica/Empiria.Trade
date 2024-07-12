@@ -38,7 +38,9 @@ namespace Empiria.Trade.Inventory.Domain {
 
     #region Public methods
 
-    internal FixedList<SalesInventoryStock> GetStockByVendorProduct(FixedList<VendorProduct> vendorProducts) {
+    
+    internal FixedList<SalesInventoryStock> GetStockByVendorProduct(
+      FixedList<VendorProduct> vendorProducts) {
 
       var list = new List<SalesInventoryStock>();
       foreach (var vendorProduct in vendorProducts) {
@@ -83,7 +85,8 @@ namespace Empiria.Trade.Inventory.Domain {
         }
       }
 
-      return list.OrderBy(x => x.VendorProduct.ProductPresentation.Id).ToFixedList();
+      return list.OrderBy(x => x.VendorProduct.ProductFields.ProductCode)
+                 .ThenBy(x => x.VendorProduct.ProductPresentation.Id).ToFixedList();
     }
 
 
@@ -101,7 +104,7 @@ namespace Empiria.Trade.Inventory.Domain {
         list.Add(header);
         list.AddRange(MapToEntriesByProduct(entries));
       }
-      return list.OrderBy(x => x.VendorProduct.ProductPresentation.Id).ToFixedList();
+      return list.ToFixedList();
     }
 
 

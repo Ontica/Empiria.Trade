@@ -120,9 +120,9 @@ namespace Empiria.Trade.Products.UseCases
     }
 
 
-    static public FixedList<VendorProduct> GetVendorProductByProduct(int productId) {
+    static public FixedList<VendorProduct> GetVendorProductByProduct(string productsIn) {
       
-      return ProductDataService.GetVendorProductByProduct(productId);
+      return ProductDataService.GetVendorProductByProduct(productsIn);
     }
 
 

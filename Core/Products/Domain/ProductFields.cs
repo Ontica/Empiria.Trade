@@ -9,6 +9,8 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Empiria.Trade.Products {
 
@@ -157,6 +159,17 @@ namespace Empiria.Trade.Products {
 
     private void LoadData(ProductFields data) {
       throw new NotImplementedException();
+    }
+
+
+    static public List<int> GetIdList(string[] products) {
+      
+      var list = new List<int>();
+      foreach (var uid in products) {
+
+        list.Add(Parse(uid).ProductId);
+      }
+      return list;
     }
 
     #endregion Methods

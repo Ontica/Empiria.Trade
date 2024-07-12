@@ -71,10 +71,14 @@ namespace Empiria.Trade.Inventory.Adapters {
       dto.RealStock = x.RealStock;
       dto.StockInProcess = x.StockInProcess;
       dto.ItemType = x.ItemType;
+
       if (x.ItemType == ReportItemType.Group) {
+        var warehouse = x.WarehouseBin.Warehouse.Id > 0 ? $"ALMACEN {x.WarehouseBin.Warehouse.Code}" : "";
         var tag = x.WarehouseBin.Id == -1 ? "PROCESO DE SALIDA" :
                   $"{x.WarehouseBin.Tag} ({x.WarehouseBin.Name})";
+        dto.Code = x.WarehouseBin.Warehouse.Code;
         dto.Tag = tag;
+        dto.Name = $"{warehouse} - {tag}";
       } else {
 
         dto.Code = x.VendorProduct.ProductFields.ProductCode;

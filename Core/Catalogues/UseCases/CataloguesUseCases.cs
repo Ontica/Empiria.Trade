@@ -9,10 +9,12 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Empiria.Services;
 using Empiria.Trade.Core.Catalogues.Adapters;
+using Empiria.Trade.Products;
 using Empiria.Trade.Products.Adapters;
 
 namespace Empiria.Trade.Core.Catalogues {
@@ -58,7 +60,31 @@ namespace Empiria.Trade.Core.Catalogues {
       Assertion.Require(vendorProductId, "vendorProductId");
       Assertion.Require(warehouseBinId, "warehouseBinId");
 
-      var clauses = InventoryData.GetInventoryStockClauses(vendorProductId, warehouseBinId);
+      var vendorProductList = new List<int>();
+      var warehouseBinList = new List<int>();
+
+      if (vendorProductId > 0) {
+        vendorProductList.Add(vendorProductId);
+      }
+      if (warehouseBinId > 0) {
+        warehouseBinList.Add(warehouseBinId);
+      }
+
+      var clauses = InventoryData.GetInventoryStockClauses(
+                                    SimpleObjects.ConcatIntsToString(vendorProductList),
+                                    SimpleObjects.ConcatIntsToString(warehouseBinList));
+
+      return InventoryData.GetInventoryStockByClauses(clauses);
+    }
+
+
+    static public FixedList<SalesInventoryStock> GetInventoryStockForList(
+      List<int> vendorProducts, List<int> warehouseBins) {
+
+      var clauses = InventoryData.GetInventoryStockClauses(
+                    SimpleObjects.ConcatIntsToString(vendorProducts),
+                    SimpleObjects.ConcatIntsToString(warehouseBins));
+
       return InventoryData.GetInventoryStockByClauses(clauses);
     }
 

@@ -44,15 +44,15 @@ namespace Empiria.Trade.Core {
     }
 
 
-    static internal string GetInventoryStockClauses(int vendorProductId, int warehouseBinId = 0) {
+    static internal string GetInventoryStockClauses(string vendorProducts, string warehouseBins) {
       var filters = new Filter();
 
-      if (vendorProductId > 0) {
-        filters.AppendAnd($"VendorProductId = {vendorProductId}");
+      if (vendorProducts != string.Empty) {
+        filters.AppendAnd($"VendorProductId IN ({vendorProducts})");
       }
 
-      if (warehouseBinId > 0) {
-        filters.AppendAnd($"WarehouseBinId IN ({warehouseBinId})");
+      if (warehouseBins != string.Empty) {
+        filters.AppendAnd($"WarehouseBinId IN ({warehouseBins})");
       }
       return filters.ToString().Length > 0 ? $"WHERE {filters}" : "";
     }

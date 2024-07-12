@@ -38,8 +38,10 @@ namespace Empiria.Trade.Tests.Procurement {
       var usecase = ReportGeneratorUseCases.UseCaseInteractor();
 
       var query = new ReportQuery {
-        ReportType = ReportType.StocksByProduct,
-        ProductUID = "2a30449f-cf61-468c-b52e-544cda8602ab"
+        ReportType = ReportType.StocksByLocation,
+        Products = new string[] { "2a30449f-cf61-468c-b52e-544cda8602ab", "850c8bfb-b98f-4412-b9a8-46bf7296fc73", "5bd3d866-f1a2-4e00-8a8a-fcfec186394d" },
+        //WarehouseBinUID = "7e1b88e6-5a7f-488f-bb2c-2bf250823f7c",
+        WarehouseBins = new string[] { "30b307d4-8e0b-4185-a1d2-ab13e3d47fac", "3ec30b06-c158-45d5-95fb-198a3c96fa29", "7e1b88e6-5a7f-488f-bb2c-2bf250823f7c" }
       };
 
       ReportDataDto sut = usecase.BuildReport(query);

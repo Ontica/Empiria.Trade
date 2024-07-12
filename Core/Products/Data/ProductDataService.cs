@@ -59,9 +59,9 @@ namespace Empiria.Trade.Products.Data
     }
 
 
-    internal static FixedList<VendorProduct> GetVendorProductByProduct(int productId) {
+    internal static FixedList<VendorProduct> GetVendorProductByProduct(string productsIn) {
 
-      var sql = $"SELECT * FROM TRDVendorProducts WHERE ProductId IN ({productId}) ";
+      var sql = $"SELECT * FROM TRDVendorProducts WHERE ProductId IN ({productsIn}) ";
 
       var dataOperation = DataOperation.Parse(sql);
 

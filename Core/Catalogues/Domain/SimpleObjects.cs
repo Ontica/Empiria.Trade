@@ -53,7 +53,7 @@ namespace Empiria.Trade.Core.Catalogues {
     }
 
 
-    static public string ConcatIntListIntoString(List<int> intList) {
+    static public string ConcatIntsToString(List<int> intList) {
 
       if (intList.Count == 0) {
         return string.Empty;
@@ -62,6 +62,21 @@ namespace Empiria.Trade.Core.Catalogues {
       string stringList = "";
       foreach (var id in intList) {
         stringList += $"{id},";
+      }
+
+      return stringList.Remove(stringList.Length - 1, 1);
+    }
+
+
+    static public string ConcatStringArrayToString(string[] stringArray) {
+
+      if (stringArray.Length == 0) {
+        return string.Empty;
+      }
+
+      string stringList = "";
+      foreach (var value in stringArray) {
+        stringList += $"{value},";
       }
 
       return stringList.Remove(stringList.Length - 1, 1);

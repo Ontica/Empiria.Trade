@@ -121,7 +121,7 @@ namespace Empiria.Trade.Inventory.Domain {
     static private SalesInventoryStock GetFirstLocationFinded(int vendorProductId,
       List<int> ignoreWarehouseBinId) {
 
-      var warehouseBinClauses = SimpleObjects.ConcatIntListIntoString(ignoreWarehouseBinId);
+      var warehouseBinClauses = SimpleObjects.ConcatIntsToString(ignoreWarehouseBinId);
 
       var inventoryStock = CataloguesUseCases.GetInventoryStockByVendorProduct(
         vendorProductId, warehouseBinClauses);

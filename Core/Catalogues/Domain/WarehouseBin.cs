@@ -121,16 +121,14 @@ namespace Empiria.Trade.Core.Catalogues {
     #region Public methods
 
 
-    private int[] GetPositions() {
-      if (PositionFrom < 1 && PositionUp < PositionFrom) {
-        return new int[0];
-      }
+    static public List<int> GetIdList(string[] uids) {
 
-      List<int> positions = new List<int>();
-      for (int i = PositionFrom; i <= PositionUp; i++) {
-        positions.Add(i);
+      var list = new List<int>();
+      foreach (var uid in uids) {
+
+        list.Add(Parse(uid).Id);
       }
-      return positions.ToArray();
+      return list;
     }
 
 
@@ -144,6 +142,19 @@ namespace Empiria.Trade.Core.Catalogues {
         levels.Add(i);
       }
       return levels.ToArray();
+    }
+
+
+    private int[] GetPositions() {
+      if (PositionFrom < 1 && PositionUp < PositionFrom) {
+        return new int[0];
+      }
+
+      List<int> positions = new List<int>();
+      for (int i = PositionFrom; i <= PositionUp; i++) {
+        positions.Add(i);
+      }
+      return positions.ToArray();
     }
 
 
