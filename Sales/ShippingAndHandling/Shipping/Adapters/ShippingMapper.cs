@@ -7,14 +7,13 @@
 *  Summary  : Methods used to map Shipping.                                                                 *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
-using System;
+
 using System.Collections.Generic;
 using System.Linq;
-using Empiria.DataTypes;
+
+using Empiria.Storage;
+
 using Empiria.Trade.Core.Common;
-using Empiria.Trade.Orders;
-using Empiria.Trade.Sales.ShippingAndHandling.Data;
-using Empiria.Trade.Sales.ShippingAndHandling.Domain;
 
 namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
@@ -54,9 +53,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
         #endregion Public methods
 
-
         #region Private methods
-
 
         static private FixedList<PackageForShippingDto> GetPackagesDtoByOrder(
                         FixedList<OrderPackageForShipping> orderPackages) {
@@ -134,7 +131,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
                 itemDto.BillingMedia = new MediaData("text/html",
                 $"http://apps.sujetsa.com.mx:8080/reporting.api/ShippingAndHandling/" +
                 $"Billing?shippingUID={item.ShippingOrder.ShippingUID}&orderUID={item.Order.UID}");
-      
+
         orderForShippingDto.Add(itemDto);
             }
 
