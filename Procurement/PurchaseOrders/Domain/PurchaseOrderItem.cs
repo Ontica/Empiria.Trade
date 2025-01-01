@@ -7,19 +7,17 @@
 *  Summary  : Represents a purchase order item.                                                              *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
-using System;
-using System.Diagnostics;
+
 using Empiria.StateEnums;
+
 using Empiria.Trade.Orders;
 using Empiria.Trade.Procurement.Adapters;
 using Empiria.Trade.Procurement.Data;
 
 namespace Empiria.Trade.Procurement {
 
-
   /// <summary>Represents a purchase order item.</summary>
   public class PurchaseOrderItem : OrderItem {
-
 
     #region Constructors and parsers
 
@@ -51,7 +49,6 @@ namespace Empiria.Trade.Procurement {
 
     #endregion Constructors and parsers
 
-
     #region Properties
 
 
@@ -71,7 +68,6 @@ namespace Empiria.Trade.Procurement {
 
 
     #endregion Properties
-
 
     #region Private methods
 
@@ -94,7 +90,7 @@ namespace Empiria.Trade.Procurement {
         this.OrderItemId = OrderItem.Parse(fields.UID).Id;
         this.OrderItemUID = fields.UID;
       }
-      
+
       this.Order = Order.Parse(purchaseOrderUID);
       this.OrderItemTypeId = 1031;
       this.VendorProduct = Products.VendorProduct.Parse(fields.VendorProductUID);

@@ -58,11 +58,9 @@
     <NoWarn>CS1591</NoWarn>
     <WarningsAsErrors />
   </PropertyGroup>
-  <ItemGroup Condition=" '$(Configuration)' == 'Multisolutions' ">
-    <ProjectReference Include="..\..\extensions\Services\Empiria.Services.csproj" />
-  </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\core\Core\Empiria.Core.csproj" />
+    <ProjectReference Include="..\..\extensions\Services\Empiria.Services.csproj" />
+    <ProjectReference Include="..\..\central\Central\Empiria.Central.csproj" />
     <ProjectReference Include="..\..\trade.sujetsa\SujetsaTemp\TradeDataSchemaManager\TradeDataSchemaManager.csproj" />
   </ItemGroup>
 </Project>
