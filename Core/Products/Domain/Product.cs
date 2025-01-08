@@ -9,8 +9,9 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Collections.Generic;
-using Empiria.Json;
-using Empiria.Ontology;
+
+using Empiria.Products;
+
 using Empiria.Trade.Core;
 using Empiria.Trade.Products.Adapters;
 
@@ -18,7 +19,7 @@ namespace Empiria.Trade.Products {
 
   /// <summary>Represents a product.</summary>
   //[PartitionedType(typeof(ProductType))]
-  public partial class Product : BaseObject {
+  public class Product : BaseObject {
 
     #region Constructors and parsers
 
@@ -242,7 +243,7 @@ namespace Empiria.Trade.Products {
 
 
     public string ProductImageUrl => $"http://apps.sujetsa.com.mx:8080/imagenes-productos/{this.Code}.jpg";
-    
+
 
     public List<ProductPresentationForSeach> Presentations {
       get; set;

@@ -5,7 +5,7 @@
     <Description>
       Empiria Trade core types and components.
     </Description>
-    <Copyright>(c) 2007-2024. La Vía Óntica SC, Ontica LLC y de los autores. Todos los derechos reservados.</Copyright>
+    <Copyright>(c) 2007-2025. La Vía Óntica SC, Ontica LLC y de los autores. Todos los derechos reservados.</Copyright>
     <Version>4.0.0</Version>
     <AssemblyVersion>4.0.0</AssemblyVersion>
     <FileVersion>4.0.0</FileVersion>
@@ -58,11 +58,9 @@
     <NoWarn>CS1591</NoWarn>
     <WarningsAsErrors />
   </PropertyGroup>
-  <ItemGroup Condition=" '$(Configuration)' == 'Multisolutions' ">
-    <ProjectReference Include="..\..\extensions\Services\Empiria.Services.csproj" />
-  </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\core\Core\Empiria.Core.csproj" />
+    <ProjectReference Include="..\..\extensions\Services\Empiria.Services.csproj" />
+    <ProjectReference Include="..\..\central\Central\Empiria.Central.csproj" />
     <ProjectReference Include="..\..\trade.sujetsa\SujetsaTemp\TradeDataSchemaManager\TradeDataSchemaManager.csproj" />
   </ItemGroup>
 </Project>

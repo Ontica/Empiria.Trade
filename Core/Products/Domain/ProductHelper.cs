@@ -12,12 +12,10 @@ using System;
 using Empiria.Trade.Products.Adapters;
 using Empiria.Trade.Core;
 using Newtonsoft.Json;
-using System.Xml.Linq;
-using System.Diagnostics;
 using Empiria.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
+
 using Empiria.Trade.Products.UseCases;
 
 namespace Empiria.Trade.Products.Domain {
@@ -80,7 +78,7 @@ namespace Empiria.Trade.Products.Domain {
       var hashProducts = new EmpiriaHashTable<Product>();
 
       foreach (var product in products) {
-        
+
         AssingHashProductByCode(hashProducts, product);
       }
 

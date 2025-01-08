@@ -1,7 +1,7 @@
 ﻿Empiria Trade: Web Api Module. Licencia
 =======================================
 
-Copyright (c) 2023-2024 y TODOS los colaboradores.
+Copyright (c) 2023-2025 y TODOS los colaboradores.
 --------------------------------------------------
 
 These software components are free software: you can redistribute them
