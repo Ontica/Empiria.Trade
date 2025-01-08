@@ -84,79 +84,77 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
 
     public NamedEntityDto Customer {
-      get; set;
-    } = new NamedEntityDto("", "");
+      get; internal set;
+    }
 
 
     public string ShippingUID {
-      get; set;
-    } = string.Empty;
+      get; internal set;
+    }
 
 
     public int OrdersCount {
-      get; set;
+      get; internal set;
     }
 
 
     public decimal OrdersTotal {
-      get; set;
+      get; internal set;
     }
 
 
     public INamedEntity ParcelSupplier {
-      get; set;
-    } = new NamedEntityDto("", "");
+      get; internal set;
+    }
 
 
     public string ShippingGuide {
-      get; set;
-    } = string.Empty;
+      get; internal set;
+    }
 
 
     public decimal ParcelAmount {
-      get; set;
+      get; internal set;
     }
 
 
     public decimal CustomerAmount {
-      get; set;
+      get; internal set;
     }
 
 
     public MediaData ShippingLabelsMedia {
-      get; set;
+      get; internal set;
     }
 
 
     public MediaData BillingsMedia {
-      get; set;
+      get; internal set;
     }
 
 
     public DateTime ShippingDate {
-      get; set;
+      get; internal set;
     } = new DateTime();
 
 
     public string ShippingNumber {
-      get;
-      internal set;
-    } = string.Empty;
+      get; internal set;
+    }
 
 
     public string DeliveryNumber {
-      get;
-      internal set;
-    } = string.Empty;
+      get; internal set;
+    }
 
 
     public ShippingMethods ShippingMethod {
-      get; set;
+      get; internal set;
     }
 
 
     public ShippingStatus Status {
-      get; set;
+      get; internal set;
     }
 
   } // class ShippingEntryDto
@@ -167,37 +165,37 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
 
     public string OrderUID {
-      get; set;
+      get; internal set;
     }
 
 
     public string OrderNumber {
-      get; set;
+      get; internal set;
     }
 
 
     public decimal OrderTotal {
-      get; set;
+      get; internal set;
     }
 
 
     public INamedEntity Customer {
-      get; set;
-    } = new NamedEntityDto("", "");
+      get; internal set;
+    }
 
 
     public INamedEntity Vendor {
-      get; set;
-    } = new NamedEntityDto("", "");
+      get; internal set;
+    }
 
 
     public FixedList<PackageForShippingDto> Packages {
-      get; set;
+      get; internal set;
     } = new FixedList<PackageForShippingDto>();
 
 
     public MediaData BillingMedia {
-      get; set;
+      get; internal set;
     }
 
   }
@@ -207,17 +205,17 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
 
     public string ShippingPalletUID {
-      get; set;
+      get; internal set;
     }
 
 
     public string ShippingPalletName {
-      get; set;
+      get; internal set;
     }
 
 
     public string[] Packages {
-      get; set;
+      get; internal set;
     } = new string[] { };
 
 
@@ -232,27 +230,27 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
   public class PackageForShippingDto {
 
     public string PackingItemUID {
-      get; set;
+      get; internal set;
     }
 
 
     public string PackageID {
-      get; set;
+      get; internal set;
     }
 
 
     public string PackageTypeName {
-      get; set;
+      get; internal set;
     }
 
 
     public decimal TotalWeight {
-      get; set;
+      get; internal set;
     }
 
 
     public decimal TotalVolume {
-      get; set;
+      get; internal set;
     }
 
   }
@@ -262,17 +260,17 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
   public class ShippingTotalFieldsDto {
 
     public int TotalPackages {
-      get; set;
+      get; internal set;
     }
 
 
     public decimal TotalWeight {
-      get; set;
+      get; internal set;
     }
 
 
     public decimal TotalVolume {
-      get; set;
+      get; internal set;
     }
 
   } // class ShippingCommonFieldsDto

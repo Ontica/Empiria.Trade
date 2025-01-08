@@ -21,8 +21,8 @@ namespace Empiria.Trade.Inventory.Adapters {
 
 
     public NamedEntityDto InventoryOrderType {
-      get; set;
-    } = new NamedEntityDto("", "");
+      get; internal set;
+    }
 
 
     public string InventoryOrderNo {
@@ -32,17 +32,17 @@ namespace Empiria.Trade.Inventory.Adapters {
 
     public NamedEntityDto ExternalObjectReference {
       get; internal set;
-    } = new NamedEntityDto("", "");
+    }
 
 
     public NamedEntityDto Responsible {
       get; internal set;
-    } = new NamedEntityDto("", "");
+    }
 
 
     public NamedEntityDto AssignedTo {
       get; internal set;
-    } = new NamedEntityDto("", "");
+    }
 
 
     public string Notes {
@@ -62,7 +62,7 @@ namespace Empiria.Trade.Inventory.Adapters {
 
     public NamedEntityDto PostedBy {
       get; internal set;
-    } = new NamedEntityDto("", "");
+    }
 
 
     public InventoryStatus Status {
