@@ -57,7 +57,7 @@ namespace Empiria.Trade.Inventory.Domain {
         decimal inProcessOutputQuantity = 0;
 
         if (olderRealStock < itemQuantity && itemQuantity > 0) {
-          
+
           ignoredWhBinId.Add(olderLocation.WarehouseBin.Id);
 
           inProcessOutputQuantity = olderRealStock;
@@ -78,7 +78,7 @@ namespace Empiria.Trade.Inventory.Domain {
 
     static private InventoryOrderItemFields GenerateInventoryItemFields(InventoryOrderItem item,
       SalesInventoryStock olderLocation, decimal inProcessOutputQuantity, bool doUpdate) {
-      
+
       return new InventoryOrderItemFields {
         UID = doUpdate ? item.InventoryOrderItemUID : "",
         InventoryOrderTypeItemId = item.InventoryOrderTypeItemId,
@@ -139,6 +139,7 @@ namespace Empiria.Trade.Inventory.Domain {
 
 
     #endregion Private methods
+
   } // class InventoryOrderHelper
 
 } // namespace Empiria.Trade.Inventory.Domain

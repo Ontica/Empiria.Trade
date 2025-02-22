@@ -7,18 +7,13 @@
 *  Summary  : Generate data for Shipping.                                                                    *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
-using System;
-using System.Collections;
+
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.Remoting.Messaging;
-using System.Transactions;
-using Empiria.Trade.Core.Common;
+
 using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 using Empiria.Trade.Sales.ShippingAndHandling.Data;
-using Empiria.Trade.Sales.UseCases;
 
 namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 

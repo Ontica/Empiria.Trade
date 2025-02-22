@@ -61,6 +61,5 @@
   <ItemGroup>
     <ProjectReference Include="..\..\extensions\Services\Empiria.Services.csproj" />
     <ProjectReference Include="..\..\central\Central\Empiria.Central.csproj" />
-    <ProjectReference Include="..\..\trade.sujetsa\SujetsaTemp\TradeDataSchemaManager\TradeDataSchemaManager.csproj" />
   </ItemGroup>
 </Project>

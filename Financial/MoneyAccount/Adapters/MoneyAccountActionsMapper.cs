@@ -7,12 +7,9 @@
 *  Summary  : Methods used to map money account actions.                                                     *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
-using System;
-using System.Transactions;
-
 
 namespace Empiria.Trade.Financial.Adapters {
-  ///  Methods used to map money account actions. 
+  ///  Methods used to map money account actions.
   public class MoneyAccountActionsMapper {
 
     static public MoneyAccountActionsDto Map(MoneyAccount moneyAccount) {
@@ -26,12 +23,12 @@ namespace Empiria.Trade.Financial.Adapters {
         CanSuspend = actions.CanSuspend,
         CanActivate = actions.CanActivate,
         CanSetPending = actions.CanSetPending,
-        CanEditTransactions = actions.CanEditTransactions 
+        CanEditTransactions = actions.CanEditTransactions
       };
       return dto;
     }
 
-    
+
 
   } // class MoneyAccountActionsMapper
 
