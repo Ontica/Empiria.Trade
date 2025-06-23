@@ -2,26 +2,16 @@
   "appName": "Empiria Trade Core Test Module",
   "description": "Tests environment settings for the Empiria Trade Core module.",
   "version": "3.0",
-  "date": "2023-08-07",
+  "date": "2025-06-25",
   "settings": [
-    {
-      "type": "",
-      "key": "ApplicationKey",
-      "value": "{{APPLICATION-KEY}}"
-    },
     {
       "type": "",
       "key": "GlobalConfigurationFile",
       "value": "{{GLOBAL-CONFIGURATION-FILE}}"
     },
     {
-      "type": "Tests",
-      "key": "SessionToken",
-      "value": "{{TESTING-SESSION-TOKEN}}"
-    },
-    {
-      "type": "Data",
-      "key": "IsObjectIdGeneratorServer",
+      "type": "",
+      "key": "IsTestingModule",
       "value": true
     }
   ]
