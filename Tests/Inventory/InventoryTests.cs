@@ -125,7 +125,7 @@ namespace Empiria.Trade.Tests.Procurement {
         Status = InventoryStatus.Cerrado
       };
 
-      InventoryOrderDataDto sut = usecase.GetInventoryOrderList(query);
+      InventoryOrderDataDto sut = usecase.SearchInventoryOrders(query);
       Assert.NotNull(sut);
     }
 

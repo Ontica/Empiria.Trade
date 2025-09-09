@@ -38,8 +38,6 @@ namespace Empiria.Trade.Inventory.Domain {
           throw Assertion.EnsureNoReachThisCode(
                 $"Unhandled inventory report type {query.ReportType}.");
       }
-
-
     }
 
 
@@ -73,7 +71,7 @@ namespace Empiria.Trade.Inventory.Domain {
       columns.Add(new DataTableColumn("realStock", "Stock real", "decimal"));
       columns.Add(new DataTableColumn("stockInProcess", "Stock entrante", "decimal"));
       //columns.Add(new DataTableColumn("property", "name", "date"));
-      
+
       return columns.ToFixedList();
     }
 

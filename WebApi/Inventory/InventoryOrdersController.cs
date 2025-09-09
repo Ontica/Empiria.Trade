@@ -7,12 +7,12 @@
 *  Summary  : Query web API used to retrieve Inventory orders.                                               *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
-using System;
+
 using System.Web.Http;
+
 using Empiria.Trade.Inventory.Adapters;
 using Empiria.Trade.Inventory.UseCases;
-using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
-using Empiria.Trade.Sales.ShippingAndHandling.UseCases;
+
 using Empiria.WebApi;
 
 namespace Empiria.Trade.WebApi.Inventory {
@@ -81,23 +81,10 @@ namespace Empiria.Trade.WebApi.Inventory {
 
       using (var usecases = InventoryOrderUseCases.UseCaseInteractor()) {
 
-        InventoryOrderDto inventoryOrder = 
+        InventoryOrderDto inventoryOrder =
           usecases.DeleteInventoryItemByUID(inventoryOrderUID, inventoryOrderItemUID);
 
         return new SingleObjectModel(this.Request, inventoryOrder);
-      }
-    }
-
-
-    [HttpPost]
-    [Route("v4/trade/inventory/orders/search")]
-    public SingleObjectModel GetInventoryOrderList([FromBody] InventoryOrderQuery query) {
-
-      using (var usecases = InventoryOrderUseCases.UseCaseInteractor()) {
-
-        InventoryOrderDataDto inventoryOrderDto = usecases.GetInventoryOrderList(query);
-
-        return new SingleObjectModel(this.Request, inventoryOrderDto);
       }
     }
 
@@ -111,6 +98,19 @@ namespace Empiria.Trade.WebApi.Inventory {
         InventoryOrderDto inventoryOrder = usecases.GetInventoryOrderByUID(inventoryOrderUID);
 
         return new SingleObjectModel(this.Request, inventoryOrder);
+      }
+    }
+
+
+    [HttpPost]
+    [Route("v4/trade/inventory/orders/search")]
+    public SingleObjectModel SearchInventoryOrders([FromBody] InventoryOrderQuery query) {
+
+      using (var usecases = InventoryOrderUseCases.UseCaseInteractor()) {
+
+        InventoryOrderDataDto inventoryOrderDto = usecases.SearchInventoryOrders(query);
+
+        return new SingleObjectModel(this.Request, inventoryOrderDto);
       }
     }
 

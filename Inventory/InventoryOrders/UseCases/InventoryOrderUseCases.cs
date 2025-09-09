@@ -7,9 +7,7 @@
 *  Summary  : Use cases used to build Inventory order.                                                       *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
-using System;
 using System.Linq;
-using System.Reflection;
 using Empiria.Services;
 using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Core.Inventories.Adapters;
@@ -156,7 +154,7 @@ namespace Empiria.Trade.Inventory.UseCases {
 
       var builder = new InventoryOrderBuilder();
       var inventoryOrder = builder.GetInventoryOrderByUID(inventoryOrderUID);
-      
+
       if (inventoryOrder == null) {
         return new InventoryOrderDto();
       }
@@ -166,7 +164,7 @@ namespace Empiria.Trade.Inventory.UseCases {
     }
 
 
-    public InventoryOrderDataDto GetInventoryOrderList(InventoryOrderQuery query) {
+    public InventoryOrderDataDto SearchInventoryOrders(InventoryOrderQuery query) {
       Assertion.Require(query, nameof(query));
 
       var clauses =
