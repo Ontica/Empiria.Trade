@@ -7,8 +7,6 @@
 *  Summary  : Represents a Party.                                                                            *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
-using System;
-
 using Empiria.Json;
 using Empiria.Trade.Core.Data;
 
@@ -34,7 +32,7 @@ namespace Empiria.Trade.Core {
 
     #region Public properties
 
-   
+
     [DataField("PartyName")]
     public string Name {
       get;
@@ -83,7 +81,7 @@ namespace Empiria.Trade.Core {
       private set;
     }
 
-    [DataField("PartyContacts", IsOptional = true)]
+    [DataField("PartyContacts")]
     private JsonObject ContactsJson {
       get;
       set;
@@ -153,6 +151,6 @@ namespace Empiria.Trade.Core {
 
   } // internal class Party
 
- 
+
 
 } // namespace Empiria.Trade.Core.Domain

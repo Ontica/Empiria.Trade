@@ -8,7 +8,6 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-using System.ComponentModel;
 using Empiria.Json;
 using Empiria.Trade.Core;
 
@@ -122,7 +121,7 @@ namespace Empiria.Trade.Orders {
       }
     }
 
-    [DataField("OrderExtData", IsOptional = true)]
+    [DataField("OrderExtData")]
     public JsonObject ExtData {
       get;
       protected set;
@@ -210,11 +209,11 @@ namespace Empiria.Trade.Orders {
   static public class OrderStatusEnumExtensions {
 
     static public string GetOrderStatusName(this OrderStatus status) {
-      
+
       switch (status) {
         case OrderStatus.Captured:
           return "Capturada";
-         
+
         case OrderStatus.Applied:
           return "Aplicada";
 
