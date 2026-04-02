@@ -7,14 +7,15 @@
 *  Summary  : Query web API used to managament Parties.                                                      *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
-using System;
-using System.Web.Http;
 
-using Empiria.Trade.Core.Adapters;
-using Empiria.Trade.Core.UsesCases;
+using System.Web.Http;
 
 using Empiria.WebApi;
 
+using Empiria.Parties;
+
+using Empiria.Trade.Core.Adapters;
+using Empiria.Trade.Core.UsesCases;
 
 namespace Empiria.Trade.WebApi.Core {
 
@@ -63,13 +64,11 @@ namespace Empiria.Trade.WebApi.Core {
 
     [HttpGet]
     [Route("v4/trade/contacts/suppliers/search")]
-    public CollectionModel GetSuppliers([FromUri] string keywords) {
+    public CollectionModel GetProvider([FromUri] string keywords) {
 
-      using (var usecases = PartyUseCases.UseCaseInteractor()) {
-        FixedList<NamedEntityDto> suppliers = usecases.GetSuppliers(keywords);
+      FixedList<Party> providers = Party.GetPartiesInRole("supplier", keywords);
 
-        return new CollectionModel(base.Request, suppliers);
-      }
+      return new CollectionModel(Request, providers.MapToNamedEntityList());
     }
 
     [HttpGet]

@@ -18,7 +18,6 @@ namespace Empiria.Trade.Procurement.Domain {
   /// <summary>Generate data for purchase order.</summary>
   internal class PurchaseOrderBuilder {
 
-
     #region Public methods
 
     internal static FixedList<PurchaseOrderEntry> GetPurchaseOrderEntries(PurchaseOrderQuery query) {
