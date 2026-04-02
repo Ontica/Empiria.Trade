@@ -50,7 +50,7 @@ namespace Empiria.Trade.Procurement.Adapters {
     }
 
 
-    public string Supplier {
+    public string Provider {
       get; internal set;
     }
 
@@ -60,7 +60,7 @@ namespace Empiria.Trade.Procurement.Adapters {
     }
 
 
-    public DateTime OrderTime {
+    public DateTime RequestedTime {
       get; internal set;
     }
 
@@ -78,7 +78,14 @@ namespace Empiria.Trade.Procurement.Adapters {
     public decimal OrderTotal {
       get; internal set;
     }
-    
+    public string OrderType {
+      get;
+      internal set;
+    }
+    public DateTime PostingTime {
+      get;
+      internal set;
+    }
   } // class PurchaseOrderDescriptorDto
 
 } // namespace Empiria.Trade.Inventory.PurchaseOrders.Adapters

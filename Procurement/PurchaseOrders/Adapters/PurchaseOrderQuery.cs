@@ -17,7 +17,7 @@ namespace Empiria.Trade.Procurement.Adapters {
   public class PurchaseOrderQuery {
 
 
-    public string SupplierUID {
+    public string ProviderUID {
       get; set;
     } = string.Empty;
 

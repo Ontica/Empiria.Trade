@@ -9,10 +9,10 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Collections.Generic;
-using System.Net.NetworkInformation;
+
 using Empiria.Trade.Core.Common;
+using Empiria.StateEnums;
 using Empiria.Trade.Orders;
-using Empiria.Trade.Procurement.Domain;
 
 namespace Empiria.Trade.Procurement.Adapters {
 
@@ -20,9 +20,61 @@ namespace Empiria.Trade.Procurement.Adapters {
   /// <summary>Methods used to map purchase order.</summary>
   static internal class PurchaseOrderMapper {
 
+    #region Public methods V2
+
+    static internal PurchaseOrdersDataDto MapDataDto(FixedList<PurchaseOrder> orders,
+      PurchaseOrderQuery query) {
+
+      return new PurchaseOrdersDataDto {
+        Query = query,
+        Columns = GetColumns_(),
+        Entries = MapList(orders)
+      };
+    }
+
+
+    static private FixedList<PurchaseOrderDescriptorDto> MapList(FixedList<PurchaseOrder> entries) {
+
+      var mappedList = entries.Select((x) => MapPurchaseDescriptor(x));
+
+      return new FixedList<PurchaseOrderDescriptorDto>(mappedList);
+    }
+
+
+    static private PurchaseOrderDescriptorDto MapPurchaseDescriptor(PurchaseOrder x) {
+      PurchaseOrderDescriptorDto dto = new PurchaseOrderDescriptorDto();
+
+      dto.UID = x.UID;
+      dto.OrderNo = x.OrderNo;
+      dto.Provider = x.Provider.Name;
+      dto.OrderType = x.OrderType.Name;
+      dto.PostingTime = x.PostingTime;
+      dto.RequestedTime = x.RequestedTime;
+      dto.OrderStatus = x.Status.GetName();
+      dto.OrderTotal = x.Total;
+
+      return dto;
+    }
+
+
+    private static FixedList<DataTableColumn> GetColumns_() {
+      List<DataTableColumn> columns = new List<DataTableColumn>();
+
+      columns.Add(new DataTableColumn("orderNo", "Número de orden", "text-link"));
+      columns.Add(new DataTableColumn("provider", "Proveedor", "text"));
+      columns.Add(new DataTableColumn("orderType", "Tipo", "text"));
+      columns.Add(new DataTableColumn("postingTime", "Fecha registro", "date"));
+      columns.Add(new DataTableColumn("requestedTime", "Fecha solicitado", "date"));
+      columns.Add(new DataTableColumn("orderTotal", "Total", "decimal"));
+      columns.Add(new DataTableColumn("orderStatus", "Estatus", "text-tag"));
+
+      return columns.ToFixedList();
+    }
+
+    #endregion Public methods V2
+
 
     #region Public methods
-
 
     static internal PurchaseOrdersDataDto MapDataDto(FixedList<PurchaseOrderEntry> entries,
       PurchaseOrderQuery query) {
@@ -105,11 +157,11 @@ namespace Empiria.Trade.Procurement.Adapters {
 
       dto.UID = x.OrderUID;
       dto.OrderNo = x.OrderNumber;
-      dto.Supplier = x.Supplier.Name;
+      dto.Provider = x.Supplier.Name;
       dto.Customer = x.Customer.Name;
       //dto.OrderType = x.OrderType.Name;
       //dto.Currency = x.Currency.ShortName;
-      dto.OrderTime = x.OrderTime;
+      dto.RequestedTime = x.OrderTime;
       dto.ScheduledTime = x.ScheduledTime;
       dto.OrderStatus = OrderStatusEnumExtensions.GetOrderStatusName(x.Status);
       dto.OrderTotal = x.OrderTotal;

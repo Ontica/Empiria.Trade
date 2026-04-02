@@ -21,6 +21,46 @@ namespace Empiria.Trade.Procurement.Data {
   internal class PurchaseOrderData {
 
 
+    #region Public methods V2
+
+    internal static FixedList<PurchaseOrder> GetPurchaseOrdersV2(PurchaseOrderQuery query, int orderTypeId) {
+
+      var queryClauses = GetQueryClausesV2(query);
+
+
+      string sql = $"SELECT * FROM OMS_Orders " +
+                   $"WHERE Order_Type_Id = {orderTypeId} " +
+                   $"{queryClauses}";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetPlainObjectFixedList<PurchaseOrder>(dataOperation);
+    }
+
+
+    static private string GetQueryClausesV2(PurchaseOrderQuery query) {
+
+      var filters = new Filter();
+
+      if (query.ProviderUID != string.Empty) {
+        filters.AppendAnd($"Order_Provider_Id = {Party.Parse(query.ProviderUID).Id}");
+      }
+
+      if (query.Keywords != string.Empty) {
+        filters.AppendAnd($"{SearchExpression.ParseAndLikeKeywords("Order_Keywords", query.Keywords)}");
+      }
+
+      if (query.Status != OrderStatus.Empty) {
+        filters.AppendAnd($"Order_Status = '{(char) query.Status}'");
+      } else {
+        filters.AppendAnd($"Order_Status != '{(char) OrderStatus.Cancelled}'");
+      }
+
+      return filters.ToString().Length > 0 ? $"AND {filters}" : "";
+    }
+
+    #endregion Public methods V2
+
     #region Public methods
 
 
@@ -94,8 +134,8 @@ namespace Empiria.Trade.Procurement.Data {
 
       var filters = new Filter();
 
-      if (query.SupplierUID != string.Empty) {
-        filters.AppendAnd($"SupplierId = {Party.Parse(query.SupplierUID).Id}");
+      if (query.ProviderUID != string.Empty) {
+        filters.AppendAnd($"SupplierId = {Party.Parse(query.ProviderUID).Id}");
       }
 
       if (query.Keywords != string.Empty) {
