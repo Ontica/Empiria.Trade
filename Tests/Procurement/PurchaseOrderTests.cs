@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using Empiria.Tests;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Procurement;
 using Empiria.Trade.Procurement.Adapters;
@@ -24,7 +25,7 @@ namespace Empiria.Trade.Tests.Procurement {
     #region Initialization
 
     public PurchaseOrderTests() {
-      //TestsCommonMethods.Authenticate();
+      TestsCommonMethods.Authenticate();
     }
 
     #endregion Initialization
@@ -32,10 +33,35 @@ namespace Empiria.Trade.Tests.Procurement {
 
     #region Facts
 
+    [Fact]
+    public void CreatePurchaseOrderTest() {
+
+      var usecase = PurchaseOrderUseCases.UseCaseInteractor();
+
+      PurchaseOrderFields fields = GetPurchaseOrderFields();
+      PurchaseOrder sut = usecase.CreatePurchaseOrderV2(fields);
+
+      Assert.NotNull(sut);
+    }
 
 
     [Fact]
-    public void CreatePurchaseOrderTest() {
+    public void SearchPurchaseOrderDataTest() {
+
+      var usecase = PurchaseOrderUseCases.UseCaseInteractor();
+
+      PurchaseOrderQuery query = new PurchaseOrderQuery {
+        ProviderUID = "",
+        Keywords = "oc-uwx7phrj"
+      };
+
+      PurchaseOrdersDataDto sut = usecase.GetPurchaseOrderDescriptorV2(query);
+      Assert.NotNull(sut);
+    }
+
+
+    [Fact]
+    public void CreatePurchaseOrderEntryTest() {
 
       var usecase = PurchaseOrderUseCases.UseCaseInteractor();
 
@@ -85,6 +111,7 @@ namespace Empiria.Trade.Tests.Procurement {
       return fields;
     }
 
+
     [Fact]
     public void DeletePurchaseOrder() {
 
@@ -124,7 +151,7 @@ namespace Empiria.Trade.Tests.Procurement {
       var usecase = PurchaseOrderUseCases.UseCaseInteractor();
 
       PurchaseOrderQuery query = new PurchaseOrderQuery {
-        SupplierUID = "",
+        ProviderUID = "",
         Keywords = "OC-4JKBI1W5BY",
         Status = Orders.OrderStatus.Captured
       };
@@ -148,16 +175,15 @@ namespace Empiria.Trade.Tests.Procurement {
 
     #endregion Facts
 
+
     #region Helpers
 
 
     private PurchaseOrderFields GetPurchaseOrderFields() {
 
       var fields = new PurchaseOrderFields {
-        SupplierUID = "1db9f53f-caf1-4e37-9626-ae68a89b42a5",
-        Notes = "OC 27 EDITADO No. 2",
-        PaymentCondition = "Credito",
-        ShippingMethod = ShippingMethods.Paqueteria
+        ProviderUID = "0d06cb65-4122-41c0-af87-1b7f8d1609da", // *
+        Observations = "TEST", // *
       };
 
       return fields;

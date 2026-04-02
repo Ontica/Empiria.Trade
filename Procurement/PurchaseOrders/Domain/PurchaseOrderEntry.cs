@@ -137,19 +137,18 @@ namespace Empiria.Trade.Procurement {
         this.OrderNumber = order.OrderNumber;
       }
       this.OrderTypeId = 1030;
-      this.Supplier = Party.Parse(fields.SupplierUID);
+      this.Supplier = Party.Parse(fields.ProviderUID);
       this.Customer = Party.Parse(3); // Fastener Fijación S de RL de CV
       this.CustomerAddress = CustomerAddress.Parse(-1); // no definido
       this.CustomerContact = CustomerContact.Parse(-1); // no definido
       this.SalesAgent = Party.Parse(-1);
-      this.Notes = fields.Notes;
+      this.Notes = fields.Observations;
       //this.AuthorizationStatus = fields.OrderAuthorizationStatus;
       //this.AuthorizationTime = DateTime.MaxValue;
       this.AuthorizatedById = -1;
-      this.ScheduledTime = fields.ScheduledTime;
-      this.ReceptionTime = fields.ReceptionTime;
-      this.PaymentCondition = fields.PaymentCondition;
-      this.ShippingMethod = fields.ShippingMethod;
+      //this.ScheduledTime = fields.ScheduledTime;
+      //this.ReceptionTime = fields.ReceptionTime;
+      //this.ShippingMethod = fields.ShippingMethod;
       
       SetTotals();
     }

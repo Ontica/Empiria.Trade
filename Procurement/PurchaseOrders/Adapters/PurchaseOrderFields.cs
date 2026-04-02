@@ -8,34 +8,14 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using Empiria.Orders;
 using Empiria.Trade.Orders;
 
 namespace Empiria.Trade.Procurement.Adapters {
 
 
   /// <summary>DTO used to manage purchase order fields.</summary>
-  public class PurchaseOrderFields {
-
-
-    public string SupplierUID {
-      get; set;
-    } = string.Empty;
-
-
-    public string Notes {
-      get; set;
-    } = string.Empty;
-
-
-    public string PaymentCondition {
-      get; set;
-    } = string.Empty;
-
-
-    public ShippingMethods ShippingMethod {
-      get; set;
-    } = ShippingMethods.None;
-
+  public class PurchaseOrderFields : OrderFields {
 
     public DateTime ScheduledTime {
       get; set;
@@ -45,43 +25,6 @@ namespace Empiria.Trade.Procurement.Adapters {
     public DateTime ReceptionTime {
       get; set;
     } = ExecutionServer.DateMaxValue;
-
-
-    //public string CustomerUID {
-    //  get; internal set;
-    //} = string.Empty;
-
-
-    //public string CustomerAddressUID {
-    //  get; internal set;
-    //} = string.Empty;
-
-
-    //public string CustomerContactUID {
-    //  get;
-    //  internal set;
-    //} = string.Empty;
-
-
-    //public string SalesAgentUID {
-    //  get; internal set;
-    //} = string.Empty;
-
-
-    //public OrderAuthorizationStatus OrderAuthorizationStatus {
-    //  get; internal set;
-    //} = OrderAuthorizationStatus.Empty;
-
-
-    //public string ImportFormalEntry {
-    //  get; internal set;
-    //} = string.Empty;
-
-
-    //public string BillOfLading {
-    //  get; internal set;
-    //} = string.Empty;
-
 
   } // class PurchaseOrderFields
 

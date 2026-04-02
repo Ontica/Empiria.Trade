@@ -8,8 +8,10 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using Empiria.Orders;
+using Empiria.Parties;
 using Empiria.Services;
-using Empiria.Trade.Orders;
+
 using Empiria.Trade.Procurement.Adapters;
 using Empiria.Trade.Procurement.Data;
 using Empiria.Trade.Procurement.Domain;
@@ -21,6 +23,7 @@ namespace Empiria.Trade.Procurement.UseCases {
   /// <summary>Use cases used to build purchase order.</summary>
   public class PurchaseOrderUseCases : UseCase {
 
+    private const string ORDERTYPE = "ObjectTypeInfo.Order.PayableOrder.PurchaseOrder";
 
     #region Constructors and parsers
 
@@ -36,8 +39,45 @@ namespace Empiria.Trade.Procurement.UseCases {
     #endregion Constructors and parsers
 
 
-    #region Public methods
+    #region Public methods V2
+    
+    public PurchaseOrder CreatePurchaseOrderV2(PurchaseOrderFields fields) {
 
+      var orderType = OrderType.Parse(ORDERTYPE);
+
+      GetDefaultFields(fields, orderType);
+
+      var order = new PurchaseOrder(orderType);
+
+      order.Update(fields);
+
+      order.Save();
+
+      return order;
+    }
+
+    private void GetDefaultFields(PurchaseOrderFields fields, OrderType orderType) {
+      fields.OrderTypeUID = orderType.UID;
+      fields.RequestedByUID = Party.ParseWithContact(ExecutionServer.CurrentContact).UID;
+      fields.Name = "Sin asignar";
+      fields.StartDate = DateTime.Now;
+      fields.EndDate = DateTime.Now.AddDays(90);
+    }
+
+    public PurchaseOrdersDataDto GetPurchaseOrderDescriptorV2(PurchaseOrderQuery query) {
+      
+      var orderType = OrderType.Parse(ORDERTYPE);
+
+      var orders = PurchaseOrderData.GetPurchaseOrdersV2(query, orderType.Id);
+
+      return PurchaseOrderMapper.MapDataDto(orders, query);
+    }
+
+
+    #endregion Public methods V2
+
+
+    #region Public methods
 
     public PurchaseOrderDto CreatePurchaseOrder(PurchaseOrderFields fields) {
 

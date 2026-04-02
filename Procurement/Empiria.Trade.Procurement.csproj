@@ -77,4 +77,7 @@
     <None Remove="Domain\**" />
     <None Remove="UseCases\**" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\operations.management\Orders\Core\Empiria.Orders.Core.csproj" />
+  </ItemGroup>
 </Project>

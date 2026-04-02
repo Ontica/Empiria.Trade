@@ -69,6 +69,7 @@
     <None Remove="Products\**" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\operations.management\Orders\Core\Empiria.Orders.Core.csproj" />
     <ProjectReference Include="..\Core\Empiria.Trade.Core.csproj" />
   </ItemGroup>
 </Project>
