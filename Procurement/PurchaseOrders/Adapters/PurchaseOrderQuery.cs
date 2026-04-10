@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using Empiria.StateEnums;
 using Empiria.Trade.Orders;
 
 namespace Empiria.Trade.Procurement.Adapters {
@@ -27,9 +28,9 @@ namespace Empiria.Trade.Procurement.Adapters {
     } = string.Empty;
 
 
-    public OrderStatus Status {
+    public EntityStatus Status {
       get; set;
-    } = OrderStatus.Empty;
+    } = EntityStatus.All;
 
 
 

@@ -27,7 +27,6 @@ namespace Empiria.Trade.Procurement.Data {
 
       var queryClauses = GetQueryClausesV2(query);
 
-
       string sql = $"SELECT * FROM OMS_Orders " +
                    $"WHERE Order_Type_Id = {orderTypeId} " +
                    $"{queryClauses}";
@@ -50,7 +49,7 @@ namespace Empiria.Trade.Procurement.Data {
         filters.AppendAnd($"{SearchExpression.ParseAndLikeKeywords("Order_Keywords", query.Keywords)}");
       }
 
-      if (query.Status != OrderStatus.Empty) {
+      if (query.Status != EntityStatus.All) {
         filters.AppendAnd($"Order_Status = '{(char) query.Status}'");
       } else {
         filters.AppendAnd($"Order_Status != '{(char) OrderStatus.Cancelled}'");
@@ -142,7 +141,7 @@ namespace Empiria.Trade.Procurement.Data {
         filters.AppendAnd($"{SearchExpression.ParseAndLikeKeywords("OrderKeywords", query.Keywords)}");
       }
 
-      if (query.Status != OrderStatus.Empty) {
+      if (query.Status != EntityStatus.All) {
         filters.AppendAnd($"OrderStatus = '{(char) query.Status}'");
       } else {
         filters.AppendAnd($"OrderStatus != '{(char) OrderStatus.Cancelled}'");

@@ -43,7 +43,7 @@ namespace Empiria.Trade.Procurement.Adapters {
 
     static private PurchaseOrderDescriptorDto MapPurchaseDescriptor(PurchaseOrder x) {
       PurchaseOrderDescriptorDto dto = new PurchaseOrderDescriptorDto();
-
+      
       dto.UID = x.UID;
       dto.OrderNo = x.OrderNo;
       dto.Provider = x.Provider.Name;
@@ -51,7 +51,7 @@ namespace Empiria.Trade.Procurement.Adapters {
       dto.PostingTime = x.PostingTime;
       dto.RequestedTime = x.RequestedTime;
       dto.OrderStatus = x.Status.GetName();
-      dto.OrderTotal = x.Total;
+      dto.OrderTotal = x.Items != null && x.Taxes != null ? x.Total : 0;
 
       return dto;
     }

@@ -10,8 +10,9 @@
 using System;
 using Empiria.Orders;
 using Empiria.Parties;
+using Empiria.Products;
+using Empiria.Projects;
 using Empiria.Services;
-
 using Empiria.Trade.Procurement.Adapters;
 using Empiria.Trade.Procurement.Data;
 using Empiria.Trade.Procurement.Domain;
@@ -47,30 +48,51 @@ namespace Empiria.Trade.Procurement.UseCases {
 
       GetDefaultFields(fields, orderType);
 
-      var order = new PurchaseOrder(orderType);
-
-      order.Update(fields);
+      var order = new PurchaseOrder(fields, orderType);
 
       order.Save();
 
       return order;
     }
 
+
     private void GetDefaultFields(PurchaseOrderFields fields, OrderType orderType) {
+      fields.ProviderUID = fields.SupplierUID;
       fields.OrderTypeUID = orderType.UID;
       fields.RequestedByUID = Party.ParseWithContact(ExecutionServer.CurrentContact).UID;
       fields.Name = "Sin asignar";
+      fields.Observations = fields.Notes;
       fields.StartDate = DateTime.Now;
       fields.EndDate = DateTime.Now.AddDays(90);
     }
 
+
     public PurchaseOrdersDataDto GetPurchaseOrderDescriptorV2(PurchaseOrderQuery query) {
-      
+      Assertion.Require(!query.ProviderUID.Equals(string.Empty) || !query.Keywords.Equals(string.Empty), 
+                        $"Por favor especifique un proveedor o una palabra de búsqueda");
+
       var orderType = OrderType.Parse(ORDERTYPE);
 
       var orders = PurchaseOrderData.GetPurchaseOrdersV2(query, orderType.Id);
 
       return PurchaseOrderMapper.MapDataDto(orders, query);
+    }
+
+
+    public PurchaseOrderDto CreatePurchaseOrderItemV2(
+      string purchaseOrderUID, PurchaseOrderItemFields fields) {
+
+      Assertion.Require(purchaseOrderUID, nameof(purchaseOrderUID));
+      Assertion.Require(fields, nameof(fields));
+
+      var product = Empiria.Products.Product.TryParseWithCode(fields.Product);
+      Assertion.Require(product, $"El producto con clave {fields.Product} no existe");
+      Assertion.Require(fields.Quantity > 0, $"Especifique una cantidad mayor a 0");
+
+      var orderItem = new PurchaseOrderItem(purchaseOrderUID, fields);
+      orderItem.Save();
+
+      return GetPurchaseOrder(purchaseOrderUID);
     }
 
 
@@ -100,6 +122,16 @@ namespace Empiria.Trade.Procurement.UseCases {
       orderItem.Save();
 
       return GetPurchaseOrder(purchaseOrderUID);
+    }
+
+
+
+    public PurchaseOrderDto GetPurchaseOrderDto(string purchaseOrderUID) {
+
+      var order = PurchaseOrderEntry.Parse(purchaseOrderUID);
+      order.Items = GetPurchaseOrderItems(order.Id);
+      order.SetTotals();
+      return PurchaseOrderMapper.MapOrder(order);
     }
 
 

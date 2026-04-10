@@ -17,6 +17,16 @@ namespace Empiria.Trade.Procurement.Adapters {
   /// <summary>DTO used to manage purchase order fields.</summary>
   public class PurchaseOrderFields : OrderFields {
 
+    public string SupplierUID {
+      get; set;
+    } = string.Empty;
+
+
+    public string Notes {
+      get; set;
+    } = string.Empty;
+
+
     public DateTime ScheduledTime {
       get; set;
     } = ExecutionServer.DateMaxValue;
@@ -36,6 +46,11 @@ namespace Empiria.Trade.Procurement.Adapters {
     public string UID {
       get; internal set;
     } = string.Empty;
+
+
+    public string Product {
+      get; set;
+    }
 
 
     public string VendorProductUID {

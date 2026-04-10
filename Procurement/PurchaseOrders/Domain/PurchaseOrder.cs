@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using Empiria.Billing;
 using Empiria.Financial;
 using Empiria.Orders;
 using Empiria.Parties;
@@ -20,12 +21,30 @@ namespace Empiria.Trade.Procurement {
 
     #region Constructors and parsers
 
-    public PurchaseOrder(OrderType orderType) : base(orderType) {
+    public PurchaseOrder() {
+      // Required by Empiria Framework for all partitioned types.
+    }
 
+
+    protected PurchaseOrder(OrderType orderType) : base(orderType) {
+      // Required by Empiria Framework for all partitioned types.
+    }
+
+
+    public PurchaseOrder(PurchaseOrderFields fields, OrderType orderType) : base(orderType) {
+      Assertion.Require(fields, nameof(fields));
+
+      base.Update(fields);
       base.OrderNo = "OC-" + EmpiriaString.BuildRandomString(8)
                                   .ToUpperInvariant();
     }
 
+
+    static public new PurchaseOrder Parse(int id) => ParseId<PurchaseOrder>(id);
+
+    static public new PurchaseOrder Parse(string uid) => ParseKey<PurchaseOrder>(uid);
+
+    static public new PurchaseOrder Empty => ParseEmpty<PurchaseOrder>();
 
     public override FixedList<IPayableEntity> GetPayableEntities() {
 
@@ -35,10 +54,6 @@ namespace Empiria.Trade.Procurement {
     #endregion Constructors and parsers
 
 
-    internal void Update(PurchaseOrderFields fields) {
-      
-      base.Update(fields);
-    }
 
   } // class PurchaseOrder
 

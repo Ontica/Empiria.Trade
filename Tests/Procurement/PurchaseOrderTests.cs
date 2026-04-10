@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using Empiria.StateEnums;
 using Empiria.Tests;
 using Empiria.Trade.Orders;
 using Empiria.Trade.Procurement;
@@ -36,10 +37,33 @@ namespace Empiria.Trade.Tests.Procurement {
     [Fact]
     public void CreatePurchaseOrderTest() {
 
+      using (var usecase = PurchaseOrderUseCases.UseCaseInteractor()) {
+
+        var fields = new PurchaseOrderFields {
+          SupplierUID = "0d06cb65-4122-41c0-af87-1b7f8d1609da", // *
+          Notes = "TEST", // *
+        };
+
+        PurchaseOrder sut = usecase.CreatePurchaseOrderV2(fields);
+
+        Assert.NotNull(sut);
+      }
+    }
+
+
+    [Fact]
+    public void CreatePurchaseOrderItemTest() {
+
       var usecase = PurchaseOrderUseCases.UseCaseInteractor();
 
-      PurchaseOrderFields fields = GetPurchaseOrderFields();
-      PurchaseOrder sut = usecase.CreatePurchaseOrderV2(fields);
+      string purchaseOrderUID = "fd915a8f-26cb-48fb-8401-d6d8a0ac7a76";
+      
+      var fields = new PurchaseOrderItemFields {
+        Product = "ASF24",
+        Quantity = 90
+      };
+
+      PurchaseOrderDto sut = usecase.CreatePurchaseOrderItemV2(purchaseOrderUID, fields);
 
       Assert.NotNull(sut);
     }
@@ -52,7 +76,8 @@ namespace Empiria.Trade.Tests.Procurement {
 
       PurchaseOrderQuery query = new PurchaseOrderQuery {
         ProviderUID = "",
-        Keywords = "oc-uwx7phrj"
+        Keywords = "OC-0B3XUBAD",
+        Status = EntityStatus.Pending
       };
 
       PurchaseOrdersDataDto sut = usecase.GetPurchaseOrderDescriptorV2(query);
@@ -67,19 +92,6 @@ namespace Empiria.Trade.Tests.Procurement {
 
       PurchaseOrderFields fields = GetPurchaseOrderFields();
       PurchaseOrderDto sut = usecase.CreatePurchaseOrder(fields);
-
-      Assert.NotNull(sut);
-    }
-
-
-    [Fact]
-    public void CreatePurchaseOrderItemTest() {
-
-      var usecase = PurchaseOrderUseCases.UseCaseInteractor();
-
-      string purchaseOrderUID = "fb1e2de6-e39e-4189-893b-ac9b74adb232";
-      PurchaseOrderItemFields fields = GetPurchaseOrderItemFields();
-      PurchaseOrderDto sut = usecase.CreatePurchaseOrderItem(purchaseOrderUID, fields);
 
       Assert.NotNull(sut);
     }
@@ -153,7 +165,7 @@ namespace Empiria.Trade.Tests.Procurement {
       PurchaseOrderQuery query = new PurchaseOrderQuery {
         ProviderUID = "",
         Keywords = "OC-4JKBI1W5BY",
-        Status = Orders.OrderStatus.Captured
+        Status = EntityStatus.All
       };
 
       PurchaseOrdersDataDto sut = usecase.GetPurchaseOrderDescriptor(query);
@@ -182,8 +194,8 @@ namespace Empiria.Trade.Tests.Procurement {
     private PurchaseOrderFields GetPurchaseOrderFields() {
 
       var fields = new PurchaseOrderFields {
-        ProviderUID = "0d06cb65-4122-41c0-af87-1b7f8d1609da", // *
-        Observations = "TEST", // *
+        SupplierUID = "0d06cb65-4122-41c0-af87-1b7f8d1609da", // *
+        Notes = "TEST", // *
       };
 
       return fields;
