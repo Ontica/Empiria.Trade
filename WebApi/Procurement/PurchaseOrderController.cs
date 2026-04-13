@@ -36,19 +36,6 @@ namespace Empiria.Trade.WebApi.Procurement {
 
 
     [HttpPost]
-    [Route("v4/trade/procurement/purchase-orders")]
-    public SingleObjectModel CreatePurchaseOrder_([FromBody] PurchaseOrderFields fields) {
-
-      using (var usecases = PurchaseOrderUseCases.UseCaseInteractor()) {
-
-        PurchaseOrderDto inventoryOrder = usecases.CreatePurchaseOrder(fields);
-
-        return new SingleObjectModel(this.Request, inventoryOrder);
-      }
-    }
-
-
-    [HttpPost]
     [Route("v4/trade/procurement/purchase-orders/{purchaseOrderUID:guid}/item")]
     public SingleObjectModel CreatePurchaseOrderItem([FromUri] string purchaseOrderUID,
                                                      [FromBody] PurchaseOrderItemFields fields) {
