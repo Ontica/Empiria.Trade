@@ -42,11 +42,6 @@ namespace Empiria.Trade.Procurement.Adapters {
     } = new NamedEntityDto("", "");
 
 
-    //public NamedEntityDto Currency {
-    //  get; internal set;
-    //}
-
-
     public string Notes {
       get; internal set;
     } = string.Empty;
@@ -58,9 +53,8 @@ namespace Empiria.Trade.Procurement.Adapters {
 
 
     public ShippingMethods ShippingMethod {
-      get;
-      internal set;
-    }
+      get; internal set;
+    } = ShippingMethods.None;
 
 
     public DateTime OrderTime {

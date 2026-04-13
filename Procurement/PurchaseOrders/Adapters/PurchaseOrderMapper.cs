@@ -71,6 +71,30 @@ namespace Empiria.Trade.Procurement.Adapters {
       return columns.ToFixedList();
     }
 
+
+    static internal PurchaseOrderDto MapOrder(PurchaseOrder order) {
+
+      return new PurchaseOrderDto {
+        UID = order.UID,
+        OrderNumber = order.OrderNo,
+        Supplier = new NamedEntityDto(order.Provider),
+        Notes = order.Observations,
+        PaymentCondition = order.PaymentConditions,
+        OrderTime = order.StartDate,
+        ScheduledTime = order.EndDate,
+        Status = order.Status.MapToDto(),
+        //dto.Items = MapItems(order.Items);
+        //dto.Totals = MapTotals(order);
+        //dto.Customer = new NamedEntityDto(order.Customer);
+        //dto.ShippingMethod = order.ShippingMethod;
+        //dto.ReceptionTime = order.ReceptionTime;
+        //dto.Contact = new NamedEntityDto(order.CustomerContact.UID, order.CustomerContact.Name);
+        //dto.SalesAgent = new NamedEntityDto(order.SalesAgent);
+        //dto.Currency = new NamedEntityDto("", "");
+      };
+
+    }
+
     #endregion Public methods V2
 
 

@@ -42,7 +42,7 @@ namespace Empiria.Trade.Procurement.UseCases {
 
     #region Public methods V2
     
-    public PurchaseOrder CreatePurchaseOrderV2(PurchaseOrderFields fields) {
+    public PurchaseOrderDto CreatePurchaseOrderV2(PurchaseOrderFields fields) {
 
       var orderType = OrderType.Parse(ORDERTYPE);
 
@@ -52,7 +52,10 @@ namespace Empiria.Trade.Procurement.UseCases {
 
       order.Save();
 
-      return order;
+      //order.Items = GetPurchaseOrderItems(order.Id);
+      //order.SetTotals();
+
+      return PurchaseOrderMapper.MapOrder(order);
     }
 
 
@@ -63,14 +66,20 @@ namespace Empiria.Trade.Procurement.UseCases {
       fields.Name = "Sin asignar";
       fields.Observations = fields.Notes;
       fields.StartDate = DateTime.Now;
-      fields.EndDate = DateTime.Now.AddDays(90);
+    }
+
+
+    public PurchaseOrderDto GetPurchaseOrderDto(string purchaseOrderUID) {
+
+      var order = PurchaseOrder.Parse(purchaseOrderUID);
+      //order.Items = GetPurchaseOrderItems(order.Id);
+      //order.SetTotals();
+      return PurchaseOrderMapper.MapOrder(order);
     }
 
 
     public PurchaseOrdersDataDto GetPurchaseOrderDescriptorV2(PurchaseOrderQuery query) {
-      Assertion.Require(!query.ProviderUID.Equals(string.Empty) || !query.Keywords.Equals(string.Empty), 
-                        $"Por favor especifique un proveedor o una palabra de búsqueda");
-
+      
       var orderType = OrderType.Parse(ORDERTYPE);
 
       var orders = PurchaseOrderData.GetPurchaseOrdersV2(query, orderType.Id);
@@ -122,16 +131,6 @@ namespace Empiria.Trade.Procurement.UseCases {
       orderItem.Save();
 
       return GetPurchaseOrder(purchaseOrderUID);
-    }
-
-
-
-    public PurchaseOrderDto GetPurchaseOrderDto(string purchaseOrderUID) {
-
-      var order = PurchaseOrderEntry.Parse(purchaseOrderUID);
-      order.Items = GetPurchaseOrderItems(order.Id);
-      order.SetTotals();
-      return PurchaseOrderMapper.MapOrder(order);
     }
 
 

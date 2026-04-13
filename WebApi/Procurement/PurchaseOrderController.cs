@@ -24,8 +24,20 @@ namespace Empiria.Trade.WebApi.Procurement {
 
     [HttpPost]
     [Route("v4/trade/procurement/purchase-orders")]
-    //[Route("v4/trade/procurement/purchase-orders/order/")]
     public SingleObjectModel CreatePurchaseOrder([FromBody] PurchaseOrderFields fields) {
+
+      using (var usecases = PurchaseOrderUseCases.UseCaseInteractor()) {
+
+        PurchaseOrderDto inventoryOrder = usecases.CreatePurchaseOrderV2(fields);
+
+        return new SingleObjectModel(this.Request, inventoryOrder);
+      }
+    }
+
+
+    [HttpPost]
+    [Route("v4/trade/procurement/purchase-orders")]
+    public SingleObjectModel CreatePurchaseOrder_([FromBody] PurchaseOrderFields fields) {
 
       using (var usecases = PurchaseOrderUseCases.UseCaseInteractor()) {
 
@@ -97,7 +109,7 @@ namespace Empiria.Trade.WebApi.Procurement {
 
       using (var usecases = PurchaseOrderUseCases.UseCaseInteractor()) {
 
-        PurchaseOrdersDataDto purchaseOrderDescriptor = usecases.GetPurchaseOrderDescriptor(query);
+        PurchaseOrdersDataDto purchaseOrderDescriptor = usecases.GetPurchaseOrderDescriptorV2(query);
 
         return new SingleObjectModel(this.Request, purchaseOrderDescriptor);
       }
