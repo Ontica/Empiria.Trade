@@ -55,6 +55,18 @@ namespace Empiria.Trade.Procurement {
 
     #region Properties
 
+    [DataField("ORDER_ID")]
+    public int OrderId {
+      get; protected set;
+    }
+
+
+    [DataField("ORDER_UID")]
+    public string OrderUID {
+      get; protected set;
+    }
+
+
     public FixedList<PurchaseOrderItem> PurchaseOrderItems {
       get {
         return PurchaseOrderItem.GetListFor(this);

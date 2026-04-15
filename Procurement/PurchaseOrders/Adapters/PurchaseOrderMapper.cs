@@ -44,7 +44,7 @@ namespace Empiria.Trade.Procurement.Adapters {
     static private PurchaseOrderDescriptorDto MapPurchaseDescriptor(PurchaseOrder x) {
       PurchaseOrderDescriptorDto dto = new PurchaseOrderDescriptorDto();
       
-      dto.UID = x.UID;
+      dto.UID = x.OrderUID;
       dto.OrderNo = x.OrderNo;
       dto.Provider = x.Provider.Name;
       dto.OrderType = x.OrderType.DisplayPluralName;
