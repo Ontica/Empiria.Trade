@@ -47,7 +47,7 @@ namespace Empiria.Trade.Procurement.Adapters {
       dto.UID = x.UID;
       dto.OrderNo = x.OrderNo;
       dto.Provider = x.Provider.Name;
-      dto.OrderType = x.OrderType.Name;
+      dto.OrderType = x.OrderType.DisplayPluralName;
       dto.PostingTime = x.PostingTime;
       dto.RequestedTime = x.RequestedTime;
       dto.OrderStatus = x.Status.GetName();
@@ -77,20 +77,14 @@ namespace Empiria.Trade.Procurement.Adapters {
       return new PurchaseOrderDto {
         UID = order.UID,
         OrderNumber = order.OrderNo,
-        Supplier = new NamedEntityDto(order.Provider),
+        Supplier = order.Provider.MapToNamedEntity(),
         Notes = order.Observations,
         PaymentCondition = order.PaymentConditions,
         OrderTime = order.StartDate,
         ScheduledTime = order.EndDate,
         Status = order.Status.MapToDto(),
-        //dto.Items = MapItems(order.Items);
-        //dto.Totals = MapTotals(order);
-        //dto.Customer = new NamedEntityDto(order.Customer);
-        //dto.ShippingMethod = order.ShippingMethod;
-        //dto.ReceptionTime = order.ReceptionTime;
-        //dto.Contact = new NamedEntityDto(order.CustomerContact.UID, order.CustomerContact.Name);
-        //dto.SalesAgent = new NamedEntityDto(order.SalesAgent);
-        //dto.Currency = new NamedEntityDto("", "");
+        Items = MapItems(order.PurchaseOrderItems),
+        Totals = MapTotals(order)
       };
 
     }
@@ -119,7 +113,7 @@ namespace Empiria.Trade.Procurement.Adapters {
       dto.UID = order.OrderUID;
       dto.OrderNumber = order.OrderNumber;
       dto.Supplier = new NamedEntityDto(order.Supplier);
-      dto.Customer = new NamedEntityDto(order.Customer);
+     // dto.Customer = new NamedEntityDto(order.Customer);
       dto.Notes = order.Notes;
       dto.PaymentCondition = order.PaymentCondition;
       dto.ShippingMethod = order.ShippingMethod;
@@ -195,22 +189,25 @@ namespace Empiria.Trade.Procurement.Adapters {
 
 
     private static PurchaseOrderItemDto MapPurchasOrderItems(PurchaseOrderItem x) {
-      var items = new PurchaseOrderItemDto();
 
-      items.UID = x.UID;
-      items.VendorProductUID = x.VendorProduct.VendorProductUID;
-      items.ProductCode = x.VendorProduct.ProductFields.ProductCode;
-      items.ProductName = x.VendorProduct.ProductFields.ProductName;
-      items.PresentationName = x.VendorProduct.ProductPresentation.PresentationName;
-      items.Quantity = x.Quantity;
-      items.Price = x.BasePrice;
-      items.Weight = x.ItemWeight; //x.VendorProduct.ProductFields.ProductWeight * x.Quantity;
-      items.Total = x.Total;
-      items.Notes = x.Notes;
-      //items.ReceivedQuantity = x.ReceivedQty;
-      
+      return new PurchaseOrderItemDto {
+        UID = x.UID,
+        Quantity = x.Quantity,
+        Subtotal = x.Subtotal,
+        ProductCode = x.ProductCode,
+        ProductName = x.ProductName,
+        PresentationName = x.Product.ProductCategory.Name,
+        Price = x.UnitPrice,
+        Notes = x.Description
+      };
+    }
 
-      return items;
+
+    private static PurchaseOrderTotal MapTotals(PurchaseOrder order) {
+
+      return new PurchaseOrderTotal {
+        ItemsTotal = order.ItemsTotal
+      };
     }
 
 

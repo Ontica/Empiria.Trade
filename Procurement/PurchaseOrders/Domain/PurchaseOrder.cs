@@ -8,10 +8,10 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-using Empiria.Billing;
+using System.Linq;
 using Empiria.Financial;
 using Empiria.Orders;
-using Empiria.Parties;
+
 using Empiria.Trade.Procurement.Adapters;
 
 namespace Empiria.Trade.Procurement {
@@ -53,7 +53,36 @@ namespace Empiria.Trade.Procurement {
 
     #endregion Constructors and parsers
 
+    #region Properties
 
+    public FixedList<PurchaseOrderItem> PurchaseOrderItems {
+      get {
+        return PurchaseOrderItem.GetListFor(this);
+      }
+    }
+
+
+    public decimal ItemsTotal {
+      get; private set;
+    }
+
+
+    public int ItemsCount {
+      get;
+      private set;
+    }
+
+    #endregion Properties
+
+
+    #region Methods
+
+    internal void SetTotals() {
+      this.ItemsTotal = PurchaseOrderItems.Sum(x => x.Subtotal);
+      this.ItemsCount = this.Items.Count;
+    }
+
+    #endregion Methods
 
   } // class PurchaseOrder
 

@@ -12,7 +12,6 @@ using Empiria.Trade.Orders;
 
 namespace Empiria.Trade.Procurement.Adapters {
 
-
   /// <summary>Output DTO used to return purchase order data.</summary>
   public class PurchaseOrderDto {
 
@@ -29,17 +28,17 @@ namespace Empiria.Trade.Procurement.Adapters {
 
     public NamedEntityDto Supplier {
       get; internal set;
-    } = new NamedEntityDto("", "");
+    } = NamedEntityDto.Empty;
 
 
-    public NamedEntityDto Customer {
-      get; internal set;
-    } = new NamedEntityDto("", "");
+    //public NamedEntityDto Customer {
+    //  get; internal set;
+    //} = new NamedEntityDto("", "");
 
 
     public NamedEntityDto Status {
       get; internal set;
-    } = new NamedEntityDto("", "");
+    } = NamedEntityDto.Empty;
 
 
     public string Notes {
@@ -138,7 +137,7 @@ namespace Empiria.Trade.Procurement.Adapters {
     }
 
 
-    public decimal Total {
+    public decimal Subtotal {
       get; internal set;
     }
 
@@ -147,25 +146,6 @@ namespace Empiria.Trade.Procurement.Adapters {
       get; internal set;
     }
     
-
-    //public NamedEntityDto MyProperty {
-    //  get; set;
-    //} = new NamedEntityDto("", "");
-
-
-    //public NamedEntityDto MyProperty2 {
-    //  get; set;
-    //} = new NamedEntityDto("", "");
-
-
-    //public NamedEntityDto MyProperty3 {
-    //  get; set;
-    //} = new NamedEntityDto("", "");
-
-
-    //public NamedEntityDto MyProperty4 {
-    //  get; set;
-    //} = new NamedEntityDto("", "");
 
   } // class PurchaseOrderItemDto
 
@@ -233,6 +213,5 @@ namespace Empiria.Trade.Procurement.Adapters {
 
 
   }
-
 
 } // namespace Empiria.Trade.Inventory.PurchaseOrders.Adapters

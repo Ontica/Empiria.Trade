@@ -60,7 +60,7 @@ namespace Empiria.Trade.Tests.Procurement {
       
       var fields = new PurchaseOrderItemFields {
         Product = "ASF24",
-        Quantity = 90
+        Quantity = 1
       };
 
       PurchaseOrderDto sut = usecase.CreatePurchaseOrderItemV2(purchaseOrderUID, fields);
@@ -74,7 +74,7 @@ namespace Empiria.Trade.Tests.Procurement {
 
       var usecase = PurchaseOrderUseCases.UseCaseInteractor();
 
-      string purchaseOrderUID = "858aeae2-8989-4401-9780-783aab9c9744";
+      string purchaseOrderUID = "7734e168-38d3-46b3-8585-f7e88125dc81";
       PurchaseOrderDto sut = usecase.GetPurchaseOrderDto(purchaseOrderUID);
       Assert.NotNull(sut);
     }
@@ -87,8 +87,8 @@ namespace Empiria.Trade.Tests.Procurement {
 
       PurchaseOrderQuery query = new PurchaseOrderQuery {
         ProviderUID = "",
-        Keywords = "OC-0B3XUBAD",
-        Status = EntityStatus.Pending
+        Keywords = "",
+        Status = EntityStatus.All
       };
 
       PurchaseOrdersDataDto sut = usecase.GetPurchaseOrderDescriptorV2(query);

@@ -8,9 +8,10 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
+using System;
+using Empiria.Billing;
+using Empiria.Orders;
 using Empiria.StateEnums;
-
-using Empiria.Trade.Orders;
 using Empiria.Trade.Procurement.Adapters;
 using Empiria.Trade.Procurement.Data;
 
@@ -21,32 +22,31 @@ namespace Empiria.Trade.Procurement {
 
     #region Constructors and parsers
 
-
     public PurchaseOrderItem() {
       // no-op
     }
 
-
-    public PurchaseOrderItem(string purchaseOrderUID, PurchaseOrderItemFields fields) {
-      MapToPurchaseOrderItem(purchaseOrderUID, fields);
+    protected PurchaseOrderItem(OrderItemType powertype) : base(powertype) {
+      // Required by Empiria Framework for all partitioned types.
     }
 
+    protected internal PurchaseOrderItem(OrderItemType powertype, PurchaseOrder order) :
+                                          base(powertype, order) {
+      Assertion.Require(order, nameof(order));
 
-    static public new PurchaseOrderItem Parse(int id) {
-      return BaseObject.ParseId<PurchaseOrderItem>(id);
     }
 
+    static public new PurchaseOrderItem Parse(int id) => ParseId<PurchaseOrderItem>(id);
 
-    static public new PurchaseOrderItem Parse(string uid) {
-      return BaseObject.ParseKey<PurchaseOrderItem>(uid);
+    static public new PurchaseOrderItem Parse(string uid) => ParseKey<PurchaseOrderItem>(uid);
+
+    static public PurchaseOrderItem Empty => ParseEmpty<PurchaseOrderItem>();
+    
+    internal static FixedList<PurchaseOrderItem> GetListFor(PurchaseOrder purchaseOrder) {
+      Assertion.Require(purchaseOrder, nameof(purchaseOrder));
+
+      return PurchaseOrderData.GetPurchaseOrderItems(purchaseOrder);
     }
-
-
-    static public PurchaseOrderItem ParseEmpty() {
-      return new PurchaseOrderItem();
-    }
-
-
     #endregion Constructors and parsers
 
     #region Properties
@@ -62,56 +62,15 @@ namespace Empiria.Trade.Procurement {
     }
 
 
-    public decimal SubTotal {
-      get; internal set;
-    }
-
-
     #endregion Properties
 
     #region Private methods
 
+    internal void Update(PurchaseOrderItemFields fields) {
+      Assertion.Require(fields, nameof(fields));
 
-    protected override void OnSave() {
-
-      if (this.OrderItemId == 0) {
-        this.OrderItemId = this.Id;
-        this.OrderItemUID = this.UID;
-        Status = EntityStatus.Active;
-      }
-
-      PurchaseOrderData.WritePurchaseOrderItem(this);
+      base.Update(fields);
     }
-
-
-    private void MapToPurchaseOrderItem(string purchaseOrderUID, PurchaseOrderItemFields fields) {
-
-      if (fields.UID != string.Empty) {
-        this.OrderItemId = OrderItem.Parse(fields.UID).Id;
-        this.OrderItemUID = fields.UID;
-      }
-
-      this.Order = Order.Parse(purchaseOrderUID);
-      this.OrderItemTypeId = 1031;
-      this.VendorProduct = Products.VendorProduct.Parse(fields.VendorProductUID);
-      this.Quantity = fields.Quantity;
-      this.ReceivedQty = 0;
-      this.ProductPriceId = -1;
-      this.PriceListNumber = 1;
-      this.BasePrice = fields.Price;
-      this.SalesPrice = fields.SalesPrice;
-      this.Discount = fields.Discount;
-      this.Shipment = 0;
-      this.TaxesIVA = fields.Taxes;
-      this.Total = fields.Quantity * fields.Price;
-      this.Notes = fields.Notes;
-      this.ScheduledTime = fields.ScheduledTime;
-      this.ReceptionTime = fields.ReceptionTime;
-      this.Reviewed = fields.Reviewed;
-      this.ItemWeight = fields.Weight;
-
-    }
-
 
     #endregion Private methods
 

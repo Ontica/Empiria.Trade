@@ -25,7 +25,7 @@ namespace Empiria.Trade.Procurement.Domain {
       var purchaseOrders = PurchaseOrderData.GetPurchaseOrders(query);
 
       foreach (var order in purchaseOrders) {
-        order.Items = PurchaseOrderData.GetPurchaseOrderItems(order.OrderId);
+        //order.Items = PurchaseOrderData.GetPurchaseOrderItems(order.OrderId);
         order.SetTotals();
       }
 

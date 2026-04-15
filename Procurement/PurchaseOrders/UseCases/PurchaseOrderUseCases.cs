@@ -25,6 +25,7 @@ namespace Empiria.Trade.Procurement.UseCases {
   public class PurchaseOrderUseCases : UseCase {
 
     private const string ORDERTYPE = "ObjectTypeInfo.Order.PayableOrder.PurchaseOrder";
+    private const string ORDERITEMTYPE = "ObjectTypeInfo.OrderItem.PayableOrderItem.PurchaseOrderItem";
 
     #region Constructors and parsers
 
@@ -52,10 +53,8 @@ namespace Empiria.Trade.Procurement.UseCases {
 
       order.Save();
 
-      //order.Items = GetPurchaseOrderItems(order.Id);
-      //order.SetTotals();
-
-      return PurchaseOrderMapper.MapOrder(order);
+      //return PurchaseOrderMapper.MapOrder(order);
+      return GetPurchaseOrderDto(order.UID);
     }
 
 
@@ -70,10 +69,11 @@ namespace Empiria.Trade.Procurement.UseCases {
 
 
     public PurchaseOrderDto GetPurchaseOrderDto(string purchaseOrderUID) {
-
+      
       var order = PurchaseOrder.Parse(purchaseOrderUID);
-      //order.Items = GetPurchaseOrderItems(order.Id);
-      //order.SetTotals();
+
+      order.SetTotals();
+
       return PurchaseOrderMapper.MapOrder(order);
     }
 
@@ -88,20 +88,28 @@ namespace Empiria.Trade.Procurement.UseCases {
     }
 
 
-    public PurchaseOrderDto CreatePurchaseOrderItemV2(
-      string purchaseOrderUID, PurchaseOrderItemFields fields) {
+    public PurchaseOrderDto CreatePurchaseOrderItemV2(string purchaseOrderUID,
+                                                      PurchaseOrderItemFields fields) {
 
       Assertion.Require(purchaseOrderUID, nameof(purchaseOrderUID));
       Assertion.Require(fields, nameof(fields));
 
       var product = Empiria.Products.Product.TryParseWithCode(fields.Product);
+
       Assertion.Require(product, $"El producto con clave {fields.Product} no existe");
       Assertion.Require(fields.Quantity > 0, $"Especifique una cantidad mayor a 0");
 
-      var orderItem = new PurchaseOrderItem(purchaseOrderUID, fields);
+      var order = PurchaseOrder.Parse(purchaseOrderUID);
+
+      var orderItemType = OrderItemType.Parse(ORDERITEMTYPE);
+
+      var orderItem = new PurchaseOrderItem(orderItemType, order);
+      
+      orderItem.Update(fields);
+
       orderItem.Save();
 
-      return GetPurchaseOrder(purchaseOrderUID);
+      return GetPurchaseOrderDto(purchaseOrderUID);
     }
 
 
@@ -127,8 +135,8 @@ namespace Empiria.Trade.Procurement.UseCases {
 
       ValidationsForItem(fields);
 
-      var orderItem = new PurchaseOrderItem(purchaseOrderUID, fields);
-      orderItem.Save();
+      //var orderItem = new PurchaseOrderItem(purchaseOrderUID, fields);
+      //orderItem.Save();
 
       return GetPurchaseOrder(purchaseOrderUID);
     }
@@ -170,7 +178,8 @@ namespace Empiria.Trade.Procurement.UseCases {
 
 
     public FixedList<PurchaseOrderItem> GetPurchaseOrderItems(int orderId) {
-      return PurchaseOrderData.GetPurchaseOrderItems(orderId);
+
+      throw new NotImplementedException();
     }
 
 

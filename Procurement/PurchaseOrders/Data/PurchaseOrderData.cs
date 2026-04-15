@@ -77,9 +77,10 @@ namespace Empiria.Trade.Procurement.Data {
     }
 
 
-    internal static FixedList<PurchaseOrderItem> GetPurchaseOrderItems(int purchaseOrderId) {
-      string sql = $"SELECT * FROM TRDOrderItems " +
-                   $"WHERE OrderId = {purchaseOrderId} and OrderItemStatus <> 'X'";
+    internal static FixedList<PurchaseOrderItem> GetPurchaseOrderItems(PurchaseOrder order) {
+      
+      string sql = $"SELECT * FROM OMS_Order_Items " +
+                   $"WHERE Order_Item_Order_Id = {order.Id} AND Order_Item_Status <> 'X'";
 
       var dataOperation = DataOperation.Parse(sql);
 
@@ -104,16 +105,17 @@ namespace Empiria.Trade.Procurement.Data {
 
     static internal void WritePurchaseOrderItem(PurchaseOrderItem item) {
       
-      var op = DataOperation.Parse("writePurchaseOrderItem",
-        item.OrderItemId, item.OrderItemUID.ToString(), item.Order.Id,
-        item.OrderItemTypeId, item.VendorProduct.Id, item.Quantity,
-        item.ReceivedQty, item.ProductPriceId, item.PriceListNumber,
-        item.BasePrice, item.SalesPrice, item.Discount,
-        item.AdditionalDiscount, item.Shipment, item.TaxesIVA,
-        item.TaxesIEPS, item.Total, item.Notes.ToString(),
-        item.ScheduledTime, item.ReceptionTime, //ConvertDateTimeToString(item.ScheduledTime), ConvertDateTimeToString(item.ReceptionTime),
-        item.Reviewed.ToString(),
-        (char) item.Status, item.ItemWeight);
+      var op = DataOperation.Parse("writePurchaseOrderItem"
+        //item.OrderItemId, item.OrderItemUID.ToString(), item.Order.Id,
+        //item.OrderItemTypeId, item.VendorProduct.Id, item.Quantity,
+        //item.ReceivedQty, item.ProductPriceId, item.PriceListNumber,
+        //item.BasePrice, item.SalesPrice, item.Discount,
+        //item.AdditionalDiscount, item.Shipment, item.TaxesIVA,
+        //item.TaxesIEPS, item.Total, item.Notes.ToString(),
+        //item.ScheduledTime, item.ReceptionTime, //ConvertDateTimeToString(item.ScheduledTime), ConvertDateTimeToString(item.ReceptionTime),
+        //item.Reviewed.ToString(),
+        //(char) item.Status, item.ItemWeight
+        );
 
       DataWriter.Execute(op);
     }

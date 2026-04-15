@@ -155,10 +155,10 @@ namespace Empiria.Trade.Procurement {
 
 
     internal void SetTotals() {
-      this.OrderTotal = this.Items.Sum(x=>x.Total);
-      this.ItemsTotal = this.Items.Sum(x => x.SubTotal);
-      this.Taxes = this.Items.Sum(x => x.TaxesIVA);
-      this.ShipmentTotal = this.Items.Sum(x => x.Shipment);
+      //this.OrderTotal = this.Items.Sum(x=>x.Total);
+      //this.Taxes = this.Items.Sum(x => x.TaxesIVA);
+      //this.ShipmentTotal = this.Items.Sum(x => x.Shipment);
+      this.ItemsTotal = this.Items.Sum(x => x.Subtotal);
       this.ItemsCount = this.Items.Count;
     }
 
