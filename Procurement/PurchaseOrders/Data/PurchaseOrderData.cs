@@ -8,9 +8,11 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+
 using Empiria.Data;
+using Empiria.Parties;
 using Empiria.StateEnums;
-using Empiria.Trade.Core;
+
 using Empiria.Trade.Orders;
 using Empiria.Trade.Procurement.Adapters;
 
@@ -41,8 +43,8 @@ namespace Empiria.Trade.Procurement.Data {
 
       var filters = new Filter();
 
-      if (query.ProviderUID != string.Empty) {
-        filters.AppendAnd($"Order_Provider_Id = {Party.Parse(query.ProviderUID).Id}");
+      if (query.SupplierUID != string.Empty) {
+        filters.AppendAnd($"Order_Provider_Id = {Party.Parse(query.SupplierUID).Id}");
       }
 
       if (query.Keywords != string.Empty) {
@@ -103,24 +105,6 @@ namespace Empiria.Trade.Procurement.Data {
     }
 
 
-    static internal void WritePurchaseOrderItem(PurchaseOrderItem item) {
-      
-      var op = DataOperation.Parse("writePurchaseOrderItem"
-        //item.OrderItemId, item.OrderItemUID.ToString(), item.Order.Id,
-        //item.OrderItemTypeId, item.VendorProduct.Id, item.Quantity,
-        //item.ReceivedQty, item.ProductPriceId, item.PriceListNumber,
-        //item.BasePrice, item.SalesPrice, item.Discount,
-        //item.AdditionalDiscount, item.Shipment, item.TaxesIVA,
-        //item.TaxesIEPS, item.Total, item.Notes.ToString(),
-        //item.ScheduledTime, item.ReceptionTime, //ConvertDateTimeToString(item.ScheduledTime), ConvertDateTimeToString(item.ReceptionTime),
-        //item.Reviewed.ToString(),
-        //(char) item.Status, item.ItemWeight
-        );
-
-      DataWriter.Execute(op);
-    }
-
-
     #endregion Public methods
 
 
@@ -135,8 +119,8 @@ namespace Empiria.Trade.Procurement.Data {
 
       var filters = new Filter();
 
-      if (query.ProviderUID != string.Empty) {
-        filters.AppendAnd($"SupplierId = {Party.Parse(query.ProviderUID).Id}");
+      if (query.SupplierUID != string.Empty) {
+        filters.AppendAnd($"SupplierId = {Party.Parse(query.SupplierUID).Id}");
       }
 
       if (query.Keywords != string.Empty) {

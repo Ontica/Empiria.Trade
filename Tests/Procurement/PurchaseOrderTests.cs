@@ -74,7 +74,7 @@ namespace Empiria.Trade.Tests.Procurement {
 
       var usecase = PurchaseOrderUseCases.UseCaseInteractor();
 
-      string purchaseOrderUID = "7734e168-38d3-46b3-8585-f7e88125dc81";
+      string purchaseOrderUID = "858aeae2-8989-4401-9780-783aab9c9744";
       PurchaseOrderDto sut = usecase.GetPurchaseOrderDto(purchaseOrderUID);
       Assert.NotNull(sut);
     }
@@ -86,7 +86,7 @@ namespace Empiria.Trade.Tests.Procurement {
       var usecase = PurchaseOrderUseCases.UseCaseInteractor();
 
       PurchaseOrderQuery query = new PurchaseOrderQuery {
-        ProviderUID = "",
+        SupplierUID = "0d06cb65-4122-41c0-af87-1b7f8d1609da",
         Keywords = "",
         Status = EntityStatus.All
       };
@@ -166,7 +166,7 @@ namespace Empiria.Trade.Tests.Procurement {
       var usecase = PurchaseOrderUseCases.UseCaseInteractor();
 
       PurchaseOrderQuery query = new PurchaseOrderQuery {
-        ProviderUID = "",
+        SupplierUID = "",
         Keywords = "OC-4JKBI1W5BY",
         Status = EntityStatus.All
       };
