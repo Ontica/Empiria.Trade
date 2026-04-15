@@ -97,18 +97,6 @@ namespace Empiria.Trade.Tests.Procurement {
 
 
     [Fact]
-    public void CreatePurchaseOrderEntryTest() {
-
-      var usecase = PurchaseOrderUseCases.UseCaseInteractor();
-
-      PurchaseOrderFields fields = GetPurchaseOrderFields();
-      PurchaseOrderDto sut = usecase.CreatePurchaseOrder(fields);
-
-      Assert.NotNull(sut);
-    }
-
-
-    [Fact]
     public void UpdatePurchaseOrderItemTest() {
 
       var usecase = PurchaseOrderUseCases.UseCaseInteractor();

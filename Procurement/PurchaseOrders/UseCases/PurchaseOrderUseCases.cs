@@ -102,15 +102,6 @@ namespace Empiria.Trade.Procurement.UseCases {
 
     #region Public methods
 
-    public PurchaseOrderDto CreatePurchaseOrder(PurchaseOrderFields fields) {
-
-      var order = new PurchaseOrderEntry(fields, "");
-      order.Save();
-
-      return GetPurchaseOrder(order.OrderUID);
-    }
-
-
     public PurchaseOrderDto CreatePurchaseOrderItem(
       string purchaseOrderUID, PurchaseOrderItemFields fields) {
 
