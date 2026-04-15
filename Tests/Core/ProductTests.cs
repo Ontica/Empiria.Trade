@@ -57,7 +57,7 @@ namespace Empiria.Trade.Tests.Core {
       var usecase = ProductUseCases.UseCaseInteractor();
       ProductQuery query = new ProductQuery {
         Keywords = "PPBTA14X34-3500",
-        OnStock= true
+        OnStock= false
       };
 
       FixedList<IProductEntryDto> sut = await usecase.GetProductsList(query).ConfigureAwait(false);

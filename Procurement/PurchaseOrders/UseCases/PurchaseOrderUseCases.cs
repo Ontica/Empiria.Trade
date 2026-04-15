@@ -53,18 +53,7 @@ namespace Empiria.Trade.Procurement.UseCases {
 
       order.Save();
 
-      //return PurchaseOrderMapper.MapOrder(order);
       return GetPurchaseOrderDto(order.UID);
-    }
-
-
-    private void GetDefaultFields(PurchaseOrderFields fields, OrderType orderType) {
-      fields.ProviderUID = fields.SupplierUID;
-      fields.OrderTypeUID = orderType.UID;
-      fields.RequestedByUID = Party.ParseWithContact(ExecutionServer.CurrentContact).UID;
-      fields.Name = "Sin asignar";
-      fields.Observations = fields.Notes;
-      fields.StartDate = DateTime.Now;
     }
 
 
@@ -90,14 +79,10 @@ namespace Empiria.Trade.Procurement.UseCases {
 
     public PurchaseOrderDto CreatePurchaseOrderItemV2(string purchaseOrderUID,
                                                       PurchaseOrderItemFields fields) {
-
       Assertion.Require(purchaseOrderUID, nameof(purchaseOrderUID));
       Assertion.Require(fields, nameof(fields));
 
-      var product = Empiria.Products.Product.TryParseWithCode(fields.Product);
-
-      Assertion.Require(product, $"El producto con clave {fields.Product} no existe");
-      Assertion.Require(fields.Quantity > 0, $"Especifique una cantidad mayor a 0");
+      GetDefaultProductFields(fields);
 
       var order = PurchaseOrder.Parse(purchaseOrderUID);
 
@@ -111,7 +96,6 @@ namespace Empiria.Trade.Procurement.UseCases {
 
       return GetPurchaseOrderDto(purchaseOrderUID);
     }
-
 
     #endregion Public methods V2
 
@@ -134,9 +118,6 @@ namespace Empiria.Trade.Procurement.UseCases {
       Assertion.Require(fields, nameof(fields));
 
       ValidationsForItem(fields);
-
-      //var orderItem = new PurchaseOrderItem(purchaseOrderUID, fields);
-      //orderItem.Save();
 
       return GetPurchaseOrder(purchaseOrderUID);
     }
@@ -214,6 +195,28 @@ namespace Empiria.Trade.Procurement.UseCases {
 
     #region Private methods
 
+    private void GetDefaultFields(PurchaseOrderFields fields, OrderType orderType) {
+      fields.ProviderUID = fields.SupplierUID;
+      fields.OrderTypeUID = orderType.UID;
+      fields.RequestedByUID = Party.ParseWithContact(ExecutionServer.CurrentContact).UID;
+      fields.Name = "Sin asignar";
+      fields.Observations = fields.Notes;
+      fields.StartDate = DateTime.Now;
+    }
+
+
+    private void GetDefaultProductFields(PurchaseOrderItemFields fields) {
+      var product = Empiria.Products.Product.TryParseWithCode(fields.Product);
+      Assertion.Require(product, $"El producto con clave {fields.Product} no existe");
+
+      fields.ProductUID = product.UID;
+      fields.ProductUnitUID = product.BaseUnit.UID;
+      fields.ProductName = product.Name;
+      fields.ProductCode = product.InternalCode;
+      fields.Description = product.Description;
+    }
+
+
     private FixedList<PurchaseOrderEntry> GetPurchaseOrderList(PurchaseOrderQuery query) {
 
       return PurchaseOrderBuilder.GetPurchaseOrderEntries(query);
@@ -234,7 +237,6 @@ namespace Empiria.Trade.Procurement.UseCases {
           $"({item.ProductPresentation.PresentationName}) debe ser mayor a 0.");
       }
     }
-
 
     #endregion Private methods
 

@@ -56,10 +56,10 @@ namespace Empiria.Trade.Tests.Procurement {
 
       var usecase = PurchaseOrderUseCases.UseCaseInteractor();
 
-      string purchaseOrderUID = "fd915a8f-26cb-48fb-8401-d6d8a0ac7a76";
+      string purchaseOrderUID = "68131d68-f199-46eb-9846-aced7d7d5e38";
       
       var fields = new PurchaseOrderItemFields {
-        Product = "ASF24",
+        Product = "TMT516X34-1700",
         Quantity = 1
       };
 
@@ -74,7 +74,7 @@ namespace Empiria.Trade.Tests.Procurement {
 
       var usecase = PurchaseOrderUseCases.UseCaseInteractor();
 
-      string purchaseOrderUID = "858aeae2-8989-4401-9780-783aab9c9744";
+      string purchaseOrderUID = "68131d68-f199-46eb-9846-aced7d7d5e38";
       PurchaseOrderDto sut = usecase.GetPurchaseOrderDto(purchaseOrderUID);
       Assert.NotNull(sut);
     }

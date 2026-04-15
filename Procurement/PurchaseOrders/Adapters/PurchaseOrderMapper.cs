@@ -196,7 +196,8 @@ namespace Empiria.Trade.Procurement.Adapters {
         Subtotal = x.Subtotal,
         ProductCode = x.ProductCode,
         ProductName = x.ProductName,
-        PresentationName = x.Product.ProductCategory.Name,
+        PresentationName = x.Product.ProductCategory.UID != "Empty" ?
+                           x.Product.ProductCategory.Name : "",
         Price = x.UnitPrice,
         Notes = x.Description
       };
