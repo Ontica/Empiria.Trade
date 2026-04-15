@@ -71,6 +71,10 @@ namespace Empiria.Trade.WebApi.Core {
     [HttpPost]
     [Route("v4/trade/products/search-products-for-purchase-order")]
     public async Task<CollectionModel> GetProductsForPurchaseOrder([FromBody] ProductQuery query) {
+
+
+      Assertion.EnsureFailed("Funcionalidad en proceso de desarrollo");
+
       RequireBody(query);
 
       using (var usecases = ProductUseCases.UseCaseInteractor()) {
