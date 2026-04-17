@@ -43,7 +43,7 @@ namespace Empiria.Trade.Procurement.UseCases {
 
     #region Public methods V2
     
-    public PurchaseOrderDto CreatePurchaseOrderV2(PurchaseOrderFields fields) {
+    public PurchaseOrderDto CreatePurchaseOrder(PurchaseOrderFields fields) {
 
       var orderType = OrderType.Parse(ORDERTYPE);
 
@@ -54,6 +54,50 @@ namespace Empiria.Trade.Procurement.UseCases {
       order.Save();
 
       return GetPurchaseOrderDto(order.UID);
+    }
+
+
+
+    public PurchaseOrderDto CreatePurchaseOrderItem(string purchaseOrderUID,
+                                                      PurchaseOrderItemFields fields) {
+      Assertion.Require(purchaseOrderUID, nameof(purchaseOrderUID));
+      Assertion.Require(fields, nameof(fields));
+
+      GetDefaultProductFields(fields);
+
+      var order = PurchaseOrder.Parse(purchaseOrderUID);
+
+      var orderItemType = OrderItemType.Parse(ORDERITEMTYPE);
+
+      var orderItem = new PurchaseOrderItem(orderItemType, order);
+
+      orderItem.Update(fields);
+
+      orderItem.Save();
+
+      return GetPurchaseOrderDto(purchaseOrderUID);
+    }
+
+
+    public PurchaseOrderDto DeletePurchaseOrder(string purchaseOrderUID) {
+
+      PurchaseOrder order = PurchaseOrder.Parse(purchaseOrderUID);
+
+      order.DeleteOrder();
+
+      return GetPurchaseOrderDto(purchaseOrderUID);
+    }
+
+
+    public PurchaseOrderDto DeletePurchaseOrderItem(string purchaseOrderUID, string purchaseOrderItemUID) {
+
+      PurchaseOrderItem orderItem = PurchaseOrderItem.Parse(purchaseOrderItemUID);
+
+      orderItem.Delete();
+
+      orderItem.Save();
+
+      return GetPurchaseOrderDto(purchaseOrderUID);
     }
 
 
@@ -77,32 +121,12 @@ namespace Empiria.Trade.Procurement.UseCases {
     }
 
 
-    public PurchaseOrderDto CreatePurchaseOrderItemV2(string purchaseOrderUID,
-                                                      PurchaseOrderItemFields fields) {
-      Assertion.Require(purchaseOrderUID, nameof(purchaseOrderUID));
-      Assertion.Require(fields, nameof(fields));
-
-      GetDefaultProductFields(fields);
-
-      var order = PurchaseOrder.Parse(purchaseOrderUID);
-
-      var orderItemType = OrderItemType.Parse(ORDERITEMTYPE);
-
-      var orderItem = new PurchaseOrderItem(orderItemType, order);
-      
-      orderItem.Update(fields);
-
-      orderItem.Save();
-
-      return GetPurchaseOrderDto(purchaseOrderUID);
-    }
-
     #endregion Public methods V2
 
 
     #region Public methods
 
-    public PurchaseOrderDto CreatePurchaseOrderItem(
+    public PurchaseOrderDto CreatePurchaseOrderItemV1(
       string purchaseOrderUID, PurchaseOrderItemFields fields) {
 
       Assertion.Require(purchaseOrderUID, nameof(purchaseOrderUID));
@@ -114,22 +138,22 @@ namespace Empiria.Trade.Procurement.UseCases {
     }
 
 
-    public void DeletePurchaseOrder(string purchaseOrderUID) {
+    public void DeletePurchaseOrderV1(string purchaseOrderUID) {
       var order = PurchaseOrderEntry.Parse(purchaseOrderUID);
 
       order.Items = GetPurchaseOrderItems(order.Id);
       
       foreach (var item in order.Items) {
-        PurchaseOrderData.DeletePurchaseOrderItem(item.UID);
+        PurchaseOrderData.DeletePurchaseOrderItemV1(item.UID);
       }
       
       PurchaseOrderData.DeletePurchaseOrder(order.Id);
     }
 
 
-    public PurchaseOrderDto DeletePurchaseOrderItem(string purchaseOrderUID, string purchaseOrderItemUID) {
+    public PurchaseOrderDto DeletePurchaseOrderItemV1(string purchaseOrderUID, string purchaseOrderItemUID) {
 
-      PurchaseOrderData.DeletePurchaseOrderItem(purchaseOrderItemUID);
+      PurchaseOrderData.DeletePurchaseOrderItemV1(purchaseOrderItemUID);
 
       return GetPurchaseOrder(purchaseOrderUID);
     }
@@ -178,7 +202,7 @@ namespace Empiria.Trade.Procurement.UseCases {
 
       fields.UID = purchaseOrderItemUID;
 
-      return CreatePurchaseOrderItem(purchaseOrderUID, fields);
+      return CreatePurchaseOrderItemV1(purchaseOrderUID, fields);
     }
 
 

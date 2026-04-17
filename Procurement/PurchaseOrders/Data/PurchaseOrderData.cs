@@ -149,7 +149,7 @@ namespace Empiria.Trade.Procurement.Data {
     }
 
 
-    internal static void DeletePurchaseOrderItem(string purchaseOrderItemUID) {
+    internal static void DeletePurchaseOrderItemV1(string purchaseOrderItemUID) {
       string sql = $"UPDATE TRDOrderItems " +
                    $"SET OrderItemStatus = '{(char) EntityStatus.Deleted}' " +
                    $"WHERE OrderItemUID = '{purchaseOrderItemUID}'";

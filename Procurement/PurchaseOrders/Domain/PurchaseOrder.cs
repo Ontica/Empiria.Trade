@@ -94,6 +94,17 @@ namespace Empiria.Trade.Procurement {
       this.ItemsCount = this.Items.Count;
     }
 
+    internal void DeleteOrder() {
+
+      foreach (var item in this.PurchaseOrderItems) {
+        item.Delete();
+        item.Save();
+      }
+
+      this.Delete();
+      this.Save();
+    }
+
     #endregion Methods
 
   } // class PurchaseOrder
