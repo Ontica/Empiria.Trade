@@ -12,8 +12,6 @@ using Empiria.WebApi;
 using System.Web.Http;
 using Empiria.Trade.Procurement.UseCases;
 using Empiria.Trade.Procurement.Adapters;
-using Empiria.Trade.Inventory.Adapters;
-using Empiria.Trade.Inventory.UseCases;
 
 namespace Empiria.Trade.WebApi.Procurement {
 
@@ -28,9 +26,9 @@ namespace Empiria.Trade.WebApi.Procurement {
 
       using (var usecases = PurchaseOrderUseCases.UseCaseInteractor()) {
 
-        PurchaseOrderDto inventoryOrder = usecases.CreatePurchaseOrderV2(fields);
+        PurchaseOrderDto purchaseOrder = usecases.CreatePurchaseOrder(fields);
 
-        return new SingleObjectModel(this.Request, inventoryOrder);
+        return new SingleObjectModel(this.Request, purchaseOrder);
       }
     }
 
@@ -42,9 +40,9 @@ namespace Empiria.Trade.WebApi.Procurement {
 
       using (var usecases = PurchaseOrderUseCases.UseCaseInteractor()) {
 
-        PurchaseOrderDto shippingOrder = usecases.CreatePurchaseOrderItemV2(purchaseOrderUID, fields);
+        PurchaseOrderDto purchaseOrder = usecases.CreatePurchaseOrderItem(purchaseOrderUID, fields);
 
-        return new SingleObjectModel(this.Request, shippingOrder);
+        return new SingleObjectModel(this.Request, purchaseOrder);
       }
     }
 
@@ -67,14 +65,12 @@ namespace Empiria.Trade.WebApi.Procurement {
     public SingleObjectModel DeletePurchaseOrderItem([FromUri] string purchaseOrderUID,
                                                      [FromUri] string purchaseOrderItemUID) {
       
-      Assertion.EnsureFailed("Funcionalidad en proceso de desarrollo");
-
       using (var usecases = PurchaseOrderUseCases.UseCaseInteractor()) {
 
-        PurchaseOrderDto shippingOrder =
-          usecases.DeletePurchaseOrderItem(purchaseOrderUID, purchaseOrderItemUID);
+        PurchaseOrderDto purchaseOrder = usecases.DeletePurchaseOrderItem(purchaseOrderUID,
+                                                                          purchaseOrderItemUID);
 
-        return new SingleObjectModel(this.Request, shippingOrder);
+        return new SingleObjectModel(this.Request, purchaseOrder);
       }
     }
 
@@ -112,9 +108,9 @@ namespace Empiria.Trade.WebApi.Procurement {
 
       using (var usecases = PurchaseOrderUseCases.UseCaseInteractor()) {
 
-        PurchaseOrderDto shippingOrder = usecases.UpdatePurchaseOrder(purchaseOrderUID, fields);
+        PurchaseOrderDto purchaseOrder = usecases.UpdatePurchaseOrder(purchaseOrderUID, fields);
 
-        return new SingleObjectModel(this.Request, shippingOrder);
+        return new SingleObjectModel(this.Request, purchaseOrder);
       }
     }
 
@@ -129,10 +125,10 @@ namespace Empiria.Trade.WebApi.Procurement {
 
       using (var usecases = PurchaseOrderUseCases.UseCaseInteractor()) {
 
-        PurchaseOrderDto shippingOrder =
+        PurchaseOrderDto purchaseOrder =
           usecases.UpdatePurchaseOrderItem(purchaseOrderUID, purchaseOrderItemUID, fields);
 
-        return new SingleObjectModel(this.Request, shippingOrder);
+        return new SingleObjectModel(this.Request, purchaseOrder);
       }
     }
 

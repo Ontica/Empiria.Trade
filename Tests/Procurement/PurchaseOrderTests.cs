@@ -10,8 +10,7 @@
 using System;
 using Empiria.StateEnums;
 using Empiria.Tests;
-using Empiria.Trade.Orders;
-using Empiria.Trade.Procurement;
+
 using Empiria.Trade.Procurement.Adapters;
 using Empiria.Trade.Procurement.UseCases;
 using Xunit;
@@ -44,7 +43,7 @@ namespace Empiria.Trade.Tests.Procurement {
           Notes = "TEST",
         };
 
-        PurchaseOrderDto sut = usecase.CreatePurchaseOrderV2(fields);
+        PurchaseOrderDto sut = usecase.CreatePurchaseOrder(fields);
 
         Assert.NotNull(sut);
       }
@@ -63,7 +62,31 @@ namespace Empiria.Trade.Tests.Procurement {
         Quantity = 1
       };
 
-      PurchaseOrderDto sut = usecase.CreatePurchaseOrderItemV2(purchaseOrderUID, fields);
+      PurchaseOrderDto sut = usecase.CreatePurchaseOrderItem(purchaseOrderUID, fields);
+
+      Assert.NotNull(sut);
+    }
+
+
+    [Fact]
+    public void DeletePurchaseOrder() {
+
+      var usecase = PurchaseOrderUseCases.UseCaseInteractor();
+
+      usecase.DeletePurchaseOrder("68131d68-f199-46eb-9846-aced7d7d5e38");
+
+      Assert.True(true);
+    }
+
+
+    [Fact]
+    public void DeletePurchaseOrderItem() {
+
+      var usecase = PurchaseOrderUseCases.UseCaseInteractor();
+      var orderUID = "68131d68-f199-46eb-9846-aced7d7d5e38";
+      var orderItemUID = "1fb8ac8b-bd36-4bce-b391-7b2202031682";
+
+      PurchaseOrderDto sut = usecase.DeletePurchaseOrderItem(orderUID, orderItemUID);
 
       Assert.NotNull(sut);
     }
@@ -124,11 +147,11 @@ namespace Empiria.Trade.Tests.Procurement {
 
 
     [Fact]
-    public void DeletePurchaseOrder() {
+    public void DeletePurchaseOrderV1() {
 
       var usecase = PurchaseOrderUseCases.UseCaseInteractor();
 
-      usecase.DeletePurchaseOrder("fb1e2de6-e39e-4189-893b-ac9b74adb232");
+      usecase.DeletePurchaseOrderV1("fb1e2de6-e39e-4189-893b-ac9b74adb232");
 
       Assert.True(true);
     }
