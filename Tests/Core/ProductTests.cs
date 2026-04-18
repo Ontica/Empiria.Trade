@@ -56,11 +56,27 @@ namespace Empiria.Trade.Tests.Core {
 
       var usecase = ProductUseCases.UseCaseInteractor();
       ProductQuery query = new ProductQuery {
+        Keywords = "MM109TO20X",
+        OnStock = false
+      };
+
+      FixedList<IProductEntryDto> sut = await usecase.GetProductsList(query).ConfigureAwait(false);
+
+      Assert.NotNull(sut);
+      Assert.NotEmpty(sut);
+    }
+
+
+    [Fact]
+    public async Task GetProductListV1Test() {
+
+      var usecase = ProductUseCases.UseCaseInteractor();
+      ProductQuery query = new ProductQuery {
         Keywords = "PPBTA14X34-3500",
         OnStock= false
       };
 
-      FixedList<IProductEntryDto> sut = await usecase.GetProductsList(query).ConfigureAwait(false);
+      FixedList<IProductEntryDto> sut = await usecase.GetProductsListV1(query).ConfigureAwait(false);
 
       Assert.NotNull(sut);
       Assert.NotEmpty(sut);

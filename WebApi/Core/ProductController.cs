@@ -46,7 +46,7 @@ namespace Empiria.Trade.WebApi.Core {
       RequireBody(query);
 
       using (var usecases = ProductUseCases.UseCaseInteractor()) {
-        FixedList<IProductEntryDto> productDto = await usecases.GetProductsList(query)
+        FixedList<IProductEntryDto> productDto = await usecases.GetProductsListV1(query)
                                                 .ConfigureAwait(false);
         return new CollectionModel(Request, productDto);
       }
@@ -61,7 +61,7 @@ namespace Empiria.Trade.WebApi.Core {
       using (var usecases = ProductUseCases.UseCaseInteractor()) {
 
         query.OnStock = false;
-        FixedList<IProductEntryDto> productDto = await usecases.GetProductsList(query)
+        FixedList<IProductEntryDto> productDto = await usecases.GetProductsListV1(query)
                                                 .ConfigureAwait(false);
         return new CollectionModel(Request, productDto);
       }
@@ -72,15 +72,28 @@ namespace Empiria.Trade.WebApi.Core {
     [Route("v4/trade/products/search-products-for-purchase-order")]
     public async Task<CollectionModel> GetProductsForPurchaseOrder([FromBody] ProductQuery query) {
 
-
-      Assertion.EnsureFailed("Funcionalidad en proceso de desarrollo");
-
       RequireBody(query);
 
       using (var usecases = ProductUseCases.UseCaseInteractor()) {
 
         query.OnStock = false;
         FixedList<IProductEntryDto> productDto = await usecases.GetProductsList(query)
+                                                .ConfigureAwait(false);
+        return new CollectionModel(Request, productDto);
+      }
+    }
+
+
+    [HttpPost]
+    [Route("v4/trade/products/search-products-for-purchase-order-")]
+    public async Task<CollectionModel> GetProductsForPurchaseOrderV1([FromBody] ProductQuery query) {
+
+      RequireBody(query);
+
+      using (var usecases = ProductUseCases.UseCaseInteractor()) {
+
+        query.OnStock = false;
+        FixedList<IProductEntryDto> productDto = await usecases.GetProductsListV1(query)
                                                 .ConfigureAwait(false);
         return new CollectionModel(Request, productDto);
       }
