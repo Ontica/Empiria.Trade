@@ -41,7 +41,7 @@ namespace Empiria.Trade.Products.Adapters
 
     public string ProductImageUrl {
       get; set;
-    }
+    } = string.Empty;
 
 
   } // class ProductDto

@@ -57,7 +57,6 @@ namespace Empiria.Trade.Procurement.UseCases {
     }
 
 
-
     public PurchaseOrderDto CreatePurchaseOrderItem(string purchaseOrderUID,
                                                       PurchaseOrderItemFields fields) {
       Assertion.Require(purchaseOrderUID, nameof(purchaseOrderUID));

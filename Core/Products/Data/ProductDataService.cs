@@ -11,12 +11,34 @@ using System;
 using System.Linq;
 using Empiria.Data;
 using Empiria.Trade.Products.Adapters;
+using Empiria.Products;
 
-namespace Empiria.Trade.Products.Data
-{
+namespace Empiria.Trade.Products.Data {
 
-    /// <summary>Provides data read methods for Products.</summary>
-    internal class ProductDataService {
+  /// <summary>Provides data read methods for Products.</summary>
+  internal class ProductDataService {
+
+
+    #region Public methods V2
+
+    internal static FixedList<Empiria.Products.Product> GetProducts(string keywords) {
+
+      string whereClauses = string.Empty;
+
+      if (keywords != string.Empty) {
+        whereClauses = $"WHERE {SearchExpression.ParseAndLikeKeywords("Product_Keywords", keywords)}";
+      }
+
+      var sql = "SELECT * FROM OMS_Products " +
+                $"{whereClauses}";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetFixedList<Empiria.Products.Product>(dataOperation);
+
+    }
+
+    #endregion Public methods V2
 
 
     internal static FixedList<Product> GetProductsForOrder(ProductQuery query) {

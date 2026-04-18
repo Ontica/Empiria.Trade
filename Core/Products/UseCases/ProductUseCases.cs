@@ -39,6 +39,20 @@ namespace Empiria.Trade.Products.UseCases
     #endregion Constructors and parsers
 
 
+    #region Methods V2
+
+    public async Task<FixedList<IProductEntryDto>> GetProductsList(ProductQuery query) {
+      var builder = new ProductBuilder();
+
+      FixedList<Empiria.Products.Product> products = await Task.Run(() => builder.GetProducts(query))
+                                            .ConfigureAwait(false);
+
+      return ProductMapper.Map(products);
+    }
+
+    #endregion Methods V2
+
+
     #region Use cases
 
 
@@ -51,7 +65,7 @@ namespace Empiria.Trade.Products.UseCases
     }
 
 
-    public async Task<FixedList<IProductEntryDto>> GetProductsList(ProductQuery query) {
+    public async Task<FixedList<IProductEntryDto>> GetProductsListV1(ProductQuery query) {
       var builder = new ProductBuilder();
 
       FixedList<Product> products = await Task.Run(() => builder.GetProductsList(query))

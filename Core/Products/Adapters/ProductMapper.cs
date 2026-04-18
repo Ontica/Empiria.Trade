@@ -13,22 +13,51 @@ using System.Linq;
 using Empiria.Trade.Core.Catalogues;
 using Newtonsoft.Json;
 
-namespace Empiria.Trade.Products.Adapters
-{
+namespace Empiria.Trade.Products.Adapters {
 
-    /// <summary>Methods used to map Products.</summary>
-    public class ProductMapper {
+  /// <summary>Methods used to map Products.</summary>
+  public class ProductMapper {
 
+    #region Public methods V2
+
+    static internal FixedList<IProductEntryDto> Map(FixedList<Empiria.Products.Product> products) {
+
+      var mappedItems = products.Select((x) => MapProduct((Empiria.Products.Product) x));
+
+      return new FixedList<IProductEntryDto>(mappedItems);
+    }
+
+
+    static private IProductEntryDto MapProduct(Empiria.Products.Product product) {
+      var dto = new ProductForSearchingDto();
+
+      dto.ProductUID = product.UID;
+      dto.ProductCode = product.InternalCode;
+      dto.Description = product.Description;
+      dto.ProductType = GetProductType(product);
+
+      return dto;
+    }
+
+
+    static private ProductTypeDto GetProductType(Empiria.Products.Product product) {
+      
+      return new ProductTypeDto {
+        ProductTypeUID = product.ProductType.UID,
+        Name = product.ProductType.DisplayPluralName
+      };
+    }
+
+
+    #endregion Public methods V2
 
     #region Public methods
-
 
     static internal IProductEntryDto MapToDto(ProductFields entry) {
 
       return MapProductFields(entry);
 
     }
-
 
     //static internal FixedList<IProductEntryDto> MapToListDto(FixedList<Product> products) {
     //  return MapToEntriesDto(products);
@@ -110,7 +139,7 @@ namespace Empiria.Trade.Products.Adapters
 
         throw new Exception($"{entry.Code}. {e.Message}", e);
       }
-      
+
 
     }
 
@@ -152,7 +181,7 @@ namespace Empiria.Trade.Products.Adapters
         vendors.Add(vendor);
 
       }
-      
+
       return vendors.ToFixedList();
     }
 

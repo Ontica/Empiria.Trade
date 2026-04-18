@@ -33,6 +33,15 @@ namespace Empiria.Trade.Products.Domain {
     #endregion Constructors and parsers
 
 
+    #region Public methods V2
+
+    internal FixedList<Empiria.Products.Product> GetProducts(ProductQuery query) {
+
+      return ProductDataService.GetProducts(query.Keywords);
+    }
+
+    #endregion Public methods V2
+
     #region Public methods
 
     public object BuildProduct(Product product) {
