@@ -47,6 +47,7 @@ namespace Empiria.Trade.Procurement {
 
       return PurchaseOrderData.GetPurchaseOrderItems(purchaseOrder);
     }
+
     #endregion Constructors and parsers
 
     #region Properties
@@ -68,6 +69,10 @@ namespace Empiria.Trade.Procurement {
 
     internal void Update(PurchaseOrderItemFields fields) {
       Assertion.Require(fields, nameof(fields));
+
+      if (this.IsNew) {
+        fields.UnitPrice = fields.UnitPrice == 0 ? 0.001M : fields.UnitPrice;
+      }
 
       base.Update(fields);
     }

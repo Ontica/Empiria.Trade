@@ -94,7 +94,7 @@ namespace Empiria.Trade.WebApi.Procurement {
 
       using (var usecases = PurchaseOrderUseCases.UseCaseInteractor()) {
 
-        PurchaseOrdersDataDto purchaseOrderDescriptor = usecases.GetPurchaseOrderDescriptorV2(query);
+        PurchaseOrdersDataDto purchaseOrderDescriptor = usecases.GetPurchaseOrderDescriptor(query);
 
         return new SingleObjectModel(this.Request, purchaseOrderDescriptor);
       }

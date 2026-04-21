@@ -58,8 +58,9 @@ namespace Empiria.Trade.Tests.Procurement {
       string purchaseOrderUID = "68131d68-f199-46eb-9846-aced7d7d5e38";
       
       var fields = new PurchaseOrderItemFields {
-        Product = "TMT516X34-1700",
-        Quantity = 1
+        Product = "AUR138-50",
+        Quantity = 1,
+        Notes = "CREATE ITEM TEST"
       };
 
       PurchaseOrderDto sut = usecase.CreatePurchaseOrderItem(purchaseOrderUID, fields);
@@ -114,7 +115,7 @@ namespace Empiria.Trade.Tests.Procurement {
         Status = EntityStatus.All
       };
 
-      PurchaseOrdersDataDto sut = usecase.GetPurchaseOrderDescriptorV2(query);
+      PurchaseOrdersDataDto sut = usecase.GetPurchaseOrderDescriptor(query);
       Assert.NotNull(sut);
     }
 
@@ -124,9 +125,11 @@ namespace Empiria.Trade.Tests.Procurement {
 
       var usecase = PurchaseOrderUseCases.UseCaseInteractor();
 
-      string purchaseOrderUID = "fb1e2de6-e39e-4189-893b-ac9b74adb232";
-      string purchaseOrderItemUID = "iykijue7-ba78-4efb-9753-18eb86poiurt";
+      string purchaseOrderUID = "68131d68-f199-46eb-9846-aced7d7d5e38";
+      string purchaseOrderItemUID = "6ae7df0b-b5d1-426b-bd47-b4d857145c2c";
+
       PurchaseOrderItemFields fields = GetPurchaseOrderItemFields();
+
       PurchaseOrderDto sut = usecase.UpdatePurchaseOrderItem(purchaseOrderUID, purchaseOrderItemUID, fields);
 
       Assert.NotNull(sut);
@@ -136,11 +139,12 @@ namespace Empiria.Trade.Tests.Procurement {
     private PurchaseOrderItemFields GetPurchaseOrderItemFields() {
 
       var fields = new PurchaseOrderItemFields {
+        Product = "AUR78-50",
         VendorProductUID = "22c278bb-2e61-4b37-b3a7-76f40950fc49",
-        Quantity = 90,
-        Price = 2,
+        Quantity = 7,
+        Price = 8,
         Weight = 1,
-        Notes = "X"
+        Notes = "UPDATE ITEM TEST"
       };
       return fields;
     }
@@ -182,7 +186,7 @@ namespace Empiria.Trade.Tests.Procurement {
         Status = EntityStatus.All
       };
 
-      PurchaseOrdersDataDto sut = usecase.GetPurchaseOrderDescriptor(query);
+      PurchaseOrdersDataDto sut = usecase.GetPurchaseOrderDescriptorV1(query);
       Assert.NotNull(sut);
     }
 

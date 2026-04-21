@@ -9,11 +9,8 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Threading.Tasks;
-using Empiria.DataTypes;
-
 using Xunit;
 
-using Empiria.Tests;
 using Empiria.Trade.Products.UseCases;
 using Empiria.Trade.Products.Adapters;
 using Empiria.Trade.Products;
@@ -35,8 +32,6 @@ namespace Empiria.Trade.Tests.Core {
 
 
     #region Facts
-
-
 
     [Fact]
     public void GetProductTest() {
