@@ -51,7 +51,7 @@ namespace Empiria.Trade.Tests.Core {
 
       var usecase = ProductUseCases.UseCaseInteractor();
       ProductQuery query = new ProductQuery {
-        Keywords = "MM109TO20X",
+        Keywords = "RPGIC112-200",
         OnStock = false
       };
 

@@ -40,7 +40,7 @@ namespace Empiria.Trade.Tests.Procurement {
 
         var fields = new PurchaseOrderFields {
           SupplierUID = "0d06cb65-4122-41c0-af87-1b7f8d1609da",
-          Notes = "TEST",
+          Notes = "TEST 27-04-2026",
         };
 
         PurchaseOrderDto sut = usecase.CreatePurchaseOrder(fields);
@@ -58,9 +58,9 @@ namespace Empiria.Trade.Tests.Procurement {
       string purchaseOrderUID = "68131d68-f199-46eb-9846-aced7d7d5e38";
       
       var fields = new PurchaseOrderItemFields {
-        Product = "AUR138-50",
+        VendorProductUID = "e373231c-a4ba-4bad-8e2a-739c813ca9e7",
         Quantity = 1,
-        Notes = "CREATE ITEM TEST"
+        Price = 1
       };
 
       PurchaseOrderDto sut = usecase.CreatePurchaseOrderItem(purchaseOrderUID, fields);
@@ -126,7 +126,7 @@ namespace Empiria.Trade.Tests.Procurement {
       var usecase = PurchaseOrderUseCases.UseCaseInteractor();
 
       string purchaseOrderUID = "68131d68-f199-46eb-9846-aced7d7d5e38";
-      string purchaseOrderItemUID = "6ae7df0b-b5d1-426b-bd47-b4d857145c2c";
+      string purchaseOrderItemUID = "437b1b66-e44a-44e8-8195-0af3f230d24e";
 
       PurchaseOrderItemFields fields = GetPurchaseOrderItemFields();
 
@@ -144,7 +144,7 @@ namespace Empiria.Trade.Tests.Procurement {
         Quantity = 7,
         Price = 8,
         Weight = 1,
-        Notes = "UPDATE ITEM TEST"
+        Description = "UPDATE ITEM TEST"
       };
       return fields;
     }

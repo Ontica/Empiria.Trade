@@ -243,9 +243,10 @@ namespace Empiria.Trade.Procurement.UseCases {
 
 
     private void GetDefaultProductFields(PurchaseOrderItemFields fields) {
-      var product = Empiria.Products.Product.TryParseWithCode(fields.Product);
+      
+      var product = Empiria.Products.Product.Parse(fields.VendorProductUID);
 
-      Assertion.Require(product, $"El producto con clave {fields.Product} no existe");
+      Assertion.Require(!product.Id.Equals(-1), $"Por favor ingrese un producto valido");
 
       fields.UnitPrice = fields.Price;
       fields.ProductUID = product.UID;
