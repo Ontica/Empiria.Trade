@@ -18,7 +18,6 @@ namespace Empiria.Trade.Products.Data {
   /// <summary>Provides data read methods for Products.</summary>
   internal class ProductDataService {
 
-
     #region Public methods V2
 
     internal static FixedList<Empiria.Products.Product> GetProducts(string keywords) {
@@ -36,6 +35,25 @@ namespace Empiria.Trade.Products.Data {
 
       return DataReader.GetFixedList<Empiria.Products.Product>(dataOperation);
 
+    }
+
+
+    internal static FixedList<ProductGroup> GetProductGroups(int typeId, int categoryId,
+                                                             int classificationId = 0) {
+
+      var category = categoryId > 0 ? $"AND Object_Category_Id = {categoryId} " : string.Empty;
+      var classification = classificationId > 0 ?
+                           $"AND Object_Classification_Id = {classificationId} " :string.Empty;
+
+
+      var sql = "SELECT * FROM Common_Storage " +
+                $"WHERE Object_Type_Id = {typeId} " +
+                category +
+                classification;
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetPlainObjectFixedList<ProductGroup>(dataOperation);
     }
 
     #endregion Public methods V2
@@ -77,7 +95,6 @@ namespace Empiria.Trade.Products.Data {
       var dataOperation = DataOperation.Parse(sql);
 
       return DataReader.GetPlainObjectFixedList<Product>(dataOperation);
-
     }
 
 

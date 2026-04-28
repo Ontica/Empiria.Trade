@@ -8,15 +8,10 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Empiria.Json;
-using Empiria.Storage;
+
 using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Products.Adapters;
 using Empiria.Trade.Products.Data;
-using Newtonsoft.Json;
 
 namespace Empiria.Trade.Products.Domain {
 
@@ -40,6 +35,7 @@ namespace Empiria.Trade.Products.Domain {
       return ProductDataService.GetProducts(query.Keywords);
     }
 
+    
     #endregion Public methods V2
 
     #region Public methods

@@ -8,11 +8,12 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using Empiria.Trade.Products.Data;
 
 namespace Empiria.Trade.Products {
 
   /// <summary>Represents a product's group.</summary>
-  public class ProductGroup : BaseObject {
+  public class ProductGroup  {
 
     #region Constructors and parsers
 
@@ -20,65 +21,70 @@ namespace Empiria.Trade.Products {
 
     }
 
-    
-    static public ProductGroup Parse(int id) => ParseId<ProductGroup>(id);
+    static internal FixedList<ProductGroup> GetListFor(int groupId) {
+      Assertion.Require(groupId, nameof(groupId));
+      
+      if (groupId == 0) {
+        return new FixedList<ProductGroup>();
+      }
 
-    static public ProductGroup Parse(string uid) => ParseKey<ProductGroup>(uid);
+      return ProductDataService.GetProductGroups(551, groupId);
+    }
 
-    static public ProductGroup Empty => ParseEmpty<ProductGroup>();
 
+    static internal FixedList<ProductGroup> GetListFor(int groupId, int subgroupId) {
+      Assertion.Require(groupId, nameof(groupId));
+      Assertion.Require(subgroupId, nameof(subgroupId));
+      
+      if (groupId == 0) {
+        return new FixedList<ProductGroup>();
+      }
+
+      return ProductDataService.GetProductGroups(553, groupId, subgroupId);
+    }
 
     #endregion Constructors and parsers
 
 
     #region Properties
 
-
-    [DataField("GroupCode")]
-    public string GroupCode {
+    [DataField("Object_Id")]
+    public int Id {
       get;
-      private set;
+      set;
     }
 
 
-    [DataField("ProductGroupName")]
+    [DataField("Object_UID")]
+    public string UID {
+      get;
+      internal set;
+    }
+
+
+    [DataField("Object_Type_Id")]
+    public int ObjectTypeId {
+      get; private set;
+    }
+
+
+    [DataField("Object_Classification_Id")]
+    public int ObjectClassificationId {
+      get; private set;
+    }
+
+
+    [DataField("Object_Name")] 
     public string Name {
       get;
-      private set;
+      internal set;
     }
 
 
-    [DataField("ProductGroupDescription")]
-    public string Description {
+    [DataField("Object_Tags")]
+    public string Tags {
       get;
-      private set;
-    }
-
-
-    [DataField("ProductGroupKeywords")]
-    internal string GroupKeywords {
-      get;
-      private set;
-    }
-
-
-    [DataField("ProductGroupExtData")]
-    internal string ExtData {
-      get;
-      private set;
-    }
-
-
-    [DataField("ProductGroupStatus", Default = StateEnums.EntityStatus.Active)]
-    public StateEnums.EntityStatus Status {
-      get; internal set;
-    }
-
-
-    internal string Keywords {
-      get {
-        return EmpiriaString.BuildKeywords(Name, Description);
-      }
+      internal set;
     }
 
 

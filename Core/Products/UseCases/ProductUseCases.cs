@@ -13,6 +13,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Empiria.DataTypes;
+using Empiria.Products;
 using Empiria.Services;
 using Empiria.Trade.Products.Adapters;
 using Empiria.Trade.Products.Data;
@@ -98,7 +99,8 @@ namespace Empiria.Trade.Products.UseCases
     public ProductGroup GetProductGroup(string productGroupUid) {
       Assertion.Require(productGroupUid, "productGroupUid");
 
-      return ProductGroup.Parse(productGroupUid);
+      //return ProductGroup.Parse(productGroupUid);
+      return new ProductGroup();
     }
 
 

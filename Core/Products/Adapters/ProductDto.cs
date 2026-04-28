@@ -9,6 +9,8 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Collections.Generic;
+using Empiria.Products;
+using Empiria.Trade.Core;
 using Empiria.Trade.Core.Catalogues;
 using Newtonsoft.Json;
 
@@ -67,7 +69,7 @@ namespace Empiria.Trade.Products.Adapters
 
     public string Sku {
       get; set;
-    }
+    } = string.Empty;
 
 
     public decimal Stock {

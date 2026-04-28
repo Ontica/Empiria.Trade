@@ -10,6 +10,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Empiria.Products;
+using Empiria.Projects;
+using Empiria.Trade.Core;
 using Empiria.Trade.Core.Catalogues;
 using Newtonsoft.Json;
 
@@ -35,19 +38,75 @@ namespace Empiria.Trade.Products.Adapters {
       dto.ProductCode = product.InternalCode;
       dto.Description = product.Description;
       dto.ProductType = GetProductType(product);
-
+      dto.Presentations = GetDefaultPresentation(product);
       return dto;
     }
 
 
     static private ProductTypeDto GetProductType(Empiria.Products.Product product) {
-      
+
       return new ProductTypeDto {
         ProductTypeUID = product.ProductType.UID,
         Name = product.ProductType.DisplayPluralName
       };
     }
 
+
+    static private FixedList<ProductPresentationForSeach> GetPresentations(Empiria.Products.Product product) {
+
+      var productSubgroup = GetProductGroup(product);
+
+      if (productSubgroup.Count == 0) {
+        return GetDefaultPresentation(product);
+      }
+
+      var presentations = new List<ProductPresentationForSeach>();
+
+      foreach (var subgroup in productSubgroup) {
+        ProductPresentationForSeach presentation = new ProductPresentationForSeach();
+
+        presentation.PresentationUID = subgroup.UID;
+        presentation.Description = $"{subgroup.Tags} {product.BaseUnit.Description}";
+        presentation.Units = 1;
+        presentation.Vendors = new List<VendorDto>() { new VendorDto { VendorName = "N/A" } };
+
+        presentations.Add(presentation);
+      }
+
+      return presentations.ToFixedList();
+    }
+
+
+    private static FixedList<ProductPresentationForSeach> GetDefaultPresentation(Empiria.Products.Product product) {
+      
+      var presentations = new List<ProductPresentationForSeach>();
+      
+      ProductPresentationForSeach presentation = new ProductPresentationForSeach();
+      presentation.PresentationUID = "Empty";
+      presentation.Description = $"{product.InternalCode} - {product.BaseUnit.Description}";
+      presentation.Units = 1;
+      presentation.Vendors = new List<VendorDto>() {
+        new VendorDto {
+          VendorUID = product.UID,
+          VendorProductUID = product.UID,
+          VendorName = product.Name,
+        } };
+
+      presentations.Add(presentation);
+
+      return presentations.ToFixedList();
+    }
+
+
+    static private FixedList<ProductGroup> GetProductGroup(Empiria.Products.Product product) {
+
+      var groupId = Convert.ToInt32(product.Group);
+      var subgroupId = Convert.ToInt32(product.Subgroup);
+
+      var productGroup = ProductGroup.GetListFor(groupId, subgroupId);
+
+      return new FixedList<ProductGroup>(productGroup);
+    }
 
     #endregion Public methods V2
 
