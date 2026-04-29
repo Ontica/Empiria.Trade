@@ -192,12 +192,12 @@ namespace Empiria.Trade.Procurement.Adapters {
 
       return new PurchaseOrderItemDto {
         UID = x.UID,
+        VendorProductUID = x.Product.UID,
         Quantity = x.Quantity,
-        Subtotal = x.Subtotal,
+        Total = x.Subtotal,
         ProductCode = x.ProductCode,
         ProductName = x.ProductName,
-        PresentationName = x.Product.ProductCategory.UID != "Empty" ?
-                           x.Product.ProductCategory.Name : "",
+        PresentationName = x.Product.BaseUnit.Description,
         Price = x.UnitPrice,
         Notes = x.Description
       };

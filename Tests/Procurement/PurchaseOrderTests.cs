@@ -60,7 +60,7 @@ namespace Empiria.Trade.Tests.Procurement {
       var fields = new PurchaseOrderItemFields {
         VendorProductUID = "e373231c-a4ba-4bad-8e2a-739c813ca9e7",
         Quantity = 1,
-        Price = 1
+        Price = 1,
       };
 
       PurchaseOrderDto sut = usecase.CreatePurchaseOrderItem(purchaseOrderUID, fields);
@@ -126,7 +126,7 @@ namespace Empiria.Trade.Tests.Procurement {
       var usecase = PurchaseOrderUseCases.UseCaseInteractor();
 
       string purchaseOrderUID = "68131d68-f199-46eb-9846-aced7d7d5e38";
-      string purchaseOrderItemUID = "437b1b66-e44a-44e8-8195-0af3f230d24e";
+      string purchaseOrderItemUID = "b1df4121-13f7-498d-865e-64093c5445d4";
 
       PurchaseOrderItemFields fields = GetPurchaseOrderItemFields();
 
@@ -138,15 +138,14 @@ namespace Empiria.Trade.Tests.Procurement {
 
     private PurchaseOrderItemFields GetPurchaseOrderItemFields() {
 
-      var fields = new PurchaseOrderItemFields {
+      return new PurchaseOrderItemFields {
         Product = "AUR78-50",
-        VendorProductUID = "22c278bb-2e61-4b37-b3a7-76f40950fc49",
+        VendorProductUID = "0d45cff4-a7a2-4941-9c22-294fd25501aa",
         Quantity = 7,
         Price = 8,
         Weight = 1,
         Description = "UPDATE ITEM TEST"
       };
-      return fields;
     }
 
 

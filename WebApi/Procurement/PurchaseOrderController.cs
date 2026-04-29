@@ -121,8 +121,6 @@ namespace Empiria.Trade.WebApi.Procurement {
                                                      [FromUri] string purchaseOrderItemUID,
                                                      [FromBody] PurchaseOrderItemFields fields) {
 
-      Assertion.EnsureFailed("Funcionalidad en proceso de desarrollo");
-
       using (var usecases = PurchaseOrderUseCases.UseCaseInteractor()) {
 
         PurchaseOrderDto purchaseOrder =

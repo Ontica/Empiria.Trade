@@ -82,7 +82,7 @@ namespace Empiria.Trade.Products.Adapters {
       var presentations = new List<ProductPresentationForSeach>();
       
       ProductPresentationForSeach presentation = new ProductPresentationForSeach();
-      presentation.PresentationUID = "Empty";
+      presentation.PresentationUID = product.BaseUnit.UID;
       presentation.Description = $"{product.InternalCode} - {product.BaseUnit.Description}";
       presentation.Units = 1;
       presentation.Vendors = new List<VendorDto>() {

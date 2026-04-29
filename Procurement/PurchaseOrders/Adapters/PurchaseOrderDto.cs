@@ -137,7 +137,7 @@ namespace Empiria.Trade.Procurement.Adapters {
     }
 
 
-    public decimal Subtotal {
+    public decimal Total {
       get; internal set;
     }
 
