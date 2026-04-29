@@ -181,6 +181,12 @@ namespace Empiria.Trade.Procurement.Adapters {
       internal set;
     }
 
+
+    public decimal ItemsCount {
+      get;
+      internal set;
+    }
+
   }
 
 

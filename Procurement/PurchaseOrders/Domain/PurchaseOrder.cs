@@ -80,8 +80,7 @@ namespace Empiria.Trade.Procurement {
 
 
     public int ItemsCount {
-      get;
-      private set;
+      get; private set;
     }
 
     #endregion Properties

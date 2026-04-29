@@ -207,7 +207,9 @@ namespace Empiria.Trade.Procurement.Adapters {
     private static PurchaseOrderTotal MapTotals(PurchaseOrder order) {
 
       return new PurchaseOrderTotal {
-        ItemsTotal = order.ItemsTotal
+        ItemsTotal = order.ItemsTotal,
+        OrderTotal = order.ItemsTotal,
+        ItemsCount = order.ItemsCount
       };
     }
 
