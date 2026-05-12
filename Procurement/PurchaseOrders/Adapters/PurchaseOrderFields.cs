@@ -7,9 +7,10 @@
 *  Summary  : DTO used to manage purchase order fields.                                                      *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
+
 using System;
+
 using Empiria.Orders;
-using Empiria.Trade.Orders;
 
 namespace Empiria.Trade.Procurement.Adapters {
 
