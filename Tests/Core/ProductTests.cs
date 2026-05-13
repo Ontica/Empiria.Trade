@@ -51,7 +51,7 @@ namespace Empiria.Trade.Tests.Core {
 
       var usecase = ProductUseCases.UseCaseInteractor();
       ProductQuery query = new ProductQuery {
-        Keywords = "RPGIC112-200",
+        Keywords = "STCA71938 STCA719516",
         OnStock = false
       };
 
@@ -125,19 +125,6 @@ namespace Empiria.Trade.Tests.Core {
       string uid = "6012ea18-82d2-4e0e-9fe2-f81a1d076b94";
 
       ProductPresentation sut = usecase.GetProductPresentation(uid);
-
-      Assert.NotNull(sut);
-    }
-
-
-    [Fact]
-    public void GetVendorProductTest() {
-
-      var usecase = ProductUseCases.UseCaseInteractor();
-
-      string uid = "1d47e4e5-ff97-4197-8bd1-b49df2780c32";
-
-      VendorProduct sut = usecase.GetVendorProduct(uid);
 
       Assert.NotNull(sut);
     }

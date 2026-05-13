@@ -39,14 +39,6 @@ namespace Empiria.Trade.Core.Catalogues {
 
     #region Use cases
 
-
-    internal InventoryEntry GetInventoryEntry(string inventoryEntryUid) {
-      Assertion.Require(inventoryEntryUid, "inventoryEntryUid");
-
-      return InventoryEntry.Parse(inventoryEntryUid);
-    }
-
-
     static public FixedList<SalesInventoryStock> GetInventoryStockByVendorProduct(
       int vendorProductId, string warehouseBinClauses) {
       Assertion.Require(vendorProductId, "vendorProductId");

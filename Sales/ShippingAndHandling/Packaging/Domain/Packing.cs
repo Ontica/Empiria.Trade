@@ -63,9 +63,12 @@ namespace Empiria.Trade.Sales.ShippingAndHandling
 
 
     [DataField("InventoryEntryId")]
-    public InventoryEntry InventoryEntry {
+    public int InventoryEntry {
       get; private set;
     }
+    //public InventoryEntry InventoryEntry {
+    //  get; private set;
+    //}
 
 
     [DataField("PackageID")]

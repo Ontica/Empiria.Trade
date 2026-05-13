@@ -20,21 +20,6 @@ namespace Empiria.Trade.Tests.Core
 
     public class CataloguesTests {
 
-
-    [Fact]
-    public void GetInventoryEntryTest() {
-
-      var usecase = CataloguesUseCases.UseCaseInteractor();
-
-      string uid = "1250b007-9d8a-46b9-83e3-bbf2e00c7ef1";
-
-      InventoryEntry sut = usecase.GetInventoryEntry(uid);
-
-      Assert.NotNull(sut);
-
-    }
-
-
     [Fact]
     public void GetInventoryStockByVendorProductTest() {
 
