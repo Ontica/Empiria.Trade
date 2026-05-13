@@ -9,7 +9,8 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Collections.Generic;
-
+using Empiria.Json;
+using Empiria.Ontology;
 using Empiria.Products;
 
 using Empiria.Trade.Core;
@@ -18,8 +19,8 @@ using Empiria.Trade.Products.Adapters;
 namespace Empiria.Trade.Products {
 
   /// <summary>Represents a product.</summary>
-  //[PartitionedType(typeof(ProductType))]
-  public class Product : BaseObject {
+  [PartitionedType(typeof(ProductType))]
+  public class Product : Empiria.Products.Product {
 
     #region Constructors and parsers
 
@@ -37,177 +38,86 @@ namespace Empiria.Trade.Products {
       LoadData(data);
     }
 
-
-    static public Product Parse(int id) => ParseId<Product>(id);
-
-    static public Product Parse(string uid) => ParseKey<Product>(uid);
-
-    static public Product Empty => ParseEmpty<Product>();
-
-
     #endregion Constructors and parsers
 
     #region Properties
 
-    //public ProductType ProductType {
-    //  get {
-    //    return (ProductType) GetEmpiriaType();
-    //  }
-    //}
-
-
-    internal string Keywords {
-      get {
-        return EmpiriaString.BuildKeywords(ProductName, Code);
-      }
-    }
-
-
-    [DataField("ProductId")]
-    public int ProductId {
-      get; internal set;
-    }
-
-
-    [DataField("ProductUID")]
-    internal string ProductUID {
+    [DataField("BASE_PRODUCT_ID")]
+    internal Empiria.Products.Product BaseProduct {
       get; private set;
     }
 
 
-    [DataField("VendorProductUID")]
+    [DataField("VENDOR_ID")]
+    internal Empiria.Parties.Party Vendor {
+      get; private set;
+    }
+
+
     internal string VendorProductUID {
       get; private set;
     }
 
 
-    //[DataField("ProductTypeId")]
-    public int ProductTypeId {
-      get; internal set;
-    }
-
-
-    [DataField("PresentationId")]
     internal ProductPresentation ProductPresentation {
       get; private set;
     }
 
 
-    [DataField("InventoryOrderItemId")]
-    internal InventoryEntry InventoryEntry {
-      get; private set;
+    //internal InventoryEntry InventoryEntry {
+    //  get; private set;
+    //}
+
+
+    internal bool IsBaseProduct {
+      get; set;
     }
 
-
-    [DataField("VendorId")]
-    internal Party Vendor {
-      get; private set;
-    }
-
-
-    [DataField("ProductGroupId")]
-    internal ProductGroup ProductGroup {
-      get; private set;
-    }
-
-
-    [DataField("ProductSubgroupId")]
-    internal ProductSubgroup ProductSubgroup {
-      get; private set;
-    }
-
-
-    [DataField("ProductCode")]
-    internal string Code {
-      get; private set;
-    }
-
-
-    [DataField("ProductUPC")]
-    internal string UPC {
-      get; private set;
-    }
-
-
-    [DataField("SKU")]
-    internal string SKU {
-      get; private set;
-    }
-
-
-    [DataField("ProductName")]
-    internal string ProductName {
-      get; private set;
-    }
-
-
-    [DataField("ProductDescription")]
-    internal string ProductDescription {
-      get; private set;
-    }
-
-
-    [DataField("Attributes")]
-    internal string Attributes {
-      get; private set;
-    }
-
-
-    [DataField("PriceList1")]
     internal decimal PriceList1 {
       get; private set;
     }
 
 
-    [DataField("PriceList2")]
     internal decimal PriceList2 {
       get; private set;
     }
 
 
-    [DataField("PriceList3")]
     internal decimal PriceList3 {
       get; private set;
     }
 
 
-    [DataField("PriceList4")]
     internal decimal PriceList4 {
       get; private set;
     }
 
 
-    [DataField("PriceList5")]
     internal decimal PriceList5 {
       get; private set;
     }
 
 
-    [DataField("PriceList6")]
     internal decimal PriceList6 {
       get; private set;
     }
 
 
-    [DataField("PriceList7")]
     internal decimal PriceList7 {
       get; private set;
     }
 
 
-    [DataField("PriceList8")]
     internal decimal PriceList8 {
       get; private set;
     }
 
 
-    [DataField("PriceList9")]
     internal decimal PriceList9 {
       get; private set;
     }
 
 
-    [DataField("PriceList10")]
     internal decimal PriceList10 {
       get; private set;
     }
@@ -218,37 +128,62 @@ namespace Empiria.Trade.Products {
     }
 
 
-    [DataField("ProductWeight")]
-    internal decimal Weight {
-      get; private set;
+    public string Weight {
+      get {
+        return Attributes.Get("weight", string.Empty);
+      }
+      private set {
+        Attributes.SetIfValue("weight", value);
+      }
     }
 
 
-    [DataField("ProductLength")]
-    public decimal Length {
-      get; internal set;
+    public string Length {
+      get {
+        return Attributes.Get("length", string.Empty);
+      }
+      private set {
+        Attributes.SetIfValue("length", value);
+      }
     }
 
 
-    [DataField("FragileProduct")]
-    public bool FragileProduct {
-      get; internal set;
+    public string Hilos {
+      get {
+        return Attributes.Get("hilos", string.Empty);
+      }
+      private set {
+        Attributes.SetIfValue("hilos", value);
+      }
     }
 
 
-    [DataField("ProductStatus", Default = StateEnums.EntityStatus.Active)]
-    public StateEnums.EntityStatus Status {
-      get; internal set;
+    public string Paso {
+      get {
+        return Attributes.Get("paso", string.Empty);
+      }
+      private set {
+        Attributes.SetIfValue("paso", value);
+      }
     }
 
 
-    public string ProductImageUrl => $"http://apps.sujetsa.com.mx:8080/imagenes-productos/{this.Code}.jpg";
+    public string FragileProduct {
+      get {
+        return ExtensionData.Get("fragileProduct", string.Empty);
+      }
+      private set {
+        ExtensionData.SetIfValue("fragileProduct", value);
+      }
+    }
+
+
+    public string ProductImageUrl => $"http://apps.sujetsa.com.mx:8080/imagenes-productos/{this.InternalCode}.jpg";
 
 
     public List<ProductPresentationForSeach> Presentations {
       get; set;
     } = new List<ProductPresentationForSeach>();
-
 
     #endregion Properties
 
