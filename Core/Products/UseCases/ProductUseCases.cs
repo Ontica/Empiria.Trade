@@ -19,11 +19,10 @@ using Empiria.Trade.Products.Adapters;
 using Empiria.Trade.Products.Data;
 using Empiria.Trade.Products.Domain;
 
-namespace Empiria.Trade.Products.UseCases
-{
+namespace Empiria.Trade.Products.UseCases {
 
-    /// <summary>Use cases used to build Products.</summary>
-    public class ProductUseCases : UseCase {
+  /// <summary>Use cases used to build Products.</summary>
+  public class ProductUseCases : UseCase {
 
 
     #region Constructors and parsers
@@ -43,13 +42,14 @@ namespace Empiria.Trade.Products.UseCases
     #region Methods V2
 
     public async Task<FixedList<IProductEntryDto>> GetProductsList(ProductQuery query) {
-      var builder = new ProductBuilder();
+      var builder = new ProductBuilder(query);
 
-      FixedList<Empiria.Products.Product> products = await Task.Run(() => builder.GetProducts(query))
+      FixedList<Product> products = await Task.Run(() => builder.GetProducts())
                                             .ConfigureAwait(false);
 
       return ProductMapper.Map(products);
     }
+
 
     #endregion Methods V2
 
@@ -67,9 +67,9 @@ namespace Empiria.Trade.Products.UseCases
 
 
     public async Task<FixedList<IProductEntryDto>> GetProductsListV1(ProductQuery query) {
-      var builder = new ProductBuilder();
+      var builder = new ProductBuilder(query);
 
-      FixedList<Product> products = await Task.Run(() => builder.GetProductsList(query))
+      FixedList<Product> products = await Task.Run(() => builder.GetProductsList())
                                             .ConfigureAwait(false);
 
       return ProductMapper.MapToEntriesDto(products);
@@ -77,19 +77,19 @@ namespace Empiria.Trade.Products.UseCases
 
 
     public async Task<FixedList<IProductEntryDto>> GetProductsForPurchaseOrder(ProductQuery query) {
-      var builder = new ProductBuilder();
+      var builder = new ProductBuilder(query);
 
-      FixedList<Product> products = await Task.Run(() => builder.GetProductsForPurchaseOrder(query))
+      FixedList<Product> products = await Task.Run(() => builder.GetProductsForPurchaseOrder())
                                             .ConfigureAwait(false);
 
       return ProductMapper.MapToEntriesDto(products);
     }
 
-    
-    public async Task<FixedList<IProductEntryDto>> GetProductsForOrder(ProductQuery query) {
-      var builder = new ProductBuilder();
 
-      FixedList<Product> products = await Task.Run(() => builder.GetProductsForOrder(query))
+    public async Task<FixedList<IProductEntryDto>> GetProductsForOrder(ProductQuery query) {
+      var builder = new ProductBuilder(query);
+
+      FixedList<Product> products = await Task.Run(() => builder.GetProductsForOrder())
                                             .ConfigureAwait(false);
 
       return ProductMapper.MapToEntriesDto(products);
@@ -120,24 +120,13 @@ namespace Empiria.Trade.Products.UseCases
 
     static internal FixedList<ProductPresentation> GetProductPresentations() {
 
-      var presentations = ProductPresentation.List().Where(x=>x.Id>0).ToList();
+      var presentations = ProductPresentation.List().Where(x => x.Id > 0).ToList();
       return presentations.ToFixedList();
     }
 
 
-    internal VendorProduct GetVendorProduct(string vendorProductUid) {
-      Assertion.Require(vendorProductUid, "vendorProductUid");
-
-      var vendorProduct = VendorProduct.Parse(vendorProductUid);
-
-      var builder = new ProductBuilder();
-
-      return builder.GetStockAndAddToVendorProduct(vendorProduct);
-    }
-
-
     static public FixedList<VendorProduct> GetVendorProductByProduct(string productsIn) {
-      
+
       return ProductDataService.GetVendorProductByProduct(productsIn);
     }
 

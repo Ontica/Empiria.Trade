@@ -20,22 +20,30 @@ namespace Empiria.Trade.Products.Domain {
 
     #region Constructors and parsers
 
-    public ProductBuilder() {
-      
-    }
+    private readonly ProductQuery query;
 
+
+    public ProductBuilder(ProductQuery _query) {
+      query = _query;
+    }
 
     #endregion Constructors and parsers
 
 
     #region Public methods V2
 
-    internal FixedList<Empiria.Products.Product> GetProducts(ProductQuery query) {
+    internal FixedList<Product> GetProducts() {
 
-      return ProductDataService.GetProducts(query.Keywords);
+      FixedList<Product> products = ProductDataService.GetProducts(query.Keywords);
+
+      var helper = new ProductHelper(query);
+
+      FixedList<Product> productsWithPresentations = helper.GetBaseProductsWithPresentations(products);
+
+      return productsWithPresentations;
     }
 
-    
+
     #endregion Public methods V2
 
     #region Public methods
@@ -46,15 +54,15 @@ namespace Empiria.Trade.Products.Domain {
     }
 
 
-    internal FixedList<Product> GetProductsForOrder(ProductQuery query) {
+    internal FixedList<Product> GetProductsForOrder() {
 
       FixedList<Product> products = ProductDataService.GetProductsForOrder(query);
 
       var helper = new ProductHelper(query);
 
       FixedList<Product> productsByStock = helper.GetProductsByStock(products);
-      
-      ValidateToGetPriceList(productsByStock, query);
+
+      ValidateToGetPriceList(productsByStock);
 
       FixedList<Product> productsByCode = helper.GetProductsByCode(productsByStock);
 
@@ -64,7 +72,7 @@ namespace Empiria.Trade.Products.Domain {
     }
 
 
-    internal FixedList<Product> GetProductsForPurchaseOrder(ProductQuery query) {
+    internal FixedList<Product> GetProductsForPurchaseOrder() {
 
       FixedList<Product> products = ProductDataService.GetProductsList(query.Keywords);
 
@@ -78,9 +86,9 @@ namespace Empiria.Trade.Products.Domain {
 
       return orderedProducts;
     }
-    
 
-    internal FixedList<Product> GetProductsList(ProductQuery query) {
+
+    internal FixedList<Product> GetProductsList() {
 
       FixedList<Product> products = ProductDataService.GetProductsList(query.Keywords);
 
@@ -88,7 +96,7 @@ namespace Empiria.Trade.Products.Domain {
 
       FixedList<Product> productsByStock = helper.GetProductsByStock(products);
 
-      ValidateToGetPriceList(productsByStock, query);
+      ValidateToGetPriceList(productsByStock);
 
       FixedList<Product> productsByCode = helper.GetProductsByCode(productsByStock);
 
@@ -97,25 +105,13 @@ namespace Empiria.Trade.Products.Domain {
       return orderedProducts;
     }
 
-
-    internal VendorProduct GetStockAndAddToVendorProduct(VendorProduct vendorProduct) {
-
-      var inventoryEntry = CataloguesData.GetInventoryEntry(vendorProduct.Id);
-
-      if (inventoryEntry != null) {
-        vendorProduct.InputQuantity = inventoryEntry.InputQuantity;
-      }
-
-      return vendorProduct;
-    }
-
     #endregion Public methods
 
 
     #region Private methods
 
 
-    private void ValidateToGetPriceList(FixedList<Product> products, ProductQuery query) {
+    private void ValidateToGetPriceList(FixedList<Product> products) {
 
       var helper = new ProductHelper(query);
 

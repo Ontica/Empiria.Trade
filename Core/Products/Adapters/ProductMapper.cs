@@ -23,27 +23,27 @@ namespace Empiria.Trade.Products.Adapters {
 
     #region Public methods V2
 
-    static internal FixedList<IProductEntryDto> Map(FixedList<Empiria.Products.Product> products) {
+    static internal FixedList<IProductEntryDto> Map(FixedList<Product> products) {
 
-      var mappedItems = products.Select((x) => MapProduct((Empiria.Products.Product) x));
+      var mappedItems = products.Select((x) => MapProduct((Product) x));
 
       return new FixedList<IProductEntryDto>(mappedItems);
     }
 
 
-    static private IProductEntryDto MapProduct(Empiria.Products.Product product) {
+    static private IProductEntryDto MapProduct(Product product) {
       var dto = new ProductForSearchingDto();
 
       dto.ProductUID = product.UID;
       dto.ProductCode = product.InternalCode;
       dto.Description = product.Description;
-      dto.ProductType = GetProductType(product);
-      dto.Presentations = GetDefaultPresentation(product);
+      dto.ProductType = GetProductsType(product);
+      dto.Presentations = product.Presentations.ToFixedList();
       return dto;
     }
 
 
-    static private ProductTypeDto GetProductType(Empiria.Products.Product product) {
+    static private ProductTypeDto GetProductsType(Product product) {
 
       return new ProductTypeDto {
         ProductTypeUID = product.ProductType.UID,
@@ -52,7 +52,7 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
-    static private FixedList<ProductPresentationForSeach> GetPresentations(Empiria.Products.Product product) {
+    static private FixedList<ProductPresentationForSeach> GetProductPresentations(Product product) {
 
       var productSubgroup = GetProductGroup(product);
 
@@ -159,9 +159,9 @@ namespace Empiria.Trade.Products.Adapters {
     static public ProductForSearchingDto MapEntry(Product entry) {
       var dto = new ProductForSearchingDto();
 
-      dto.ProductUID = entry.ProductUID;
-      dto.ProductCode = entry.Code;
-      dto.Description = entry.ProductName;
+      dto.ProductUID = entry.UID;
+      dto.ProductCode = entry.InternalCode;
+      dto.Description = entry.Name;
       dto.ProductImageUrl = entry.ProductImageUrl;
       dto.ProductType = GetProductType(entry);
       dto.Presentations = GetPresentations(entry);
@@ -176,8 +176,8 @@ namespace Empiria.Trade.Products.Adapters {
 
       var attributes = GetAttributes(entry);
 
-      type.ProductTypeUID = "ddddd-dc17-49f5-b378-aa692dc21cdd";
-      type.Name = entry.ProductGroup.Name; //GroupName
+      type.ProductTypeUID = entry.ProductType.UID;
+      type.Name = entry.ProductCategory.Name; //Group/Subgroup - Name
       type.Attributes = attributes;
 
       return type;
@@ -186,17 +186,15 @@ namespace Empiria.Trade.Products.Adapters {
 
     static private FixedList<Attributes> GetAttributes(Product entry) {
 
-      AttributesList attrs = new AttributesList();
+      //AttributesList attrs = new AttributesList();
       try {
-        if (entry.Attributes != "") {
-          attrs = JsonConvert.DeserializeObject<AttributesList>(entry.Attributes);
-        }
-
-        return attrs.Attributes.ToFixedList();
-
+        //if (entry.Attributes != "") {
+        //  attrs = JsonConvert.DeserializeObject<AttributesList>(entry.Attributes);
+        //} return attrs.Attributes.ToFixedList();
+        return new FixedList<Attributes>();
       } catch (Exception e) {
 
-        throw new Exception($"{entry.Code}. {e.Message}", e);
+        throw new Exception($"{entry.InternalCode}. {e.Message}", e);
       }
 
 

@@ -31,6 +31,60 @@ namespace Empiria.Trade.Products.Domain {
     }
 
 
+    #region Public methods V2
+
+    internal FixedList<Product> GetBaseProductsWithPresentations(FixedList<Product> productsList) {
+
+      List<Product> productsWithPresentation= new List<Product>();
+
+      var baseProducts = productsList.FindAll(x=>x.BaseProduct.Id == -1 || x.BaseProduct.Id == x.Id);
+
+      foreach (var baseProduct in baseProducts) {
+
+        var childProducts = productsList.FindAll(x=>x.BaseProduct.Id == baseProduct.Id);
+
+        GetProductPresentations(baseProduct, childProducts);
+
+        productsWithPresentation.Add(baseProduct);
+      }
+
+      return productsWithPresentation.ToFixedList();
+    }
+
+    
+    private void GetProductPresentations(Product baseProduct, FixedList<Product> childProducts) {
+      
+      foreach (var child in childProducts) {
+        var presentation = new ProductPresentationForSeach();
+        presentation.PresentationUID = child.UID;
+        presentation.Description = child.Description;
+        //presentation.Units = 1;
+        presentation.Vendors = GetVendorsByPresentation(child);
+
+        baseProduct.Presentations.Add(presentation);
+      }
+
+    }
+
+    private List<VendorDto> GetVendorsByPresentation(Product child) {
+
+      List<VendorDto> vendors = new List<VendorDto>();
+
+      var vendor = new VendorDto {
+        VendorUID = child.Vendor.UID,
+        VendorProductUID = child.Vendor.UID,
+        VendorName = child.Vendor.Name,
+      };
+
+      vendors.Add(vendor);
+
+      return vendors;
+    }
+
+
+    #endregion Public methods V2
+
+
     #region public methods
 
 
@@ -92,8 +146,8 @@ namespace Empiria.Trade.Products.Domain {
         product.Presentations = product.Presentations.OrderBy(x => x.Units).ToList();
       }
 
-      return productsByCode.OrderBy(p => p.Code)
-                           .ThenBy(p => p.ProductName)
+      return productsByCode.OrderBy(p => p.InternalCode)
+                           .ThenBy(p => p.Name)
                            .ToList().ToFixedList();
     }
 
@@ -115,7 +169,7 @@ namespace Empiria.Trade.Products.Domain {
 
     private void AssingHashProductByCode(EmpiriaHashTable<Product> hashProducts, Product product) {
 
-      string hash = $"{product.Code}";
+      string hash = $"{product.InternalCode}";
 
       Product productEntry;
 
@@ -140,7 +194,7 @@ namespace Empiria.Trade.Products.Domain {
     private void AssingHashProductByCodeForPurchaseOrder(
       EmpiriaHashTable<Product> hashProducts, Product product) {
 
-      string hash = $"{product.Code}";
+      string hash = $"{product.InternalCode}";
 
       Product productEntry;
 
@@ -253,7 +307,7 @@ namespace Empiria.Trade.Products.Domain {
       FixedList<Product> productsByStock = new FixedList<Product>(products);
 
       if (query.OnStock) {
-        productsByStock = products.Where(x => x.InventoryEntry.InputQuantity > 0).ToFixedList();
+        //productsByStock = products.Where(x => x.InventoryEntry.InputQuantity > 0).ToFixedList();
       }
 
       return productsByStock;

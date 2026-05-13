@@ -20,12 +20,12 @@ namespace Empiria.Trade.Products.Data {
 
     #region Public methods V2
 
-    internal static FixedList<Empiria.Products.Product> GetProducts(string keywords) {
+    internal static FixedList<Product> GetProducts(string keywords) {
 
       string whereClauses = string.Empty;
 
       if (keywords != string.Empty) {
-        whereClauses = $"WHERE {SearchExpression.ParseAndLikeKeywords("Product_Keywords", keywords)}";
+        whereClauses = $"WHERE {SearchExpression.ParseOrLikeKeywords("Product_Keywords", keywords)}";
       }
 
       var sql = "SELECT * FROM OMS_Products " +
@@ -33,7 +33,7 @@ namespace Empiria.Trade.Products.Data {
 
       var dataOperation = DataOperation.Parse(sql);
 
-      return DataReader.GetFixedList<Empiria.Products.Product>(dataOperation);
+      return DataReader.GetFixedList<Product>(dataOperation);
 
     }
 
