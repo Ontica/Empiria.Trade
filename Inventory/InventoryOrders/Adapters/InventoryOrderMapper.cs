@@ -9,15 +9,86 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Collections.Generic;
+
+using Empiria.Inventory;
+using Empiria.Orders;
 using Empiria.Trade.Core;
 using Empiria.Trade.Core.Common;
-using Empiria.Trade.Inventory.Domain;
+
+using Empiria.StateEnums;
 
 namespace Empiria.Trade.Inventory.Adapters {
 
 
   /// <summary>Methods used to map Inventory order.</summary>
   static internal class InventoryOrderMapper {
+
+    #region Public methods V2
+
+    static public InventoryOrderDataDto InventoryOrderDataDto(FixedList<InventoryOrder> list,
+                                                              InventoryOrderQuery query) {
+
+      return new InventoryOrderDataDto {
+        Query = query,
+        Columns = GetColumns(),
+        Entries = MapInventoryOrderDescriptors(list)
+      };
+    }
+
+
+    static internal FixedList<InventoryOrderDescriptorDto> MapInventoryOrderDescriptors(
+                                                            FixedList<InventoryOrder> orders) {
+      return orders.Select(x => MapToDescriptor(x))
+                   .ToFixedList();
+    }
+
+
+    static private InventoryOrderDescriptorDto MapToDescriptor(InventoryOrder order) {
+
+      return new InventoryOrderDescriptorDto() {
+        UID = order.UID,
+        OrderTypeName = order.OrderType.DisplayName,
+        OrderNo = order.OrderNo,
+        InventoryTypeName = order.InventoryType.Name,
+        WarehouseName = order.Warehouse.Name,
+        ResponsibleName = order.Responsible.IsEmptyInstance ? "Sin Asignar" : order.Responsible.Name,
+        RequestedByName = order.RequestedBy.Name,
+        Description = order.Description,
+        DocumentNo = GetDocumentNo(order),
+        StakeholderName = GetStakeholderName(order),
+        PostedByName = order.PostedBy.Name,
+        PostingTime = order.PostingTime,
+        Status = order.Status.GetName()
+      };
+    }
+
+
+    static private string GetDocumentNo(InventoryOrder inventoryOrder) {
+
+      if (inventoryOrder.ParentOrder.Id == -1) {
+        return string.Empty;
+      }
+
+      var order = Order.Parse(inventoryOrder.ParentOrder.Id);
+      return order.OrderNo;
+    }
+
+
+    private static string GetStakeholderName(InventoryOrder inventoryOrder) {
+      if (inventoryOrder.ParentOrder.Id == -1) {
+        return string.Empty;
+      }
+
+      var order = Order.Parse(inventoryOrder.ParentOrder.Id);
+
+      if (order.Category.UID == "a40c65bd-9a56-48eb-a8bf-f9245ecd3004") {
+        return order.Provider.Name;
+      } else {
+        return order.Beneficiary.Name;
+      }
+    }
+
+    #endregion Public methods V2
 
 
     #region Public methods
@@ -67,7 +138,7 @@ namespace Empiria.Trade.Inventory.Adapters {
       return new InventoryOrderDataDto {
         Query = query,
         Columns = GetColumns(),
-        Entries = MapList(list)
+        EntriesV1 = MapList(list)
       };
     }
 
@@ -81,12 +152,14 @@ namespace Empiria.Trade.Inventory.Adapters {
 
       List<DataTableColumn> columns = new List<DataTableColumn>();
 
-      columns.Add(new DataTableColumn("inventoryOrderTypeName", "Tipo", "text"));
-      columns.Add(new DataTableColumn("inventoryOrderNo", "Número de orden", "text-link"));
+      columns.Add(new DataTableColumn("inventoryTypeName", "Tipo", "text"));
+      columns.Add(new DataTableColumn("orderNo", "Orden", "text-link"));
+      columns.Add(new DataTableColumn("warehouseName", "Almacén", "text"));
       columns.Add(new DataTableColumn("responsibleName", "Responsable", "text"));
-      columns.Add(new DataTableColumn("assignedToName", "Asignado a", "text"));
-      columns.Add(new DataTableColumn("postingTime", "Fecha registro", "date"));
-      columns.Add(new DataTableColumn("inventoryStatus", "Estatus", "text-tag"));
+      columns.Add(new DataTableColumn("documentNo", "No. Documento", "text"));
+      columns.Add(new DataTableColumn("stakeholderName", "Cliente/Proveedor", "text"));
+      columns.Add(new DataTableColumn("postingTime", "Registro", "date"));
+      columns.Add(new DataTableColumn("status", "Estatus", "text-tag"));
 
       return columns.ToFixedList();
     }
@@ -119,16 +192,14 @@ namespace Empiria.Trade.Inventory.Adapters {
       var postedBy = Party.Parse(entry.PostedById);
 
       dto.UID = entry.InventoryOrderUID;
-      dto.InventoryOrderTypeName = entry.InventoryOrderType.Name;
-      dto.InventoryOrderNo = entry.InventoryOrderNo;
-      dto.ExternalObjectReferenceName = "External reference"; //External.Parse(entry.ExternalObjectReferenceId).UID;
+      dto.InventoryTypeName = entry.InventoryOrderType.Name;
+      dto.OrderNo = entry.InventoryOrderNo;
       dto.ResponsibleName = responsible.Name;
-      dto.AssignedToName = assignedTo.Name;
-      dto.Notes = entry.Notes;
-      dto.ClosingTime = entry.ClosingTime;
+      dto.ResponsibleName = assignedTo.Name;
+      dto.Description = entry.Notes;
       dto.PostingTime = entry.PostingTime;
       dto.PostedByName = postedBy.Name;
-      dto.InventoryStatus = entry.Status;
+      dto.Status = entry.Status.ToString();
 
       return dto;
     }

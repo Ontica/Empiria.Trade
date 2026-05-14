@@ -10,6 +10,8 @@
 using System;
 using System.Net.NetworkInformation;
 using Empiria.Data;
+using Empiria.Inventory;
+using Empiria.StateEnums;
 using Empiria.Trade.Core;
 using Empiria.Trade.Inventory;
 using Empiria.Trade.Inventory.Adapters;
@@ -22,11 +24,31 @@ namespace Empiria.Trade.Inventory.Data {
   /// <summary>Provides data read methods for inventory order.</summary>
   internal class InventoryOrderData {
 
+    #region Public methods V2
+
+    internal static FixedList<InventoryOrder> SearchInventoryOrders(string filter, string sort) {
+
+      var sql = "SELECT * FROM OMS_Orders";
+
+      if (!string.IsNullOrWhiteSpace(filter)) {
+        sql += $" WHERE {filter}";
+      }
+      if (!string.IsNullOrWhiteSpace(sort)) {
+        sql += $" ORDER BY {sort}";
+      }
+
+      var op = DataOperation.Parse(sql);
+
+      return DataReader.GetFixedList<InventoryOrder>(op);
+    }
+
+    #endregion Public methods V2
+
 
     #region Public methods
 
 
-    static internal void CloseInventoryOrder(int inventoryOrderId, InventoryStatus status) {
+    static internal void CloseInventoryOrder(int inventoryOrderId, EntityStatus status) {
 
       string sql = $"UPDATE TRDInventoryOrders SET " +
                    $"InventoryOrderStatus = '{(char) status}', " +
@@ -42,7 +64,7 @@ namespace Empiria.Trade.Inventory.Data {
     static internal void CloseInventoryOrderForSalesOrder(int inventoryOrderTypeId, int referenceId) {
 
       string sql = $"UPDATE TRDInventoryOrders SET " +
-                   $"InventoryOrderStatus = '{(char) InventoryStatus.Cerrado}' " +
+                   $"InventoryOrderStatus = '{(char) EntityStatus.Closed}' " +
                    $",ClosingTime = '{ConvertDateTimeToString()}' " +
                    $"WHERE InventoryOrderTypeId = {inventoryOrderTypeId} " +
                    $"AND ReferenceId = {referenceId} ";
@@ -56,7 +78,7 @@ namespace Empiria.Trade.Inventory.Data {
     internal static void CloseInventoryOrderItemsForSales(int inventoryOrderId) {
 
       string sql = $"UPDATE TRDInventoryOrderItems SET " +
-                   $"InventoryOrderItemStatus = '{(char) InventoryStatus.Cerrado}' " +
+                   $"InventoryOrderItemStatus = '{(char) EntityStatus.Closed}' " +
                    $",OutputQuantity = InProcessOutputQuantity " +
                    $",InProcessOutputQuantity = 0 " +
                    $",InventoryOrderItemNotes = 'APLICADO' " +
@@ -73,7 +95,7 @@ namespace Empiria.Trade.Inventory.Data {
       int inventoryOrderItemId, decimal quantityDifference) {
 
       string sql = $"UPDATE TRDInventoryOrderItems SET " +
-                   $"InventoryOrderItemStatus = '{(char) InventoryStatus.Cerrado}' " +
+                   $"InventoryOrderItemStatus = '{(char) EntityStatus.Closed}' " +
                    $"{GetQuantityClauses(quantityDifference)} " +
                    $",ClosingTime = '{ConvertDateTimeToString()}' " +
                    $"WHERE InventoryOrderItemId = {inventoryOrderItemId} ";

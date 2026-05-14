@@ -142,41 +142,47 @@ namespace Empiria.Trade.Inventory.Adapters {
     }
 
 
-    public string InventoryOrderTypeName {
+    public string OrderTypeName {
       get; set;
-    } = string.Empty;
-
-
-    public string InventoryOrderNo {
-      get;
-      internal set;
     }
 
 
-    public string ExternalObjectReferenceName {
-      get;
-      internal set;
-    } = string.Empty;
+    public string OrderNo {
+      get; set;
+    }
+
+
+    public string InventoryTypeName {
+      get; set;
+    }
+
+
+    public string WarehouseName {
+      get; set;
+    }
 
 
     public string ResponsibleName {
-      get;
-      internal set;
-    } = string.Empty;
-
-
-    public string AssignedToName {
-      get;
-      internal set;
-    } = string.Empty;
-
-
-    public string Notes {
       get; set;
     }
 
 
-    public DateTime ClosingTime {
+    public string RequestedByName {
+      get; set;
+    }
+
+
+    public string Description {
+      get; set;
+    }
+
+
+    public string DocumentNo {
+      get; set;
+    }
+
+
+    public string PostedByName {
       get; set;
     }
 
@@ -186,14 +192,14 @@ namespace Empiria.Trade.Inventory.Adapters {
     }
 
 
-    public string PostedByName {
+    public string Status {
+      get; set;
+    }
+
+
+    public string StakeholderName {
       get;
       internal set;
-    } = string.Empty;
-
-
-    public InventoryStatus InventoryStatus {
-      get; set;
     }
 
 

@@ -8,6 +8,8 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using DocumentFormat.OpenXml.Office2013.Drawing.ChartStyle;
+using Empiria.StateEnums;
 using Empiria.Trade.Core;
 using Empiria.Trade.Inventory.Adapters;
 
@@ -46,7 +48,7 @@ namespace Empiria.Trade.Inventory.Data {
           $"{SearchExpression.ParseAndLikeKeywords("InventoryOrderKeywords", clauses.Keywords)}");
       }
 
-      if (clauses.InventoryOrderStatus != InventoryStatus.Todos) {
+      if (clauses.InventoryOrderStatus != EntityStatus.All) {
         filters.AppendAnd($"InventoryOrderStatus = '{(char)clauses.InventoryOrderStatus}'");
       }
 

@@ -9,6 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System.Linq;
 using Empiria.Services;
+using Empiria.StateEnums;
 using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Core.Inventories.Adapters;
 using Empiria.Trade.Inventory.Adapters;
@@ -34,6 +35,25 @@ namespace Empiria.Trade.Inventory.UseCases {
 
     #endregion Constructors and parsers
 
+
+    #region Public methods V2
+
+
+    public InventoryOrderDataDto SearchInventoryOrder(InventoryOrderQuery query) {
+      Assertion.Require(query, nameof(query));
+
+      var filter = query.MapToFilterString();
+      var sort = query.MapToSortString();
+
+      var orders = InventoryOrderData.SearchInventoryOrders(filter, sort);
+
+      return InventoryOrderMapper.InventoryOrderDataDto(orders, query);
+    }
+
+
+    #endregion Public methods V2
+
+
     #region Public methods
 
 
@@ -44,7 +64,7 @@ namespace Empiria.Trade.Inventory.UseCases {
       var inventoryOrderId = InventoryOrderEntry.Parse(inventoryOrderUID).Id;
 
       InventoryOrderData.CloseInventoryOrder(
-        inventoryOrderId, InventoryStatus.Cerrado);
+        inventoryOrderId, EntityStatus.Closed);
 
       var inventoryItems = InventoryOrderData.GetInventoryItemsByInventoryOrder(inventoryOrderId);
 

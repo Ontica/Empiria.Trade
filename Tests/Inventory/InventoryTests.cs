@@ -8,13 +8,13 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-using Empiria.Trade.Sales.ShippingAndHandling.UseCases;
-using Empiria.Trade.Sales.ShippingAndHandling;
-using Xunit;
-using Empiria.Trade.Inventory.UseCases;
-using Empiria.Trade.Inventory;
+
+using Empiria.StateEnums;
+
 using Empiria.Trade.Inventory.Adapters;
-using System.Collections.Generic;
+using Empiria.Trade.Inventory.UseCases;
+
+using Xunit;
 
 namespace Empiria.Trade.Tests.Procurement {
 
@@ -28,6 +28,28 @@ namespace Empiria.Trade.Tests.Procurement {
     }
 
     #endregion Initialization
+
+    #region Facts V2
+
+    [Fact]
+    public void SearchInventoryOrderTest() {
+
+      var usecase = InventoryOrderUseCases.UseCaseInteractor();
+
+      InventoryOrderQuery query = new InventoryOrderQuery {
+        Keywords = "",
+        WarehouseUID = "",
+        InventoryTypeUID = "",
+        Status = EntityStatus.All
+      };
+
+      InventoryOrderDataDto sut = usecase.SearchInventoryOrder(query);
+
+      Assert.NotNull(sut);
+    }
+
+    #endregion Facts V2
+
 
     #region Facts
 
@@ -119,10 +141,10 @@ namespace Empiria.Trade.Tests.Procurement {
       var usecase = InventoryOrderUseCases.UseCaseInteractor();
 
       InventoryOrderQuery query = new InventoryOrderQuery {
-        InventoryOrderTypeUID = "5851e71b-3a1f-40ab-836f-ac3d2c9408de",
+        InventoryTypeUID = "5851e71b-3a1f-40ab-836f-ac3d2c9408de",
         AssignedToUID = "",
         Keywords = "OCFI000000008",
-        Status = InventoryStatus.Cerrado
+        Status = EntityStatus.Closed
       };
 
       InventoryOrderDataDto sut = usecase.SearchInventoryOrders(query);

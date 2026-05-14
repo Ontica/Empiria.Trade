@@ -30,7 +30,12 @@ namespace Empiria.Trade.Inventory.Adapters {
     } = new FixedList<DataTableColumn>();
 
 
-    public FixedList<IInventoryOrderDto> Entries {
+    public FixedList<InventoryOrderDescriptorDto> Entries {
+      get; set;
+    } = new FixedList<InventoryOrderDescriptorDto>();
+
+
+    public FixedList<IInventoryOrderDto> EntriesV1 {
       get; set;
     } = new FixedList<IInventoryOrderDto>();
 

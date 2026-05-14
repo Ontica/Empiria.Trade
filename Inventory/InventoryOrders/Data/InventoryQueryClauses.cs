@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using Empiria.StateEnums;
 using Empiria.Trade.Core;
 using Empiria.Trade.Inventory.Adapters;
 
@@ -63,9 +64,9 @@ namespace Empiria.Trade.Inventory.Data {
     } = string.Empty;
 
 
-    internal InventoryStatus InventoryOrderStatus {
+    internal EntityStatus InventoryOrderStatus {
       get; set;
-    } = InventoryStatus.Todos;
+    } = EntityStatus.All;
 
 
     #region Public methods
@@ -73,8 +74,8 @@ namespace Empiria.Trade.Inventory.Data {
 
     private void GetClausesForInventoryOrder(InventoryOrderQuery query) {
 
-      if (query.InventoryOrderTypeUID != string.Empty) {
-        this.InventoryOrderTypeId = InventoryOrderType.Parse(query.InventoryOrderTypeUID).Id;
+      if (query.InventoryTypeUID != string.Empty) {
+        this.InventoryOrderTypeId = InventoryOrderType.Parse(query.InventoryTypeUID).Id;
       }
       if (query.AssignedToUID != string.Empty) {
         this.AssignedToId = Party.Parse(query.AssignedToUID).Id;
@@ -82,7 +83,7 @@ namespace Empiria.Trade.Inventory.Data {
       if (query.Keywords != string.Empty) {
         this.Keywords = query.Keywords;
       }
-      if (query.Status != InventoryStatus.Todos) {
+      if (query.Status != EntityStatus.All) {
         this.InventoryOrderStatus = query.Status;
       }
     }
