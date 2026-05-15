@@ -16,6 +16,18 @@ namespace Empiria.Trade.Core {
   /// <summary>Provides data read methods for inventory.</summary>
   internal class InventoryData {
 
+    internal static FixedList<InventoryEntry> GetInventoryEntriesByOrderItem(InventoryOrderItem orderItem) {
+
+      var sql = $"SELECT * FROM OMS_Inventory_Entries " +
+                $"WHERE Inv_Entry_Status != 'X' " +
+                $"AND Inv_Entry_Order_Id = {orderItem.Order.Id} " +
+                $"AND Inv_Entry_Order_Item_Id = {orderItem.Id} ";
+
+      var op = DataOperation.Parse(sql);
+
+      return DataReader.GetFixedList<InventoryEntry>(op);
+    }
+
 
     static internal FixedList<SalesInventoryStock> GetInventoryStockByVendorProduct(
                                         int vendorProductId, string warehouseBinClauses) {
@@ -57,6 +69,55 @@ namespace Empiria.Trade.Core {
       return filters.ToString().Length > 0 ? $"WHERE {filters}" : "";
     }
 
+
+    internal static decimal GetProductPriceFromHistoricCost(string productName) {
+
+      var productKey = productName.Split('-');
+
+      var sql = $"SELECT top 1 Costo6  FROM Historic_Cost_Initial where Clave = '{productKey[0]}'" +
+                $"  order by fecha desc ";
+
+      var op = DataOperation.Parse(sql);
+
+      return DataReader.GetScalar<decimal>(op);
+
+    }
+
+
+    internal static decimal GetProductPriceFromVirtualWarehouse(int productId) {
+
+      var sql = $"SELECT TOP  1 Inv_Entry_Input_Cost FROM " +
+                $"OMS_Inventory_Entries " +
+                $"where Inv_Entry_Order_Id = -10 and Inv_Entry_Product_Id = {productId} " +
+                $"order by Inv_Entry_Time ";
+
+      var op = DataOperation.Parse(sql);
+
+      return DataReader.GetScalar<decimal>(op);
+    }
+
+
+    internal static void WriteInventoryEntry(InventoryEntry entry) {
+
+      var op = DataOperation.Parse("write_OMS_Inventory_Entry",
+          entry.Id, entry.UID,
+          entry.InventoryEntryTypeId,
+          entry.Order.Id,
+          entry.OrderItem.Id,
+          entry.Product.Id,
+          entry.Sku.Id,
+          entry.Location.Id,
+          entry.Observations,
+          entry.Unit.Id,
+          entry.InputQuantity,
+          entry.InputCost, entry.OutputQuantity,
+          entry.OutputCost, entry.CountingQuantity, entry.CountingCost,
+          entry.EntryTime, entry.Tags, entry.ExtData,
+          entry.Keywords, entry.Position, entry.PostedBy.Id,
+          entry.PostingTime, (char) entry.Status);
+
+      DataWriter.Execute(op);
+    }
 
     #region Private methods
 
