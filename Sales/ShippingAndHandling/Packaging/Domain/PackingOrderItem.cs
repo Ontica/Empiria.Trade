@@ -39,7 +39,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling
 
 
     public PackingOrderItem(string orderUID, string packingItemUID,
-                            InventoryOrderItem inventory, MissingItemField missingItemFields) {
+                            Empiria.Trade.Inventory.InventoryOrderItem inventory, MissingItemField missingItemFields) {
 
       MapToPackagingOrderItem(orderUID, packingItemUID, inventory, missingItemFields);
 
@@ -87,7 +87,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling
 
 
     [DataField("InventoryEntryId")]
-    public InventoryOrderItem InventoryOrderItem {
+    public Empiria.Trade.Inventory.InventoryOrderItem InventoryOrderItem {
       get;
       internal set;
     }
@@ -123,7 +123,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling
 
 
     private void MapToPackagingOrderItem(string orderUID, string packingItemUID,
-                  InventoryOrderItem inventory, MissingItemField missingItemFields) {
+                  Empiria.Trade.Inventory.InventoryOrderItem inventory, MissingItemField missingItemFields) {
 
       var warehouseBin = WarehouseBin.Parse(missingItemFields.WarehouseBinUID);
       var orderItem = OrderItem.Parse(missingItemFields.orderItemUID);

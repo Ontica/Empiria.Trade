@@ -167,11 +167,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
       var assignedTo = Party.Parse(pickingData.AssignedToId);
       
       picking.OrderUID = pickingData.OrderUID;
-      picking.InventoryOrderNo = pickingData.InventoryOrderNo;
-      picking.InventoryOrderType = new NamedEntityDto(inventoryType.UID, inventoryType.Name);
+      //picking.InventoryOrderNo = pickingData.InventoryOrderNo;
+      //picking.InventoryOrderType = new NamedEntityDto(inventoryType.UID, inventoryType.Name);
       picking.Responsible = new NamedEntityDto(responsible.UID, responsible.Name);
-      picking.AssignedTo = new NamedEntityDto(assignedTo.UID, assignedTo.Name);
-      picking.Notes = pickingData.Notes;
+      //picking.AssignedTo = new NamedEntityDto(assignedTo.UID, assignedTo.Name);
+      //picking.Notes = pickingData.Notes;
       return picking;
     }
 

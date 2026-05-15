@@ -39,7 +39,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
     #region Public methods
 
 
-    internal InventoryOrderItem GetInventoryEntries(string orderItemUID, string warehouseBinUID) {
+    internal Empiria.Trade.Inventory.InventoryOrderItem GetInventoryEntries(string orderItemUID, string warehouseBinUID) {
 
       var orderItem = OrderItem.Parse(orderItemUID);
       var warehouseBinId = WarehouseBin.Parse(warehouseBinUID).Id;
