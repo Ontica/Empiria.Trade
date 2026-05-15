@@ -33,7 +33,7 @@ namespace Empiria.Trade.Inventory {
     static public InventoryOrderEntry Empty => ParseEmpty<InventoryOrderEntry>();
 
 
-    public InventoryOrderEntry(InventoryOrderFields fields, string inventoryOrderUID) {
+    public InventoryOrderEntry(Adapters.InventoryOrderFields fields, string inventoryOrderUID) {
 
       MapToInventoryOrderEntry(fields, inventoryOrderUID);
     }
@@ -127,10 +127,10 @@ namespace Empiria.Trade.Inventory {
     }
 
 
-    [DataField("InventoryOrderStatus", Default = InventoryStatus.Abierto)]
-    internal InventoryStatus Status {
+    [DataField("InventoryOrderStatus", Default = Adapters.InventoryStatus.Abierto)]
+    internal Adapters.InventoryStatus Status {
       get; set;
-    } = InventoryStatus.Abierto;
+    } = Adapters.InventoryStatus.Abierto;
 
 
     internal FixedList<InventoryOrderItem> InventoryOrderItems {
@@ -172,7 +172,7 @@ namespace Empiria.Trade.Inventory {
     }
 
 
-    private void MapToInventoryOrderEntry(InventoryOrderFields fields, string inventoryOrderUID) {
+    private void MapToInventoryOrderEntry(Adapters.InventoryOrderFields fields, string inventoryOrderUID) {
 
       this.InventoryOrderType = InventoryOrderType.Parse(fields.InventoryOrderTypeUID);
 
@@ -190,7 +190,7 @@ namespace Empiria.Trade.Inventory {
                           Party.Parse(fields.AssignedToUID).Id;
       this.Notes = fields.Notes;
       this.InventoryOrderExtData = "";
-      this.Status = InventoryStatus.Abierto;
+      this.Status = Adapters.InventoryStatus.Abierto;
 
       this.PostedById = ExecutionServer.CurrentUserId;
       this.ClosingTime = new DateTime(2049, 01, 01);

@@ -8,29 +8,68 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using Empiria.Inventory.Adapters;
+using Empiria.StateEnums;
 
 namespace Empiria.Trade.Inventory.Adapters {
+
+  /// <summary>Output DTO used to return inventory type.</summary>
+  public class InventoryTypeDto {
+
+    public string UID {
+      get; internal set;
+    }
+
+    public string Name {
+      get; internal set;
+    }
+
+    public InventoryTypeRulesDto Rules {
+      get; internal set;
+    }
+
+  } // class InventoryType
+
+
+  /// <summary>Output DTO used to return inventory display rules.</summary>
+  public class InventoryTypeRulesDto {
+
+    public Boolean EntriesRequired {
+      get; internal set;
+    }
+
+
+    public Boolean ItemsRequired {
+      get; internal set;
+    }
+
+  } //  class InventoryTypeRules
+
 
   /// <summary>Output DTO used to return inventory data.</summary>
   public class InventoryOrderDto {
 
-
     public string UID {
-      get; set;
-    }
-
-
-    public NamedEntityDto InventoryOrderType {
       get; internal set;
     }
 
 
-    public string InventoryOrderNo {
+    public NamedEntityDto OrderType {
       get; internal set;
-    } = string.Empty;
+    }
 
 
-    public NamedEntityDto ExternalObjectReference {
+    public string OrderNo {
+      get; internal set;
+    }
+
+
+    public InventoryTypeDto InventoryType {
+      get; internal set;
+    }
+
+
+    public NamedEntityDto Warehouse {
       get; internal set;
     }
 
@@ -40,23 +79,23 @@ namespace Empiria.Trade.Inventory.Adapters {
     }
 
 
-    public NamedEntityDto AssignedTo {
+    public NamedEntityDto RequestedBy {
       get; internal set;
     }
 
 
-    public string Notes {
-      get; set;
+    public string Description {
+      get; internal set;
     }
 
 
     public DateTime ClosingTime {
-      get; set;
+      get; internal set;
     }
 
 
     public DateTime PostingTime {
-      get; set;
+      get; internal set;
     }
 
 
@@ -65,8 +104,9 @@ namespace Empiria.Trade.Inventory.Adapters {
     }
 
 
-    public InventoryStatus Status {
-      get; set;
+    public NamedEntityDto Status {
+      get;
+      internal set;
     }
 
 
@@ -85,50 +125,59 @@ namespace Empiria.Trade.Inventory.Adapters {
 
   public class InventoryOrderItemDto {
 
-
     public string UID {
-      get; set;
+      get; internal set;
+    } = string.Empty;
+
+
+    public string ProductName {
+      get; internal set;
+    } = string.Empty;
+
+
+    public string Description {
+      get; internal set;
+    } = string.Empty;
+
+
+    public NamedEntityDto ProductUnit {
+      get; internal set;
     }
-
-
-    public InventoryProductDto Product {
-      get; set;
-    } = new InventoryProductDto();
-
-
-    public InventoryWarehouseBinDto WarehouseBin {
-      get; set;
-    } = new InventoryWarehouseBinDto();
 
 
     public decimal Quantity {
-      get; set;
+      get; internal set;
     }
 
 
-    public string Notes {
-      get; set;
+    public string Location {
+      get; internal set;
     }
 
 
-    //public string ExternalObjectItemReferenceUID {
-    //  get; set;
-    //}
+    public decimal AssignedQuantity {
+      get; internal set;
+    }
 
 
-    //public decimal InputQuantity {
-    //  get; set;
-    //}
+    public NamedEntityDto PostedBy {
+      get; internal set;
+    }
 
 
-    //public decimal OutputQuantity {
-    //  get; set;
-    //}
+    public DateTime PostingTime {
+      get; internal set;
+    }
 
 
-    //public InventoryStatus Status {
-    //  get; set;
-    //}
+    public EntityStatus Status {
+      get; internal set;
+    }
+
+
+    public FixedList<InventoryEntryDto> Entries {
+      get; internal set;
+    }
 
   }
 
@@ -204,36 +253,5 @@ namespace Empiria.Trade.Inventory.Adapters {
 
 
   } // class InventoryOrderDescriptorDto
-
-
-  public class InventoryOrderActions {
-
-
-    public bool CanEdit {
-      get; set;
-    } = false;
-
-
-    public bool CanEditItems {
-      get; set;
-    } = false;
-
-
-    public bool CanDelete {
-      get; set;
-    } = false;
-
-
-    public bool CanClose {
-      get; set;
-    } = false;
-
-
-    public bool CanOpen {
-      get; set;
-    } = false;
-
-
-  } // class InventoryOrderActions
 
 } // namespace Empiria.Trade.Inventory.Adapters

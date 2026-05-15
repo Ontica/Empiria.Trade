@@ -8,8 +8,12 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System.Linq;
+using Empiria.Inventory.UseCases;
+using Empiria.Locations;
 using Empiria.Services;
 using Empiria.StateEnums;
+
+using Empiria.Trade.Core;
 using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Core.Inventories.Adapters;
 using Empiria.Trade.Inventory.Adapters;
@@ -23,6 +27,8 @@ namespace Empiria.Trade.Inventory.UseCases {
 
 
     #region Constructors and parsers
+
+    private const string INVENTORYORDERTYPE = "ObjectTypeInfo.Order.InventoryOrder";
 
     public InventoryOrderUseCases() {
       // no-op
@@ -38,6 +44,16 @@ namespace Empiria.Trade.Inventory.UseCases {
 
     #region Public methods V2
 
+    public InventoryHolderDto GetInventoryOrder(string orderUID) {
+      Assertion.Require(orderUID, nameof(orderUID));
+
+      InventoryOrder inventoryOrder = InventoryUtility.GetInventoryOrder(orderUID);
+
+      InventoryOrderActions actions = InventoryUtility.GetActions(inventoryOrder);
+
+      return InventoryOrderMapper.MapToHolderDto(inventoryOrder, actions);
+    }
+
 
     public InventoryOrderDataDto SearchInventoryOrder(InventoryOrderQuery query) {
       Assertion.Require(query, nameof(query));
@@ -45,11 +61,208 @@ namespace Empiria.Trade.Inventory.UseCases {
       var filter = query.MapToFilterString();
       var sort = query.MapToSortString();
 
-      var orders = InventoryOrderData.SearchInventoryOrders(filter, sort);
+      FixedList<InventoryOrder> orders = InventoryOrderData.SearchInventoryOrders(filter, sort);
 
       return InventoryOrderMapper.InventoryOrderDataDto(orders, query);
     }
 
+
+    public FixedList<NamedEntityDto> GetOrderTypes() {
+      return InventoryType.GetList().MapToNamedEntityList();
+    }
+
+
+    public FixedList<NamedEntityDto> GetWarehouses() {
+      return CommonStorage.GetList<Location>().FindAll(x =>
+                              x.Level == 1 && x.GetStatus<EntityStatus>() != EntityStatus.Deleted)
+                          .MapToNamedEntityList();
+    }
+
+
+    public FixedList<NamedEntityDto> GetPartiesByRol(string rol) {
+      return Parties.Party.GetPartiesInRole(rol).MapToNamedEntityList();
+    }
+
+
+    public InventoryHolderDto CreateInventoryOrder(string warehouseUID, Core.InventoryOrderFields fields) {
+      Assertion.Require(warehouseUID, nameof(warehouseUID));
+      Assertion.Require(fields, nameof(fields));
+
+      var orderType = Empiria.Orders.OrderType.Parse(INVENTORYORDERTYPE);
+      fields.Priority = Priority.Normal;
+
+      InventoryOrder order = new InventoryOrder(warehouseUID, orderType);
+
+      order.Update(fields);
+
+      order.Save();
+
+      return GetInventoryOrder(order.UID);
+    }
+
+
+    public InventoryHolderDto CreateInventoryOrderItem(string orderUID, Core.InventoryOrderItemFields fields) {
+      Assertion.Require(orderUID, nameof(orderUID));
+      Assertion.Require(fields, nameof(fields));
+
+      var order = InventoryOrder.Parse(orderUID);
+
+      var orderItemType = Empiria.Orders.OrderItemType.Parse("ObjectTypeInfo.OrderItem.InventoryOrderItem");
+
+      var location = CommonStorage.TryParseNamedKey<Location>(fields.Location);
+      var product = Empiria.Trade.Products.Product.TryParseWithCode(fields.Product);
+      var ifNotExistProductinLocation = VerifyProductAndLocationInOrder(order.Id, product.Id, location.Id);
+
+      Assertion.Require(location, $"La ubicacion {fields.Location} no existe.");
+      Assertion.Require(order.Warehouse == GetRootLocation(location),
+                 $"La localización {fields.Location} no existe en el almacen {order.Warehouse.Name}");
+
+      Assertion.Require(product, $"El producto con clave {fields.Product} no existe.");
+
+      Assertion.Require(ifNotExistProductinLocation, $"El producto {product.Name} ya está registrado " +
+                                                     $"en la localización {fields.Location}.");
+
+      var maxOrderItem = InventoryOrderData.SearchMaxOrderItemPosition(order);
+
+      fields.Position = maxOrderItem.Count > 0 ? maxOrderItem.First().Position + 1 : 1;
+      fields.ProductUID = product.UID;
+      fields.Description = product.Description;
+      fields.ProductUnitUID = product.BaseUnit.UID;
+      fields.LocationUID = fields.LocationUID == string.Empty ? location.UID : fields.LocationUID;
+
+      Core.InventoryOrderItem orderItem = new Core.InventoryOrderItem(orderItemType, order, location);
+
+      orderItem.Update(fields);
+      orderItem.Save();
+      order.AddItem(orderItem);
+
+      AddInventoryEntry(order, orderItem);
+
+      return GetInventoryOrder(order.UID);
+    }
+
+
+    public InventoryHolderDto CloseInventoryOrder(string orderUID) {
+      Assertion.Require(orderUID, nameof(orderUID));
+
+      InventoryOrder order = InventoryOrder.Parse(orderUID);
+
+      order.Close(Parties.Party.ParseWithContact(ExecutionServer.CurrentContact));
+      order.Save();
+
+      order.CloseItems();
+
+      OutputInventoryEntriesVW(order);
+
+      var inventoryEntryUseCase = InventoryEntryUseCases.UseCaseInteractor();
+      inventoryEntryUseCase.CloseInventoryEntries(order.UID);
+
+      return GetInventoryOrder(order.UID);
+    }
+
+
+    public void DeleteInventoryOrder(string orderUID) {
+      Assertion.Require(orderUID, nameof(orderUID));
+
+      InventoryOrder order = InventoryOrder.Parse(orderUID);
+
+      order.Delete();
+      order.Save();
+    }
+
+
+    public InventoryHolderDto DeleteInventoryOrderItem(string orderUID, string orderItemUID) {
+      Assertion.Require(orderUID, nameof(orderUID));
+      Assertion.Require(orderItemUID, nameof(orderItemUID));
+
+      InventoryOrder order = InventoryOrder.Parse(orderUID);
+
+      var item = order.GetItem<Core.InventoryOrderItem>(orderItemUID);
+
+      order.RemoveItem(item);
+      item.Save();
+
+      InventoryOrderData.DeleteEntry(order.Id, item.Id);
+
+      return GetInventoryOrder(orderUID);
+    }
+
+
+    public InventoryHolderDto UpdateInventoryOrder(string orderUID, Core.InventoryOrderFields fields) {
+      Assertion.Require(orderUID, nameof(orderUID));
+      Assertion.Require(fields, nameof(fields));
+
+      fields.EnsureValid();
+
+      var order = InventoryOrder.Parse(orderUID);
+      order.Update(fields);
+
+      order.Save();
+
+      return GetInventoryOrder(order.UID);
+    }
+
+
+    public InventoryHolderDto UpdateInventoryOrderItemQuantity(string orderUID, string orderItemUID,
+                                               Core.InventoryOrderItemFields fields) {
+      var order = InventoryOrder.Parse(orderUID);
+
+      var item = order.GetItem<Core.InventoryOrderItem>(orderItemUID);
+
+      item.UpdateQuantity(fields.Quantity);
+
+      item.Save();
+
+      var inventoryEntry = InventoryEntry.TryParseWithOrderItemId(item.Id);
+
+      inventoryEntry.UpdateCountingQuantity(fields.Quantity);
+
+      inventoryEntry.Save();
+
+      return GetInventoryOrder(order.UID);
+    }
+
+
+    private Location GetRootLocation(Location location) {
+      var current = location;
+      while (!current.IsRoot) {
+        var parent = current.GetParent<Location>();
+        current = parent;
+      }
+
+      return current;
+    }
+
+
+    private bool VerifyProductAndLocationInOrder(int orderId, int productID, int locationID) {
+      if (InventoryOrderData.VerifyProductAndLocationInOrder(orderId, productID, locationID) != 0) {
+        return false;
+      }
+      return true;
+    }
+
+
+    private void AddInventoryEntry(InventoryOrder order, Core.InventoryOrderItem orderItem) {
+      var inventoryEntry = new InventoryEntry(order.UID, orderItem.UID);
+
+      inventoryEntry.InitialEntry(orderItem.UnitPrice, orderItem.Location);
+
+      inventoryEntry.Save();
+    }
+
+
+    public void OutputInventoryEntriesVW(InventoryOrder order) {
+
+      foreach (var item in order.GetItems<Core.InventoryOrderItem>()) {
+
+        var inventoryEntry = new InventoryEntry(order, item);
+
+        var price = InventoryOrderData.GetProductPriceFromVirtualWarehouse(item.Product.Id);
+        inventoryEntry.OutputEntry(price);
+
+        inventoryEntry.Save();
+      }
+    }
 
     #endregion Public methods V2
 
@@ -58,7 +271,7 @@ namespace Empiria.Trade.Inventory.UseCases {
 
 
 
-    public InventoryOrderDto CloseInventoryOrder(string inventoryOrderUID) {
+    public InventoryOrderDto CloseInventoryOrderV1(string inventoryOrderUID) {
       Assertion.Require(inventoryOrderUID, nameof(inventoryOrderUID));
 
       var inventoryOrderId = InventoryOrderEntry.Parse(inventoryOrderUID).Id;
@@ -84,7 +297,8 @@ namespace Empiria.Trade.Inventory.UseCases {
     }
 
 
-    public InventoryOrderDto CreateInventoryOrder(InventoryOrderFields fields) {
+    public InventoryOrderDto CreateInventoryOrderV1(
+                              Empiria.Trade.Inventory.Adapters.InventoryOrderFields fields) {
       Assertion.Require(fields, nameof(fields));
 
       var builder = new InventoryOrderBuilder();
@@ -104,7 +318,7 @@ namespace Empiria.Trade.Inventory.UseCases {
 
       foreach (var inventoryItem in inventoryItems) {
 
-        InventoryOrderItemFields itemFields =
+        Empiria.Trade.Inventory.Adapters.InventoryOrderItemFields itemFields =
           builder.MapToInventoryOrderItemFields(inventoryItem, inventoryOrder.InventoryOrderType.Id);
 
         builder.CreateInventoryOrderItem(inventoryOrder.InventoryOrderUID, itemFields);
@@ -113,8 +327,8 @@ namespace Empiria.Trade.Inventory.UseCases {
     }
 
 
-    public InventoryOrderDto CreateInventoryOrderItem(string inventoryOrderUID,
-      InventoryOrderItemFields fields) {
+    public InventoryOrderDto CreateInventoryOrderItemV1(string inventoryOrderUID,
+      Empiria.Trade.Inventory.Adapters.InventoryOrderItemFields fields) {
       Assertion.Require(inventoryOrderUID, nameof(inventoryOrderUID));
       Assertion.Require(fields, nameof(fields));
 
@@ -195,8 +409,8 @@ namespace Empiria.Trade.Inventory.UseCases {
     }
 
 
-    public InventoryOrderDto UpdateInventoryOrder(string inventoryOrderUID,
-      InventoryOrderFields fields) {
+    public InventoryOrderDto UpdateInventoryOrderV1(string inventoryOrderUID,
+      Empiria.Trade.Inventory.Adapters.InventoryOrderFields fields) {
       Assertion.Require(inventoryOrderUID, nameof(inventoryOrderUID));
       Assertion.Require(fields, nameof(fields));
 
@@ -207,7 +421,7 @@ namespace Empiria.Trade.Inventory.UseCases {
     }
 
 
-    public void UpdateInventoryOrderForPicking(InventoryOrderFields fields) {
+    public void UpdateInventoryOrderForPicking(Empiria.Trade.Inventory.Adapters.InventoryOrderFields fields) {
       Assertion.Require(fields, nameof(fields));
 
       var builder = new InventoryOrderBuilder();

@@ -76,10 +76,10 @@ namespace Empiria.Trade.Inventory.Domain {
     }
 
 
-    static private InventoryOrderItemFields GenerateInventoryItemFields(InventoryOrderItem item,
+    static private Empiria.Trade.Inventory.Adapters.InventoryOrderItemFields GenerateInventoryItemFields(InventoryOrderItem item,
       SalesInventoryStock olderLocation, decimal inProcessOutputQuantity, bool doUpdate) {
 
-      return new InventoryOrderItemFields {
+      return new Empiria.Trade.Inventory.Adapters.InventoryOrderItemFields {
         UID = doUpdate ? item.InventoryOrderItemUID : "",
         InventoryOrderTypeItemId = item.InventoryOrderTypeItemId,
         ItemReferenceId = item.ItemReferenceId,
@@ -111,7 +111,7 @@ namespace Empiria.Trade.Inventory.Domain {
     #region Private methods
 
     static private void CreateInventoryOrderItemForPicking(
-      string inventoryOrderUID, InventoryOrderItemFields fields) {
+      string inventoryOrderUID, Empiria.Trade.Inventory.Adapters.InventoryOrderItemFields fields) {
 
       var builder = new InventoryOrderBuilder();
       builder.CreateInventoryOrderItem(inventoryOrderUID, fields);

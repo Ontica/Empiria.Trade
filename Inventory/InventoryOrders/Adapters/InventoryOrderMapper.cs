@@ -9,13 +9,12 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Collections.Generic;
-
-using Empiria.Inventory;
+using System.Linq;
 using Empiria.Orders;
+using Empiria.StateEnums;
 using Empiria.Trade.Core;
 using Empiria.Trade.Core.Common;
-
-using Empiria.StateEnums;
+using InventoryEntry = Empiria.Trade.Core.InventoryEntry;
 
 namespace Empiria.Trade.Inventory.Adapters {
 
@@ -63,6 +62,66 @@ namespace Empiria.Trade.Inventory.Adapters {
     }
 
 
+    static internal InventoryHolderDto MapToHolderDto(InventoryOrder order, InventoryOrderActions actions) {
+
+      return new InventoryHolderDto {
+        Order = MapToOrderDto(order),
+        Items = MapToOrderItemsDto(order.GetItems<Core.InventoryOrderItem>()),
+        Actions = actions
+      };
+    }
+
+
+    private static FixedList<InventoryOrderItemDto> MapToOrderItemsDto(FixedList<Core.InventoryOrderItem> items) {
+
+      return items.Select((x) => MapToOrderItemDto(x))
+                         .ToFixedList();
+    }
+
+
+    static private InventoryOrderItemDto MapToOrderItemDto(Core.InventoryOrderItem item) {
+
+      return new InventoryOrderItemDto() {
+        UID = item.UID,
+        ProductName = item.Product.Name,
+        Quantity = item.Quantity,
+        Location = item.Location.Name,
+        AssignedQuantity = item.Entries.Sum(x => x.InputQuantity),
+        PostedBy = item.PostedBy.MapToNamedEntity(),
+        PostingTime = item.PostingTime,
+        Entries = MapToInventoryEntriesDto(item.Entries),
+        Status = item.Status
+      };
+    }
+
+
+    static internal InventoryEntryDto MapToInventoryEntryDto(InventoryEntry entry) {
+      decimal quantity = 0;
+
+      if (entry.Order.Category.UID == "0eb5a072-b857-4071-8b06-57a34822ec64") {
+        quantity = entry.OutputQuantity;
+      } else {
+        quantity = entry.InputQuantity;
+      }
+
+      return new InventoryEntryDto {
+        UID = entry.UID,
+        Product = entry.Product.Name,
+        Location = entry.Location.Name,
+        Quantity = quantity,
+        PostedBy = entry.PostedBy.MapToNamedEntity(),
+        PostingTime = entry.PostingTime
+      };
+    }
+
+
+    static private FixedList<InventoryEntryDto> MapToInventoryEntriesDto(FixedList<InventoryEntry> items) {
+
+      return items.Select((x) => MapToInventoryEntryDto(x))
+                         .ToFixedList();
+    }
+
+
     static private string GetDocumentNo(InventoryOrder inventoryOrder) {
 
       if (inventoryOrder.ParentOrder.Id == -1) {
@@ -86,6 +145,44 @@ namespace Empiria.Trade.Inventory.Adapters {
       } else {
         return order.Beneficiary.Name;
       }
+    }
+
+
+    private static InventoryOrderDto MapToOrderDto(InventoryOrder order) {
+
+      return new InventoryOrderDto {
+        UID = order.UID,
+        OrderNo = order.OrderNo,
+        OrderType = order.OrderType.MapToNamedEntity(), // new NamedEntityDto("X","Orden de inventario"),
+        InventoryType = MapToInventoryTypeDto(order.InventoryType),
+        Warehouse = order.Warehouse.MapToNamedEntity(),
+        Responsible = order.Responsible.MapToNamedEntity(),
+        RequestedBy = order.RequestedBy.MapToNamedEntity(),
+        Description = order.Description,
+        PostedBy = order.PostedBy.MapToNamedEntity(),
+        PostingTime = order.PostingTime,
+        ClosingTime = order.ClosingTime,
+        Status = order.Status.MapToDto()
+      };
+    }
+
+
+    private static InventoryTypeDto MapToInventoryTypeDto(InventoryType inventoryType) {
+
+      return new InventoryTypeDto {
+        UID = inventoryType.UID,
+        Name = inventoryType.Name,
+        Rules = MapInventoryTypeRules(inventoryType),
+      };
+    }
+
+
+    private static InventoryTypeRulesDto MapInventoryTypeRules(InventoryType inventoryType) {
+
+      return new InventoryTypeRulesDto {
+        EntriesRequired = inventoryType.EntriesRequired,
+        ItemsRequired = inventoryType.ItemsRequired,
+      };
     }
 
     #endregion Public methods V2
@@ -115,17 +212,17 @@ namespace Empiria.Trade.Inventory.Adapters {
       var postedBy = Party.Parse(entry.PostedById);
       
       dto.UID = entry.InventoryOrderUID;
-      dto.InventoryOrderType = 
-        new NamedEntityDto(entry.InventoryOrderType.UID, entry.InventoryOrderType.Name);
-      dto.InventoryOrderNo = entry.InventoryOrderNo;
-      dto.ExternalObjectReference = new NamedEntityDto("", "External reference"); //External.Parse(entry.ExternalObjectReferenceId).UID;
+      //dto.InventoryOrderType = 
+      //  new NamedEntityDto(entry.InventoryOrderType.UID, entry.InventoryOrderType.Name);
+      //dto.InventoryOrderNo = entry.InventoryOrderNo;
+      //dto.ExternalObjectReference = new NamedEntityDto("", "External reference"); //External.Parse(entry.ExternalObjectReferenceId).UID;
       dto.Responsible = new NamedEntityDto(responsible.UID, responsible.Name);
-      dto.AssignedTo = new NamedEntityDto(assignedTo.UID, assignedTo.Name);
-      dto.Notes = entry.Notes;
+      //dto.AssignedTo = new NamedEntityDto(assignedTo.UID, assignedTo.Name);
+      //dto.Notes = entry.Notes;
       dto.ClosingTime = entry.ClosingTime;
       dto.PostingTime = entry.PostingTime;
       dto.PostedBy = new NamedEntityDto(postedBy.UID, postedBy.Name);
-      dto.Status = entry.Status;
+      //dto.Status = entry.Status;
       dto.Actions = actions;
       dto.Items = MapInventoryItems(entry.InventoryOrderItems);
       return dto;
@@ -209,10 +306,10 @@ namespace Empiria.Trade.Inventory.Adapters {
       var dto = new InventoryOrderItemDto();
 
       dto.UID = x.InventoryOrderItemUID;
-      dto.Product = GetInventoryProductData(x);
-      dto.WarehouseBin = GetInventoryWarehouseBinData(x);
+      //dto.Product = GetInventoryProductData(x);
+      //dto.WarehouseBin = GetInventoryWarehouseBinData(x);
       dto.Quantity = GetInventoryQuantity(x);
-      dto.Notes = x.ItemNotes;
+      //dto.Notes = x.ItemNotes;
       //dto.InputQuantity = x.InputQuantity;
       //dto.OutputQuantity = x.OutputQuantity;
       //dto.Status = x.Status;
