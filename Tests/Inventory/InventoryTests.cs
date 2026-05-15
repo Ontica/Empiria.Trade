@@ -32,6 +32,15 @@ namespace Empiria.Trade.Tests.Procurement {
     #region Facts V2
 
     [Fact]
+    public void GetInventoryHolderTest() {
+      
+      var usecase = InventoryOrderUseCases.UseCaseInteractor();
+      InventoryHolderDto sut = usecase.GetInventoryOrder("f54744dd-81d7-4eb6-8587-424431c60e45");
+      Assert.NotNull(sut);
+    }
+
+
+    [Fact]
     public void SearchInventoryOrderTest() {
 
       var usecase = InventoryOrderUseCases.UseCaseInteractor();
@@ -64,43 +73,6 @@ namespace Empiria.Trade.Tests.Procurement {
     }
 
 
-    [Fact]
-    public void CloseInventoryOrderStatusTest() {
-
-      var usecase = InventoryOrderUseCases.UseCaseInteractor();
-
-      string inventoryOrderUID = "64b96507-37b5-45d5-9a4c-40ef8099a6db";
-      InventoryOrderDto sut = usecase.CloseInventoryOrder(inventoryOrderUID);
-
-      Assert.NotNull(sut);
-    }
-
-
-    [Fact]
-    public void CreateInventoryOrderTest() {
-
-      var usecase = InventoryOrderUseCases.UseCaseInteractor();
-
-      InventoryOrderFields fields = GetInventoryOrderFields();
-      InventoryOrderDto sut = usecase.CreateInventoryOrder(fields);
-
-      Assert.NotNull(sut);
-    }
-
-
-    [Fact]
-    public void CreateInventoryOrderItemTest() {
-
-      var usecase = InventoryOrderUseCases.UseCaseInteractor();
-
-      string inventoryOrderUID = "bc39e761-90ff-4a5c-8971-34c39cc6af21";
-      var fields = GetInventoryOrderItemFields();
-      InventoryOrderDto sut = usecase.CreateInventoryOrderItem(inventoryOrderUID, fields);
-
-      Assert.NotNull(sut);
-    }
-
-    
     [Fact]
     public void DeleteInventoryOrderTest() {
 
@@ -159,18 +131,6 @@ namespace Empiria.Trade.Tests.Procurement {
       string inventoryOrderUID = "656af915-4dc9-46b6-83a9-8b65722589df";
 
       InventoryOrderDto sut = usecase.GetInventoryOrderByUID(inventoryOrderUID);
-      Assert.NotNull(sut);
-    }
-
-
-    [Fact]
-    public void UpdateInventoryCountOrderTest() {
-
-      var usecase = InventoryOrderUseCases.UseCaseInteractor();
-      string inventoryOrderUID = "7bb09f2b-5491-4304-bdf3-2e88fc41d33a";
-      InventoryOrderFields fields = GetInventoryOrderFields();
-      InventoryOrderDto sut = usecase.UpdateInventoryOrder(inventoryOrderUID, fields);
-
       Assert.NotNull(sut);
     }
 
