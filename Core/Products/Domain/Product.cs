@@ -28,6 +28,8 @@ namespace Empiria.Trade.Products {
 
     }
 
+    static public Product ParseProduct(int id) => ParseId<Product>(id);
+
     protected Product(ProductType productType) : base(productType) {
       // Required by Empiria Framework for all partitioned types.
     }
@@ -43,8 +45,15 @@ namespace Empiria.Trade.Products {
     #region Properties
 
     [DataField("BASE_PRODUCT_ID")]
-    internal Empiria.Products.Product BaseProduct {
+    internal int BaseProductId {
       get; private set;
+    }
+
+
+    internal Product BaseProduct {
+      get {
+        return Product.ParseProduct(BaseProductId);
+      }
     }
 
 
