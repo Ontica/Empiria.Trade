@@ -70,7 +70,9 @@ namespace Empiria.Trade.Inventory {
 
       InventoryOrder inventoryOrder = InventoryOrder.Parse(orderUID);
 
-      GetInventoryEntriesByItem(inventoryOrder.GetItems<Core.InventoryOrderItem>());
+      FixedList<Core.InventoryOrderItem> items = inventoryOrder.GetItems<Core.InventoryOrderItem>();
+
+      GetInventoryEntriesByItem(items);
 
       return inventoryOrder;
     }

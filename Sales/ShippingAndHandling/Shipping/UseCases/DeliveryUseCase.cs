@@ -80,8 +80,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
         int orderId = SalesOrder.Parse(orderUID).Id;
 
-        inventoryUseCases.CloseInventoryOrderForSalesOrder(504, orderId);
-
         CloseInventoryOrderItemsForSales(504, orderId);
       }
     }

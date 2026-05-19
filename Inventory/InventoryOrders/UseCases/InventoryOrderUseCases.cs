@@ -269,44 +269,6 @@ namespace Empiria.Trade.Inventory.UseCases {
 
     #region Public methods
 
-
-
-    public InventoryOrderDto CloseInventoryOrderV1(string inventoryOrderUID) {
-      Assertion.Require(inventoryOrderUID, nameof(inventoryOrderUID));
-
-      var inventoryOrderId = InventoryOrderEntry.Parse(inventoryOrderUID).Id;
-
-      InventoryOrderData.CloseInventoryOrder(
-        inventoryOrderId, EntityStatus.Closed);
-
-      var inventoryItems = InventoryOrderData.GetInventoryItemsByInventoryOrder(inventoryOrderId);
-
-      foreach (var item in inventoryItems) {
-
-        var inventoryStock = CataloguesUseCases.GetInventoryStockByClauses(
-          item.VendorProduct.Id, item.WarehouseBin.Id);
-
-        var realStock = inventoryStock.Sum(x => x.RealStock);
-
-        decimal quantityDiff = item.CountingQuantity - realStock;
-
-        InventoryOrderData.CloseInventoryItemForInventoryOrder(item.InventoryOrderItemId, quantityDiff);
-      }
-
-      return GetInventoryOrderByUID(inventoryOrderUID);
-    }
-
-
-    public InventoryOrderDto CreateInventoryOrderV1(
-                              Empiria.Trade.Inventory.Adapters.InventoryOrderFields fields) {
-      Assertion.Require(fields, nameof(fields));
-
-      var builder = new InventoryOrderBuilder();
-      var inventoryOrder = builder.CreateInventoryOrder(fields, "");
-      return GetInventoryOrderByUID(inventoryOrder.InventoryOrderUID);
-    }
-
-
     public void CreateInventoryOrderBySale(FixedList<InventoryItems> inventoryItems) {
       Assertion.Require(inventoryItems, nameof(inventoryItems));
 
@@ -314,124 +276,7 @@ namespace Empiria.Trade.Inventory.UseCases {
 
       var fields = builder.MapToInventoryOrderFields(inventoryItems.FirstOrDefault());
 
-      InventoryOrderEntry inventoryOrder = builder.CreateInventoryOrder(fields, "");
-
-      foreach (var inventoryItem in inventoryItems) {
-
-        Empiria.Trade.Inventory.Adapters.InventoryOrderItemFields itemFields =
-          builder.MapToInventoryOrderItemFields(inventoryItem, inventoryOrder.InventoryOrderType.Id);
-
-        builder.CreateInventoryOrderItem(inventoryOrder.InventoryOrderUID, itemFields);
-      }
-
-    }
-
-
-    public InventoryOrderDto CreateInventoryOrderItemV1(string inventoryOrderUID,
-      Empiria.Trade.Inventory.Adapters.InventoryOrderItemFields fields) {
-      Assertion.Require(inventoryOrderUID, nameof(inventoryOrderUID));
-      Assertion.Require(fields, nameof(fields));
-
-      fields.UID = InventoryOrderHelper.GetInventoryOrderItemUIDByVendorProductLocation(
-        inventoryOrderUID, fields.VendorProductUID, fields.WarehouseBinUID);
-
-      var builder = new InventoryOrderBuilder();
-      builder.CreateInventoryOrderItem(inventoryOrderUID, fields);
-      return GetInventoryOrderByUID(inventoryOrderUID);
-    }
-
-
-    public InventoryOrderItem GetInventoryOrderItemByUID(string itemUID) {
-
-      return InventoryOrderItem.Parse(itemUID);
-    }
-
-
-    public void DeleteInventoryCountOrderByUID(string inventoryOrderUID) {
-      Assertion.Require(inventoryOrderUID, nameof(inventoryOrderUID));
-
-      InventoryOrderData.DeleteInventoryItemByOrderUID(inventoryOrderUID);
-      InventoryOrderData.DeleteInventoryOrderByUID(inventoryOrderUID);
-    }
-
-
-    public InventoryOrderDto DeleteInventoryItemByOrderUID(string inventoryOrderUID) {
-      Assertion.Require(inventoryOrderUID, nameof(inventoryOrderUID));
-
-      InventoryOrderData.DeleteInventoryItemByOrderUID(inventoryOrderUID);
-      return GetInventoryOrderByUID(inventoryOrderUID);
-    }
-
-
-    public InventoryOrderDto DeleteInventoryItemByUID(string inventoryOrderUID,
-      string inventoryOrderItemUID) {
-      Assertion.Require(inventoryOrderUID, nameof(inventoryOrderUID));
-      Assertion.Require(inventoryOrderItemUID, nameof(inventoryOrderItemUID));
-
-      InventoryOrderData.DeleteInventoryItemByUID(inventoryOrderItemUID);
-      return GetInventoryOrderByUID(inventoryOrderUID);
-    }
-
-
-    internal InventoryOrderActions GetActions(InventoryOrderEntry inventoryOrder) {
-      Assertion.Require(inventoryOrder, nameof(inventoryOrder));
-
-      var builder = new InventoryOrderBuilder();
-      InventoryOrderActions actions = builder.GetActions(inventoryOrder);
-
-      return actions;
-    }
-
-
-    public InventoryOrderDto GetInventoryOrderByUID(string inventoryOrderUID) {
-      Assertion.Require(inventoryOrderUID, nameof(inventoryOrderUID));
-
-      var builder = new InventoryOrderBuilder();
-      var inventoryOrder = builder.GetInventoryOrderByUID(inventoryOrderUID);
-
-      if (inventoryOrder == null) {
-        return new InventoryOrderDto();
-      }
-
-      InventoryOrderActions actions = GetActions(inventoryOrder);
-      return InventoryOrderMapper.MapInventoryOrder(inventoryOrder, actions);
-    }
-
-
-    public InventoryOrderDataDto SearchInventoryOrders(InventoryOrderQuery query) {
-      Assertion.Require(query, nameof(query));
-
-      var clauses =
-        InventoryOrderQueryClauses.CreateClausesForInventoryOrder(new InventoryQueryClauses(query));
-      var list = InventoryOrderData.GetInventoryOrderList(clauses);
-
-      return InventoryOrderMapper.MapList(list, query);
-    }
-
-
-    public InventoryOrderDto UpdateInventoryOrderV1(string inventoryOrderUID,
-      Empiria.Trade.Inventory.Adapters.InventoryOrderFields fields) {
-      Assertion.Require(inventoryOrderUID, nameof(inventoryOrderUID));
-      Assertion.Require(fields, nameof(fields));
-
-      var builder = new InventoryOrderBuilder();
-      builder.UpdateInventoryOrder(inventoryOrderUID, fields);
-
-      return GetInventoryOrderByUID(inventoryOrderUID);
-    }
-
-
-    public void UpdateInventoryOrderForPicking(Empiria.Trade.Inventory.Adapters.InventoryOrderFields fields) {
-      Assertion.Require(fields, nameof(fields));
-
-      var builder = new InventoryOrderBuilder();
-      builder.UpdateInventoryOrderForPicking(fields);
-    }
-
-
-    internal void CloseInventoryOrderForSalesOrder(int inventoryOrderTypeId, int referenceId) {
-
-      InventoryOrderData.CloseInventoryOrderForSalesOrder(inventoryOrderTypeId, referenceId);
+      InventoryOrderEntry inventoryOrder = new InventoryOrderEntry();
     }
 
 
@@ -441,8 +286,7 @@ namespace Empiria.Trade.Inventory.UseCases {
       var clauses = InventoryOrderQueryClauses.CreateClausesForInventoryOrder(
         new InventoryQueryClauses("", inventoryOrderTypeId, referenceId));
 
-      InventoryOrderEntry inventoryOrder =
-        InventoryOrderData.GetInventoryOrderList(clauses).FirstOrDefault();
+      InventoryOrderEntry inventoryOrder = new InventoryOrderEntry();
 
       InventoryOrderData.CloseInventoryOrderItemsForSales(inventoryOrder.InventoryOrderId);
     }

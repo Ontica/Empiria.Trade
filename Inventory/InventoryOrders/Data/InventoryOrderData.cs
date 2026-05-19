@@ -96,33 +96,6 @@ namespace Empiria.Trade.Inventory.Data {
     #region Public methods
 
 
-    static internal void CloseInventoryOrder(int inventoryOrderId, EntityStatus status) {
-
-      string sql = $"UPDATE TRDInventoryOrders SET " +
-                   $"InventoryOrderStatus = '{(char) status}', " +
-                   $"ClosingTime = '{ConvertDateTimeToString()}' " +
-                   $"WHERE InventoryOrderId IN('{inventoryOrderId}')";
-
-      var dataOperation = DataOperation.Parse(sql);
-
-      DataWriter.Execute(dataOperation);
-    }
-
-
-    static internal void CloseInventoryOrderForSalesOrder(int inventoryOrderTypeId, int referenceId) {
-
-      string sql = $"UPDATE TRDInventoryOrders SET " +
-                   $"InventoryOrderStatus = '{(char) EntityStatus.Closed}' " +
-                   $",ClosingTime = '{ConvertDateTimeToString()}' " +
-                   $"WHERE InventoryOrderTypeId = {inventoryOrderTypeId} " +
-                   $"AND ReferenceId = {referenceId} ";
-
-      var dataOperation = DataOperation.Parse(sql);
-
-      DataWriter.Execute(dataOperation);
-    }
-
-
     internal static void CloseInventoryOrderItemsForSales(int inventoryOrderId) {
 
       string sql = $"UPDATE TRDInventoryOrderItems SET " +
@@ -136,73 +109,6 @@ namespace Empiria.Trade.Inventory.Data {
       var dataOperation = DataOperation.Parse(sql);
 
       DataWriter.Execute(dataOperation);
-    }
-
-
-    internal static void CloseInventoryItemForInventoryOrder(
-      int inventoryOrderItemId, decimal quantityDifference) {
-
-      string sql = $"UPDATE TRDInventoryOrderItems SET " +
-                   $"InventoryOrderItemStatus = '{(char) EntityStatus.Closed}' " +
-                   $"{GetQuantityClauses(quantityDifference)} " +
-                   $",ClosingTime = '{ConvertDateTimeToString()}' " +
-                   $"WHERE InventoryOrderItemId = {inventoryOrderItemId} ";
-
-      var dataOperation = DataOperation.Parse(sql);
-
-      DataWriter.Execute(dataOperation);
-    }
-
-
-
-    static internal void DeleteInventoryItemByOrderUID(string inventoryOrderUID) {
-
-      var inventoryId = InventoryOrderEntry.Parse(inventoryOrderUID).Id;
-
-      string sql = $"DELETE FROM TRDInventoryOrderItems " +
-                   $"WHERE InventoryOrderId = '{inventoryId}' ";
-
-      var dataOperation = DataOperation.Parse(sql);
-
-      DataWriter.Execute(dataOperation);
-    }
-
-
-    static internal void DeleteInventoryItemByUID(string inventoryOrderItemUID) {
-
-      var itemId = InventoryOrderItem.Parse(inventoryOrderItemUID).Id;
-
-      string sql = $"DELETE FROM TRDInventoryOrderItems " +
-                   $"WHERE InventoryOrderItemId = '{itemId}' ";
-
-      var dataOperation = DataOperation.Parse(sql);
-
-      DataWriter.Execute(dataOperation);
-    }
-
-
-    static internal void DeleteInventoryOrderByUID(string inventoryOrderUID) {
-
-      var inventoryId = InventoryOrderEntry.Parse(inventoryOrderUID).Id;
-
-      string sql = $"DELETE FROM TRDInventoryOrders " +
-                   $"WHERE InventoryOrderId = '{inventoryId}' ";
-
-      var dataOperation = DataOperation.Parse(sql);
-
-      DataWriter.Execute(dataOperation);
-    }
-
-
-    static internal FixedList<InventoryOrderItem> GetInventoryItemsByInventoryOrder(
-      int inventoryOrderId) {
-
-      string sql = $"SELECT * FROM TRDInventoryOrderItems WHERE " +
-                   $"InventoryOrderId IN ({inventoryOrderId})";
-
-      var dataOperation = DataOperation.Parse(sql);
-
-      return DataReader.GetPlainObjectFixedList<InventoryOrderItem>(dataOperation);
     }
 
 
@@ -227,15 +133,6 @@ namespace Empiria.Trade.Inventory.Data {
       var dataOperation = DataOperation.Parse(sql);
 
       return DataReader.GetPlainObjectFixedList<InventoryOrderItem>(dataOperation);
-    }
-
-
-    static internal FixedList<InventoryOrderEntry> GetInventoryOrderList(string clauses) {
-      
-      string sql = $"SELECT * FROM TRDInventoryOrders {clauses}";
-      var dataOperation = DataOperation.Parse(sql);
-
-      return DataReader.GetPlainObjectFixedList<InventoryOrderEntry>(dataOperation);
     }
 
 

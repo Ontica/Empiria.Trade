@@ -70,7 +70,7 @@ namespace Empiria.Trade.Core {
     }
 
 
-    internal protected new void Delete() {
+    public new void Delete() {
       base.Delete();
 
       this.DeleteItems();

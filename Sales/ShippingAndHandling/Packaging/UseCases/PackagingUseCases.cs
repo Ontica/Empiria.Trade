@@ -136,10 +136,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
       fields.ReferenceId = SalesOrder.Parse(orderUID).Id;
 
-      var usecases = InventoryOrderUseCases.UseCaseInteractor();
-
-      usecases.UpdateInventoryOrderForPicking(fields);
-
       return GetSalesOrder(orderUID);
     }
 

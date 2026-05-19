@@ -190,44 +190,6 @@ namespace Empiria.Trade.Inventory.Adapters {
 
     #region Public methods
 
-    static internal FixedList<InventoryOrderItemDto> MapInventoryItems(
-        FixedList<InventoryOrderItem> inventoryOrderItems) {
-
-      if (inventoryOrderItems.Count == 0) {
-        return new FixedList<InventoryOrderItemDto>();
-      }
-
-      var mappedItems = inventoryOrderItems.Select((x) => MapInventoryItem(x));
-
-      return new FixedList<InventoryOrderItemDto>(mappedItems);
-    }
-
-
-    static internal InventoryOrderDto MapInventoryOrder(InventoryOrderEntry entry,
-      InventoryOrderActions actions) {
-      var dto = new InventoryOrderDto();
-
-      var responsible = Party.Parse(entry.ResponsibleId);
-      var assignedTo = Party.Parse(entry.AssignedToId);
-      var postedBy = Party.Parse(entry.PostedById);
-      
-      dto.UID = entry.InventoryOrderUID;
-      //dto.InventoryOrderType = 
-      //  new NamedEntityDto(entry.InventoryOrderType.UID, entry.InventoryOrderType.Name);
-      //dto.InventoryOrderNo = entry.InventoryOrderNo;
-      //dto.ExternalObjectReference = new NamedEntityDto("", "External reference"); //External.Parse(entry.ExternalObjectReferenceId).UID;
-      dto.Responsible = new NamedEntityDto(responsible.UID, responsible.Name);
-      //dto.AssignedTo = new NamedEntityDto(assignedTo.UID, assignedTo.Name);
-      //dto.Notes = entry.Notes;
-      dto.ClosingTime = entry.ClosingTime;
-      dto.PostingTime = entry.PostingTime;
-      dto.PostedBy = new NamedEntityDto(postedBy.UID, postedBy.Name);
-      //dto.Status = entry.Status;
-      dto.Actions = actions;
-      dto.Items = MapInventoryItems(entry.InventoryOrderItems);
-      return dto;
-    }
-
 
     static public InventoryOrderDataDto MapList(
       FixedList<InventoryOrderEntry> list, InventoryOrderQuery query) {
@@ -299,47 +261,6 @@ namespace Empiria.Trade.Inventory.Adapters {
       dto.Status = entry.Status.ToString();
 
       return dto;
-    }
-
-
-    static private InventoryOrderItemDto MapInventoryItem(InventoryOrderItem x) {
-      var dto = new InventoryOrderItemDto();
-
-      dto.UID = x.InventoryOrderItemUID;
-      //dto.Product = GetInventoryProductData(x);
-      //dto.WarehouseBin = GetInventoryWarehouseBinData(x);
-      dto.Quantity = GetInventoryQuantity(x);
-      //dto.Notes = x.ItemNotes;
-      //dto.InputQuantity = x.InputQuantity;
-      //dto.OutputQuantity = x.OutputQuantity;
-      //dto.Status = x.Status;
-      return dto;
-    }
-
-
-    private static decimal GetInventoryQuantity(InventoryOrderItem x) {
-
-      decimal quantity = 0;
-      if (x.Status == InventoryStatus.Abierto) {
-
-        if (x.InventoryOrderTypeItemId == 504) {
-          quantity = x.InProcessOutputQuantity;
-        } else {
-          quantity = x.CountingQuantity;
-        }
-        
-      }
-      
-      if (x.Status == InventoryStatus.Cerrado) {
-        
-        if (x.InventoryOrderTypeItemId == 504) {
-          quantity = x.OutputQuantity;
-        } else {
-          quantity = x.InputQuantity;
-        }
-
-      }
-      return quantity;
     }
 
 

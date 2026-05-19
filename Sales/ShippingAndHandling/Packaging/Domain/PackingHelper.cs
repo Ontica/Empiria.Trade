@@ -34,7 +34,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       var clauses = InventoryOrderQueryClauses.CreateClausesForInventoryOrder(
         new InventoryQueryClauses("", 504, Order.Parse(orderUid).Id));
 
-      var inventoryOrder = InventoryOrderData.GetInventoryOrderList(clauses).FirstOrDefault();
+      var inventoryOrder = new InventoryOrderEntry();
       
       if (inventoryOrder == null) {
         return new FixedList<MissingItem>();
@@ -138,20 +138,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       var clauses = InventoryOrderQueryClauses.CreateClausesForInventoryOrder(
         new InventoryQueryClauses("", 504, SalesOrder.Parse(orderUID).Id));
 
-      var inventoryOrder = InventoryOrderData.GetInventoryOrderList(clauses).FirstOrDefault();
-
-      if (inventoryOrder == null) {
-        return new PickingData();
-      }
-
-      var pickingData = new PickingData();
-      pickingData.OrderUID = orderUID;
-      pickingData.InventoryOrderNo = inventoryOrder.InventoryOrderNo;
-      pickingData.InventoryOrderTypeId = inventoryOrder.InventoryOrderType.Id;
-      pickingData.ResponsibleId = inventoryOrder.ResponsibleId;
-      pickingData.AssignedToId = inventoryOrder.AssignedToId;
-      pickingData.Notes = inventoryOrder.Notes;
-      return pickingData;
+      return new PickingData();
     }
 
 
@@ -215,8 +202,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       var data = new PackagingData();
       var whBinList = new List<WarehouseBinForPacking>();
-      var inventoryItems =
-        InventoryOrderData.GetInventoryItemsByInventoryOrder(inventoryOrder.InventoryOrderId);
+      var inventoryItems = new FixedList<Trade.Inventory.InventoryOrderItem>();
 
       foreach (var inventoryItem in inventoryItems.Where(x => x.VendorProduct.Id == item.VendorProductId)) {
 
