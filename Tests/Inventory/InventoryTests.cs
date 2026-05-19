@@ -10,7 +10,7 @@
 using System;
 
 using Empiria.StateEnums;
-
+using Empiria.Tests;
 using Empiria.Trade.Inventory.Adapters;
 using Empiria.Trade.Inventory.UseCases;
 
@@ -24,7 +24,7 @@ namespace Empiria.Trade.Tests.Procurement {
     #region Initialization
 
     public InventoryTests() {
-      //TestsCommonMethods.Authenticate();
+      TestsCommonMethods.Authenticate();
     }
 
     #endregion Initialization
@@ -32,10 +32,49 @@ namespace Empiria.Trade.Tests.Procurement {
     #region Facts V2
 
     [Fact]
+    public void CreateInventoryOrderTest() {
+
+      var usecase = InventoryOrderUseCases.UseCaseInteractor();
+
+      Trade.Core.InventoryOrderFields fields = new Trade.Core.InventoryOrderFields {
+        Description = "ABCDE",
+        InventoryTypeUID = "F6C83B25-4857-41E3-BB10-79959F37B247",
+        RequestedByUID = "72b902de-8840-4985-81aa-46700d915ea7",
+        ResponsibleUID = "d5527139-02e5-49b1-9e8f-827c5b8630ca",
+        WarehouseUID = "C5D74E47-CFEE-4B31-81B8-D9B102EDDE8F"
+      };
+
+      InventoryHolderDto sut = usecase.CreateInventoryOrder(fields.WarehouseUID, fields);
+
+      Assert.NotNull(sut);
+    }
+
+
+
+    [Fact]
+    public void UpdateInventoryItemTest() {
+      TestsCommonMethods.Authenticate();
+      var usecase = InventoryOrderUseCases.UseCaseInteractor();
+
+      string orderUID = "8a97f5c8-bec2-4c8d-8296-19a291be4efb";
+
+      Trade.Core.InventoryOrderItemFields fields = new Trade.Core.InventoryOrderItemFields() {
+        Product = "ASF24",
+        Location = "A-001-01-02",
+        Quantity = 1,
+        RequestedByUID = "e4b5e0f9-c259-44dc-80ef-6b9c8f48324d",
+      };
+
+      InventoryHolderDto sut = usecase.CreateInventoryOrderItem(orderUID, fields);
+      Assert.NotNull(sut);
+    }
+
+
+    [Fact]
     public void GetInventoryHolderTest() {
       
       var usecase = InventoryOrderUseCases.UseCaseInteractor();
-      InventoryHolderDto sut = usecase.GetInventoryOrder("f54744dd-81d7-4eb6-8587-424431c60e45");
+      InventoryHolderDto sut = usecase.GetInventoryOrder("98b80314-e79f-447a-a083-431c1045d156");
       Assert.NotNull(sut);
     }
 
@@ -57,92 +96,47 @@ namespace Empiria.Trade.Tests.Procurement {
       Assert.NotNull(sut);
     }
 
+
+    [Fact]
+    public void GetInventoryOrderTypeTest() {
+
+      var usecase = InventoryOrderUseCases.UseCaseInteractor();
+      var sut = usecase.GetOrderTypes();
+
+      Assert.NotNull(sut);
+    }
+
+
+
+    [Fact]
+    public void GetWarehousesTest() {
+
+      var usecase = InventoryOrderUseCases.UseCaseInteractor();
+      var sut = usecase.GetWarehouses();
+
+      Assert.NotNull(sut);
+    }
+
+
+    [Fact]
+    public void GetPartiesByRolTest() {
+
+      var usecase = InventoryOrderUseCases.UseCaseInteractor();
+      
+      string[] partyRols = new string[] { "Inventory-manager", "Warehouseman" }; 
+      
+      var sut = usecase.GetPartiesByRol(partyRols[1]);
+
+      Assert.NotNull(sut);
+    }
+
     #endregion Facts V2
 
 
     #region Facts
 
 
-    [Fact]
-    public void GetInventoryOrderItemByUIDTest() {
 
-      var usecase = InventoryOrderUseCases.UseCaseInteractor();
-      var sut = usecase.GetInventoryOrderItemByUID("9444f6ea-0aa4-48b4-aed3-d49feac10c11");
-
-      Assert.NotNull(sut);
-    }
-
-
-    [Fact]
-    public void DeleteInventoryOrderTest() {
-
-      var usecase = InventoryOrderUseCases.UseCaseInteractor();
-      string inventoryOrderUID = "96295bcd-fea9-4c0a-b9d3-5dfd9aeaa920";
-
-      usecase.DeleteInventoryCountOrderByUID(inventoryOrderUID);
-      Assert.True(true);
-    }
-
-
-    [Fact]
-    public void DeleteInventoryItemByOrderUIDTest() {
-
-      var usecase = InventoryOrderUseCases.UseCaseInteractor();
-
-      string inventoryOrderUID = "f2d2a10d-abb2-467d-9c4f-bdd2bc15d5c6";
-      InventoryOrderDto sut = usecase.DeleteInventoryItemByOrderUID(inventoryOrderUID);
-      Assert.NotNull(sut);
-    }
-
-
-    [Fact]
-    public void DeleteInventoryItemByUIDTest() {
-
-      var usecase = InventoryOrderUseCases.UseCaseInteractor();
-      string inventoryOrderUID = "e6ec21ce-ad6b-46ac-99e8-4ff71864f138";
-      string inventoryItemUID = "26859b32-642a-49c9-8ac6-b24e74ba0faf";
-
-      InventoryOrderDto sut = usecase.DeleteInventoryItemByUID(inventoryOrderUID, inventoryItemUID);
-      Assert.NotNull(sut);
-    }
-
-
-    [Fact]
-    public void GetInventoryOrderListTest() {
-
-      var usecase = InventoryOrderUseCases.UseCaseInteractor();
-
-      InventoryOrderQuery query = new InventoryOrderQuery {
-        InventoryTypeUID = "5851e71b-3a1f-40ab-836f-ac3d2c9408de",
-        AssignedToUID = "",
-        Keywords = "OCFI000000008",
-        Status = EntityStatus.Closed
-      };
-
-      InventoryOrderDataDto sut = usecase.SearchInventoryOrders(query);
-      Assert.NotNull(sut);
-    }
-
-
-    [Fact]
-    public void GetInventoryOrderByUID() {
-
-      var usecase = InventoryOrderUseCases.UseCaseInteractor();
-      string inventoryOrderUID = "656af915-4dc9-46b6-83a9-8b65722589df";
-
-      InventoryOrderDto sut = usecase.GetInventoryOrderByUID(inventoryOrderUID);
-      Assert.NotNull(sut);
-    }
-
-
-    [Fact]
-    public void GetInventoryOrderTypeTest() {
-
-      var usecase = InventoryOrderCataloguesUseCases.UseCaseInteractor();
-      var sut = usecase.GetInventoryOrderTypeByUID("5851e71b-3a1f-40ab-836f-ac3d2c9408de");
-
-      Assert.NotNull(sut);
-    }
 
 
     [Fact]
