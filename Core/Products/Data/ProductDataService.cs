@@ -25,7 +25,7 @@ namespace Empiria.Trade.Products.Data {
       string whereClauses = string.Empty;
 
       if (keywords != string.Empty) {
-        whereClauses = $"WHERE {SearchExpression.ParseOrLikeKeywords("Product_Keywords", keywords)}";
+        whereClauses = $"WHERE {SearchExpression.ParseAndLikeKeywords("Product_Keywords", keywords)}";
       }
 
       var sql = "SELECT * FROM OMS_Products " +
