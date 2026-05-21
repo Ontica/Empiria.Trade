@@ -14,10 +14,10 @@ using Empiria.Services;
 using Empiria.StateEnums;
 
 using Empiria.Trade.Core;
-using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Core.Inventories.Adapters;
-using Empiria.Trade.Inventory.Adapters;
+using Empiria.Trade.Products;
 using Empiria.Trade.Inventory.Data;
+using Empiria.Trade.Inventory.Adapters;
 using Empiria.Trade.Inventory.Domain;
 
 namespace Empiria.Trade.Inventory.UseCases {
@@ -105,12 +105,13 @@ namespace Empiria.Trade.Inventory.UseCases {
       Assertion.Require(orderUID, nameof(orderUID));
       Assertion.Require(fields, nameof(fields));
 
+      //TODO, SOLUCIONAR PROBLEMA DE REFERENCIA DE Location
       var order = InventoryOrder.Parse(orderUID);
 
       var orderItemType = Empiria.Orders.OrderItemType.Parse("ObjectTypeInfo.OrderItem.InventoryOrderItem");
 
       var location = CommonStorage.TryParseNamedKey<Location>(fields.Location);
-      var product = Empiria.Trade.Products.Product.TryParseWithCode(fields.Product);
+      var product = Product.TryParseWithCode(fields.Product);
       var ifNotExistProductinLocation = VerifyProductAndLocationInOrder(order.Id, product.Id, location.Id);
 
       Assertion.Require(location, $"La ubicacion {fields.Location} no existe.");

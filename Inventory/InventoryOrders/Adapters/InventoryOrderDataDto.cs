@@ -34,11 +34,6 @@ namespace Empiria.Trade.Inventory.Adapters {
       get; set;
     } = new FixedList<InventoryOrderDescriptorDto>();
 
-
-    public FixedList<IInventoryOrderDto> EntriesV1 {
-      get; set;
-    } = new FixedList<IInventoryOrderDto>();
-
   }
 
 

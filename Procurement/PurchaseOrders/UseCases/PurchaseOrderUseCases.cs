@@ -62,7 +62,7 @@ namespace Empiria.Trade.Procurement.UseCases {
                                                       PurchaseOrderItemFields fields) {
       Assertion.Require(purchaseOrderUID, nameof(purchaseOrderUID));
       Assertion.Require(fields, nameof(fields));
-
+      //TODO VALIDAR SI PRODUCTO YA EXISTE REGISTRADO
       GetDefaultProductFields(fields);
 
       var order = PurchaseOrder.Parse(purchaseOrderUID);
@@ -244,7 +244,7 @@ namespace Empiria.Trade.Procurement.UseCases {
 
     private void GetDefaultProductFields(PurchaseOrderItemFields fields) {
       
-      var product = Empiria.Products.Product.Parse(fields.VendorProductUID);
+      var product = Trade.Products.Product.ParseUID(fields.VendorProductUID);
 
       Assertion.Require(!product.Id.Equals(-1), $"Por favor ingrese un producto valido");
 

@@ -187,25 +187,7 @@ namespace Empiria.Trade.Inventory.Adapters {
 
     #endregion Public methods V2
 
-
-    #region Public methods
-
-
-    static public InventoryOrderDataDto MapList(
-      FixedList<InventoryOrderEntry> list, InventoryOrderQuery query) {
-
-      return new InventoryOrderDataDto {
-        Query = query,
-        Columns = GetColumns(),
-        EntriesV1 = MapList(list)
-      };
-    }
-
-
-    #endregion Public methods
-
     #region Private methods
-
 
     static private FixedList<DataTableColumn> GetColumns() {
 
@@ -222,56 +204,6 @@ namespace Empiria.Trade.Inventory.Adapters {
 
       return columns.ToFixedList();
     }
-
-
-    static private InventoryProductDto GetInventoryProductData(InventoryOrderItem x) {
-      var dto = new InventoryProductDto();
-
-      dto.ProductCode = x.VendorProduct.ProductFields.ProductCode;
-      dto.ProductDescription = x.VendorProduct.ProductFields.ProductDescription;
-      dto.Presentation = x.VendorProduct.ProductPresentation.PresentationName;
-
-      return dto;
-    }
-
-
-    static private InventoryWarehouseBinDto GetInventoryWarehouseBinData(InventoryOrderItem x) {
-      var dto = new InventoryWarehouseBinDto();
-      dto.Rack = x.WarehouseBin.Rack;
-      dto.RackDescription = x.WarehouseBin.Tag;
-      return dto;
-    }
-
-
-    private static InventoryOrderDescriptorDto MapInventoryDescriptorList(InventoryOrderEntry entry) {
-      var dto = new InventoryOrderDescriptorDto();
-
-      var responsible = Party.Parse(entry.ResponsibleId);
-      var assignedTo = Party.Parse(entry.AssignedToId);
-      var postedBy = Party.Parse(entry.PostedById);
-
-      dto.UID = entry.InventoryOrderUID;
-      dto.InventoryTypeName = entry.InventoryOrderType.Name;
-      dto.OrderNo = entry.InventoryOrderNo;
-      dto.ResponsibleName = responsible.Name;
-      dto.ResponsibleName = assignedTo.Name;
-      dto.Description = entry.Notes;
-      dto.PostingTime = entry.PostingTime;
-      dto.PostedByName = postedBy.Name;
-      dto.Status = entry.Status.ToString();
-
-      return dto;
-    }
-
-
-    static private FixedList<IInventoryOrderDto> MapList(
-      FixedList<InventoryOrderEntry> list) {
-
-      var mappedList = list.Select((x) => MapInventoryDescriptorList(x));
-
-      return new FixedList<IInventoryOrderDto>(mappedList);
-    }
-
 
     #endregion Private methods
 
