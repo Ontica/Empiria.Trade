@@ -11,7 +11,7 @@ using System;
 using System.Linq;
 using Empiria.Financial;
 using Empiria.Orders;
-
+using Empiria.Parties;
 using Empiria.Trade.Procurement.Adapters;
 
 namespace Empiria.Trade.Procurement {
@@ -34,9 +34,14 @@ namespace Empiria.Trade.Procurement {
     public PurchaseOrder(PurchaseOrderFields fields, OrderType orderType) : base(orderType) {
       Assertion.Require(fields, nameof(fields));
 
+      GetDefaultFields(fields, orderType);
+
       base.Update(fields);
-      base.OrderNo = "OC-" + EmpiriaString.BuildRandomString(8)
+      
+      if (this.IsNew) {
+        base.OrderNo = "OC-" + EmpiriaString.BuildRandomString(8)
                                   .ToUpperInvariant();
+      }
     }
 
 
@@ -74,6 +79,25 @@ namespace Empiria.Trade.Procurement {
     }
 
 
+    public string ShippingMethod {
+      get {
+        return ConditionsData.Get("shippingMethod", string.Empty);
+      }
+      private set {
+        ConditionsData.SetIfValue("shippingMethod", value);
+      }
+    }
+
+
+    public DateTime ScheduledTime {
+      get {
+        return ConditionsData.Get("scheduledTime", DateTime.MaxValue);
+      }
+      private set {
+        ConditionsData.SetIfValue("scheduledTime", value);
+      }
+    }
+
     public decimal ItemsTotal {
       get; private set;
     }
@@ -83,15 +107,11 @@ namespace Empiria.Trade.Procurement {
       get; private set;
     }
 
+
     #endregion Properties
 
 
     #region Methods
-
-    internal void SetTotals() {
-      this.ItemsTotal = PurchaseOrderItems.Sum(x => x.Subtotal);
-      this.ItemsCount = this.Items.Count;
-    }
 
     internal void DeleteOrder() {
 
@@ -104,7 +124,38 @@ namespace Empiria.Trade.Procurement {
       this.Save();
     }
 
+
+    internal void SetTotals() {
+      this.ItemsTotal = PurchaseOrderItems.Sum(x => x.Subtotal);
+      this.ItemsCount = this.Items.Count;
+    }
+
+
+    internal void Update(PurchaseOrderFields fields, OrderType orderType) {
+
+      GetDefaultFields(fields, orderType);
+
+      ShippingMethod = fields.ShippingMethod;
+      ScheduledTime = fields.ScheduledTime;
+
+      base.Update(fields);
+    }
+
     #endregion Methods
+
+    #region Private methods
+
+    private void GetDefaultFields(PurchaseOrderFields fields, OrderType orderType) {
+      fields.OrderTypeUID = orderType.UID;
+      fields.ProviderUID = fields.SupplierUID;
+      fields.RequestedByUID = Party.ParseWithContact(ExecutionServer.CurrentContact).UID;
+      fields.Name = "Sin asignar";
+      fields.Observations = fields.Notes;
+      fields.PaymentConditions = fields.PaymentCondition;
+      fields.StartDate = DateTime.Now;
+    }
+
+    #endregion
 
   } // class PurchaseOrder
 

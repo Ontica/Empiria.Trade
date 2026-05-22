@@ -9,11 +9,14 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
 using System;
+using System.Linq;
 using Empiria.Billing;
 using Empiria.Orders;
+using Empiria.Products;
 using Empiria.StateEnums;
 using Empiria.Trade.Procurement.Adapters;
 using Empiria.Trade.Procurement.Data;
+using Empiria.Trade.Products;
 
 namespace Empiria.Trade.Procurement {
 
@@ -30,10 +33,19 @@ namespace Empiria.Trade.Procurement {
       // Required by Empiria Framework for all partitioned types.
     }
 
-    protected internal PurchaseOrderItem(OrderItemType powertype, PurchaseOrder order) :
+    protected internal PurchaseOrderItem(OrderItemType powertype, PurchaseOrder order, string productUID) :
                                           base(powertype, order) {
       Assertion.Require(order, nameof(order));
 
+      ValuateItems(order, productUID);
+    }
+
+
+    private void ValuateItems(PurchaseOrder order, string productUID) {
+      var items = order.PurchaseOrderItems.FindAll(x => x.Product.UID == productUID);
+
+      Assertion.Require(items.Count == 0,
+        $"El producto que intenta guardar, ya se encuentra registrado.");
     }
 
     static public new PurchaseOrderItem Parse(int id) => ParseId<PurchaseOrderItem>(id);
@@ -41,7 +53,7 @@ namespace Empiria.Trade.Procurement {
     static public new PurchaseOrderItem Parse(string uid) => ParseKey<PurchaseOrderItem>(uid);
 
     static public PurchaseOrderItem Empty => ParseEmpty<PurchaseOrderItem>();
-    
+
     internal static FixedList<PurchaseOrderItem> GetListFor(PurchaseOrder purchaseOrder) {
       Assertion.Require(purchaseOrder, nameof(purchaseOrder));
 
@@ -50,20 +62,20 @@ namespace Empiria.Trade.Procurement {
 
     #endregion Constructors and parsers
 
+
     #region Properties
 
-
-    public int OrderItemId {
-      get; internal set;
+    public decimal Weight {
+      get {
+        return ExtData.Get<decimal>("weight", 0);
+      }
+      private set {
+        ExtData.SetIfValue("weight", value);
+      }
     }
-
-
-    public string OrderItemUID {
-      get; internal set;
-    }
-
 
     #endregion Properties
+
 
     #region Private methods
 
@@ -71,9 +83,10 @@ namespace Empiria.Trade.Procurement {
       Assertion.Require(fields, nameof(fields));
 
       if (this.IsNew) {
+
         fields.UnitPrice = fields.UnitPrice == 0 ? 0.001M : fields.UnitPrice;
       }
-
+      Weight = fields.Weight;
       base.Update(fields);
     }
 

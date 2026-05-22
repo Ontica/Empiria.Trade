@@ -10,10 +10,10 @@
 using System;
 
 using Empiria.Data;
-using Empiria.Parties;
-using Empiria.StateEnums;
 
-using Empiria.Trade.Orders;
+using Empiria.StateEnums;
+using Empiria.Trade.Core;
+
 using Empiria.Trade.Procurement.Adapters;
 
 namespace Empiria.Trade.Procurement.Data {
@@ -44,7 +44,7 @@ namespace Empiria.Trade.Procurement.Data {
       var filters = new Filter();
 
       if (query.SupplierUID != string.Empty) {
-        filters.AppendAnd($"Order_Provider_Id = {Party.Parse(query.SupplierUID).Id}");
+        filters.AppendAnd($"Order_Provider_Id = {Parties.Party.Parse(query.SupplierUID).Id}");
       }
 
       if (query.Keywords != string.Empty) {
@@ -120,7 +120,7 @@ namespace Empiria.Trade.Procurement.Data {
       var filters = new Filter();
 
       if (query.SupplierUID != string.Empty) {
-        filters.AppendAnd($"SupplierId = {Party.Parse(query.SupplierUID).Id}");
+        filters.AppendAnd($"SupplierId = {Core.Party.Parse(query.SupplierUID).Id}");
       }
 
       if (query.Keywords != string.Empty) {

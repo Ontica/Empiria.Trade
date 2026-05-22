@@ -8,12 +8,11 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+
 using Empiria.Orders;
-using Empiria.Parties;
 using Empiria.Products;
-using Empiria.Projects;
 using Empiria.Services;
-using Empiria.Trade.Orders;
+
 using Empiria.Trade.Procurement.Adapters;
 using Empiria.Trade.Procurement.Data;
 using Empiria.Trade.Procurement.Domain;
@@ -48,8 +47,6 @@ namespace Empiria.Trade.Procurement.UseCases {
 
       var orderType = OrderType.Parse(ORDERTYPE);
 
-      GetDefaultFields(fields, orderType);
-
       var order = new PurchaseOrder(fields, orderType);
 
       order.Save();
@@ -62,14 +59,14 @@ namespace Empiria.Trade.Procurement.UseCases {
                                                       PurchaseOrderItemFields fields) {
       Assertion.Require(purchaseOrderUID, nameof(purchaseOrderUID));
       Assertion.Require(fields, nameof(fields));
-      //TODO VALIDAR SI PRODUCTO YA EXISTE REGISTRADO
+
       GetDefaultProductFields(fields);
 
       var order = PurchaseOrder.Parse(purchaseOrderUID);
 
       var orderItemType = OrderItemType.Parse(ORDERITEMTYPE);
 
-      var orderItem = new PurchaseOrderItem(orderItemType, order);
+      var orderItem = new PurchaseOrderItem(orderItemType, order, fields.ProductUID);
 
       orderItem.Update(fields);
 
@@ -118,6 +115,22 @@ namespace Empiria.Trade.Procurement.UseCases {
       var orders = PurchaseOrderData.GetPurchaseOrdersV2(query, orderType.Id);
 
       return PurchaseOrderMapper.MapDataDto(orders, query);
+    }
+    
+    
+    public PurchaseOrderDto UpdatePurchaseOrder(string purchaseOrderUID, PurchaseOrderFields fields) {
+      Assertion.Require(purchaseOrderUID, nameof(purchaseOrderUID));
+      Assertion.Require(fields, nameof(fields));
+
+      var orderType = OrderType.Parse(ORDERTYPE);
+
+      var order = PurchaseOrder.Parse(purchaseOrderUID);
+
+      order.Update(fields, orderType);
+
+      order.Save();
+
+      return GetPurchaseOrderDto(order.OrderUID);
     }
 
 
@@ -208,15 +221,6 @@ namespace Empiria.Trade.Procurement.UseCases {
     }
 
 
-    public PurchaseOrderDto UpdatePurchaseOrder(string purchaseOrderUID, PurchaseOrderFields fields) {
-
-      var order = new PurchaseOrderEntry(fields, purchaseOrderUID);
-      order.Save();
-
-      return GetPurchaseOrder(order.OrderUID);
-    }
-
-
     public PurchaseOrderDto UpdatePurchaseOrderItemV1(string purchaseOrderUID, string purchaseOrderItemUID,
                                                     PurchaseOrderItemFields fields) {
       Assertion.Require(purchaseOrderUID, nameof(purchaseOrderUID));
@@ -231,16 +235,6 @@ namespace Empiria.Trade.Procurement.UseCases {
     #endregion Public methods
 
     #region Private methods
-
-    private void GetDefaultFields(PurchaseOrderFields fields, OrderType orderType) {
-      fields.ProviderUID = fields.SupplierUID;
-      fields.OrderTypeUID = orderType.UID;
-      fields.RequestedByUID = Party.ParseWithContact(ExecutionServer.CurrentContact).UID;
-      fields.Name = "Sin asignar";
-      fields.Observations = fields.Notes;
-      fields.StartDate = DateTime.Now;
-    }
-
 
     private void GetDefaultProductFields(PurchaseOrderItemFields fields) {
       
