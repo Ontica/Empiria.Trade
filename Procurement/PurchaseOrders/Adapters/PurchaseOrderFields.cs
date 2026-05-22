@@ -27,6 +27,16 @@ namespace Empiria.Trade.Procurement.Adapters {
       get; set;
     } = string.Empty;
 
+    //TODO REMOVE AND USE OrderFields.PaymentConditions
+    public string PaymentCondition {
+      get; set;
+    } = string.Empty;
+
+
+    public string ShippingMethod {
+      get; set;
+    } = string.Empty;
+
 
     public DateTime ScheduledTime {
       get; set;

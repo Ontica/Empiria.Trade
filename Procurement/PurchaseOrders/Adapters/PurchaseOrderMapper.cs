@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using Empiria.Trade.Core.Common;
 using Empiria.StateEnums;
 using Empiria.Trade.Orders;
+using Empiria.Trade.Core;
 
 namespace Empiria.Trade.Procurement.Adapters {
 
@@ -73,15 +74,16 @@ namespace Empiria.Trade.Procurement.Adapters {
 
 
     static internal PurchaseOrderDto MapOrder(PurchaseOrder order) {
-
+      
       return new PurchaseOrderDto {
         UID = order.UID,
         OrderNumber = order.OrderNo,
         Supplier = order.Provider.MapToNamedEntity(),
         Notes = order.Observations,
-        PaymentCondition = order.PaymentConditions,
+        PaymentCondition = EnumExtensions.GetPaymentConditionEnum(order.PaymentConditions),
+        ShippingMethod = EnumExtensions.GetShippingMethodEnum(order.ShippingMethod),
         OrderTime = order.StartDate,
-        ScheduledTime = order.EndDate,
+        ScheduledTime = order.ScheduledTime,
         Status = order.Status.MapToDto(),
         Items = MapItems(order.PurchaseOrderItems),
         Totals = MapTotals(order)
@@ -115,7 +117,7 @@ namespace Empiria.Trade.Procurement.Adapters {
       dto.Supplier = new NamedEntityDto(order.Supplier);
      // dto.Customer = new NamedEntityDto(order.Customer);
       dto.Notes = order.Notes;
-      dto.PaymentCondition = order.PaymentCondition;
+      dto.PaymentCondition = EnumExtensions.GetPaymentConditionEnum(order.PaymentCondition);
       dto.ShippingMethod = order.ShippingMethod;
       dto.OrderTime = order.OrderTime;
       dto.ScheduledTime = order.ScheduledTime;
@@ -199,6 +201,7 @@ namespace Empiria.Trade.Procurement.Adapters {
         ProductName = x.ProductName,
         PresentationName = x.Product.BaseUnit.Description,
         Price = x.UnitPrice,
+        Weight = x.Weight,
         Notes = x.Description
       };
     }

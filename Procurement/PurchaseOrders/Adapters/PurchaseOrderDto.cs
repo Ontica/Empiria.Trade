@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using Empiria.Trade.Core;
 using Empiria.Trade.Orders;
 
 namespace Empiria.Trade.Procurement.Adapters {
@@ -46,9 +47,9 @@ namespace Empiria.Trade.Procurement.Adapters {
     } = string.Empty;
 
 
-    public string PaymentCondition {
+    public PaymentCondition PaymentCondition {
       get; set;
-    }
+    } = PaymentCondition.None;
 
 
     public ShippingMethods ShippingMethod {
