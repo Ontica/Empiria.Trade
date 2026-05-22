@@ -12,7 +12,7 @@ using System.Collections.Generic;
 
 using Empiria.Trade.Core.Common;
 using Empiria.StateEnums;
-using Empiria.Trade.Orders;
+
 using Empiria.Trade.Core;
 
 namespace Empiria.Trade.Procurement.Adapters {
@@ -21,44 +21,43 @@ namespace Empiria.Trade.Procurement.Adapters {
   /// <summary>Methods used to map purchase order.</summary>
   static internal class PurchaseOrderMapper {
 
-    #region Public methods V2
+    #region Public methods
 
     static internal PurchaseOrdersDataDto MapDataDto(FixedList<PurchaseOrder> orders,
-      PurchaseOrderQuery query) {
+                                                      PurchaseOrderQuery query) {
 
       return new PurchaseOrdersDataDto {
         Query = query,
-        Columns = GetColumns_(),
+        Columns = GetColumns(),
         Entries = MapList(orders)
       };
     }
 
 
-    static private FixedList<PurchaseOrderDescriptorDto> MapList(FixedList<PurchaseOrder> entries) {
-
-      var mappedList = entries.Select((x) => MapPurchaseDescriptor(x));
-
-      return new FixedList<PurchaseOrderDescriptorDto>(mappedList);
-    }
-
-
-    static private PurchaseOrderDescriptorDto MapPurchaseDescriptor(PurchaseOrder x) {
-      PurchaseOrderDescriptorDto dto = new PurchaseOrderDescriptorDto();
+    static internal PurchaseOrderDto MapOrder(PurchaseOrder order) {
       
-      dto.UID = x.OrderUID;
-      dto.OrderNo = x.OrderNo;
-      dto.Provider = x.Provider.Name;
-      dto.OrderType = x.OrderType.DisplayPluralName;
-      dto.PostingTime = x.PostingTime;
-      dto.RequestedTime = x.RequestedTime;
-      dto.OrderStatus = x.Status.GetName();
-      dto.OrderTotal = x.Items != null && x.Taxes != null ? x.Total : 0;
+      return new PurchaseOrderDto {
+        UID = order.UID,
+        OrderNumber = order.OrderNo,
+        Supplier = order.Provider.MapToNamedEntity(),
+        Notes = order.Observations,
+        PaymentConditions = EnumExtensions.GetPaymentConditionEnum(order.PaymentConditions),
+        ShippingMethod = EnumExtensions.GetShippingMethodEnum(order.ShippingMethod),
+        OrderTime = order.StartDate,
+        ScheduledTime = order.ScheduledTime,
+        Status = order.Status.MapToDto(),
+        Items = MapItems(order.PurchaseOrderItems),
+        Totals = MapTotals(order)
+      };
 
-      return dto;
     }
 
+    #endregion Public methods
 
-    private static FixedList<DataTableColumn> GetColumns_() {
+
+    #region Private methods
+
+    static private FixedList<DataTableColumn> GetColumns() {
       List<DataTableColumn> columns = new List<DataTableColumn>();
 
       columns.Add(new DataTableColumn("orderNo", "Número de orden", "text-link"));
@@ -73,66 +72,15 @@ namespace Empiria.Trade.Procurement.Adapters {
     }
 
 
-    static internal PurchaseOrderDto MapOrder(PurchaseOrder order) {
-      
-      return new PurchaseOrderDto {
-        UID = order.UID,
-        OrderNumber = order.OrderNo,
-        Supplier = order.Provider.MapToNamedEntity(),
-        Notes = order.Observations,
-        PaymentCondition = EnumExtensions.GetPaymentConditionEnum(order.PaymentConditions),
-        ShippingMethod = EnumExtensions.GetShippingMethodEnum(order.ShippingMethod),
-        OrderTime = order.StartDate,
-        ScheduledTime = order.ScheduledTime,
-        Status = order.Status.MapToDto(),
-        Items = MapItems(order.PurchaseOrderItems),
-        Totals = MapTotals(order)
-      };
+    static private FixedList<PurchaseOrderDescriptorDto> MapList(FixedList<PurchaseOrder> entries) {
 
-    }
+      var mappedList = entries.Select((x) => MapPurchaseOrderDescriptor(x));
 
-    #endregion Public methods V2
-
-
-    #region Public methods
-
-    static internal PurchaseOrdersDataDto MapDataDto(FixedList<PurchaseOrderEntry> entries,
-      PurchaseOrderQuery query) {
-
-      return new PurchaseOrdersDataDto {
-        Query = query,
-        Columns = GetColumns(),
-        Entries = MapList(entries)
-      };
+      return new FixedList<PurchaseOrderDescriptorDto>(mappedList);
     }
 
 
-    static internal PurchaseOrderDto MapOrder(PurchaseOrderEntry order) {
-
-      var statusName = OrderStatusEnumExtensions.GetOrderStatusName(order.Status);
-
-      var dto = new PurchaseOrderDto();
-      dto.UID = order.OrderUID;
-      dto.OrderNumber = order.OrderNumber;
-      dto.Supplier = new NamedEntityDto(order.Supplier);
-     // dto.Customer = new NamedEntityDto(order.Customer);
-      dto.Notes = order.Notes;
-      dto.PaymentCondition = EnumExtensions.GetPaymentConditionEnum(order.PaymentCondition);
-      dto.ShippingMethod = order.ShippingMethod;
-      dto.OrderTime = order.OrderTime;
-      dto.ScheduledTime = order.ScheduledTime;
-      dto.ReceptionTime = order.ReceptionTime;
-      dto.Items = MapItems(order.Items);
-      dto.Totals = MapTotals(order);
-      dto.Status = new NamedEntityDto(order.Status.ToString(), statusName);
-      //dto.Contact = new NamedEntityDto(order.CustomerContact.UID, order.CustomerContact.Name);
-      //dto.SalesAgent = new NamedEntityDto(order.SalesAgent);
-      //dto.Currency = new NamedEntityDto("", "");
-      return dto;
-    }
-
-
-    static internal FixedList<PurchaseOrderItemDto> MapItems(FixedList<PurchaseOrderItem> items) {
+    static private FixedList<PurchaseOrderItemDto> MapItems(FixedList<PurchaseOrderItem> items) {
 
       var mappedItems = items.Select((x) => MapPurchasOrderItems(x));
 
@@ -140,51 +88,17 @@ namespace Empiria.Trade.Procurement.Adapters {
     }
 
 
-    #endregion Public methods
-
-
-    #region Private methods
-
-
-    private static FixedList<DataTableColumn> GetColumns() {
-      List<DataTableColumn> columns = new List<DataTableColumn>();
-
-      columns.Add(new DataTableColumn("orderNo", "Número de orden", "text-link"));
-      columns.Add(new DataTableColumn("supplier", "Proveedor", "text"));
-      //columns.Add(new DataTableColumn("customer", "Cliente", "text"));
-      //columns.Add(new DataTableColumn("orderType", "Tipo", "text"));
-      //columns.Add(new DataTableColumn("currency", "Moneda", "text"));
-      columns.Add(new DataTableColumn("orderTime", "Fecha registro", "date"));
-      columns.Add(new DataTableColumn("scheduledTime", "Fecha programada", "date"));
-      columns.Add(new DataTableColumn("orderStatus", "Estatus", "text-tag"));
-      columns.Add(new DataTableColumn("orderTotal", "Total", "decimal"));
-
-      return columns.ToFixedList();
-    }
-
-
-    static private FixedList<PurchaseOrderDescriptorDto> MapList(
-      FixedList<PurchaseOrderEntry> entries) {
-
-      var mappedList = entries.Select((x) => MapPurchaseDescriptorList(x));
-
-      return new FixedList<PurchaseOrderDescriptorDto>(mappedList);
-    }
-
-
-    static private PurchaseOrderDescriptorDto MapPurchaseDescriptorList(PurchaseOrderEntry x) {
+    static private PurchaseOrderDescriptorDto MapPurchaseOrderDescriptor(PurchaseOrder x) {
       PurchaseOrderDescriptorDto dto = new PurchaseOrderDescriptorDto();
 
       dto.UID = x.OrderUID;
-      dto.OrderNo = x.OrderNumber;
-      dto.Provider = x.Supplier.Name;
-      dto.Customer = x.Customer.Name;
-      //dto.OrderType = x.OrderType.Name;
-      //dto.Currency = x.Currency.ShortName;
-      dto.RequestedTime = x.OrderTime;
-      dto.ScheduledTime = x.ScheduledTime;
-      dto.OrderStatus = OrderStatusEnumExtensions.GetOrderStatusName(x.Status);
-      dto.OrderTotal = x.OrderTotal;
+      dto.OrderNo = x.OrderNo;
+      dto.Provider = x.Provider.Name;
+      dto.OrderType = x.OrderType.DisplayPluralName;
+      dto.PostingTime = x.PostingTime;
+      dto.RequestedTime = x.RequestedTime;
+      dto.OrderStatus = x.Status.GetName();
+      dto.OrderTotal = x.Items != null && x.Taxes != null ? x.Total : 0;
 
       return dto;
     }
@@ -215,18 +129,6 @@ namespace Empiria.Trade.Procurement.Adapters {
         ItemsCount = order.ItemsCount
       };
     }
-
-
-    private static PurchaseOrderTotal MapTotals(PurchaseOrderEntry order) {
-      var totals = new PurchaseOrderTotal();
-      totals.ItemsTotal = order.ItemsTotal;
-      totals.ShipmentTotal = order.ShipmentTotal;
-      totals.Discount = order.Discount;
-      totals.Taxes = order.Taxes;
-      totals.OrderTotal = order.OrderTotal;
-      return totals;
-    }
-
 
     #endregion Private methods
 

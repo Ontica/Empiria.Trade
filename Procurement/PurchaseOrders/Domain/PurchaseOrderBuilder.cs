@@ -8,9 +8,6 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-using Empiria.Trade.Orders;
-using Empiria.Trade.Procurement.Adapters;
-using Empiria.Trade.Procurement.Data;
 
 namespace Empiria.Trade.Procurement.Domain {
 
@@ -19,18 +16,6 @@ namespace Empiria.Trade.Procurement.Domain {
   internal class PurchaseOrderBuilder {
 
     #region Public methods
-
-    internal static FixedList<PurchaseOrderEntry> GetPurchaseOrderEntries(PurchaseOrderQuery query) {
-
-      var purchaseOrders = PurchaseOrderData.GetPurchaseOrders(query);
-
-      foreach (var order in purchaseOrders) {
-        //order.Items = PurchaseOrderData.GetPurchaseOrderItems(order.OrderId);
-        order.SetTotals();
-      }
-
-      return purchaseOrders;
-    }
 
     #endregion Public methods
 

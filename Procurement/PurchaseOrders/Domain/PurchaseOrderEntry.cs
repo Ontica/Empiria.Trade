@@ -123,8 +123,6 @@ namespace Empiria.Trade.Procurement {
         OrderTime = DateTime.Now;
         Status = OrderStatus.Captured;
       }
-
-      PurchaseOrderData.WritePurchaseOrder(this);
     }
 
 

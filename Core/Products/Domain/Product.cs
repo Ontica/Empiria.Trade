@@ -9,11 +9,10 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Collections.Generic;
-using Empiria.Json;
+
 using Empiria.Ontology;
 using Empiria.Products;
 
-using Empiria.Trade.Core;
 using Empiria.Trade.Products.Adapters;
 
 namespace Empiria.Trade.Products {

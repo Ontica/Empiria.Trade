@@ -56,11 +56,12 @@ namespace Empiria.Trade.Tests.Procurement {
       var usecase = PurchaseOrderUseCases.UseCaseInteractor();
 
       string purchaseOrderUID = "68131d68-f199-46eb-9846-aced7d7d5e38";
-      
+
       var fields = new PurchaseOrderItemFields {
-        VendorProductUID = "e373231c-a4ba-4bad-8e2a-739c813ca9e7",
-        Quantity = 1,
-        Price = 1,
+        Product = "TTRC8X34-200-S",
+        VendorProductUID = "6b8a8254-0e41-42d9-88ed-4392977efb65",
+        Quantity = 100,
+        Price = 100,
       };
 
       PurchaseOrderDto sut = usecase.CreatePurchaseOrderItem(purchaseOrderUID, fields);
@@ -126,7 +127,7 @@ namespace Empiria.Trade.Tests.Procurement {
       var usecase = PurchaseOrderUseCases.UseCaseInteractor();
 
       string purchaseOrderUID = "68131d68-f199-46eb-9846-aced7d7d5e38";
-      string purchaseOrderItemUID = "b1df4121-13f7-498d-865e-64093c5445d4";
+      string purchaseOrderItemUID = "912a20ca-0a5b-4249-a4f0-ce00da1591e2";
 
       PurchaseOrderItemFields fields = GetPurchaseOrderItemFields();
 
@@ -136,67 +137,13 @@ namespace Empiria.Trade.Tests.Procurement {
     }
 
 
-    private PurchaseOrderItemFields GetPurchaseOrderItemFields() {
-
-      return new PurchaseOrderItemFields {
-        Product = "AUR78-50",
-        VendorProductUID = "0d45cff4-a7a2-4941-9c22-294fd25501aa",
-        Quantity = 7,
-        Price = 8,
-        Weight = 1,
-        Description = "UPDATE ITEM TEST"
-      };
-    }
-
-
     [Fact]
-    public void DeletePurchaseOrderV1() {
-
-      var usecase = PurchaseOrderUseCases.UseCaseInteractor();
-
-      usecase.DeletePurchaseOrderV1("fb1e2de6-e39e-4189-893b-ac9b74adb232");
-
-      Assert.True(true);
-    }
-
-
-    
-
-
-    [Fact]
-    public void GetPurchaseOrderItemTest() {
-
-      var usecase = PurchaseOrderUseCases.UseCaseInteractor();
-
-      string purchaseOrderItemUID = "iykijue7-ba78-4efb-9753-18eb86poiurt";
-      var sut = usecase.GetPurchaseOrderItem(purchaseOrderItemUID);
-      Assert.NotNull(sut);
-    }
-
-
-    [Fact]
-    public void GetPurchaseOrderDataTest() {
-
-      var usecase = PurchaseOrderUseCases.UseCaseInteractor();
-
-      PurchaseOrderQuery query = new PurchaseOrderQuery {
-        SupplierUID = "",
-        Keywords = "OC-4JKBI1W5BY",
-        Status = EntityStatus.All
-      };
-
-      PurchaseOrdersDataDto sut = usecase.GetPurchaseOrderDescriptorV1(query);
-      Assert.NotNull(sut);
-    }
-
-
-    [Fact]
-    public void UpdateInventoryOrderTest() {
+    public void UpdatePurchaseOrderTest() {
 
       var usecase = PurchaseOrderUseCases.UseCaseInteractor();
 
       PurchaseOrderFields fields = GetPurchaseOrderFields();
-      PurchaseOrderDto sut = usecase.UpdatePurchaseOrder("fb1e2de6-e39e-4189-893b-ac9b74adb232", fields);
+      PurchaseOrderDto sut = usecase.UpdatePurchaseOrder("68131d68-f199-46eb-9846-aced7d7d5e38", fields);
 
       Assert.NotNull(sut);
     }
@@ -212,10 +159,26 @@ namespace Empiria.Trade.Tests.Procurement {
 
       var fields = new PurchaseOrderFields {
         SupplierUID = "0d06cb65-4122-41c0-af87-1b7f8d1609da", // *
-        Notes = "TEST", // *
+        Notes = "TEST edicion", // *
+        PaymentConditions = "Credito",
+        ShippingMethod = "Paqueteria",
+        ScheduledTime = new DateTime(2026, 8, 30)
       };
 
       return fields;
+    }
+
+
+    private PurchaseOrderItemFields GetPurchaseOrderItemFields() {
+
+      return new PurchaseOrderItemFields {
+        Product = "ASF24-20",
+        VendorProductUID = "be585bd8-bdf7-4669-9a04-5f52a1bcbfde",
+        Quantity = 1,
+        Price = 1,
+        Weight = 1,
+        Description = "UPDATE ITEM TEST 222"
+      };
     }
 
     #endregion Helpers

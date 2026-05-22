@@ -50,17 +50,16 @@ namespace Empiria.Trade.Tests.Procurement {
     }
 
 
-
     [Fact]
     public void UpdateInventoryItemTest() {
       TestsCommonMethods.Authenticate();
       var usecase = InventoryOrderUseCases.UseCaseInteractor();
 
-      string orderUID = "8a97f5c8-bec2-4c8d-8296-19a291be4efb";
+      string orderUID = "f54744dd-81d7-4eb6-8587-424431c60e45";
 
       Trade.Core.InventoryOrderItemFields fields = new Trade.Core.InventoryOrderItemFields() {
         Product = "ASF24",
-        Location = "A-001-01-02",
+        Location = "A-029-01-09",
         Quantity = 1,
         RequestedByUID = "e4b5e0f9-c259-44dc-80ef-6b9c8f48324d",
       };

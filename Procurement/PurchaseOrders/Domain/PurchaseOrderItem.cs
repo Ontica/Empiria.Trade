@@ -9,14 +9,9 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
 using System;
-using System.Linq;
-using Empiria.Billing;
 using Empiria.Orders;
-using Empiria.Products;
-using Empiria.StateEnums;
 using Empiria.Trade.Procurement.Adapters;
 using Empiria.Trade.Procurement.Data;
-using Empiria.Trade.Products;
 
 namespace Empiria.Trade.Procurement {
 
