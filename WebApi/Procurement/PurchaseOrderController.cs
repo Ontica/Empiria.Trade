@@ -19,6 +19,20 @@ namespace Empiria.Trade.WebApi.Procurement {
   /// <summary>Query web API used to retrieve purchase orders.</summary>
   public class PurchaseOrderController : WebApiController {
 
+    [HttpPost]
+    [Route("v4/trade/procurement/purchase-orders/{purchaseOrderUID:guid}/close")]
+    public SingleObjectModel ClosePurchaseOrder([FromUri] string purchaseOrderUID) {
+
+      Assertion.EnsureFailed("Funcionalidad en proceso de desarrollo.");
+
+      using (var usecases = PurchaseOrderUseCases.UseCaseInteractor()) {
+
+        PurchaseOrderDto purchaseOrder = usecases.ClosePurchaseOrder();
+
+        return new SingleObjectModel(this.Request, purchaseOrder);
+      }
+    }
+
 
     [HttpPost]
     [Route("v4/trade/procurement/purchase-orders")]
