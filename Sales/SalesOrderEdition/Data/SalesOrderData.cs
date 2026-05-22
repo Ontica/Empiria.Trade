@@ -8,11 +8,11 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-using System.Collections.Generic;
+
 using Empiria.Data;
-using Empiria.DataTypes;
-using Empiria.Trade.Inventory;
-using Empiria.Trade.Orders;
+
+using Empiria.Trade.Core;
+
 using Empiria.Trade.Sales.Adapters;
 
 namespace Empiria.Trade.Sales.Data {
@@ -27,14 +27,14 @@ namespace Empiria.Trade.Sales.Data {
 
       string status = string.Empty;
 
-      if (fields.Status != Orders.OrderStatus.Empty) {
-        if (fields.Status == Orders.OrderStatus.Authorized) {
+      if (fields.Status != OrderStatus.Empty) {
+        if (fields.Status == OrderStatus.Authorized) {
           status = " AND (OrderAuthorizationStatus = 'A')";
         } else {
           status = $" AND (OrderStatus = '{(char) fields.Status}')";
         }
       } else {
-         status = $" AND (OrderStatus <> '{(char) Orders.OrderStatus.Cancelled}')";
+         status = $" AND (OrderStatus <> '{(char) OrderStatus.Cancelled}')";
       }
 
        return GetOrders(fields, status); 
@@ -45,7 +45,7 @@ namespace Empiria.Trade.Sales.Data {
       
         string status = string.Empty;
 
-        if (fields.Status != Orders.OrderStatus.Empty) {
+        if (fields.Status != OrderStatus.Empty) {
           if (fields.Status == OrderStatus.Authorized) {
             status = " AND (OrderAuthorizationStatus = 'A')";
           }
@@ -63,7 +63,7 @@ namespace Empiria.Trade.Sales.Data {
 
         string status = string.Empty;
 
-      if (fields.Status != Orders.OrderStatus.Empty) {
+      if (fields.Status != OrderStatus.Empty) {
         if (fields.Status == OrderStatus.Suppled) {
           status = "  AND ((OrderStatus = 'S') or (OrderStatus = 'D') or (OrderStatus = 'F')) ";
         }

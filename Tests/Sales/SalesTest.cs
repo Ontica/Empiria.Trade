@@ -16,16 +16,11 @@ using Xunit;
 using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Sales;
 
-
-using Empiria.StateEnums;
 using System.Collections.Generic;
 using Empiria.Trade.Sales.UseCases;
 
 using Empiria.Trade.Core;
-using Xunit.Abstractions;
-using Empiria.Trade.Orders;
 using System.Linq;
-using Empiria.Trade.Financial.UseCases;
 
 namespace Empiria.Trade.Tests.Sales {
 
@@ -111,7 +106,7 @@ namespace Empiria.Trade.Tests.Sales {
         //UID = "217ac442-5409-44b9-ae4d-22f9f104c5fe",
         //OrderNumber = "P-EY2DDRfrr2",
         OrderTime = DateTime.Now,
-        Status = Orders.OrderStatus.Captured,
+        Status = OrderStatus.Captured,
         CustomerUID = "ab8c4f29-5cf9-4def-9903-afa407a25c56",
 
         CustomerContactUID = "",

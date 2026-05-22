@@ -17,6 +17,7 @@ using Empiria.Trade.Sales.ShippingAndHandling.UseCases;
 using Empiria.Trade.Sales.ShippingAndHandling;
 
 using Empiria.Trade.Financial.UseCases;
+using Empiria.Trade.Core;
 
 namespace Empiria.Trade.Sales.Adapters {
 
@@ -48,7 +49,7 @@ namespace Empiria.Trade.Sales.Adapters {
       columns.Add(new DataTableColumn("salesAgentName", "Vendedor", "text"));
       columns.Add(new DataTableColumn("orderTotal", "Total", "decimal"));
 
-      if (query.Status == Orders.OrderStatus.Shipping) {
+      if (query.Status == OrderStatus.Shipping) {
         columns.Add(new DataTableColumn("shippingStatus", "Envío", "text-tag",0,true));
       }
 
@@ -70,14 +71,14 @@ namespace Empiria.Trade.Sales.Adapters {
       switch (query.QueryType) {
 
         case QueryType.Sales: {
-          if ((query.ShippingStatus != string.Empty) && (query.Status == Orders.OrderStatus.Shipping)) {            
+          if ((query.ShippingStatus != string.Empty) && (query.Status == OrderStatus.Shipping)) {            
             var list = MapBaseSalesOrdersShipmentStatus(salesOrders);
             var orders = list.ConvertAll(o => (BaseSalesOrderShipmentDto) o);
 
             return  orders.FindAll(x => x.ShippingStatus == query.ShippingStatus).ToFixedList<ISalesOrderDto>();             
           }
 
-          if (query.Status == Orders.OrderStatus.Shipping) {
+          if (query.Status == OrderStatus.Shipping) {
             return MapBaseSalesOrdersShipmentStatus(salesOrders);
           } else {
             return MapBaseSalesOrders(salesOrders);

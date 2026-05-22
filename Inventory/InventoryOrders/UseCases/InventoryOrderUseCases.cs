@@ -111,6 +111,7 @@ namespace Empiria.Trade.Inventory.UseCases {
       var orderItemType = Empiria.Orders.OrderItemType.Parse("ObjectTypeInfo.OrderItem.InventoryOrderItem");
 
       var location = CommonStorage.TryParseNamedKey<Location>(fields.Location);
+
       var product = Product.TryParseWithCode(fields.Product);
       var ifNotExistProductinLocation = VerifyProductAndLocationInOrder(order.Id, product.Id, location.Id);
 

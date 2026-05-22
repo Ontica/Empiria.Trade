@@ -15,10 +15,7 @@ using Empiria.WebApi;
 
 using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Sales.UseCases;
-
-
-using Empiria.DataTypes;
-using System.Security.Cryptography;
+using Empiria.Trade.Core;
 
 namespace Empiria.Trade.Sales.WebApi {
 
@@ -159,8 +156,8 @@ namespace Empiria.Trade.Sales.WebApi {
         SearchOrderFields fields = new SearchOrderFields();
 
         fields.QueryType = QueryType.Sales;
-        fields.Status = Orders.OrderStatus.Shipping;
-        fields.ShippingMethod = Orders.ShippingMethods.Paqueteria;
+        fields.Status = OrderStatus.Shipping;
+        fields.ShippingMethod = ShippingMethods.Paqueteria;
         fields.Keywords = keywords;
 
         var salesOrders = usecases.GetOrdersForShipping(fields);

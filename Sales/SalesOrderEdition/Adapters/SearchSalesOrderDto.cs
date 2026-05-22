@@ -15,6 +15,7 @@ using Newtonsoft.Json;
 using Empiria.Json;
 using Empiria.Trade.Core.Common;
 using Empiria.Trade.Orders;
+using Empiria.Trade.Core;
 
 // <summary>Output DTO used to return serach orders info. </summary>
 namespace Empiria.Trade.Sales.Adapters {

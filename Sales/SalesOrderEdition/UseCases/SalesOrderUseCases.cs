@@ -9,22 +9,17 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
+
 using Empiria.Services;
 using Empiria.Trade.Core;
 using Empiria.Trade.Core.Catalogues;
-using Empiria.Trade.Core.Inventories.Adapters;
 using Empiria.Trade.Core.UsesCases;
 using Empiria.Trade.Financial.Adapters;
 using Empiria.Trade.Financial.UseCases;
-using Empiria.Trade.Inventory.UseCases;
-using Empiria.Trade.Orders;
 using Empiria.Trade.Products;
 using Empiria.Trade.Sales.Adapters;
 
 using Empiria.Trade.Sales.Data;
-using Empiria.Trade.Sales.ShippingAndHandling;
-using Empiria.Trade.Sales.ShippingAndHandling.Data;
 
 namespace Empiria.Trade.Sales.UseCases {
 
@@ -216,7 +211,7 @@ namespace Empiria.Trade.Sales.UseCases {
     public ISalesOrderDto UpdateSalesOrder(SalesOrderFields fields) {
       Assertion.Require(fields, "fields");
                   
-      if (fields.Status != Orders.OrderStatus.Captured) {
+      if (fields.Status != OrderStatus.Captured) {
         Assertion.RequireFail($"It is only possible to update orders in the Captured status your order status is:{fields.Status}");
       }
 
@@ -243,7 +238,7 @@ namespace Empiria.Trade.Sales.UseCases {
 
       var order = SalesOrder.Parse(orderUID);
 
-      if (order.Status != Orders.OrderStatus.Applied) {
+      if (order.Status != OrderStatus.Applied) {
         Assertion.RequireFail($"It is only possible to Authorize orders in the Applied status, your order status is: {order.Status}");
       }
 
@@ -261,7 +256,7 @@ namespace Empiria.Trade.Sales.UseCases {
 
       var order = SalesOrder.Parse(orderUID);
 
-      if (order.Status != Orders.OrderStatus.Packing) {
+      if (order.Status != OrderStatus.Packing) {
         Assertion.RequireFail($"It is only possible to Supply orders in the Packing status, your order status is: {order.Status}");
       }
 
@@ -307,7 +302,7 @@ namespace Empiria.Trade.Sales.UseCases {
     }
 
     private void ValidateShippingMethod(SalesOrderFields fields) {
-      if ((fields.ShippingMethod != Orders.ShippingMethods.Ocurre) && (fields.CustomerAddressUID == String.Empty)) {
+      if ((fields.ShippingMethod != ShippingMethods.Ocurre) && (fields.CustomerAddressUID == String.Empty)) {
         throw Assertion.EnsureNoReachThisCode($"It is customer address is mandatory.");
       }
     }
