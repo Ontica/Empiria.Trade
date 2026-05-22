@@ -47,7 +47,7 @@ namespace Empiria.Trade.Procurement.Adapters {
     } = string.Empty;
 
 
-    public PaymentCondition PaymentCondition {
+    public PaymentCondition PaymentConditions {
       get; set;
     } = PaymentCondition.None;
 

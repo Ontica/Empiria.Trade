@@ -151,7 +151,6 @@ namespace Empiria.Trade.Procurement {
       fields.RequestedByUID = Party.ParseWithContact(ExecutionServer.CurrentContact).UID;
       fields.Name = "Sin asignar";
       fields.Observations = fields.Notes;
-      fields.PaymentConditions = fields.PaymentCondition;
       fields.StartDate = DateTime.Now;
     }
 
