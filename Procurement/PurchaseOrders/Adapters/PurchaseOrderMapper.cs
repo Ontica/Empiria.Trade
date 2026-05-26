@@ -63,8 +63,8 @@ namespace Empiria.Trade.Procurement.Adapters {
       columns.Add(new DataTableColumn("orderNo", "Número de orden", "text-link"));
       columns.Add(new DataTableColumn("provider", "Proveedor", "text"));
       columns.Add(new DataTableColumn("orderType", "Tipo", "text"));
-      columns.Add(new DataTableColumn("postingTime", "Fecha registro", "date"));
-      columns.Add(new DataTableColumn("requestedTime", "Fecha solicitado", "date"));
+      columns.Add(new DataTableColumn("postingTime", "Registro", "date"));
+      //columns.Add(new DataTableColumn("requestedTime", "Solicitado", "date"));
       columns.Add(new DataTableColumn("orderTotal", "Total", "decimal"));
       columns.Add(new DataTableColumn("orderStatus", "Estatus", "text-tag"));
 

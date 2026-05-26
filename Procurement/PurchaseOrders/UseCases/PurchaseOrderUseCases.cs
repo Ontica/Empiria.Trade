@@ -41,8 +41,12 @@ namespace Empiria.Trade.Procurement.UseCases {
 
     #region Public methods
 
-    public PurchaseOrderDto ClosePurchaseOrder() {
-      throw new NotImplementedException();
+    public PurchaseOrderDto ClosePurchaseOrder(string purchaseOrderUID) {
+      PurchaseOrder order = PurchaseOrder.Parse(purchaseOrderUID);
+
+      order.CloseOrder();
+
+      return GetPurchaseOrderDto(order.UID);
     }
 
 

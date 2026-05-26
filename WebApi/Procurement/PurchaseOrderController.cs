@@ -27,7 +27,7 @@ namespace Empiria.Trade.WebApi.Procurement {
 
       using (var usecases = PurchaseOrderUseCases.UseCaseInteractor()) {
 
-        PurchaseOrderDto purchaseOrder = usecases.ClosePurchaseOrder();
+        PurchaseOrderDto purchaseOrder = usecases.ClosePurchaseOrder(purchaseOrderUID);
 
         return new SingleObjectModel(this.Request, purchaseOrder);
       }

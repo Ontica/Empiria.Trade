@@ -113,6 +113,13 @@ namespace Empiria.Trade.Procurement {
 
     #region Methods
 
+    internal void CloseOrder() {
+      
+      this.Close(Party.ParseWithContact(ExecutionServer.CurrentContact));
+      this.Save();
+    }
+
+
     internal void DeleteOrder() {
 
       foreach (var item in this.PurchaseOrderItems) {

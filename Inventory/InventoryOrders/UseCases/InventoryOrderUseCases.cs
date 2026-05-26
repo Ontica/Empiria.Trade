@@ -105,10 +105,7 @@ namespace Empiria.Trade.Inventory.UseCases {
       Assertion.Require(orderUID, nameof(orderUID));
       Assertion.Require(fields, nameof(fields));
 
-      //TODO, SOLUCIONAR PROBLEMA DE REFERENCIA DE Location
       var order = InventoryOrder.Parse(orderUID);
-
-      var orderItemType = Empiria.Orders.OrderItemType.Parse("ObjectTypeInfo.OrderItem.InventoryOrderItem");
 
       var location = CommonStorage.TryParseNamedKey<Location>(fields.Location);
 
@@ -131,6 +128,8 @@ namespace Empiria.Trade.Inventory.UseCases {
       fields.Description = product.Description;
       fields.ProductUnitUID = product.BaseUnit.UID;
       fields.LocationUID = fields.LocationUID == string.Empty ? location.UID : fields.LocationUID;
+
+      var orderItemType = Empiria.Orders.OrderItemType.Parse("ObjectTypeInfo.OrderItem.InventoryOrderItem");
 
       Core.InventoryOrderItem orderItem = new Core.InventoryOrderItem(orderItemType, order, location);
 
