@@ -7,9 +7,6 @@
 *  Summary  : Generate data for Products.                                                                    *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
-using System;
-
-using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Products.Adapters;
 using Empiria.Trade.Products.Data;
 
@@ -34,13 +31,9 @@ namespace Empiria.Trade.Products.Domain {
 
     internal FixedList<Product> GetProducts() {
 
-      FixedList<Product> products = ProductDataService.GetProducts(query.Keywords);
-
       var helper = new ProductHelper(query);
 
-      FixedList<Product> productsWithPresentations = helper.GetBaseProductsWithPresentations(products);
-
-      return new FixedList<Product>(productsWithPresentations);
+      return helper.BaseProducts;
     }
 
 

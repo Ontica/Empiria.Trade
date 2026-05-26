@@ -9,12 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using Empiria.Products;
-using Empiria.Projects;
-using Empiria.Trade.Core;
 using Empiria.Trade.Core.Catalogues;
-using Newtonsoft.Json;
 
 namespace Empiria.Trade.Products.Adapters {
 
@@ -25,9 +20,8 @@ namespace Empiria.Trade.Products.Adapters {
 
     static internal FixedList<ProductForSearchingDto> Map(FixedList<Product> products) {
 
-      var mappedItems = products.Select((x) => MapProduct((Product) x));
-
-      return new FixedList<ProductForSearchingDto>(mappedItems);
+      return products.Select(x => MapProduct(x))
+                     .ToFixedList();
     }
 
 
@@ -38,7 +32,7 @@ namespace Empiria.Trade.Products.Adapters {
         ProductCode = product.InternalCode,
         Description = product.Description,
         ProductType = GetProductsType(product),
-        Presentations = GetProductPresentations(product.Presentations.ToFixedList())
+        Presentations = GetProductPresentations(product.Presentations)
       };
     }
 
@@ -52,22 +46,21 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
-    static private FixedList<ProductPresentationForSeach> GetProductPresentations(
-                      FixedList<ProductPresentationForSeach> productPresentations) {
+    static private FixedList<ProductPresentationForSeach> GetProductPresentations(FixedList<Product> presentations) {
 
-      var presentations = new List<ProductPresentationForSeach>();
+      var list = new List<ProductPresentationForSeach>();
 
-      foreach (var presentationEntry in productPresentations) {
+      foreach (var p in presentations) {
         ProductPresentationForSeach presentation = new ProductPresentationForSeach();
 
-        presentation.PresentationUID = presentationEntry.PresentationUID;
-        presentation.Description = presentationEntry.Description;
-        presentation.Vendors = GetVendors(presentationEntry);
+        presentation.PresentationUID = p.UID;
+        presentation.Description = p.Description;
+        presentation.Vendors = MapVendors(p);
 
-        presentations.Add(presentation);
+        list.Add(presentation);
       }
 
-      return presentations.ToFixedList();
+      return list.ToFixedList();
     }
 
 
@@ -179,12 +172,7 @@ namespace Empiria.Trade.Products.Adapters {
 
 
     static private FixedList<Attributes> GetAttributes(Product entry) {
-
-      //AttributesList attrs = new AttributesList();
       try {
-        //if (entry.Attributes != "") {
-        //  attrs = JsonConvert.DeserializeObject<AttributesList>(entry.Attributes);
-        //} return attrs.Attributes.ToFixedList();
         return new FixedList<Attributes>();
       } catch (Exception e) {
         throw new Exception($"{entry.InternalCode}. {e.Message}", e);
@@ -199,70 +187,31 @@ namespace Empiria.Trade.Products.Adapters {
       foreach (var present in entry.Presentations) {
         ProductPresentationForSeach presentation = new ProductPresentationForSeach();
 
-        presentation.PresentationUID = present.PresentationUID;
+        presentation.PresentationUID = present.VendorProductUID;
         presentation.Description = present.Description;
-        presentation.Units = present.Units;
-        presentation.Vendors = GetVendors(present);
+        presentation.Units = 10.5m;
+        presentation.Vendors = MapVendors(present);
         presentations.Add(presentation);
       }
       return presentations.ToFixedList();
     }
 
 
-    static private FixedList<VendorDto> GetVendors(ProductPresentationForSeach presentation) {
-      
-      var vendors = new List<VendorDto>();
+    static private FixedList<VendorDto> MapVendors(Product presentation) {
 
-      foreach (var _vendor in presentation.Vendors) {
-        VendorDto vendor = new VendorDto() {
-          VendorProductUID = _vendor.VendorProductUID,
-          VendorUID = _vendor.VendorUID,
-          VendorName = _vendor.VendorName,
-          Sku = _vendor.Sku,
-          Stock = _vendor.Stock,
-          Price = _vendor.Price
-        };
-        vendors.Add(vendor);
-      }
+      var vendor = new VendorDto {
+        VendorProductUID = presentation.VendorProductUID,
+        VendorUID = presentation.Vendor.UID,
+        VendorName = presentation.Vendor.Name,
+        Sku = "SKU",
+        Stock = 10,
+        Price = 250
+      };
+
+      var vendors = new List<VendorDto>();
+      vendors.Add(vendor);
       return vendors.ToFixedList();
     }
-
-
-    //static private FixedList<Presentation> GetPresentations(Product entry) {
-
-    //  var presentations = new List<Presentation>();
-
-    //  Presentation presentation = new Presentation();
-
-    //  presentation.PresentationUID = entry.ProductPresentation.PresentationUID;
-    //  presentation.Description = entry.ProductPresentation.PresentationDescription;
-    //  presentation.Units = entry.ProductPresentation.QuantityAmount;
-    //  presentation.Vendors = GetVendors(entry);
-
-    //  presentations.Add(presentation);
-
-    //  return presentations.ToFixedList();
-    //}
-
-
-    //static private FixedList<Vendor> GetVendors(Product entry) {
-
-    //  var vendors = new List<Vendor>();
-
-    //  Vendor vendor = new Vendor() {
-    //    VendorProductUID = entry.VendorProductUID,
-    //    VendorUID = entry.Vendor.UID,
-    //    VendorName = entry.Vendor.Name,
-    //    Sku = entry.SKU,
-    //    Stock = entry.InventoryEntry.InputQuantity,
-    //    Price = entry.PriceList
-    //  };
-
-    //  vendors.Add(vendor);
-
-    //  return vendors.ToFixedList();
-    //}
-
 
     #endregion Private methods
 

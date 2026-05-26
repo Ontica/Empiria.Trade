@@ -7,13 +7,12 @@
 *  Summary  : Represents a product.                                                                          *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
-using System;
-using System.Collections.Generic;
 
+using System;
+
+using Empiria.Parties;
 using Empiria.Ontology;
 using Empiria.Products;
-
-using Empiria.Trade.Products.Adapters;
 
 namespace Empiria.Trade.Products {
 
@@ -21,25 +20,26 @@ namespace Empiria.Trade.Products {
   [PartitionedType(typeof(ProductType))]
   public class Product : Empiria.Products.Product {
 
+
+    private Lazy<FixedList<Product>> _presentations;
+
     #region Constructors and parsers
-
-    internal Product() {
-
-    }
-
-    static public Product ParseId(int id) => ParseId<Product>(id);
-
-
-    static public Product ParseUID(string uid) => ParseKey<Product>(uid);
 
     protected Product(ProductType productType) : base(productType) {
       // Required by Empiria Framework for all partitioned types.
     }
 
-
-    internal Product(ProductType productType,
-                     ProductFields data) : base(productType) {
+    internal Product(ProductType productType, ProductFields data) : base(productType) {
       LoadData(data);
+    }
+
+    static public Product ParseId(int id) => ParseId<Product>(id);
+
+    static public Product ParseUID(string uid) => ParseKey<Product>(uid);
+
+
+    protected override void OnLoad() {
+      _presentations = new Lazy<FixedList<Product>>(() => Data.ProductDataService.GetProductsPresentations(this));
     }
 
     #endregion Constructors and parsers
@@ -60,7 +60,7 @@ namespace Empiria.Trade.Products {
 
 
     [DataField("VENDOR_ID")]
-    internal Empiria.Parties.Party Vendor {
+    internal Party Vendor {
       get; private set;
     }
 
@@ -192,9 +192,11 @@ namespace Empiria.Trade.Products {
     public string ProductImageUrl => $"http://apps.sujetsa.com.mx:8080/imagenes-productos/{this.InternalCode}.jpg";
 
 
-    public List<ProductPresentationForSeach> Presentations {
-      get; set;
-    } = new List<ProductPresentationForSeach>();
+    public FixedList<Product> Presentations {
+      get {
+        return _presentations.Value;
+      }
+    }
 
     #endregion Properties
 
