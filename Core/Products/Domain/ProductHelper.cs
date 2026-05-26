@@ -13,50 +13,28 @@ using System.Linq;
 using Empiria.Collections;
 using Empiria.Trade.Core;
 using Empiria.Trade.Products.Adapters;
+using Empiria.Trade.Products.Data;
 using Empiria.Trade.Products.UseCases;
-using Newtonsoft.Json;
 
 namespace Empiria.Trade.Products.Domain {
 
   /// <summary>Helper methods to build product structure.</summary>
   internal class ProductHelper {
 
-    private ProductQuery query;
+    private readonly FixedList<Product> _baseProducts;
 
-    internal ProductHelper(ProductQuery _query) {
-      query = _query;
+    internal ProductHelper(ProductQuery query) {
 
+      _baseProducts = ProductDataService.GetBaseProducts(query.Keywords);
+    }
+
+    public FixedList<Product> BaseProducts {
+      get {
+        return _baseProducts;
+      }
     }
 
     #region Public methods V2
-
-    internal FixedList<Product> GetBaseProductsWithPresentations(FixedList<Product> productsList) {
-
-      List<Product> productsWithPresentation = new List<Product>();
-
-      var baseProducts = productsList.FindAll(x => x.BaseProduct.Id == -1 || x.BaseProduct.Id == x.Id);
-
-      foreach (var baseProduct in baseProducts) {
-
-        var childProducts = productsList.FindAll(x => x.BaseProduct.Id == baseProduct.Id &&
-                                                      x.Id != baseProduct.Id);
-        
-        //GetProductBasePresentations(baseProduct);
-
-        GetProductPresentations(baseProduct, childProducts);
-
-        productsWithPresentation.Add(baseProduct);
-      }
-
-      return new FixedList<Product>(productsWithPresentation.ToFixedList());
-    }
-
-
-    private void GetProductBasePresentations(Product baseProduct) {
-
-      baseProduct.Presentations.Add(AssignPresentationByProduct(baseProduct));
-    }
-
 
     private ProductPresentationForSeach AssignPresentationByProduct(Product product) {
 
@@ -68,14 +46,6 @@ namespace Empiria.Trade.Products.Domain {
       };
     }
 
-
-    private void GetProductPresentations(Product baseProduct, FixedList<Product> childProducts) {
-
-      foreach (var child in childProducts) {
-
-        baseProduct.Presentations.Add(AssignPresentationByProduct(child));
-      }
-    }
 
     private FixedList<VendorDto> GetVendorsByPresentation(Product child) {
 
@@ -152,10 +122,6 @@ namespace Empiria.Trade.Products.Domain {
 
 
     internal FixedList<Product> GetProductsOrderBy(FixedList<Product> productsByCode) {
-
-      foreach (var product in productsByCode) {
-        product.Presentations = product.Presentations.OrderBy(x => x.Units).ToList();
-      }
 
       return productsByCode.OrderBy(p => p.InternalCode)
                            .ThenBy(p => p.Name)
@@ -248,14 +214,16 @@ namespace Empiria.Trade.Products.Domain {
 
     private PartyExtData GetCustomerAssignedPriceNumber() {
 
-      var customer = Party.Parse(query.CustomerUID);
-      var extData = new PartyExtData();
+      throw new NotImplementedException();
 
-      if (customer != null) {
-        extData = JsonConvert.DeserializeObject<PartyExtData>(customer.ExtData);
-      }
+      //var customer = Party.Parse(_query.CustomerUID);
+      //var extData = new PartyExtData();
 
-      return extData;
+      //if (customer != null) {
+      //  extData = JsonConvert.DeserializeObject<PartyExtData>(customer.ExtData);
+      //}
+
+      //return extData;
     }
 
 
@@ -317,10 +285,6 @@ namespace Empiria.Trade.Products.Domain {
 
       FixedList<Product> productsByStock = new FixedList<Product>(products);
 
-      if (query.OnStock) {
-        //productsByStock = products.Where(x => x.InventoryEntry.InputQuantity > 0).ToFixedList();
-      }
-
       return productsByStock;
     }
 
@@ -328,11 +292,11 @@ namespace Empiria.Trade.Products.Domain {
     private void GetProductPresentations(Product productEntry, Product product) {
 
       var existPresentation = productEntry.Presentations.Find(
-                          x => x.PresentationUID == product.ProductPresentation.UID);
+                          x => x.UID == product.ProductPresentation.UID);
 
       if (existPresentation != null) {
 
-        GetVendorsByPresentation(existPresentation, product);
+        // GetVendorsByPresentation(existPresentation, product);
 
       } else {
 
@@ -342,9 +306,6 @@ namespace Empiria.Trade.Products.Domain {
         presentation.Units = product.ProductPresentation.QuantityAmount;
 
         GetVendorsByPresentation(presentation, product);
-
-        productEntry.Presentations.Add(presentation);
-
       }
     }
 
@@ -359,8 +320,6 @@ namespace Empiria.Trade.Products.Domain {
         presentation.Description = present.PresentationDescription;
         presentation.Units = present.QuantityAmount;
         presentation.Vendors = new FixedList<VendorDto>();
-
-        productEntry.Presentations.Add(presentation);
       }
     }
 
@@ -370,7 +329,7 @@ namespace Empiria.Trade.Products.Domain {
       var vendorProduct = VendorProduct.Parse(product.VendorProductUID);
 
       var existVendor = presentation.Vendors.Find(x => x.VendorUID == product.Vendor.UID);
-      List< VendorDto> vendorDtos = new List< VendorDto>();
+      List<VendorDto> vendorDtos = new List<VendorDto>();
       if (existVendor == null) {
 
         VendorDto vendor = new VendorDto();
