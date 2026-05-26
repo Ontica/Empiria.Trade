@@ -70,15 +70,15 @@ namespace Empiria.Trade.WebApi.Core {
 
     [HttpPost]
     [Route("v4/trade/products/search-products-for-purchase-order")]
-    public async Task<CollectionModel> GetProductsForPurchaseOrder([FromBody] ProductQuery query) {
+    public CollectionModel GetProductsForPurchaseOrder([FromBody] ProductQuery query) {
 
       RequireBody(query);
 
       using (var usecases = ProductUseCases.UseCaseInteractor()) {
 
         query.OnStock = false;
-        FixedList<IProductEntryDto> productDto = await usecases.GetProductsList(query)
-                                                .ConfigureAwait(false);
+        FixedList<ProductForSearchingDto> productDto = usecases.GetProductsList(query);
+
         return new CollectionModel(Request, productDto);
       }
     }

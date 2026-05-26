@@ -47,15 +47,15 @@ namespace Empiria.Trade.Tests.Core {
 
 
     [Fact]
-    public async Task GetProductListTest() {
+    public void GetProductListTest() {
 
       var usecase = ProductUseCases.UseCaseInteractor();
       ProductQuery query = new ProductQuery {
-        Keywords = "MMAI14X80-15", //TG5G516X3
+        Keywords = "TG5G516X3", //TG5G516X3
         OnStock = false
       };
 
-      FixedList<IProductEntryDto> sut = await usecase.GetProductsList(query).ConfigureAwait(false);
+      FixedList<ProductForSearchingDto> sut = usecase.GetProductsList(query);
 
       Assert.NotNull(sut);
       Assert.NotEmpty(sut);

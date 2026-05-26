@@ -56,8 +56,6 @@ namespace Empiria.Trade.Products.Data {
       return DataReader.GetPlainObjectFixedList<ProductGroup>(dataOperation);
     }
 
-    #endregion Public methods V2
-
 
     internal static FixedList<Product> GetProductsForOrder(ProductQuery query) {
 
@@ -107,6 +105,7 @@ namespace Empiria.Trade.Products.Data {
       return DataReader.GetPlainObjectFixedList<VendorProduct>(dataOperation);
     }
 
+    #endregion Public methods V2
 
   } // class ProductDataService
 

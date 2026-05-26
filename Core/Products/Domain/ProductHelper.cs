@@ -15,7 +15,6 @@ using Empiria.Trade.Core;
 using Empiria.Trade.Products.Adapters;
 using Empiria.Trade.Products.UseCases;
 using Newtonsoft.Json;
-using Org.BouncyCastle.Asn1.Ocsp;
 
 namespace Empiria.Trade.Products.Domain {
 
@@ -29,7 +28,6 @@ namespace Empiria.Trade.Products.Domain {
 
     }
 
-
     #region Public methods V2
 
     internal FixedList<Product> GetBaseProductsWithPresentations(FixedList<Product> productsList) {
@@ -42,15 +40,15 @@ namespace Empiria.Trade.Products.Domain {
 
         var childProducts = productsList.FindAll(x => x.BaseProduct.Id == baseProduct.Id &&
                                                       x.Id != baseProduct.Id);
-
-        GetProductBasePresentations(baseProduct);
+        
+        //GetProductBasePresentations(baseProduct);
 
         GetProductPresentations(baseProduct, childProducts);
 
         productsWithPresentation.Add(baseProduct);
       }
 
-      return productsWithPresentation.ToFixedList();
+      return new FixedList<Product>(productsWithPresentation.ToFixedList());
     }
 
 
@@ -64,7 +62,7 @@ namespace Empiria.Trade.Products.Domain {
 
       return new ProductPresentationForSeach {
         PresentationUID = product.UID,
-        Description = product.Description,
+        Description = $"{product.InternalCode} - {product.BaseUnit.Description}",
         //Units = 1,
         Vendors = GetVendorsByPresentation(product)
       };
@@ -79,20 +77,19 @@ namespace Empiria.Trade.Products.Domain {
       }
     }
 
-
-    private List<VendorDto> GetVendorsByPresentation(Product child) {
+    private FixedList<VendorDto> GetVendorsByPresentation(Product child) {
 
       List<VendorDto> vendors = new List<VendorDto>();
 
       var vendor = new VendorDto {
         VendorUID = child.Vendor.UID,
         VendorProductUID = child.UID,
-        VendorName = child.Vendor.Name,
+        VendorName = child.Vendor.Name
       };
 
       vendors.Add(vendor);
 
-      return vendors;
+      return vendors.ToFixedList();
     }
 
 
@@ -361,7 +358,7 @@ namespace Empiria.Trade.Products.Domain {
         presentation.PresentationUID = present.PresentationUID;
         presentation.Description = present.PresentationDescription;
         presentation.Units = present.QuantityAmount;
-        presentation.Vendors = new List<VendorDto>();
+        presentation.Vendors = new FixedList<VendorDto>();
 
         productEntry.Presentations.Add(presentation);
       }
@@ -373,7 +370,7 @@ namespace Empiria.Trade.Products.Domain {
       var vendorProduct = VendorProduct.Parse(product.VendorProductUID);
 
       var existVendor = presentation.Vendors.Find(x => x.VendorUID == product.Vendor.UID);
-
+      List< VendorDto> vendorDtos = new List< VendorDto>();
       if (existVendor == null) {
 
         VendorDto vendor = new VendorDto();
@@ -383,9 +380,9 @@ namespace Empiria.Trade.Products.Domain {
         vendor.Sku = vendorProduct.SKU;
         vendor.Stock = InventoryBuilder.GetInventoryStockByVendorProduct(vendorProduct.Id, "").Sum(x => x.Stock);
         vendor.Price = product.PriceList;
-        presentation.Vendors.Add(vendor);
+        vendorDtos.Add(vendor);
       }
-
+      presentation.Vendors = vendorDtos.ToFixedList();
     }
 
 

@@ -26,9 +26,9 @@ namespace Empiria.Trade.Products.Adapters {
   public class ProductPresentationForSeach : ProductPresentationDto {
 
 
-    public List<VendorDto> Vendors {
+    public FixedList<VendorDto> Vendors {
       get; set;
-    } = new List<VendorDto>();
+    } = new FixedList<VendorDto>();
 
 
   } // class ProductPresentationForSeach

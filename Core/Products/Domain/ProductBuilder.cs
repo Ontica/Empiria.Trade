@@ -40,7 +40,7 @@ namespace Empiria.Trade.Products.Domain {
 
       FixedList<Product> productsWithPresentations = helper.GetBaseProductsWithPresentations(products);
 
-      return productsWithPresentations;
+      return new FixedList<Product>(productsWithPresentations);
     }
 
 

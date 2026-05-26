@@ -38,23 +38,16 @@ namespace Empiria.Trade.Products.UseCases {
 
     #endregion Constructors and parsers
 
+    #region Use cases
 
-    #region Methods V2
+    public FixedList<ProductForSearchingDto> GetProductsList(ProductQuery query) {
 
-    public async Task<FixedList<IProductEntryDto>> GetProductsList(ProductQuery query) {
       var builder = new ProductBuilder(query);
 
-      FixedList<Product> products = await Task.Run(() => builder.GetProducts())
-                                            .ConfigureAwait(false);
+      FixedList<Product> products = builder.GetProducts();
 
       return ProductMapper.Map(products);
     }
-
-
-    #endregion Methods V2
-
-
-    #region Use cases
 
 
     public IProductEntryDto GetProductByUID(string productUID) {

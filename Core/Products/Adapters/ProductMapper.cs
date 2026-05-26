@@ -23,23 +23,23 @@ namespace Empiria.Trade.Products.Adapters {
 
     #region Public methods V2
 
-    static internal FixedList<IProductEntryDto> Map(FixedList<Product> products) {
+    static internal FixedList<ProductForSearchingDto> Map(FixedList<Product> products) {
 
       var mappedItems = products.Select((x) => MapProduct((Product) x));
 
-      return new FixedList<IProductEntryDto>(mappedItems);
+      return new FixedList<ProductForSearchingDto>(mappedItems);
     }
 
 
-    static private IProductEntryDto MapProduct(Product product) {
-      var dto = new ProductForSearchingDto();
+    static private ProductForSearchingDto MapProduct(Product product) {
 
-      dto.ProductUID = product.UID;
-      dto.ProductCode = product.InternalCode;
-      dto.Description = product.Description;
-      dto.ProductType = GetProductsType(product);
-      dto.Presentations = product.Presentations.ToFixedList();
-      return dto;
+      return new ProductForSearchingDto() {
+        ProductUID = product.UID,
+        ProductCode = product.InternalCode,
+        Description = product.Description,
+        ProductType = GetProductsType(product),
+        Presentations = GetProductPresentations(product.Presentations.ToFixedList())
+      };
     }
 
 
@@ -52,23 +52,17 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
-    static private FixedList<ProductPresentationForSeach> GetProductPresentations(Product product) {
-
-      var productSubgroup = GetProductGroup(product);
-
-      if (productSubgroup.Count == 0) {
-        return GetDefaultPresentation(product);
-      }
+    static private FixedList<ProductPresentationForSeach> GetProductPresentations(
+                      FixedList<ProductPresentationForSeach> productPresentations) {
 
       var presentations = new List<ProductPresentationForSeach>();
 
-      foreach (var subgroup in productSubgroup) {
+      foreach (var presentationEntry in productPresentations) {
         ProductPresentationForSeach presentation = new ProductPresentationForSeach();
 
-        presentation.PresentationUID = subgroup.UID;
-        presentation.Description = $"{subgroup.Tags} {product.BaseUnit.Description}";
-        presentation.Units = 1;
-        presentation.Vendors = new List<VendorDto>() { new VendorDto { VendorName = "N/A" } };
+        presentation.PresentationUID = presentationEntry.PresentationUID;
+        presentation.Description = presentationEntry.Description;
+        presentation.Vendors = GetVendors(presentationEntry);
 
         presentations.Add(presentation);
       }
@@ -78,9 +72,9 @@ namespace Empiria.Trade.Products.Adapters {
 
 
     private static FixedList<ProductPresentationForSeach> GetDefaultPresentation(Empiria.Products.Product product) {
-      
+
       var presentations = new List<ProductPresentationForSeach>();
-      
+
       ProductPresentationForSeach presentation = new ProductPresentationForSeach();
       presentation.PresentationUID = product.BaseUnit.UID;
       presentation.Description = $"{product.InternalCode} - {product.BaseUnit.Description}";
@@ -90,7 +84,7 @@ namespace Empiria.Trade.Products.Adapters {
           VendorUID = product.UID,
           VendorProductUID = product.UID,
           VendorName = product.Name,
-        } };
+        } }.ToFixedList();
 
       presentations.Add(presentation);
 
@@ -193,11 +187,8 @@ namespace Empiria.Trade.Products.Adapters {
         //} return attrs.Attributes.ToFixedList();
         return new FixedList<Attributes>();
       } catch (Exception e) {
-
         throw new Exception($"{entry.InternalCode}. {e.Message}", e);
       }
-
-
     }
 
 
@@ -211,21 +202,18 @@ namespace Empiria.Trade.Products.Adapters {
         presentation.PresentationUID = present.PresentationUID;
         presentation.Description = present.Description;
         presentation.Units = present.Units;
-        presentation.Vendors = GetVendors(present).ToList();
-
+        presentation.Vendors = GetVendors(present);
         presentations.Add(presentation);
-
       }
-
       return presentations.ToFixedList();
     }
 
 
     static private FixedList<VendorDto> GetVendors(ProductPresentationForSeach presentation) {
+      
       var vendors = new List<VendorDto>();
 
       foreach (var _vendor in presentation.Vendors) {
-
         VendorDto vendor = new VendorDto() {
           VendorProductUID = _vendor.VendorProductUID,
           VendorUID = _vendor.VendorUID,
@@ -234,11 +222,8 @@ namespace Empiria.Trade.Products.Adapters {
           Stock = _vendor.Stock,
           Price = _vendor.Price
         };
-
         vendors.Add(vendor);
-
       }
-
       return vendors.ToFixedList();
     }
 
