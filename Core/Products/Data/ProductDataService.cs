@@ -7,34 +7,41 @@
 *  Summary  : Provides data read methods for TRDProducts.                                                    *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
-using System;
-using System.Linq;
 using Empiria.Data;
 using Empiria.Trade.Products.Adapters;
-using Empiria.Products;
 
 namespace Empiria.Trade.Products.Data {
 
   /// <summary>Provides data read methods for Products.</summary>
   internal class ProductDataService {
 
-    #region Public methods V2
+    #region Methods
 
-    internal static FixedList<Product> GetProducts(string keywords) {
-
-      string whereClauses = string.Empty;
-
-      if (keywords != string.Empty) {
-        whereClauses = $"WHERE {SearchExpression.ParseAndLikeKeywords("Product_Keywords", keywords)}";
-      }
+    internal static FixedList<Product> GetBaseProducts(string keywords) {
 
       var sql = "SELECT * FROM OMS_Products " +
-                $"{whereClauses}";
+                "WHERE (Base_Product_Id = Product_Id OR Base_Product_Id = -1) ";
 
-      var dataOperation = DataOperation.Parse(sql);
+      if (keywords != string.Empty) {
+        sql += $"AND {SearchExpression.ParseAndLikeKeywords("Product_Keywords", keywords)}";
+      }
 
-      return DataReader.GetFixedList<Product>(dataOperation);
+      var op = DataOperation.Parse(sql);
 
+      return DataReader.GetFixedList<Product>(op);
+    }
+
+
+    internal static FixedList<Product> GetProductsPresentations(Product baseProduct) {
+
+      var sql = "SELECT * FROM OMS_Products " +
+                $"WHERE Base_Product_Id = {baseProduct.Id} AND " +
+                $"Product_Id <> {baseProduct.Id} AND " +
+                $"Product_Status <> 'X'";
+
+      var op = DataOperation.Parse(sql);
+
+      return DataReader.GetFixedList<Product>(op);
     }
 
 
@@ -43,7 +50,7 @@ namespace Empiria.Trade.Products.Data {
 
       var category = categoryId > 0 ? $"AND Object_Category_Id = {categoryId} " : string.Empty;
       var classification = classificationId > 0 ?
-                           $"AND Object_Classification_Id = {classificationId} " :string.Empty;
+                           $"AND Object_Classification_Id = {classificationId} " : string.Empty;
 
 
       var sql = "SELECT * FROM Common_Storage " +
@@ -105,7 +112,7 @@ namespace Empiria.Trade.Products.Data {
       return DataReader.GetPlainObjectFixedList<VendorProduct>(dataOperation);
     }
 
-    #endregion Public methods V2
+    #endregion Methods
 
   } // class ProductDataService
 
