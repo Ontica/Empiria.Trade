@@ -1,7 +1,7 @@
 ﻿/* Empiria Trade *********************************************************************************************
 *                                                                                                            *
 *  Module   : Inventory Management                       Component : Interface adapters                      *
-*  Assembly : Empiria.Trade.Inventory.dll                Pattern   : Data Transfer Object                    *
+*  Assembly : Empiria.Trade.Core.dll                     Pattern   : Data Transfer Object                    *
 *  Type     : PurchaseOrderFields                        License   : Please read LICENSE.txt file            *
 *                                                                                                            *
 *  Summary  : DTO used to manage purchase order fields.                                                      *
@@ -12,7 +12,7 @@ using System;
 
 using Empiria.Orders;
 
-namespace Empiria.Trade.Procurement.Adapters {
+namespace Empiria.Trade.Core {
 
 
   /// <summary>DTO used to manage purchase order fields.</summary>
@@ -100,4 +100,4 @@ namespace Empiria.Trade.Procurement.Adapters {
   } // class PurchaseOrderItemFields
 
 
-} // namespace Empiria.Trade.Inventory.PurchaseOrders.Adapters
+} // namespace Empiria.Trade.Core

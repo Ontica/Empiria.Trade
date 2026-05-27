@@ -12,9 +12,8 @@ using System.Linq;
 using Empiria.Financial;
 using Empiria.Orders;
 using Empiria.Parties;
-using Empiria.Trade.Procurement.Adapters;
 
-namespace Empiria.Trade.Procurement {
+namespace Empiria.Trade.Core {
 
   /// <summary>Represents a purchase order entry.</summary>
   public class PurchaseOrder : Order {
@@ -35,13 +34,14 @@ namespace Empiria.Trade.Procurement {
       Assertion.Require(fields, nameof(fields));
 
       GetDefaultFields(fields, orderType);
-
-      base.Update(fields);
       
       if (this.IsNew) {
         base.OrderNo = "OC-" + EmpiriaString.BuildRandomString(8)
                                   .ToUpperInvariant();
       }
+
+      base.Activate();
+      base.Update(fields);
     }
 
 
@@ -113,14 +113,14 @@ namespace Empiria.Trade.Procurement {
 
     #region Methods
 
-    internal void CloseOrder() {
+    public void CloseOrder() {
       
-      this.Close(Party.ParseWithContact(ExecutionServer.CurrentContact));
+      this.Close(Parties.Party.ParseWithContact(ExecutionServer.CurrentContact));
       this.Save();
     }
 
 
-    internal void DeleteOrder() {
+    public void DeleteOrder() {
 
       foreach (var item in this.PurchaseOrderItems) {
         item.Delete();
@@ -132,13 +132,13 @@ namespace Empiria.Trade.Procurement {
     }
 
 
-    internal void SetTotals() {
+    public void SetTotals() {
       this.ItemsTotal = PurchaseOrderItems.Sum(x => x.Subtotal);
       this.ItemsCount = this.Items.Count;
     }
 
 
-    internal void Update(PurchaseOrderFields fields, OrderType orderType) {
+    public void Update(PurchaseOrderFields fields, OrderType orderType) {
 
       GetDefaultFields(fields, orderType);
 
@@ -155,7 +155,7 @@ namespace Empiria.Trade.Procurement {
     private void GetDefaultFields(PurchaseOrderFields fields, OrderType orderType) {
       fields.OrderTypeUID = orderType.UID;
       fields.ProviderUID = fields.SupplierUID;
-      fields.RequestedByUID = Party.ParseWithContact(ExecutionServer.CurrentContact).UID;
+      fields.RequestedByUID = Parties.Party.ParseWithContact(ExecutionServer.CurrentContact).UID;
       fields.Name = "Sin asignar";
       fields.Observations = fields.Notes;
       fields.StartDate = DateTime.Now;
@@ -165,4 +165,4 @@ namespace Empiria.Trade.Procurement {
 
   } // class PurchaseOrder
 
-} // namespace Empiria.Trade.Procurement
+} // namespace Empiria.Trade.Core

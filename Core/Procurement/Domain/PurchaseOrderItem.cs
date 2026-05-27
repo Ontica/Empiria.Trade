@@ -1,19 +1,16 @@
 ﻿/* Empiria Trade *********************************************************************************************
 *                                                                                                            *
 *  Module   : Inventory Management                       Component : Domain Layer                            *
-*  Assembly : Empiria.Trade.Inventory.dll                Pattern   : Information Holder                      *
+*  Assembly : Empiria.Trade.Core.dll                     Pattern   : Information Holder                      *
 *  Type     : PurchaseOrderItem                          License   : Please read LICENSE.txt file            *
 *                                                                                                            *
 *  Summary  : Represents a purchase order item.                                                              *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
-
 using System;
 using Empiria.Orders;
-using Empiria.Trade.Procurement.Adapters;
-using Empiria.Trade.Procurement.Data;
 
-namespace Empiria.Trade.Procurement {
+namespace Empiria.Trade.Core {
 
   /// <summary>Represents a purchase order item.</summary>
   public class PurchaseOrderItem : OrderItem {
@@ -28,7 +25,7 @@ namespace Empiria.Trade.Procurement {
       // Required by Empiria Framework for all partitioned types.
     }
 
-    protected internal PurchaseOrderItem(OrderItemType powertype, PurchaseOrder order, string productUID) :
+    public PurchaseOrderItem(OrderItemType powertype, PurchaseOrder order, string productUID) :
                                           base(powertype, order) {
       Assertion.Require(order, nameof(order));
 
@@ -74,7 +71,7 @@ namespace Empiria.Trade.Procurement {
 
     #region Private methods
 
-    internal void Update(PurchaseOrderItemFields fields) {
+    public void Update(PurchaseOrderItemFields fields) {
       Assertion.Require(fields, nameof(fields));
 
       if (this.IsNew) {
