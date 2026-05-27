@@ -8,12 +8,13 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-
 using Empiria.Orders;
 using Empiria.Services;
-
+using Empiria.Trade.Core;
+//using Empiria.Trade.Inventory.UseCases;
 using Empiria.Trade.Procurement.Adapters;
 using Empiria.Trade.Procurement.Data;
+using Empiria.Trade.Procurement.Domain;
 using Empiria.Trade.Products;
 
 namespace Empiria.Trade.Procurement.UseCases {
@@ -42,13 +43,17 @@ namespace Empiria.Trade.Procurement.UseCases {
     #region Public methods
 
     public PurchaseOrderDto ClosePurchaseOrder(string purchaseOrderUID) {
+      
       PurchaseOrder order = PurchaseOrder.Parse(purchaseOrderUID);
 
       order.CloseOrder();
 
+      PurchaseOrderBuilder.GenerateInventoryOrder(order);
+
       return GetPurchaseOrderDto(order.UID);
     }
 
+    
 
     public PurchaseOrderDto CreatePurchaseOrder(PurchaseOrderFields fields) {
 

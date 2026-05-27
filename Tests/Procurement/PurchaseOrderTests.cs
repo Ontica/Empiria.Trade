@@ -10,7 +10,7 @@
 using System;
 using Empiria.StateEnums;
 using Empiria.Tests;
-
+using Empiria.Trade.Core;
 using Empiria.Trade.Procurement.Adapters;
 using Empiria.Trade.Procurement.UseCases;
 using Xunit;
@@ -34,13 +34,26 @@ namespace Empiria.Trade.Tests.Procurement {
     #region Facts
 
     [Fact]
+    public void ClosePurchaseOrderTest() {
+
+      var usecase = PurchaseOrderUseCases.UseCaseInteractor();
+
+      string purchaseOrderUID = "9a6afb05-49c2-4a7a-b8ee-a665fec1389a";
+
+      PurchaseOrderDto sut = usecase.ClosePurchaseOrder(purchaseOrderUID);
+
+      Assert.NotNull(sut);
+    }
+
+
+    [Fact]
     public void CreatePurchaseOrderTest() {
 
       using (var usecase = PurchaseOrderUseCases.UseCaseInteractor()) {
 
         var fields = new PurchaseOrderFields {
           SupplierUID = "0d06cb65-4122-41c0-af87-1b7f8d1609da",
-          Notes = "TEST 27-04-2026",
+          Notes = "TEST 26-05-2026"
         };
 
         PurchaseOrderDto sut = usecase.CreatePurchaseOrder(fields);
@@ -58,7 +71,7 @@ namespace Empiria.Trade.Tests.Procurement {
       string purchaseOrderUID = "68131d68-f199-46eb-9846-aced7d7d5e38";
 
       var fields = new PurchaseOrderItemFields {
-        Product = "TTRC8X34-200-S",
+        Product = "TCCT12X112",
         VendorProductUID = "6b8a8254-0e41-42d9-88ed-4392977efb65",
         Quantity = 100,
         Price = 100,
@@ -126,8 +139,8 @@ namespace Empiria.Trade.Tests.Procurement {
 
       var usecase = PurchaseOrderUseCases.UseCaseInteractor();
 
-      string purchaseOrderUID = "68131d68-f199-46eb-9846-aced7d7d5e38";
-      string purchaseOrderItemUID = "912a20ca-0a5b-4249-a4f0-ce00da1591e2";
+      string purchaseOrderUID = "69451fcc-d8e0-495e-b35a-57b3f65f009d";
+      string purchaseOrderItemUID = "c52ae9ba-87aa-4c66-b032-adf6797eb0fa";
 
       PurchaseOrderItemFields fields = GetPurchaseOrderItemFields();
 
@@ -173,7 +186,7 @@ namespace Empiria.Trade.Tests.Procurement {
 
       return new PurchaseOrderItemFields {
         Product = "ASF24-20",
-        VendorProductUID = "be585bd8-bdf7-4669-9a04-5f52a1bcbfde",
+        VendorProductUID = "c0a3f389-5bfa-4fea-8954-8ef39f5afea7",
         Quantity = 1,
         Price = 1,
         Weight = 1,

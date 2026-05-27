@@ -8,8 +8,8 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using Empiria.Trade.Core;
 using Empiria.Trade.Core.Common;
-using Empiria.Trade.Orders;
 
 namespace Empiria.Trade.Procurement.Adapters {
 

@@ -12,6 +12,7 @@ using Empiria.WebApi;
 using System.Web.Http;
 using Empiria.Trade.Procurement.UseCases;
 using Empiria.Trade.Procurement.Adapters;
+using Empiria.Trade.Core;
 
 namespace Empiria.Trade.WebApi.Procurement {
 
@@ -22,8 +23,6 @@ namespace Empiria.Trade.WebApi.Procurement {
     [HttpPost]
     [Route("v4/trade/procurement/purchase-orders/{purchaseOrderUID:guid}/close")]
     public SingleObjectModel ClosePurchaseOrder([FromUri] string purchaseOrderUID) {
-
-      Assertion.EnsureFailed("Funcionalidad en proceso de desarrollo.");
 
       using (var usecases = PurchaseOrderUseCases.UseCaseInteractor()) {
 
