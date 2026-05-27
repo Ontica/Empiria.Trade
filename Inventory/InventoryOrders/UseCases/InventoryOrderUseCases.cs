@@ -19,6 +19,7 @@ using Empiria.Trade.Products;
 using Empiria.Trade.Inventory.Data;
 using Empiria.Trade.Inventory.Adapters;
 using Empiria.Trade.Inventory.Domain;
+using Empiria.Orders;
 
 namespace Empiria.Trade.Inventory.UseCases {
 
@@ -84,14 +85,13 @@ namespace Empiria.Trade.Inventory.UseCases {
     }
 
 
-    public InventoryHolderDto CreateInventoryOrder(string warehouseUID, Core.InventoryOrderFields fields) {
-      Assertion.Require(warehouseUID, nameof(warehouseUID));
+    public InventoryHolderDto CreateInventoryOrder(Core.InventoryOrderFields fields) {
       Assertion.Require(fields, nameof(fields));
 
       var orderType = Empiria.Orders.OrderType.Parse(INVENTORYORDERTYPE);
       fields.Priority = Priority.Normal;
 
-      InventoryOrder order = new InventoryOrder(warehouseUID, orderType);
+      InventoryOrder order = new InventoryOrder(fields.WarehouseUID, orderType);
 
       order.Update(fields);
 
@@ -121,7 +121,7 @@ namespace Empiria.Trade.Inventory.UseCases {
       Assertion.Require(ifNotExistProductinLocation, $"El producto {product.Name} ya está registrado " +
                                                      $"en la localización {fields.Location}.");
 
-      var maxOrderItem = InventoryOrderData.SearchMaxOrderItemPosition(order);
+      var maxOrderItem = InventoryData.SearchMaxOrderItemPosition(order);
 
       fields.Position = maxOrderItem.Count > 0 ? maxOrderItem.First().Position + 1 : 1;
       fields.ProductUID = product.UID;
@@ -129,7 +129,7 @@ namespace Empiria.Trade.Inventory.UseCases {
       fields.ProductUnitUID = product.BaseUnit.UID;
       fields.LocationUID = fields.LocationUID == string.Empty ? location.UID : fields.LocationUID;
 
-      var orderItemType = Empiria.Orders.OrderItemType.Parse("ObjectTypeInfo.OrderItem.InventoryOrderItem");
+      var orderItemType = OrderItemType.Parse("ObjectTypeInfo.OrderItem.InventoryOrderItem");
 
       Core.InventoryOrderItem orderItem = new Core.InventoryOrderItem(orderItemType, order, location);
 

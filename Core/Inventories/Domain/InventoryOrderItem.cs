@@ -12,8 +12,6 @@ using System;
 using Empiria.Locations;
 using Empiria.Orders;
 
-using Empiria.Inventory.Data;
-
 namespace Empiria.Trade.Core {
 
   /// <summary>Represents an inventory order item.</summary>
@@ -26,11 +24,11 @@ namespace Empiria.Trade.Core {
     }
 
     protected internal InventoryOrderItem(OrderItemType powertype,
-                                          Core.InventoryOrder order) : base(powertype, order) {
+                                          InventoryOrder order) : base(powertype, order) {
     }
 
     public InventoryOrderItem(OrderItemType powertype,
-                                          Core.InventoryOrder order, Location location) : base(powertype, order) {
+                                          InventoryOrder order, Location location) : base(powertype, order) {
 
       Assertion.Require(location, nameof(location));
       Assertion.Require(!location.IsEmptyInstance, nameof(location));
@@ -69,9 +67,10 @@ namespace Empiria.Trade.Core {
 
       fields.UnitPrice = GetProductPrice();
 
+      fields.EnsureValid();
+
       base.Update(fields);
     }
-
 
 
     public new void UpdateQuantity(decimal quantity) {

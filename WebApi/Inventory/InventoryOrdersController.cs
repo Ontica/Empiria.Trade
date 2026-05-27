@@ -9,10 +9,10 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
 using System.Web.Http;
-
+using DocumentFormat.OpenXml.Bibliography;
+using Empiria.Trade.Core;
 using Empiria.Trade.Inventory.Adapters;
 using Empiria.Trade.Inventory.UseCases;
-using Empiria.Trade.Core;
 using Empiria.WebApi;
 
 namespace Empiria.Trade.WebApi.Inventory {
@@ -107,7 +107,7 @@ namespace Empiria.Trade.WebApi.Inventory {
 
       using (var usecases = InventoryOrderUseCases.UseCaseInteractor()) {
 
-        InventoryHolderDto inventoryOrder = usecases.CreateInventoryOrder(fields.WarehouseUID, fields);
+        InventoryHolderDto inventoryOrder = usecases.CreateInventoryOrder(fields);
 
         return new SingleObjectModel(this.Request, inventoryOrder);
       }
@@ -130,6 +130,8 @@ namespace Empiria.Trade.WebApi.Inventory {
     [HttpPost]
     [Route("v8/order-management/inventory-orders/{orderUID:guid}/close")]
     public SingleObjectModel CloseInventoryOrder([FromUri] string orderUID) {
+
+      Assertion.RequireFail("Funcionalidad en proceso de desarrollo.");
 
       using (var usecases = InventoryOrderUseCases.UseCaseInteractor()) {
 

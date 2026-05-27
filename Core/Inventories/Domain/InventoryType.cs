@@ -9,6 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
 using System;
+using Empiria.Billing;
 using Empiria.Orders;
 
 namespace Empiria.Trade.Core {
@@ -27,6 +28,8 @@ namespace Empiria.Trade.Core {
     static public new FixedList<InventoryType> GetList() {
       return GetStorageObjects<InventoryType>();
     }
+
+    static public InventoryType InventarioEntradasCompra => Parse(1009);
 
     #endregion Constructors and parsers
 

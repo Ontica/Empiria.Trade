@@ -14,7 +14,19 @@ namespace Empiria.Trade.Core {
 
 
   /// <summary>Provides data read methods for inventory.</summary>
-  internal class InventoryData {
+  public class InventoryData {
+
+    static public FixedList<InventoryOrderItem> SearchMaxOrderItemPosition(InventoryOrder order) {
+
+      var sql = $"SELECT TOP 1 * FROM OMS_Order_Items WHERE " +
+                $"Order_Item_Status <> 'X' AND Order_Item_Order_Id = {order.Id} " +
+                $"ORDER BY Order_Item_Position DESC";
+
+      var op = DataOperation.Parse(sql);
+
+      return DataReader.GetFixedList<InventoryOrderItem>(op);
+    }
+
 
     internal static FixedList<InventoryEntry> GetInventoryEntriesByOrderItem(InventoryOrderItem orderItem) {
 
