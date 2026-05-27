@@ -9,6 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Collections.Generic;
+using Empiria.Products;
 using Empiria.Trade.Core.Catalogues;
 
 namespace Empiria.Trade.Products.Adapters {
@@ -32,7 +33,7 @@ namespace Empiria.Trade.Products.Adapters {
         ProductCode = product.InternalCode,
         Description = product.Description,
         ProductType = GetProductsType(product),
-        Presentations = GetProductPresentations(product.Presentations)
+        Presentations = GetProductPresentations(product)
       };
     }
 
@@ -46,15 +47,28 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
-    static private FixedList<ProductPresentationForSeach> GetProductPresentations(FixedList<Product> presentations) {
+    static private FixedList<ProductPresentationForSeach> GetProductPresentations(
+                                                            Product product) {
+
+      var presentations = product.Presentations;
 
       var list = new List<ProductPresentationForSeach>();
+
+      if (presentations.Count == 0) {
+        ProductPresentationForSeach presentation = new ProductPresentationForSeach();
+
+        presentation.PresentationUID = product.UID;
+        presentation.Description = $"{product.InternalCode} - {product.BaseUnit.Description}";
+        presentation.Vendors = MapVendors(product);
+
+        list.Add(presentation);
+      }
 
       foreach (var p in presentations) {
         ProductPresentationForSeach presentation = new ProductPresentationForSeach();
 
         presentation.PresentationUID = p.UID;
-        presentation.Description = p.Description;
+        presentation.Description = $"{p.InternalCode} - {p.BaseUnit.Description}";
         presentation.Vendors = MapVendors(p);
 
         list.Add(presentation);
@@ -187,7 +201,7 @@ namespace Empiria.Trade.Products.Adapters {
       foreach (var present in entry.Presentations) {
         ProductPresentationForSeach presentation = new ProductPresentationForSeach();
 
-        presentation.PresentationUID = present.VendorProductUID;
+        presentation.PresentationUID = present.UID;
         presentation.Description = present.Description;
         presentation.Units = 10.5m;
         presentation.Vendors = MapVendors(present);
@@ -203,9 +217,7 @@ namespace Empiria.Trade.Products.Adapters {
         VendorProductUID = presentation.VendorProductUID,
         VendorUID = presentation.Vendor.UID,
         VendorName = presentation.Vendor.Name,
-        Sku = "SKU",
-        Stock = 10,
-        Price = 250
+        Sku = "SKU"
       };
 
       var vendors = new List<VendorDto>();

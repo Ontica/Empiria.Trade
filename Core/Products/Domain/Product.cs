@@ -66,7 +66,9 @@ namespace Empiria.Trade.Products {
 
 
     internal string VendorProductUID {
-      get; private set;
+      get {
+        return this.UID;
+      }
     }
 
 

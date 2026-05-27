@@ -23,6 +23,8 @@ namespace Empiria.Trade.Products.Domain {
 
     private readonly FixedList<Product> _baseProducts;
 
+    #region Public methods V2
+
     internal ProductHelper(ProductQuery query) {
 
       _baseProducts = ProductDataService.GetBaseProducts(query.Keywords);
@@ -33,35 +35,6 @@ namespace Empiria.Trade.Products.Domain {
         return _baseProducts;
       }
     }
-
-    #region Public methods V2
-
-    private ProductPresentationForSeach AssignPresentationByProduct(Product product) {
-
-      return new ProductPresentationForSeach {
-        PresentationUID = product.UID,
-        Description = $"{product.InternalCode} - {product.BaseUnit.Description}",
-        //Units = 1,
-        Vendors = GetVendorsByPresentation(product)
-      };
-    }
-
-
-    private FixedList<VendorDto> GetVendorsByPresentation(Product child) {
-
-      List<VendorDto> vendors = new List<VendorDto>();
-
-      var vendor = new VendorDto {
-        VendorUID = child.Vendor.UID,
-        VendorProductUID = child.UID,
-        VendorName = child.Vendor.Name
-      };
-
-      vendors.Add(vendor);
-
-      return vendors.ToFixedList();
-    }
-
 
     #endregion Public methods V2
 
@@ -137,12 +110,10 @@ namespace Empiria.Trade.Products.Domain {
 
     }
 
-
     #endregion public methods
 
 
     #region Private methods
-
 
     private void AssingHashProductByCode(EmpiriaHashTable<Product> hashProducts, Product product) {
 
