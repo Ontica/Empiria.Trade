@@ -32,7 +32,7 @@ namespace Empiria.Trade.Products.Domain {
 
     public FixedList<Product> BaseProducts {
       get {
-        return _baseProducts;
+        return _baseProducts.FindAll(x=>x.BaseProductId == x.Id || x.BaseProductId == -1);
       }
     }
 

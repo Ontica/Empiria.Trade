@@ -58,7 +58,8 @@ namespace Empiria.Trade.Products.Adapters {
         ProductPresentationForSeach presentation = new ProductPresentationForSeach();
 
         presentation.PresentationUID = product.UID;
-        presentation.Description = $"{product.InternalCode} - {product.BaseUnit.Description}";
+        presentation.Name = $"{product.InternalCode} - {product.BaseUnit.Description}";
+        presentation.Description = product.Description;
         presentation.Vendors = MapVendors(product);
 
         list.Add(presentation);
@@ -68,7 +69,8 @@ namespace Empiria.Trade.Products.Adapters {
         ProductPresentationForSeach presentation = new ProductPresentationForSeach();
 
         presentation.PresentationUID = p.UID;
-        presentation.Description = $"{p.InternalCode} - {p.BaseUnit.Description}";
+        presentation.Name = $"{p.InternalCode} - {p.BaseUnit.Description}";
+        presentation.Description = p.Description;
         presentation.Vendors = MapVendors(p);
 
         list.Add(presentation);

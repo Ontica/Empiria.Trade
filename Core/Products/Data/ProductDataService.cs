@@ -19,11 +19,11 @@ namespace Empiria.Trade.Products.Data {
 
     internal static FixedList<Product> GetBaseProducts(string keywords) {
 
-      var sql = "SELECT * FROM OMS_Products " +
-                "WHERE (Base_Product_Id = Product_Id OR Base_Product_Id = -1) ";
+      var sql = "SELECT * FROM OMS_Products "; 
+                //"(Base_Product_Id = Product_Id OR Base_Product_Id = -1) ";
 
       if (keywords != string.Empty) {
-        sql += $"AND {SearchExpression.ParseAndLikeKeywords("Product_Keywords", keywords)}";
+        sql += $"WHERE {SearchExpression.ParseAndLikeKeywords("Product_Keywords", keywords)}";
       }
 
       var op = DataOperation.Parse(sql);

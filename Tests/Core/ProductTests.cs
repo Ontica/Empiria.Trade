@@ -51,7 +51,7 @@ namespace Empiria.Trade.Tests.Core {
 
       var usecase = ProductUseCases.UseCaseInteractor();
       ProductQuery query = new ProductQuery {
-        Keywords = "TCCT12X112", //TG5G516X3
+        Keywords = "TG5G38X6", //TG5G516X3
         OnStock = false
       };
 
