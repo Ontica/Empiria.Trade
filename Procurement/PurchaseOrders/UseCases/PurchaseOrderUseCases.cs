@@ -11,9 +11,8 @@ using System;
 using Empiria.Orders;
 using Empiria.Services;
 using Empiria.Trade.Core;
-//using Empiria.Trade.Inventory.UseCases;
+
 using Empiria.Trade.Procurement.Adapters;
-using Empiria.Trade.Procurement.Data;
 using Empiria.Trade.Procurement.Domain;
 using Empiria.Trade.Products;
 
@@ -111,11 +110,9 @@ namespace Empiria.Trade.Procurement.UseCases {
 
 
     public PurchaseOrderDto GetPurchaseOrderDto(string purchaseOrderUID) {
-      
+
       var order = PurchaseOrder.Parse(purchaseOrderUID);
-
-      order.SetTotals();
-
+      
       return PurchaseOrderMapper.MapOrder(order);
     }
 

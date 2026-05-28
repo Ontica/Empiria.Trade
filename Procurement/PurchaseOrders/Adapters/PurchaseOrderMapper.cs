@@ -14,6 +14,7 @@ using Empiria.Trade.Core.Common;
 using Empiria.StateEnums;
 
 using Empiria.Trade.Core;
+using System.Linq;
 
 namespace Empiria.Trade.Procurement.Adapters {
 
@@ -46,7 +47,7 @@ namespace Empiria.Trade.Procurement.Adapters {
         OrderTime = order.StartDate,
         ScheduledTime = order.ScheduledTime,
         Status = order.Status.MapToDto(),
-        Items = MapItems(order.PurchaseOrderItems),
+        Items = MapItems(order),
         Totals = MapTotals(order)
       };
 
@@ -65,7 +66,7 @@ namespace Empiria.Trade.Procurement.Adapters {
       columns.Add(new DataTableColumn("orderType", "Tipo", "text"));
       columns.Add(new DataTableColumn("postingTime", "Registro", "date"));
       //columns.Add(new DataTableColumn("requestedTime", "Solicitado", "date"));
-      columns.Add(new DataTableColumn("orderTotal", "Total", "decimal"));
+      columns.Add(new DataTableColumn("totals.OrderTotal", "Total", "decimal"));
       columns.Add(new DataTableColumn("orderStatus", "Estatus", "text-tag"));
 
       return columns.ToFixedList();
@@ -80,9 +81,11 @@ namespace Empiria.Trade.Procurement.Adapters {
     }
 
 
-    static private FixedList<PurchaseOrderItemDto> MapItems(FixedList<PurchaseOrderItem> items) {
+    static private FixedList<PurchaseOrderItemDto> MapItems(PurchaseOrder order) {
 
-      var mappedItems = items.Select((x) => MapPurchasOrderItems(x));
+      var purchaseOrderItems = PurchaseOrderItem.GetListFor(order);
+
+      var mappedItems = purchaseOrderItems.Select((x) => MapPurchaseOrderItems(x));
 
       return new FixedList<PurchaseOrderItemDto>(mappedItems);
     }
@@ -104,7 +107,7 @@ namespace Empiria.Trade.Procurement.Adapters {
     }
 
 
-    private static PurchaseOrderItemDto MapPurchasOrderItems(PurchaseOrderItem x) {
+    private static PurchaseOrderItemDto MapPurchaseOrderItems(PurchaseOrderItem x) {
 
       return new PurchaseOrderItemDto {
         UID = x.UID,
@@ -123,10 +126,12 @@ namespace Empiria.Trade.Procurement.Adapters {
 
     private static PurchaseOrderTotal MapTotals(PurchaseOrder order) {
 
+      var purchaseOrderItems = order.PurchaseOrderItems;
+      
       return new PurchaseOrderTotal {
-        ItemsTotal = order.ItemsTotal,
-        OrderTotal = order.ItemsTotal,
-        ItemsCount = order.ItemsCount
+        ItemsTotal = purchaseOrderItems.Sum(x => x.Subtotal),
+        OrderTotal = purchaseOrderItems.Sum(x => x.Subtotal),
+        ItemsCount = purchaseOrderItems.Count
       };
     }
 

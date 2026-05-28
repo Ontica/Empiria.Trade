@@ -11,8 +11,6 @@ using System;
 using System.Linq;
 using Empiria.Trade.Core;
 using Empiria.Trade.Orders;
-using Empiria.Trade.Procurement.Adapters;
-using Empiria.Trade.Procurement.Data;
 
 namespace Empiria.Trade.Procurement {
 

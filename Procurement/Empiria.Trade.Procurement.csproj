@@ -80,4 +80,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\operations.management\Orders\Core\Empiria.Orders.Core.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="PurchaseOrders\Data\" />
+  </ItemGroup>
 </Project>
