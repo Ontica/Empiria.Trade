@@ -16,12 +16,23 @@ namespace Empiria.Trade.Core {
 
 
   /// <summary>Provides data read methods for purchase order.</summary>
-  internal class PurchaseOrderData {
-
+  public class PurchaseOrderData {
 
     #region Public methods
 
-    internal static FixedList<PurchaseOrder> GetPurchaseOrders(PurchaseOrderQuery query, int orderTypeId) {
+    static public PurchaseOrder GetPurchaseOrder(string purchaseOrderUID, int orderTypeId) {
+
+      string sql = $"SELECT * FROM OMS_Orders " +
+                   $"WHERE Order_Type_Id = {orderTypeId} " +
+                   $"AND Order_UID = '{purchaseOrderUID}'";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetPlainObject<PurchaseOrder>(dataOperation);
+    }
+
+
+    static public FixedList<PurchaseOrder> GetPurchaseOrders(PurchaseOrderQuery query, int orderTypeId) {
 
       var queryClauses = GetQueryClauses(query);
 
@@ -35,7 +46,7 @@ namespace Empiria.Trade.Core {
     }
 
 
-    internal static FixedList<PurchaseOrderItem> GetPurchaseOrderItems(PurchaseOrder order) {
+    static public FixedList<PurchaseOrderItem> GetPurchaseOrderItems(PurchaseOrder order) {
 
       string sql = $"SELECT * FROM OMS_Order_Items " +
                    $"WHERE Order_Item_Order_Id = {order.Id} AND Order_Item_Status <> 'X'";

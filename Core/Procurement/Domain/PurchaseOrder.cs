@@ -9,6 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Linq;
+using DocumentFormat.OpenXml.Presentation;
 using Empiria.Financial;
 using Empiria.Orders;
 using Empiria.Parties;
@@ -17,6 +18,8 @@ namespace Empiria.Trade.Core {
 
   /// <summary>Represents a purchase order entry.</summary>
   public class PurchaseOrder : Order {
+
+    private Lazy<FixedList<PurchaseOrderItem>> _purchaseOrderItems;
 
     #region Constructors and parsers
 
@@ -56,6 +59,11 @@ namespace Empiria.Trade.Core {
       return new FixedList<IPayableEntity>();
     }
 
+    protected override void OnLoad() {
+      _purchaseOrderItems = new Lazy<FixedList<PurchaseOrderItem>>(() =>
+                              PurchaseOrderData.GetPurchaseOrderItems(this));
+    }
+
     #endregion Constructors and parsers
 
     #region Properties
@@ -73,6 +81,13 @@ namespace Empiria.Trade.Core {
 
 
     public FixedList<PurchaseOrderItem> PurchaseOrderItems {
+      get {
+        return _purchaseOrderItems.Value;
+      }
+    }
+
+
+    public FixedList<PurchaseOrderItem> OrderItems {
       get {
         return PurchaseOrderItem.GetListFor(this);
       }
@@ -122,19 +137,13 @@ namespace Empiria.Trade.Core {
 
     public void DeleteOrder() {
 
-      foreach (var item in this.PurchaseOrderItems) {
+      foreach (var item in this.OrderItems) {
         item.Delete();
         item.Save();
       }
 
       this.Delete();
       this.Save();
-    }
-
-
-    public void SetTotals() {
-      this.ItemsTotal = PurchaseOrderItems.Sum(x => x.Subtotal);
-      this.ItemsCount = this.Items.Count;
     }
 
 

@@ -46,7 +46,7 @@ namespace Empiria.Trade.Core {
 
     static public PurchaseOrderItem Empty => ParseEmpty<PurchaseOrderItem>();
 
-    internal static FixedList<PurchaseOrderItem> GetListFor(PurchaseOrder purchaseOrder) {
+    static public FixedList<PurchaseOrderItem> GetListFor(PurchaseOrder purchaseOrder) {
       Assertion.Require(purchaseOrder, nameof(purchaseOrder));
 
       return PurchaseOrderData.GetPurchaseOrderItems(purchaseOrder);
