@@ -68,7 +68,8 @@ namespace Empiria.Trade.Procurement.Domain {
         Position = maxOrderItem.Count > 0 ? maxOrderItem.First().Position + 1 : 1,
         ProductUID = purchaseOrderItem.Product.UID,
         Description = purchaseOrderItem.Product.Description,
-        ProductUnitUID = purchaseOrderItem.Product.BaseUnit.UID
+        ProductUnitUID = purchaseOrderItem.Product.BaseUnit.UID,
+        Quantity = purchaseOrderItem.Quantity,
       };
     }
 
@@ -76,7 +77,8 @@ namespace Empiria.Trade.Procurement.Domain {
     static private void GenerateInventoryOrderItems(PurchaseOrder purchaseOrder,
                                                     InventoryOrder inventoryOrder) {
       
-      var purchaseOrderItems = purchaseOrder.GetItems<PurchaseOrderItem>();
+      var purchaseOrderItems = PurchaseOrderItem.GetListFor(purchaseOrder);
+      //purchaseOrder.GetItems<PurchaseOrderItem>();
 
       foreach (var purchaseOrderItem in purchaseOrderItems) {
 

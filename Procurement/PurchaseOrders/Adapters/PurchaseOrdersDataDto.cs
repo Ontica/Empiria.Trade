@@ -17,7 +17,6 @@ namespace Empiria.Trade.Procurement.Adapters {
   /// <summary>Output DTO used to return purchase descriptor data.</summary>
   public class PurchaseOrdersDataDto {
 
-
     public PurchaseOrderQuery Query {
       get; set;
     } = new PurchaseOrderQuery();
@@ -32,13 +31,11 @@ namespace Empiria.Trade.Procurement.Adapters {
       get; set;
     } = new FixedList<PurchaseOrderDescriptorDto>();
 
-
   } // class PurchaseOrdersDataDto
 
 
   public class PurchaseOrderDescriptorDto {
 
-    
     public string UID {
       get;
       internal set;
@@ -78,14 +75,19 @@ namespace Empiria.Trade.Procurement.Adapters {
     public decimal OrderTotal {
       get; internal set;
     }
+
+
     public string OrderType {
       get;
       internal set;
     }
+
+
     public DateTime PostingTime {
       get;
       internal set;
     }
+
   } // class PurchaseOrderDescriptorDto
 
 } // namespace Empiria.Trade.Inventory.PurchaseOrders.Adapters

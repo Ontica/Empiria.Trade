@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using Empiria.Inventory.Adapters;
 using Empiria.Orders;
 
 namespace Empiria.Trade.Core {
@@ -15,6 +16,7 @@ namespace Empiria.Trade.Core {
   /// <summary>Represents a purchase order item.</summary>
   public class PurchaseOrderItem : OrderItem {
 
+    private readonly PurchaseOrder _order;
     #region Constructors and parsers
 
     public PurchaseOrderItem() {
@@ -28,13 +30,16 @@ namespace Empiria.Trade.Core {
     public PurchaseOrderItem(OrderItemType powertype, PurchaseOrder order, string productUID) :
                                           base(powertype, order) {
       Assertion.Require(order, nameof(order));
+      Assertion.Require(productUID, nameof(productUID));
 
-      ValuateItems(order, productUID);
+      _order = order;
+
+      ValuateItems(productUID);
     }
 
 
-    private void ValuateItems(PurchaseOrder order, string productUID) {
-      var items = order.PurchaseOrderItems.FindAll(x => x.Product.UID == productUID);
+    private void ValuateItems(string productUID) {
+      var items = _order.PurchaseOrderItems.FindAll(x => x.Product.UID == productUID);
 
       Assertion.Require(items.Count == 0,
         $"El producto que intenta guardar, ya se encuentra registrado.");
@@ -76,8 +81,10 @@ namespace Empiria.Trade.Core {
 
       if (this.IsNew) {
 
-        fields.UnitPrice = fields.UnitPrice == 0 ? 0.001M : fields.UnitPrice;
+        fields.UnitPrice = fields.UnitPrice == 0 ? 0.000001M : fields.UnitPrice;
+        fields.Position = PurchaseOrderItem.GetListFor(_order).Count + 1;
       }
+      
       Weight = fields.Weight;
       base.Update(fields);
     }

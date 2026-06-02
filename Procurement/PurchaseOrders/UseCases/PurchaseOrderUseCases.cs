@@ -71,9 +71,9 @@ namespace Empiria.Trade.Procurement.UseCases {
       Assertion.Require(purchaseOrderUID, nameof(purchaseOrderUID));
       Assertion.Require(fields, nameof(fields));
 
-      GetDefaultProductFields(fields);
-
       var order = PurchaseOrder.Parse(purchaseOrderUID);
+
+      GetDefaultProductFields(order, fields);
 
       var orderItemType = OrderItemType.Parse(ORDERITEMTYPE);
 
@@ -149,12 +149,14 @@ namespace Empiria.Trade.Procurement.UseCases {
       Assertion.Require(purchaseOrderItemUID, nameof(purchaseOrderItemUID));
       Assertion.Require(fields, nameof(fields));
 
-      fields.UID = purchaseOrderItemUID;
-
-      GetDefaultProductFields(fields);
-
       var order = PurchaseOrder.Parse(purchaseOrderUID);
-      var item = order.GetItem<PurchaseOrderItem>(purchaseOrderItemUID);
+
+      var item = PurchaseOrderItem.Parse(purchaseOrderItemUID);
+
+      GetDefaultProductFields(order, fields);
+
+      fields.UID = purchaseOrderItemUID;
+      fields.Position = item.Position;
 
       item.Update(fields);
       item.Save();
@@ -167,7 +169,7 @@ namespace Empiria.Trade.Procurement.UseCases {
 
     #region Private methods
 
-    private void GetDefaultProductFields(PurchaseOrderItemFields fields) {
+    private void GetDefaultProductFields(PurchaseOrder order, PurchaseOrderItemFields fields) {
       
       var product = Product.ParseUID(fields.VendorProductUID);
 

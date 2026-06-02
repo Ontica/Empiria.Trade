@@ -125,7 +125,7 @@ namespace Empiria.Trade.Tests.Procurement {
 
       PurchaseOrderQuery query = new PurchaseOrderQuery {
         SupplierUID = "",
-        Keywords = "",
+        Keywords = "OC-554TY9TC",
         Status = EntityStatus.All
       };
 
@@ -139,8 +139,8 @@ namespace Empiria.Trade.Tests.Procurement {
 
       var usecase = PurchaseOrderUseCases.UseCaseInteractor();
 
-      string purchaseOrderUID = "69451fcc-d8e0-495e-b35a-57b3f65f009d";
-      string purchaseOrderItemUID = "c52ae9ba-87aa-4c66-b032-adf6797eb0fa";
+      string purchaseOrderUID = "858aeae2-8989-4401-9780-783aab9c9744";
+      string purchaseOrderItemUID = "88ac35f0-b803-4929-b92e-81038ee143ae";
 
       PurchaseOrderItemFields fields = GetPurchaseOrderItemFields();
 

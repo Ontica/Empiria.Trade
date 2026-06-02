@@ -24,8 +24,6 @@ namespace Empiria.Trade.WebApi.Procurement {
     [Route("v4/trade/procurement/purchase-orders/{purchaseOrderUID:guid}/close")]
     public SingleObjectModel ClosePurchaseOrder([FromUri] string purchaseOrderUID) {
 
-      Assertion.RequireFail("Funcionalidad en proceso de desarrollo.");
-
       using (var usecases = PurchaseOrderUseCases.UseCaseInteractor()) {
 
         PurchaseOrderDto purchaseOrder = usecases.ClosePurchaseOrder(purchaseOrderUID);
@@ -135,8 +133,6 @@ namespace Empiria.Trade.WebApi.Procurement {
     public SingleObjectModel UpdatePurchaseOrderItem([FromUri] string purchaseOrderUID,
                                                      [FromUri] string purchaseOrderItemUID,
                                                      [FromBody] PurchaseOrderItemFields fields) {
-
-      Assertion.RequireFail("Funcionalidad en proceso de desarrollo.");
 
       using (var usecases = PurchaseOrderUseCases.UseCaseInteractor()) {
 

@@ -36,7 +36,9 @@ namespace Empiria.Trade.Procurement.Adapters {
 
 
     static internal PurchaseOrderDto MapOrder(PurchaseOrder order) {
-      
+
+      var orderItems = PurchaseOrderItem.GetListFor(order);
+
       return new PurchaseOrderDto {
         UID = order.UID,
         OrderNumber = order.OrderNo,
@@ -47,8 +49,8 @@ namespace Empiria.Trade.Procurement.Adapters {
         OrderTime = order.StartDate,
         ScheduledTime = order.ScheduledTime,
         Status = order.Status.MapToDto(),
-        Items = MapItems(order),
-        Totals = MapTotals(order)
+        Items = MapItems(orderItems),
+        Totals = MapTotals(orderItems)
       };
 
     }
@@ -66,7 +68,7 @@ namespace Empiria.Trade.Procurement.Adapters {
       columns.Add(new DataTableColumn("orderType", "Tipo", "text"));
       columns.Add(new DataTableColumn("postingTime", "Registro", "date"));
       //columns.Add(new DataTableColumn("requestedTime", "Solicitado", "date"));
-      columns.Add(new DataTableColumn("totals.OrderTotal", "Total", "decimal"));
+      columns.Add(new DataTableColumn("orderTotal", "Total", "decimal"));
       columns.Add(new DataTableColumn("orderStatus", "Estatus", "text-tag"));
 
       return columns.ToFixedList();
@@ -81,11 +83,9 @@ namespace Empiria.Trade.Procurement.Adapters {
     }
 
 
-    static private FixedList<PurchaseOrderItemDto> MapItems(PurchaseOrder order) {
+    static private FixedList<PurchaseOrderItemDto> MapItems(FixedList<PurchaseOrderItem> items) {
 
-      var purchaseOrderItems = PurchaseOrderItem.GetListFor(order);
-
-      var mappedItems = purchaseOrderItems.Select((x) => MapPurchaseOrderItems(x));
+      var mappedItems = items.Select((x) => MapPurchaseOrderItems(x));
 
       return new FixedList<PurchaseOrderItemDto>(mappedItems);
     }
@@ -101,7 +101,7 @@ namespace Empiria.Trade.Procurement.Adapters {
       dto.PostingTime = x.PostingTime;
       dto.RequestedTime = x.RequestedTime;
       dto.OrderStatus = x.Status.GetName();
-      dto.OrderTotal = x.Items != null && x.Taxes != null ? x.Total : 0;
+      dto.OrderTotal = x.PurchaseOrderItems.Sum(a => a.Subtotal);
 
       return dto;
     }
@@ -124,14 +124,12 @@ namespace Empiria.Trade.Procurement.Adapters {
     }
 
 
-    private static PurchaseOrderTotal MapTotals(PurchaseOrder order) {
+    private static PurchaseOrderTotal MapTotals(FixedList<PurchaseOrderItem> orderItems) {
 
-      var purchaseOrderItems = order.PurchaseOrderItems;
-      
       return new PurchaseOrderTotal {
-        ItemsTotal = purchaseOrderItems.Sum(x => x.Subtotal),
-        OrderTotal = purchaseOrderItems.Sum(x => x.Subtotal),
-        ItemsCount = purchaseOrderItems.Count
+        ItemsTotal = orderItems.Sum(x => x.Subtotal),
+        OrderTotal = orderItems.Sum(x => x.Subtotal),
+        ItemsCount = orderItems.Count
       };
     }
 
