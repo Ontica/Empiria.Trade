@@ -115,11 +115,22 @@ namespace Empiria.Trade.Core {
     #region Methods
 
     public void CloseOrder() {
-      
+
+      ValuateItemsToClose();
+
       this.Close(Parties.Party.ParseWithContact(ExecutionServer.CurrentContact));
       this.Save();
     }
 
+
+    private void ValuateItemsToClose() {
+
+      foreach (var item in PurchaseOrderItems) {
+        if (item.Subtotal <= 0.01M) {
+          Assertion.RequireFail("Para cerrar la OC, todos los productos deben tener un costo mayor a $0.00");
+        }
+      }
+    }
 
     public void DeleteOrder() {
 
