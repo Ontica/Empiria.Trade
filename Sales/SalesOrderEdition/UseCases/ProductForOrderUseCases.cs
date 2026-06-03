@@ -64,7 +64,7 @@ namespace Empiria.Trade.Sales.UseCases {
       query.OnStock = orderQuery.OnStock;
       query.CustomerUID = orderQuery.Order.CustomerUID;
       query.SalesAgentUID = orderQuery.Order.SalesAgentUID;
-      query.SuplierUID = orderQuery.Order.SupplierUID;
+      query.SupplierUID = orderQuery.Order.SupplierUID;
 
       return query;
     }

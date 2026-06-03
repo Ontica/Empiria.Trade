@@ -46,7 +46,7 @@ namespace Empiria.Trade.Products.UseCases {
 
       FixedList<Product> products = builder.GetProducts();
 
-      return ProductMapper.Map(products);
+      return ProductMapper.Map(products, query.SupplierUID);
     }
 
 

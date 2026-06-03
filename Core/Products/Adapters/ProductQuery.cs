@@ -31,7 +31,7 @@ namespace Empiria.Trade.Products.Adapters {
     } = string.Empty;
 
 
-    public string SuplierUID {
+    public string SupplierUID {
       get; set;
     } = string.Empty;
 
