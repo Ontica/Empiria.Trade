@@ -34,19 +34,6 @@ namespace Empiria.Trade.Tests.Core {
     #region Facts
 
     [Fact]
-    public void GetProductTest() {
-
-      var usecase = ProductUseCases.UseCaseInteractor();
-
-      string uid = "78be58ab-75d0-4e8f-bed4-2305e70101c8";
-
-      IProductEntryDto sut = usecase.GetProductByUID(uid);
-
-      Assert.NotNull(sut);
-    }
-
-
-    [Fact]
     public void GetProductListTest() {
 
       var usecase = ProductUseCases.UseCaseInteractor();
@@ -55,7 +42,7 @@ namespace Empiria.Trade.Tests.Core {
         OnStock = false
       };
 
-      FixedList<ProductForSearchingDto> sut = usecase.GetProductsList(query);
+      FixedList<ProductForSearchingDto> sut = usecase.GetProducts(query);
 
       Assert.NotNull(sut);
       Assert.NotEmpty(sut);

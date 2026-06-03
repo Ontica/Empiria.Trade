@@ -9,6 +9,8 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using DocumentFormat.OpenXml.Presentation;
 using Empiria.Products;
 using Empiria.Trade.Core.Catalogues;
 
@@ -50,81 +52,26 @@ namespace Empiria.Trade.Products.Adapters {
     static private FixedList<ProductPresentationForSeach> GetProductPresentations(
                                                             Product product) {
 
-      var presentations = product.Presentations;
+      var presentations = product.Presentations.OrderBy(x => x.InternalCode).ToFixedList();
 
       var list = new List<ProductPresentationForSeach>();
 
       if (presentations.Count == 0) {
-        ProductPresentationForSeach presentation = new ProductPresentationForSeach();
-
-        presentation.PresentationUID = product.UID;
-        presentation.Name = $"{product.InternalCode} - {product.BaseUnit.Description}";
-        presentation.Description = product.Description;
-        presentation.Vendors = MapVendors(product);
-
-        list.Add(presentation);
+        
+        list.Add(AssignProductPresentation(product));
       }
 
       foreach (var p in presentations) {
-        ProductPresentationForSeach presentation = new ProductPresentationForSeach();
 
-        presentation.PresentationUID = p.UID;
-        presentation.Name = $"{p.InternalCode} - {p.BaseUnit.Description}";
-        presentation.Description = p.Description;
-        presentation.Vendors = MapVendors(p);
-
-        list.Add(presentation);
+        list.Add(AssignProductPresentation(p));
       }
 
       return list.ToFixedList();
     }
 
-
-    private static FixedList<ProductPresentationForSeach> GetDefaultPresentation(Empiria.Products.Product product) {
-
-      var presentations = new List<ProductPresentationForSeach>();
-
-      ProductPresentationForSeach presentation = new ProductPresentationForSeach();
-      presentation.PresentationUID = product.BaseUnit.UID;
-      presentation.Description = $"{product.InternalCode} - {product.BaseUnit.Description}";
-      presentation.Units = 1;
-      presentation.Vendors = new List<VendorDto>() {
-        new VendorDto {
-          VendorUID = product.UID,
-          VendorProductUID = product.UID,
-          VendorName = product.Name,
-        } }.ToFixedList();
-
-      presentations.Add(presentation);
-
-      return presentations.ToFixedList();
-    }
-
-
-    static private FixedList<ProductGroup> GetProductGroup(Empiria.Products.Product product) {
-
-      var groupId = Convert.ToInt32(product.Group);
-      var subgroupId = Convert.ToInt32(product.Subgroup);
-
-      var productGroup = ProductGroup.GetListFor(groupId, subgroupId);
-
-      return new FixedList<ProductGroup>(productGroup);
-    }
-
     #endregion Public methods V2
 
     #region Public methods
-
-    static internal IProductEntryDto MapToDto(ProductFields entry) {
-
-      return MapProductFields(entry);
-
-    }
-
-    //static internal FixedList<IProductEntryDto> MapToListDto(FixedList<Product> products) {
-    //  return MapToEntriesDto(products);
-    //}
-
 
     static internal FixedList<IProductEntryDto> MapToEntriesDto(FixedList<Product> entries) {
 
@@ -133,29 +80,18 @@ namespace Empiria.Trade.Products.Adapters {
       return new FixedList<IProductEntryDto>(mappedItems);
     }
 
-
     #endregion Public methods
 
     #region Private methods
 
+    private static ProductPresentationForSeach AssignProductPresentation(Product product) {
 
-    static private IProductEntryDto MapProductFields(ProductFields entry) {
-      var dto = new ProductEntryDto();
-
-      dto.ProductUID = entry.ProductUID;
-      dto.ProductGroupUID = entry.ProductGroup.UID;
-      dto.ProductSubgroupUID = entry.ProductSubgroup.UID;
-      dto.ProductCode = entry.ProductCode;
-      dto.ProductUPC = entry.ProductUPC;
-      dto.ProductName = entry.ProductName;
-      dto.ProductDescription = entry.ProductDescription;
-      dto.Category = entry.Category;
-      dto.ProductWeight = entry.ProductWeight;
-      dto.ProductLength = entry.ProductLength;
-      dto.FragileProduct = entry.FragileProduct;
-      dto.ProductStatus = entry.Status;
-
-      return dto;
+      return new ProductPresentationForSeach {
+        PresentationUID = product.UID,
+        Name = $"{product.InternalCode} - {product.BaseUnit.Description}",
+        Description = product.Description,
+        Vendors = MapVendors(product)
+      };
     }
 
 

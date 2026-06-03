@@ -33,9 +33,11 @@ namespace Empiria.Trade.WebApi.Core {
     public SingleObjectModel GetProduct([FromUri] string productUID) {
       RequireBody(productUID);
 
+      Assertion.RequireFail("Funcionalidad en proceso de desarrollo.");
+
       using (var usecases = ProductUseCases.UseCaseInteractor()) {
-        IProductEntryDto productDto = usecases.GetProductByUID(productUID);
-        return new SingleObjectModel(Request, productDto);
+        
+        return new SingleObjectModel(Request, new object());
       }
     }
 
@@ -77,7 +79,7 @@ namespace Empiria.Trade.WebApi.Core {
       using (var usecases = ProductUseCases.UseCaseInteractor()) {
 
         query.OnStock = false;
-        FixedList<ProductForSearchingDto> productDto = usecases.GetProductsList(query);
+        FixedList<ProductForSearchingDto> productDto = usecases.GetProducts(query);
 
         return new CollectionModel(Request, productDto);
       }

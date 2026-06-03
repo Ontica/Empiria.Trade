@@ -40,22 +40,13 @@ namespace Empiria.Trade.Products.UseCases {
 
     #region Use cases
 
-    public FixedList<ProductForSearchingDto> GetProductsList(ProductQuery query) {
+    public FixedList<ProductForSearchingDto> GetProducts(ProductQuery query) {
 
       var builder = new ProductBuilder(query);
 
       FixedList<Product> products = builder.GetProducts();
 
       return ProductMapper.Map(products);
-    }
-
-
-    public IProductEntryDto GetProductByUID(string productUID) {
-      Assertion.Require(productUID, "productUID");
-
-      var product = ProductFields.Parse(productUID);
-
-      return ProductMapper.MapToDto(product);
     }
 
 

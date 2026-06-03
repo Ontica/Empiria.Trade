@@ -7,6 +7,7 @@
 *  Summary  : Generate data for Products.                                                                    *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
+using System.Linq;
 using Empiria.Trade.Products.Adapters;
 using Empiria.Trade.Products.Data;
 
@@ -33,19 +34,13 @@ namespace Empiria.Trade.Products.Domain {
 
       var helper = new ProductHelper(query);
 
-      return helper.BaseProducts;
+      return helper.BaseProducts.OrderBy(x=>x.InternalCode).ToFixedList();
     }
 
 
     #endregion Public methods V2
 
     #region Public methods
-
-    public object BuildProduct(Product product) {
-
-      return product;
-    }
-
 
     internal FixedList<Product> GetProductsForOrder() {
 
