@@ -52,16 +52,20 @@ namespace Empiria.Trade.Products.Adapters {
     static private FixedList<ProductPresentationForSeach> GetProductPresentations(
                                                             Product product, string vendorUID) {
       
-      var presentations = GetPresentationsForVendor(product, vendorUID);
+      
+      var productPresentations = product.Presentations.OrderBy(x => x.Vendor.Name)
+                                                      .ThenBy(x => x.InternalCode).ToFixedList();
+
+      var presentationsByVendor = GetPresentationsByVendor(productPresentations, vendorUID);
 
       var list = new List<ProductPresentationForSeach>();
 
-      if (presentations.Count == 0) {
+      if (presentationsByVendor.Count == 0) {
         
         list.Add(AssignProductPresentation(product));
       }
 
-      foreach (var p in presentations) {
+      foreach (var p in presentationsByVendor) {
 
         list.Add(AssignProductPresentation(p));
       }
@@ -69,20 +73,7 @@ namespace Empiria.Trade.Products.Adapters {
       return list.ToFixedList();
     }
 
-    static private FixedList<Product> GetPresentationsForVendor(Product product, string vendorUID) {
-      
-      vendorUID = vendorUID == string.Empty ? "Empty"  : vendorUID;
-      var vendor = Party.Parse(vendorUID);
-
-      var presentations = product.Presentations.OrderBy(x => x.InternalCode).ToFixedList();
-
-      if (vendor.Id != -1) {
-        presentations = presentations.FindAll(x=>x.Vendor.Id == vendor.Id).ToFixedList();
-      }
-
-      return new FixedList<Product>(presentations); 
-    }
-
+    
     #endregion Public methods V2
 
     #region Public methods
@@ -160,6 +151,19 @@ namespace Empiria.Trade.Products.Adapters {
         presentations.Add(presentation);
       }
       return presentations.ToFixedList();
+    }
+
+
+    static private FixedList<Product> GetPresentationsByVendor(FixedList<Product> productPresentations,
+                                                                string vendorUID) {
+      vendorUID = vendorUID == string.Empty ? "Empty" : vendorUID;
+      var vendor = Party.Parse(vendorUID);
+
+      if (vendor.Id != -1) {
+        return productPresentations.FindAll(x => x.Vendor.Id == vendor.Id).ToFixedList();
+      }
+
+      return new FixedList<Product>(productPresentations);
     }
 
 

@@ -38,9 +38,9 @@ namespace Empiria.Trade.Tests.Core {
 
       var usecase = ProductUseCases.UseCaseInteractor();
       ProductQuery query = new ProductQuery {
-        Keywords = "TG5G14X3", //TG5G516X3
+        Keywords = "TG5G38X114", //TG5G516X3
         OnStock = false,
-        SupplierUID = "b8b6d1ce-ffd0-47fd-92ef-3db32fa44ed5"
+        //SupplierUID = "b8b6d1ce-ffd0-47fd-92ef-3db32fa44ed5"
       };
 
       FixedList<ProductForSearchingDto> sut = usecase.GetProducts(query);
