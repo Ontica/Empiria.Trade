@@ -40,7 +40,11 @@ namespace Empiria.Trade.Products.UseCases {
 
     #region Use cases
 
-    public FixedList<ProductForSearchingDto> GetProducts(ProductQuery query) {
+    public FixedList<ProductForSearchingDto> GetProductsForPurchaseOrder(ProductQuery query) {
+
+      if (query.Keywords == string.Empty) {
+        Assertion.RequireFail("Por favor escribe una palabra clave para iniciar búsqueda.");
+      }
 
       var builder = new ProductBuilder(query);
 
@@ -54,16 +58,6 @@ namespace Empiria.Trade.Products.UseCases {
       var builder = new ProductBuilder(query);
 
       FixedList<Product> products = await Task.Run(() => builder.GetProductsList())
-                                            .ConfigureAwait(false);
-
-      return ProductMapper.MapToEntriesDto(products);
-    }
-
-
-    public async Task<FixedList<IProductEntryDto>> GetProductsForPurchaseOrder(ProductQuery query) {
-      var builder = new ProductBuilder(query);
-
-      FixedList<Product> products = await Task.Run(() => builder.GetProductsForPurchaseOrder())
                                             .ConfigureAwait(false);
 
       return ProductMapper.MapToEntriesDto(products);

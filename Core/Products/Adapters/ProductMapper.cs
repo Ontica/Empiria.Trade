@@ -24,7 +24,8 @@ namespace Empiria.Trade.Products.Adapters {
     static internal FixedList<ProductForSearchingDto> Map(FixedList<Product> products, string vendorUID) {
 
       return products.Select(x => MapProduct(x, vendorUID))
-                     .ToFixedList();
+                                 .Where(x => x.Presentations.Count > 0)
+                                 .ToFixedList();
     }
 
 
@@ -53,14 +54,14 @@ namespace Empiria.Trade.Products.Adapters {
                                                             Product product, string vendorUID) {
       
       
-      var productPresentations = product.Presentations.OrderBy(x => x.Vendor.Name)
+      var productPresentations = product.Presentations.OrderBy(x => x.InternalCode.Length)
                                                       .ThenBy(x => x.InternalCode).ToFixedList();
 
       var presentationsByVendor = GetPresentationsByVendor(productPresentations, vendorUID);
 
       var list = new List<ProductPresentationForSeach>();
 
-      if (presentationsByVendor.Count == 0) {
+      if (presentationsByVendor.Count == 0 && vendorUID != string.Empty && product.Vendor.UID == vendorUID) {
         
         list.Add(AssignProductPresentation(product));
       }

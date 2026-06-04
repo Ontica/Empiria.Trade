@@ -38,12 +38,12 @@ namespace Empiria.Trade.Tests.Core {
 
       var usecase = ProductUseCases.UseCaseInteractor();
       ProductQuery query = new ProductQuery {
-        Keywords = "TG5G38X114", //TG5G516X3
+        Keywords = "CARRIAGE BOLTS GRADE", //TG5G516X3 TCC12X1
         OnStock = false,
-        //SupplierUID = "b8b6d1ce-ffd0-47fd-92ef-3db32fa44ed5"
+        SupplierUID = "b8b6d1ce-ffd0-47fd-92ef-3db32fa44ed5"
       };
 
-      FixedList<ProductForSearchingDto> sut = usecase.GetProducts(query);
+      FixedList<ProductForSearchingDto> sut = usecase.GetProductsForPurchaseOrder(query);
 
       Assert.NotNull(sut);
       Assert.NotEmpty(sut);
@@ -60,22 +60,6 @@ namespace Empiria.Trade.Tests.Core {
       };
 
       FixedList<IProductEntryDto> sut = await usecase.GetProductsListV1(query).ConfigureAwait(false);
-
-      Assert.NotNull(sut);
-      Assert.NotEmpty(sut);
-    }
-
-
-    [Fact]
-    public async Task GetProductListForPurchaseOrderTest() {
-
-      var usecase = ProductUseCases.UseCaseInteractor();
-      ProductQuery query = new ProductQuery {
-        Keywords = "PPBTA14X34-3500",
-        OnStock = true
-      };
-
-      FixedList<IProductEntryDto> sut = await usecase.GetProductsForPurchaseOrder(query).ConfigureAwait(false);
 
       Assert.NotNull(sut);
       Assert.NotEmpty(sut);

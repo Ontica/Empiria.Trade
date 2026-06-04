@@ -27,12 +27,15 @@ namespace Empiria.Trade.Products.Domain {
 
     internal ProductHelper(ProductQuery query) {
 
-      _baseProducts = ProductDataService.GetBaseProducts(query.Keywords);
+      var baseProductIds = ProductDataService.GetProductsByKeywords(query.Keywords)
+                                             .SelectDistinct(x => x.BaseProductId).ToArray();
+
+      _baseProducts = ProductDataService.GetBaseProducts(baseProductIds);
     }
 
     public FixedList<Product> BaseProducts {
       get {
-        return _baseProducts.FindAll(x=>x.BaseProductId == x.Id || x.BaseProductId == -1);
+        return _baseProducts;
       }
     }
 

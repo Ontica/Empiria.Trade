@@ -34,7 +34,9 @@ namespace Empiria.Trade.Products.Domain {
 
       var helper = new ProductHelper(query);
 
-      return helper.BaseProducts.OrderBy(x=>x.InternalCode).ToFixedList();
+      return helper.BaseProducts.OrderBy(x=>x.InternalCode.Length)
+                                .ThenBy(x => x.InternalCode)
+                                .ToFixedList();
     }
 
 
