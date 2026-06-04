@@ -48,6 +48,7 @@ namespace Empiria.Trade.Procurement.Adapters {
         ShippingMethod = EnumExtensions.GetShippingMethodEnum(order.ShippingMethod),
         OrderTime = order.StartDate,
         ScheduledTime = order.ScheduledTime,
+        PostingTime = order.PostingTime,
         Status = order.Status.MapToDto(),
         Items = MapItems(orderItems),
         Totals = MapTotals(orderItems)

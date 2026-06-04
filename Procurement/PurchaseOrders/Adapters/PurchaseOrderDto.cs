@@ -14,8 +14,7 @@ using Empiria.Trade.Orders;
 namespace Empiria.Trade.Procurement.Adapters {
 
   /// <summary>Output DTO used to return purchase order data.</summary>
-  public class PurchaseOrderDto {
-
+  public class PurchaseOrderDto : IOrderDto {
 
     public string UID {
       get; internal set;
@@ -30,11 +29,6 @@ namespace Empiria.Trade.Procurement.Adapters {
     public NamedEntityDto Supplier {
       get; internal set;
     } = NamedEntityDto.Empty;
-
-
-    //public NamedEntityDto Customer {
-    //  get; internal set;
-    //} = new NamedEntityDto("", "");
 
 
     public NamedEntityDto Status {
@@ -72,6 +66,11 @@ namespace Empiria.Trade.Procurement.Adapters {
     } = DateTime.MaxValue;
 
 
+    public DateTime PostingTime {
+      get; set;
+    }
+
+
     public FixedList<PurchaseOrderItemDto> Items {
       get; set;
     } = new FixedList<PurchaseOrderItemDto>();
@@ -86,12 +85,10 @@ namespace Empiria.Trade.Procurement.Adapters {
       get; set;
     } = new PurchaseOrderActions();
     
-
   } // class PurchaseOrderDto
 
 
-  public class PurchaseOrderItemDto {
-
+  public class PurchaseOrderItemDto : IOrderItemDto {
 
     public string UID {
       get; internal set;
@@ -147,7 +144,6 @@ namespace Empiria.Trade.Procurement.Adapters {
       get; internal set;
     }
     
-
   } // class PurchaseOrderItemDto
 
 
