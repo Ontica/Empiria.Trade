@@ -79,7 +79,7 @@ namespace Empiria.Trade.WebApi.Core {
       using (var usecases = ProductUseCases.UseCaseInteractor()) {
 
         query.OnStock = false;
-        FixedList<ProductForSearchingDto> productDto = usecases.GetProducts(query);
+        FixedList<ProductForSearchingDto> productDto = usecases.GetProductsForPurchaseOrder(query);
 
         return new CollectionModel(Request, productDto);
       }
