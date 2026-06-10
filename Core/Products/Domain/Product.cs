@@ -77,6 +77,76 @@ namespace Empiria.Trade.Products {
     }
 
 
+    public string Weight {
+      get {
+        return Attributes.Get("weight", string.Empty);
+      }
+      private set {
+        Attributes.SetIfValue("weight", value);
+      }
+    }
+
+
+    public string Length {
+      get {
+        return Attributes.Get("length", string.Empty);
+      }
+      private set {
+        Attributes.SetIfValue("length", value);
+      }
+    }
+
+
+    public string Hilos {
+      get {
+        return Attributes.Get("hilos", string.Empty);
+      }
+      private set {
+        Attributes.SetIfValue("hilos", value);
+      }
+    }
+
+
+    public string Paso {
+      get {
+        return Attributes.Get("paso", string.Empty);
+      }
+      private set {
+        Attributes.SetIfValue("paso", value);
+      }
+    }
+
+
+    public string FragileProduct {
+      get {
+        return ExtensionData.Get("fragileProduct", string.Empty);
+      }
+      private set {
+        ExtensionData.SetIfValue("fragileProduct", value);
+      }
+    }
+
+
+    public decimal PackingSmallBag {
+      get {
+        return ExtensionData.Get<decimal>("packingSmallBag", 1);
+      }
+      private set {
+        ExtensionData.SetIfValue("packingSmallBag", value);
+      }
+    }
+
+
+    public decimal PackagingSize {
+      get {
+        return ExtensionData.Get<decimal>("packagingSize", 1);
+      }
+      private set {
+        ExtensionData.SetIfValue("packagingSize", value);
+      }
+    }
+
+
     //internal InventoryEntry InventoryEntry {
     //  get; private set;
     //}
@@ -138,56 +208,6 @@ namespace Empiria.Trade.Products {
 
     internal decimal PriceList {
       get; set;
-    }
-
-
-    public string Weight {
-      get {
-        return Attributes.Get("weight", string.Empty);
-      }
-      private set {
-        Attributes.SetIfValue("weight", value);
-      }
-    }
-
-
-    public string Length {
-      get {
-        return Attributes.Get("length", string.Empty);
-      }
-      private set {
-        Attributes.SetIfValue("length", value);
-      }
-    }
-
-
-    public string Hilos {
-      get {
-        return Attributes.Get("hilos", string.Empty);
-      }
-      private set {
-        Attributes.SetIfValue("hilos", value);
-      }
-    }
-
-
-    public string Paso {
-      get {
-        return Attributes.Get("paso", string.Empty);
-      }
-      private set {
-        Attributes.SetIfValue("paso", value);
-      }
-    }
-
-
-    public string FragileProduct {
-      get {
-        return ExtensionData.Get("fragileProduct", string.Empty);
-      }
-      private set {
-        ExtensionData.SetIfValue("fragileProduct", value);
-      }
     }
 
 

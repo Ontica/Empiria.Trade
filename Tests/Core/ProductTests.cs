@@ -38,7 +38,7 @@ namespace Empiria.Trade.Tests.Core {
 
       var usecase = ProductUseCases.UseCaseInteractor();
       ProductQuery query = new ProductQuery {
-        Keywords = "CARRIAGE BOLTS GRADE", //TG5G516X3 TCC12X1
+        Keywords = "TMG12X4", //TG5G516X3 TCC12X1
         OnStock = false,
         SupplierUID = "b8b6d1ce-ffd0-47fd-92ef-3db32fa44ed5"
       };
