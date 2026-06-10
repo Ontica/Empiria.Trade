@@ -177,7 +177,7 @@ namespace Empiria.Trade.Procurement.UseCases {
 
       fields.UnitPrice = fields.Price;
       fields.ProductUID = product.UID;
-      fields.ProductUnitUID = product.BaseUnit.UID;
+      fields.ProductUnitUID = "BJG2T8Q6-4E73-412B-84C7-4F97OPERMV52"; //todo buscar en common storage por nombre
       fields.ProductName = product.Name;
       fields.ProductCode = product.InternalCode;
       fields.Description = product.Description;

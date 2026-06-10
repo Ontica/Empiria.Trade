@@ -9,12 +9,11 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Collections.Generic;
-
-using Empiria.Trade.Core.Common;
-using Empiria.StateEnums;
-
-using Empiria.Trade.Core;
 using System.Linq;
+using Empiria.StateEnums;
+using Empiria.Trade.Core;
+using Empiria.Trade.Core.Common;
+using Empiria.Trade.Products;
 
 namespace Empiria.Trade.Procurement.Adapters {
 
@@ -51,9 +50,20 @@ namespace Empiria.Trade.Procurement.Adapters {
         PostingTime = order.PostingTime,
         Status = order.Status.MapToDto(),
         Items = MapItems(orderItems),
-        Totals = MapTotals(orderItems)
+        Totals = MapTotals(orderItems),
+        Actions = MapActions(order.Status)
       };
 
+    }
+
+    private static PurchaseOrderActions MapActions(EntityStatus status) {
+      return new PurchaseOrderActions {
+        CanClose = status != EntityStatus.Closed ? true : false,
+        CanDelete = status != EntityStatus.Closed ? true : false,
+        CanEdit = status != EntityStatus.Closed ? true : false,
+        CanEditItems = status != EntityStatus.Closed ? true : false,
+        CanExport = true //status == EntityStatus.Closed ? true : false
+      };
     }
 
     #endregion Public methods
@@ -110,26 +120,33 @@ namespace Empiria.Trade.Procurement.Adapters {
 
     private static PurchaseOrderItemDto MapPurchaseOrderItems(PurchaseOrderItem x) {
 
+      var product = Product.ParseUID(x.Product.UID);
+
       return new PurchaseOrderItemDto {
         UID = x.UID,
         VendorProductUID = x.Product.UID,
-        Quantity = x.Quantity,
-        Total = x.Subtotal,
         ProductCode = x.ProductCode,
         ProductName = x.ProductName,
         PresentationName = x.Product.BaseUnit.Description,
+        Description = x.Description,
+        Notes = x.Notes,
+        PackingSmallBag = product.PackingSmallBag,
+        PackagingSize = product.PackagingSize,
+        Quantity = x.Quantity,
+        TotalUnits = x.CalculateTotalUnits(product.PackagingSize),
         Price = x.UnitPrice,
-        Weight = x.Weight,
-        Notes = x.Description
+        Total = x.CalculateTotalPrice(product.PackagingSize)
       };
     }
 
 
     private static PurchaseOrderTotal MapTotals(FixedList<PurchaseOrderItem> orderItems) {
 
+      var _total = orderItems.Sum(x => x.CalculateTotalPrice(Product.ParseUID(x.Product.UID).PackagingSize));
+
       return new PurchaseOrderTotal {
-        ItemsTotal = orderItems.Sum(x => x.Subtotal),
-        OrderTotal = orderItems.Sum(x => x.Subtotal),
+        ItemsTotal = Math.Round(_total, 2, MidpointRounding.AwayFromZero),
+        OrderTotal = Math.Round(_total, 2, MidpointRounding.AwayFromZero),
         ItemsCount = orderItems.Count
       };
     }

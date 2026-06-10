@@ -68,12 +68,13 @@ namespace Empiria.Trade.Tests.Procurement {
 
       var usecase = PurchaseOrderUseCases.UseCaseInteractor();
 
-      string purchaseOrderUID = "09660694-82a9-41a3-9384-6e56f18d813f";
+      string purchaseOrderUID = "8bdc8346-d7ed-44ba-9463-261f56525a4f";
 
       var fields = new PurchaseOrderItemFields {
-        Product = "TCCT12X112",
-        VendorProductUID = "6b8a8254-0e41-42d9-88ed-4392977efb65",
-        Quantity = 100
+        Product = "TMG12X4-25",
+        VendorProductUID = "6ee8b450-d723-44b9-aa47-dd043236d8aa",
+        Quantity = 10,
+        ProductUnitUID = "BJG2T8Q6-4E73-412B-84C7-4F97OPERMV52"
         //Price = 100,
       };
 
@@ -112,7 +113,7 @@ namespace Empiria.Trade.Tests.Procurement {
 
       var usecase = PurchaseOrderUseCases.UseCaseInteractor();
 
-      string purchaseOrderUID = "858aeae2-8989-4401-9780-783aab9c9744";
+      string purchaseOrderUID = "8bdc8346-d7ed-44ba-9463-261f56525a4f";
       PurchaseOrderDto sut = usecase.GetPurchaseOrderDto(purchaseOrderUID);
       Assert.NotNull(sut);
     }

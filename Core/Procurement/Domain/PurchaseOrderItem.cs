@@ -62,6 +62,16 @@ namespace Empiria.Trade.Core {
 
     #region Properties
 
+    public string Notes {
+      get {
+        return ExtData.Get("notes", string.Empty);
+      }
+      private set {
+        ExtData.SetIfValue("notes", value);
+      }
+    }
+
+
     public decimal Weight {
       get {
         return ExtData.Get<decimal>("weight", 0);
@@ -74,7 +84,17 @@ namespace Empiria.Trade.Core {
     #endregion Properties
 
 
-    #region Private methods
+    #region Public methods
+
+    public decimal CalculateTotalUnits(decimal packagingSize) {
+      return packagingSize * this.Quantity;
+    }
+
+
+    public decimal CalculateTotalPrice(decimal packagingSize) {
+      return ((packagingSize * this.Quantity) / 1000) * this.UnitPrice;
+    }
+
 
     public void Update(PurchaseOrderItemFields fields) {
       Assertion.Require(fields, nameof(fields));
@@ -84,12 +104,12 @@ namespace Empiria.Trade.Core {
         fields.UnitPrice = fields.UnitPrice == 0 ? 0.000001M : fields.UnitPrice;
         fields.Position = PurchaseOrderItem.GetListFor(_order).Count + 1;
       }
-      
+      Notes = fields.Notes;
       Weight = fields.Weight;
       base.Update(fields);
     }
 
-    #endregion Private methods
+    #endregion Public methods
 
   } // class PurchaseOrderItem
 

@@ -115,12 +115,32 @@ namespace Empiria.Trade.Procurement.Adapters {
     }
 
 
+    public string Description {
+      get; internal set;
+    }
+
+
+    public decimal PackingSmallBag {
+      get; internal set;
+    }
+
+
+    public decimal PackagingSize {
+      get; internal set;
+    }
+
+
     public decimal Quantity {
       get; internal set;
     }
 
 
     public decimal ReceivedQuantity {
+      get; internal set;
+    }
+
+
+    public decimal TotalUnits {
       get; internal set;
     }
 
@@ -142,7 +162,7 @@ namespace Empiria.Trade.Procurement.Adapters {
 
     public string Notes {
       get; internal set;
-    }
+    } = string.Empty;
     
   } // class PurchaseOrderItemDto
 
@@ -192,28 +212,32 @@ namespace Empiria.Trade.Procurement.Adapters {
 
     public bool CanEdit {
       get; set;
-    } = true;
+    }
 
 
     public bool CanEditItems {
       get; set;
-    } = true;
+    }
 
 
     public bool CanDelete {
       get; set;
-    } = true;
+    }
 
 
     public bool CanClose {
       get; set;
-    } = true;
+    }
 
 
     public bool CanOpen {
       get; set;
-    } = true;
+    }
 
+
+    public bool CanExport {
+      get; set;
+    }
 
   }
 

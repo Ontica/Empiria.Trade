@@ -58,6 +58,11 @@ namespace Empiria.Trade.Core {
     } = string.Empty;
 
 
+    public string Notes {
+      get; set;
+    } = string.Empty;
+
+
     public decimal Price {
       get; set;
     }
