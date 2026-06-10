@@ -94,9 +94,9 @@ namespace Empiria.Trade.Products.Adapters {
 
       return new ProductPresentationForSeach {
         PresentationUID = product.UID,
-        Name = $"{product.InternalCode} {product.BaseUnit.Description}" +
-               $"|Empaque:{product.PackingSmallBag}" +
-               $"|uds.Contenedor:{product.PackagingSize}",
+        Name = $"{product.InternalCode} " +
+               $"| Empaque: {product.PackingSmallBag} " +
+               $"| Unidades: {product.PackagingSize} {product.BaseUnit.Description}",
         Description = product.Description,
         Vendors = MapVendors(product)
       };
