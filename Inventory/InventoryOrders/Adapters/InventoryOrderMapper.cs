@@ -14,7 +14,6 @@ using Empiria.Orders;
 using Empiria.StateEnums;
 using Empiria.Trade.Core;
 using Empiria.Trade.Core.Common;
-using InventoryEntry = Empiria.Trade.Core.InventoryEntry;
 
 namespace Empiria.Trade.Inventory.Adapters {
 
@@ -66,20 +65,20 @@ namespace Empiria.Trade.Inventory.Adapters {
 
       return new InventoryHolderDto {
         Order = MapToOrderDto(order),
-        Items = MapToOrderItemsDto(order.GetItems<Core.InventoryOrderItem>()),
+        Items = MapToOrderItemsDto(order.GetItems<InventoryOrderItem>()),
         Actions = actions
       };
     }
 
 
-    private static FixedList<InventoryOrderItemDto> MapToOrderItemsDto(FixedList<Core.InventoryOrderItem> items) {
+    private static FixedList<InventoryOrderItemDto> MapToOrderItemsDto(FixedList<InventoryOrderItem> items) {
 
       return items.Select((x) => MapToOrderItemDto(x))
                          .ToFixedList();
     }
 
 
-    static private InventoryOrderItemDto MapToOrderItemDto(Core.InventoryOrderItem item) {
+    static private InventoryOrderItemDto MapToOrderItemDto(InventoryOrderItem item) {
 
       return new InventoryOrderItemDto() {
         UID = item.UID,

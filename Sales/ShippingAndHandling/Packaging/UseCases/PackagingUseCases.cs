@@ -131,15 +131,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
     }
 
 
-    public ISalesOrderDto UpdateInventoryOrderForPicking(
-      string orderUID, InventoryOrderFields fields) {
-
-      fields.ReferenceId = SalesOrder.Parse(orderUID).Id;
-
-      return GetSalesOrder(orderUID);
-    }
-
-
     public ISalesOrderDto DeletePackageForItem(string orderUID, string packageForItemUID) {
 
       var data = new PackagingData();

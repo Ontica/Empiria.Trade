@@ -84,23 +84,6 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
     }
 
 
-    [HttpPut]
-    [Route("v4/trade/sales/packing/{orderUID:guid}/picking")]
-    public SingleObjectModel UpdateInventoryOrderForPicking(
-      [FromUri] string orderUID, [FromBody] InventoryOrderFields inventoryFields) {
-
-      base.RequireBody(inventoryFields);
-
-      using (var usecases = PackagingUseCases.UseCaseInteractor()) {
-
-        ISalesOrderDto packingItem =
-          usecases.UpdateInventoryOrderForPicking(orderUID, inventoryFields);
-
-        return new SingleObjectModel(this.Request, packingItem);
-      }
-    }
-
-
     [HttpDelete]
     [Route("v4/trade/sales/packing/{orderUID:guid}/packing-item/{packingItemUID:guid}")]
     public SingleObjectModel DeletePackageForItem([FromUri] string orderUID, [FromUri] string packingItemUID) {

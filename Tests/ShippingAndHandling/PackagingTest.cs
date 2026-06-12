@@ -130,26 +130,6 @@ namespace Empiria.Trade.Tests {
 
 
     [Fact]
-    public void UpdateInventoryOrderForPickingTest() {
-
-      var usecase = PackagingUseCases.UseCaseInteractor();
-
-      string orderUID = "f75b0e0e-74a6-4191-a895-23672f38b358";
-      var fields = new InventoryOrderFields() {
-        InventoryOrderTypeUID = "2ft8y5h4-db55-48b3-aa78-63132a8d5e7f",
-        ResponsibleUID = "f3c61569-25f7-4296-a48d-f01735e27062",
-        AssignedToUID = "5c351378-9423-498c-bf4f-c7cb4dae5523",
-        Notes = "NOTAS XYZ"
-      };
-
-      ISalesOrderDto sut = usecase.UpdateInventoryOrderForPicking(orderUID, fields);
-
-      Assert.NotNull(sut);
-
-    }
-
-
-    [Fact]
     public void DeletePackageForItemTest() {
 
       var usecase = PackagingUseCases.UseCaseInteractor();
