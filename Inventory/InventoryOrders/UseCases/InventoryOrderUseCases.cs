@@ -8,18 +8,16 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System.Linq;
-using Empiria.Inventory.UseCases;
 using Empiria.Locations;
 using Empiria.Services;
 using Empiria.StateEnums;
 
+using Empiria.Inventory.UseCases;
+using Empiria.Orders;
 using Empiria.Trade.Core;
-using Empiria.Trade.Core.Inventories.Adapters;
 using Empiria.Trade.Products;
 using Empiria.Trade.Inventory.Data;
 using Empiria.Trade.Inventory.Adapters;
-using Empiria.Trade.Inventory.Domain;
-using Empiria.Orders;
 
 namespace Empiria.Trade.Inventory.UseCases {
 
@@ -85,7 +83,7 @@ namespace Empiria.Trade.Inventory.UseCases {
     }
 
 
-    public InventoryHolderDto CreateInventoryOrder(Core.InventoryOrderFields fields) {
+    public InventoryHolderDto CreateInventoryOrder(InventoryOrderFields fields) {
       Assertion.Require(fields, nameof(fields));
 
       var orderType = Empiria.Orders.OrderType.Parse(INVENTORYORDERTYPE);
@@ -101,7 +99,7 @@ namespace Empiria.Trade.Inventory.UseCases {
     }
 
 
-    public InventoryHolderDto CreateInventoryOrderItem(string orderUID, Core.InventoryOrderItemFields fields) {
+    public InventoryHolderDto CreateInventoryOrderItem(string orderUID, InventoryOrderItemFields fields) {
       Assertion.Require(orderUID, nameof(orderUID));
       Assertion.Require(fields, nameof(fields));
 
@@ -131,7 +129,7 @@ namespace Empiria.Trade.Inventory.UseCases {
 
       var orderItemType = OrderItemType.Parse("ObjectTypeInfo.OrderItem.InventoryOrderItem");
 
-      Core.InventoryOrderItem orderItem = new Core.InventoryOrderItem(orderItemType, order, location);
+      InventoryOrderItem orderItem = new InventoryOrderItem(orderItemType, order, location);
 
       orderItem.Update(fields);
       orderItem.Save();
@@ -178,7 +176,7 @@ namespace Empiria.Trade.Inventory.UseCases {
 
       InventoryOrder order = InventoryOrder.Parse(orderUID);
 
-      var item = order.GetItem<Core.InventoryOrderItem>(orderItemUID);
+      var item = order.GetItem<InventoryOrderItem>(orderItemUID);
 
       order.RemoveItem(item);
       item.Save();
@@ -189,7 +187,7 @@ namespace Empiria.Trade.Inventory.UseCases {
     }
 
 
-    public InventoryHolderDto UpdateInventoryOrder(string orderUID, Core.InventoryOrderFields fields) {
+    public InventoryHolderDto UpdateInventoryOrder(string orderUID, InventoryOrderFields fields) {
       Assertion.Require(orderUID, nameof(orderUID));
       Assertion.Require(fields, nameof(fields));
 
@@ -205,10 +203,10 @@ namespace Empiria.Trade.Inventory.UseCases {
 
 
     public InventoryHolderDto UpdateInventoryOrderItemQuantity(string orderUID, string orderItemUID,
-                                               Core.InventoryOrderItemFields fields) {
+                                               InventoryOrderItemFields fields) {
       var order = InventoryOrder.Parse(orderUID);
 
-      var item = order.GetItem<Core.InventoryOrderItem>(orderItemUID);
+      var item = order.GetItem<InventoryOrderItem>(orderItemUID);
 
       item.UpdateQuantity(fields.Quantity);
 
@@ -243,7 +241,7 @@ namespace Empiria.Trade.Inventory.UseCases {
     }
 
 
-    private void AddInventoryEntry(InventoryOrder order, Core.InventoryOrderItem orderItem) {
+    private void AddInventoryEntry(InventoryOrder order, InventoryOrderItem orderItem) {
       var inventoryEntry = new InventoryEntry(order.UID, orderItem.UID);
 
       inventoryEntry.InitialEntry(orderItem.UnitPrice, orderItem.Location);
@@ -254,7 +252,7 @@ namespace Empiria.Trade.Inventory.UseCases {
 
     public void OutputInventoryEntriesVW(InventoryOrder order) {
 
-      foreach (var item in order.GetItems<Core.InventoryOrderItem>()) {
+      foreach (var item in order.GetItems<InventoryOrderItem>()) {
 
         var inventoryEntry = new InventoryEntry(order, item);
 

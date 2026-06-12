@@ -11,6 +11,7 @@ using System;
 
 using Empiria.StateEnums;
 using Empiria.Tests;
+using Empiria.Trade.Core;
 using Empiria.Trade.Inventory.Adapters;
 using Empiria.Trade.Inventory.UseCases;
 
@@ -36,7 +37,7 @@ namespace Empiria.Trade.Tests.Procurement {
 
       var usecase = InventoryOrderUseCases.UseCaseInteractor();
 
-      Trade.Core.InventoryOrderFields fields = new Trade.Core.InventoryOrderFields {
+      InventoryOrderFields fields = new InventoryOrderFields {
         Description = "ABCDE",
         InventoryTypeUID = "D3042817-63FA-4728-BF5B-BED68FECA3FC",
         RequestedByUID = "72b902de-8840-4985-81aa-46700d915ea7",
@@ -57,7 +58,7 @@ namespace Empiria.Trade.Tests.Procurement {
 
       string orderUID = "da4997ce-9a0d-4059-a15e-a808a5f4525c";
 
-      Trade.Core.InventoryOrderItemFields fields = new Trade.Core.InventoryOrderItemFields() {
+      InventoryOrderItemFields fields = new InventoryOrderItemFields() {
         Product = "ASF24",
         Location = "A-029-01-09",
         Quantity = 1,

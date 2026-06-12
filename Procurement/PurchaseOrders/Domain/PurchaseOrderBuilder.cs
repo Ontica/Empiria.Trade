@@ -78,7 +78,6 @@ namespace Empiria.Trade.Procurement.Domain {
                                                     InventoryOrder inventoryOrder) {
       
       var purchaseOrderItems = PurchaseOrderItem.GetListFor(purchaseOrder);
-      //purchaseOrder.GetItems<PurchaseOrderItem>();
 
       foreach (var purchaseOrderItem in purchaseOrderItems) {
 

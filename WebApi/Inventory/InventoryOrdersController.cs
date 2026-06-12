@@ -9,7 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
 using System.Web.Http;
-using DocumentFormat.OpenXml.Bibliography;
+
 using Empiria.Trade.Core;
 using Empiria.Trade.Inventory.Adapters;
 using Empiria.Trade.Inventory.UseCases;
@@ -188,7 +188,7 @@ namespace Empiria.Trade.WebApi.Inventory {
     [Route("v8/order-management/inventory-orders/{orderUID:guid}/items/{orderItemUID:guid}")]
 
     public SingleObjectModel UpdateInventoryOrderItemQuantity([FromUri] string orderUID, [FromUri] string orderItemUID,
-                                                              [FromBody] Trade.Core.InventoryOrderItemFields fields) {
+                                                              [FromBody] InventoryOrderItemFields fields) {
 
       using (var usecases = InventoryOrderUseCases.UseCaseInteractor()) {
 
