@@ -73,7 +73,7 @@ namespace Empiria.Trade.Tests.Procurement {
     public void GetInventoryHolderTest() {
       
       var usecase = InventoryOrderUseCases.UseCaseInteractor();
-      InventoryHolderDto sut = usecase.GetInventoryOrder("98b80314-e79f-447a-a083-431c1045d156");
+      InventoryHolderDto sut = usecase.GetInventoryOrder("13027887-96c2-4823-a881-31cb8d34eabb");
       Assert.NotNull(sut);
     }
 

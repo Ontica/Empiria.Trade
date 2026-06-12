@@ -145,8 +145,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
 
       var helper = new PackingHelper();
 
-      PickingData pickingData = helper.GetPickingData(orderUID);
-
       FixedList<PackagedForItem> packagesForItems = helper.GetPackagesByOrder(orderUID, packsForItems);
 
       PackagedData packingData = helper.GetPackingData(orderUID, packagesForItems);
@@ -156,7 +154,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
 
       var packingEntry = new PackingEntry();
 
-      packingEntry.PickingData = pickingData;
+      packingEntry.PickingData = new PickingData();
       packingEntry.PackagedItems = packagesForItems;
       packingEntry.Data = packingData;
       packingEntry.MissingItems = missingItems;

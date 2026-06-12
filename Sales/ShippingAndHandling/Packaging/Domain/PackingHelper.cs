@@ -31,15 +31,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       var missingItems = new List<MissingItem>();
 
-      var clauses = InventoryOrderQueryClauses.CreateClausesForInventoryOrder(
-        new InventoryQueryClauses("", 504, Order.Parse(orderUid).Id));
-
-      var inventoryOrder = new InventoryOrderEntry();
-      
-      if (inventoryOrder == null) {
-        return new FixedList<MissingItem>();
-      }
-
       var data = new PackagingData();
       var orderItems = data.GetOrderItems(orderUid);
       var packingOrderItems = packagesForItems.SelectMany(x => x.OrderItems).ToList();
@@ -131,16 +122,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       return data;
     }
-
-
-    internal PickingData GetPickingData(string orderUID) {
-
-      var clauses = InventoryOrderQueryClauses.CreateClausesForInventoryOrder(
-        new InventoryQueryClauses("", 504, SalesOrder.Parse(orderUID).Id));
-
-      return new PickingData();
-    }
-
 
     #endregion Public methods
 
