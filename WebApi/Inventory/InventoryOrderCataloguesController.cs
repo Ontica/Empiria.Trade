@@ -17,19 +17,6 @@ namespace Empiria.Trade.WebApi.Inventory {
   /// <summary>Query web API used to retrieve Inventory order catalogues.</summary>
   public class InventoryOrderCataloguesController : WebApiController {
 
-
-    [HttpGet]
-    [Route("v4/trade/inventory/orders/inventory-types")]
-    public CollectionModel GetInventoryTypes() {
-
-      using (var usescase = InventoryOrderCataloguesUseCases.UseCaseInteractor()) {
-        FixedList<NamedEntityDto> inventoryTypes = usescase.GetInventoryOrderTypesNamedEntity();
-
-        return new CollectionModel(base.Request, inventoryTypes);
-      }
-    }
-
-
   } // class InventoryOrderCataloguesController
 
 } // namespace Empiria.Trade.WebApi.Inventory

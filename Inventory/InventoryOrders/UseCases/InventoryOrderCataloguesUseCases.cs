@@ -33,26 +33,6 @@ namespace Empiria.Trade.Inventory.UseCases {
     #region Public methods
 
 
-    public InventoryOrderType GetInventoryOrderTypeByUID(string typeUID) {
-      
-      var inventoryOrderType = InventoryOrderType.Parse(typeUID);
-
-      return inventoryOrderType;
-    }
-
-
-    public FixedList<NamedEntityDto> GetInventoryOrderTypesNamedEntity() {
-
-      return InventoryOrderType.NamedEntityList();
-    }
-
-
-    public FixedList<InventoryOrderType> GetInventoryOrderTypeList() {
-
-      return InventoryOrderType.List();
-    }
-
-
     #endregion Public methods
 
   } // class InventoryOrderCataloguesUseCases

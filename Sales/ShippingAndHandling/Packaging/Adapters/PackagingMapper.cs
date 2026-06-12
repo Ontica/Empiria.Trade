@@ -162,7 +162,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
     private static PickingDataDto MapPickingData(PickingData pickingData) {
       var picking = new PickingDataDto();
-      var inventoryType = InventoryOrderType.Parse(pickingData.InventoryOrderTypeId);
       var responsible = Party.Parse(pickingData.ResponsibleId);
       var assignedTo = Party.Parse(pickingData.AssignedToId);
       

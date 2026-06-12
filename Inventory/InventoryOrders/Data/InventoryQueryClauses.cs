@@ -23,9 +23,6 @@ namespace Empiria.Trade.Inventory.Data {
 
     }
 
-    internal InventoryQueryClauses(InventoryOrderQuery query) {
-      GetClausesForInventoryOrder(query);
-    }
 
     internal int InventoryOrderId {
       get; set;
@@ -62,9 +59,6 @@ namespace Empiria.Trade.Inventory.Data {
 
     private void GetClausesForInventoryOrder(InventoryOrderQuery query) {
 
-      if (query.InventoryTypeUID != string.Empty) {
-        this.InventoryOrderTypeId = InventoryOrderType.Parse(query.InventoryTypeUID).Id;
-      }
       if (query.AssignedToUID != string.Empty) {
         this.AssignedToId = Party.Parse(query.AssignedToUID).Id;
       }

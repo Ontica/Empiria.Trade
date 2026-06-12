@@ -38,21 +38,6 @@ namespace Empiria.Trade.Inventory.Domain {
 
     #region Private methods
 
-    internal InventoryOrderFields MapToInventoryOrderFields(InventoryItems inventoryItemData) {
-
-      InventoryOrderFields fields = new InventoryOrderFields();
-
-      fields.InventoryOrderTypeUID = InventoryOrderType.Parse(504).UID; // TODO cambiar metodo de referencia
-      fields.ResponsibleUID = PartyUseCases.GetWarehouseResponsible().FirstOrDefault().UID;
-      fields.AssignedToUID = "";
-      fields.Notes = "";
-      fields.ReferenceId = inventoryItemData.OrderId;
-
-      return fields;
-    }
-
-
-
     internal InventoryOrderItemFields MapToInventoryOrderItemFields(
       InventoryItems inventoryItem, int InventoryOrderTypeId) {
 

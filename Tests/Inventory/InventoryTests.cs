@@ -29,7 +29,7 @@ namespace Empiria.Trade.Tests.Procurement {
 
     #endregion Initialization
 
-    #region Facts V2
+    #region Facts
 
     [Fact]
     public void CreateInventoryOrderTest() {
@@ -129,57 +129,7 @@ namespace Empiria.Trade.Tests.Procurement {
       Assert.NotNull(sut);
     }
 
-    #endregion Facts V2
-
-
-    #region Facts
-
-
-
-
-
-    [Fact]
-    public void GetInventoryOrderTypeListTest() {
-
-      var usecase = InventoryOrderCataloguesUseCases.UseCaseInteractor();
-      var sut = usecase.GetInventoryOrderTypesNamedEntity();
-
-      Assert.NotNull(sut);
-    }
-
-
     #endregion Facts
 
-    #region Private methods
-
-
-    private InventoryOrderFields GetInventoryOrderFields() {
-
-      var fields = new InventoryOrderFields() {
-        InventoryOrderTypeUID = "5851e71b-3a1f-40ab-836f-ac3d2c9408de",
-        //ExternalObjectReferenceUID = "",
-        ResponsibleUID = "b08b3cd5-8797-454e-8811-afc27b819d41",
-        AssignedToUID = "a517e788-8ddf-4772-b6d2-adc3907e3905",
-        Notes = "NOTAS XYZ"
-        //ItemFields = GetItemFields()
-      };
-      return fields;
-    }
-
-
-    private InventoryOrderItemFields GetInventoryOrderItemFields() {
-      return new InventoryOrderItemFields() {
-        UID = "",
-        Notes = "NOTA 101010 TRASPASO ALMACEN X",
-        VendorProductUID = "0f3b01a8-15b3-45ce-8d55-a5f46d1e2545",
-        WarehouseBinUID = "0b334d35-0014-400e-8530-e611858a0932",
-        Quantity = 10,
-        InputQuantity = 0,
-        OutputQuantity = 0
-      };
-    }
-
-
-    #endregion Private methods
   }
 }
