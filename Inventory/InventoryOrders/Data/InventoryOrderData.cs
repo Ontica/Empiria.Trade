@@ -23,7 +23,7 @@ namespace Empiria.Trade.Inventory.Data {
   /// <summary>Provides data read methods for inventory order.</summary>
   public class InventoryOrderData {
 
-    #region Public methods V2
+    #region Public methods
 
     internal static FixedList<InventoryOrder> SearchInventoryOrders(string filter, string sort) {
 
@@ -78,7 +78,7 @@ namespace Empiria.Trade.Inventory.Data {
       DataWriter.Execute(dataOperation);
     }
 
-    #endregion Public methods V2
+    #endregion Public methods
 
   } // class InventoryOrderData
 

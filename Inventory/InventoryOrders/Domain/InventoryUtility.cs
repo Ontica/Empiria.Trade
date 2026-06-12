@@ -32,7 +32,7 @@ namespace Empiria.Trade.Inventory {
     static internal InventoryOrderActions GetActions(InventoryOrder order) {
 
       bool existClosedEntries = ValuateIfInventoryEntriesClosed(
-                                  order.GetItems<Core.InventoryOrderItem>());
+                                  order.GetItems<InventoryOrderItem>());
 
       InventoryOrderActions actions = new InventoryOrderActions {
         CanEdit = order.Status == EntityStatus.Pending || order.Status == EntityStatus.Active,
@@ -54,23 +54,11 @@ namespace Empiria.Trade.Inventory {
     }
 
 
-    static internal void EnsureIsValidToClose(FixedList<Core.InventoryOrderItem> orderItems) {
-      foreach (var item in orderItems) {
-
-        var entries = InventoryEntry.GetListFor(item);
-
-        var entriesQuantity = entries.Sum(x => x.InputQuantity);
-
-        Assertion.Require(item.Quantity == entriesQuantity, "Faltan productos por asignar.");
-      }
-    }
-
-
     static internal InventoryOrder GetInventoryOrder(string orderUID) {
 
       InventoryOrder inventoryOrder = InventoryOrder.Parse(orderUID);
 
-      FixedList<Core.InventoryOrderItem> items = inventoryOrder.GetItems<Core.InventoryOrderItem>();
+      FixedList<InventoryOrderItem> items = inventoryOrder.GetItems<InventoryOrderItem>();
 
       GetInventoryEntriesByItem(items);
 
@@ -82,7 +70,7 @@ namespace Empiria.Trade.Inventory {
 
     #region Private methods
 
-    static private void GetInventoryEntriesByItem(FixedList<Core.InventoryOrderItem> items) {
+    static private void GetInventoryEntriesByItem(FixedList<InventoryOrderItem> items) {
 
       foreach (var item in items) {
 
@@ -91,7 +79,7 @@ namespace Empiria.Trade.Inventory {
     }
 
 
-    static private bool ValuateIfInventoryEntriesClosed(FixedList<Core.InventoryOrderItem> items) {
+    static private bool ValuateIfInventoryEntriesClosed(FixedList<InventoryOrderItem> items) {
 
       if (items.Count == 0) {
         return false;
