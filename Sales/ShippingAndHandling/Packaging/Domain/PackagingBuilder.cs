@@ -38,18 +38,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
 
     #region Public methods
 
-
-    internal Empiria.Trade.Inventory.InventoryOrderItem GetInventoryEntries(string orderItemUID, string warehouseBinUID) {
-
-      var orderItem = OrderItem.Parse(orderItemUID);
-      var warehouseBinId = WarehouseBin.Parse(warehouseBinUID).Id;
-
-      var inventories = InventoryOrderData.GetInventoryItemsBySalesOrderAndWhBin(
-                                              orderItem.Id, warehouseBinId, 0);
-      return inventories.Last();
-    }
-
-
     internal PackingEntry GetPackagesAndItemsForOrder(string orderUid) {
 
       FixedList<PackageForItem> packsForItems = GetPackagesForItemsData(orderUid);

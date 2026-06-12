@@ -133,11 +133,6 @@ namespace Empiria.Trade.Inventory {
     } = Adapters.InventoryStatus.Abierto;
 
 
-    internal FixedList<InventoryOrderItem> InventoryOrderItems {
-      get; set;
-    } = new FixedList<InventoryOrderItem>();
-
-
     internal string Keywords {
       get {
         return EmpiriaString.BuildKeywords(
@@ -168,7 +163,6 @@ namespace Empiria.Trade.Inventory {
 
       this.InventoryOrderNo = GenerateOrderNumber();
 
-      InventoryOrderData.WriteInventoryEntry(this);
     }
 
 

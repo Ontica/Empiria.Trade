@@ -32,19 +32,6 @@ namespace Empiria.Trade.Sales {
     }
     #region Public methods
 
-
-    internal void CreateInventoryOrderBySale(FixedList<SalesOrderItem> salesOrderItems) {
-
-      FixedList<InventoryItems> inventoryItems = GetDataForInventoryOutput(salesOrderItems);
-      
-      if (inventoryItems.Count>0) {
-
-        InventoryOrderUseCases inventoryOrderUseCases = new InventoryOrderUseCases();
-        inventoryOrderUseCases.CreateInventoryOrderBySale(inventoryItems);
-      }
-    }
-
-
     public FixedList<SalesOrder> GetOrders(SearchOrderFields fields) {
       var orders = SalesOrderData.GetSalesOrders(fields);
 

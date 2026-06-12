@@ -63,36 +63,12 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
       ShippingData.UpdateShippingStatus(shippingOrderUID, ShippingStatus.Cerrado);
 
-      CloseInventoryOrdersForSales(orders);
-     
       var shippingUseCase = new ShippingUseCases();
 
       var shipping = shippingUseCase.GetShippingByUID(shippingOrderUID, ShippingQueryType.Delivery);
 
       return shipping;
     }
-
-
-    private void CloseInventoryOrdersForSales(string[] orders) {
-
-      InventoryOrderUseCases inventoryUseCases = new InventoryOrderUseCases();
-      foreach (var orderUID in orders) {
-
-        int orderId = SalesOrder.Parse(orderUID).Id;
-
-        CloseInventoryOrderItemsForSales(504, orderId);
-      }
-    }
-
-    
-    private void CloseInventoryOrderItemsForSales(int inventoryOrderTypeId, int orderId) {
-
-      InventoryOrderUseCases inventoryUseCases = new InventoryOrderUseCases();
-
-      inventoryUseCases.CloseInventoryOrderItemsForSales(
-        inventoryOrderTypeId, orderId);
-    }
-
 
     #endregion Public methods
 

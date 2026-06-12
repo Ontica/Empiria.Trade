@@ -185,7 +185,7 @@ namespace Empiria.Trade.Sales.UseCases {
       }
 
       SalesOrderHelper helper = new SalesOrderHelper();
-      helper.CreateInventoryOrderBySale(order.SalesOrderItems);
+      //helper.CreateInventoryOrderBySale(order.SalesOrderItems);
 
       return SalesOrderMapper.Map(order);
     }

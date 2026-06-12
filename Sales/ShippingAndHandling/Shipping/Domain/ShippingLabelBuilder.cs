@@ -88,13 +88,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       var shippingLabels = new List<SupplyLabel>();
 
-      foreach (var orderForShipping in ordersForShipping) {
-
-        FixedList<SalesOrderItem> orderItems = SalesOrderItemsData.GetOrderItems(orderForShipping.Order.Id);
-
-        shippingLabels.AddRange(MapToShippingLabelByOrderItem(orderItems));
-      }
-
       return shippingLabels.ToFixedList();
     }
 
@@ -276,34 +269,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
           label.BagQuantity++;
         }
       }
-    }
-
-
-    private List<SupplyLabel> MapToShippingLabelByOrderItem(FixedList<SalesOrderItem> orderItems) {
-
-      var shippingLabels = new List<SupplyLabel>();
-
-      foreach (var item in orderItems) {
-
-        var locations = InventoryOrderData.GetInventoryItemsBySalesOrderAndWhBin(
-          item.Id, 0, item.VendorProduct.Id);
-
-        foreach (var location in locations) {
-
-          var shippingLabel = new SupplyLabel {
-            OrderUID = item.Order.UID,
-            ProductCode = item.VendorProduct.ProductFields.ProductCode,
-            ProductPresentation = item.VendorProduct.ProductPresentation.PresentationName,
-            Description = item.VendorProduct.ProductFields.ProductDescription,
-            Comments = "",
-            Quantity = item.Quantity,
-            Ubication = location.WarehouseBin.Tag
-          };
-          shippingLabels.Add(shippingLabel);
-        }
-      }
-
-      return shippingLabels;
     }
 
 

@@ -55,7 +55,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
           missing.Quantity = item.Quantity - quantityOrderItems;
           missing.MergeCommonFieldsData(item.OrderItemId);
           missing.ItemWeight = missing.Quantity * missing.Product.ProductWeight;
-          missing.WarehouseBins = GetWarehousesByItem(missing.OrderItemUID, item, inventoryOrder);
+          missing.WarehouseBins = new FixedList<WarehouseBinForPacking>();
 
           missingItems.Add(missing);
         }
@@ -164,71 +164,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
         packingOrderItem.Quantity = item.Quantity;
         packingOrderItem.ItemWeight = item.Quantity * packingOrderItem.Product.ProductWeight;
 
-        GetWarehouses(packingOrderItem, item);
-
         packingOrderItems.Add(packingOrderItem);
       }
 
       return packingOrderItems.ToFixedList();
     }
-
-
-    static private void GetWarehouses(PackingItem packingOrderItem, PackingOrderItem item) {
-
-      var inventory = item.InventoryOrderItem;
-
-      if (inventory?.WarehouseBin.Id > 0) {
-
-        var whBinForPacking = new WarehouseBinForPacking();
-        whBinForPacking.UID = inventory.WarehouseBin.UID;
-        whBinForPacking.OrderItemUID = packingOrderItem.OrderItemUID;
-        whBinForPacking.Name = $"{inventory.WarehouseBin.Name}";
-        whBinForPacking.WarehouseName = $"{inventory.WarehouseBin.Warehouse.Code}";
-        //whBinDto.Stock = //TODO SACAR STOCK DE INVENTARIO-WAREHOUSE
-        packingOrderItem.WarehouseBinForPacking = whBinForPacking;
-
-        var whForPacking = new WarehouseForPacking();
-        whForPacking.UID = inventory.WarehouseBin.Warehouse.UID;
-        whForPacking.Code = inventory.WarehouseBin.Warehouse.Code;
-        whForPacking.Name = inventory.WarehouseBin.Warehouse.Name;
-        //whForPacking.Stock = //TODO SACAR STOCK DE INVENTARIO-WAREHOUSE
-        packingOrderItem.WarehouseForPacking = whForPacking;
-      }
-    }
-
-
-    private FixedList<WarehouseBinForPacking> GetWarehousesByItem(
-      string orderItemUID, OrderItemTemp item, InventoryOrderEntry inventoryOrder) {
-
-      var data = new PackagingData();
-      var whBinList = new List<WarehouseBinForPacking>();
-      var inventoryItems = new FixedList<Trade.Inventory.InventoryOrderItem>();
-
-      foreach (var inventoryItem in inventoryItems.Where(x => x.VendorProduct.Id == item.VendorProductId)) {
-
-        var inventoryWhBin = WarehouseBin.Parse(inventoryItem.WarehouseBin.Id);
-
-        var packingItemsQuantity = data.GetPackingItemByOrderItemAndWarehouseBin(
-            item.OrderItemId, inventoryWhBin.Id).Sum(x => x.Quantity);
-
-        var inventoryStock = inventoryItem.InProcessOutputQuantity - packingItemsQuantity;
-
-        var exist = whBinList.Find(
-          x => x.UID == inventoryWhBin.UID && x.OrderItemUID == orderItemUID);
-
-        if (exist == null && inventoryStock > 0) {
-          var whBin = new WarehouseBinForPacking();
-          whBin.UID = inventoryWhBin.UID;
-          whBin.OrderItemUID = orderItemUID;
-          whBin.Name = inventoryWhBin.Name;
-          whBin.WarehouseName = inventoryWhBin.Tag;
-          whBin.Stock = inventoryStock;
-          whBinList.Add(whBin);
-        }
-      }
-      return whBinList.ToFixedList();
-    }
-
 
     #endregion Private methods
 

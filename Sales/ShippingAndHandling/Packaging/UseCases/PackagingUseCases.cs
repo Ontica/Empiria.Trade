@@ -155,11 +155,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
       var builder = new PackagingBuilder();
 
-      var inventory = builder.GetInventoryEntries(missingItemFields.orderItemUID,
-                                                  missingItemFields.WarehouseBinUID);
-
       var packagingOrder = new PackingOrderItem(orderUID, packingItemUID,
-                                inventory, missingItemFields);
+                                missingItemFields);
 
       packagingOrder.Save();
 

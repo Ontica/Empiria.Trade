@@ -43,7 +43,7 @@ namespace Empiria.Trade.Inventory.UseCases {
     #endregion Constructors and parsers
 
 
-    #region Public methods V2
+    #region Public methods
 
     public InventoryHolderDto GetInventoryOrder(string orderUID) {
       Assertion.Require(orderUID, nameof(orderUID));
@@ -265,41 +265,7 @@ namespace Empiria.Trade.Inventory.UseCases {
       }
     }
 
-    #endregion Public methods V2
-
-
-    #region Public methods
-
-    public void CreateInventoryOrderBySale(FixedList<InventoryItems> inventoryItems) {
-      Assertion.Require(inventoryItems, nameof(inventoryItems));
-
-      var builder = new InventoryOrderBuilder();
-
-      var fields = builder.MapToInventoryOrderFields(inventoryItems.FirstOrDefault());
-
-      InventoryOrderEntry inventoryOrder = new InventoryOrderEntry();
-    }
-
-
-    internal void CloseInventoryOrderItemsForSales(
-      int inventoryOrderTypeId, int referenceId) {
-
-      var clauses = InventoryOrderQueryClauses.CreateClausesForInventoryOrder(
-        new InventoryQueryClauses("", inventoryOrderTypeId, referenceId));
-
-      InventoryOrderEntry inventoryOrder = new InventoryOrderEntry();
-
-      InventoryOrderData.CloseInventoryOrderItemsForSales(inventoryOrder.InventoryOrderId);
-    }
-
-
     #endregion Public methods
-
-    #region Private methods
-
-
-
-    #endregion Private methods
 
   } // class InventoryOrderUseCases
 

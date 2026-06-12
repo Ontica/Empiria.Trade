@@ -133,17 +133,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data
     }
 
 
-    internal static void WritePackingOrderItem(PackingOrderItem orderItem) {
-
-      var op = DataOperation.Parse("writePackagingItem",
-        orderItem.PackingItemId, orderItem.UID, orderItem.OrderPacking.OrderPackingId,
-        orderItem.OrderId, orderItem.OrderItemId, orderItem.InventoryOrderItem.InventoryOrderItemId,
-        orderItem.WarehouseBin.Id, orderItem.Quantity);
-
-      DataWriter.Execute(op);
-    }
-
-
     internal FixedList<PackageType> GetPackageTypeList() {
 
       string sql = "SELECT * FROM SimpleObjects WHERE ObjectStatus = 'A' AND ObjectTypeId = 1061";

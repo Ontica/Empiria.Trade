@@ -38,10 +38,9 @@ namespace Empiria.Trade.Sales.ShippingAndHandling
     static public PackingOrderItem Empty => ParseEmpty<PackingOrderItem>();
 
 
-    public PackingOrderItem(string orderUID, string packingItemUID,
-                            Empiria.Trade.Inventory.InventoryOrderItem inventory, MissingItemField missingItemFields) {
+    public PackingOrderItem(string orderUID, string packingItemUID, MissingItemField missingItemFields) {
 
-      MapToPackagingOrderItem(orderUID, packingItemUID, inventory, missingItemFields);
+      MapToPackagingOrderItem(orderUID, packingItemUID, missingItemFields);
 
     }
 
@@ -86,13 +85,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling
     }
 
 
-    [DataField("InventoryEntryId")]
-    public Empiria.Trade.Inventory.InventoryOrderItem InventoryOrderItem {
-      get;
-      internal set;
-    }
-
-
     [DataField("WarehouseBinId")]
     public WarehouseBin WarehouseBin {
       get;
@@ -117,13 +109,10 @@ namespace Empiria.Trade.Sales.ShippingAndHandling
       if (this.PackingItemId == 0) {
         this.PackingItemId = this.Id;
       }
-      PackagingData.WritePackingOrderItem(this);
-
     }
 
 
-    private void MapToPackagingOrderItem(string orderUID, string packingItemUID,
-                  Empiria.Trade.Inventory.InventoryOrderItem inventory, MissingItemField missingItemFields) {
+    private void MapToPackagingOrderItem(string orderUID, string packingItemUID, MissingItemField missingItemFields) {
 
       var warehouseBin = WarehouseBin.Parse(missingItemFields.WarehouseBinUID);
       var orderItem = OrderItem.Parse(missingItemFields.orderItemUID);
@@ -144,7 +133,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling
       this.OrderPacking = PackageForItem.Parse(packingItemUID);
       this.OrderId = orderItem.Order.Id;
       this.OrderItemId = orderItem.Id;
-      this.InventoryOrderItem = inventory;
       this.WarehouseBin = warehouseBin;
     }
 
