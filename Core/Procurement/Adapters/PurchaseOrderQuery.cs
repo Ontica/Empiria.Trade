@@ -16,7 +16,6 @@ namespace Empiria.Trade.Core {
   /// <summary></summary>
   public class PurchaseOrderQuery {
 
-
     public string SupplierUID {
       get; set;
     } = string.Empty;
@@ -27,11 +26,42 @@ namespace Empiria.Trade.Core {
     } = string.Empty;
 
 
-    public EntityStatus Status {
+    public string Status {
       get; set;
-    } = EntityStatus.All;
+    }
 
 
+    public EntityStatus Status_ {
+      get {
+        return GetEntityStatus(Status);
+      }
+    }
+
+
+    private EntityStatus GetEntityStatus(string status) {
+
+      switch (status) {
+        case "Pending":
+        case "InProgress":
+          return EntityStatus.Pending;
+        case "Active":
+        case "Captured":
+          return EntityStatus.Active;
+        case "OnReview":
+          return EntityStatus.OnReview;
+        case "Suspended":
+        case "Cancelled":
+          return EntityStatus.Suspended;
+        case "Discontinued":
+          return EntityStatus.Discontinued;
+        case "Deleted":
+          return EntityStatus.Deleted;
+        case "Closed":
+          return EntityStatus.Closed;
+        default:
+          return EntityStatus.All;
+      }
+    }
 
   } // class PurchaseOrderQuery
 

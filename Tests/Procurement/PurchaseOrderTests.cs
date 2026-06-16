@@ -126,8 +126,8 @@ namespace Empiria.Trade.Tests.Procurement {
 
       PurchaseOrderQuery query = new PurchaseOrderQuery {
         SupplierUID = "",
-        Keywords = "OC-554TY9TC",
-        Status = EntityStatus.All
+        Keywords = "OC-",
+        Status = ""
       };
 
       PurchaseOrdersDataDto sut = usecase.GetPurchaseOrderDescriptor(query);

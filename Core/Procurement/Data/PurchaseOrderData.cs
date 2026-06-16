@@ -69,8 +69,8 @@ namespace Empiria.Trade.Core {
         filters.AppendAnd($"{SearchExpression.ParseAndLikeKeywords("Order_Keywords", query.Keywords)}");
       }
 
-      if (query.Status != EntityStatus.All) {
-        filters.AppendAnd($"Order_Status = '{(char) query.Status}'");
+      if (query.Status_ != EntityStatus.All) {
+        filters.AppendAnd($"Order_Status = '{(char) query.Status_}'");
       } else {
         filters.AppendAnd($"Order_Status != '{(char) OrderStatus.Cancelled}'");
       }
