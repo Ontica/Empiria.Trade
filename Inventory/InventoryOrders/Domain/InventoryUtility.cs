@@ -29,6 +29,18 @@ namespace Empiria.Trade.Inventory {
 
     #region Public methods
 
+    static internal void EnsureIsValidToClose(FixedList<InventoryOrderItem> orderItems) {
+      foreach (var item in orderItems) {
+
+        var entries = InventoryEntry.GetListFor(item);
+
+        var entriesQuantity = entries.Sum(x => x.InputQuantity);
+
+        Assertion.Require(item.Quantity == entriesQuantity, "Faltan productos por asignar.");
+      }
+    }
+
+
     static internal InventoryOrderActions GetActions(InventoryOrder order) {
 
       bool existClosedEntries = ValuateIfInventoryEntriesClosed(

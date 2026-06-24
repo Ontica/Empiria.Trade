@@ -15,7 +15,6 @@ using Empiria.Orders;
 using Empiria.Parties;
 using Empiria.Products;
 
-using Empiria.Inventory.Data;
 using Empiria.Inventory;
 
 namespace Empiria.Trade.Core {
@@ -229,7 +228,7 @@ namespace Empiria.Trade.Core {
 
     #region Private methods
 
-    internal void AddEntry(InventoryEntryFields fields) {
+    public void AddEntry(InventoryEntryFields fields) {
 
       this.InputQuantity = fields.Quantity;
       this.Product = Patcher.Patch(fields.ProductUID, this.Product);

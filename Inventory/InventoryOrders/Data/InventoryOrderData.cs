@@ -8,13 +8,11 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-using System.Net.NetworkInformation;
+
 using Empiria.Data;
-using Empiria.StateEnums;
+using Empiria.Locations;
+
 using Empiria.Trade.Core;
-using Empiria.Trade.Inventory;
-using Empiria.Trade.Inventory.Adapters;
-using Empiria.Trade.Inventory.Domain;
 using Empiria.Trade.Products;
 
 namespace Empiria.Trade.Inventory.Data {
@@ -65,6 +63,10 @@ namespace Empiria.Trade.Inventory.Data {
       return DataReader.GetScalar<decimal>(op);
     }
 
+    #endregion Public methods
+
+
+    #region Methods - inventory entry
 
     internal static void DeleteEntry(int orderId, int orderItemId) {
 
@@ -78,7 +80,93 @@ namespace Empiria.Trade.Inventory.Data {
       DataWriter.Execute(dataOperation);
     }
 
-    #endregion Public methods
+
+    internal static void DeleteEntryStatus(int orderId, int orderItemId,
+                                           int inventoryEntryId, InventoryStatus status) {
+
+      string sql = $"UPDATE OMS_Inventory_Entries " +
+                   $"SET Inv_Entry_Status = '{(char) status}' " +
+                   $"WHERE Inv_Entry_Id = {inventoryEntryId} AND " +
+                   $"Inv_Entry_Order_Id = {orderId} AND " +
+                   $"Inv_Entry_Order_Item_Id = {orderItemId}";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      DataWriter.Execute(dataOperation);
+    }
+
+
+    internal static Location GetLocationEntryByName(string locationName) {
+
+      try {
+
+        var sql = $"SELECT * FROM Common_Storage " +
+                $"WHERE Object_Type_Id = 5275 AND Object_Name = '{locationName}'";
+
+        var op = DataOperation.Parse(sql);
+
+        return DataReader.GetPlainObject<Location>(op);
+
+      } catch (Exception) {
+
+        throw new Exception("Localización no encontrada.");
+      }
+    }
+
+
+    internal static Product GetProductEntryByName(string productName) {
+
+      try {
+
+        var sql = $"SELECT * FROM OMS_Products WHERE Product_Name = '{productName}'";
+
+        var op = DataOperation.Parse(sql);
+
+        return DataReader.GetPlainObject<Product>(op);
+
+      } catch (Exception) {
+
+        throw new Exception("Producto no coincide con el seleccionado.");
+      }
+
+    }
+
+
+    internal static FixedList<InventoryEntriesReport> GetProductEntryInventoryReport(int orderId) {
+
+      var sql = $"SELECT * FROM VW_Inventory_Report WHERE Inv_Entry_Order_Id = {orderId} ORDER BY Inv_entry_position";
+
+      var op = DataOperation.Parse(sql);
+
+      return DataReader.GetPlainObjectFixedList<InventoryEntriesReport>(op);
+    }
+
+
+    internal static FixedList<InventoryEntriesReport> GetProductEntryInventoryReportByLocation(string locationName) {
+
+      var sql = $"SELECT * FROM VW_Inventory_Report " +
+                 $" inner join Common_Storage on Inv_Entry_Location_Id = Object_Id " +
+                 $" WHERE Object_Type_Id = 5275 and Object_Name = {locationName} ORDER BY Product_Name ";
+
+      var op = DataOperation.Parse(sql);
+
+      return DataReader.GetPlainObjectFixedList<InventoryEntriesReport>(op);
+    }
+
+
+    internal static void UpdateEntriesStatusByOrder(int orderId, InventoryStatus status) {
+
+      string sql = $"UPDATE OMS_Inventory_Entries " +
+                   $"SET Inv_Entry_Status = '{(char) status}' " +
+                   $"WHERE Inv_Entry_Order_Id = {orderId} AND " +
+                   $"Inv_Entry_Status != 'X'";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      DataWriter.Execute(dataOperation);
+    }
+
+    #endregion Methods - inventory entry
 
   } // class InventoryOrderData
 
