@@ -30,7 +30,7 @@ namespace Empiria.Trade.Products.Domain {
       var baseProductIds = ProductDataService.GetProductsByKeywords(query.Keywords)
                                              .SelectDistinct(x => x.BaseProductId).ToArray();
 
-      _baseProducts = ProductDataService.GetBaseProducts(baseProductIds);
+      _baseProducts = ProductDataService.GetBaseProducts(baseProductIds, query.Keywords);
     }
 
     public FixedList<Product> BaseProducts {

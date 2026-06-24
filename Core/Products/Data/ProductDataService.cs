@@ -21,29 +21,34 @@ namespace Empiria.Trade.Products.Data {
 
     internal static FixedList<Product> GetProductsByKeywords(string keywords) {
 
-      var sql = "SELECT * FROM OMS_Products "; 
-                //"(Base_Product_Id = Product_Id OR Base_Product_Id = -1) ";
+      var sql = "SELECT * FROM OMS_Products ";
+      //"(Base_Product_Id = Product_Id OR Base_Product_Id = -1) ";
 
       if (keywords != string.Empty) {
-        
+
         sql += $"WHERE {SearchExpression.ParseAndLikeKeywords("Product_Keywords", keywords)} ";
       }
-      
+
       var op = DataOperation.Parse(sql);
 
       return DataReader.GetFixedList<Product>(op);
     }
 
 
-    internal static FixedList<Product> GetBaseProducts(int[] baseProductIds) {
+    internal static FixedList<Product> GetBaseProducts(int[] baseProductIds, string keywords) {
 
       var idsCondition = baseProductIds.Length > 0 ?
                          $"OR Base_Product_Id IN ({String.Join(", ", baseProductIds)})" :
                          string.Empty;
 
+      var keywordsCondition = keywords != string.Empty ?
+                              $"AND {SearchExpression.ParseAndLikeKeywords("Product_Keywords", keywords)} " :
+                              string.Empty;
+
       var sql = "SELECT * FROM OMS_Products " +
                 $"WHERE (Base_Product_Id = -1 " +
                 $"{idsCondition}) " +
+                //$"{keywordsCondition} " +
                 $"AND  Base_Product_Id = Product_Id " +
                 $"AND Product_Id != -1 " +
                 $"ORDER BY Product_Name ";
@@ -60,7 +65,7 @@ namespace Empiria.Trade.Products.Data {
                 $"WHERE Base_Product_Id = {baseProduct.Id} AND " +
                 $"Product_Id <> {baseProduct.Id} AND " +
                 $"Product_Status <> 'X' ";
-      
+
       var op = DataOperation.Parse(sql);
 
       return DataReader.GetFixedList<Product>(op);

@@ -66,7 +66,8 @@ namespace Empiria.Trade.WebApi.Core {
     [Route("v4/trade/contacts/suppliers/search")]
     public CollectionModel GetProvider([FromUri] string keywords) {
 
-      FixedList<Party> providers = Party.GetPartiesInRole("supplier", keywords);
+      FixedList<Party> providers = Party.GetPartiesInRole("supplier", keywords)
+                                        .FindAll(x=>x.Name != string.Empty);
 
       return new CollectionModel(Request, providers.MapToNamedEntityList());
     }
