@@ -62,6 +62,20 @@ namespace Empiria.Trade.Core {
 
     #region Properties
 
+    public decimal PackagingSize {
+      get {
+        return Products.Product.ParseUID(this.Product.UID).PackagingSize;
+      }
+    }
+
+
+    public decimal PackingSmallBag {
+      get {
+        return Products.Product.ParseUID(this.Product.UID).PackingSmallBag;
+      }
+    }
+
+
     public string Notes {
       get {
         return ExtData.Get("notes", string.Empty);
@@ -86,13 +100,13 @@ namespace Empiria.Trade.Core {
 
     #region Public methods
 
-    public decimal CalculateTotalUnits(decimal packagingSize) {
-      return packagingSize * this.Quantity;
+    public decimal CalculateTotalUnits() {
+      return PackagingSize * this.Quantity;
     }
 
 
-    public decimal CalculateTotalPrice(decimal packagingSize) {
-      return ((packagingSize * this.Quantity) / 1000) * this.UnitPrice;
+    public decimal CalculateTotalPrice() {
+      return ((PackagingSize * this.Quantity) / 1000) * this.UnitPrice;
     }
 
 

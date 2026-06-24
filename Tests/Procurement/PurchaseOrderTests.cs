@@ -113,7 +113,7 @@ namespace Empiria.Trade.Tests.Procurement {
 
       var usecase = PurchaseOrderUseCases.UseCaseInteractor();
 
-      string purchaseOrderUID = "8bdc8346-d7ed-44ba-9463-261f56525a4f";
+      string purchaseOrderUID = "62322440-38c3-46d4-9593-b31c98455389";
       PurchaseOrderDto sut = usecase.GetPurchaseOrderDto(purchaseOrderUID);
       Assert.NotNull(sut);
     }
@@ -126,7 +126,7 @@ namespace Empiria.Trade.Tests.Procurement {
 
       PurchaseOrderQuery query = new PurchaseOrderQuery {
         SupplierUID = "",
-        Keywords = "OC-",
+        Keywords = "OC-V3GT1VO1",
         Status = ""
       };
 

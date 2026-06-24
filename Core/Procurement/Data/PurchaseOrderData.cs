@@ -48,8 +48,10 @@ namespace Empiria.Trade.Core {
 
     static public FixedList<PurchaseOrderItem> GetPurchaseOrderItems(PurchaseOrder order) {
 
+      var orderId = order.Id == 0 ? order.OrderId : order.Id;
+
       string sql = $"SELECT * FROM OMS_Order_Items " +
-                   $"WHERE Order_Item_Order_Id = {order.Id} AND Order_Item_Status <> 'X'";
+                   $"WHERE Order_Item_Order_Id = {orderId} AND Order_Item_Status <> 'X'";
 
       var dataOperation = DataOperation.Parse(sql);
 

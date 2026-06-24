@@ -104,7 +104,7 @@ namespace Empiria.Trade.Procurement.Adapters {
 
     static private PurchaseOrderDescriptorDto MapPurchaseOrderDescriptor(PurchaseOrder x) {
       PurchaseOrderDescriptorDto dto = new PurchaseOrderDescriptorDto();
-
+      
       dto.UID = x.OrderUID;
       dto.OrderNo = x.OrderNo;
       dto.Provider = x.Provider.Name;
@@ -112,7 +112,7 @@ namespace Empiria.Trade.Procurement.Adapters {
       dto.PostingTime = x.PostingTime;
       dto.RequestedTime = x.RequestedTime;
       dto.OrderStatus = x.Status.GetName();
-      dto.OrderTotal = x.PurchaseOrderItems.Sum(a => a.Subtotal);
+      dto.OrderTotal = Math.Round(x.PurchaseOrderItems.Sum(a => a.CalculateTotalPrice()), 2);
 
       return dto;
     }
@@ -130,19 +130,19 @@ namespace Empiria.Trade.Procurement.Adapters {
         PresentationName = x.Product.BaseUnit.Description,
         Description = x.Description,
         Notes = x.Notes,
-        PackingSmallBag = product.PackingSmallBag,
-        PackagingSize = product.PackagingSize,
+        PackingSmallBag = x.PackingSmallBag,
+        PackagingSize = x.PackagingSize,
         Quantity = x.Quantity,
-        TotalUnits = x.CalculateTotalUnits(product.PackagingSize),
+        TotalUnits = x.CalculateTotalUnits(),
         Price = x.UnitPrice,
-        Total = x.CalculateTotalPrice(product.PackagingSize)
+        Total = x.CalculateTotalPrice()
       };
     }
 
 
     private static PurchaseOrderTotal MapTotals(FixedList<PurchaseOrderItem> orderItems) {
 
-      var _total = orderItems.Sum(x => x.CalculateTotalPrice(Product.ParseUID(x.Product.UID).PackagingSize));
+      var _total = orderItems.Sum(x => x.CalculateTotalPrice());
 
       return new PurchaseOrderTotal {
         ItemsTotal = Math.Round(_total, 2, MidpointRounding.AwayFromZero),
