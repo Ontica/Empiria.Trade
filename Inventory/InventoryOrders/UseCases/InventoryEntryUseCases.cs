@@ -60,7 +60,7 @@ namespace Empiria.Trade.Inventory.UseCases {
       Assertion.Require(orderItemUID, nameof(orderItemUID));
       Assertion.Require(fields, nameof(fields));
 
-      Products.Product productEntry = InventoryOrderData.GetProductEntryByName(fields.Product.Trim());
+      Products.ProductEntry productEntry = InventoryOrderData.GetProductEntryByName(fields.Product.Trim());
       Location locationEntry = InventoryOrderData.GetLocationEntryByName(fields.Location.Trim());
 
       //TODO VERIFICAR ERROR EN REFERENCIA A VALIDACION

@@ -19,7 +19,7 @@ namespace Empiria.Trade.Products.Data {
 
     #region Methods
 
-    internal static FixedList<Product> GetProductsByKeywords(string keywords) {
+    internal static FixedList<ProductEntry> GetProductsByKeywords(string keywords) {
 
       var sql = "SELECT * FROM OMS_Products ";
       //"(Base_Product_Id = Product_Id OR Base_Product_Id = -1) ";
@@ -31,11 +31,11 @@ namespace Empiria.Trade.Products.Data {
 
       var op = DataOperation.Parse(sql);
 
-      return DataReader.GetFixedList<Product>(op);
+      return DataReader.GetFixedList<ProductEntry>(op);
     }
 
 
-    internal static FixedList<Product> GetBaseProducts(int[] baseProductIds, string keywords) {
+    internal static FixedList<ProductEntry> GetBaseProducts(int[] baseProductIds, string keywords) {
 
       var idsCondition = baseProductIds.Length > 0 ?
                          $"OR Base_Product_Id IN ({String.Join(", ", baseProductIds)})" :
@@ -55,11 +55,11 @@ namespace Empiria.Trade.Products.Data {
 
       var op = DataOperation.Parse(sql);
 
-      return DataReader.GetFixedList<Product>(op);
+      return DataReader.GetFixedList<ProductEntry>(op);
     }
 
 
-    internal static FixedList<Product> GetProductsPresentations(Product baseProduct) {
+    internal static FixedList<ProductEntry> GetProductsPresentations(ProductEntry baseProduct) {
 
       var sql = "SELECT * FROM OMS_Products " +
                 $"WHERE Base_Product_Id = {baseProduct.Id} AND " +
@@ -68,7 +68,7 @@ namespace Empiria.Trade.Products.Data {
 
       var op = DataOperation.Parse(sql);
 
-      return DataReader.GetFixedList<Product>(op);
+      return DataReader.GetFixedList<ProductEntry>(op);
     }
 
 
@@ -91,14 +91,14 @@ namespace Empiria.Trade.Products.Data {
     }
 
 
-    internal static FixedList<Product> GetProductsForOrder(ProductQuery query) {
+    internal static FixedList<ProductEntry> GetProductsForOrder(ProductQuery query) {
 
       return GetProductsList(query.Keywords);
 
     }
 
 
-    internal static FixedList<Product> GetProductsList(string keywords) {
+    internal static FixedList<ProductEntry> GetProductsList(string keywords) {
 
       string whereClauses = string.Empty;
 
@@ -126,7 +126,7 @@ namespace Empiria.Trade.Products.Data {
 
       var dataOperation = DataOperation.Parse(sql);
 
-      return DataReader.GetPlainObjectFixedList<Product>(dataOperation);
+      return DataReader.GetPlainObjectFixedList<ProductEntry>(dataOperation);
     }
 
 

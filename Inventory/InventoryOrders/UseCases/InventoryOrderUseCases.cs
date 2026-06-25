@@ -85,7 +85,7 @@ namespace Empiria.Trade.Inventory.UseCases {
     public InventoryHolderDto CreateInventoryOrder(InventoryOrderFields fields) {
       Assertion.Require(fields, nameof(fields));
 
-      var orderType = Empiria.Orders.OrderType.Parse(INVENTORYORDERTYPE);
+      var orderType = OrderType.Parse(INVENTORYORDERTYPE);
       fields.Priority = Priority.Normal;
 
       InventoryOrder order = new InventoryOrder(fields.WarehouseUID, orderType);
@@ -106,7 +106,7 @@ namespace Empiria.Trade.Inventory.UseCases {
 
       var location = CommonStorage.TryParseNamedKey<Location>(fields.Location);
 
-      var product = Product.TryParseWithCode(fields.Product);
+      var product = ProductEntry.TryParseWithCode(fields.Product);
       var ifNotExistProductinLocation = VerifyProductAndLocationInOrder(order.Id, product.Id, location.Id);
 
       Assertion.Require(location, $"La ubicacion {fields.Location} no existe.");

@@ -171,7 +171,7 @@ namespace Empiria.Trade.Procurement.UseCases {
 
     private void GetDefaultProductFields(PurchaseOrder order, PurchaseOrderItemFields fields) {
       
-      var product = Product.ParseUID(fields.VendorProductUID);
+      var product = ProductEntry.ParseUID(fields.VendorProductUID);
 
       Assertion.Require(!product.Id.Equals(-1), $"Por favor ingrese un producto valido");
 

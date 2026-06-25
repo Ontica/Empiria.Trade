@@ -7,7 +7,6 @@
 *  Summary  : Represents a product.                                                                          *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
-
 using System;
 
 using Empiria.Parties;
@@ -18,28 +17,27 @@ namespace Empiria.Trade.Products {
 
   /// <summary>Represents a product.</summary>
   [PartitionedType(typeof(ProductType))]
-  public class Product : Empiria.Products.Product {
+  public class ProductEntry : Product {
 
-
-    private Lazy<FixedList<Product>> _presentations;
+    private Lazy<FixedList<ProductEntry>> _presentations;
 
     #region Constructors and parsers
 
-    protected Product(ProductType productType) : base(productType) {
+    protected ProductEntry(ProductType productType) : base(productType) {
       // Required by Empiria Framework for all partitioned types.
     }
 
-    internal Product(ProductType productType, ProductFields data) : base(productType) {
+    internal ProductEntry(ProductType productType, ProductFields data) : base(productType) {
       LoadData(data);
     }
 
-    static public Product ParseId(int id) => ParseId<Product>(id);
+    static public ProductEntry ParseId(int id) => ParseId<ProductEntry>(id);
 
-    static public Product ParseUID(string uid) => ParseKey<Product>(uid);
+    static public ProductEntry ParseUID(string uid) => ParseKey<ProductEntry>(uid);
 
 
     protected override void OnLoad() {
-      _presentations = new Lazy<FixedList<Product>>(() => Data.ProductDataService.GetProductsPresentations(this));
+      _presentations = new Lazy<FixedList<ProductEntry>>(() => Data.ProductDataService.GetProductsPresentations(this));
     }
 
     #endregion Constructors and parsers
@@ -52,9 +50,9 @@ namespace Empiria.Trade.Products {
     }
 
 
-    internal Product BaseProduct {
+    internal ProductEntry BaseProduct {
       get {
-        return Product.ParseId(BaseProductId);
+        return ParseId(BaseProductId);
       }
     }
 
@@ -214,7 +212,7 @@ namespace Empiria.Trade.Products {
     public string ProductImageUrl => $"http://apps.sujetsa.com.mx:8080/imagenes-productos/{this.InternalCode}.jpg";
 
 
-    public FixedList<Product> Presentations {
+    public FixedList<ProductEntry> Presentations {
       get {
         return _presentations.Value;
       }

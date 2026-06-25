@@ -63,14 +63,14 @@ namespace Empiria.Trade.Core {
 
     public decimal PackagingSize {
       get {
-        return Products.Product.ParseUID(this.Product.UID).PackagingSize;
+        return Products.ProductEntry.ParseUID(this.Product.UID).PackagingSize;
       }
     }
 
 
     public decimal PackingSmallBag {
       get {
-        return Products.Product.ParseUID(this.Product.UID).PackingSmallBag;
+        return Products.ProductEntry.ParseUID(this.Product.UID).PackingSmallBag;
       }
     }
 

@@ -21,7 +21,7 @@ namespace Empiria.Trade.Products.Adapters {
 
     #region Public methods V2
 
-    static internal FixedList<ProductForSearchingDto> Map(FixedList<Product> products, string vendorUID) {
+    static internal FixedList<ProductForSearchingDto> Map(FixedList<ProductEntry> products, string vendorUID) {
 
       return products.Select(x => MapProduct(x, vendorUID))
                                  .Where(x => x.Presentations.Count > 0)
@@ -29,7 +29,7 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
-    static private ProductForSearchingDto MapProduct(Product product, string vendorUID) {
+    static private ProductForSearchingDto MapProduct(ProductEntry product, string vendorUID) {
 
       return new ProductForSearchingDto() {
         ProductUID = product.UID,
@@ -41,7 +41,7 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
-    static private ProductTypeDto GetProductsType(Product product) {
+    static private ProductTypeDto GetProductsType(ProductEntry product) {
 
       return new ProductTypeDto {
         ProductTypeUID = product.ProductType.UID,
@@ -51,7 +51,7 @@ namespace Empiria.Trade.Products.Adapters {
 
 
     static private FixedList<ProductPresentationForSeach> GetProductPresentations(
-                                                            Product product, string vendorUID) {
+                                                            ProductEntry product, string vendorUID) {
       
       
       var productPresentations = product.Presentations.OrderBy(x => x.InternalCode.Length)
@@ -79,9 +79,9 @@ namespace Empiria.Trade.Products.Adapters {
 
     #region Public methods
 
-    static internal FixedList<IProductEntryDto> MapToEntriesDto(FixedList<Product> entries) {
+    static internal FixedList<IProductEntryDto> MapToEntriesDto(FixedList<ProductEntry> entries) {
 
-      var mappedItems = entries.Select((x) => MapEntry((Product) x));
+      var mappedItems = entries.Select((x) => MapEntry((ProductEntry) x));
 
       return new FixedList<IProductEntryDto>(mappedItems);
     }
@@ -90,7 +90,7 @@ namespace Empiria.Trade.Products.Adapters {
 
     #region Private methods
 
-    private static ProductPresentationForSeach AssignProductPresentation(Product product) {
+    private static ProductPresentationForSeach AssignProductPresentation(ProductEntry product) {
 
       return new ProductPresentationForSeach {
         PresentationUID = product.UID,
@@ -103,7 +103,7 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
-    static public ProductForSearchingDto MapEntry(Product entry) {
+    static public ProductForSearchingDto MapEntry(ProductEntry entry) {
       var dto = new ProductForSearchingDto();
 
       dto.ProductUID = entry.UID;
@@ -117,7 +117,7 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
-    static private ProductTypeDto GetProductType(Product entry) {
+    static private ProductTypeDto GetProductType(ProductEntry entry) {
 
       var type = new ProductTypeDto();
 
@@ -131,7 +131,7 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
-    static private FixedList<Attributes> GetAttributes(Product entry) {
+    static private FixedList<Attributes> GetAttributes(ProductEntry entry) {
       try {
         return new FixedList<Attributes>();
       } catch (Exception e) {
@@ -140,7 +140,7 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
-    static private FixedList<ProductPresentationForSeach> GetPresentations(Product entry) {
+    static private FixedList<ProductPresentationForSeach> GetPresentations(ProductEntry entry) {
 
       var presentations = new List<ProductPresentationForSeach>();
 
@@ -157,7 +157,7 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
-    static private FixedList<Product> GetPresentationsByVendor(FixedList<Product> productPresentations,
+    static private FixedList<ProductEntry> GetPresentationsByVendor(FixedList<ProductEntry> productPresentations,
                                                                 string vendorUID) {
       vendorUID = vendorUID == string.Empty ? "Empty" : vendorUID;
       var vendor = Party.Parse(vendorUID);
@@ -166,11 +166,11 @@ namespace Empiria.Trade.Products.Adapters {
         return productPresentations.FindAll(x => x.Vendor.Id == vendor.Id).ToFixedList();
       }
 
-      return new FixedList<Product>(productPresentations);
+      return new FixedList<ProductEntry>(productPresentations);
     }
 
 
-    static private FixedList<VendorDto> MapVendors(Product presentation) {
+    static private FixedList<VendorDto> MapVendors(ProductEntry presentation) {
 
       var vendor = new VendorDto {
         VendorProductUID = presentation.VendorProductUID,

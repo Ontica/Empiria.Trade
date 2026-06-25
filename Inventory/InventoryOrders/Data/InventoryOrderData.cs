@@ -114,7 +114,7 @@ namespace Empiria.Trade.Inventory.Data {
     }
 
 
-    internal static Product GetProductEntryByName(string productName) {
+    internal static ProductEntry GetProductEntryByName(string productName) {
 
       try {
 
@@ -122,7 +122,7 @@ namespace Empiria.Trade.Inventory.Data {
 
         var op = DataOperation.Parse(sql);
 
-        return DataReader.GetPlainObject<Product>(op);
+        return DataReader.GetPlainObject<ProductEntry>(op);
 
       } catch (Exception) {
 

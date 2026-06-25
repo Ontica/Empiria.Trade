@@ -21,7 +21,7 @@ namespace Empiria.Trade.Products.Domain {
   /// <summary>Helper methods to build product structure.</summary>
   internal class ProductHelper {
 
-    private readonly FixedList<Product> _baseProducts;
+    private readonly FixedList<ProductEntry> _baseProducts;
 
     #region Public methods V2
 
@@ -33,7 +33,7 @@ namespace Empiria.Trade.Products.Domain {
       _baseProducts = ProductDataService.GetBaseProducts(baseProductIds, query.Keywords);
     }
 
-    public FixedList<Product> BaseProducts {
+    public FixedList<ProductEntry> BaseProducts {
       get {
         return _baseProducts;
       }
@@ -45,7 +45,7 @@ namespace Empiria.Trade.Products.Domain {
     #region public methods
 
 
-    internal decimal DefaultPrice(Product product) {
+    internal decimal DefaultPrice(ProductEntry product) {
 
       if (product.Vendor.Id == 1) {
 
@@ -61,7 +61,7 @@ namespace Empiria.Trade.Products.Domain {
     }
 
 
-    internal void GetDefaultProductBasePrices(FixedList<Product> products) {
+    internal void GetDefaultProductBasePrices(FixedList<ProductEntry> products) {
 
       foreach (var product in products) {
 
@@ -71,9 +71,9 @@ namespace Empiria.Trade.Products.Domain {
     }
 
 
-    internal FixedList<Product> GetProductsByCodeForPurchaseOrder(FixedList<Product> products) {
+    internal FixedList<ProductEntry> GetProductsByCodeForPurchaseOrder(FixedList<ProductEntry> products) {
 
-      var hashProducts = new EmpiriaHashTable<Product>();
+      var hashProducts = new EmpiriaHashTable<ProductEntry>();
 
       foreach (var product in products) {
 
@@ -84,9 +84,9 @@ namespace Empiria.Trade.Products.Domain {
     }
 
 
-    internal FixedList<Product> GetProductsByCode(FixedList<Product> products) {
+    internal FixedList<ProductEntry> GetProductsByCode(FixedList<ProductEntry> products) {
 
-      var hashProducts = new EmpiriaHashTable<Product>();
+      var hashProducts = new EmpiriaHashTable<ProductEntry>();
 
       foreach (var product in products) {
 
@@ -97,7 +97,7 @@ namespace Empiria.Trade.Products.Domain {
     }
 
 
-    internal FixedList<Product> GetProductsOrderBy(FixedList<Product> productsByCode) {
+    internal FixedList<ProductEntry> GetProductsOrderBy(FixedList<ProductEntry> productsByCode) {
 
       return productsByCode.OrderBy(p => p.InternalCode)
                            .ThenBy(p => p.Name)
@@ -105,7 +105,7 @@ namespace Empiria.Trade.Products.Domain {
     }
 
 
-    internal void GetProductsWithCustomerPrice(FixedList<Product> products) {
+    internal void GetProductsWithCustomerPrice(FixedList<ProductEntry> products) {
 
       var customerExtData = GetCustomerAssignedPriceNumber();
 
@@ -118,11 +118,11 @@ namespace Empiria.Trade.Products.Domain {
 
     #region Private methods
 
-    private void AssingHashProductByCode(EmpiriaHashTable<Product> hashProducts, Product product) {
+    private void AssingHashProductByCode(EmpiriaHashTable<ProductEntry> hashProducts, ProductEntry product) {
 
       string hash = $"{product.InternalCode}";
 
-      Product productEntry;
+      ProductEntry productEntry;
 
       hashProducts.TryGetValue(hash, out productEntry);
 
@@ -143,11 +143,11 @@ namespace Empiria.Trade.Products.Domain {
 
 
     private void AssingHashProductByCodeForPurchaseOrder(
-      EmpiriaHashTable<Product> hashProducts, Product product) {
+      EmpiriaHashTable<ProductEntry> hashProducts, ProductEntry product) {
 
       string hash = $"{product.InternalCode}";
 
-      Product productEntry;
+      ProductEntry productEntry;
 
       hashProducts.TryGetValue(hash, out productEntry);
 
@@ -164,7 +164,7 @@ namespace Empiria.Trade.Products.Domain {
     }
 
 
-    private void GetAssignedPrice(FixedList<Product> products, PartyExtData customerExtData) {
+    private void GetAssignedPrice(FixedList<ProductEntry> products, PartyExtData customerExtData) {
 
       foreach (var product in products) {
 
@@ -201,7 +201,7 @@ namespace Empiria.Trade.Products.Domain {
     }
 
 
-    private decimal GetPrice(Product product, int customerPriceNumber) {
+    private decimal GetPrice(ProductEntry product, int customerPriceNumber) {
 
       decimal price = 0;
 
@@ -255,15 +255,15 @@ namespace Empiria.Trade.Products.Domain {
     }
 
 
-    internal FixedList<Product> GetProductsByStock(FixedList<Product> products) {
+    internal FixedList<ProductEntry> GetProductsByStock(FixedList<ProductEntry> products) {
 
-      FixedList<Product> productsByStock = new FixedList<Product>(products);
+      FixedList<ProductEntry> productsByStock = new FixedList<ProductEntry>(products);
 
       return productsByStock;
     }
 
 
-    private void GetProductPresentations(Product productEntry, Product product) {
+    private void GetProductPresentations(ProductEntry productEntry, ProductEntry product) {
 
       var existPresentation = productEntry.Presentations.Find(
                           x => x.UID == product.ProductPresentation.UID);
@@ -284,7 +284,7 @@ namespace Empiria.Trade.Products.Domain {
     }
 
 
-    private void GetProductPresentationsForPurchaseOrder(Product productEntry) {
+    private void GetProductPresentationsForPurchaseOrder(ProductEntry productEntry) {
 
       var presentations = ProductUseCases.GetProductPresentations();
 
@@ -298,7 +298,7 @@ namespace Empiria.Trade.Products.Domain {
     }
 
 
-    private void GetVendorsByPresentation(ProductPresentationForSeach presentation, Product product) {
+    private void GetVendorsByPresentation(ProductPresentationForSeach presentation, ProductEntry product) {
 
       var vendorProduct = VendorProduct.Parse(product.VendorProductUID);
 
@@ -319,7 +319,7 @@ namespace Empiria.Trade.Products.Domain {
     }
 
 
-    private int GetVendorId(Product product, string fromDatabase) {
+    private int GetVendorId(ProductEntry product, string fromDatabase) {
 
       if (fromDatabase == "NK SUJETSA") {
         return 1;

@@ -30,7 +30,7 @@ namespace Empiria.Trade.Products.Domain {
 
     #region Public methods V2
 
-    internal FixedList<Product> GetProducts() {
+    internal FixedList<ProductEntry> GetProducts() {
 
       var helper = new ProductHelper(query);
 
@@ -44,53 +44,53 @@ namespace Empiria.Trade.Products.Domain {
 
     #region Public methods
 
-    internal FixedList<Product> GetProductsForOrder() {
+    internal FixedList<ProductEntry> GetProductsForOrder() {
 
-      FixedList<Product> products = ProductDataService.GetProductsForOrder(query);
+      FixedList<ProductEntry> products = ProductDataService.GetProductsForOrder(query);
 
       var helper = new ProductHelper(query);
 
-      FixedList<Product> productsByStock = helper.GetProductsByStock(products);
+      FixedList<ProductEntry> productsByStock = helper.GetProductsByStock(products);
 
       ValidateToGetPriceList(productsByStock);
 
-      FixedList<Product> productsByCode = helper.GetProductsByCode(productsByStock);
+      FixedList<ProductEntry> productsByCode = helper.GetProductsByCode(productsByStock);
 
-      FixedList<Product> orderedProducts = helper.GetProductsOrderBy(productsByCode);
+      FixedList<ProductEntry> orderedProducts = helper.GetProductsOrderBy(productsByCode);
 
       return orderedProducts;
     }
 
 
-    internal FixedList<Product> GetProductsForPurchaseOrder() {
+    internal FixedList<ProductEntry> GetProductsForPurchaseOrder() {
 
-      FixedList<Product> products = ProductDataService.GetProductsList(query.Keywords);
+      FixedList<ProductEntry> products = ProductDataService.GetProductsList(query.Keywords);
 
       var helper = new ProductHelper(query);
 
-      FixedList<Product> productsByStock = helper.GetProductsByStock(products);
+      FixedList<ProductEntry> productsByStock = helper.GetProductsByStock(products);
 
-      FixedList<Product> productsByCode = helper.GetProductsByCodeForPurchaseOrder(productsByStock);
+      FixedList<ProductEntry> productsByCode = helper.GetProductsByCodeForPurchaseOrder(productsByStock);
 
-      FixedList<Product> orderedProducts = helper.GetProductsOrderBy(productsByCode);
+      FixedList<ProductEntry> orderedProducts = helper.GetProductsOrderBy(productsByCode);
 
       return orderedProducts;
     }
 
 
-    internal FixedList<Product> GetProductsList() {
+    internal FixedList<ProductEntry> GetProductsList() {
 
-      FixedList<Product> products = ProductDataService.GetProductsList(query.Keywords);
+      FixedList<ProductEntry> products = ProductDataService.GetProductsList(query.Keywords);
 
       var helper = new ProductHelper(query);
 
-      FixedList<Product> productsByStock = helper.GetProductsByStock(products);
+      FixedList<ProductEntry> productsByStock = helper.GetProductsByStock(products);
 
       ValidateToGetPriceList(productsByStock);
 
-      FixedList<Product> productsByCode = helper.GetProductsByCode(productsByStock);
+      FixedList<ProductEntry> productsByCode = helper.GetProductsByCode(productsByStock);
 
-      FixedList<Product> orderedProducts = helper.GetProductsOrderBy(productsByCode);
+      FixedList<ProductEntry> orderedProducts = helper.GetProductsOrderBy(productsByCode);
 
       return orderedProducts;
     }
@@ -101,7 +101,7 @@ namespace Empiria.Trade.Products.Domain {
     #region Private methods
 
 
-    private void ValidateToGetPriceList(FixedList<Product> products) {
+    private void ValidateToGetPriceList(FixedList<ProductEntry> products) {
 
       var helper = new ProductHelper(query);
 

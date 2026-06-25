@@ -120,7 +120,7 @@ namespace Empiria.Trade.Procurement.Adapters {
 
     private static PurchaseOrderItemDto MapPurchaseOrderItems(PurchaseOrderItem x) {
 
-      var product = Product.ParseUID(x.Product.UID);
+      var product = ProductEntry.ParseUID(x.Product.UID);
 
       return new PurchaseOrderItemDto {
         UID = x.UID,
