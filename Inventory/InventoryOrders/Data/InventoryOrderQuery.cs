@@ -12,6 +12,7 @@ using System;
 using Empiria.Inventory;
 using Empiria.Locations;
 using Empiria.StateEnums;
+using Empiria.Trade.Core;
 
 namespace Empiria.Trade.Inventory.Adapters {
 

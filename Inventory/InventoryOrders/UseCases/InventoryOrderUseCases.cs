@@ -12,7 +12,6 @@ using Empiria.Locations;
 using Empiria.Services;
 using Empiria.StateEnums;
 
-using Empiria.Inventory.UseCases;
 using Empiria.Orders;
 using Empiria.Trade.Core;
 using Empiria.Trade.Products;

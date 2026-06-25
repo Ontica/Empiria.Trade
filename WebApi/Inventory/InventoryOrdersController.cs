@@ -103,7 +103,7 @@ namespace Empiria.Trade.WebApi.Inventory {
 
     [HttpPost]
     [Route("v8/order-management/inventory-orders")]
-    public SingleObjectModel CreateInventoryOrder([FromBody] Trade.Core.InventoryOrderFields fields) {
+    public SingleObjectModel CreateInventoryOrder([FromBody] InventoryOrderFields fields) {
 
       using (var usecases = InventoryOrderUseCases.UseCaseInteractor()) {
 
@@ -116,7 +116,7 @@ namespace Empiria.Trade.WebApi.Inventory {
 
     [HttpPost]
     [Route("v8/order-management/inventory-orders/{orderUID}/items")]
-    public SingleObjectModel CreateInventoryOrderItem([FromUri] string orderUID, [FromBody] Trade.Core.InventoryOrderItemFields fields) {
+    public SingleObjectModel CreateInventoryOrderItem([FromUri] string orderUID, [FromBody] InventoryOrderItemFields fields) {
 
       using (var usecases = InventoryOrderUseCases.UseCaseInteractor()) {
 
@@ -173,7 +173,7 @@ namespace Empiria.Trade.WebApi.Inventory {
     [Route("v8/order-management/inventory-orders/{orderUID:guid}")]
 
     public SingleObjectModel UpdateInventoryOrder([FromUri] string orderUID,
-                                                  [FromBody] Trade.Core.InventoryOrderFields fields) {
+                                                  [FromBody] InventoryOrderFields fields) {
 
       using (var usecases = InventoryOrderUseCases.UseCaseInteractor()) {
 

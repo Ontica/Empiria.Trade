@@ -8,7 +8,6 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-using Empiria.Inventory.Adapters;
 using Empiria.StateEnums;
 
 namespace Empiria.Trade.Inventory.Adapters {

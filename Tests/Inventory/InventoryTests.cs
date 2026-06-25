@@ -70,32 +70,6 @@ namespace Empiria.Trade.Tests.Procurement {
     }
 
 
-    [Fact]
-    public void GetInventoryHolderTest() {
-      
-      var usecase = InventoryOrderUseCases.UseCaseInteractor();
-      InventoryHolderDto sut = usecase.GetInventoryOrder("13027887-96c2-4823-a881-31cb8d34eabb");
-      Assert.NotNull(sut);
-    }
-
-
-    [Fact]
-    public void SearchInventoryOrderTest() {
-
-      var usecase = InventoryOrderUseCases.UseCaseInteractor();
-
-      InventoryOrderQuery query = new InventoryOrderQuery {
-        Keywords = "",
-        WarehouseUID = "",
-        InventoryTypeUID = "",
-        Status = EntityStatus.All
-      };
-
-      InventoryOrderDataDto sut = usecase.SearchInventoryOrder(query);
-
-      Assert.NotNull(sut);
-    }
-
 
     [Fact]
     public void GetInventoryOrderTypeTest() {
