@@ -86,6 +86,18 @@ namespace Empiria.Trade.Procurement.Adapters {
     }
 
 
+    private static string GetProductAttributes(ProductEntry product) {
+
+      string attrDiametro = product.Diametro != string.Empty ?
+                            $"diametro {product.Diametro}. " : "";
+
+      string attrLargo = product.Largo != string.Empty ?
+                            $"largo {product.Largo}. " : "";
+
+      return attrDiametro + attrLargo;
+    }
+
+
     static private FixedList<PurchaseOrderDescriptorDto> MapList(FixedList<PurchaseOrder> entries) {
 
       var mappedList = entries.Select((x) => MapPurchaseOrderDescriptor(x));
@@ -104,7 +116,7 @@ namespace Empiria.Trade.Procurement.Adapters {
 
     static private PurchaseOrderDescriptorDto MapPurchaseOrderDescriptor(PurchaseOrder x) {
       PurchaseOrderDescriptorDto dto = new PurchaseOrderDescriptorDto();
-      
+
       dto.UID = x.OrderUID;
       dto.OrderNo = x.OrderNo;
       dto.Provider = x.Provider.Name;
@@ -121,7 +133,7 @@ namespace Empiria.Trade.Procurement.Adapters {
     private static PurchaseOrderItemDto MapPurchaseOrderItems(PurchaseOrderItem x) {
 
       var product = ProductEntry.ParseUID(x.Product.UID);
-
+      
       return new PurchaseOrderItemDto {
         UID = x.UID,
         VendorProductUID = x.Product.UID,
@@ -129,6 +141,7 @@ namespace Empiria.Trade.Procurement.Adapters {
         ProductName = x.ProductName,
         PresentationName = x.Product.BaseUnit.Description,
         Description = x.Description,
+        ProductAttrs = GetProductAttributes(product),
         Notes = x.Notes,
         PackingSmallBag = x.PackingSmallBag,
         PackagingSize = x.PackagingSize,

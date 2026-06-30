@@ -130,6 +130,16 @@ namespace Empiria.Trade.Procurement.Adapters {
     }
 
 
+    public decimal Weight {
+      get; internal set;
+    }
+
+
+    public object ProductAttrs {
+      get; internal set;
+    }
+
+
     public decimal Quantity {
       get; internal set;
     }
@@ -141,11 +151,6 @@ namespace Empiria.Trade.Procurement.Adapters {
 
 
     public decimal TotalUnits {
-      get; internal set;
-    }
-
-
-    public decimal Weight {
       get; internal set;
     }
 

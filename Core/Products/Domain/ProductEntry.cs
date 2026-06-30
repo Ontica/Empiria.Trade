@@ -75,22 +75,22 @@ namespace Empiria.Trade.Products {
     }
 
 
-    public string Weight {
+    public string Diametro {
       get {
-        return Attributes.Get("weight", string.Empty);
+        return Attributes.Get("diametro", string.Empty);
       }
       private set {
-        Attributes.SetIfValue("weight", value);
+        Attributes.SetIfValue("diametro", value);
       }
     }
 
 
-    public string Length {
+    public string Largo {
       get {
-        return Attributes.Get("length", string.Empty);
+        return Attributes.Get("largo", string.Empty);
       }
       private set {
-        Attributes.SetIfValue("length", value);
+        Attributes.SetIfValue("largo", value);
       }
     }
 
@@ -105,12 +105,12 @@ namespace Empiria.Trade.Products {
     }
 
 
-    public string Paso {
+    public decimal Peso {
       get {
-        return Attributes.Get("paso", string.Empty);
+        return Attributes.Get<decimal>("peso", 0);
       }
       private set {
-        Attributes.SetIfValue("paso", value);
+        Attributes.SetIfValue("peso", value);
       }
     }
 
@@ -143,11 +143,6 @@ namespace Empiria.Trade.Products {
         ExtensionData.SetIfValue("packagingSize", value);
       }
     }
-
-
-    //internal InventoryEntry InventoryEntry {
-    //  get; private set;
-    //}
 
 
     internal bool IsBaseProduct {
