@@ -9,6 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using Empiria.Orders;
+using Empiria.Trade.Products;
 
 namespace Empiria.Trade.Core {
 
@@ -63,14 +64,14 @@ namespace Empiria.Trade.Core {
 
     public decimal PackagingSize {
       get {
-        return Products.ProductEntry.ParseUID(this.Product.UID).PackagingSize;
+        return ProductEntry.ParseUID(this.Product.UID).PackagingSize;
       }
     }
 
 
     public decimal PackingSmallBag {
       get {
-        return Products.ProductEntry.ParseUID(this.Product.UID).PackingSmallBag;
+        return ProductEntry.ParseUID(this.Product.UID).PackingSmallBag;
       }
     }
 
@@ -105,7 +106,7 @@ namespace Empiria.Trade.Core {
 
 
     public decimal CalculateTotalPrice() {
-      return ((PackagingSize * this.Quantity) / 1000) * this.UnitPrice;
+      return this.Quantity * this.UnitPrice;
     }
 
 
