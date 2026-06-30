@@ -52,8 +52,10 @@ namespace Empiria.Trade.Tests.Procurement {
       using (var usecase = PurchaseOrderUseCases.UseCaseInteractor()) {
 
         var fields = new PurchaseOrderFields {
-          SupplierUID = "0d06cb65-4122-41c0-af87-1b7f8d1609da",
-          Notes = "TEST 26-05-2026"
+          SupplierUID = "b8b6d1ce-ffd0-47fd-92ef-3db32fa44ed5",
+          Notes = "TEST 29-06-2026",
+          CurrencyUID = "A7F54FC5-4626-4B14-9E44-96A054FBDE27",
+          ExchangeRate = 19.505050M
         };
 
         PurchaseOrderDto sut = usecase.CreatePurchaseOrder(fields);

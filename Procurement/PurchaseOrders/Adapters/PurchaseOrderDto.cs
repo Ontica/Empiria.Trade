@@ -51,6 +51,16 @@ namespace Empiria.Trade.Procurement.Adapters {
     } = ShippingMethods.None;
 
 
+    public NamedEntityDto Currency {
+      get; internal set;
+    }
+
+
+    public decimal ExchangeRate {
+      get; internal set;
+    }
+
+
     public DateTime OrderTime {
       get; set;
     } = DateTime.MaxValue;
