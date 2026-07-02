@@ -56,7 +56,7 @@ namespace Empiria.Trade.Procurement.UseCases {
 
     public PurchaseOrderDto CreatePurchaseOrder(PurchaseOrderFields fields) {
 
-      var orderType = OrderType.Parse(ORDERTYPE);
+      var orderType = OrderType.PurchaseOrder;
 
       var order = new PurchaseOrder(fields, orderType);
 
@@ -75,7 +75,7 @@ namespace Empiria.Trade.Procurement.UseCases {
 
       GetDefaultProductFields(order, fields);
 
-      var orderItemType = OrderItemType.Parse(ORDERITEMTYPE);
+      var orderItemType = OrderItemType.PurchaseOrderItemType;
 
       var orderItem = new PurchaseOrderItem(orderItemType, order, fields.ProductUID);
 
@@ -119,7 +119,7 @@ namespace Empiria.Trade.Procurement.UseCases {
 
     public PurchaseOrdersDataDto GetPurchaseOrderDescriptor(PurchaseOrderQuery query) {
       
-      var orderType = OrderType.Parse(ORDERTYPE);
+      var orderType = OrderType.PurchaseOrder;
 
       var orders = PurchaseOrderData.GetPurchaseOrders(query, orderType.Id);
 
@@ -131,7 +131,7 @@ namespace Empiria.Trade.Procurement.UseCases {
       Assertion.Require(purchaseOrderUID, nameof(purchaseOrderUID));
       Assertion.Require(fields, nameof(fields));
 
-      var orderType = OrderType.Parse(ORDERTYPE);
+      var orderType = OrderType.PurchaseOrder;
 
       var order = PurchaseOrder.Parse(purchaseOrderUID);
 

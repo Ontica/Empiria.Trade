@@ -18,13 +18,11 @@ namespace Empiria.Trade.Procurement.Domain {
   /// <summary>Generate data for purchase order.</summary>
   internal class PurchaseOrderBuilder {
 
-    private const string INVENTORYORDERTYPE = "ObjectTypeInfo.Order.InventoryOrder";
-
     #region Public methods
 
     static internal void GenerateInventoryOrder(PurchaseOrder purchaseOrder) {
 
-      var orderType = OrderType.Parse(INVENTORYORDERTYPE);
+      var orderType = OrderType.InventoryOrder;
 
       InventoryOrderFields inventoryFields = AssignInventoryOrderFields(purchaseOrder);
 
@@ -84,8 +82,8 @@ namespace Empiria.Trade.Procurement.Domain {
         InventoryOrderItemFields inventoryItemFields = AssignInventoryOrderItemFields(inventoryOrder,
                                                                                       purchaseOrderItem);
 
-        var orderItemType = OrderItemType.Parse("ObjectTypeInfo.OrderItem.InventoryOrderItem");
-
+        var orderItemType = OrderItemType.InventoryOrderItemType;
+        
         InventoryOrderItem orderItem = new InventoryOrderItem(orderItemType, inventoryOrder,
                                                               new Locations.Location());
 
