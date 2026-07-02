@@ -85,7 +85,7 @@ namespace Empiria.Trade.Inventory.UseCases {
     public InventoryHolderDto CreateInventoryOrder(InventoryOrderFields fields) {
       Assertion.Require(fields, nameof(fields));
 
-      var orderType = OrderType.Parse(INVENTORYORDERTYPE);
+      var orderType = OrderType.InventoryOrder;
       fields.Priority = Priority.Normal;
 
       InventoryOrder order = new InventoryOrder(fields.WarehouseUID, orderType);
@@ -126,7 +126,7 @@ namespace Empiria.Trade.Inventory.UseCases {
       fields.ProductUnitUID = product.BaseUnit.UID;
       fields.LocationUID = fields.LocationUID == string.Empty ? location.UID : fields.LocationUID;
 
-      var orderItemType = OrderItemType.Parse("ObjectTypeInfo.OrderItem.InventoryOrderItem");
+      var orderItemType = OrderItemType.InventoryOrderItemType;
 
       InventoryOrderItem orderItem = new InventoryOrderItem(orderItemType, order, location);
 
@@ -241,7 +241,11 @@ namespace Empiria.Trade.Inventory.UseCases {
 
 
     private void AddInventoryEntry(InventoryOrder order, InventoryOrderItem orderItem) {
-      var inventoryEntry = new InventoryEntry(order.UID, orderItem.UID);
+
+      var inventoryEntryType = InventoryEntryType.InventoryEntryItemType;
+
+      var inventoryEntry = new InventoryEntry(inventoryEntryType,
+                                              order.UID, orderItem.UID);
 
       inventoryEntry.InitialEntry(orderItem.UnitPrice, orderItem.Location);
 
@@ -253,7 +257,7 @@ namespace Empiria.Trade.Inventory.UseCases {
 
       foreach (var item in order.GetItems<InventoryOrderItem>()) {
 
-        var inventoryEntry = new InventoryEntry(order, item);
+        var inventoryEntry = new InventoryEntry(InventoryEntryType.InventoryEntryItemType, order, item);
 
         var price = InventoryOrderData.GetProductPriceFromVirtualWarehouse(item.Product.Id);
         inventoryEntry.OutputEntry(price);

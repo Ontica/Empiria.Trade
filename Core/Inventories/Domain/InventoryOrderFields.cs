@@ -99,7 +99,7 @@ namespace Empiria.Trade.Core {
 
   static public class InventoryEntryFieldsExtensions {
 
-    static internal void EnsureIsValid(this InventoryEntryFields fields,
+    static public void EnsureIsValid(this InventoryEntryFields fields,
                                        int productId,
                                        string orderItemUID) {
 

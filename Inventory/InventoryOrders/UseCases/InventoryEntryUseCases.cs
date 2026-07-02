@@ -63,12 +63,12 @@ namespace Empiria.Trade.Inventory.UseCases {
       Products.ProductEntry productEntry = InventoryOrderData.GetProductEntryByName(fields.Product.Trim());
       Location locationEntry = InventoryOrderData.GetLocationEntryByName(fields.Location.Trim());
 
-      //TODO VERIFICAR ERROR EN REFERENCIA A VALIDACION
-      //fields.EnsureIsValid(productEntry.Id, orderItemUID);
+      fields.EnsureIsValid(productEntry.Id, orderItemUID);
       fields.ProductUID = Product.Parse(productEntry.Id).UID;
       fields.LocationUID = locationEntry.UID;
 
-      var inventoryEntry = new InventoryEntry(orderUID, orderItemUID);
+      var inventoryEntry = new InventoryEntry(InventoryEntryType.InventoryEntryItemType,
+                                              orderUID, orderItemUID);
 
       var order = InventoryOrder.Parse(orderUID);
 
@@ -146,7 +146,7 @@ namespace Empiria.Trade.Inventory.UseCases {
 
       foreach (var item in order.GetItems<InventoryOrderItem>()) {
 
-        var inventoryEntry = new InventoryEntry(order, item);
+        var inventoryEntry = new InventoryEntry(InventoryEntryType.InventoryEntryItemType, order, item);
 
         var price = InventoryOrderData.GetProductPriceFromVirtualWarehouse(item.Product.Id);
         inventoryEntry.OutputEntry(price);

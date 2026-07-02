@@ -28,7 +28,19 @@ namespace Empiria.Trade.Core {
     }
 
 
-    internal static FixedList<InventoryEntry> GetInventoryEntriesByOrderItem(InventoryOrderItem orderItem) {
+    static internal FixedList<InventoryEntry> GetInventoryEntriesByOrderId(InventoryOrder order) {
+
+      var sql = $"SELECT * FROM OMS_Inventory_Entries " +
+                $"WHERE Inv_Entry_Status != 'X' " +
+                $"AND Inv_Entry_Order_Id = {order.Id} ";
+
+      var op = DataOperation.Parse(sql);
+
+      return DataReader.GetFixedList<InventoryEntry>(op);
+    }
+
+
+    static internal FixedList<InventoryEntry> GetInventoryEntriesByOrderItem(InventoryOrderItem orderItem) {
 
       var sql = $"SELECT * FROM OMS_Inventory_Entries " +
                 $"WHERE Inv_Entry_Status != 'X' " +
@@ -113,7 +125,7 @@ namespace Empiria.Trade.Core {
 
       var op = DataOperation.Parse("write_OMS_Inventory_Entry",
           entry.Id, entry.UID,
-          entry.InventoryEntryTypeId,
+          entry.InventoryEntryItemType.Id,
           entry.Order.Id,
           entry.OrderItem.Id,
           entry.Product.Id,

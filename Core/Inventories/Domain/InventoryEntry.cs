@@ -16,10 +16,12 @@ using Empiria.Parties;
 using Empiria.Products;
 
 using Empiria.Inventory;
+using Empiria.Ontology;
 
 namespace Empiria.Trade.Core {
 
   /// <summary>Represents an inventory entry.</summary>
+  [PartitionedType(typeof(InventoryEntryType))]
   public class InventoryEntry : BaseObject {
 
     #region Constructors and parsers
@@ -28,6 +30,9 @@ namespace Empiria.Trade.Core {
       //no-op
     }
 
+    protected InventoryEntry(InventoryEntryType powertype) : base(powertype) {
+      // Required by Empiria Framework for all partitioned types.
+    }
 
     static public InventoryEntry Parse(int id) => ParseId<InventoryEntry>(id);
 
@@ -35,26 +40,28 @@ namespace Empiria.Trade.Core {
 
     static public InventoryEntry Empty => ParseEmpty<InventoryEntry>();
 
-    public InventoryEntry(string orderUID, string orderItemUID) {
+    public InventoryEntry(InventoryEntryType powertipe, string orderUID, string orderItemUID) :
+                           base(powertipe){
+
       Assertion.Require(orderUID, nameof(orderUID));
       Assertion.Require(orderItemUID, nameof(orderItemUID));
 
       this.Order = Order.Parse(orderUID);
       this.OrderItem = OrderItem.Parse(orderItemUID);
-      this.InventoryEntryTypeId = 5311; // TODO CAMBIAR METODO DE ASIGNACION
       this.Unit = ProductUnit.Parse(OrderItem.ProductUnit.Id);
       this.Position = OrderItem.Position;
       this.Sku = ProductSku.Empty;
     }
 
 
-    public InventoryEntry(Order order, InventoryOrderItem orderItem) {
+    public InventoryEntry(InventoryEntryType powertipe, Order order, InventoryOrderItem orderItem) :
+                           base(powertipe) {
+
       Assertion.Require(order, nameof(order));
       Assertion.Require(orderItem, nameof(orderItem));
 
       this.Order = order;
       this.OrderItem = orderItem;
-      this.InventoryEntryTypeId = 5311; // TODO CAMBIAR METODO DE ASIGNACION
       this.Unit = orderItem.ProductUnit;
       this.Position = orderItem.Position;
       this.Sku = ProductSku.Empty;
@@ -78,10 +85,10 @@ namespace Empiria.Trade.Core {
 
     #region Properties
 
-
-    [DataField("Inv_Entry_Type_Id")]
-    internal int InventoryEntryTypeId {
-      get; set;
+    public InventoryEntryType InventoryEntryItemType {
+      get {
+        return (InventoryEntryType) base.GetEmpiriaType();
+      }
     }
 
 
