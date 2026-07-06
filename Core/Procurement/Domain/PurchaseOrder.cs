@@ -34,12 +34,12 @@ namespace Empiria.Trade.Core {
     public PurchaseOrder(PurchaseOrderFields fields, OrderType orderType) : base(orderType) {
       Assertion.Require(fields, nameof(fields));
 
-      GetDefaultFields(fields, orderType);
-      
       if (this.IsNew) {
         base.OrderNo = "OC-" + EmpiriaString.BuildRandomString(8)
                                   .ToUpperInvariant();
       }
+
+      GetDefaultFields(fields, orderType);
 
       base.Activate();
       base.Update(fields);
@@ -165,6 +165,8 @@ namespace Empiria.Trade.Core {
       fields.Name = "Sin asignar";
       fields.Observations = fields.Notes;
       fields.StartDate = DateTime.Now;
+
+      fields.EnsureIsValid();
     }
 
     #endregion

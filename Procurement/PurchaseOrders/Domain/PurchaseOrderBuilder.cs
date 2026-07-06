@@ -46,8 +46,10 @@ namespace Empiria.Trade.Procurement.Domain {
 
       return new InventoryOrderFields {
         ParentOrderUID = order.UID,
-        Description = $"Generado desde: {order.OrderNo}",
         InventoryTypeUID = InventoryType.InventarioEntradasCompra.UID,
+        Description = $"Generado por: {order.OrderNo}",
+        CurrencyUID = order.Currency.UID,
+        ExchangeRate = order.ExchangeRate,
         RequestedByUID = order.RequestedBy.UID,
         ResponsibleUID = order.Responsible.UID,
         WarehouseUID = order.Warehouse.UID
@@ -56,18 +58,19 @@ namespace Empiria.Trade.Procurement.Domain {
 
 
     private static InventoryOrderItemFields AssignInventoryOrderItemFields(
-                      InventoryOrder inventoryOrder, PurchaseOrderItem purchaseOrderItem) {
+                      InventoryOrder inventoryOrder, PurchaseOrderItem item) {
 
       var maxOrderItem = InventoryData.SearchMaxOrderItemPosition(inventoryOrder);
 
       return new InventoryOrderItemFields {
-        Product = purchaseOrderItem.Product.InternalCode,
+        Product = item.Product.InternalCode,
         Location = "A-001-01-01",
         Position = maxOrderItem.Count > 0 ? maxOrderItem.First().Position + 1 : 1,
-        ProductUID = purchaseOrderItem.Product.UID,
-        Description = purchaseOrderItem.Product.Description,
-        ProductUnitUID = purchaseOrderItem.Product.BaseUnit.UID,
-        Quantity = purchaseOrderItem.Quantity,
+        ProductUID = item.Product.UID,
+        Description = item.Product.Description,
+        ProductUnitUID = item.ProductUnit.UID, //TODO PREGUNTAR SI ES UNIDAD DE ITEM O BASEUNIT DE PRODUCT
+        Quantity = item.Quantity,
+        UnitPrice = item.UnitPrice,
       };
     }
 

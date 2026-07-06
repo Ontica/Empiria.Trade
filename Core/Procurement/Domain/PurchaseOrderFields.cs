@@ -9,7 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
 using System;
-
+using Empiria.Financial;
 using Empiria.Orders;
 
 namespace Empiria.Trade.Core {
@@ -41,6 +41,21 @@ namespace Empiria.Trade.Core {
     public DateTime ReceptionTime {
       get; set;
     } = ExecutionServer.DateMaxValue;
+
+
+    public virtual void EnsureIsValid() {
+      
+      var orderType = OrderType.Parse(OrderTypeUID);
+
+      Assertion.Require(CurrencyUID != string.Empty,
+                        "Favor de especificar moneda.");
+
+      if (CurrencyUID != Currency.Default.UID && orderType.Equals(OrderType.PurchaseOrder)) {
+        Assertion.Require(ExchangeRate > 0 && ExchangeRate != decimal.One,
+                         "El tipo de cambio debe ser positivo y distinto a uno.");
+      }
+
+    }
 
   } // class PurchaseOrderFields
 
