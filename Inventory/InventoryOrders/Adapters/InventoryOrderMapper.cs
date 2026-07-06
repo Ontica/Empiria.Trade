@@ -48,7 +48,7 @@ namespace Empiria.Trade.Inventory.Adapters {
         OrderTypeName = order.OrderType.DisplayName,
         OrderNo = order.OrderNo,
         InventoryTypeName = order.InventoryType.Name,
-        WarehouseName = order.Warehouse.Name,
+        WarehouseName = order.Warehouse.Id == -1 ? "Sin asignar" : order.Warehouse.Name,
         ResponsibleName = order.Responsible.IsEmptyInstance ? "Sin Asignar" : order.Responsible.Name,
         RequestedByName = order.RequestedBy.Name,
         Description = order.Description,

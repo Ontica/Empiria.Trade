@@ -40,20 +40,6 @@ namespace Empiria.Trade.Core {
 
     static public InventoryEntry Empty => ParseEmpty<InventoryEntry>();
 
-    public InventoryEntry(InventoryEntryType powertipe, string orderUID, string orderItemUID) :
-                           base(powertipe){
-
-      Assertion.Require(orderUID, nameof(orderUID));
-      Assertion.Require(orderItemUID, nameof(orderItemUID));
-
-      this.Order = Order.Parse(orderUID);
-      this.OrderItem = OrderItem.Parse(orderItemUID);
-      this.Unit = ProductUnit.Parse(OrderItem.ProductUnit.Id);
-      this.Position = OrderItem.Position;
-      this.Sku = ProductSku.Empty;
-    }
-
-
     public InventoryEntry(InventoryEntryType powertipe, Order order, InventoryOrderItem orderItem) :
                            base(powertipe) {
 

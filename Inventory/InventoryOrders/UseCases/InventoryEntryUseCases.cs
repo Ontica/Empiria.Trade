@@ -67,10 +67,12 @@ namespace Empiria.Trade.Inventory.UseCases {
       fields.ProductUID = Product.Parse(productEntry.Id).UID;
       fields.LocationUID = locationEntry.UID;
 
-      var inventoryEntry = new InventoryEntry(InventoryEntryType.InventoryEntryItemType,
-                                              orderUID, orderItemUID);
-
       var order = InventoryOrder.Parse(orderUID);
+
+      var orderItem = InventoryOrderItem.Parse(orderItemUID);
+
+      var inventoryEntry = new InventoryEntry(InventoryEntryType.InventoryEntryItemType,
+                                              order, orderItem);
 
       //TODO CAMBIAR ESTA VALIDACION DE InventoryType
       if (order.InventoryType.UID == "0eb5a072-b857-4071-8b06-57a34822ec64") {

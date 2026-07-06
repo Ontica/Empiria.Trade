@@ -38,7 +38,7 @@ namespace Empiria.Trade.Tests.Procurement {
 
       var usecase = PurchaseOrderUseCases.UseCaseInteractor();
 
-      string purchaseOrderUID = "3ec1fab0-2fc6-4f74-9272-139bee3128fa";
+      string purchaseOrderUID = "8bdc8346-d7ed-44ba-9463-261f56525a4f";
 
       PurchaseOrderDto sut = usecase.ClosePurchaseOrder(purchaseOrderUID);
 

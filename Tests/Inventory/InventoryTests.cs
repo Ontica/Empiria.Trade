@@ -33,6 +33,25 @@ namespace Empiria.Trade.Tests.Procurement {
     #region Facts
 
     [Fact]
+    public void CreateInventoryEntryTest() {
+
+      string orderUID = "32df363b-1395-4ae6-af62-ca322a1876c9";
+      string orderItemUID = "6889069c-5d7e-4e86-8437-fe6f12bb249a";
+
+      InventoryEntryFields fields = new InventoryEntryFields {
+        Product = "ASF24-100",
+        ProductUID = "7e38bd5e-0258-407a-82bb-bc407f86989f",
+      };
+
+      var usecase = InventoryEntryUseCases.UseCaseInteractor();
+
+      InventoryHolderDto sut = usecase.CreateInventoryEntry(orderUID, orderItemUID, fields);
+
+      Assert.NotNull(sut);
+    }
+
+
+    [Fact]
     public void CreateInventoryOrderTest() {
 
       var usecase = InventoryOrderUseCases.UseCaseInteractor();
@@ -46,6 +65,19 @@ namespace Empiria.Trade.Tests.Procurement {
       };
 
       InventoryHolderDto sut = usecase.CreateInventoryOrder(fields);
+
+      Assert.NotNull(sut);
+    }
+
+
+    [Fact]
+    public void GetInventoryOrderTest() {
+
+      var usecase = InventoryOrderUseCases.UseCaseInteractor();
+
+      string orderUID = "8d669146-ebbc-4dca-b04f-4145c7f7ae49";
+
+      InventoryHolderDto sut = usecase.GetInventoryOrder(orderUID);
 
       Assert.NotNull(sut);
     }
