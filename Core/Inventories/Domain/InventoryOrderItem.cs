@@ -11,6 +11,7 @@ using System;
 
 using Empiria.Locations;
 using Empiria.Orders;
+using Empiria.Trade.Products;
 
 namespace Empiria.Trade.Core {
 
@@ -49,6 +50,20 @@ namespace Empiria.Trade.Core {
 
     public FixedList<InventoryEntry> Entries {
       get; set;
+    }
+
+
+    public decimal PackagingSize {
+      get {
+        return ProductEntry.ParseUID(this.Product.UID).PackagingSize;
+      }
+    }
+
+
+    public decimal PackingSmallBag {
+      get {
+        return ProductEntry.ParseUID(this.Product.UID).PackingSmallBag;
+      }
     }
 
     #endregion Properties

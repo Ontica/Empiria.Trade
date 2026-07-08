@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Empiria.Orders;
+using Empiria.Products;
+using Empiria.Projects;
 using Empiria.StateEnums;
 using Empiria.Trade.Core;
 using Empiria.Trade.Core.Common;
@@ -80,9 +82,16 @@ namespace Empiria.Trade.Inventory.Adapters {
 
     static private InventoryOrderItemDto MapToOrderItemDto(InventoryOrderItem item) {
 
+      var itemPackaging = item.Product.BaseUnit != item.ProductUnit ?
+                          $"| Empaque: {item.PackingSmallBag} " +
+                          $"| Unidades por {item.ProductUnit.Name}: {item.PackagingSize} " +
+                          $"{item.Product.BaseUnit.Description}(s)" :
+                          $"| {item.ProductUnit.Name}(s)";
+
       return new InventoryOrderItemDto() {
         UID = item.UID,
-        ProductName = item.Product.Name,
+        ProductName = $"{item.Product.InternalCode} " +
+                      $"{itemPackaging}",
         Quantity = item.Quantity,
         Location = item.Location.Name,
         AssignedQuantity = item.Entries.Sum(x => x.InputQuantity),

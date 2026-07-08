@@ -22,9 +22,6 @@ namespace Empiria.Trade.Procurement.UseCases {
   /// <summary>Use cases used to build purchase order.</summary>
   public class PurchaseOrderUseCases : UseCase {
 
-    private const string ORDERTYPE = "ObjectTypeInfo.Order.PayableOrder.PurchaseOrder";
-    private const string ORDERITEMTYPE = "ObjectTypeInfo.OrderItem.PayableOrderItem.PurchaseOrderItem";
-
     #region Constructors and parsers
 
     public PurchaseOrderUseCases() {
