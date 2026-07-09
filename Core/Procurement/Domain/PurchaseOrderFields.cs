@@ -43,7 +43,11 @@ namespace Empiria.Trade.Core {
     } = ExecutionServer.DateMaxValue;
 
 
-    public virtual void EnsureIsValid() {
+    public virtual void EnsureIsValid(string providerUID, int orderItemsCount) {
+
+      if (orderItemsCount > 0 && providerUID != this.SupplierUID) {
+        Assertion.EnsureFailed("No es posible cambiar de proveedor una vez que se asignan productos.");
+      }
       
       var orderType = OrderType.Parse(OrderTypeUID);
 

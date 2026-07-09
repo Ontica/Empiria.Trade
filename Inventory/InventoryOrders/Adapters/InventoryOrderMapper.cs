@@ -158,12 +158,15 @@ namespace Empiria.Trade.Inventory.Adapters {
 
     private static InventoryOrderDto MapToOrderDto(InventoryOrder order) {
 
+      var warehouse = order.Warehouse.Id != -1 ? order.Warehouse.MapToNamedEntity() :
+                                                 new NamedEntityDto("Empty", "Almacén no asignado");
+
       return new InventoryOrderDto {
         UID = order.UID,
         OrderNo = order.OrderNo,
-        OrderType = order.OrderType.MapToNamedEntity(), // new NamedEntityDto("X","Orden de inventario"),
+        OrderType = order.OrderType.MapToNamedEntity(),
         InventoryType = MapToInventoryTypeDto(order.InventoryType),
-        Warehouse = order.Warehouse.MapToNamedEntity(),
+        Warehouse = warehouse,
         Responsible = order.Responsible.MapToNamedEntity(),
         RequestedBy = order.RequestedBy.MapToNamedEntity(),
         Description = order.Description,

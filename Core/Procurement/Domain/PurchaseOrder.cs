@@ -166,7 +166,7 @@ namespace Empiria.Trade.Core {
       fields.Observations = fields.Notes;
       fields.StartDate = DateTime.Now;
 
-      fields.EnsureIsValid();
+      fields.EnsureIsValid(this.Provider.UID, this.PurchaseOrderItems.Count);
     }
 
     #endregion

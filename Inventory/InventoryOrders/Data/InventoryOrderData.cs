@@ -109,7 +109,7 @@ namespace Empiria.Trade.Inventory.Data {
 
       } catch (Exception) {
 
-        throw new Exception("Localización no encontrada.");
+        throw new Exception("La Localización especificada no existe.");
       }
     }
 
