@@ -100,16 +100,15 @@ namespace Empiria.Trade.Core {
   static public class InventoryEntryFieldsExtensions {
 
     static public void EnsureIsValid(this InventoryEntryFields fields,
-                                       int productId,
-                                       string orderItemUID) {
+                                     InventoryOrder order, InventoryOrderItem orderItem) {
 
-      InventoryOrderItem orderItem = InventoryOrderItem.Parse(orderItemUID);
-      var entries = InventoryEntry.GetListFor(orderItem);
+      Assertion.Require(order.Warehouse.Id > 0,
+                        $"Se debe asignar almacen antes de ubicar los productos.");
 
-      Assertion.Require((fields.Quantity + entries.Sum(x => x.InputQuantity)) <= orderItem.Quantity,
+      var inventoryEntries = InventoryEntry.GetListFor(orderItem);
+
+      Assertion.Require((fields.Quantity + inventoryEntries.Sum(x => x.ItemUnitQuantity)) <= orderItem.Quantity,
                         $"La cantidad de productos capturados supera los productos restantes.");
-
-      Assertion.Require(productId == orderItem.Product.Id, "El producto no coincide con el seleccionado.");
     }
   } // class InventoryEntryFieldsExtensions
 

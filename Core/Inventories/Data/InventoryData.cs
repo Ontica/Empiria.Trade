@@ -136,7 +136,7 @@ namespace Empiria.Trade.Core {
           entry.InputQuantity,
           entry.InputCost, entry.OutputQuantity,
           entry.OutputCost, entry.CountingQuantity, entry.CountingCost,
-          entry.EntryTime, entry.Tags, entry.ExtData,
+          entry.EntryTime, entry.Tags, entry.ExtData.ToString(),
           entry.Keywords, entry.Position, entry.PostedBy.Id,
           entry.PostingTime, (char) entry.Status);
 

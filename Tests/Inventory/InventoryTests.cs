@@ -35,12 +35,12 @@ namespace Empiria.Trade.Tests.Procurement {
     [Fact]
     public void CreateInventoryEntryTest() {
 
-      string orderUID = "32df363b-1395-4ae6-af62-ca322a1876c9";
-      string orderItemUID = "6889069c-5d7e-4e86-8437-fe6f12bb249a";
+      string orderUID = "a44bcbb6-8d7b-40c2-8df8-6c7b97a6efc0";
+      string orderItemUID = "b5546604-f737-4789-b954-c3870b909910";
 
       InventoryEntryFields fields = new InventoryEntryFields {
-        Product = "ASF24-100",
-        ProductUID = "7e38bd5e-0258-407a-82bb-bc407f86989f",
+        Location = "A-001-01-01",
+        Quantity = 1
       };
 
       var usecase = InventoryEntryUseCases.UseCaseInteractor();

@@ -15,6 +15,8 @@ using Empiria.Products;
 using Empiria.Trade.Core;
 using Empiria.Trade.Inventory.Data;
 using Empiria.Trade.Inventory.Adapters;
+using Empiria.Trade.Products;
+using System;
 
 
 namespace Empiria.Trade.Inventory.UseCases {
@@ -59,27 +61,18 @@ namespace Empiria.Trade.Inventory.UseCases {
       Assertion.Require(orderUID, nameof(orderUID));
       Assertion.Require(orderItemUID, nameof(orderItemUID));
       Assertion.Require(fields, nameof(fields));
-
-      Products.ProductEntry productEntry = InventoryOrderData.GetProductEntryByName(fields.Product.Trim());
-      Location locationEntry = InventoryOrderData.GetLocationEntryByName(fields.Location.Trim());
-
-      fields.EnsureIsValid(productEntry.Id, orderItemUID);
-      fields.ProductUID = Product.Parse(productEntry.Id).UID;
-      fields.LocationUID = locationEntry.UID;
-
+      
       var order = InventoryOrder.Parse(orderUID);
-
       var orderItem = InventoryOrderItem.Parse(orderItemUID);
+
+      AssignFieldsByCode(fields, orderItem);
+
+      fields.EnsureIsValid(order, orderItem);
 
       var inventoryEntry = new InventoryEntry(InventoryEntryType.InventoryEntryItemType,
                                               order, orderItem);
 
-      //TODO CAMBIAR ESTA VALIDACION DE InventoryType
-      if (order.InventoryType.UID == "0eb5a072-b857-4071-8b06-57a34822ec64") {
-        inventoryEntry.OutputEntry(fields);
-      } else {
-        inventoryEntry.AddEntry(fields);
-      }
+      inventoryEntry.AddEntry(fields);
 
       inventoryEntry.Save();
 
@@ -87,6 +80,13 @@ namespace Empiria.Trade.Inventory.UseCases {
       return inventoryOrderUseCase.GetInventoryOrder(orderUID);
     }
 
+    private void AssignFieldsByCode(InventoryEntryFields fields, InventoryOrderItem orderItem) {
+
+      Location locationEntry = InventoryOrderData.GetLocationEntryByName(fields.Location.Trim());
+
+      fields.ProductUID = orderItem.Product.UID;
+      fields.LocationUID = locationEntry.UID;
+    }
 
     public InventoryHolderDto DeleteInventoryEntry(string orderUID, string itemUID, string entryUID) {
       Assertion.Require(orderUID, nameof(orderUID));

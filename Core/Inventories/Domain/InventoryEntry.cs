@@ -9,14 +9,15 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
 using System;
-
+using Empiria.Financial;
+using Empiria.Inventory;
+using Empiria.Json;
 using Empiria.Locations;
+using Empiria.Ontology;
 using Empiria.Orders;
 using Empiria.Parties;
 using Empiria.Products;
-
-using Empiria.Inventory;
-using Empiria.Ontology;
+using Empiria.Trade.Orders;
 
 namespace Empiria.Trade.Core {
 
@@ -40,7 +41,7 @@ namespace Empiria.Trade.Core {
 
     static public InventoryEntry Empty => ParseEmpty<InventoryEntry>();
 
-    public InventoryEntry(InventoryEntryType powertipe, Order order, InventoryOrderItem orderItem) :
+    public InventoryEntry(InventoryEntryType powertipe, InventoryOrder order, InventoryOrderItem orderItem) :
                            base(powertipe) {
 
       Assertion.Require(order, nameof(order));
@@ -48,7 +49,7 @@ namespace Empiria.Trade.Core {
 
       this.Order = order;
       this.OrderItem = orderItem;
-      this.Unit = orderItem.ProductUnit;
+      this.Unit = orderItem.Product.BaseUnit;
       this.Position = orderItem.Position;
       this.Sku = ProductSku.Empty;
     }
@@ -79,13 +80,13 @@ namespace Empiria.Trade.Core {
 
 
     [DataField("Inv_Entry_Order_Id")]
-    public Order Order {
+    public InventoryOrder Order {
       get; set;
     }
 
 
     [DataField("Inv_Entry_Order_Item_Id")]
-    internal OrderItem OrderItem {
+    internal InventoryOrderItem OrderItem {
       get; set;
     }
 
@@ -169,9 +170,9 @@ namespace Empiria.Trade.Core {
 
 
     [DataField("Inv_Entry_Ext_Data")]
-    public string ExtData {
-      get; set;
-    } = string.Empty;
+    internal protected JsonObject ExtData {
+      get; private set;
+    }
 
 
     [DataField("Inv_Entry_Keywords")]
@@ -211,10 +212,70 @@ namespace Empiria.Trade.Core {
 
     public virtual string Keywords {
       get {
-        return EmpiriaString.BuildKeywords(Observations);
+        return EmpiriaString.BuildKeywords(this.Order.OrderNo, this.OrderItem.ProductCode,
+                                           this.OrderItem.ProductName, Observations);
       }
     }
 
+
+    public string OriginalCurrency {
+      get {
+        return ExtData.Get("originalCurrency", string.Empty);
+      }
+      private set {
+        ExtData.SetIfValue("originalCurrency", value);
+      }
+    }
+
+
+    public string BaseCurrency {
+      get {
+        return ExtData.Get("baseCurrency", string.Empty);
+      }
+      private set {
+        ExtData.SetIfValue("baseCurrency", value);
+      }
+    }
+
+
+    public decimal CostOriginalCurrency {
+      get {
+        return ExtData.Get<decimal>("costOriginalCurrency", 0);
+      }
+      private set {
+        ExtData.SetIfValue("costOriginalCurrency", value);
+      }
+    }
+
+
+    public decimal ExchangeRate {
+      get {
+        return ExtData.Get<decimal>("exchangeRate", 1);
+      }
+      private set {
+        ExtData.SetIfValue("exchangeRate", value);
+      }
+    }
+
+
+    public string ItemUnitName {
+      get {
+        return ExtData.Get("itemUnitName", string.Empty);
+      }
+      private set {
+        ExtData.SetIfValue("itemUnitName", value);
+      }
+    }
+
+
+    public decimal ItemUnitQuantity {
+      get {
+        return ExtData.Get<decimal>("itemUnitQuantity", 0);
+      }
+      private set {
+        ExtData.SetIfValue("itemUnitQuantity", value);
+      }
+    }
 
     #endregion Properties
 
@@ -223,17 +284,28 @@ namespace Empiria.Trade.Core {
 
     public void AddEntry(InventoryEntryFields fields) {
 
-      this.InputQuantity = fields.Quantity;
       this.Product = Patcher.Patch(fields.ProductUID, this.Product);
       this.Location = Patcher.Patch(fields.LocationUID, this.Location);
-      this.InputCost = fields.Cost;
+      this.Position = this.OrderItem.Position;
+
+      this.OriginalCurrency = this.Order.Currency.Code;
+      this.BaseCurrency = Currency.Default.Code;
+      this.ExchangeRate = this.Order.ExchangeRate;
+
+      this.ItemUnitName = this.OrderItem.ProductUnit.Name;
+      this.ItemUnitQuantity = fields.Quantity;
+
+      this.InputQuantity = fields.Quantity * this.OrderItem.PackagingSize;
+      this.InputCost = (this.OrderItem.Quantity * this.OrderItem.UnitPrice) /
+                       (this.OrderItem.Quantity * this.OrderItem.PackagingSize);
+
     }
 
 
     protected override void OnSave() {
 
       if (IsNew) {
-        this.PostedBy = Empiria.Parties.Party.ParseWithContact(ExecutionServer.CurrentContact);
+        this.PostedBy = Parties.Party.ParseWithContact(ExecutionServer.CurrentContact);
         this.PostingTime = DateTime.Now;
         this.EntryTime = DateTime.Now;
       }
@@ -279,7 +351,6 @@ namespace Empiria.Trade.Core {
       this.OutputQuantity = 0;
       this.OutputCost = 0;
       this.Tags = string.Empty;
-      this.ExtData = string.Empty;
       this.Position = 0;
       this.Status = InventoryStatus.Abierto;
     }
