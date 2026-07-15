@@ -28,8 +28,6 @@ namespace Empiria.Trade.WebApi.Inventory {
                                                   [FromUri] string itemUID,
                                                   [FromBody] InventoryEntryFields fields) {
 
-      Assertion.EnsureFailed("Funcionalidad en proceso de desarrollo");
-
       using (var usecases = InventoryEntryUseCases.UseCaseInteractor()) {
 
         InventoryHolderDto inventoryOrder = usecases.CreateInventoryEntry(orderUID, itemUID, fields);

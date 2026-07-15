@@ -53,12 +53,6 @@ namespace Empiria.Trade.Core {
 
       Assertion.Require(CurrencyUID != string.Empty,
                         "Favor de especificar moneda.");
-
-      if (CurrencyUID != Currency.Default.UID && orderType.Equals(OrderType.PurchaseOrder)) {
-        Assertion.Require(ExchangeRate > 0 && ExchangeRate != decimal.One,
-                         "El tipo de cambio debe ser positivo y distinto a uno.");
-      }
-
     }
 
   } // class PurchaseOrderFields

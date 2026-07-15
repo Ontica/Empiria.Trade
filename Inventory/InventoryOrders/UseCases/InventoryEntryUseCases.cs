@@ -85,7 +85,7 @@ namespace Empiria.Trade.Inventory.UseCases {
       Location locationEntry = InventoryOrderData.GetLocationEntryByName(fields.Location.Trim());
 
       fields.ProductUID = orderItem.Product.UID;
-      fields.LocationUID = locationEntry.UID;
+      fields.LocationUID = locationEntry.LocationUID;
     }
 
     public InventoryHolderDto DeleteInventoryEntry(string orderUID, string itemUID, string entryUID) {

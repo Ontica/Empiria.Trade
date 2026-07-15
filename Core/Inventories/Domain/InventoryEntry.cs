@@ -49,7 +49,7 @@ namespace Empiria.Trade.Core {
 
       this.Order = order;
       this.OrderItem = orderItem;
-      this.Unit = orderItem.Product.BaseUnit;
+      this.Unit = orderItem.ProductUnit;
       this.Position = orderItem.Position;
       this.Sku = ProductSku.Empty;
     }
@@ -228,26 +228,6 @@ namespace Empiria.Trade.Core {
     }
 
 
-    public string BaseCurrency {
-      get {
-        return ExtData.Get("baseCurrency", string.Empty);
-      }
-      private set {
-        ExtData.SetIfValue("baseCurrency", value);
-      }
-    }
-
-
-    public decimal CostOriginalCurrency {
-      get {
-        return ExtData.Get<decimal>("costOriginalCurrency", 0);
-      }
-      private set {
-        ExtData.SetIfValue("costOriginalCurrency", value);
-      }
-    }
-
-
     public decimal ExchangeRate {
       get {
         return ExtData.Get<decimal>("exchangeRate", 1);
@@ -258,22 +238,22 @@ namespace Empiria.Trade.Core {
     }
 
 
+    public string BaseCurrency {
+      get {
+        return ExtData.Get("baseCurrency", string.Empty);
+      }
+      private set {
+        ExtData.SetIfValue("baseCurrency", value);
+      }
+    }
+
+
     public string ItemUnitName {
       get {
         return ExtData.Get("itemUnitName", string.Empty);
       }
       private set {
         ExtData.SetIfValue("itemUnitName", value);
-      }
-    }
-
-
-    public decimal ItemUnitQuantity {
-      get {
-        return ExtData.Get<decimal>("itemUnitQuantity", 0);
-      }
-      private set {
-        ExtData.SetIfValue("itemUnitQuantity", value);
       }
     }
 
@@ -289,15 +269,12 @@ namespace Empiria.Trade.Core {
       this.Position = this.OrderItem.Position;
 
       this.OriginalCurrency = this.Order.Currency.Code;
-      this.BaseCurrency = Currency.Default.Code;
       this.ExchangeRate = this.Order.ExchangeRate;
+      this.BaseCurrency = Currency.Default.Code;
 
       this.ItemUnitName = this.OrderItem.ProductUnit.Name;
-      this.ItemUnitQuantity = fields.Quantity;
-
-      this.InputQuantity = fields.Quantity * this.OrderItem.PackagingSize;
-      this.InputCost = (this.OrderItem.Quantity * this.OrderItem.UnitPrice) /
-                       (this.OrderItem.Quantity * this.OrderItem.PackagingSize);
+      this.InputQuantity = fields.Quantity;
+      this.InputCost = fields.Quantity * this.OrderItem.UnitPrice;
 
     }
 
