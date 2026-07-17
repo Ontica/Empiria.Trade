@@ -51,7 +51,7 @@ namespace Empiria.Trade.Procurement.Adapters {
         PostingTime = order.PostingTime,
         Notes = order.Observations,
         Status = order.Status.MapToDto(),
-        Items = MapItems(orderItems),
+        Items = orderItems.Count > 0 ? MapItems(orderItems) : new FixedList<PurchaseOrderItemDto>(),
         Totals = MapTotals(orderItems),
         Actions = MapActions(order.Status)
       };
@@ -95,6 +95,20 @@ namespace Empiria.Trade.Procurement.Adapters {
 
       string attrLargo = product.Largo != string.Empty ?
                             $"largo {product.Largo}. " : "";
+
+      return attrDiametro + attrLargo;
+    }
+
+
+
+    private static object GetProductAttributesShort(ProductEntry product) {
+      string attrDiametro = product.Diametro != string.Empty ?
+                            $"{product.Diametro} " : "";
+
+      string _by = attrDiametro != string.Empty ? "X " : string.Empty;
+
+      string attrLargo = product.Largo != string.Empty ?
+                            $"{_by}{product.Largo}" : "";
 
       return attrDiametro + attrLargo;
     }
@@ -144,6 +158,7 @@ namespace Empiria.Trade.Procurement.Adapters {
         PresentationName = x.Product.BaseUnit.Description,
         Description = x.Description,
         ProductAttrs = GetProductAttributes(product),
+        ProductAttrsShort = GetProductAttributesShort(product),
         Notes = x.Notes,
         PackingSmallBag = x.PackingSmallBag,
         PackagingSize = x.PackagingSize,

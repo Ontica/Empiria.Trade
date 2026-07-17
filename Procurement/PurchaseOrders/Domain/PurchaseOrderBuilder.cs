@@ -45,7 +45,7 @@ namespace Empiria.Trade.Procurement.Domain {
     private static InventoryOrderFields AssignInventoryOrderFields(PurchaseOrder order) {
 
       return new InventoryOrderFields {
-        ParentOrderUID = order.UID,
+        ParentOrderUID = order.OrderUID,
         InventoryTypeUID = InventoryType.InventarioEntradasCompra.UID,
         Description = $"Generado por: {order.OrderNo}",
         CurrencyUID = order.Currency.UID,

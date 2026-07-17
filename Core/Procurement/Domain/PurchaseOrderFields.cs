@@ -35,12 +35,12 @@ namespace Empiria.Trade.Core {
 
     public DateTime ScheduledTime {
       get; set;
-    } = ExecutionServer.DateMaxValue;
+    }
 
 
     public DateTime ReceptionTime {
       get; set;
-    } = ExecutionServer.DateMaxValue;
+    }
 
 
     public virtual void EnsureIsValid(string providerUID, int orderItemsCount) {
@@ -48,11 +48,6 @@ namespace Empiria.Trade.Core {
       if (orderItemsCount > 0 && providerUID != this.SupplierUID) {
         Assertion.EnsureFailed("No es posible cambiar de proveedor una vez que se asignan productos.");
       }
-      
-      var orderType = OrderType.Parse(OrderTypeUID);
-
-      Assertion.Require(CurrencyUID != string.Empty,
-                        "Favor de especificar moneda.");
     }
 
   } // class PurchaseOrderFields

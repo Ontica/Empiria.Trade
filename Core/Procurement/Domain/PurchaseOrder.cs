@@ -41,6 +41,9 @@ namespace Empiria.Trade.Core {
 
       GetDefaultFields(fields, orderType);
 
+      ShippingMethod = fields.ShippingMethod;
+      ScheduledTime = fields.ScheduledTime;
+
       base.Activate();
       base.Update(fields);
     }
@@ -92,7 +95,7 @@ namespace Empiria.Trade.Core {
 
     public DateTime ScheduledTime {
       get {
-        return ConditionsData.Get("scheduledTime", DateTime.MaxValue);
+        return ConditionsData.Get("scheduledTime", new DateTime());
       }
       private set {
         ConditionsData.SetIfValue("scheduledTime", value);
@@ -165,7 +168,7 @@ namespace Empiria.Trade.Core {
       fields.Name = "Sin asignar";
       fields.Observations = fields.Notes;
       fields.StartDate = DateTime.Now;
-
+      fields.CurrencyUID = fields.CurrencyUID == string.Empty ? Currency.Default.UID : fields.CurrencyUID;
       fields.EnsureIsValid(this.Provider.UID, this.PurchaseOrderItems.Count);
     }
 

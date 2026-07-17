@@ -63,17 +63,17 @@ namespace Empiria.Trade.Procurement.Adapters {
 
     public DateTime OrderTime {
       get; set;
-    } = DateTime.MaxValue;
+    }
 
 
     public DateTime ScheduledTime {
       get; set;
-    } = DateTime.MaxValue;
+    }
 
 
     public DateTime ReceptionTime {
       get; set;
-    } = DateTime.MaxValue;
+    }
 
 
     public DateTime PostingTime {
@@ -146,6 +146,11 @@ namespace Empiria.Trade.Procurement.Adapters {
 
 
     public object ProductAttrs {
+      get; internal set;
+    }
+
+
+    public object ProductAttrsShort {
       get; internal set;
     }
 
