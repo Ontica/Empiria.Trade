@@ -71,7 +71,7 @@ namespace Empiria.Trade.Core {
     #region Methods
 
     public void GetProductByCode(string productCode) {
-      this.Product = Empiria.Products.Product.TryParseWithCode(productCode);
+      this.Product = ProductEntry.TryParseWithCode(productCode);
     }
 
 
@@ -81,6 +81,17 @@ namespace Empiria.Trade.Core {
       GetProductByCode(fields.Product);
 
       fields.UnitPrice = GetProductPrice();
+
+      fields.EnsureValid();
+
+      base.Update(fields);
+    }
+
+
+    public void UpdateItem(InventoryOrderItemFields fields) {
+      Assertion.Require(fields, nameof(fields));
+
+      this.Product = ProductEntry.ParseUID(this.Product.UID);
 
       fields.EnsureValid();
 

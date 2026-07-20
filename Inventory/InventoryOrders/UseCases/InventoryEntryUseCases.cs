@@ -80,14 +80,7 @@ namespace Empiria.Trade.Inventory.UseCases {
       return inventoryOrderUseCase.GetInventoryOrder(orderUID);
     }
 
-    private void AssignFieldsByCode(InventoryEntryFields fields, InventoryOrderItem orderItem) {
-
-      Location locationEntry = InventoryOrderData.GetLocationEntryByName(fields.Location.Trim());
-
-      fields.ProductUID = orderItem.Product.UID;
-      fields.LocationUID = locationEntry.LocationUID;
-    }
-
+    
     public InventoryHolderDto DeleteInventoryEntry(string orderUID, string itemUID, string entryUID) {
       Assertion.Require(orderUID, nameof(orderUID));
       Assertion.Require(itemUID, nameof(itemUID));
@@ -133,7 +126,7 @@ namespace Empiria.Trade.Inventory.UseCases {
 
       //var inventoryOrder = InventoryOrder.Parse(inventoryOrderUID);
 
-      Location locationEntry = InventoryOrderData.GetLocationEntryByName(locationUID);
+      Location locationEntry = InventoryOrderData.GetLocationByName(locationUID);
 
       var report = InventoryOrderData.GetProductEntryInventoryReportByLocation(locationEntry.Name);
 
@@ -143,6 +136,15 @@ namespace Empiria.Trade.Inventory.UseCases {
     #endregion Use cases
 
     #region Helpers
+
+    private void AssignFieldsByCode(InventoryEntryFields fields, InventoryOrderItem orderItem) {
+
+      Location locationEntry = InventoryOrderData.GetLocationByName(fields.Location.Trim());
+
+      fields.ProductUID = orderItem.Product.UID;
+      fields.LocationUID = locationEntry.LocationUID;
+    }
+
 
     public void OutputInventoryEntriesVW(InventoryOrder order) {
 

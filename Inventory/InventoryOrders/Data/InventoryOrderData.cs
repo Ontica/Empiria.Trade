@@ -96,7 +96,7 @@ namespace Empiria.Trade.Inventory.Data {
     }
 
 
-    internal static Location GetLocationEntryByName(string locationName) {
+    internal static Location GetLocationByName(string locationName) {
 
       try {
 

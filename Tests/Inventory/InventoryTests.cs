@@ -35,11 +35,11 @@ namespace Empiria.Trade.Tests.Procurement {
     [Fact]
     public void CreateInventoryEntryTest() {
 
-      string orderUID = "f8f9f74d-c63c-4ca6-b665-a6cec3672fb1";
-      string orderItemUID = "a2598665-fa84-4dc7-a432-27dfab7adaff";
+      string orderUID = "496caf42-2cef-4757-a2b3-4b960d1331ec";
+      string orderItemUID = "9d0b8245-6ce0-493f-9766-8504db863dce";
 
       InventoryEntryFields fields = new InventoryEntryFields {
-        Location = "M-007-02-11",
+        Location = "A-001-01-03",
         Quantity = 2
       };
 
@@ -79,6 +79,26 @@ namespace Empiria.Trade.Tests.Procurement {
 
       InventoryHolderDto sut = usecase.GetInventoryOrder(orderUID);
 
+      Assert.NotNull(sut);
+    }
+
+
+    [Fact]
+    public void UpdateInventoryOrderTest() {
+      TestsCommonMethods.Authenticate();
+      var usecase = InventoryOrderUseCases.UseCaseInteractor();
+
+      string orderUID = "496caf42-2cef-4757-a2b3-4b960d1331ec";
+
+      InventoryOrderFields fields = new InventoryOrderFields {
+        Description = "Generado desde: OC-1XWOCG4U",
+        InventoryTypeUID = "D3042817-63FA-4728-BF5B-BED68FECA3FC",
+        RequestedByUID = "e4b5e0f9-c259-44dc-80ef-6b9c8f48324d",
+        ResponsibleUID = "e4b5e0f9-c259-44dc-80ef-6b9c8f48324d",
+        WarehouseUID = "C7AF150C-4F4A-4ABE-A22A-402C64F24AEE"
+      };
+
+      InventoryHolderDto sut = usecase.UpdateInventoryOrder(orderUID, fields);
       Assert.NotNull(sut);
     }
 

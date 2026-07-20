@@ -9,6 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
 using System.Linq;
+using Empiria.Locations;
 using Empiria.Orders;
 using Empiria.Parties;
 
@@ -109,6 +110,12 @@ namespace Empiria.Trade.Core {
 
       Assertion.Require((fields.Quantity + inventoryEntries.Sum(x => x.InputQuantity)) <= orderItem.Quantity,
                         $"La cantidad de productos capturados supera los productos restantes.");
+
+      Location location = Location.Parse(fields.LocationUID);
+
+      Assertion.Require(inventoryEntries.Find(x => x.Product.UID == fields.ProductUID &&
+                                              x.Location.Id == location.Id) == null,
+                        $"El producto ya fue registrado en esta localización");
     }
   } // class InventoryEntryFieldsExtensions
 

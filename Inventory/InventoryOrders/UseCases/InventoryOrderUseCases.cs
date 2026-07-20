@@ -188,9 +188,10 @@ namespace Empiria.Trade.Inventory.UseCases {
       Assertion.Require(orderUID, nameof(orderUID));
       Assertion.Require(fields, nameof(fields));
 
-      fields.EnsureValid();
-
       var order = InventoryOrder.Parse(orderUID);
+
+      fields.ParentOrderUID = order.ParentOrder.UID;
+
       order.Update(fields);
 
       order.Save();
