@@ -38,6 +38,12 @@ namespace Empiria.Trade.Procurement.Adapters {
 
       var orderItems = PurchaseOrderItem.GetListFor(order);
 
+      DateTime? scheduleTime = null;
+
+      if (order.ScheduledTime.Year < DateTime.MaxValue.Year) {
+        scheduleTime = order.ScheduledTime;
+      }
+
       return new PurchaseOrderDto {
         UID = order.UID,
         OrderNumber = order.OrderNo,
@@ -47,7 +53,7 @@ namespace Empiria.Trade.Procurement.Adapters {
         Currency = order.Currency.MapToNamedEntity(),
         ExchangeRate = order.ExchangeRate,
         OrderTime = order.StartDate,
-        ScheduledTime = order.ScheduledTime,
+        ScheduledTime = scheduleTime,
         PostingTime = order.PostingTime,
         Notes = order.Observations,
         Status = order.Status.MapToDto(),

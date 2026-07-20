@@ -35,12 +35,12 @@ namespace Empiria.Trade.Core {
 
     public DateTime ScheduledTime {
       get; set;
-    }
+    } = DateTime.MaxValue;
 
 
     public DateTime ReceptionTime {
       get; set;
-    }
+    } = DateTime.MaxValue;
 
 
     public virtual void EnsureIsValid(string providerUID, int orderItemsCount) {

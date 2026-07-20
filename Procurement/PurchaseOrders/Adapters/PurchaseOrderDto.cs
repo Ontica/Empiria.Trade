@@ -66,14 +66,14 @@ namespace Empiria.Trade.Procurement.Adapters {
     }
 
 
-    public DateTime ScheduledTime {
+    public DateTime? ScheduledTime {
       get; set;
     }
 
 
-    public DateTime ReceptionTime {
+    public DateTime? ReceptionTime {
       get; set;
-    }
+    } = null;
 
 
     public DateTime PostingTime {

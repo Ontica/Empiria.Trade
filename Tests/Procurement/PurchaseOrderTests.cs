@@ -115,7 +115,7 @@ namespace Empiria.Trade.Tests.Procurement {
 
       var usecase = PurchaseOrderUseCases.UseCaseInteractor();
 
-      string purchaseOrderUID = "ec8d485a-4d9e-454e-b224-de3b6d4f450d";
+      string purchaseOrderUID = "9dfccf5d-5ab0-4dc2-bcbb-5f07dedf34fb";
       PurchaseOrderDto sut = usecase.GetPurchaseOrderDto(purchaseOrderUID);
       Assert.NotNull(sut);
     }
@@ -159,7 +159,7 @@ namespace Empiria.Trade.Tests.Procurement {
       var usecase = PurchaseOrderUseCases.UseCaseInteractor();
 
       PurchaseOrderFields fields = GetPurchaseOrderFields();
-      PurchaseOrderDto sut = usecase.UpdatePurchaseOrder("ec8d485a-4d9e-454e-b224-de3b6d4f450d", fields);
+      PurchaseOrderDto sut = usecase.UpdatePurchaseOrder("84c595c7-289a-4339-a95b-c49057f25f5c", fields);
 
       Assert.NotNull(sut);
     }
@@ -174,10 +174,9 @@ namespace Empiria.Trade.Tests.Procurement {
     private PurchaseOrderFields GetPurchaseOrderFields() {
 
       var fields = new PurchaseOrderFields {
-        SupplierUID = "b8b6d1ce-ffd0-47fd-92ef-3db32fa44ed5",
+        SupplierUID = "f353f64b-9657-4a60-9de0-9c5cf0134c87",
         Notes = "N/A",
         PaymentConditions = "Credito",
-        ScheduledTime = new DateTime(),
         ShippingMethod = "Ocurre",
         CurrencyUID = "0ECB4030-35A2-493F-BA20-D12CD36666B6"
       };

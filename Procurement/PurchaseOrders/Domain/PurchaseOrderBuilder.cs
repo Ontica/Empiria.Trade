@@ -44,8 +44,10 @@ namespace Empiria.Trade.Procurement.Domain {
 
     private static InventoryOrderFields AssignInventoryOrderFields(PurchaseOrder order) {
 
+      var parentOrderUID = order.OrderUID == string.Empty ? order.UID : order.OrderUID;
+
       return new InventoryOrderFields {
-        ParentOrderUID = order.OrderUID,
+        ParentOrderUID = parentOrderUID,
         InventoryTypeUID = InventoryType.InventarioEntradasCompra.UID,
         Description = $"Generado por: {order.OrderNo}",
         CurrencyUID = order.Currency.UID,
@@ -68,7 +70,7 @@ namespace Empiria.Trade.Procurement.Domain {
         Position = maxOrderItem.Count > 0 ? maxOrderItem.First().Position + 1 : 1,
         ProductUID = item.Product.UID,
         Description = item.Product.Description,
-        ProductUnitUID = item.ProductUnit.UID, //TODO PREGUNTAR SI ES UNIDAD DE ITEM O BASEUNIT DE PRODUCT
+        ProductUnitUID = item.ProductUnit.UID,
         Quantity = item.Quantity,
         UnitPrice = item.UnitPrice,
       };
@@ -90,7 +92,7 @@ namespace Empiria.Trade.Procurement.Domain {
         InventoryOrderItem orderItem = new InventoryOrderItem(orderItemType, inventoryOrder,
                                                               new Locations.Location());
 
-        orderItem.Update(inventoryItemFields);
+        orderItem.UpdateItem(inventoryItemFields);
         orderItem.Save();
       }
     }

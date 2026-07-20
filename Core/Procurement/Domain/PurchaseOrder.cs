@@ -95,7 +95,7 @@ namespace Empiria.Trade.Core {
 
     public DateTime ScheduledTime {
       get {
-        return ConditionsData.Get("scheduledTime", new DateTime());
+        return ConditionsData.Get("scheduledTime", DateTime.MaxValue);
       }
       private set {
         ConditionsData.SetIfValue("scheduledTime", value);
