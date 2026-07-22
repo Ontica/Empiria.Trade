@@ -34,7 +34,23 @@ namespace Empiria.Trade.Tests.Core {
     #region Facts
 
     [Fact]
-    public void GetProductListTest() {
+    public void GetProductForSearcherTest() {
+
+      var usecase = ProductUseCases.UseCaseInteractor();
+      ProductQuery query = new ProductQuery {
+        Keywords = "TMG12X4", //TG5G516X3 TCC12X1
+        OnStock = true
+      };
+
+      FixedList<ProductForSearchingDto> sut = usecase.GetProductsForSearcher(query);
+
+      Assert.NotNull(sut);
+      Assert.NotEmpty(sut);
+    }
+
+
+    [Fact]
+    public void GetProductsForPurchaseOrderTest() {
 
       var usecase = ProductUseCases.UseCaseInteractor();
       ProductQuery query = new ProductQuery {

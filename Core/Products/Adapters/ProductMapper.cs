@@ -21,7 +21,8 @@ namespace Empiria.Trade.Products.Adapters {
 
     #region Public methods V2
 
-    static internal FixedList<ProductForSearchingDto> Map(FixedList<ProductEntry> products, string vendorUID) {
+    static internal FixedList<ProductForSearchingDto> MapToPurchaseOrder(FixedList<ProductEntry> products,
+                                                                         string vendorUID) {
 
       return products.Select(x => MapProduct(x, vendorUID))
                                  .Where(x => x.Presentations.Count > 0)
@@ -29,14 +30,24 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
-    static private ProductForSearchingDto MapProduct(ProductEntry product, string vendorUID) {
+    static internal FixedList<ProductForSearchingDto> MapToSearcher(FixedList<ProductEntry> products,
+                                                                    bool withUnits) {
+
+      return products.Select(x => MapProduct(x, string.Empty, withUnits))
+                                 .Where(x => x.Presentations.Count > 0)
+                                 .ToFixedList();
+    }
+
+
+    static private ProductForSearchingDto MapProduct(ProductEntry product, string vendorUID,
+                                                     bool withUnits = false) {
 
       return new ProductForSearchingDto() {
         ProductUID = product.UID,
         ProductCode = product.InternalCode,
         Description = product.Description,
         ProductType = GetProductsType(product),
-        Presentations = GetProductPresentations(product, vendorUID)
+        Presentations = GetProductPresentations(product, vendorUID, withUnits)
       };
     }
 
@@ -50,28 +61,29 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
-    static private FixedList<ProductPresentationForSeach> GetProductPresentations(
-                                                            ProductEntry product, string vendorUID) {
+    static private FixedList<ProductPresentationForSeach> GetProductPresentations(ProductEntry product,
+                                                            string vendorUID, bool withUnits) {
       
-      
-      var productPresentations = product.Presentations.OrderBy(x => x.InternalCode.Length)
+      product.WithUnits = withUnits;
+
+      var _presentations = product.Presentations.OrderBy(x => x.InternalCode.Length)
                                                       .ThenBy(x => x.InternalCode).ToFixedList();
 
-      var presentationsByVendor = GetPresentationsByVendor(productPresentations, vendorUID);
+      var productsByVendor = GetPresentationsByVendor(_presentations, vendorUID);
 
-      var list = new List<ProductPresentationForSeach>();
+      var productPresentations = new List<ProductPresentationForSeach>();
 
-      if (presentationsByVendor.Count == 0 && vendorUID != string.Empty && product.Vendor.UID == vendorUID) {
+      if (productsByVendor.Count == 0 && vendorUID != string.Empty && product.Vendor.UID == vendorUID) {
         
-        list.Add(AssignProductPresentation(product));
+        productPresentations.Add(AssignProductPresentation(product, withUnits));
       }
 
-      foreach (var p in presentationsByVendor) {
+      foreach (var p in productsByVendor) {
 
-        list.Add(AssignProductPresentation(p));
+        productPresentations.Add(AssignProductPresentation(p, withUnits));
       }
 
-      return list.ToFixedList();
+      return productPresentations.ToFixedList();
     }
 
     
@@ -90,15 +102,15 @@ namespace Empiria.Trade.Products.Adapters {
 
     #region Private methods
 
-    private static ProductPresentationForSeach AssignProductPresentation(ProductEntry product) {
+    private static ProductPresentationForSeach AssignProductPresentation(ProductEntry presentation, bool withUnits) {
 
       return new ProductPresentationForSeach {
-        PresentationUID = product.UID,
-        Name = $"{product.InternalCode} " +
-               $"| Empaque: {product.PackingSmallBag} " +
-               $"| Unidades: {product.PackagingSize} {product.BaseUnit.Description}",
-        Description = product.Description,
-        Vendors = MapVendors(product)
+        PresentationUID = presentation.UID,
+        Name = $"{presentation.InternalCode} " +
+               $"| Empaque: {presentation.PackingSmallBag} " +
+               $"| Unidades: {presentation.PackagingSize} {presentation.BaseUnit.Description}",
+        Description = presentation.Description,
+        Vendors = MapVendors(presentation)
       };
     }
 
@@ -172,6 +184,8 @@ namespace Empiria.Trade.Products.Adapters {
 
     static private FixedList<VendorDto> MapVendors(ProductEntry presentation) {
 
+      var vendors = new List<VendorDto>();
+
       var vendor = new VendorDto {
         VendorProductUID = presentation.VendorProductUID,
         VendorUID = presentation.Vendor.UID,
@@ -179,7 +193,6 @@ namespace Empiria.Trade.Products.Adapters {
         Sku = "SKU"
       };
 
-      var vendors = new List<VendorDto>();
       vendors.Add(vendor);
       return vendors.ToFixedList();
     }

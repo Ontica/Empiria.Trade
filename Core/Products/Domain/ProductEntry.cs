@@ -12,6 +12,7 @@ using System;
 using Empiria.Parties;
 using Empiria.Ontology;
 using Empiria.Products;
+using Empiria.Trade.Products.Data;
 
 namespace Empiria.Trade.Products {
 
@@ -37,7 +38,8 @@ namespace Empiria.Trade.Products {
 
 
     protected override void OnLoad() {
-      _presentations = new Lazy<FixedList<ProductEntry>>(() => Data.ProductDataService.GetProductsPresentations(this));
+
+      _presentations = new Lazy<FixedList<ProductEntry>>(() => ProductDataService.GetProductsPresentations(this));
     }
 
     #endregion Constructors and parsers
@@ -205,6 +207,11 @@ namespace Empiria.Trade.Products {
 
 
     public string ProductImageUrl => $"http://apps.sujetsa.com.mx:8080/imagenes-productos/{this.InternalCode}.jpg";
+
+
+    public bool WithUnits {
+      get; internal set;
+    }
 
 
     public FixedList<ProductEntry> Presentations {

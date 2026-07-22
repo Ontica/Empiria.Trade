@@ -40,17 +40,26 @@ namespace Empiria.Trade.Products.UseCases {
 
     #region Use cases
 
-    public FixedList<ProductForSearchingDto> GetProductsForPurchaseOrder(ProductQuery query) {
+    public FixedList<ProductEntry> GetProducts(ProductQuery query) {
 
-      if (query.Keywords == string.Empty) {
-        Assertion.RequireFail("Por favor escribe una palabra clave para iniciar búsqueda.");
-      }
+      Assertion.Require(query.Keywords != string.Empty,
+                        "Por favor escribe una palabra clave para iniciar búsqueda.");
 
       var builder = new ProductBuilder(query);
 
-      FixedList<ProductEntry> products = builder.GetProducts();
+      return builder.GetProducts();
+    }
 
-      return ProductMapper.Map(products, query.SupplierUID);
+
+    public FixedList<ProductForSearchingDto> GetProductsForPurchaseOrder(ProductQuery query) {
+
+      return ProductMapper.MapToPurchaseOrder(GetProducts(query), query.SupplierUID);
+    }
+
+
+    public FixedList<ProductForSearchingDto> GetProductsForSearcher(ProductQuery query) {
+
+      return ProductMapper.MapToSearcher(GetProducts(query), query.OnStock);
     }
 
 

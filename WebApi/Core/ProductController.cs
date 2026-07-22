@@ -44,12 +44,13 @@ namespace Empiria.Trade.WebApi.Core {
 
     [HttpPost]
     [Route("v4/trade/products/search-products")]
-    public async Task<CollectionModel> GetProductsDto([FromBody] ProductQuery query) {
+    public CollectionModel GetProductsDto([FromBody] ProductQuery query) {
       RequireBody(query);
 
       using (var usecases = ProductUseCases.UseCaseInteractor()) {
-        FixedList<IProductEntryDto> productDto = await usecases.GetProductsListV1(query)
-                                                .ConfigureAwait(false);
+
+        FixedList<ProductForSearchingDto> productDto = usecases.GetProductsForSearcher(query);
+
         return new CollectionModel(Request, productDto);
       }
     }
@@ -81,22 +82,6 @@ namespace Empiria.Trade.WebApi.Core {
         query.OnStock = false;
         FixedList<ProductForSearchingDto> productDto = usecases.GetProductsForPurchaseOrder(query);
 
-        return new CollectionModel(Request, productDto);
-      }
-    }
-
-
-    [HttpPost]
-    [Route("v4/trade/products/search-products-for-purchase-order-")]
-    public async Task<CollectionModel> GetProductsForPurchaseOrderV1([FromBody] ProductQuery query) {
-
-      RequireBody(query);
-
-      using (var usecases = ProductUseCases.UseCaseInteractor()) {
-
-        query.OnStock = false;
-        FixedList<IProductEntryDto> productDto = await usecases.GetProductsListV1(query)
-                                                .ConfigureAwait(false);
         return new CollectionModel(Request, productDto);
       }
     }
