@@ -76,22 +76,32 @@ namespace Empiria.Trade.WebApi.Core {
     [Route("v4/trade/contacts/internal-suppliers")]
     public CollectionModel GetInternalSupppliers() {
 
-      using (var usecases = PartyUseCases.UseCaseInteractor()) {
-        FixedList<NamedEntityDto> internalSuppliers = usecases.GetInternalSuppliers();
+      //using (var usecases = PartyUseCases.UseCaseInteractor()) {
+      //  FixedList<NamedEntityDto> internalSuppliers = usecases.GetInternalSuppliers();
 
-        return new CollectionModel(base.Request, internalSuppliers);
-      }
+      //  return new CollectionModel(base.Request, internalSuppliers);
+      //}
+
+      FixedList<Party> providers = Party.GetPartiesInRole("internalSupplier")
+                                        .FindAll(x => x.Name != string.Empty);
+
+      return new CollectionModel(Request, providers.MapToNamedEntityList());
     }
 
     [HttpGet]
     [Route("v4/trade/contacts/sales-agents")]
     public CollectionModel GetSalesAgents() {
 
-      using (var usescase = PartyUseCases.UseCaseInteractor()) {
-        FixedList<NamedEntityDto> salesAgents = usescase.GetSalesAgents();
+      //using (var usescase = PartyUseCases.UseCaseInteractor()) {
+      //  FixedList<NamedEntityDto> salesAgents = usescase.GetSalesAgents();
 
-        return new CollectionModel(base.Request, salesAgents);
-      }
+      //  return new CollectionModel(base.Request, salesAgents);
+      //}
+
+      FixedList<Party> providers = Party.GetPartiesInRole("salesAgent")
+                                        .FindAll(x => x.Name != string.Empty);
+
+      return new CollectionModel(Request, providers.MapToNamedEntityList());
     }
 
 
