@@ -9,6 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Collections.Generic;
+using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace Empiria.Trade.Core.Adapters {
 
@@ -18,24 +19,20 @@ namespace Empiria.Trade.Core.Adapters {
     #region Public methods
 
     static public FixedList<CustomerContactDto> MapCustomerContacts(FixedList<CustomerContact> contacts) {
-      List<CustomerContactDto> contactsList = new List<CustomerContactDto>();
+      
+      var mappedList = contacts.Select((x) => MapCustomerContact(x));
 
-      foreach (var contact in contacts) {
-        contactsList.Add(MapCustomerContact(contact));
-      }
-
-      return contactsList.ToFixedList();
+      return new FixedList<CustomerContactDto>(mappedList);
     }
 
-   static public CustomerContactDto MapCustomerContact(CustomerContact contact) {
-      var dto = new CustomerContactDto {
+
+    static public CustomerContactDto MapCustomerContact(CustomerContact contact) {
+      
+      return new CustomerContactDto {
         UID = contact.UID,
         Name = contact.Name,
         Phone = contact.PhoneNumber
       };
-
-
-      return dto;
     }
 
     #endregion Public methods

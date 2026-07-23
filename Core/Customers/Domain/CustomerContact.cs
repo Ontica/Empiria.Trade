@@ -32,37 +32,38 @@ namespace Empiria.Trade.Core {
 
     #region Public properties
 
-    [DataField("PartyId")]
+    [DataField("Party_Id")]
     public int CustomerId {
       get; private set;
     }
 
-    [DataField("PartyContactIndex")]
+    [DataField("Party_Contact_Index")]
     public int Index {
       get; private set;
     }
 
-    [DataField("PartyContactName")]
+    [DataField("Party_Contact_Name")]
     public string Name {
       get; private set;
     }
 
-    [DataField("PartyContactEmail")]
+    [DataField("Party_Contact_Email")]
     public string Email {
       get; private set;
     } = String.Empty;
 
-    [DataField("PartyContactPhoneNumber")]
+    [DataField("Party_Contact_Phone_Number")]
     public string PhoneNumber {
       get; private set;
     } = String.Empty;
 
-    [DataField("PartyContactExtData")]
+    [DataField("Party_Contact_Ext_Data")]
     public string ExtData {
       get; private set;
     } = String.Empty;
 
-    [DataField("PartyContactStatus", Default = 'A')]
+    //TODO CAMBIAR TIPO A UN ENUM DE EMPIRIA
+    [DataField("Party_Contact_Status", Default = 'A')]
     public char Status {
       get; private set;
     } = 'A';
@@ -76,7 +77,7 @@ namespace Empiria.Trade.Core {
       CustomerContactData.Write(this);
     }
 
-    public FixedList<CustomerContact> GetContacts(int customerId) {
+    static public FixedList<CustomerContact> GetContacts(int customerId) {
       return CustomerContactData.GetCustomerContacts(customerId);     
     }
 

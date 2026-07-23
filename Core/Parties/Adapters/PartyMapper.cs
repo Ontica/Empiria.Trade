@@ -16,13 +16,13 @@ using Empiria.Trade.Core.UsesCases;
 namespace Empiria.Trade.Core.Adapters {
 
   /// <summary>Methods used to map Parties.   </summary>
-  public static  class PartyMapper {
+  public static class PartyMapper {
 
 
     #region Public methods
 
     static internal ShortPartyDto MapTo(Party party) {
-      var dto = new ShortPartyDto  {
+      var dto = new ShortPartyDto {
         id = party.Id,
         UID = party.UID,
         Name = party.Name,
@@ -33,56 +33,51 @@ namespace Empiria.Trade.Core.Adapters {
       return dto;
     }
 
-    internal static FixedList<ContactDto> MapToContacs(FixedList<Party> partyList) {
-      List<ContactDto> contacts = new List<ContactDto>();
-      foreach (Party party in partyList) {
-        contacts.Add(MapToContact(party));
-      }
 
-      return contacts.ToFixedList();
+    static internal FixedList<ContactDto> MapToCustomers(FixedList<Parties.Party> customers) {
+      
+      var mappedList = customers.Select((x) => MapToCustomer(x));
+
+      return new FixedList<ContactDto>(mappedList);
     }
 
-      public static ContactDto MapToContact(Party party) {
-      var dto = new ContactDto {
+
+    public static ContactDto MapToCustomer(Parties.Party party) {
+
+      return new ContactDto {
         UID = party.UID,
         Name = party.Name,
         Contacts = MapCustomerContacts(party.Id),
         Addresses = MapCustomerAddresses(party.UID)
       };
-
-    return dto;
     }
 
-    public static FixedList<CustomerShortAddressDto> MapCustomerAddresses(string UID) {
+    public static FixedList<CustomerShortAddressDto> MapCustomerAddresses(string customerUID) {
+
       using (var usescase = CustomerUseCases.UseCaseInteractor()) {
-        var addresses = usescase.GetCustomerAddress(UID);
-
-        return addresses;
+        return usescase.GetCustomerAddress(customerUID);
       }
-
     }
 
     public static FixedList<CustomerContactDto> MapCustomerContacts(int customerId) {
+
       using (var usescase = CustomerUseCases.UseCaseInteractor()) {
-        var contacts = usescase.GetCustomerContacts(customerId);
-
-        return contacts;
+        return usescase.GetCustomerContacts(customerId);
       }
-
     }
 
-   
-    internal static FixedList<NamedEntityDto> MapToMinimalPartyDto(FixedList<Party> partyList) {      
+
+    internal static FixedList<NamedEntityDto> MapToMinimalPartyDto(FixedList<Party> partyList) {
       return partyList.MapToNamedEntityList();
-  }
-    
+    }
+
 
     #endregion Public methods
 
 
     #region Private methods
- 
-   
+
+
     #endregion Private methods
 
   } //static internal class PartyMapper

@@ -56,7 +56,7 @@ namespace Empiria.Trade.WebApi.Core {
     public CollectionModel GetCustomerContacts([FromUri] string keywords) {
 
       using (var usecases = PartyUseCases.UseCaseInteractor()) {
-        FixedList<ContactDto> customerContacts = usecases.GetCustomerContacts(keywords);
+        FixedList<ContactDto> customerContacts = usecases.GetCustomersData(keywords);
 
         return new CollectionModel(base.Request, customerContacts);
       }
@@ -82,7 +82,7 @@ namespace Empiria.Trade.WebApi.Core {
       //  return new CollectionModel(base.Request, internalSuppliers);
       //}
 
-      FixedList<Party> providers = Party.GetPartiesInRole("internalSupplier")
+      FixedList<Party> providers = Party.GetPartiesInRole("internal-supplier")
                                         .FindAll(x => x.Name != string.Empty);
 
       return new CollectionModel(Request, providers.MapToNamedEntityList());
@@ -98,7 +98,7 @@ namespace Empiria.Trade.WebApi.Core {
       //  return new CollectionModel(base.Request, salesAgents);
       //}
 
-      FixedList<Party> providers = Party.GetPartiesInRole("salesAgent")
+      FixedList<Party> providers = Party.GetPartiesInRole("salesperson")
                                         .FindAll(x => x.Name != string.Empty);
 
       return new CollectionModel(Request, providers.MapToNamedEntityList());

@@ -23,11 +23,10 @@ namespace Empiria.Trade.Core.Data {
     internal static FixedList<CustomerAddress> GetCustomerAddresses(int customerId) {
            
       var sql = "SELECT * " +
-                "FROM TRDPartyAddresses " +
-               $"WHERE PartyId = {customerId} AND PartyAddessStatus = 'A' ";
+                "FROM OMS_Party_Addresses " +
+               $"WHERE Party_Id = {customerId} AND Party_Addess_Status = 'A' ";
 
       var dataOperation = DataOperation.Parse(sql);
-
 
       return DataReader.GetFixedList<CustomerAddress>(dataOperation);
     }

@@ -32,17 +32,17 @@ namespace Empiria.Trade.Core {
 
     #region Public properties
 
-    [DataField("PartyId")]
+    [DataField("Party_Id")]
     public int CustomerId {
       get; set;
     }
 
-    [DataField("PartyAddressIndex")]
+    [DataField("Party_Address_Index")]
     public int Index {
       get; set;
     }
 
-    [DataField("PartyAddessDescription")]
+    [DataField("Party_Address_Description")]
     public string Description {
       get; set;
     }
@@ -72,12 +72,13 @@ namespace Empiria.Trade.Core {
       get; set;
     }
 
-    [DataField("PartyAddessExtData")]
+    [DataField("Party_Addess_Ext_Data")]
     public string ExtData {
       get; set;
     } = String.Empty;
 
-    [DataField("PartyAddessStatus", Default = 'A')]
+    //TODO CAMBIAR TIPO A UN ENUM DE EMPIRIA
+    [DataField("Party_Addess_Status", Default = 'A')]
     public char Status {
       get; set;
     } = 'A';
@@ -92,7 +93,7 @@ namespace Empiria.Trade.Core {
     }
 
 
-    public FixedList<CustomerAddress> GetAddresses(int customerId) {
+    static public FixedList<CustomerAddress> GetAddresses(int customerId) {
       return CustomerAddressData.GetCustomerAddresses(customerId);
     }
 

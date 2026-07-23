@@ -55,12 +55,13 @@ namespace Empiria.Trade.Core.UsesCases {
       return GetPartiesByRole("customer", keywords);
     }
 
-    public FixedList<ContactDto> GetCustomerContacts(string keywords) {
+    public FixedList<ContactDto> GetCustomersData(string keywords) {
       Assertion.Require(keywords, "keywords");
 
-      var customerList = Party.GetPartiesByRole("customer", keywords);
+      FixedList<Parties.Party> customers = Parties.Party.GetPartiesInRole("customer", keywords)
+                                                           .FindAll(x => x.Name != string.Empty);
 
-      return PartyMapper.MapToContacs(customerList);
+      return PartyMapper.MapToCustomers(customers);
     }
 
     public FixedList<NamedEntityDto> GetSuppliers(string keywords) {

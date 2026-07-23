@@ -21,8 +21,8 @@ namespace Empiria.Trade.Core.Data {
     static internal FixedList<CustomerContact> GetCustomerContacts(int customerId) {
 
       var sql = "SELECT * " +
-                "FROM TRDPartyContacts " +
-               $"WHERE PartyId = {customerId} AND PartyContactStatus = 'A' ";
+                "FROM OMS_Party_Contacts " +
+               $"WHERE Party_Id = {customerId} AND Party_Contact_Status = 'A' ";
 
       var dataOperation = DataOperation.Parse(sql);
 

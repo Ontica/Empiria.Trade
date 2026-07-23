@@ -20,7 +20,8 @@ namespace Empiria.Trade.Core.Adapters {
     #region Public methods
 
     static public CustomerAddressDto MapTo(CustomerAddress address) {
-      var dto = new CustomerAddressDto {
+      
+      return new CustomerAddressDto {
         UID = address.UID,
         Address = address.Address1,
         Neighborhood = address.Address2,
@@ -28,16 +29,17 @@ namespace Empiria.Trade.Core.Adapters {
         State = address.State,
         ZipCode = address.ZipCode
       };
-
-
-      return dto;
     }
 
-    static public FixedList<CustomerShortAddressDto> MapToShortAddresses(FixedList<CustomerAddress> addresses) {
-      
-      return addresses.Select(x => MapShortAddress(x)).ToFixedList();
 
+    static public FixedList<CustomerShortAddressDto> MapCustomerShortAddresses(
+                                                      FixedList<CustomerAddress> addresses) {
+
+      var mappedList = addresses.Select((x) => MapShortAddress(x));
+
+      return new FixedList<CustomerShortAddressDto>(mappedList);
     }
+
 
     static public CustomerShortAddressDto MapShortAddress(CustomerAddress address) {
       var dto = new CustomerShortAddressDto {
@@ -51,13 +53,10 @@ namespace Empiria.Trade.Core.Adapters {
 
 
     static public FixedList<CustomerAddressDto> MapCustomerAddresses(FixedList<CustomerAddress> addresses) {
-      List<CustomerAddressDto> CustomerAddressDtoList = new List<CustomerAddressDto>();
+      
+      var mappedList = addresses.Select((x) => MapTo(x));
 
-      foreach (var address in addresses) {
-        CustomerAddressDtoList.Add(MapTo(address));
-      }
-
-      return CustomerAddressDtoList.ToFixedList();
+      return new FixedList<CustomerAddressDto>(mappedList);
     }
 
 

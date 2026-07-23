@@ -127,15 +127,15 @@ namespace Empiria.Trade.Core {
     }
 
     internal static FixedList<Party> GetInternalSuppliers() {
-      return PartyData.GetPartyListByRole("internalSupplier");
+      return PartyData.GetPartyListByRole("internal-supplier");
     }
 
     internal static FixedList<Party> GetSalesAgents() {
-      return PartyData.GetPartyListByRole("salesAgent");
+      return PartyData.GetPartyListByRole("salesperson");
     }
 
     internal static FixedList<Party> GetWarehouseMen() {
-      return PartyData.GetPartyListByRole("warehouseMan");
+      return PartyData.GetPartyListByRole("warehouseman");
     }
 
     internal static FixedList<Party> GetWarehouseResponsible() {

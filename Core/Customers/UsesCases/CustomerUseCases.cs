@@ -34,23 +34,16 @@ namespace Empiria.Trade.Core.UsesCases {
     #region Use cases
 
     public FixedList<CustomerShortAddressDto> GetCustomerAddress(string customerUID) {
-      var customer = new CustomerAddress();
 
-      Party customerInfo= Party.Parse(customerUID);
+      Parties.Party customer = Parties.Party.Parse(customerUID);
 
-      var addresses = customer.GetAddresses(customerInfo.Id);
-
-      var addressesDto = CustomerAddressMapper.MapToShortAddresses(addresses);
-
-      return addressesDto;
+      return CustomerAddressMapper.MapCustomerShortAddresses(CustomerAddress.GetAddresses(customer.Id));
     }
 
-    public  FixedList<CustomerContactDto> GetCustomerContacts(int customerId) {
-      var contact = new CustomerContact();
-     
-      var contacts = contact.GetContacts(customerId);
 
-      return CustomerConctacMapper.MapCustomerContacts(contacts);
+    public FixedList<CustomerContactDto> GetCustomerContacts(int customerId) {
+
+      return CustomerConctacMapper.MapCustomerContacts(CustomerContact.GetContacts(customerId));
     }
 
     #endregion Use cases
