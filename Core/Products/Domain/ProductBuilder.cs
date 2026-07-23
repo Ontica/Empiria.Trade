@@ -40,6 +40,10 @@ namespace Empiria.Trade.Products.Domain {
     }
 
 
+    static public FixedList<ProductsTotals> GetStockForPresentations(ProductEntry product) {
+      return ProductDataService.GetStockForPresentations(product);
+    }
+
     #endregion Public methods V2
 
     #region Public methods

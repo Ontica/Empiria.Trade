@@ -1,7 +1,7 @@
 ﻿/* Empiria Trade *********************************************************************************************
 *                                                                                                            *
 *  Module   : Product Management                         Component : Domain Layer                            *
-*  Assembly : Empiria.Trade.Products.dll                Pattern   : Partitioned Type / Information Holder   *
+*  Assembly : Empiria.Trade.Products.dll                 Pattern   : Partitioned Type / Information Holder   *
 *  Type     : Product                                    License   : Please read LICENSE.txt file            *
 *                                                                                                            *
 *  Summary  : Represents a product.                                                                          *
@@ -62,6 +62,11 @@ namespace Empiria.Trade.Products {
     [DataField("VENDOR_ID")]
     internal Party Vendor {
       get; private set;
+    }
+
+    
+    public decimal Stock {
+      get; set;
     }
 
 

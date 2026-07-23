@@ -7,13 +7,12 @@
 *  Summary  : Test cases for products.                                                                       *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
-using System;
 using System.Threading.Tasks;
 using Xunit;
 
-using Empiria.Trade.Products.UseCases;
-using Empiria.Trade.Products.Adapters;
 using Empiria.Trade.Products;
+using Empiria.Trade.Products.Adapters;
+using Empiria.Trade.Products.UseCases;
 using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Sales.UseCases;
 

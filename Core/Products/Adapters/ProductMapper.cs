@@ -9,10 +9,12 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 using Empiria.Parties;
 using Empiria.Trade.Core.Catalogues;
+using Empiria.Trade.Products.Domain;
 
 namespace Empiria.Trade.Products.Adapters {
 
@@ -69,24 +71,25 @@ namespace Empiria.Trade.Products.Adapters {
       var _presentations = product.Presentations.OrderBy(x => x.InternalCode.Length)
                                                       .ThenBy(x => x.InternalCode).ToFixedList();
 
+      GetStockForPresentations(product, _presentations);
+
       var productsByVendor = GetPresentationsByVendor(_presentations, vendorUID);
 
       var productPresentations = new List<ProductPresentationForSeach>();
 
       if (productsByVendor.Count == 0 && vendorUID != string.Empty && product.Vendor.UID == vendorUID) {
         
-        productPresentations.Add(AssignProductPresentation(product, withUnits));
+        productPresentations.Add(AssignProductPresentation(product));
       }
 
       foreach (var p in productsByVendor) {
 
-        productPresentations.Add(AssignProductPresentation(p, withUnits));
+        productPresentations.Add(AssignProductPresentation(p));
       }
 
       return productPresentations.ToFixedList();
     }
 
-    
     #endregion Public methods V2
 
     #region Public methods
@@ -102,7 +105,7 @@ namespace Empiria.Trade.Products.Adapters {
 
     #region Private methods
 
-    private static ProductPresentationForSeach AssignProductPresentation(ProductEntry presentation, bool withUnits) {
+    private static ProductPresentationForSeach AssignProductPresentation(ProductEntry presentation) {
 
       return new ProductPresentationForSeach {
         PresentationUID = presentation.UID,
@@ -110,36 +113,9 @@ namespace Empiria.Trade.Products.Adapters {
                $"| Empaque: {presentation.PackingSmallBag} " +
                $"| Unidades: {presentation.PackagingSize} {presentation.BaseUnit.Description}",
         Description = presentation.Description,
+        Units = presentation.Stock,
         Vendors = MapVendors(presentation)
       };
-    }
-
-
-    static public ProductForSearchingDto MapEntry(ProductEntry entry) {
-      var dto = new ProductForSearchingDto();
-
-      dto.ProductUID = entry.UID;
-      dto.ProductCode = entry.InternalCode;
-      dto.Description = entry.Name;
-      dto.ProductImageUrl = entry.ProductImageUrl;
-      dto.ProductType = GetProductType(entry);
-      dto.Presentations = GetPresentations(entry);
-
-      return dto;
-    }
-
-
-    static private ProductTypeDto GetProductType(ProductEntry entry) {
-
-      var type = new ProductTypeDto();
-
-      var attributes = GetAttributes(entry);
-
-      type.ProductTypeUID = entry.ProductType.UID;
-      type.Name = entry.ProductCategory.Name; //Group/Subgroup - Name
-      type.Attributes = attributes;
-
-      return type;
     }
 
 
@@ -179,6 +155,45 @@ namespace Empiria.Trade.Products.Adapters {
       }
 
       return new FixedList<ProductEntry>(productPresentations);
+    }
+
+
+    static private void GetStockForPresentations(ProductEntry product,
+                                                     FixedList<ProductEntry> presentations) {
+
+      FixedList<ProductsTotals> stocks = ProductBuilder.GetStockForPresentations(product);
+
+      foreach (var p in presentations) {
+        p.Stock = stocks.FindAll(x=>x.Product_Id == p.Id).Sum(x => x.Stock);
+      }
+    }
+
+
+    static private ProductTypeDto GetProductType(ProductEntry entry) {
+
+      var type = new ProductTypeDto();
+
+      var attributes = GetAttributes(entry);
+
+      type.ProductTypeUID = entry.ProductType.UID;
+      type.Name = entry.ProductCategory.Name; //Group/Subgroup - Name
+      type.Attributes = attributes;
+
+      return type;
+    }
+
+
+    static public ProductForSearchingDto MapEntry(ProductEntry entry) {
+      var dto = new ProductForSearchingDto();
+
+      dto.ProductUID = entry.UID;
+      dto.ProductCode = entry.InternalCode;
+      dto.Description = entry.Name;
+      dto.ProductImageUrl = entry.ProductImageUrl;
+      dto.ProductType = GetProductType(entry);
+      dto.Presentations = GetPresentations(entry);
+
+      return dto;
     }
 
 
