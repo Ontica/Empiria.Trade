@@ -63,26 +63,22 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
-    static private FixedList<ProductPresentationForSeach> GetProductPresentations(ProductEntry product,
+    static private FixedList<ProductPresentationForSeach> GetProductPresentations(ProductEntry baseProduct,
                                                             string vendorUID, bool withUnits) {
       
-      product.WithUnits = withUnits;
-
-      var _presentations = product.Presentations.OrderBy(x => x.InternalCode.Length)
+      var _presentations = baseProduct.Presentations.OrderBy(x => x.InternalCode.Length)
                                                       .ThenBy(x => x.InternalCode).ToFixedList();
 
-      GetStockForPresentations(product, _presentations);
-
-      var productsByVendor = GetPresentationsByVendor(_presentations, vendorUID);
+      GetStockForPresentations(baseProduct, _presentations);
 
       var productPresentations = new List<ProductPresentationForSeach>();
 
-      if (productsByVendor.Count == 0 && vendorUID != string.Empty && product.Vendor.UID == vendorUID) {
+      if (_presentations.Count == 0) {
         
-        productPresentations.Add(AssignProductPresentation(product));
+        productPresentations.Add(AssignProductPresentation(baseProduct));
       }
 
-      foreach (var p in productsByVendor) {
+      foreach (var p in _presentations) {
 
         productPresentations.Add(AssignProductPresentation(p));
       }
@@ -113,7 +109,7 @@ namespace Empiria.Trade.Products.Adapters {
                $"| Empaque: {presentation.PackingSmallBag} " +
                $"| Unidades: {presentation.PackagingSize} {presentation.BaseUnit.Description}",
         Description = presentation.Description,
-        Units = presentation.Stock,
+        Units = presentation.PackingSmallBag,
         Vendors = MapVendors(presentation)
       };
     }
@@ -205,6 +201,7 @@ namespace Empiria.Trade.Products.Adapters {
         VendorProductUID = presentation.VendorProductUID,
         VendorUID = presentation.Vendor.UID,
         VendorName = presentation.Vendor.Name,
+        Stock = presentation.Stock,
         Sku = "SKU"
       };
 
