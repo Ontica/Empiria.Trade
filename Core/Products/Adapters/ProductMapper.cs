@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -23,10 +24,9 @@ namespace Empiria.Trade.Products.Adapters {
 
     #region Public methods V2
 
-    static internal FixedList<ProductForSearchingDto> MapToPurchaseOrder(FixedList<ProductEntry> products,
-                                                                         string vendorUID) {
+    static internal FixedList<ProductForSearchingDto> MapToPurchaseOrder(FixedList<ProductEntry> products) {
 
-      return products.Select(x => MapProduct(x, vendorUID))
+      return products.Select(x => MapProduct(x))
                                  .Where(x => x.Presentations.Count > 0)
                                  .ToFixedList();
     }
@@ -35,13 +35,13 @@ namespace Empiria.Trade.Products.Adapters {
     static internal FixedList<ProductForSearchingDto> MapToSearcher(FixedList<ProductEntry> products,
                                                                     bool withUnits) {
 
-      return products.Select(x => MapProduct(x, string.Empty, withUnits))
+      return products.Select(x => MapProduct(x, withUnits))
                                  .Where(x => x.Presentations.Count > 0)
                                  .ToFixedList();
     }
 
 
-    static private ProductForSearchingDto MapProduct(ProductEntry product, string vendorUID,
+    static private ProductForSearchingDto MapProduct(ProductEntry product,
                                                      bool withUnits = false) {
 
       return new ProductForSearchingDto() {
@@ -49,7 +49,7 @@ namespace Empiria.Trade.Products.Adapters {
         ProductCode = product.InternalCode,
         Description = product.Description,
         ProductType = GetProductsType(product),
-        Presentations = GetProductPresentations(product, vendorUID, withUnits)
+        Presentations = GetProductPresentations(product, withUnits)
       };
     }
 
@@ -64,26 +64,19 @@ namespace Empiria.Trade.Products.Adapters {
 
 
     static private FixedList<ProductPresentationForSeach> GetProductPresentations(ProductEntry baseProduct,
-                                                            string vendorUID, bool withUnits) {
-      
-      var _presentations = baseProduct.Presentations.OrderBy(x => x.InternalCode.Length)
-                                                      .ThenBy(x => x.InternalCode).ToFixedList();
+                                                                                  bool withUnits) {
 
-      GetStockForPresentations(baseProduct, _presentations);
+      FixedList<ProductEntry> _presentations = GetPresentationsWithStock(baseProduct, withUnits);
 
-      var productPresentations = new List<ProductPresentationForSeach>();
+      var productPresentations = _presentations.Select((x) => AssignProductPresentation((ProductEntry) x))
+                                               .ToFixedList();
 
       if (_presentations.Count == 0) {
-        
-        productPresentations.Add(AssignProductPresentation(baseProduct));
+
+        productPresentations.ToList().Add(AssignProductPresentation(baseProduct));
       }
 
-      foreach (var p in _presentations) {
-
-        productPresentations.Add(AssignProductPresentation(p));
-      }
-
-      return productPresentations.ToFixedList();
+      return new FixedList<ProductPresentationForSeach>(productPresentations);
     }
 
     #endregion Public methods V2
@@ -141,27 +134,21 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
-    static private FixedList<ProductEntry> GetPresentationsByVendor(FixedList<ProductEntry> productPresentations,
-                                                                string vendorUID) {
-      vendorUID = vendorUID == string.Empty ? "Empty" : vendorUID;
-      var vendor = Party.Parse(vendorUID);
+    static private FixedList<ProductEntry> GetPresentationsWithStock(ProductEntry baseProduct,
+                                                                     bool withUnits) {
 
-      if (vendor.Id != -1) {
-        return productPresentations.FindAll(x => x.Vendor.Id == vendor.Id).ToFixedList();
+      var _presentations = baseProduct.Presentations.OrderBy(x => x.InternalCode.Length)
+                                                      .ThenBy(x => x.InternalCode).ToFixedList();
+
+      FixedList<ProductsTotals> stocks = ProductBuilder.GetStockForPresentations(baseProduct);
+
+      _presentations.ToList().ForEach(x => x.Stock = stocks.Find(a => a.Product_Id == x.Id).Stock);
+
+      if (withUnits) {
+        _presentations = _presentations.FindAll(x => x.Stock > 0);
       }
 
-      return new FixedList<ProductEntry>(productPresentations);
-    }
-
-
-    static private void GetStockForPresentations(ProductEntry product,
-                                                     FixedList<ProductEntry> presentations) {
-
-      FixedList<ProductsTotals> stocks = ProductBuilder.GetStockForPresentations(product);
-
-      foreach (var p in presentations) {
-        p.Stock = stocks.FindAll(x=>x.Product_Id == p.Id).Sum(x => x.Stock);
-      }
+      return _presentations;
     }
 
 

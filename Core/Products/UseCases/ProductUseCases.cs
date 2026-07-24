@@ -53,7 +53,7 @@ namespace Empiria.Trade.Products.UseCases {
 
     public FixedList<ProductForSearchingDto> GetProductsForPurchaseOrder(ProductQuery query) {
 
-      return ProductMapper.MapToPurchaseOrder(GetProducts(query), query.SupplierUID);
+      return ProductMapper.MapToPurchaseOrder(GetProducts(query));
     }
 
 
