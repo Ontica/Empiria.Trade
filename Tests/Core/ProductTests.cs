@@ -33,6 +33,28 @@ namespace Empiria.Trade.Tests.Core {
     #region Facts
 
     [Fact]
+    public async Task GetProductsForOrderTest() {
+
+      var usecase = ProductForOrderUseCases.UseCaseInteractor();
+
+      ProductOrderQuery query = new ProductOrderQuery {
+        Keywords = "TMG12X4",
+        OnStock = true,
+        Order = {
+          CustomerUID = "154a6994-caa4-460e-95cd-de7e4a789b55",
+          SalesAgentUID = "",
+          SupplierUID = ""
+        }
+      };
+
+      FixedList<ProductForSearchingDto> sut = await usecase.GetProductsForOrder(query).ConfigureAwait(false);
+
+      Assert.NotNull(sut);
+      Assert.NotEmpty(sut);
+    }
+
+
+    [Fact]
     public void GetProductForSearcherTest() {
 
       var usecase = ProductUseCases.UseCaseInteractor();
@@ -74,29 +96,6 @@ namespace Empiria.Trade.Tests.Core {
       };
 
       FixedList<IProductEntryDto> sut = await usecase.GetProductsListV1(query).ConfigureAwait(false);
-
-      Assert.NotNull(sut);
-      Assert.NotEmpty(sut);
-    }
-
-
-    [Fact]
-    public async Task GetProductsForOrderTest() {
-
-      var usecase = ProductForOrderUseCases.UseCaseInteractor();
-
-      ProductOrderQuery query = new ProductOrderQuery {
-        Keywords = "PPBTA14X34-3500",
-        OnStock = true,
-        Order = {
-          CustomerUID = "b251959f-2b7b-46af-bdf6-09171a6182ee",
-          SalesAgentUID = "",
-          SupplierUID = "",
-
-        }
-      };
-
-      FixedList<IProductEntryDto> sut = await usecase.GetProductsForOrder(query).ConfigureAwait(false);
 
       Assert.NotNull(sut);
       Assert.NotEmpty(sut);

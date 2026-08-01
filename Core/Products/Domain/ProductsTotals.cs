@@ -25,6 +25,12 @@ namespace Empiria.Trade.Products {
     }
 
 
+    [DataField("LOCATION_ID")]
+    public Locations.Location Location {
+      get; internal set;
+    }
+
+
     [DataField("PRODUCT_STOCK")]
     public decimal Stock {
       get; internal set;

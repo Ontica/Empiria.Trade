@@ -40,8 +40,8 @@ namespace Empiria.Trade.Products.Domain {
     }
 
 
-    static public FixedList<ProductsTotals> GetStockForPresentations(ProductEntry product) {
-      return ProductDataService.GetStockForPresentations(product);
+    static public FixedList<ProductsTotals> GetStockAndLocationByBaseProduct(ProductEntry product) {
+      return ProductDataService.GetStocksByBaseProduct(product);
     }
 
     #endregion Public methods V2
@@ -50,17 +50,17 @@ namespace Empiria.Trade.Products.Domain {
 
     internal FixedList<ProductEntry> GetProductsForOrder() {
 
-      FixedList<ProductEntry> products = ProductDataService.GetProductsForOrder(query);
+      FixedList<ProductEntry> products = ProductDataService.GetProductsList(query.Keywords);
 
-      var helper = new ProductHelper(query);
+      var productHelper = new ProductHelper(query);
 
-      FixedList<ProductEntry> productsByStock = helper.GetProductsByStock(products);
+      FixedList<ProductEntry> productsByStock = productHelper.GetProductsByStock(products);
 
       ValidateToGetPriceList(productsByStock);
 
-      FixedList<ProductEntry> productsByCode = helper.GetProductsByCode(productsByStock);
+      FixedList<ProductEntry> productsByCode = productHelper.GetProductsByCode(productsByStock);
 
-      FixedList<ProductEntry> orderedProducts = helper.GetProductsOrderBy(productsByCode);
+      FixedList<ProductEntry> orderedProducts = productHelper.GetProductsOrderBy(productsByCode);
 
       return orderedProducts;
     }

@@ -37,16 +37,13 @@ namespace Empiria.Trade.Sales.UseCases {
     #region Use cases
 
 
-    public async Task<FixedList<IProductEntryDto>> GetProductsForOrder(ProductOrderQuery OrderQuery) {
+    public async Task<FixedList<ProductForSearchingDto>> GetProductsForOrder(ProductOrderQuery OrderQuery) {
 
       using (var usecases = ProductUseCases.UseCaseInteractor()) {
 
         ProductQuery query = MapToProductQuery(OrderQuery);
 
-        FixedList<IProductEntryDto> productDto = await usecases.GetProductsForOrder(query)
-                                                .ConfigureAwait(false);
-
-        return productDto;
+        return await usecases.GetProductsForOrder(query).ConfigureAwait(false);
       }
     }
 

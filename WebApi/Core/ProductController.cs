@@ -93,8 +93,8 @@ namespace Empiria.Trade.WebApi.Core {
       RequireBody(query);
 
       using (var usecases = ProductForOrderUseCases.UseCaseInteractor()) {
-        FixedList<IProductEntryDto> productDto = await usecases.GetProductsForOrder(query)
-                                                .ConfigureAwait(false);
+        FixedList<ProductForSearchingDto> productDto = await usecases.GetProductsForOrder(query)
+                                                                     .ConfigureAwait(false);
         return new CollectionModel(Request, productDto);
       }
     }

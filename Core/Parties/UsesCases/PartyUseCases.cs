@@ -55,7 +55,7 @@ namespace Empiria.Trade.Core.UsesCases {
       return GetPartiesByRole("customer", keywords);
     }
 
-    public FixedList<ContactDto> GetCustomersData(string keywords) {
+    public FixedList<ContactDto> GetCustomersInfo(string keywords) {
       Assertion.Require(keywords, "keywords");
 
       FixedList<Parties.Party> customers = Parties.Party.GetPartiesInRole("customer", keywords)

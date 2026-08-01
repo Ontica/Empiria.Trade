@@ -13,6 +13,7 @@ using Empiria.Parties;
 using Empiria.Ontology;
 using Empiria.Products;
 using Empiria.Trade.Products.Data;
+using Empiria.Locations;
 
 namespace Empiria.Trade.Products {
 
@@ -52,7 +53,7 @@ namespace Empiria.Trade.Products {
     }
 
 
-    internal ProductEntry BaseProduct {
+    public ProductEntry BaseProduct {
       get {
         return ParseId(BaseProductId);
       }
@@ -64,7 +65,12 @@ namespace Empiria.Trade.Products {
       get; private set;
     }
 
-    
+
+    internal FixedList<Location> Locations {
+      get; set;
+    }
+
+
     public decimal Stock {
       get; set;
     }
@@ -155,6 +161,7 @@ namespace Empiria.Trade.Products {
     internal bool IsBaseProduct {
       get; set;
     }
+
 
     internal decimal PriceList1 {
       get; private set;

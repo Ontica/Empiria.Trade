@@ -56,7 +56,7 @@ namespace Empiria.Trade.WebApi.Core {
     public CollectionModel GetCustomerContacts([FromUri] string keywords) {
 
       using (var usecases = PartyUseCases.UseCaseInteractor()) {
-        FixedList<ContactDto> customerContacts = usecases.GetCustomersData(keywords);
+        FixedList<ContactDto> customerContacts = usecases.GetCustomersInfo(keywords);
 
         return new CollectionModel(base.Request, customerContacts);
       }
