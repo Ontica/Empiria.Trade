@@ -8,11 +8,13 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-using Empiria.WebApi;
 using System.Web.Http;
-using Empiria.Trade.Procurement.UseCases;
-using Empiria.Trade.Procurement.Adapters;
+using Empiria.Storage;
+using Empiria.Sujetsa.Reporting;
 using Empiria.Trade.Core;
+using Empiria.Trade.Procurement.Adapters;
+using Empiria.Trade.Procurement.UseCases;
+using Empiria.WebApi;
 
 namespace Empiria.Trade.WebApi.Procurement {
 
@@ -42,6 +44,23 @@ namespace Empiria.Trade.WebApi.Procurement {
         PurchaseOrderDto purchaseOrder = usecases.CreatePurchaseOrder(fields);
 
         return new SingleObjectModel(this.Request, purchaseOrder);
+      }
+    }
+
+
+    [HttpGet]
+    [Route("v4/trade/procurement/purchase-orders/{purchaseOrderUID:guid}/box-labels")]
+    public SingleObjectModel ExportOrderToExcel([FromUri] string purchaseOrderUID) {
+
+      using (var usecases = PurchaseOrderUseCases.UseCaseInteractor()) {
+
+        IOrderDto reportentries = usecases.GetPurchaseOrderDto(purchaseOrderUID);
+
+        var exporter = new OrdersReportingService();
+
+        FileDto report = exporter.PrintLabels(reportentries);
+
+        return new SingleObjectModel(this.Request, report);
       }
     }
 
