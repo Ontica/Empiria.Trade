@@ -108,7 +108,8 @@ namespace Empiria.Trade.Inventory.UseCases {
       var ifNotExistProductinLocation = VerifyProductAndLocationInOrder(order.Id, product.Id, location.Id);
 
       Assertion.Require(location, $"La ubicacion {fields.Location} no existe.");
-      Assertion.Require(order.Warehouse == GetRootLocation(location),
+      
+      Assertion.Require(order.Warehouse == InventoryBuilder.GetRootLocation(location),
                  $"La localización {fields.Location} no existe en el almacen {order.Warehouse.Name}");
 
       Assertion.Require(product, $"El producto con clave {fields.Product} no existe.");
@@ -217,17 +218,6 @@ namespace Empiria.Trade.Inventory.UseCases {
       inventoryEntry.Save();
 
       return GetInventoryOrder(order.UID);
-    }
-
-
-    private Location GetRootLocation(Location location) {
-      var current = location;
-      while (!current.IsRoot) {
-        var parent = current.GetParent<Location>();
-        current = parent;
-      }
-
-      return current;
     }
 
 

@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using Empiria.Locations;
 
 namespace Empiria.Trade.Core {
 
@@ -33,6 +34,18 @@ namespace Empiria.Trade.Core {
       int vendorProducId, string warehouseBinClauses) {
 
       return InventoryData.GetInventoryStockByVendorProduct(vendorProducId, warehouseBinClauses);
+    }
+
+
+    static public Location GetRootLocation(Location location) {
+      var current = location;
+
+      while (!current.IsRoot) {
+        var parent = current.GetParent<Location>();
+        current = parent;
+      }
+
+      return current;
     }
 
 
