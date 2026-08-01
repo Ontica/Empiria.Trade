@@ -63,4 +63,9 @@
     <ProjectReference Include="..\..\central\Central\Empiria.Central.csproj" />
     <ProjectReference Include="..\..\operations.management\Inventory\Core\Empiria.Inventory.Core.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="C1.Win.C1BarCode.2">
+      <HintPath>barcode\C1.Win.C1BarCode.2.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>
