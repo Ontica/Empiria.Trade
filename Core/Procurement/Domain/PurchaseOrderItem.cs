@@ -62,16 +62,24 @@ namespace Empiria.Trade.Core {
 
     #region Properties
 
+    public ProductEntry ProductEntry {
+      get {
+        return ProductEntry.ParseUID(this.Product.UID);
+      }
+    }
+
+
     public decimal PackagingSize {
       get {
-        return ProductEntry.ParseUID(this.Product.UID).PackagingSize;
+        return this.ProductEntry.PackagingSize;
       }
     }
 
 
     public decimal PackingSmallBag {
       get {
-        return ProductEntry.ParseUID(this.Product.UID).PackingSmallBag;
+        //return ProductEntry.ParseUID(this.Product.UID).PackingSmallBag;
+        return this.ProductEntry.PackingSmallBag;
       }
     }
 

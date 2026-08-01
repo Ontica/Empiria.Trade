@@ -107,7 +107,7 @@ namespace Empiria.Trade.Procurement.Adapters {
 
 
 
-    private static object GetProductAttributesShort(ProductEntry product) {
+    static private string GetProductAttributesShort(ProductEntry product) {
       string attrDiametro = product.Diametro != string.Empty ?
                             $"{product.Diametro} " : "";
 
@@ -160,6 +160,7 @@ namespace Empiria.Trade.Procurement.Adapters {
         UID = x.UID,
         VendorProductUID = x.Product.UID,
         ProductCode = x.ProductCode,
+        BaseProductName = x.ProductEntry.BaseProduct.Description,
         ProductName = x.ProductName,
         PresentationName = x.Product.BaseUnit.Description,
         Description = x.Description,

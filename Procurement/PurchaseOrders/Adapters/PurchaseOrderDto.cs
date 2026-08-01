@@ -115,6 +115,11 @@ namespace Empiria.Trade.Procurement.Adapters {
     } = string.Empty;
 
 
+    public string BaseProductName {
+      get; internal set;
+    } = string.Empty;
+
+
     public string ProductName {
       get; internal set;
     } = string.Empty;
@@ -145,12 +150,12 @@ namespace Empiria.Trade.Procurement.Adapters {
     }
 
 
-    public object ProductAttrs {
+    public string ProductAttrs {
       get; internal set;
     }
 
 
-    public object ProductAttrsShort {
+    public string ProductAttrsShort {
       get; internal set;
     }
 

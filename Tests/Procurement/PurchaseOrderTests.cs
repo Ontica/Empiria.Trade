@@ -9,6 +9,8 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using Empiria.StateEnums;
+using Empiria.Storage;
+using Empiria.Sujetsa.Reporting;
 using Empiria.Tests;
 using Empiria.Trade.Core;
 using Empiria.Trade.Procurement.Adapters;
@@ -32,6 +34,25 @@ namespace Empiria.Trade.Tests.Procurement {
 
 
     #region Facts
+
+
+    [Fact]
+    public void ExportSaldosEncerradosTest() {
+
+      using (var usecases = PurchaseOrderUseCases.UseCaseInteractor()) {
+
+        string orderUID = "af9a7ae8-0696-4884-96e2-74abb2b0aa0a";
+
+        IOrderDto order = usecases.GetPurchaseOrderDto(orderUID);
+
+        var exporterService = new OrdersReportingService();
+
+        FileDto excelFileDto = exporterService.PrintLabels(order);
+
+        Assert.NotNull(excelFileDto);
+      }
+    }
+
 
     [Fact]
     public void ClosePurchaseOrderTest() {
@@ -115,7 +136,7 @@ namespace Empiria.Trade.Tests.Procurement {
 
       var usecase = PurchaseOrderUseCases.UseCaseInteractor();
 
-      string purchaseOrderUID = "9dfccf5d-5ab0-4dc2-bcbb-5f07dedf34fb";
+      string purchaseOrderUID = "3ec1fab0-2fc6-4f74-9272-139bee3128fa";
       PurchaseOrderDto sut = usecase.GetPurchaseOrderDto(purchaseOrderUID);
       Assert.NotNull(sut);
     }
