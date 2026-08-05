@@ -10,6 +10,7 @@
 using System;
 
 using Empiria.Data;
+using Empiria.Parties;
 using Empiria.StateEnums;
 
 namespace Empiria.Trade.Core {
@@ -64,7 +65,7 @@ namespace Empiria.Trade.Core {
       var filters = new Filter();
 
       if (query.SupplierUID != string.Empty) {
-        filters.AppendAnd($"Order_Provider_Id = {Parties.Party.Parse(query.SupplierUID).Id}");
+        filters.AppendAnd($"Order_Provider_Id = {Party.Parse(query.SupplierUID).Id}");
       }
 
       if (query.Keywords != string.Empty) {

@@ -8,7 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-
+using Empiria.Parties;
 using Empiria.Services;
 using Empiria.Trade.Core.Adapters;
 
@@ -35,7 +35,7 @@ namespace Empiria.Trade.Core.UsesCases {
 
     public FixedList<CustomerShortAddressDto> GetCustomerAddress(string customerUID) {
 
-      Parties.Party customer = Parties.Party.Parse(customerUID);
+      Party customer = Party.Parse(customerUID);
 
       return CustomerAddressMapper.MapCustomerShortAddresses(CustomerAddress.GetAddresses(customer.Id));
     }

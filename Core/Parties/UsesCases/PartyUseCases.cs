@@ -7,12 +7,9 @@
 *  Summary  : Use cases used to management Parties.                                                          *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
-
-using System;
-
+using Empiria.Parties;
 using Empiria.Services;
 using Empiria.Trade.Core.Adapters;
-
 
 namespace Empiria.Trade.Core.UsesCases {
 
@@ -58,7 +55,7 @@ namespace Empiria.Trade.Core.UsesCases {
     public FixedList<ContactDto> GetCustomersInfo(string keywords) {
       Assertion.Require(keywords, "keywords");
 
-      FixedList<Parties.Party> customers = Parties.Party.GetPartiesInRole("customer", keywords)
+      FixedList<Party> customers = Party.GetPartiesInRole("customer", keywords)
                                                            .FindAll(x => x.Name != string.Empty);
 
       return PartyMapper.MapToCustomers(customers);
@@ -69,25 +66,33 @@ namespace Empiria.Trade.Core.UsesCases {
     }  
 
     public FixedList<NamedEntityDto> GetSalesAgents() {
-      var salesAgentsList = Party.GetSalesAgents();
+
+      var salesAgentsList = Party.GetPartiesInRole("salesperson")
+                                        .FindAll(x => x.Name != string.Empty);
 
       return PartyMapper.MapToMinimalPartyDto(salesAgentsList);
     }
 
     public FixedList<NamedEntityDto> GetInternalSuppliers() {
-      var internalSuppliersList = Party.GetInternalSuppliers();
+
+      var internalSuppliersList = Party.GetPartiesInRole("internal-supplier")
+                                        .FindAll(x => x.Name != string.Empty);
 
       return PartyMapper.MapToMinimalPartyDto(internalSuppliersList);
     }
 
     public FixedList<NamedEntityDto> GetWarehouseMen() {
-      var wharehouseMan = Party.GetWarehouseMen();
+
+      var wharehouseMan = Party.GetPartiesInRole("warehouseman")
+                                        .FindAll(x => x.Name != string.Empty);
 
       return PartyMapper.MapToMinimalPartyDto(wharehouseMan);
     }
 
     static public FixedList<NamedEntityDto> GetWarehouseResponsible() {
-      var wharehouseResponsible = Party.GetWarehouseResponsible();
+
+      var wharehouseResponsible = Party.GetPartiesInRole("warehouseResponsible")
+                                        .FindAll(x => x.Name != string.Empty);
 
       return PartyMapper.MapToMinimalPartyDto(wharehouseResponsible);
     }
@@ -101,9 +106,11 @@ namespace Empiria.Trade.Core.UsesCases {
     #region Private methods
 
     private FixedList<NamedEntityDto> GetPartiesByRole(string role, string keywords) {
+      Assertion.Require(role, "role");
       Assertion.Require(keywords, "keywords");
 
-      var partyList = Party.GetPartiesByRole(role, keywords);
+      FixedList<Party> partyList = Party.GetPartiesInRole(role, keywords)
+                                                  .FindAll(x => x.Name != string.Empty);
 
       return PartyMapper.MapToMinimalPartyDto(partyList);
     }

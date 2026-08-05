@@ -121,7 +121,7 @@ namespace Empiria.Trade.Core {
 
       ValuateItemsToClose();
 
-      this.Close(Parties.Party.ParseWithContact(ExecutionServer.CurrentContact));
+      this.Close(Party.ParseWithContact(ExecutionServer.CurrentContact));
       this.Save();
     }
 
@@ -164,7 +164,7 @@ namespace Empiria.Trade.Core {
     private void GetDefaultFields(PurchaseOrderFields fields, OrderType orderType) {
       fields.OrderTypeUID = orderType.UID;
       fields.ProviderUID = fields.SupplierUID;
-      fields.RequestedByUID = Parties.Party.ParseWithContact(ExecutionServer.CurrentContact).UID;
+      fields.RequestedByUID = Party.ParseWithContact(ExecutionServer.CurrentContact).UID;
       fields.Name = "Sin asignar";
       fields.Observations = fields.Notes;
       fields.StartDate = DateTime.Now;

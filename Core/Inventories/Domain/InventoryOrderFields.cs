@@ -49,10 +49,10 @@ namespace Empiria.Trade.Core {
       _ = InventoryType.Parse(InventoryTypeUID);
 
       Assertion.Require(ResponsibleUID, nameof(ResponsibleUID));
-      _ = Parties.Party.Parse(ResponsibleUID);
+      _ = Party.Parse(ResponsibleUID);
 
       Assertion.Require(RequestedByUID, nameof(RequestedByUID));
-      _ = Parties.Party.Parse(RequestedByUID);
+      _ = Party.Parse(RequestedByUID);
 
       Assertion.Require(Description, nameof(Description));
     }

@@ -14,10 +14,8 @@ using Empiria.Inventory;
 using Empiria.Json;
 using Empiria.Locations;
 using Empiria.Ontology;
-using Empiria.Orders;
 using Empiria.Parties;
 using Empiria.Products;
-using Empiria.Trade.Orders;
 
 namespace Empiria.Trade.Core {
 
@@ -188,7 +186,7 @@ namespace Empiria.Trade.Core {
 
 
     [DataField("Inv_Entry_Posted_By_Id")]
-    public Empiria.Parties.Party PostedBy {
+    public Party PostedBy {
       get; set;
     }
 
@@ -282,7 +280,7 @@ namespace Empiria.Trade.Core {
     protected override void OnSave() {
 
       if (IsNew) {
-        this.PostedBy = Parties.Party.ParseWithContact(ExecutionServer.CurrentContact);
+        this.PostedBy = Party.ParseWithContact(ExecutionServer.CurrentContact);
         this.PostingTime = DateTime.Now;
         this.EntryTime = DateTime.Now;
       }

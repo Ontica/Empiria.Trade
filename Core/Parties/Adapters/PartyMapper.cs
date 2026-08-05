@@ -8,9 +8,7 @@
 *  Summary  : Methods used to map Parties.                                                                   *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
-using System;
-
-using System.Collections.Generic;
+using Empiria.Parties;
 using Empiria.Trade.Core.UsesCases;
 
 namespace Empiria.Trade.Core.Adapters {
@@ -26,7 +24,7 @@ namespace Empiria.Trade.Core.Adapters {
         id = party.Id,
         UID = party.UID,
         Name = party.Name,
-        Phone = party.PhoneNumbers
+        Phone = party.Contact.EMail
       };
 
 
@@ -34,7 +32,7 @@ namespace Empiria.Trade.Core.Adapters {
     }
 
 
-    static internal FixedList<ContactDto> MapToCustomers(FixedList<Parties.Party> customers) {
+    static internal FixedList<ContactDto> MapToCustomers(FixedList<Party> customers) {
       
       var mappedList = customers.Select((x) => MapToCustomer(x));
 
@@ -42,7 +40,7 @@ namespace Empiria.Trade.Core.Adapters {
     }
 
 
-    public static ContactDto MapToCustomer(Parties.Party party) {
+    public static ContactDto MapToCustomer(Party party) {
 
       return new ContactDto {
         UID = party.UID,

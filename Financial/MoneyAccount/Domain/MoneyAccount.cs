@@ -8,13 +8,10 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-
+using Empiria.Parties;
 using Empiria.StateEnums;
 using Empiria.Trade.Financial.Adapters;
 using Empiria.Trade.Financial.Data;
-using Empiria.Trade.Orders;
-using Empiria.Trade.Core;
-using Empiria.Trade.MoneyAccounts;
 
 namespace Empiria.Trade.Financial {
   ///Represents credit money account.
