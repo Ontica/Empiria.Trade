@@ -25,15 +25,15 @@ namespace Empiria.Trade.Sales.Adapters {
       var dto = new SalesOrderItemDto {
         OrderItemUID = orderItem.UID,
         Quantity = orderItem.Quantity,
-        UnitPrice = orderItem.BasePrice,
-        SalesPrice = orderItem.SalesPrice,
+        UnitPrice = orderItem.UnitPrice,
+        //SalesPrice = orderItem.SalesPrice,
         DiscountPolicy = orderItem.DiscountPolicy,
         Discount1 = orderItem.Discount,
         Discount2 = orderItem.AdditionalDiscount,
         //Shipment = orderItem.Shipment,
         //Taxes = orderItem.TaxesIVA,
         //Total = orderItem.Total,
-        Subtotal = orderItem.SubTotal,
+        Subtotal = orderItem.Subtotal_,
         Notes = orderItem.Notes,
         Product = MapBaseProductDto(orderItem),
         Presentation = MapPresentation(orderItem),
@@ -45,10 +45,10 @@ namespace Empiria.Trade.Sales.Adapters {
 
     private static ProductDto MapBaseProductDto(SalesOrderItem orderItem) {
       var dto = new ProductDto {
-        ProductUID = orderItem.VendorProduct.ProductFields.ProductUID,
-        ProductCode = orderItem.VendorProduct.ProductFields.ProductCode,
-        Description = orderItem.VendorProduct.ProductFields.ProductName,
-        ProductImageUrl = orderItem.VendorProduct.ProductFields.ProductImageUrl,
+        //ProductUID = orderItem.VendorProduct.ProductFields.ProductUID,
+        //ProductCode = orderItem.VendorProduct.ProductFields.ProductCode,
+        //Description = orderItem.VendorProduct.ProductFields.ProductName,
+        //ProductImageUrl = orderItem.VendorProduct.ProductFields.ProductImageUrl,
         ProductType = MapProductType(orderItem)
       };
 
@@ -58,15 +58,12 @@ namespace Empiria.Trade.Sales.Adapters {
     private static ProductTypeDto MapProductType(SalesOrderItem orderItem) {
       var dto = new ProductTypeDto {
         ProductTypeUID = "ddddd-dc17-49f5-b378-aa692dc21cdd",
-        Name = orderItem.VendorProduct.ProductFields.ProductGroup.Name,
-        Attributes = new Attributes().GetAttributesList(orderItem.VendorProduct.ProductFields.Attributes) 
+        //Name = orderItem.VendorProduct.ProductFields.ProductGroup.Name,
+        //Attributes = new Attributes().GetAttributesList(orderItem.VendorProduct.ProductFields.Attributes) 
       };
 
       return dto;
     }
-
-    
-
 
     #endregion Public methods
 
@@ -74,11 +71,11 @@ namespace Empiria.Trade.Sales.Adapters {
 
     static private VendorDto MapVendor(SalesOrderItem orderItem) {
       var dto = new VendorDto {
-        VendorProductUID = orderItem.VendorProduct.UID,
-        VendorUID = orderItem.VendorProduct.Vendor.UID,
-        VendorName = orderItem.VendorProduct.Vendor.Name,
-        Sku = orderItem.VendorProduct.SKU,
-        Stock = orderItem.VendorProduct.InputQuantity,
+        //VendorProductUID = orderItem.VendorProduct.UID,
+        //VendorUID = orderItem.VendorProduct.Vendor.UID,
+        //VendorName = orderItem.VendorProduct.Vendor.Name,
+        //Sku = orderItem.VendorProduct.SKU,
+        //Stock = orderItem.VendorProduct.InputQuantity,
         Price = 0
       };
 
@@ -87,16 +84,13 @@ namespace Empiria.Trade.Sales.Adapters {
 
     static private ProductPresentationDto MapPresentation(SalesOrderItem orderItem) {
       var dto = new ProductPresentationDto {
-        PresentationUID = orderItem.VendorProduct.ProductPresentation.UID,
-        Description = orderItem.VendorProduct.ProductPresentation.PresentationDescription,
-        Units = orderItem.VendorProduct.ProductPresentation.QuantityAmount
+        //PresentationUID = orderItem.VendorProduct.ProductPresentation.UID,
+        //Description = orderItem.VendorProduct.ProductPresentation.PresentationDescription,
+        //Units = orderItem.VendorProduct.ProductPresentation.QuantityAmount
       };
 
       return dto;
     }
-
-    
-    
 
     #endregion Private methods
 

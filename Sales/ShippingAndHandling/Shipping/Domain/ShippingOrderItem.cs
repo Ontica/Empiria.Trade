@@ -8,10 +8,6 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
-using System;
-using System.Linq;
-using Empiria.Trade.Orders;
-using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 using Empiria.Trade.Sales.ShippingAndHandling.Data;
 
 namespace Empiria.Trade.Sales.ShippingAndHandling {
@@ -65,7 +61,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
 
 
     [DataField("OrderId")]
-    public Order Order {
+    public SalesOrder Order {
       get; internal set;
     }
 
@@ -111,7 +107,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
 
     private void MapToShippingOrderItem(string orderUID, ShippingEntry shipping) {
 
-      this.Order = Order.Parse(orderUID);
+      this.Order = SalesOrder.Parse(orderUID);
       this.ShippingOrder = shipping;
       
       var existItem = ShippingData.GetOrdersForShippingByShippingId(

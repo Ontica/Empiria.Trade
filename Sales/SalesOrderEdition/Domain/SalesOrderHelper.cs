@@ -74,7 +74,7 @@ namespace Empiria.Trade.Sales {
         var data = new InventoryItems();
         data.OrderId = item.Order.Id;
         data.OrderItemId = item.Id;
-        data.VendorProductUID = item.VendorProduct.VendorProductUID;
+        //data.VendorProductUID = item.VendorProduct.VendorProductUID;
         data.Quantity = item.Quantity;
         data.WarehouseBinUID = WarehouseBin.Parse(-1).WarehouseBinUID;
         

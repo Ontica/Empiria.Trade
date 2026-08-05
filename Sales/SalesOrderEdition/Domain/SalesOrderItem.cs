@@ -13,12 +13,10 @@ using Empiria.Trade.Core;
 using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Sales.Data;
 
-using Empiria.Trade.Orders;
-
 namespace Empiria.Trade.Sales {
 
   /// <summary>Represents a Order item. </summary>
-  public class SalesOrderItem : OrderItem {
+  public class SalesOrderItem : Empiria.Orders.OrderItem {
 
     #region Constructors and parsers
 
@@ -27,7 +25,7 @@ namespace Empiria.Trade.Sales {
     }
 
     public SalesOrderItem(SalesOrder salesOrder, SalesOrderItemsFields fields) {
-      this.Order = salesOrder;
+      this.SalesOrder = salesOrder;
       LoadOrderItem(fields);
     }
 
@@ -35,13 +33,48 @@ namespace Empiria.Trade.Sales {
 
     #region Public properties
 
-    public decimal SubTotal {
+    public SalesOrder SalesOrder {
+      get; private set;
+    }
+
+
+    public decimal Subtotal_ {
       get; set;
     } = 0;
+
+
+    public decimal Shipment {
+      get; protected set;
+    }
+
+
+    public decimal TaxesIVA {
+      get; protected set;
+    }
+
+
+    public int PriceListNumber {
+      get; protected set;
+    }
+
 
     public string DiscountPolicy {
       get; set;
     } = String.Empty;
+
+
+    public decimal AdditionalDiscount {
+      get; protected set;
+    }
+
+    public string Notes {
+      get {
+        return ExtData.Get("notes", string.Empty);
+      }
+      private set {
+        ExtData.SetIfValue("notes", value);
+      }
+    }
 
     #endregion Public properties
 
@@ -51,45 +84,52 @@ namespace Empiria.Trade.Sales {
 
       FixedList<VendorPrices> prices = GetCustomerPriceList();
 
-      this.OrderItemTypeId = 1045;
-      this.Notes = String.IsNullOrEmpty(fields.Notes) ? String.Empty : fields.Notes;
-      this.VendorProduct = fields.GetVendorProduct();
-      this.PriceListNumber = GetPriceListNumber(prices);
-      this.ProductPriceId = GetProductPriceId(VendorProduct.Id);
-      this.Quantity = fields.Quantity;
-      this.BasePrice = GetProductPrice(VendorProduct.Id);
-      this.SalesPrice = GetSalesPrice();
-      this.DiscountPolicy = GetDiscount().ToString();
-      this.Discount = GetDiscount();
-      this.AdditionalDiscount = fields.Discount2;
-      this.SubTotal = GetSubtotal();
-      this.Shipment = 0;
-      this.TaxesIVA = GetTaxesIva(this.SubTotal);
-      this.Total = GetTotal(this.SubTotal);
-      this.ReceivedQty = 0;
-      this.ScheduledTime = ExecutionServer.DateMaxValue;
-      this.ReceptionTime = ExecutionServer.DateMaxValue;
-      this.Reviewed = string.Empty;
+      //this.OrderItemTypeId = 1045;
+      //this.Notes = String.IsNullOrEmpty(fields.Notes) ? String.Empty : fields.Notes;
+      //this.VendorProduct = fields.GetVendorProduct();
+      //this.PriceListNumber = GetPriceListNumber(prices);
+      //this.ProductPriceId = GetProductPriceId(VendorProduct.Id);
+      //this.Quantity = fields.Quantity;
+      //this.BasePrice = GetProductPrice(VendorProduct.Id);
+      //this.SalesPrice = GetSalesPrice();
+      //this.DiscountPolicy = GetDiscount().ToString();
+      //this.Discount = GetDiscount();
+      //this.AdditionalDiscount = fields.Discount2;
+      //this.Subtotal_ = GetSubtotal();
+      //this.Shipment = 0;
+      //this.TaxesIVA = GetTaxesIva(this.Subtotal_);
+      //this.Total = GetTotal(this.Subtotal_);
+      //this.ReceivedQty = 0;
+      //this.ScheduledTime = ExecutionServer.DateMaxValue;
+      //this.ReceptionTime = ExecutionServer.DateMaxValue;
+      //this.Reviewed = string.Empty;
     }
 
+
     public static void SaveSalesOrderItems(FixedList<SalesOrderItem> orderItems, int orderId) {
+      
       foreach (SalesOrderItem orderItem in orderItems) {
-        orderItem.Order = Order.Parse(orderId);
+        orderItem.SalesOrder = SalesOrder.Parse(orderId);
         orderItem.Save();
       }
 
     }
 
+
     protected override void OnSave() {
       SalesOrderItemsData.Write(this);
     }
 
+
     public static FixedList<SalesOrderItem> GetOrderItems(int orderId) {
+     
       var orderItems = SalesOrderItemsData.GetOrderItems(orderId);
+
       foreach (SalesOrderItem orderItem in orderItems) {
         orderItem.DiscountPolicy = "10"; 
-        orderItem.SubTotal = CalculeSubtotal(orderItem);
+        orderItem.Subtotal_ = CalculeSubtotal(orderItem);
       }
+
       return orderItems;
     }
 
@@ -110,24 +150,25 @@ namespace Empiria.Trade.Sales {
     }
 
     private FixedList<VendorPrices> GetCustomerPriceList() {
-      var pricesList = CustomerPrices.GetVendorPrices(this.Order.Customer.Id);
+      var pricesList = CustomerPrices.GetVendorPrices(this.SalesOrder.Customer.Id);
 
       return pricesList;
     }
 
     private decimal GetDiscount() {
-      return SalesDiscountData.GetCustomerDiscount(this.Order.Customer.Id);
+      return SalesDiscountData.GetCustomerDiscount(this.SalesOrder.Customer.Id);
     }
 
     private decimal GetAdditionalDiscount() {
       
       decimal additionalDiscount = 0;
 
-      var discounts = SalesDiscount.GetDiscountByVendor(this.VendorProduct, this.Order.OrderTime);
+      //var discounts = SalesDiscount.GetDiscountByVendor(this.VendorProduct, this.Order.OrderTime);
+      var discounts = new FixedList<SalesDiscount>();
 
       foreach (SalesDiscount discount in discounts) {
-        additionalDiscount += (this.SubTotal * discount.Discount) / 100;
-        this.SubTotal = SubTotal - ((this.SubTotal * discount.Discount) / 100);
+        additionalDiscount += (this.Subtotal_ * discount.Discount) / 100;
+        this.Subtotal_ = Subtotal_ - ((this.Subtotal_ * discount.Discount) / 100);
         this.Notes += $"Tiene un descuento de: {discount.Discount} % por {discount.Description}";
       }
 
@@ -136,24 +177,24 @@ namespace Empiria.Trade.Sales {
     }
 
     private int GetPriceListNumber(FixedList<VendorPrices> vendorPrices) {
-      var vendorPrice = vendorPrices.Find(r => r.VendorId == this.VendorProduct.Vendor.Id);
+      //var vendorPrice = vendorPrices.Find(r => r.VendorId == this.VendorProduct.Vendor.Id);
 
-      return vendorPrice.PriceListId;
+      return new VendorPrices().PriceListId;
     }
 
     private decimal GetSalesPrice() {
-      return (this.Quantity * this.BasePrice);
+      return (this.Quantity * this.UnitPrice);
     }
 
     private decimal GetSubtotal() {
-      var subTotal = this.SalesPrice - ((this.SalesPrice * this.Discount) / 100);
+      var subTotal = this.GetSalesPrice() - ((this.GetSalesPrice() * this.Discount) / 100);
       subTotal = subTotal - ((subTotal * AdditionalDiscount) / 100);
 
       return subTotal;
     }
 
-    static private decimal CalculeSubtotal(OrderItem orderItem) {
-      var subTotal = orderItem.SalesPrice - ((orderItem.SalesPrice * orderItem.Discount) / 100);
+    static private decimal CalculeSubtotal(SalesOrderItem orderItem) {
+      var subTotal = orderItem.GetSalesPrice() - ((orderItem.GetSalesPrice() * orderItem.Discount) / 100);
       subTotal = subTotal - ((subTotal * orderItem.AdditionalDiscount) / 100);
 
       return subTotal;

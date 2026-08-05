@@ -145,13 +145,13 @@ namespace Empiria.Trade.Sales.Adapters {
     private static ISalesOrderDto MapBaseSalesOrderShipmentStatus(SalesOrder order) {
       var dto = new BaseSalesOrderShipmentDto {
         UID = order.UID,
-        OrderNumber = order.OrderNumber,
-        OrderTime = order.OrderTime,
+        OrderNumber = order.OrderNo,
+        OrderTime = order.RequestedTime,
         CustomerName = order.Customer.Name,
         SupplierName = order.Supplier.Name,
         SalesAgentName = order.SalesAgent.Name,
         OrderTotal = order.OrderTotal,
-        Status = order.Status,
+        //Status = order.Status,
         ShippingStatus = GetShippingStatus(order.UID),
         TagType = GetShippingStatusTagType(GetShippingStatus(order.UID)),
         StatusName = SalesOrderMapper.MapOrderStatus(order.Status.ToString())
@@ -163,13 +163,13 @@ namespace Empiria.Trade.Sales.Adapters {
     static public ISalesOrderDto MapBaseSalesOrder(SalesOrder order) {
       var dto = new BaseSalesOrderDto {
         UID = order.UID,
-        OrderNumber = order.OrderNumber,
-        OrderTime = order.OrderTime,
+        OrderNumber = order.OrderNo,
+        OrderTime = order.RequestedTime,
         CustomerName = order.Customer.Name,
         SupplierName = order.Supplier.Name,
         SalesAgentName = order.SalesAgent.Name,
         OrderTotal = order.OrderTotal,
-        Status = order.Status,
+        //Status = order.Status,
         StatusName = SalesOrderMapper.MapOrderStatus(order.Status.ToString())
       };
 
@@ -179,15 +179,15 @@ namespace Empiria.Trade.Sales.Adapters {
     static public ISalesOrderDto MapBaseSalesOrderAuthorization(SalesOrder order) {
       var dto = new BaseSalesOrdersAuthorizationDto {
         UID = order.UID,
-        OrderNumber = order.OrderNumber,
-        OrderTime = order.OrderTime,
+        OrderNumber = order.OrderNo,
+        OrderTime = order.RequestedTime,
         CustomerName = order.Customer.Name,
         SupplierName = order.Supplier.Name,
         SalesAgentName = order.SalesAgent.Name,
         OrderTotal = order.OrderTotal,
         TotalDebt = GetCustomerTotalDebt(order.Customer.Id),
-        Status = order.Status,
-        StatusName = MapOrderAuthorizationStatus(order.AuthorizationStatus.ToString())
+        //Status = order.Status,
+        //StatusName = MapOrderAuthorizationStatus(order.AuthorizationStatus.ToString())
       };
 
       return dto;
@@ -196,15 +196,15 @@ namespace Empiria.Trade.Sales.Adapters {
     static public ISalesOrderDto MapBaseSalesOrderPacking(SalesOrder order) {
       var dto = new BaseSalesOrderPackingDto {
         UID = order.UID,
-        OrderNumber = order.OrderNumber,
-        OrderTime = order.OrderTime,
+        OrderNumber = order.OrderNo,
+        OrderTime = order.RequestedTime,
         CustomerName = order.Customer.Name,
         SupplierName = order.Supplier.Name,
         SalesAgentName = order.SalesAgent.Name,
         OrderTotal = order.OrderTotal,
         Weight = GetWeightTotalPackageByOrder(order),
         TotalPackages = GetTotalPackageByOrder(order),
-        Status = order.Status,
+        //Status = order.Status,
         StatusName = MapOrderPackingStatus(order.Status.ToString())
       };
 

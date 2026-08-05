@@ -9,7 +9,6 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using Empiria.Trade.Core.Catalogues;
-using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 using Empiria.Trade.Sales.ShippingAndHandling.Data;
 
@@ -82,7 +81,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
     }
 
 
-    public Order Order {
+    public Empiria.Orders.Order Order {
       get;
       internal set;
     }
@@ -120,7 +119,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
         OrderPackingUID = packageForItemUID;
       }
 
-      Order = Order.Parse(orderUID);
+      Order = Empiria.Orders.Order.Parse(orderUID);
       PackageType = PackageType.Parse(orderFields.PackageTypeUID);
 
       OrderId = Order.Id;

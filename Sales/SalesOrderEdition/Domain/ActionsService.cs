@@ -8,8 +8,6 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-using Empiria.Trade.Core;
-using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Sales.ShippingAndHandling.UseCases;
 using static Empiria.Trade.Sales.Adapters.SalesOrderFields;
@@ -92,31 +90,35 @@ namespace Empiria.Trade.Sales {
     #region Private Methods
 
     private bool ValidateCancel(QueryType queryType, SalesOrder salesOrder) {
-      return (salesOrder.Status == OrderStatus.Captured && queryType == QueryType.Sales) || OnCreateEvent;
+      //return (salesOrder.Status == OrderStatus.Captured && queryType == QueryType.Sales) || OnCreateEvent;
+      return OnCreateEvent;
     }
 
     private bool ValidateApply(QueryType queryType, SalesOrder salesOrder) {
-      return (salesOrder.Status == OrderStatus.Captured && queryType == QueryType.Sales && !OnApplyEvent) || OnCreateEvent;
-      
+      //return (salesOrder.Status == OrderStatus.Captured && queryType == QueryType.Sales && !OnApplyEvent) || OnCreateEvent;
+      return OnCreateEvent;
     }
 
     private bool ValidateUpdate(QueryType queryType, SalesOrder salesOrder) {
-      return (salesOrder.Status == OrderStatus.Captured && queryType == QueryType.Sales) || OnCreateEvent;
+      //return (salesOrder.Status == OrderStatus.Captured && queryType == QueryType.Sales) || OnCreateEvent;
+      return OnCreateEvent;
     }
 
     private bool ValidateAuthorize(QueryType queryType, SalesOrder salesOrder) {
-      return salesOrder.Status == OrderStatus.Applied && queryType == QueryType.SalesAuthorization && !OnAuthorizeEvent;
+      //return salesOrder.Status == OrderStatus.Applied && queryType == QueryType.SalesAuthorization && !OnAuthorizeEvent;
+      return true;
     }
 
     private bool ValidateDeauthorize(QueryType queryType, SalesOrder salesOrder) {
-      return salesOrder.AuthorizationStatus == OrderAuthorizationStatus.Authorized && queryType == QueryType.SalesAuthorization;
+      //return salesOrder.AuthorizationStatus == OrderAuthorizationStatus.Authorized && queryType == QueryType.SalesAuthorization;
+      return true;
     }
 
     private bool ValidateEditPacking(QueryType queryType, SalesOrder salesOrder) {
 
-      if (salesOrder.Status != OrderStatus.Packing) {
-        return false;
-      }
+      //if (salesOrder.Status != OrderStatus.Packing) {
+      //  return false;
+      //}
 
       if (queryType != QueryType.SalesPacking) {
         return false;
@@ -133,9 +135,9 @@ namespace Empiria.Trade.Sales {
 
     private bool ValidateEditPicking(QueryType queryType, SalesOrder salesOrder) {
 
-      if (salesOrder.Status != OrderStatus.Packing) {
-        return false;
-      }
+      //if (salesOrder.Status != OrderStatus.Packing) {
+      //  return false;
+      //}
 
       if (queryType != QueryType.SalesPacking) {
         return false;
@@ -152,9 +154,9 @@ namespace Empiria.Trade.Sales {
 
     private bool ValidateEditClosePacking(QueryType queryType, SalesOrder salesOrder) {
 
-      if (salesOrder.Status != OrderStatus.Packing) {
-        return false;
-      }
+      //if (salesOrder.Status != OrderStatus.Packing) {
+      //  return false;
+      //}
 
       if (queryType != QueryType.SalesPacking) {
         return false;
@@ -176,11 +178,13 @@ namespace Empiria.Trade.Sales {
     }
 
     private bool ValidateEditShipping(SalesOrder salesOrder) {
-      return salesOrder.Status == OrderStatus.Shipping;
+      //return salesOrder.Status == OrderStatus.Shipping;
+      return true;
     }
 
     private bool ValidateEditSendShipping(SalesOrder salesOrder) {
-      return salesOrder.Status == OrderStatus.Shipping;
+      //return salesOrder.Status == OrderStatus.Shipping;
+      return true;
     }
 
 

@@ -119,7 +119,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
                 var itemDto = new ShippingOrderItemDto();
                 itemDto.OrderUID = item.Order.UID;
-                itemDto.OrderNumber = item.Order.OrderNumber;
+                itemDto.OrderNumber = item.Order.OrderNo;
                 itemDto.OrderTotal = item.OrderTotal;
                 itemDto.Customer = new NamedEntityDto(item.Order.Customer.UID, item.Order.Customer.Name);
                 itemDto.Vendor = new NamedEntityDto(item.Order.SalesAgent.UID, item.Order.SalesAgent.Name);

@@ -10,13 +10,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Emit;
 using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Core.Common;
-using Empiria.Trade.Inventory.Data;
-using Empiria.Trade.Orders;
-using Empiria.Trade.Sales.Adapters;
-using Empiria.Trade.Sales.Data;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 using Empiria.Trade.Sales.ShippingAndHandling.Data;
 
@@ -140,11 +135,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
         label.PackingName = $"{packing.PackageID} / {packageType.Name}";
         label.PackingCount = $"({packingCount}/{packagings.Count}) ";
         label.ShippingGuide = shipping.ShippingGuide;
-        label.ShippingType = item.Order.ShippingMethod;
+        //label.ShippingType = item.Order.ShippingMethod;
         label.Customer = item.Order.Customer.Name;
-        label.CustomerAddress = $"{item.Order.CustomerAddress.Address1} " +
-                                $"CP. {item.Order.Customer.ZipCode}.";
-        label.CustomerPhoneNumber = item.Order.Customer.PhoneNumbers;
+        label.CustomerAddress = $"{item.Order.CustomerAddress.Address1} ";
+                                //$"CP. {item.Order.Customer.ZipCode}.";
+        label.CustomerPhoneNumber = item.Order.CustomerContact.PhoneNumber;
 
         labels.Add(label);
       }
@@ -174,13 +169,13 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
           label.DeliveryNumber = item.ShippingOrder.DeliveryNumber;
           label.ParcelSupplier = SimpleObjectData.Parse(shipping.ParcelSupplierId).Name;
           label.PackingName = $"Orden: ";
-          label.PackingCount = $"{item.Order.OrderNumber} ({packingCount}/{shippingItems.Count}) ";
+          label.PackingCount = $"{item.Order.OrderNo} ({packingCount}/{shippingItems.Count}) ";
           label.ShippingGuide = shipping.ShippingGuide;
-          label.ShippingType = item.Order.ShippingMethod;
+          //label.ShippingType = item.Order.ShippingMethod;
           label.Customer = item.Order.Customer.Name;
-          label.CustomerAddress = $"{item.Order.CustomerAddress.Address1} " +
-                                  $"CP. {item.Order.Customer.ZipCode}.";
-          label.CustomerPhoneNumber = item.Order.Customer.PhoneNumbers;
+          label.CustomerAddress = $"{item.Order.CustomerAddress.Address1} ";
+                                  //$"CP. {item.Order.Customer.ZipCode}.";
+          label.CustomerPhoneNumber = item.Order.CustomerContact.PhoneNumber;
 
           GetPackingTypesByOrder(label, item.Order.UID);
 
@@ -215,12 +210,13 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
         FixedList<ShippingPackage> shippingPackages =
             ShippingData.GetShippingPackagesByPalletUID(shippingPallet.ShippingPalletUID);
 
-        Order order = Order.Parse(shippingPackages.FirstOrDefault().Order.Id);
+        SalesOrder order = SalesOrder.Parse(shippingPackages.FirstOrDefault().Order.Id);
         label.ShippingGuide = shipping.ShippingGuide;
-        label.ShippingType = order.ShippingMethod;
+        //label.ShippingType = order.ShippingMethod;
         label.Customer = order.Customer.Name;
-        label.CustomerAddress = $"{order.CustomerAddress.Address1} CP. {order.Customer.ZipCode}.";
-        label.CustomerPhoneNumber = order.Customer.PhoneNumbers;
+        label.CustomerAddress = $"{order.CustomerAddress.Address1} ";
+                                //$"CP. {order.Customer.ZipCode}.";
+        label.CustomerPhoneNumber = order.CustomerContact.PhoneNumber;
         label.WithPallets = true;
         GetPackingTypeCountByPallet(label, shippingPackages);
 
@@ -276,22 +272,22 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       BillingDto billing = new BillingDto {
         OrderUID = order.UID,
-        OrderNumber = order.OrderNumber,
+        OrderNumber = order.OrderNo,
         Customer = order.Customer.Name,
         CustomerAddress = order.CustomerAddress.Address1,
         CustomerContact = order.CustomerContact.Name,
         CustomerPhone = order.CustomerContact.PhoneNumber,
         Supplier = order.Supplier.Name,
-        SupplierAddress = order.Supplier.AddressLine1,
-        SupplierPhonoNumber = order.Supplier.PhoneNumbers,
+        //SupplierAddress = order.Supplier.AddressLine1,
+        //SupplierPhonoNumber = order.Supplier.PhoneNumbers,
         SalesAgent = order.SalesAgent.Name,
-        PaymentCondition = order.PaymentCondition,
-        ShippingMethod = order.ShippingMethod,
-        OrderNotes = order.Notes,
+        PaymentCondition = order.PaymentConditions,
+        //ShippingMethod = order.ShippingMethod,
+        OrderNotes = order.Observations,
         ItemsCount = order.ItemsCount,
         BillingSubtotal = Math.Round(order.ItemsTotal, 2),
         ShipmentTotal = Math.Round(order.Shipment, 2),
-        Taxes = Math.Round(order.Taxes, 2),
+        Taxes = Math.Round(order.Tax, 2),
         BillingTotal = Math.Round(order.OrderTotal, 2),
         BillingItems = GetBillingItems(order)
 
@@ -307,16 +303,16 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       foreach (var orderItem in order.SalesOrderItems) {
         var item = new BillingItemDto {
 
-          ProductPresentation = orderItem.VendorProduct.ProductPresentation.PresentationName,
-          ProductCode = orderItem.VendorProduct.ProductFields.ProductCode,
-          ProductName = orderItem.VendorProduct.ProductFields.ProductName,
+          //ProductPresentation = orderItem.VendorProduct.ProductPresentation.PresentationName,
+          //ProductCode = orderItem.VendorProduct.ProductFields.ProductCode,
+          //ProductName = orderItem.VendorProduct.ProductFields.ProductName,
           Quantity = orderItem.Quantity,
-          UnitPrice = orderItem.BasePrice,
-          SalesPrice = orderItem.SalesPrice,
+          UnitPrice = orderItem.UnitPrice,
+          //SalesPrice = orderItem.SalesPrice,
           DiscountPolicy = orderItem.DiscountPolicy,
           Discount1 = orderItem.Discount,
           Discount2 = orderItem.AdditionalDiscount,
-          Subtotal = orderItem.SubTotal
+          Subtotal = orderItem.Subtotal_
         };
         billingItems.Add(item);
       }

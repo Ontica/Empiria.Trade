@@ -8,10 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
-using System;
-using Empiria.Trade.Core;
 using Empiria.Trade.Core.Catalogues;
-using Empiria.Trade.Orders;
 
 namespace Empiria.Trade.Sales.ShippingAndHandling
 {
@@ -51,7 +48,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling
 
 
     [DataField("OrderId")]
-    public Order Order {
+    public Empiria.Orders.Order Order {
       get; private set;
     }
 

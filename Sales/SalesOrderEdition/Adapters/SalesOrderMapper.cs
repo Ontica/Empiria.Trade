@@ -7,14 +7,12 @@
 *  Summary  : Methods used to map Order.                                                                     *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
-using System;
+
 using System.Collections.Generic;
 
-using Empiria.Trade.Core;
 using Empiria.Trade.Core.Adapters;
 using Empiria.Trade.Financial.Adapters;
 using Empiria.Trade.Financial.UseCases;
-using Empiria.Trade.Orders;
 
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 using Empiria.Trade.Sales.ShippingAndHandling.UseCases;
@@ -89,26 +87,25 @@ namespace Empiria.Trade.Sales.Adapters
 
       var dto = new OrderDataDto {
         UID = order.UID,
-        OrderNumber = order.OrderNumber,
-        OrderTime = order.OrderTime,
-        Notes = order.Notes,
-        Status = order.Status,
+        OrderNumber = order.OrderNo,
+        OrderTime = order.RequestedTime,
+        Notes = order.Observations,
+        //Status = order.Status,
       
         StatusName = MapOrderStatus(order.Status.ToString()),
-        // TODO CAMBIAR TODAS LAS REFERENCIAS DE PARTY
         //Customer = MapCustomer(order.Customer),
         Customer = MapCustomer(Parties.Party.Parse(-1)),
         CustomerAddress = CustomerAddressMapper.MapShortAddress(order.CustomerAddress),
         CustomerContact = CustomerConctacMapper.MapCustomerContact(order.CustomerContact), 
         Supplier = order.Supplier.MapToNamedEntity(),
         SalesAgent = order.SalesAgent.MapToNamedEntity(),
-        ShippingMethod = order.ShippingMethod,
-        PaymentCondition = order.PaymentCondition,
+        //ShippingMethod = order.ShippingMethod,
+        PaymentCondition = order.PaymentConditions,
         PriceList = order.PriceList,
         ItemsCount = order.ItemsCount,
         ItemsTotal = order.ItemsTotal,
         Shipment = order.Shipment,
-        Taxes = order.Taxes,
+        Taxes = order.Tax,
         OrderTotal = order.OrderTotal
       };
 
@@ -121,9 +118,9 @@ namespace Empiria.Trade.Sales.Adapters
 
     private static AuthorizationDto MapAuthorizationDto(SalesOrder order) {
       var dto = new AuthorizationDto {
-        AuthorizationStatus = order.AuthorizationStatus,
+        //AuthorizationStatus = order.AuthorizationStatus,
         AuthorizationTime = order.AuthorizationTime,
-        AuthorizatedById = order.AuthorizatedById
+        //AuthorizatedById = order.AuthorizatedById
       };
 
       return dto;

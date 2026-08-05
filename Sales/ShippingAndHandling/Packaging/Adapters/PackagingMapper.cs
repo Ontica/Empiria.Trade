@@ -7,16 +7,9 @@
 *  Summary  : Methods used to map packaging.                                                                 *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
-using System;
-using System.Collections;
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using Empiria.Trade.Core;
 using Empiria.Trade.Core.Catalogues;
-using Empiria.Trade.Inventory;
-using Empiria.Trade.Inventory.Adapters;
-using Empiria.Trade.Orders;
 using Empiria.Trade.Products;
 using Empiria.Trade.Products.Adapters;
 
@@ -162,8 +155,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
     private static PickingDataDto MapPickingData(PickingData pickingData) {
       var picking = new PickingDataDto();
-      var responsible = Party.Parse(pickingData.ResponsibleId);
-      var assignedTo = Party.Parse(pickingData.AssignedToId);
+      var responsible = Parties.Party.Parse(pickingData.ResponsibleId);
+      var assignedTo = Parties.Party.Parse(pickingData.AssignedToId);
       
       picking.OrderUID = pickingData.OrderUID;
       //picking.InventoryOrderNo = pickingData.InventoryOrderNo;

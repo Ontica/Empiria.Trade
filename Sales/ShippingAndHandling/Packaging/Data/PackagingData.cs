@@ -9,10 +9,8 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using Empiria.Data;
-using Empiria.Trade.Core;
+using Empiria.Orders;
 using Empiria.Trade.Core.Catalogues;
-using Empiria.Trade.Orders;
-using Newtonsoft.Json;
 
 namespace Empiria.Trade.Sales.ShippingAndHandling.Data
 {
@@ -24,7 +22,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data
 
     internal FixedList<Packing> GetPackagingForOrder(string orderUid) {
 
-      int orderId = Order.Parse(orderUid).Id;
+      int orderId = Empiria.Orders.Order.Parse(orderUid).Id;
 
       string sql = "SELECT PACK.OrderPackingId, PACK.OrderPackingUID, ITEM.PackingItemId, " +
                    "ITEM.PackingItemUID, PACK.OrderId, ITEM.OrderItemId, PACK.PackageTypeId, " +
@@ -42,7 +40,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data
 
     static internal FixedList<PackageForItem> GetPackagesForItemsByOrder(string orderUid) {
 
-      int orderId = Order.Parse(orderUid).Id;
+      int orderId = Empiria.Orders.Order.Parse(orderUid).Id;
 
       string sql = $"SELECT * FROM TRDPackaging WHERE OrderId = {orderId}";
 
@@ -112,7 +110,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data
 
     internal FixedList<OrderItemTemp> GetOrderItems(string orderUid) {
 
-      int orderId = Order.Parse(orderUid).Id;
+      int orderId = Empiria.Orders.Order.Parse(orderUid).Id;
 
       string sql = $"SELECT OrderId, OrderItemId, OrderItemUID, VendorProductId, Quantity " +
                    $"FROM TRDOrderItems WHERE OrderItemStatus = 'A' AND OrderId = {orderId}";
@@ -187,7 +185,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data
 
 
     [DataField("OrderId")]
-    public Order Order {
+    public Empiria.Orders.Order Order {
       get;
       protected set;
     }

@@ -9,8 +9,9 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Linq;
-
+using Empiria.Orders;
 using Empiria.Services;
+using Empiria.StateEnums;
 using Empiria.Trade.Core;
 using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Core.UsesCases;
@@ -40,6 +41,19 @@ namespace Empiria.Trade.Sales.UseCases {
 
     #region Use cases
 
+    public ISalesOrderDto ProcessSalesOrderV2(SalesOrderFields fields) {
+      Assertion.Require(fields, "fields");
+
+      var orderType = OrderType.SalesOrder;
+
+      var order = new SalesOrder(fields, orderType);
+
+      
+
+      return SalesOrderMapper.Map(order);
+    }
+
+
     public ISalesOrderDto ProcessSalesOrder(SalesOrderFields fields) {
       Assertion.Require(fields, "fields");
 
@@ -48,11 +62,13 @@ namespace Empiria.Trade.Sales.UseCases {
       ValidateCustomerAddress(fields.CustomerUID, fields.CustomerAddressUID);
       ValidateOrderItemsExistence(fields.Items);
 
+      var orderType = OrderType.SalesOrder;
+
       if (fields.UID.Length != 0) {
         order = SalesOrder.Parse(fields.UID);
         order.Update(fields);
       } else {
-        order = new SalesOrder(fields);
+        order = new SalesOrder(fields, orderType);
       }
 
       return SalesOrderMapper.Map(order);
@@ -65,8 +81,10 @@ namespace Empiria.Trade.Sales.UseCases {
       ValidateCustomerAddress(fields.CustomerUID, fields.CustomerAddressUID);
       ValidateShippingMethod(fields);
       ValidateOrderItemsExistence(fields.Items);
-            
-      var order = new SalesOrder(fields);
+
+      var orderType = OrderType.SalesOrder;
+
+      var order = new SalesOrder(fields, orderType);
 
       order.Save();
 
@@ -132,7 +150,7 @@ namespace Empiria.Trade.Sales.UseCases {
 
     public FixedList<ISalesOrderDto> GetOrdersByCustomerUID(string customerUID) {
       var helper = new SalesOrderHelper();
-      var customer = Party.Parse(customerUID);
+      var customer = Parties.Party.Parse(customerUID);
 
       FixedList<SalesOrder> salesOrders = helper.GetOrdersByCustomer(customer.Id);
 
@@ -179,7 +197,7 @@ namespace Empiria.Trade.Sales.UseCases {
       var order = SalesOrder.Parse(orderUID);
       order.GetOrderTotal();
 
-      switch (order.PaymentCondition) {
+      switch (order.PaymentConditions) {
         case "Contado": order.AuthorizePayment(); break;
         case "Credito": SetCreditOrder(order); break;
       }
@@ -211,8 +229,9 @@ namespace Empiria.Trade.Sales.UseCases {
     public ISalesOrderDto UpdateSalesOrder(SalesOrderFields fields) {
       Assertion.Require(fields, "fields");
                   
-      if (fields.Status != OrderStatus.Captured) {
-        Assertion.RequireFail($"It is only possible to update orders in the Captured status your order status is:{fields.Status}");
+      if (fields.Status != EntityStatus.Pending) { // OrderStatus.Captured
+        Assertion.RequireFail($"It is only possible to update orders in the Captured status, " +
+                              $"your order status is:{fields.Status}");
       }
 
       ValidateCustomerAddress(fields.CustomerUID, fields.CustomerAddressUID);
@@ -238,8 +257,9 @@ namespace Empiria.Trade.Sales.UseCases {
 
       var order = SalesOrder.Parse(orderUID);
 
-      if (order.Status != OrderStatus.Applied) {
-        Assertion.RequireFail($"It is only possible to Authorize orders in the Applied status, your order status is: {order.Status}");
+      if (order.Status != EntityStatus.Active) { // OrderStatus.Applied
+        Assertion.RequireFail($"It is only possible to Authorize orders in the Applied status, " +
+                              $"your order status is: {order.Status}");
       }
 
       order.Authorize();
@@ -256,8 +276,9 @@ namespace Empiria.Trade.Sales.UseCases {
 
       var order = SalesOrder.Parse(orderUID);
 
-      if (order.Status != OrderStatus.Packing) {
-        Assertion.RequireFail($"It is only possible to Supply orders in the Packing status, your order status is: {order.Status}");
+      if (order.Status != EntityStatus.OnReview) { // OrderStatus.Packing
+        Assertion.RequireFail($"It is only possible to Supply orders in the Packing status, " +
+                              $"your order status is: {order.Status}");
       }
 
       order.Supply();
@@ -284,7 +305,7 @@ namespace Empiria.Trade.Sales.UseCases {
         TransactionTime = DateTime.Now,
         CreditAmount = order.OrderTotal,
         PayableOrderId = order.Id,
-        ExtData = order.OrderNumber
+        ExtData = order.OrderNo
       };
       var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
 
@@ -313,7 +334,8 @@ namespace Empiria.Trade.Sales.UseCases {
         var productExistence = GetItemExistence(vendor.Id);
 
         if (productExistence < item.Quantity) {
-          throw Assertion.EnsureNoReachThisCode($"No hay existencia suficiente. del producto {vendor.ProductFields.ProductCode} {vendor.ProductFields.ProductName}");
+          throw Assertion.EnsureNoReachThisCode($"No hay existencia suficiente. del producto " +
+            $"{vendor.ProductFields.ProductCode} {vendor.ProductFields.ProductName}");
         }
       }
 

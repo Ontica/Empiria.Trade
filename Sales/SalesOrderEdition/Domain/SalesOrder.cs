@@ -9,10 +9,10 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Collections.Generic;
-using Empiria.Services;
-
+using Empiria.Financial;
+using Empiria.Orders;
+using Empiria.Parties;
 using Empiria.Trade.Core;
-using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Sales.Data;
 
@@ -28,26 +28,64 @@ namespace Empiria.Trade.Sales {
       //no-op
     }
 
+    public SalesOrder(SalesOrderFields fields, OrderType orderType) : base(orderType) {
+      Assertion.Require(fields, nameof(fields));
+
+      if (IsNew) {
+        OrderNo = "P-" + EmpiriaString.BuildRandomString(10).ToUpperInvariant();
+      }
+
+      Update(fields);
+    }
+
     public SalesOrder(SalesOrderFields fields) {
       Update(fields);
     }
 
-    static public new SalesOrder Parse(int id) {
-      return BaseObject.ParseId<SalesOrder>(id);
-    }
+    static public new SalesOrder Parse(int id) => ParseId<SalesOrder>(id);
 
-    static public new SalesOrder Parse(string uid) {
-      return BaseObject.ParseKey<SalesOrder>(uid);
-    }
+    static public new SalesOrder Parse(string uid) => ParseKey<SalesOrder>(uid);
 
+    static public new SalesOrder Empty => ParseEmpty<SalesOrder>();
+
+    public override FixedList<IPayableEntity> GetPayableEntities() {
+
+      return new FixedList<IPayableEntity>();
+    }
 
     #endregion Constructors and parsers
 
     #region Public properties
 
+    public Party Customer {
+      get; protected set;
+    }
+
+
+    public CustomerContact CustomerContact {
+      get; protected set;
+    }
+
+
+    public CustomerAddress CustomerAddress {
+      get; protected set;
+    }
+
+
+    public Party Supplier {
+      get; protected set;
+    }
+
+
+    public Party SalesAgent {
+      get; protected set;
+    }
+
+
     public FixedList<SalesOrderItem> SalesOrderItems {
       get; private set;
     } = new FixedList<SalesOrderItem>();
+
 
     public int ItemsCount {
       get; private set;
@@ -58,68 +96,93 @@ namespace Empiria.Trade.Sales {
       get; private set;
     } = 0m;
 
+
     public decimal Shipment {
       get; private set;
     } = 0m;
+
 
     public decimal Discount {
       get; private set;
     } = 0m;
 
-    public decimal Taxes {
+
+    public decimal Tax {
       get; private set;
     } = 0m;
+
 
     public decimal OrderTotal {
       get; private set;
     } = 0m;
 
+
     public string PriceList {
       get; private set;
-    }  
-   
+    }
+
+
     public TransactionActions Actions {
       get; private set;
     } = new TransactionActions();
+
+
+    public string ShippingMethod {
+      get {
+        return ConditionsData.Get("shippingMethod", string.Empty);
+      }
+      private set {
+        ConditionsData.SetIfValue("shippingMethod", value);
+      }
+    }
+
+
+    public DateTime ScheduledTime {
+      get {
+        return ConditionsData.Get("scheduledTime", DateTime.MaxValue);
+      }
+      private set {
+        ConditionsData.SetIfValue("scheduledTime", value);
+      }
+    }
 
     #endregion
 
     #region Public methods
 
     protected override void OnSave() {
-      if (IsNew) {
-        OrderNumber = "P-" + EmpiriaString.BuildRandomString(10).ToUpperInvariant();
-        OrderTime = DateTime.Now;
-        Status = OrderStatus.Captured;
- 
-      }
 
       SalesOrderData.Write(this);
       SalesOrderItem.SaveSalesOrderItems(this.SalesOrderItems, this.Id);
     }
 
     public void Apply() {
-      Status = OrderStatus.Applied;
-      AuthorizationStatus = OrderAuthorizationStatus.Pending;
+      //Status = OrderStatus.Applied;
+      //AuthorizationStatus = OrderAuthorizationStatus.Pending;
 
       SalesOrderData.Write(this);
-                   
+
       SetOrderValues();
 
       var actions = ActionsService.Load();
       actions.OnApply();
       this.Actions = actions.SetActions(this, QueryType.Sales);
+
+      // TODO VERIFICAR ACCIONES
+
+      this.Activate();
+      this.Save();
     }
 
 
     public void Authorize() {
-      AuthorizationStatus = OrderAuthorizationStatus.Authorized;
-      this.AuthorizationTime = DateTime.Now;
-      this.AuthorizatedById = ExecutionServer.CurrentUserId;
+      //AuthorizationStatus = OrderAuthorizationStatus.Authorized;
+      //this.AuthorizationTime = DateTime.Now;
+      //this.AuthorizatedById = ExecutionServer.CurrentUserId;
 
-      this.Status = OrderStatus.Packing;
-      //AuthorizationStatus = OrderAuthorizationStatus.ToSupply;
-           
+      //this.Status = OrderStatus.Packing;
+      ////AuthorizationStatus = OrderAuthorizationStatus.ToSupply;
+
 
       SalesOrderData.Write(this);
 
@@ -131,8 +194,8 @@ namespace Empiria.Trade.Sales {
     }
 
     public void Deauthorize() {
-      Status = OrderStatus.Applied;
-      AuthorizationStatus = OrderAuthorizationStatus.Pending;
+      //Status = OrderStatus.Applied;
+      //AuthorizationStatus = OrderAuthorizationStatus.Pending;
 
       SalesOrderData.Write(this);
 
@@ -144,8 +207,8 @@ namespace Empiria.Trade.Sales {
     }
 
     public void AuthorizePayment() {
-      this.Status = OrderStatus.Packing;
-      AuthorizationStatus = OrderAuthorizationStatus.ToSupply;
+      //this.Status = OrderStatus.Packing;
+      //AuthorizationStatus = OrderAuthorizationStatus.ToSupply;
 
       SalesOrderData.Write(this);
 
@@ -159,7 +222,7 @@ namespace Empiria.Trade.Sales {
 
 
     public void Cancel() {
-      Status = OrderStatus.Cancelled;
+      //Status = OrderStatus.Cancelled;
 
       SalesOrderData.Write(this);
       SalesOrderItemsData.CancelOrderItems(this.Id);
@@ -172,28 +235,28 @@ namespace Empiria.Trade.Sales {
     }
 
     public void Close() {
-      this.Status = OrderStatus.Closed;
+      //this.Status = OrderStatus.Closed;
 
-      AuthorizationStatus = OrderAuthorizationStatus.Empty;
+      //AuthorizationStatus = OrderAuthorizationStatus.Empty;
 
       SalesOrderData.Write(this);
       SetOrderValues();
     }
 
     public void Deliver() {
-      this.Status = OrderStatus.Delivery;
+      //this.Status = OrderStatus.Delivery;
 
-      AuthorizationStatus = OrderAuthorizationStatus.Suppled;
+      //AuthorizationStatus = OrderAuthorizationStatus.Suppled;
 
       SalesOrderData.Write(this);
       SetOrderValues();
     }
-       
+
 
     public void Supply() {
-      this.Status = OrderStatus.Shipping;
+      //this.Status = OrderStatus.Shipping;
 
-      AuthorizationStatus = OrderAuthorizationStatus.Suppled;
+      //AuthorizationStatus = OrderAuthorizationStatus.Suppled;
 
       SalesOrderData.Write(this);
       SetOrderValues();
@@ -205,24 +268,18 @@ namespace Empiria.Trade.Sales {
 
     internal void Update(SalesOrderFields fields) {
 
-      this.OrderTypeId = 1025;
-      this.OrderTime = fields.OrderTime;
-      this.Customer = fields.GetCustomer();
+      //this.Customer = fields.GetCustomer();
       this.Supplier = fields.GetSupplier();
       this.SalesAgent = fields.GetSalesAgent();
       this.CustomerAddress = fields.GetCustomerAddress();
       this.CustomerContact = fields.GetCustomerContact();
-      this.Notes = fields.Notes;
-      this.Status = fields.Status;
-      this.ShippingMethod = fields.ShippingMethod;
-      this.PaymentCondition = fields.PaymentCondition;
+      //this.ShippingMethod = fields.ShippingMethod;
       this.PriceList = GetPriceList();
       this.SalesOrderItems = LoadSalesOrderItems(fields.Items);
       this.ScheduledTime = ExecutionServer.DateMaxValue;
-      this.ReceptionTime = ExecutionServer.DateMaxValue;
-      this.PedimentoImportacion = string.Empty;
-      this.CartaPorte = string.Empty;
-
+      //this.ReceptionTime = ExecutionServer.DateMaxValue;
+      //this.PedimentoImportacion = string.Empty;
+      //this.CartaPorte = string.Empty;
 
       SetOrderTotals();
 
@@ -230,7 +287,7 @@ namespace Empiria.Trade.Sales {
       actions.OnCreate();
       this.Actions = actions.SetActions(this, QueryType.Sales);
     }
-      
+
 
     public void CalculateSalesOrder() {
       this.SetOrderValues();
@@ -241,7 +298,7 @@ namespace Empiria.Trade.Sales {
 
       this.Actions = actions.SetActions(this, queryType);
     }
-       
+
     public void GetOrderTotal() {
       this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id);
       SetOrderTotals();
@@ -270,19 +327,19 @@ namespace Empiria.Trade.Sales {
     private void SetOrderTotals() {
       this.OrderTotal = 0;
       this.ItemsTotal = 0;
-      this.Taxes = 0;
+      this.Tax = 0;
       this.ItemsCount = this.SalesOrderItems.Count;
 
       foreach (SalesOrderItem item in this.SalesOrderItems) {
-        this.ItemsTotal += item.SubTotal;
+        this.ItemsTotal += item.Subtotal_;
         this.Shipment += item.Shipment;
         this.Discount += item.Discount;
-        this.Taxes += item.TaxesIVA;
-        this.OrderTotal += item.Total;
+        this.Tax += item.TaxesIVA;
+        this.OrderTotal += item.Subtotal;
       }
 
     }
-  
+
     private string GetPriceList() {
       var pricesList = CustomerPrices.GetVendorPrices(this.Customer.Id);
 
@@ -290,7 +347,6 @@ namespace Empiria.Trade.Sales {
 
       return vendorPrice.PriceListId.ToString();
     }
-    
 
     #endregion Helpers
 

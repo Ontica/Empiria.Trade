@@ -10,12 +10,8 @@
 
 using System;
 using Empiria.Trade.Core.Common;
-using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.ShippingAndHandling.Data;
-using Empiria.Trade.Sales.ShippingAndHandling.Domain;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
-using Empiria.Trade.Inventory;
-using System.Linq;
 using Empiria.Trade.Core;
 
 namespace Empiria.Trade.Sales.ShippingAndHandling {
@@ -185,7 +181,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
             this.CustomerAmount = fields.ShippingData.CustomerAmount;
             this.ShippingDate = DateTime.Now;
             this.DeliveryDate = DateTime.Now;
-            this.ShippingMethod = Order.Parse(fields.Orders.First()).ShippingMethod;
+            //this.ShippingMethod = SalesOrder.Parse(fields.Orders.First()).ShippingMethod;
             this.Status = fields.ShippingData.Status;
         }
 

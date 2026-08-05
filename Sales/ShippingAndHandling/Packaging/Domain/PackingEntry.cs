@@ -7,9 +7,8 @@
 *  Summary  : Represents a Packing item for order.                                                           *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
-using System;
-using Empiria.Trade.Core;
-using Empiria.Trade.Orders;
+
+using Empiria.Orders;
 using Empiria.Trade.Products;
 
 namespace Empiria.Trade.Sales.ShippingAndHandling {
@@ -277,7 +276,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
     }
 
 
-    public Party Vendor {
+    public Parties.Party Vendor {
       get; set;
     }
 
@@ -290,11 +289,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
     public void MergeCommonFieldsData(int orderItemId) {
 
       var orderItem = OrderItem.Parse(orderItemId);
-      var vendorProduct = VendorProduct.Parse(orderItem.VendorProduct.Id);
-      
-      this.ProductImageUrl = orderItem.VendorProduct.ProductFields.ProductImageUrl;
+      var vendorProduct = VendorProduct.Parse(0); // orderItem.VendorProduct.Id
+
+      //this.ProductImageUrl = orderItem.VendorProduct.ProductFields.ProductImageUrl;
       this.OrderItemUID = orderItem.UID;
-      this.VendorProductId = orderItem.VendorProduct.Id;
+      //this.VendorProductId = orderItem.VendorProduct.Id;
       this.Product = vendorProduct.ProductFields;
       this.Presentation = vendorProduct.ProductPresentation;
       this.Vendor = vendorProduct.Vendor;

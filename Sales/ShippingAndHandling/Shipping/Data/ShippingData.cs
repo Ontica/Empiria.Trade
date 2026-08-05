@@ -7,16 +7,10 @@
 *  Summary  : Provides data read and write methods for shipping.                                             *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
-using System;
-using System.Collections;
-using System.Collections.Generic;
+
 using Empiria.Data;
-using Empiria.DataTypes;
-using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Core.Common;
-using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
-using Empiria.Trade.Sales.ShippingAndHandling.Domain;
 
 namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
 
@@ -228,7 +222,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
 
       foreach (var uid in orderUIDs) {
 
-        int orderId = Order.Parse(uid).Id;
+        int orderId = Empiria.Orders.Order.Parse(uid).Id;
         orderIdList += $"{orderId},";
       }
 

@@ -11,7 +11,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 using Empiria.Trade.Sales.ShippingAndHandling.Data;
 
@@ -139,7 +138,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
         internal ShippingEntry GetShippingByOrderUID(string orderUID) {
 
-            string orderId = Order.Parse(orderUID).Id.ToString();
+            string orderId = Empiria.Orders.Order.Parse(orderUID).Id.ToString();
             var ordersForShipping = ShippingData.GetOrdersForShippingByOrderUID(orderId);
 
             var helper = new ShippingHelper();
