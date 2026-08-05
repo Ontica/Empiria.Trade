@@ -10,13 +10,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Empiria.Trade.Core;
+
 using Empiria.Trade.Core.Catalogues;
-using Empiria.Trade.Inventory;
-using Empiria.Trade.Inventory.Data;
-using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.ShippingAndHandling.Data;
-using Newtonsoft.Json;
 
 namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
 {

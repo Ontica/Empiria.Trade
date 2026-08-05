@@ -8,9 +8,10 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-
+using Empiria.Orders;
+using Empiria.Parties;
+using Empiria.StateEnums;
 using Empiria.Trade.Core;
-using Empiria.Trade.Orders;
 
 namespace Empiria.Trade.Sales.Adapters {
 
@@ -25,7 +26,7 @@ namespace Empiria.Trade.Sales.Adapters {
     
 
   /// <summary>Input DTO for sales orders.</summary>
-  public class SalesOrderFields {
+  public class SalesOrderFields : OrderFields {
 
     #region Constructors and parsers
 
@@ -37,11 +38,6 @@ namespace Empiria.Trade.Sales.Adapters {
 
     #region Properties
 
-    public string UID {
-      get; set;
-    } = string.Empty;
-
-
     public string OrderNumber {
       get; set;
     } = string.Empty;
@@ -51,11 +47,10 @@ namespace Empiria.Trade.Sales.Adapters {
       get; set;
     } = DateTime.Today;
 
-    public string Notes {
-      get; set;
-    } = string.Empty;
+    //Notes = string Observations
 
-    public OrderStatus Status {
+    //OrderStatus
+    public EntityStatus Status {
       get; set;
     }
 
@@ -107,7 +102,7 @@ namespace Empiria.Trade.Sales.Adapters {
       return Party.Parse(this.SalesAgentUID);
     }
 
-    internal  Party GetSupplier() {
+    internal Party GetSupplier() {
       return Party.Parse(this.SupplierUID);
     }
 

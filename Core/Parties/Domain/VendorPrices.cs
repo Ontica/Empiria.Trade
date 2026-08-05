@@ -7,10 +7,7 @@
 *  Summary  : Represents a VendorPrices.                                                                     *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
-using System;
-using System.Collections.Generic;
-using Empiria.Json;
-using Empiria.Trade.Products.Adapters;
+using Empiria.Parties;
 using Newtonsoft.Json;
 
 namespace Empiria.Trade.Core {
@@ -22,7 +19,7 @@ namespace Empiria.Trade.Core {
     static public FixedList<VendorPrices> GetVendorPrices(int customerId) {
       var customer = Party.Parse(customerId);
 
-      var ExtData = JsonConvert.DeserializeObject<PartyExtData>(customer.ExtData);
+      var ExtData = JsonConvert.DeserializeObject<PartyExtData>(customer.ExtendedData.ToString());
 
      return ExtData.VendorPrices;
     }

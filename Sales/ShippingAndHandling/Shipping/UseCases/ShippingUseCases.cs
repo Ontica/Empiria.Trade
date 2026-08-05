@@ -11,13 +11,8 @@ using System;
 using Empiria.Services;
 using Empiria.Trade.Sales.ShippingAndHandling.Domain;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
-using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Sales.ShippingAndHandling.Data;
-using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.UseCases;
-using System.Reflection;
-using System.Net.NetworkInformation;
-using Empiria.Trade.Sales.Adapters;
 
 namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 

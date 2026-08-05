@@ -10,12 +10,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using Empiria.Trade.Core;
+
 using Empiria.Trade.Core.Catalogues;
-using Empiria.Trade.Inventory;
-using Empiria.Trade.Inventory.Data;
-using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.ShippingAndHandling.Data;
 
 namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {

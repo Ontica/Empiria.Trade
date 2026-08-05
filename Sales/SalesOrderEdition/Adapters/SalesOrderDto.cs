@@ -12,7 +12,6 @@ using System;
 using Empiria.Trade.Core;
 using Empiria.Trade.Core.Adapters;
 using Empiria.Trade.Financial.Adapters;
-using Empiria.Trade.Orders;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 
 

@@ -11,7 +11,6 @@ using System;
 
 using Empiria.Storage;
 using Empiria.Trade.Core;
-using Empiria.Trade.Orders;
 
 namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
