@@ -10,11 +10,10 @@
 
 using Empiria.Trade.Core.Catalogues;
 
-namespace Empiria.Trade.Sales.ShippingAndHandling
-{
+namespace Empiria.Trade.Core {
 
 
-    public class Packing {
+  public class Packing {
 
 
     [DataField("OrderPackingId")]

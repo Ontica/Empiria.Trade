@@ -7,22 +7,12 @@
 *  Summary  : Use cases used to build packaging orders.                                                      *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
-using System;
-using System.Collections.Generic;
-using System.Reflection;
 using Empiria.Services;
+using Empiria.Trade.Core;
 using Empiria.Trade.Core.Catalogues;
-using Empiria.Trade.Inventory.Data;
-using Empiria.Trade.Inventory;
-using Empiria.Trade.Sales.Adapters;
-using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
-using Empiria.Trade.Sales.ShippingAndHandling.Data;
-using Empiria.Trade.Sales.ShippingAndHandling.Domain;
 using Empiria.Trade.Sales.UseCases;
-using Empiria.Trade.Inventory.Adapters;
-using Empiria.Trade.Inventory.UseCases;
 
-namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
+namespace Empiria.Trade.Packaging.UseCases {
 
 
   /// <summary>Use cases used to build packaging orders.</summary>
@@ -179,7 +169,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
       var packaging = builder.GetPackagesAndItemsForOrder(orderUid);
       
       return PackagingMapper.MapPackingDto(packaging);
-
     }
 
 

@@ -13,17 +13,17 @@ using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Products;
 using Empiria.Trade.Products.Adapters;
 
-namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
+namespace Empiria.Trade.Core {
 
 
   /// <summary>Methods used to map packaging.</summary>
-  static internal class PackagingMapper {
+  static public class PackagingMapper {
 
 
     #region Public methods
 
 
-    internal static PackingDto MapPackingDto(PackingEntry packaging) {
+    static public PackingDto MapPackingDto(PackingEntry packaging) {
 
       var pickingData = MapPickingData(packaging.PickingData);
       var packagedItems = MapToPackagedItems(packaging);

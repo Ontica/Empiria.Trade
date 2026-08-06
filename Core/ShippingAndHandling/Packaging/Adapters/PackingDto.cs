@@ -9,10 +9,9 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using Empiria.Trade.Core.Catalogues;
-using Empiria.Trade.Inventory.Adapters;
 using Empiria.Trade.Products.Adapters;
 
-namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
+namespace Empiria.Trade.Core {
 
   /// <summary>DTO used to manage order packing detail.</summary>
   public class PackingDto : IShippingAndHandling {

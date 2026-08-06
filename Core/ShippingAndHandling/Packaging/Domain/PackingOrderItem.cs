@@ -11,11 +11,8 @@
 using System.Linq;
 using Empiria.Orders;
 using Empiria.Trade.Core.Catalogues;
-using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
-using Empiria.Trade.Sales.ShippingAndHandling.Data;
 
-namespace Empiria.Trade.Sales.ShippingAndHandling
-{
+namespace Empiria.Trade.Core {
 
     /// <summary>Represents a Packaging order item.</summary>
     public class PackingOrderItem : BaseObject {

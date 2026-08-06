@@ -12,17 +12,17 @@ using Empiria.Data;
 using Empiria.Orders;
 using Empiria.Trade.Core.Catalogues;
 
-namespace Empiria.Trade.Sales.ShippingAndHandling.Data
+namespace Empiria.Trade.Core
 {
 
 
     /// <summary>Provides data read  and write methods for packaging.</summary>
-    internal class PackagingData {
+    public class PackagingData {
 
 
-    internal FixedList<Packing> GetPackagingForOrder(string orderUid) {
+    public FixedList<Packing> GetPackagingForOrder(string orderUid) {
 
-      int orderId = Empiria.Orders.Order.Parse(orderUid).Id;
+      int orderId = Order.Parse(orderUid).Id;
 
       string sql = "SELECT PACK.OrderPackingId, PACK.OrderPackingUID, ITEM.PackingItemId, " +
                    "ITEM.PackingItemUID, PACK.OrderId, ITEM.OrderItemId, PACK.PackageTypeId, " +
@@ -38,9 +38,9 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data
     }
 
 
-    static internal FixedList<PackageForItem> GetPackagesForItemsByOrder(string orderUid) {
+    static public FixedList<PackageForItem> GetPackagesForItemsByOrder(string orderUid) {
 
-      int orderId = Empiria.Orders.Order.Parse(orderUid).Id;
+      int orderId = Order.Parse(orderUid).Id;
 
       string sql = $"SELECT * FROM TRDPackaging WHERE OrderId = {orderId}";
 
@@ -51,7 +51,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data
     }
 
 
-    internal FixedList<PackingOrderItem> GetPackingOrderItems(int OrderPackingId) {
+    public FixedList<PackingOrderItem> GetPackingOrderItems(int OrderPackingId) {
 
       string sql = $"SELECT * " +
                    $"FROM TRDPackagingItems WHERE OrderPackingId = {OrderPackingId}";
@@ -63,7 +63,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data
     }
 
 
-    static internal FixedList<PackingOrderItem> GetPackingOrderItemsByOrder(int OrderId) {
+    static public FixedList<PackingOrderItem> GetPackingOrderItemsByOrder(int OrderId) {
 
       string sql = $"SELECT * " +
                    $"FROM TRDPackagingItems WHERE OrderId = {OrderId}";
@@ -75,7 +75,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data
     }
 
 
-    static internal FixedList<PackingOrderItem> GetPackingOrderItem(
+    static public FixedList<PackingOrderItem> GetPackingOrderItem(
       string packingItemUID, string orderItemUID, int warehouseBinId) {
 
       var orderPackingId = PackageForItem.Parse(packingItemUID).OrderPackingId;
@@ -94,7 +94,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data
     }
 
 
-    internal FixedList<PackingOrderItem> GetPackingItemByOrderItemAndWarehouseBin(
+    public FixedList<PackingOrderItem> GetPackingItemByOrderItemAndWarehouseBin(
       int orderItemId, int warehouseBinId) {
 
       string sql = $"SELECT * " +
@@ -108,9 +108,9 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data
     }
 
 
-    internal FixedList<OrderItemTemp> GetOrderItems(string orderUid) {
+    public FixedList<OrderItemTemp> GetOrderItems(string orderUid) {
 
-      int orderId = Empiria.Orders.Order.Parse(orderUid).Id;
+      int orderId = Order.Parse(orderUid).Id;
 
       string sql = $"SELECT OrderId, OrderItemId, OrderItemUID, VendorProductId, Quantity " +
                    $"FROM TRDOrderItems WHERE OrderItemStatus = 'A' AND OrderId = {orderId}";
@@ -122,7 +122,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data
     }
 
 
-    internal static void WritePacking(PackageForItem order) {
+    public static void WritePacking(PackageForItem order) {
 
       var op = DataOperation.Parse("writePackaging",
         order.OrderPackingId, order.UID, order.OrderId, order.PackageTypeId, order.PackageID);
@@ -131,7 +131,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data
     }
 
 
-    internal FixedList<PackageType> GetPackageTypeList() {
+    public FixedList<PackageType> GetPackageTypeList() {
 
       string sql = "SELECT * FROM SimpleObjects WHERE ObjectStatus = 'A' AND ObjectTypeId = 1061";
 
@@ -141,7 +141,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data
     }
 
 
-    internal void DeletePackingOrderItem(string packingItemEntryUID) {
+    public void DeletePackingOrderItem(string packingItemEntryUID) {
       
       string sql = $"DELETE FROM TRDPackagingItems WHERE PackingItemUID = '{packingItemEntryUID}'";
 
@@ -151,7 +151,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data
     }
 
 
-    internal void DeletePackageForItem(string packageForItemUID) {
+    public void DeletePackageForItem(string packageForItemUID) {
       
       var package = PackageForItem.Parse(packageForItemUID);
 
@@ -181,11 +181,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data
   } // class PackagingData
 
 
-  internal class OrderItemTemp {
+  public class OrderItemTemp {
 
 
     [DataField("OrderId")]
-    public Empiria.Orders.Order Order {
+    public Order Order {
       get;
       protected set;
     }

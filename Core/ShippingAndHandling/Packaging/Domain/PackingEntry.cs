@@ -11,10 +11,10 @@
 using Empiria.Orders;
 using Empiria.Trade.Products;
 
-namespace Empiria.Trade.Sales.ShippingAndHandling {
+namespace Empiria.Trade.Core {
 
   /// <summary>Represents a Packing item for order.</summary>
-  internal class PackingEntry {
+  public class PackingEntry {
 
 
     public PickingData PickingData {

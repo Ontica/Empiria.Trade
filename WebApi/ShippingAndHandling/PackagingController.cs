@@ -14,6 +14,8 @@ using Empiria.Trade.Sales.ShippingAndHandling.UseCases;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Inventory.Adapters;
+using Empiria.Trade.Packaging.UseCases;
+using Empiria.Trade.Core;
 //using Empiria.Trade.Shipping.UseCases;
 
 namespace Empiria.Trade.WebApi.ShippingAndHandling {

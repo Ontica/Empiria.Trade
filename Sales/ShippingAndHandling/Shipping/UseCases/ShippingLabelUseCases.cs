@@ -7,13 +7,11 @@
 *  Summary  : Use cases used to build shipping labels.                                                       *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
-using System;
+
 using Empiria.Services;
-using Empiria.Trade.Sales.Data;
+
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
-using Empiria.Trade.Sales.ShippingAndHandling.Data;
 using Empiria.Trade.Sales.ShippingAndHandling.Domain;
-using Empiria.Trade.Sales.ShippingAndHandling.UseCases;
 
 namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 

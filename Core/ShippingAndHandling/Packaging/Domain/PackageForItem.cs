@@ -7,12 +7,11 @@
 *  Summary  : Represents a Packaging order.                                                                  *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
-using System;
-using Empiria.Trade.Core.Catalogues;
-using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
-using Empiria.Trade.Sales.ShippingAndHandling.Data;
 
-namespace Empiria.Trade.Sales.ShippingAndHandling {
+using Empiria.Orders;
+using Empiria.Trade.Core.Catalogues;
+
+namespace Empiria.Trade.Core {
 
 
   /// <summary>Represents a Packaging order.</summary>
@@ -81,7 +80,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
     }
 
 
-    public Empiria.Orders.Order Order {
+    public Order Order {
       get;
       internal set;
     }
@@ -119,7 +118,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
         OrderPackingUID = packageForItemUID;
       }
 
-      Order = Empiria.Orders.Order.Parse(orderUID);
+      Order = Order.Parse(orderUID);
       PackageType = PackageType.Parse(orderFields.PackageTypeUID);
 
       OrderId = Order.Id;

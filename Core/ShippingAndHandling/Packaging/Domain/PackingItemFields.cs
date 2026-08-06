@@ -7,9 +7,8 @@
 *  Summary  : DTO used to manage packing and handling fields.                                                *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
-using System;
 
-namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
+namespace Empiria.Trade.Core {
 
 
   /// <summary>DTO used to manage order packing fields.</summary>

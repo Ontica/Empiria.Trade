@@ -10,7 +10,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
-
+using Empiria.Trade.Core;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 using Empiria.Trade.Sales.ShippingAndHandling.Data;
 

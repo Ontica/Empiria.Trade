@@ -8,7 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
-namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
+namespace Empiria.Trade.Core {
 
 
   /// <summary>Interface used to manage shipping and handling fields.</summary>

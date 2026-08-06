@@ -7,19 +7,18 @@
 *  Summary  : Generate data for packaging.                                                                   *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
-using System;
+
 using System.Collections.Generic;
 using System.Linq;
 
 using Empiria.Trade.Core.Catalogues;
-using Empiria.Trade.Sales.ShippingAndHandling.Data;
 
-namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
+namespace Empiria.Trade.Core
 {
 
 
     /// <summary>Generate data for packaging.</summary>
-    internal class PackagingBuilder {
+    public class PackagingBuilder {
 
 
     #region Constructor
@@ -34,7 +33,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
 
     #region Public methods
 
-    internal PackingEntry GetPackagesAndItemsForOrder(string orderUid) {
+    public PackingEntry GetPackagesAndItemsForOrder(string orderUid) {
 
       FixedList<PackageForItem> packsForItems = GetPackagesForItemsData(orderUid);
 
@@ -80,7 +79,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
     }
 
 
-    internal FixedList<INamedEntity> GetPackageTypeList() {
+    public FixedList<INamedEntity> GetPackageTypeList() {
       var data = new PackagingData();
 
       FixedList<PackageType> packageTypes = data.GetPackageTypeList();
@@ -159,7 +158,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain
     }
 
 
-    internal FixedList<PackingItem> GetPackingItemsByOrderPackingUID(string orderPackingUID) {
+    public FixedList<PackingItem> GetPackingItemsByOrderPackingUID(string orderPackingUID) {
 
       var packageForItem = PackageForItem.Parse(orderPackingUID);
       

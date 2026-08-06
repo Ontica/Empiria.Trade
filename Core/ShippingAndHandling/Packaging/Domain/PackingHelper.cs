@@ -7,17 +7,16 @@
 *  Summary  : Helper methods to build packing structure.                                                     *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
-using System;
+
 using System.Collections.Generic;
 using System.Linq;
 
 using Empiria.Trade.Core.Catalogues;
-using Empiria.Trade.Sales.ShippingAndHandling.Data;
 
-namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
+namespace Empiria.Trade.Core {
 
   /// <summary>Helper methods to build packing structure.</summary>
-  internal class PackingHelper {
+  public class PackingHelper {
 
     #region Public methods
 
@@ -82,7 +81,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     }
 
 
-    internal PackageType GetPackageTypeById(int packageTypeId) {
+    public PackageType GetPackageTypeById(int packageTypeId) {
 
       var packageType = PackageType.Parse(packageTypeId);
       packageType.GetVolumeAttributes();
@@ -125,7 +124,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     #region Private methods
 
 
-    internal FixedList<PackingItem> GetPackingItems(int orderPackingId) {
+    public FixedList<PackingItem> GetPackingItems(int orderPackingId) {
 
       var data = new PackagingData();
       var packingItems = data.GetPackingOrderItems(orderPackingId);
