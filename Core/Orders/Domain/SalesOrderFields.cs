@@ -11,9 +11,8 @@ using System;
 using Empiria.Orders;
 using Empiria.Parties;
 using Empiria.StateEnums;
-using Empiria.Trade.Core;
 
-namespace Empiria.Trade.Sales.Adapters {
+namespace Empiria.Trade.Core {
 
   public enum QueryType {
     Empty,

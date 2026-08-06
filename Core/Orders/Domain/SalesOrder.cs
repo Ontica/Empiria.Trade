@@ -9,15 +9,13 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Collections.Generic;
+
 using Empiria.Financial;
 using Empiria.Orders;
 using Empiria.Parties;
-using Empiria.Trade.Core;
-using Empiria.Trade.Sales.Adapters;
-using Empiria.Trade.Sales.Data;
 
 
-namespace Empiria.Trade.Sales {
+namespace Empiria.Trade.Core {
 
   /// <summary>Represents a sales order.</summary>
   public class SalesOrder : Order {
@@ -266,7 +264,8 @@ namespace Empiria.Trade.Sales {
       this.Actions = actions.SetActions(this, QueryType.SalesPacking);
     }
 
-    internal void Update(SalesOrderFields fields) {
+    
+    public void Update(SalesOrderFields fields) {
 
       //this.Customer = fields.GetCustomer();
       this.Supplier = fields.GetSupplier();

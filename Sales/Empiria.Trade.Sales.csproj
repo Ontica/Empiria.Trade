@@ -73,4 +73,10 @@
     <ProjectReference Include="..\Financial\Empiria.Trade.Financial.csproj" />
     <ProjectReference Include="..\Inventory\Empiria.Trade.Inventory.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="SalesOrderEdition\Data\" />
+    <Folder Include="ShippingAndHandling\Packaging\Adapters\" />
+    <Folder Include="ShippingAndHandling\Packaging\Data\" />
+    <Folder Include="ShippingAndHandling\Packaging\Domain\" />
+  </ItemGroup>
 </Project>

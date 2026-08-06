@@ -11,12 +11,12 @@ using System;
 using System.Data;
 using Empiria.Data;
 
-namespace Empiria.Trade.Sales.Data {
+namespace Empiria.Trade.Core {
 
   /// <summary>Provides data layer for OrderItems. </summary>
-  static internal class SalesOrderItemsData {
+  static public class SalesOrderItemsData {
 
-    internal static FixedList<SalesOrderItem> GetOrderItems(int orderId) {
+    static public FixedList<SalesOrderItem> GetOrderItems(int orderId) {
       string sql = $"SELECT * FROM TRDOrderItems " +
                    $"WHERE OrderId = {orderId} and OrderItemStatus <> 'X'";
 
@@ -25,7 +25,8 @@ namespace Empiria.Trade.Sales.Data {
       return DataReader.GetFixedList<SalesOrderItem>(op);
     }
 
-    internal static DataRow GetProductPrice(int vendorProductId, int customerPriceListNumber) {
+
+    static public DataRow GetProductPrice(int vendorProductId, int customerPriceListNumber) {
 
       string pricelistNumber = "PriceList" + customerPriceListNumber.ToString();
 
@@ -38,7 +39,8 @@ namespace Empiria.Trade.Sales.Data {
       return DataReader.GetDataRow(op);
     }
 
-    static internal void Write(SalesOrderItem o) {
+
+    static public void Write(SalesOrderItem o) {
       var op = DataOperation.Parse("writeOrderItems", o.Id, o.UID, o.Order.Id
         //o.OrderItemTypeId,o.VendorProduct.Id, o.Quantity, o.ReceivedQty, o.ProductPriceId, o.PriceListNumber,
         //o.BasePrice, o.SalesPrice, o.Discount, o.AdditionalDiscount, o.Shipment, o.TaxesIVA, o.TaxesIEPS,
@@ -47,7 +49,8 @@ namespace Empiria.Trade.Sales.Data {
       DataWriter.Execute(op);
     }
 
-    static internal void CancelOrderItems(int orderId) {
+
+    static public void CancelOrderItems(int orderId) {
       var sql = $"UPDATE TRDOrderItems SET OrderItemStatus = 'X' WHERE orderId = {orderId}";
 
       var op = DataOperation.Parse(sql);

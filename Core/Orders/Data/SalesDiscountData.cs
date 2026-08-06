@@ -11,7 +11,7 @@
 using System;
 using Empiria.Data;
 
-namespace Empiria.Trade.Sales.Data {
+namespace Empiria.Trade.Core {
 
   /// <summary>Provides data layer for Sales Discounts. </summary>
   internal static class SalesDiscountData {

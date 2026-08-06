@@ -18,6 +18,7 @@ using Empiria.Trade.Sales.ShippingAndHandling;
 
 using Empiria.Trade.Financial.UseCases;
 using Empiria.Trade.Core;
+using Empiria.Trade.Packaging.UseCases;
 
 namespace Empiria.Trade.Sales.Adapters {
 

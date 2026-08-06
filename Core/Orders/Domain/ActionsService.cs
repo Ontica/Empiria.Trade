@@ -7,12 +7,8 @@
 *  Summary  : Represents a sales order transaction actions.                                                  *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
-using System;
-using Empiria.Trade.Sales.Adapters;
-using Empiria.Trade.Sales.ShippingAndHandling.UseCases;
-using static Empiria.Trade.Sales.Adapters.SalesOrderFields;
 
-namespace Empiria.Trade.Sales {
+namespace Empiria.Trade.Core {
 
   /// <summary>Represents a sales order actions service. </summary>
    public  class ActionsService {
@@ -166,8 +162,8 @@ namespace Empiria.Trade.Sales {
         return false;
       }
 
-      var packingUseCase = PackagingUseCases.UseCaseInteractor();
-      var packingOrder = packingUseCase.GetPackagingForOrder(salesOrder.UID);
+      var builder = new PackagingBuilder();
+      var packingOrder = builder.GetPackagesAndItemsForOrder(salesOrder.UID);
 
       if (packingOrder.MissingItems.Count == 0)  {
         return true;

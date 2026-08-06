@@ -8,6 +8,8 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
+using Empiria.Trade.Core;
+
 namespace Empiria.Trade.Sales.Adapters {
 
   /// <summary>Query to filter Products by order.</summary>

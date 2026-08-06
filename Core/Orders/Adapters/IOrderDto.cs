@@ -21,4 +21,9 @@ namespace Empiria.Trade.Core {
 
   } // interface IOrderItemDto
 
+
+  public interface ISalesOrderDto {
+
+  }  // interface ISalesOrderDto
+
 } // namespace Empiria.Trade.Core

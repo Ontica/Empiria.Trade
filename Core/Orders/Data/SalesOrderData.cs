@@ -11,19 +11,15 @@ using System;
 
 using Empiria.Data;
 
-using Empiria.Trade.Core;
+namespace Empiria.Trade.Core {
 
-using Empiria.Trade.Sales.Adapters;
-
-namespace Empiria.Trade.Sales.Data {
-
-    /// <summary>Provides data layer for Orders.</summary>
-    static internal class SalesOrderData {
+  /// <summary>Provides data layer for Orders.</summary>
+  static public class SalesOrderData {
 
 
     #region Internal methods
 
-    internal static FixedList<SalesOrder> GetSalesOrders(SearchOrderFields fields) {
+    static public FixedList<SalesOrder> GetSalesOrders(SearchOrderFields fields) {
 
       string status = string.Empty;
 
@@ -34,34 +30,34 @@ namespace Empiria.Trade.Sales.Data {
           status = $" AND (OrderStatus = '{(char) fields.Status}')";
         }
       } else {
-         status = $" AND (OrderStatus <> '{(char) OrderStatus.Cancelled}')";
+        status = $" AND (OrderStatus <> '{(char) OrderStatus.Cancelled}')";
       }
 
-       return GetOrders(fields, status); 
-        
+      return GetOrders(fields, status);
+
     }
 
-    internal static FixedList<SalesOrder> GetSalesOrdersToAuthorize(SearchOrderFields fields) {
-      
-        string status = string.Empty;
+    static public FixedList<SalesOrder> GetSalesOrdersToAuthorize(SearchOrderFields fields) {
 
-        if (fields.Status != OrderStatus.Empty) {
-          if (fields.Status == OrderStatus.Authorized) {
-            status = " AND (OrderAuthorizationStatus = 'A')";
-          }
-          if (fields.Status == OrderStatus.Pending) {
-            status = " AND (OrderAuthorizationStatus = 'P')";
-          }
-        } else {
-          status = " AND ((OrderAuthorizationStatus = 'A') or (OrderAuthorizationStatus = 'P'))";
+      string status = string.Empty;
+
+      if (fields.Status != OrderStatus.Empty) {
+        if (fields.Status == OrderStatus.Authorized) {
+          status = " AND (OrderAuthorizationStatus = 'A')";
         }
+        if (fields.Status == OrderStatus.Pending) {
+          status = " AND (OrderAuthorizationStatus = 'P')";
+        }
+      } else {
+        status = " AND ((OrderAuthorizationStatus = 'A') or (OrderAuthorizationStatus = 'P'))";
+      }
 
       return GetOrders(fields, status);
     }
 
-    internal static FixedList<SalesOrder> GetSalesOrdersToPacking(SearchOrderFields fields) {
+    static public FixedList<SalesOrder> GetSalesOrdersToPacking(SearchOrderFields fields) {
 
-        string status = string.Empty;
+      string status = string.Empty;
 
       if (fields.Status != OrderStatus.Empty) {
         if (fields.Status == OrderStatus.Suppled) {
@@ -73,7 +69,7 @@ namespace Empiria.Trade.Sales.Data {
         if (fields.Status == OrderStatus.InProgress) {
           status = " AND (OrderAuthorizationStatus = 'U') ";
         }
-        } else {
+      } else {
         status = "  AND ((OrderStatus = 'P') or (OrderStatus = 'S') or (OrderStatus = 'D') or (OrderStatus = 'F')) ";
       }
 
@@ -81,15 +77,15 @@ namespace Empiria.Trade.Sales.Data {
 
     }
 
-    internal static FixedList<SalesOrder> GetSalesByCustomer(int customerId) {
+    static public FixedList<SalesOrder> GetSalesByCustomer(int customerId) {
       var sql = $"SELECT * FROM TRDOrders WHERE CustomerId = {customerId} AND OrderStatus <> 'X' ";
-  
+
       var dataOperation = DataOperation.Parse(sql);
 
       return DataReader.GetFixedList<SalesOrder>(dataOperation);
     }
 
-    internal static SalesOrder GetSalesOrder(string orderNumber) {
+    static public SalesOrder GetSalesOrder(string orderNumber) {
       var sql = $"SELECT * FROM TRDOrders  WHERE orderNumber = '{orderNumber}' ";
 
       var dataOperation = DataOperation.Parse(sql);
@@ -97,15 +93,15 @@ namespace Empiria.Trade.Sales.Data {
       return DataReader.GetObject<SalesOrder>(dataOperation);
     }
 
-    internal static void Write(SalesOrder o) {
-        var op = DataOperation.Parse("writeOrder", o.Id, o.UID 
-          //o.OrderTypeId, o.Customer.Id, o.Supplier.Id, o.SalesAgent.Id,o.CustomerContact.Id, o.OrderNumber,
-          //o.OrderTime, o.Notes, o.Keywords, o.ExtData.ToString(), o.CustomerAddress.Id,
-          //(char)o.ShippingMethod, (char)o.Status, (char)o.AuthorizationStatus, o.AuthorizationTime,
-          //o.AuthorizatedById,o.ScheduledTime,o.ReceptionTime, o.PedimentoImportacion, o.CartaPorte
-          );
-        DataWriter.Execute(op);
-      }
+    static public void Write(SalesOrder o) {
+      var op = DataOperation.Parse("writeOrder", o.Id, o.UID
+        //o.OrderTypeId, o.Customer.Id, o.Supplier.Id, o.SalesAgent.Id,o.CustomerContact.Id, o.OrderNumber,
+        //o.OrderTime, o.Notes, o.Keywords, o.ExtData.ToString(), o.CustomerAddress.Id,
+        //(char)o.ShippingMethod, (char)o.Status, (char)o.AuthorizationStatus, o.AuthorizationTime,
+        //o.AuthorizatedById,o.ScheduledTime,o.ReceptionTime, o.PedimentoImportacion, o.CartaPorte
+        );
+      DataWriter.Execute(op);
+    }
 
     #endregion Internal methods
 
@@ -143,7 +139,7 @@ namespace Empiria.Trade.Sales.Data {
       return DataReader.GetFixedList<SalesOrder>(dataOperation);
     }
 
-   
+
 
     #endregion Private methods
 

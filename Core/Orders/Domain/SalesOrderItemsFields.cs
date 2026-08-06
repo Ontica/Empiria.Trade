@@ -11,7 +11,7 @@ using System;
 
 using Empiria.Trade.Products;
 
-namespace Empiria.Trade.Sales.Adapters {
+namespace Empiria.Trade.Core {
 
   /// <summary>Holds a OrderItems properties. </summary>
   public class SalesOrderItemsFields {

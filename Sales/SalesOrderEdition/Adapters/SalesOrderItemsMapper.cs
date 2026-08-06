@@ -10,9 +10,7 @@
 using System;
 
 using Empiria.Trade.Products.Adapters;
-using Empiria.Trade.Products;
-using Newtonsoft.Json;
-using Empiria.Trade.Core.Catalogues;
+using Empiria.Trade.Core;
 
 namespace Empiria.Trade.Sales.Adapters {
 

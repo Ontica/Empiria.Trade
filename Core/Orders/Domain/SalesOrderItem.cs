@@ -9,11 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 
-using Empiria.Trade.Core;
-using Empiria.Trade.Sales.Adapters;
-using Empiria.Trade.Sales.Data;
-
-namespace Empiria.Trade.Sales {
+namespace Empiria.Trade.Core {
 
   /// <summary>Represents a Order item. </summary>
   public class SalesOrderItem : Empiria.Orders.OrderItem {

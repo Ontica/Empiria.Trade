@@ -11,9 +11,7 @@ using System;
 using System.Collections.Generic;
 using Empiria.Trade.Products;
 
-using Empiria.Trade.Sales.Data;
-
-namespace Empiria.Trade.Sales {
+namespace Empiria.Trade.Core {
 
   public class SalesDiscount : BaseObject {
 

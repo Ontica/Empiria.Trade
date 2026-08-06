@@ -15,15 +15,10 @@ using Empiria.Trade.Financial.Adapters;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 
 
-namespace Empiria.Trade.Sales.Adapters
-{
+namespace Empiria.Trade.Sales.Adapters {
 
-    public interface ISalesOrderDto {
-  }  // interface ISalesOrderDto
-
-
-    /// <summary>Output DTO used to return orders. </summary>
-    public class SalesOrderDto : ISalesOrderDto {
+  /// <summary>Output DTO used to return orders. </summary>
+  public class SalesOrderDto : ISalesOrderDto {
 
     public OrderDataDto OrderData {
       get; internal set;

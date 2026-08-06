@@ -8,19 +8,11 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
-using System;
-using Empiria.Trade.Core.Inventories.Adapters;
-using Empiria.Trade.Inventory.UseCases;
-using Empiria.Trade.Sales.Adapters;
-using Empiria.Trade.Sales.Data;
-using Empiria.Trade.Sales.ShippingAndHandling.Data;
-using Empiria.Trade.Sales.ShippingAndHandling;
 using System.Collections.Generic;
-using Empiria.Services;
+
+using Empiria.Trade.Core.Inventories.Adapters;
 using Empiria.Trade.Core;
-using Empiria.Trade.Products;
 using Empiria.Trade.Core.Catalogues;
-using System.Linq;
 
 namespace Empiria.Trade.Sales {
 

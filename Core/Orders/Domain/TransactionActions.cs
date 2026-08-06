@@ -9,14 +9,10 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 
-namespace Empiria.Trade.Sales {
-
- 
+namespace Empiria.Trade.Core {
 
   /// <summary>Represents a sales order transaction actions. </summary>
   public class TransactionActions {
-
-    
 
     #region Constructors and parsers
 

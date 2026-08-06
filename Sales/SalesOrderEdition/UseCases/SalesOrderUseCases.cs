@@ -20,8 +20,6 @@ using Empiria.Trade.Financial.UseCases;
 using Empiria.Trade.Products;
 using Empiria.Trade.Sales.Adapters;
 
-using Empiria.Trade.Sales.Data;
-
 namespace Empiria.Trade.Sales.UseCases {
 
   /// <summary>Use cases used to management Orders.</summary>
