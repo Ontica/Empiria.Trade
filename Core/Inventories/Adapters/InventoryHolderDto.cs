@@ -7,25 +7,24 @@
 *  Summary  : Output DTO used to return inventory data.                                                      *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
-using System;
 
-namespace Empiria.Trade.Inventory.Adapters {
+namespace Empiria.Trade.Core {
 
   /// <summary>Output DTO used to return inventory data.</summary>
   public class InventoryHolderDto {
 
     public InventoryOrderDto Order {
-      get; internal set;
+      get; set;
     }
 
 
     public FixedList<InventoryOrderItemDto> Items {
-      get; internal set;
+      get; set;
     }
 
 
     public InventoryOrderActions Actions {
-      get; internal set;
+      get; set;
     }
 
   } // class InventoryHolderDto

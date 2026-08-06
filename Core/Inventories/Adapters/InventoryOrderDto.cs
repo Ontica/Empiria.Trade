@@ -10,21 +10,61 @@
 using System;
 using Empiria.StateEnums;
 
-namespace Empiria.Trade.Inventory.Adapters {
+namespace Empiria.Trade.Core {
+
+  public interface IInventoryOrderDto {
+
+  }
+
+
+  /// <summary>Output DTO used to return inventory entry data.</summary>
+  public class InventoryEntryDto {
+
+    public string UID {
+      get;  set;
+    }
+
+
+    public string Product {
+      get;  set;
+    }
+
+
+    public string Location {
+      get;  set;
+    }
+
+
+    public decimal Quantity {
+      get;  set;
+    }
+
+
+    public NamedEntityDto PostedBy {
+      get;  set;
+    }
+
+
+    public DateTime PostingTime {
+      get;  set;
+    }
+
+  } // class InventoryEntryDto
+
 
   /// <summary>Output DTO used to return inventory type.</summary>
   public class InventoryTypeDto {
 
     public string UID {
-      get; internal set;
+      get;  set;
     }
 
     public string Name {
-      get; internal set;
+      get;  set;
     }
 
     public InventoryTypeRulesDto Rules {
-      get; internal set;
+      get;  set;
     }
 
   } // class InventoryType
@@ -34,12 +74,12 @@ namespace Empiria.Trade.Inventory.Adapters {
   public class InventoryTypeRulesDto {
 
     public Boolean EntriesRequired {
-      get; internal set;
+      get;  set;
     }
 
 
     public Boolean ItemsRequired {
-      get; internal set;
+      get;  set;
     }
 
   } //  class InventoryTypeRules
@@ -49,63 +89,63 @@ namespace Empiria.Trade.Inventory.Adapters {
   public class InventoryOrderDto {
 
     public string UID {
-      get; internal set;
+      get;  set;
     }
 
 
     public NamedEntityDto OrderType {
-      get; internal set;
+      get;  set;
     }
 
 
     public string OrderNo {
-      get; internal set;
+      get;  set;
     }
 
 
     public InventoryTypeDto InventoryType {
-      get; internal set;
+      get;  set;
     }
 
 
     public NamedEntityDto Warehouse {
-      get; internal set;
+      get;  set;
     }
 
 
     public NamedEntityDto Responsible {
-      get; internal set;
+      get;  set;
     }
 
 
     public NamedEntityDto RequestedBy {
-      get; internal set;
+      get;  set;
     }
 
 
     public string Description {
-      get; internal set;
+      get;  set;
     }
 
 
     public DateTime ClosingTime {
-      get; internal set;
+      get;  set;
     }
 
 
     public DateTime PostingTime {
-      get; internal set;
+      get;  set;
     }
 
 
     public NamedEntityDto PostedBy {
-      get; internal set;
+      get;  set;
     }
 
 
     public NamedEntityDto Status {
       get;
-      internal set;
+       set;
     }
 
 
@@ -125,57 +165,57 @@ namespace Empiria.Trade.Inventory.Adapters {
   public class InventoryOrderItemDto {
 
     public string UID {
-      get; internal set;
+      get;  set;
     } = string.Empty;
 
 
     public string ProductName {
-      get; internal set;
+      get;  set;
     } = string.Empty;
 
 
     public string Description {
-      get; internal set;
+      get;  set;
     } = string.Empty;
 
 
     public NamedEntityDto ProductUnit {
-      get; internal set;
+      get;  set;
     }
 
 
     public decimal Quantity {
-      get; internal set;
+      get;  set;
     }
 
 
     public string Location {
-      get; internal set;
+      get;  set;
     }
 
 
     public decimal AssignedQuantity {
-      get; internal set;
+      get;  set;
     }
 
 
     public NamedEntityDto PostedBy {
-      get; internal set;
+      get;  set;
     }
 
 
     public DateTime PostingTime {
-      get; internal set;
+      get;  set;
     }
 
 
     public EntityStatus Status {
-      get; internal set;
+      get;  set;
     }
 
 
     public FixedList<InventoryEntryDto> Entries {
-      get; internal set;
+      get;  set;
     }
 
   }
@@ -247,7 +287,7 @@ namespace Empiria.Trade.Inventory.Adapters {
 
     public string StakeholderName {
       get;
-      internal set;
+       set;
     }
 
 

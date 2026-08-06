@@ -8,15 +8,10 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using Empiria.Trade.Core;
 using Empiria.Trade.Core.Common;
 
 namespace Empiria.Trade.Inventory.Adapters {
-
-
-  public interface IInventoryOrderDto {
-
-  }
-
 
   public class InventoryOrderDataDto {
 
@@ -35,6 +30,5 @@ namespace Empiria.Trade.Inventory.Adapters {
     } = new FixedList<InventoryOrderDescriptorDto>();
 
   }
-
 
 } // namespace Empiria.Trade.Inventory.Adapters
