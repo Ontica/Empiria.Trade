@@ -213,17 +213,15 @@ namespace Empiria.Trade.Tests.Sales {
     private SalesOrderFields GetSalesOrderFields() {
 
       return new SalesOrderFields {
-        //UID = "217ac442-5409-44b9-ae4d-22f9f104c5fe",
-        //OrderNumber = "P-EY2DDRfrr2",
+        CustomerUID = "c74f0f44-39a4-4f8b-8e0a-7853909648b7",
+        CustomerContactUID = "5dc570bd-8653-4ade-a869-0540fc391f49",
+        CustomerAddressUID = "4886782b-fefa-48fd-8cf0-e4412dd94753",
+        SalesAgentUID = "7dc0b0bb-cac3-469e-8da9-309efda127ef",
+        SupplierUID = "4c0c43e4-8bdc-4b7d-b91e-3fb385441120",
+        PaymentConditions = "Credito",
+        ShippingMethod = ShippingMethods.RutaLocal,
         OrderTime = DateTime.Now,
         Status = EntityStatus.Pending,
-        CustomerUID = "ab8c4f29-5cf9-4def-9903-afa407a25c56",
-        CustomerContactUID = "",
-        SupplierUID = "45ff9d31-cb77-4fd5-9dea-7bcbc4cbe292",
-        SalesAgentUID = "8b1d6d37-8d6c-4983-a3a0-42ed6b867bbe",
-        PaymentCondition = "1 Mes",
-        ShippingMethod = ShippingMethods.Paqueteria,
-        CustomerAddressUID = "769b1781-8c46-439d-86d2-53a3fcfa7c63",
         Items = GetSalesOrderItemFields()
       };
     }
@@ -235,9 +233,9 @@ namespace Empiria.Trade.Tests.Sales {
 
       var fields = new SalesOrderItemsFields {
         OrderItemUID = "",
-        VendorProductUID = "4d3d6aa9-3e11-4620-bf02-3f2f39e1eb2a",
-        Quantity = 1,
-        UnitPrice = 100,
+        VendorProductUID = "85fd259d-0d24-4301-9fdd-c413404401a5",
+        Quantity = 100,
+        UnitPrice = 0,
         SalesPrice = 0,
         DiscountPolicy = "",
         Discount1 = 0,

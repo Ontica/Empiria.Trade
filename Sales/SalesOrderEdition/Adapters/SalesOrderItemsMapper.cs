@@ -43,10 +43,10 @@ namespace Empiria.Trade.Sales.Adapters {
 
     private static ProductDto MapBaseProductDto(SalesOrderItem orderItem) {
       var dto = new ProductDto {
-        //ProductUID = orderItem.VendorProduct.ProductFields.ProductUID,
-        //ProductCode = orderItem.VendorProduct.ProductFields.ProductCode,
-        //Description = orderItem.VendorProduct.ProductFields.ProductName,
-        //ProductImageUrl = orderItem.VendorProduct.ProductFields.ProductImageUrl,
+        ProductUID = orderItem.Product.UID,
+        ProductCode = orderItem.Product.InternalCode,
+        Description = orderItem.Product.Name,
+        //ProductImageUrl = orderItem.Product,
         ProductType = MapProductType(orderItem)
       };
 

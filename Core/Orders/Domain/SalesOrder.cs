@@ -117,7 +117,7 @@ namespace Empiria.Trade.Core {
 
     public string PriceList {
       get; private set;
-    }
+    } = string.Empty;
 
 
     public TransactionActions Actions {
@@ -267,9 +267,9 @@ namespace Empiria.Trade.Core {
     
     public void Update(SalesOrderFields fields) {
 
-      //this.Customer = fields.GetCustomer();
       this.Supplier = fields.GetSupplier();
       this.SalesAgent = fields.GetSalesAgent();
+      this.Customer = fields.GetCustomer();
       this.CustomerAddress = fields.GetCustomerAddress();
       this.CustomerContact = fields.GetCustomerContact();
       //this.ShippingMethod = fields.ShippingMethod;
@@ -343,6 +343,10 @@ namespace Empiria.Trade.Core {
       var pricesList = CustomerPrices.GetVendorPrices(this.Customer.Id);
 
       var vendorPrice = pricesList.Find(r => r.VendorId == this.Supplier.Id);
+
+      if (vendorPrice == null) {
+        return string.Empty;
+      }
 
       return vendorPrice.PriceListId.ToString();
     }

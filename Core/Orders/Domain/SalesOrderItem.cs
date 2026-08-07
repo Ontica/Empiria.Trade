@@ -8,11 +8,12 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using Empiria.Orders;
 
 namespace Empiria.Trade.Core {
 
   /// <summary>Represents a Order item. </summary>
-  public class SalesOrderItem : Empiria.Orders.OrderItem {
+  public class SalesOrderItem : OrderItem {
 
     #region Constructors and parsers
 

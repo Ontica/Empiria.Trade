@@ -36,7 +36,7 @@ namespace Empiria.Trade.Products.Adapters {
     static internal FixedList<ProductForSearchingDto> MapToSearcher(FixedList<ProductEntry> products,
                                                                     bool withUnits) {
 
-      return products.Select(x => MapProduct(x, withUnits))
+      return products.Select(x => MapTo(x, withUnits))
                                  .Where(x => x.Presentations.Count > 0)
                                  .ToFixedList();
     }

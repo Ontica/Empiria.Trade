@@ -8,8 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-using System.Linq;
-using DocumentFormat.OpenXml.Presentation;
+
 using Empiria.Financial;
 using Empiria.Orders;
 using Empiria.Parties;

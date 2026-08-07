@@ -40,10 +40,10 @@ namespace Empiria.Trade.Core.Catalogues {
     #region Use cases
 
     static public FixedList<SalesInventoryStock> GetInventoryStockByVendorProduct(
-      int vendorProductId, string warehouseBinClauses) {
-      Assertion.Require(vendorProductId, "vendorProductId");
+                                                  int productId, string warehouseBinClauses) {
+      Assertion.Require(productId, "productId");
 
-      return InventoryBuilder.GetInventoryStockByVendorProduct(vendorProductId, warehouseBinClauses);
+      return InventoryBuilder.GetInventoryStockByVendorProduct(productId, warehouseBinClauses);
     }
 
 

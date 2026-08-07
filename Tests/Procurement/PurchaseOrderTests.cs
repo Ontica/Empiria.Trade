@@ -136,7 +136,7 @@ namespace Empiria.Trade.Tests.Procurement {
 
       var usecase = PurchaseOrderUseCases.UseCaseInteractor();
 
-      string purchaseOrderUID = "3ec1fab0-2fc6-4f74-9272-139bee3128fa";
+      string purchaseOrderUID = "27dbdbfb-f9aa-4af9-8a52-63bbd03b310b";
       PurchaseOrderDto sut = usecase.GetPurchaseOrderDto(purchaseOrderUID);
       Assert.NotNull(sut);
     }

@@ -21,6 +21,10 @@ namespace Empiria.Trade.Core {
 
       var ExtData = JsonConvert.DeserializeObject<PartyExtData>(customer.ExtendedData.ToString());
 
+      if (ExtData == null) {
+        return new FixedList<VendorPrices>();
+      }
+
      return ExtData.VendorPrices;
     }
 
