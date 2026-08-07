@@ -8,6 +8,8 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using Empiria.Locations;
+using Empiria.StateEnums;
 using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Products;
 
@@ -31,35 +33,69 @@ namespace Empiria.Trade.Core {
     #region Properties
 
 
-    [DataField("VendorProductId")]
-    public VendorProduct VendorProduct {
+    [DataField("Product_Id")]
+    public int ProductId {
+      get; set;
+    }
+
+    public ProductEntry Product {
+      get {
+        return ProductEntry.ParseId(ProductId);
+      }
+    }
+
+
+    [DataField("Base_Product_Id")]
+    internal int BaseProductId {
+      get; private set;
+    }
+
+
+    public ProductEntry BaseProduct {
+      get {
+        return ProductEntry.ParseId(BaseProductId);
+      }
+    }
+
+
+    [DataField("Location_Id")]
+    public Location Location {
       get; set;
     }
 
 
-    [DataField("WarehouseBinId")]
-    public WarehouseBin WarehouseBin {
-      get; set;
-    }
-
-
-    [DataField("AvailableStock")]
+    [DataField("Available_Stock")]
     public decimal Stock {
       get; set;
     }
 
 
-    [DataField("RealStock")]
+    [DataField("Real_Stock")]
     public decimal RealStock {
       get; set;
     }
 
 
-    [DataField("StockInProcess")]
+    [DataField("Stock_In_Process")]
     public decimal StockInProcess {
       get; set;
     }
 
+
+    [DataField("Product_Status", Default = EntityStatus.Active)]
+    public EntityStatus Status {
+      get; set;
+    }
+
+
+    public WarehouseBin WarehouseBin {
+      get; set;
+    }
+
+
+    public VendorProduct VendorProduct {
+      get; set;
+    }
 
     #endregion
 

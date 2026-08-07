@@ -39,19 +39,6 @@ namespace Empiria.Trade.Sales.UseCases {
 
     #region Use cases
 
-    public ISalesOrderDto ProcessSalesOrderV2(SalesOrderFields fields) {
-      Assertion.Require(fields, "fields");
-
-      var orderType = OrderType.SalesOrder;
-
-      var order = new SalesOrder(fields, orderType);
-
-      
-
-      return SalesOrderMapper.Map(order);
-    }
-
-
     public ISalesOrderDto ProcessSalesOrder(SalesOrderFields fields) {
       Assertion.Require(fields, "fields");
 
@@ -327,13 +314,16 @@ namespace Empiria.Trade.Sales.UseCases {
     }
 
     private void ValidateOrderItemsExistence(FixedList<SalesOrderItemsFields> items) {
+      
       foreach (var item in items) {
-        var vendor = VendorProduct.Parse(item.VendorProductUID);
-        var productExistence = GetItemExistence(vendor.Id);
+
+        var product = ProductEntry.Parse(item.VendorProductUID);
+        var productExistence = GetItemExistence(product.Id);
 
         if (productExistence < item.Quantity) {
-          throw Assertion.EnsureNoReachThisCode($"No hay existencia suficiente. del producto " +
-            $"{vendor.ProductFields.ProductCode} {vendor.ProductFields.ProductName}");
+
+          throw Assertion.EnsureNoReachThisCode($"No hay existencia suficiente del producto " +
+            $"{product.InternalCode} {product.Name}");
         }
       }
 
@@ -343,16 +333,17 @@ namespace Empiria.Trade.Sales.UseCases {
       var usescase = CustomerUseCases.UseCaseInteractor();
       var addresses = usescase.GetCustomerAddress(customerUID);
 
-      if (addresses.Contains(x => x.UID == customerAddressUID) == false) {
+      if (usescase.GetCustomerAddress(customerUID).Contains(x => x.UID == customerAddressUID) == false) {
         throw Assertion.EnsureNoReachThisCode($"El Cliente no tiene registrada la dirección seleccionada");
       }
     }
 
-    private decimal GetItemExistence(int vendorProductId) {
+    private decimal GetItemExistence(int productId) {
 
       var usecase = CataloguesUseCases.UseCaseInteractor();
+
       FixedList<SalesInventoryStock> inventoryStock = 
-        CataloguesUseCases.GetInventoryStockByVendorProduct(vendorProductId, "");
+        CataloguesUseCases.GetInventoryStockByVendorProduct(productId, "");
 
       return inventoryStock.Sum(x=>x.Stock);
     }

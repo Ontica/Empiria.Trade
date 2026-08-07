@@ -31,9 +31,9 @@ namespace Empiria.Trade.Core {
 
 
     static public FixedList<SalesInventoryStock> GetInventoryStockByVendorProduct(
-      int vendorProducId, string warehouseBinClauses) {
+      int productId, string warehouseBinClauses) {
 
-      return InventoryData.GetInventoryStockByVendorProduct(vendorProducId, warehouseBinClauses);
+      return InventoryData.GetInventoryStockByVendorProduct(productId, warehouseBinClauses);
     }
 
 
