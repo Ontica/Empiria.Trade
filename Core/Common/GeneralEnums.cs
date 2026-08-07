@@ -35,7 +35,57 @@ namespace Empiria.Trade.Core {
   } // enum OrderStatus
 
 
-  static public class OrderStatusEnumExtensions {
+  public enum OrderAuthorizationStatus {
+    Authorized = 'A',
+    Pending = 'P',
+    Empty = 'E',
+    Pendings = 'W',
+    ToSupply = 'I',
+    InProgress = 'U',
+    Suppled = 'S'
+  } // enum AutorizationStatus
+
+
+  public enum QueryType {
+    Empty,
+    Sales,
+    SalesAuthorization,
+    SalesPacking,
+    SalesShipping
+  }
+
+
+  public enum ShippingMethods {
+    RutaLocal = 'L',
+    RutaForanea = 'F',
+    Ocurre = 'O',
+    Paqueteria = 'P',
+    None = 'N'
+  }
+
+
+  public enum PaymentCondition {
+    Credito,
+    Contado,
+    None
+  }
+
+
+  /// <summary>Enums to assing item type for reports elements.</summary>
+  public enum ReportItemType {
+
+    Entry,
+
+    Summary,
+
+    Group,
+
+    Total
+
+  } // enum ReportItemType
+
+
+  static public class EnumExtensions {
 
     static public string GetOrderStatusName(this OrderStatus status) {
 
@@ -84,51 +134,19 @@ namespace Empiria.Trade.Core {
       }
     }
 
-  } // class OrderStatusEnumExtensions
 
+    static public PaymentCondition GetPaymentConditionEnum(string shippingMethod) {
+      switch (shippingMethod) {
+        case "Credito":
+        case "Crédito":
+          return PaymentCondition.Credito;
+        case "Contado":
+          return PaymentCondition.Contado;
+        default:
+          return PaymentCondition.None;
+      }
+    }
 
-  public enum OrderAuthorizationStatus {
-    Authorized = 'A',
-    Pending = 'P',
-    Empty = 'E',
-    Pendings = 'W',
-    ToSupply = 'I',
-    InProgress = 'U',
-    Suppled = 'S'
-  } // enum AutorizationStatus
-
-
-  public enum ShippingMethods {
-    RutaLocal = 'L',
-    RutaForanea = 'F',
-    Ocurre = 'O',
-    Paqueteria = 'P',
-    None = 'N'
-  }
-
-
-  public enum PaymentCondition {
-    Credito,
-    Contado,
-    None
-  }
-
-
-  /// <summary>Enums to assing item type for reports elements.</summary>
-  public enum ReportItemType {
-
-    Entry,
-
-    Summary,
-
-    Group,
-
-    Total
-
-  } // enum ReportItemType
-
-
-  public class EnumExtensions {
 
     static public ShippingMethods GetShippingMethodEnum(string shippingMethod) {
       switch (shippingMethod) {
@@ -142,19 +160,6 @@ namespace Empiria.Trade.Core {
           return ShippingMethods.Paqueteria;
         default:
           return ShippingMethods.None;
-      }
-    }
-
-
-    static public PaymentCondition GetPaymentConditionEnum(string shippingMethod) {
-      switch (shippingMethod) {
-        case "Credito":
-        case "Crédito":
-          return PaymentCondition.Credito;
-        case "Contado":
-          return PaymentCondition.Contado;
-        default:
-          return PaymentCondition.None;
       }
     }
 

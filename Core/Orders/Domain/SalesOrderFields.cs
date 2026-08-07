@@ -13,17 +13,7 @@ using Empiria.Parties;
 using Empiria.StateEnums;
 
 namespace Empiria.Trade.Core {
-
-  public enum QueryType {
-    Empty,
-    Sales,
-    SalesAuthorization,
-    SalesPacking,
-    SalesShipping
-  }
-    
-    
-
+  
   /// <summary>Input DTO for sales orders.</summary>
   public class SalesOrderFields : OrderFields {
 
@@ -66,10 +56,6 @@ namespace Empiria.Trade.Core {
     }
 
     public string SalesAgentUID {
-      get; set;
-    }
-
-    public string PaymentCondition {
       get; set;
     }
 
