@@ -29,8 +29,8 @@ namespace Empiria.Trade.Financial.Data {
     static internal decimal GetMoneyAccountTotalDebt(int moneyAccountId) {
      
 
-      var sql = "SELECT (SUM(Credit) - SUM(Debit)) AS Balance FROM TRDMoneyAccountTransactions " +
-               $"WHERE MoneyAccountId = {moneyAccountId} AND MoneyAccountTransactionStatus <> 'X' ";
+      var sql = "SELECT (SUM(Credit) - SUM(Debit)) AS Balance FROM OMS_Money_Account_Transactions " +
+               $"WHERE Money_Account_Id = {moneyAccountId} AND Money_Account_Transaction_Status <> 'X' ";
 
       var dataOperation = DataOperation.Parse(sql);
 
@@ -40,8 +40,8 @@ namespace Empiria.Trade.Financial.Data {
     }
 
     internal static FixedList<MoneyAccountTransaction> GetTransactions(int moneyAccountId) {
-      string sql = "SELECT * FROM  TRDMoneyAccountTransactions " +
-                  $" WHERE MoneyAccountId  = {moneyAccountId} AND MoneyAccountTransactionStatus <> 'X'";
+      string sql = "SELECT * FROM  OMS_Money_Account_Transactions " +
+                  $" WHERE Money_Account_Id  = {moneyAccountId} AND Money_Account_Transaction_Status <> 'X'";
 
       var op = DataOperation.Parse(sql);
 
@@ -49,7 +49,7 @@ namespace Empiria.Trade.Financial.Data {
     }
 
     internal static MoneyAccountTransaction GetMoneyAccountTransactionByReference(int referenceId) {
-      string sql = $"SELECT * FROM TRDMoneyAccountTransactions WHERE ReferenceId =  {referenceId} ";                  
+      string sql = $"SELECT * FROM OMS_Money_Account_Transactions WHERE Reference_Id =  {referenceId} ";                  
 
       var op = DataOperation.Parse(sql);
 

@@ -44,28 +44,28 @@ namespace Empiria.Trade.Financial {
 
     #region Public properties
 
-    [DataField("MoneyAccountTransactionId")]
+    [DataField("Money_Account_Transaction_Id")]
     public MoneyAccountTransaction MoneyAccountTransaction {
       get; private set;
     }
 
-    [DataField("MoneyAccountTransactionItemTypeId")]
+    [DataField("Money_Account_Transaction_Item_Type_Id")]
     public MoneyAccountTransactionItemType MoneyAccountTransactionItemType {          
       get; private set;
     }
 
-    [DataField("ReferenceTypeId")]
+    [DataField("Reference_Type_Id")]
     public int ReferenceTypeId {
       get; private set;
     } = 1;
 
-    [DataField("ReferenceId")]
+    [DataField("Reference_Id")]
     public int ReferenceId {
       get; private set;
     } = -1;
 
-    [DataField("PaymentTypeId")]
-    public PaymentType PaymentType {
+    [DataField("Payment_Type_Id")]
+    public Payments.PaymentType PaymentType {
       get; private set;
     }
 
@@ -89,22 +89,22 @@ namespace Empiria.Trade.Financial {
       get; protected set;
     } = string.Empty;
 
-    [DataField("TransactionTime")]
+    [DataField("Transaction_Time")]
     public DateTime TransactionTime {
       get; private set;
     }
 
-    [DataField("PostedTime")]
+    [DataField("Posted_Time")]
     public DateTime PostedTime {
       get; private set;
     }
 
-    [DataField("PostedById")]
+    [DataField("Posted_By_Id")]
     public int PostedById {
       get; private set;
     }
 
-    [DataField("MoneyAccountTransactionItemStatus", Default = EntityStatus.Active)]
+    [DataField("Money_Account_Transaction_Item_Status", Default = EntityStatus.Active)]
     public EntityStatus MoneyAccountTransactionItemStatus {
       get; private set;
     } = EntityStatus.Active;
@@ -121,7 +121,7 @@ namespace Empiria.Trade.Financial {
 
     public void Update(MoneyAccountTransactionItemFields fields) {
       this.MoneyAccountTransactionItemType = MoneyAccountTransactionItemType.Parse(fields.ItemTypeUID);
-      this.PaymentType = PaymentType.Parse(fields.PaymentTypeUID);
+      this.PaymentType = Payments.PaymentType.Parse(fields.PaymentTypeUID);
       this.Deposit = fields.Deposit;
       this.ExtData = fields.Reference;
       this.Withdrawal = fields.Withdrawal;

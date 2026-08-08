@@ -11,9 +11,9 @@ using System;
 
 namespace Empiria.Trade.Financial {
   /// Represents money account transaction item type.
-  public class MoneyAccountTransactionItemType : GeneralObject {
+  public class MoneyAccountTransactionItemType : CommonStorage {
+    
     #region Constructor and parsers
-
 
     public MoneyAccountTransactionItemType() {
       //no-op
@@ -25,10 +25,7 @@ namespace Empiria.Trade.Financial {
 
     static public MoneyAccountTransactionItemType Empty => ParseEmpty<MoneyAccountTransactionItemType>();
 
-
     #endregion Constructor and parsers
-
-
 
   } // class MoneyAcccountTransactionItemType
 

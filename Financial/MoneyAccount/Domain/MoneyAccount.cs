@@ -45,22 +45,22 @@ namespace Empiria.Trade.Financial {
 
     #region Public properties
 
-    [DataField("MoneyAccountTypeId")]
+    [DataField("Money_Account_Type_Id")]
     public MoneyAccountType MoneyAccountType {
       get; protected set;
     } 
 
-    [DataField("MoneyAccountDescription")]
+    [DataField("Money_Account_Description")]
     public string Description {
       get; protected set;
     }
 
-    [DataField("MoneyAccountNumber")]
+    [DataField("Money_Account_Number")]
     public string Number {
       get; protected set;
     }
 
-    [DataField("OwnerId")]
+    [DataField("Owner_Id")]
     public Party Owner {
       get; protected set;
     }
@@ -77,38 +77,38 @@ namespace Empiria.Trade.Financial {
       }
     }
 
-    [DataField("ExtData", Default = "")]
+    [DataField("Ext_Data", Default = "")]
     public string ExtData {
       get; protected set;
     } = string.Empty;
 
-    [DataField("PostedTime")]
+    [DataField("Posted_Time")]
     public DateTime PostedTime {
       get; protected set;
     }
 
-    [DataField("PostedById")]
+    [DataField("Posted_By_Id")]
     public int PostedById {
       get; protected set;
     }
 
-    [DataField("FromDate")]
+    [DataField("From_Date")]
     public DateTime FromDate {
       get; protected set;
     } = new DateTime(1980, 01, 01);
 
-    [DataField("ToDate")]
+    [DataField("To_Date")]
     public DateTime ToDate {
       get; protected set;
     } = new DateTime(2078, 12, 31);
 
 
-    [DataField("CreditLimit")]
+    [DataField("Credit_Limit")]
     public decimal CreditLimit {
       get; protected set;
     } = 0m;
 
-    [DataField("DayToPay")]
+    [DataField("Day_To_Pay")]
     public int DaysToPay {
       get; protected set;
     }

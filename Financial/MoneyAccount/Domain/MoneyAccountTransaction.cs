@@ -49,32 +49,32 @@ namespace Empiria.Trade.Financial {
     #region Public properties
 
     
-    [DataField("MoneyAccountId")]
+    [DataField("Money_Account_Id")]
     public MoneyAccount MoneyAccount {
       get; private set;
     }
 
-    [DataField("MoneyAccountTransactionTypeId")]
+    [DataField("Money_Account_Transaction_Type_Id")]
     public MoneyAccountTransactionType TransactionType {
       get; private set;
     }
 
-    [DataField("TransactionNumber")]
+    [DataField("Transaction_Number")]
     public string TransactionNumber {
       get; private set;
     }
 
-    [DataField("ReferenceTypeId")]
+    [DataField("Reference_Type_Id")]
     public int ReferenceTypeId {
       get; private set;
     } = 1;
 
-    [DataField("ReferenceId")]
+    [DataField("Reference_Id")]
     public int ReferenceId {
       get; private set;
     }
 
-    [DataField("MoneyAccountTransactionDescription")]
+    [DataField("Money_Account_Transaction_Description")]
     public string Description {
       get; private set;
     } = string.Empty;
@@ -89,7 +89,7 @@ namespace Empiria.Trade.Financial {
       get; private set;
     } = 0m;
 
-    [DataField("MoneyAccountTransactionTime")]
+    [DataField("Money_Account_Transaction_Time")]
     public DateTime TransactionTime {
       get; private set;
     }
@@ -99,22 +99,22 @@ namespace Empiria.Trade.Financial {
       get; private set;
     }
 
-    [DataField("ExtData", Default = "")]
+    [DataField("Ext_Data", Default = "")]
     public string ExtData {
       get; private set;
     } = string.Empty;
 
-    [DataField("PostedTime")]
+    [DataField("Posted_Time")]
     public DateTime PostedTime {
       get; private set;
     }
 
-    [DataField("PostedById")]
+    [DataField("Posted_By_Id")]
     public int PostedById {
       get; private set;
     }
 
-    [DataField("MoneyAccountTransactionStatus", Default = EntityStatus.Active)]
+    [DataField("Money_Account_Transaction_Status", Default = EntityStatus.Active)]
     public EntityStatus Status {
       get; set;
     } = EntityStatus.Active;
@@ -156,7 +156,6 @@ namespace Empiria.Trade.Financial {
         transaction.LoadItems();
         maTransactionList.Add(transaction);
       }
-
 
       return maTransactionList.ToFixedList<MoneyAccountTransaction>();
     }

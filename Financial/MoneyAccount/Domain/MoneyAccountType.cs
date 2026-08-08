@@ -14,7 +14,7 @@ using Empiria.Trade.Core.Common;
 
 namespace Empiria.Trade.Financial {
   /// Represents money account types.
-  public class MoneyAccountType : GeneralObject {
+  public class MoneyAccountType : CommonStorage {
 
     #region Constructor and parsers
 
@@ -34,9 +34,8 @@ namespace Empiria.Trade.Financial {
 
 
     #region Properties
-
-
-    [DataField("ObjectExtData")]
+    
+    //[DataField("Object_Ext_Data")]
     public string ObjectExtData {
       get; set;
     }

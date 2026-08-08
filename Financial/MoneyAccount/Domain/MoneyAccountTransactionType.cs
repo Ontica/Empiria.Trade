@@ -11,7 +11,7 @@ using System;
 
 namespace Empiria.Trade.Financial {
   ///  Represents money account transaction types.      
-  public class MoneyAccountTransactionType : GeneralObject {
+  public class MoneyAccountTransactionType : CommonStorage {
 
     #region Constructor and parsers
 
