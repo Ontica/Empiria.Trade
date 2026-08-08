@@ -28,7 +28,7 @@ namespace Empiria.Trade.Core {
 
     public SalesOrder(SalesOrderFields fields, OrderType orderType) : base(orderType) {
       Assertion.Require(fields, nameof(fields));
-
+      
       if (IsNew) {
         OrderNo = "P-" + EmpiriaString.BuildRandomString(10).ToUpperInvariant();
       }
@@ -123,6 +123,11 @@ namespace Empiria.Trade.Core {
     public TransactionActions Actions {
       get; private set;
     } = new TransactionActions();
+
+
+    public OrderAuthorizationStatus AuthorizationStatus {
+      get; internal set;
+    } = OrderAuthorizationStatus.Pending;
 
 
     public string ShippingMethod {

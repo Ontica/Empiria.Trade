@@ -118,9 +118,9 @@ namespace Empiria.Trade.Sales.Adapters
 
     private static AuthorizationDto MapAuthorizationDto(SalesOrder order) {
       var dto = new AuthorizationDto {
-        //AuthorizationStatus = order.AuthorizationStatus,
+        AuthorizationStatus = order.AuthorizationStatus,
         AuthorizationTime = order.AuthorizationTime,
-        //AuthorizatedById = order.AuthorizatedById
+        AuthorizatedById = order.AuthorizedBy.Id
       };
 
       return dto;

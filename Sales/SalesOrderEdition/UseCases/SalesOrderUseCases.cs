@@ -42,30 +42,18 @@ namespace Empiria.Trade.Sales.UseCases {
     public ISalesOrderDto ProcessSalesOrder(SalesOrderFields fields) {
       Assertion.Require(fields, "fields");
 
-      SalesOrder order;
+      ValuateSalesOrder(fields);
 
-      ValidateCustomerAddress(fields.CustomerUID, fields.CustomerAddressUID);
-      ValidateOrderItemsExistence(fields.Items);
-
-      var orderType = OrderType.SalesOrder;
-
-      if (fields.UID.Length != 0) {
-        order = SalesOrder.Parse(fields.UID);
-        order.Update(fields);
-      } else {
-        order = new SalesOrder(fields, orderType);
-      }
+      SalesOrder order = InitializeSalesOrder(fields);
 
       return SalesOrderMapper.Map(order);
     }
 
-
+    
     public ISalesOrderDto CreateSalesOrder(SalesOrderFields fields) {
       Assertion.Require(fields, "fields");
 
-      ValidateCustomerAddress(fields.CustomerUID, fields.CustomerAddressUID);
-      ValidateShippingMethod(fields);
-      ValidateOrderItemsExistence(fields.Items);
+      ValuateSalesOrder(fields);
 
       var orderType = OrderType.SalesOrder;
 
@@ -75,6 +63,7 @@ namespace Empiria.Trade.Sales.UseCases {
 
       return SalesOrderMapper.Map(order); 
     }
+
 
     public ISalesOrderDto DeliverySalesOrderWithMap(string orderUID) {
 
@@ -87,6 +76,7 @@ namespace Empiria.Trade.Sales.UseCases {
       return SalesOrderMapper.Map(order);
     }
 
+
     public void DeliverySalesOrder(string orderUID) {
 
       Assertion.Require(orderUID, "orderUID");
@@ -96,6 +86,7 @@ namespace Empiria.Trade.Sales.UseCases {
       order.Deliver();
     }
 
+
     public void CloseSalesOrder(string orderUID) {
 
       Assertion.Require(orderUID, "orderUID");
@@ -104,6 +95,7 @@ namespace Empiria.Trade.Sales.UseCases {
 
       order.Close();
     }
+
 
     public SearchSalesOrderDto GetOrders(SearchOrderFields fields) {
       Assertion.Require(fields, "fields");
@@ -133,6 +125,7 @@ namespace Empiria.Trade.Sales.UseCases {
 
     }
 
+
     public FixedList<ISalesOrderDto> GetOrdersByCustomerUID(string customerUID) {
       var helper = new SalesOrderHelper();
       var customer = Parties.Party.Parse(customerUID);
@@ -142,12 +135,14 @@ namespace Empiria.Trade.Sales.UseCases {
       return SearchSealesOrderMapper.MapBaseSalesOrders(salesOrders);
     }
 
+
     public FixedList<ISalesOrderDto> GetOrdersForShipping(SearchOrderFields fields) {
       var helper = new SalesOrderHelper();
       var salesOrdersList = helper.GetOrders(fields);
 
       return SearchSealesOrderMapper.MapEntries(fields, salesOrdersList);
     }
+
 
     public ISalesOrderDto CancelSalesOrder(string orderUID) {
       Assertion.Require(orderUID, "orderUID");
@@ -158,6 +153,7 @@ namespace Empiria.Trade.Sales.UseCases {
       return SalesOrderMapper.Map(order);
     }
 
+
     public void ChangeOrdersToDeliveryStatus(string [] ordersUID) {
       Assertion.Require(ordersUID, "ordersUID");
 
@@ -167,6 +163,7 @@ namespace Empiria.Trade.Sales.UseCases {
     
     }
 
+
     public void ChangeOrdersToCloseStatus(string[] ordersUID) {
       Assertion.Require(ordersUID, "ordersUID");
 
@@ -175,6 +172,7 @@ namespace Empiria.Trade.Sales.UseCases {
       }
 
     }
+
 
     public ISalesOrderDto ApplySalesOrder(string orderUID) {
       Assertion.Require(orderUID, "orderUID");
@@ -203,6 +201,7 @@ namespace Empiria.Trade.Sales.UseCases {
       return SalesOrderMapper.Map(order);
     }
 
+
     public ISalesOrderDto GetSalesOrder(string orderNumber) {
       SalesOrderHelper helper = new SalesOrderHelper();
 
@@ -210,6 +209,7 @@ namespace Empiria.Trade.Sales.UseCases {
 
       return SalesOrderMapper.Map(order);
     }
+
 
     public ISalesOrderDto UpdateSalesOrder(SalesOrderFields fields) {
       Assertion.Require(fields, "fields");
@@ -232,9 +232,11 @@ namespace Empiria.Trade.Sales.UseCases {
       return SalesOrderMapper.Map(order);
     }
 
+
     public FixedList<NamedEntityDto> GetStatusList() {
       return SalesOrderStatusService.GetStatusList();
     }
+
 
     public ISalesOrderDto AuthorizeSalesOrder(string orderUID) {
 
@@ -271,15 +273,16 @@ namespace Empiria.Trade.Sales.UseCases {
       return SalesOrderMapper.Map(order);
     }
 
+
     public FixedList<NamedEntityDto> GetAuthorizationStatusList() {
       return SalesOrderStatusService.GetAuthorizationStatusList();
     }
+
 
     public FixedList<NamedEntityDto> GetPackingStatusList() {
       return SalesOrderStatusService.GetPackingStatusList();
     }
 
-    
     #endregion Use cases
 
     #region Private methods
@@ -297,6 +300,62 @@ namespace Empiria.Trade.Sales.UseCases {
       moneyAccountUseCase.AddCreditTransaction(creditFields);
     }
 
+
+    public ISalesOrderDto CancelCreditInOrder(string orderUID, string notes) {
+
+      var order = SalesOrder.Parse(orderUID);
+
+      var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
+      moneyAccountUseCase.CancelTransaction(order.Id, notes);
+
+      order.Deauthorize();
+
+
+      return SalesOrderMapper.Map(order);
+    }
+
+
+    static private decimal GetCusomerCreditLimit(int customerId) {
+      var moneyAccountUseCases = MoneyAccountUseCases.UseCaseInteractor();
+
+      return moneyAccountUseCases.GetMoneyAccountCreditLimit(customerId);
+    }
+
+
+    static private decimal GetCustomerTotalDebt(int customerId) {
+
+      var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
+
+      return moneyAccountUseCase.GetMoneyAccountTotalDebt(customerId);
+    }
+
+
+    private decimal GetItemExistence(int productId) {
+
+      var usecase = CataloguesUseCases.UseCaseInteractor();
+
+      FixedList<SalesInventoryStock> inventoryStock =
+        CataloguesUseCases.GetInventoryStockByVendorProduct(productId, "");
+
+      return inventoryStock.Sum(x => x.Stock);
+    }
+
+
+    private SalesOrder InitializeSalesOrder(SalesOrderFields fields) {
+      SalesOrder order;
+
+      var orderType = OrderType.SalesOrder;
+
+      if (fields.UID.Length != 0) {
+        order = SalesOrder.Parse(fields.UID);
+        order.Update(fields);
+      } else {
+        order = new SalesOrder(fields, orderType);
+      }
+      return order;
+    }
+
+
     private void SetCreditOrder(SalesOrder order) {
       var debitTotal = GetCustomerTotalDebt(order.Customer.Id) + order.OrderTotal;
       if (debitTotal > GetCusomerCreditLimit(order.Customer.Id)) {
@@ -307,11 +366,14 @@ namespace Empiria.Trade.Sales.UseCases {
       }
     }
 
+
     private void ValidateShippingMethod(SalesOrderFields fields) {
-      if ((fields.ShippingMethod != ShippingMethods.Ocurre) && (fields.CustomerAddressUID == String.Empty)) {
-        throw Assertion.EnsureNoReachThisCode($"It is customer address is mandatory.");
+
+      if ((fields.ShippingMethod != ShippingMethods.Ocurre) && (fields.CustomerAddressUID == string.Empty)) {
+        throw Assertion.EnsureNoReachThisCode($"La dirección del cliente es obligatoria.");
       }
     }
+
 
     private void ValidateOrderItemsExistence(FixedList<SalesOrderItemsFields> items) {
       
@@ -329,6 +391,7 @@ namespace Empiria.Trade.Sales.UseCases {
 
     }
 
+
     private void ValidateCustomerAddress(string customerUID, string customerAddressUID) {
       var usescase = CustomerUseCases.UseCaseInteractor();
       var addresses = usescase.GetCustomerAddress(customerUID);
@@ -338,40 +401,12 @@ namespace Empiria.Trade.Sales.UseCases {
       }
     }
 
-    private decimal GetItemExistence(int productId) {
 
-      var usecase = CataloguesUseCases.UseCaseInteractor();
+    private void ValuateSalesOrder(SalesOrderFields fields) {
 
-      FixedList<SalesInventoryStock> inventoryStock = 
-        CataloguesUseCases.GetInventoryStockByVendorProduct(productId, "");
-
-      return inventoryStock.Sum(x=>x.Stock);
-    }
-
-    public ISalesOrderDto CancelCreditInOrder(string orderUID, string notes) {
-
-      var order = SalesOrder.Parse(orderUID);
-
-      var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
-      moneyAccountUseCase.CancelTransaction(order.Id, notes);
-
-      order.Deauthorize();
-      
-
-     return SalesOrderMapper.Map(order);
-    }
-
-    static private decimal GetCusomerCreditLimit(int customerId) {
-      var moneyAccountUseCases = MoneyAccountUseCases.UseCaseInteractor();
-
-      return moneyAccountUseCases.GetMoneyAccountCreditLimit(customerId);
-    }
-
-    static private decimal GetCustomerTotalDebt(int customerId) {
-
-      var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
-
-      return moneyAccountUseCase.GetMoneyAccountTotalDebt(customerId);
+      ValidateCustomerAddress(fields.CustomerUID, fields.CustomerAddressUID);
+      ValidateShippingMethod(fields);
+      ValidateOrderItemsExistence(fields.Items);
     }
 
     #endregion Private methods
