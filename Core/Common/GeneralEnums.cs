@@ -44,8 +44,8 @@ namespace Empiria.Trade.Core {
     InProgress = 'U',
     Suppled = 'S'
   } // enum AutorizationStatus
-
-
+  
+  
   public enum QueryType {
     Empty,
     Sales,
@@ -86,6 +86,93 @@ namespace Empiria.Trade.Core {
 
 
   static public class EnumExtensions {
+
+    static public ShippingMethods GetShippingMethodEnum(string shippingMethod) {
+      switch (shippingMethod) {
+        case "RutaLocal":
+          return ShippingMethods.RutaLocal;
+        case "RutaForanea":
+          return ShippingMethods.RutaForanea;
+        case "Ocurre":
+          return ShippingMethods.Ocurre;
+        case "Paqueteria":
+          return ShippingMethods.Paqueteria;
+        default:
+          return ShippingMethods.None;
+      }
+    }
+
+
+    static public OrderAuthorizationStatus GetOrderAuthorizationEnum(string shippingMethod) {
+      switch (shippingMethod) {
+        case "Autorizada":
+        case "Autorizado":
+          return OrderAuthorizationStatus.Authorized;
+        case "Pendiente":
+          return OrderAuthorizationStatus.Pending;
+        case "Pendientes":
+          return OrderAuthorizationStatus.Pendings;
+        case "Por surtir":
+          return OrderAuthorizationStatus.ToSupply;
+        case "En proceso":
+          return OrderAuthorizationStatus.InProgress;
+        case "Surtido":
+          return OrderAuthorizationStatus.Suppled;
+
+        default:
+          return OrderAuthorizationStatus.Empty;
+      }
+    }
+
+
+    static public OrderStatus GetOrderStatusEnum(string orderStatus) {
+
+      switch (orderStatus) {
+        case "Capturada":
+          return OrderStatus.Captured;
+
+        case "Aplicada":
+          return OrderStatus.Applied;
+
+        case "Autorizada":
+        case "Autorizado":
+          return OrderStatus.Authorized;
+
+        case "Surtiendo":
+          return OrderStatus.Packing;
+
+        case "Envío":
+          return OrderStatus.Shipping;
+
+        case "Entregada":
+          return OrderStatus.Delivery;
+
+        case "cerrada":
+          return OrderStatus.Closed;
+
+        case "Cancelada":
+          return OrderStatus.Cancelled;
+
+        case "Empty":
+          return OrderStatus.Empty;
+
+        case "Pendiente":
+          return OrderStatus.Pending;
+
+        case "Por surtir":
+          return OrderStatus.ToSupply;
+
+        case "En proceso":
+          return OrderStatus.InProgress;
+
+        case "Surtida":
+          return OrderStatus.Suppled;
+
+        default:
+          throw Assertion.EnsureNoReachThisCode($"Unrecognized status {orderStatus}");
+      }
+    }
+
 
     static public string GetOrderStatusName(this OrderStatus status) {
 
@@ -148,20 +235,7 @@ namespace Empiria.Trade.Core {
     }
 
 
-    static public ShippingMethods GetShippingMethodEnum(string shippingMethod) {
-      switch (shippingMethod) {
-        case "RutaLocal":
-          return ShippingMethods.RutaLocal;
-        case "RutaForanea":
-          return ShippingMethods.RutaForanea;
-        case "Ocurre":
-          return ShippingMethods.Ocurre;
-        case "Paqueteria":
-          return ShippingMethods.Paqueteria;
-        default:
-          return ShippingMethods.None;
-      }
-    }
+    
 
   }
 
