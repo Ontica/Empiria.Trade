@@ -9,7 +9,9 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using Empiria.Data;
+using Empiria.Inventory;
 using Empiria.Parties;
+using Empiria.Trade.Core;
 using Empiria.Trade.Products.Adapters;
 
 namespace Empiria.Trade.Products.Data {
@@ -149,6 +151,26 @@ namespace Empiria.Trade.Products.Data {
       var dataOperation = DataOperation.Parse(sql);
 
       return DataReader.GetPlainObjectFixedList<VendorProduct>(dataOperation);
+    }
+
+
+    static public FixedList<ProductPrices> GetProductPrices(int productId) {
+
+      var sql = $"SELECT * FROM Product_Price_List WHERE Product_Id IN ({productId}) ";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetPlainObjectFixedList<ProductPrices>(dataOperation);
+    }
+
+
+    static internal FixedList<ProductPriceType> GetProductPriceTypes(int productId) {
+
+      var sql = $"SELECT * FROM Product_Price_List WHERE Product_Id IN ({productId}) ";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetPlainObjectFixedList<ProductPriceType>(dataOperation);
     }
 
     #endregion Methods

@@ -12,10 +12,9 @@ using System.Collections.Generic;
 using Empiria.Services;
 using Empiria.Trade.Financial.Adapters;
 
-namespace Empiria.Trade.Financial.UseCases
-{
-    /// <summary>Use cases used to management MoneyAccount transactions.</summary>
-    public class MoneyAccountUseCases : UseCase {
+namespace Empiria.Trade.Financial.UseCases {
+  /// <summary>Use cases used to management MoneyAccount transactions.</summary>
+  public class MoneyAccountUseCases : UseCase {
 
     #region Constructors and parsers
 
@@ -36,7 +35,7 @@ namespace Empiria.Trade.Financial.UseCases
 
       var moneyAccount = new MoneyAccount(fields);
       moneyAccount.Save();
-     
+
       return MoneyAccountMapper.Map(moneyAccount);
     }
 
@@ -46,7 +45,7 @@ namespace Empiria.Trade.Financial.UseCases
       var moneyAccount = MoneyAccount.Parse(moneyAccountUID);
       moneyAccount.Update(fields);
       moneyAccount.Save();
-    
+
       return MoneyAccountMapper.Map(moneyAccount);
     }
 
@@ -89,10 +88,10 @@ namespace Empiria.Trade.Financial.UseCases
 
     public MoneyAccountTransactionDto AddMoneyAccountTransaction(string moneyAccountUID, MoneyAccountTransactionFields fields) {
       Assertion.Require(fields, "fields");
-            
-      var moneyAccountTransaction = new MoneyAccountTransaction(moneyAccountUID,fields);
+
+      var moneyAccountTransaction = new MoneyAccountTransaction(moneyAccountUID, fields);
       moneyAccountTransaction.Save();
-           
+
 
       return MoneyAccountTransactionMapper.Map(moneyAccountTransaction);
     }
@@ -133,13 +132,13 @@ namespace Empiria.Trade.Financial.UseCases
       return MoneyAccountTransactionType.GetList<MoneyAccountTransactionType>().MapToNamedEntityList();
     }
 
-    public MoneyAccountTransactionDto AddMoneyAccountTransactionItem(string moneyAccountTransactionUID, 
+    public MoneyAccountTransactionDto AddMoneyAccountTransactionItem(string moneyAccountTransactionUID,
                                                                          MoneyAccountTransactionItemFields fields) {
       Assertion.Require(fields, "fields");
 
       var moneyAccountTransactionItem = new MoneyAccountTransactionItem(moneyAccountTransactionUID, fields);
       moneyAccountTransactionItem.Save();
-      
+
       moneyAccountTransactionItem.MoneyAccountTransaction.LoadItems();
 
 
@@ -181,10 +180,10 @@ namespace Empiria.Trade.Financial.UseCases
       var moneyAccountTransaction = MoneyAccountTransaction.Parse(moneyAccountTransactionUID);
 
       var moneyAccountTransactionItems = MoneyAccountTransactionItem.GetTransactionItems(moneyAccountTransaction.Id);
-      
+
       return MoneyAccountTransactionItemMapper.MapMoneyAccountTransactionItems(moneyAccountTransactionItems);
     }
-     
+
 
     public CreditTransactionDto AddCreditTransaction(CreditTrasnactionFields fields) {
       Assertion.Require(fields, "fields");
@@ -192,7 +191,7 @@ namespace Empiria.Trade.Financial.UseCases
 
       var moneyAccountTransaction = new MoneyAccountTransaction();
       moneyAccountTransaction.AddCreditTransactions(moneyAccount, fields);
-     
+
       return CreditTransactionMapper.Map(moneyAccountTransaction, moneyAccount.DaysToPay);
     }
 
@@ -205,14 +204,14 @@ namespace Empiria.Trade.Financial.UseCases
 
       return CreditTransactionMapper.Map(transaction, 10);
     }
-       
+
 
     public decimal GetMoneyAccountTotalDebt(int ownerId) {
       var moneyAccount = MoneyAccount.ParseByOwner(ownerId);
 
       return moneyAccount.GetDebit();
     }
-    
+
 
     public FixedList<CreditTransactionDto> GetCreditTransactions(int customerId) {
 
@@ -241,14 +240,14 @@ namespace Empiria.Trade.Financial.UseCases
 
     public FixedList<NamedEntityDto> GetMoneyAccountTypes() {
 
-      return MoneyAccountType.GetList<MoneyAccountType>().MapToNamedEntityList();     
+      return MoneyAccountType.GetList<MoneyAccountType>().MapToNamedEntityList();
     }
 
-    public FixedList<NamedEntityDto> GetStatusList() {      
+    public FixedList<NamedEntityDto> GetStatusList() {
       var active = new NamedEntityDto("Active", "Activo");
       var pending = new NamedEntityDto("Pending", "Pendiente");
       var suspended = new NamedEntityDto("Suspended", "Suspendido");
-      var deleted = new NamedEntityDto("Deleted", "Cancelado");     
+      var deleted = new NamedEntityDto("Deleted", "Cancelado");
 
       List<NamedEntityDto> orderSalesStatus = new List<NamedEntityDto>();
 
@@ -256,7 +255,7 @@ namespace Empiria.Trade.Financial.UseCases
       orderSalesStatus.Add(pending);
       orderSalesStatus.Add(suspended);
       orderSalesStatus.Add(deleted);
-     
+
       return orderSalesStatus.ToFixedList<NamedEntityDto>();
     }
 
@@ -264,11 +263,11 @@ namespace Empiria.Trade.Financial.UseCases
       var moneyAccount = MoneyAccount.Parse(moneyAccountUID);
       moneyAccount.LoadMoneyAccountTransactions();
 
-      return  MoneyAccountMapper.Map(moneyAccount);
+      return MoneyAccountMapper.Map(moneyAccount);
     }
 
     public FixedList<NamedEntityDto> GetPaymentTypes() {
-       return PaymentType.GetList<PaymentType>().MapToNamedEntityList();
+      return PaymentType.GetList<PaymentType>().MapToNamedEntityList();
     }
 
     public FixedList<NamedEntityDto> GetMoneyAccountTransactionItemTypes() {

@@ -2,7 +2,7 @@
 *                                                                                                            *
 *  Module   : Product Management                         Component : Domain Layer                            *
 *  Assembly : Empiria.Trade.Products.dll                 Pattern   : Partitioned Type / Information Holder   *
-*  Type     : Product                                    License   : Please read LICENSE.txt file            *
+*  Type     : ProductEntry                               License   : Please read LICENSE.txt file            *
 *                                                                                                            *
 *  Summary  : Represents a product.                                                                          *
 *                                                                                                            *
@@ -85,6 +85,20 @@ namespace Empiria.Trade.Products {
 
     internal ProductPresentation ProductPresentation {
       get; private set;
+    }
+
+
+    public FixedList<ProductEntry> Presentations {
+      get {
+        return _presentations.Value;
+      }
+    }
+
+    
+    public FixedList<ProductPrices> ProductPrices {
+      get {
+        return ProductDataService.GetProductPrices(this.Id);
+      }
     }
 
 
@@ -219,13 +233,6 @@ namespace Empiria.Trade.Products {
 
 
     public string ProductImageUrl => $"http://apps.sujetsa.com.mx:8080/imagenes-productos/{this.InternalCode}.jpg";
-
-
-    public FixedList<ProductEntry> Presentations {
-      get {
-        return _presentations.Value;
-      }
-    }
 
     #endregion Properties
 

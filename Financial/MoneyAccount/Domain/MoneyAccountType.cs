@@ -7,10 +7,6 @@
 *  Summary  : Represents money account types.                                                                *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
-using System;
-using Empiria.Trade.Core.Common;
-
-
 
 namespace Empiria.Trade.Financial {
   /// Represents money account types.

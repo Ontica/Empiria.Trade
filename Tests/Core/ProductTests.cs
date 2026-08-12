@@ -15,6 +15,8 @@ using Empiria.Trade.Products.Adapters;
 using Empiria.Trade.Products.UseCases;
 using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Sales.UseCases;
+using Empiria.Trade.Core;
+using Empiria.Trade.Products.Data;
 
 namespace Empiria.Trade.Tests.Core {
 
@@ -33,12 +35,32 @@ namespace Empiria.Trade.Tests.Core {
     #region Facts
 
     [Fact]
+    public void GetProductPriceTest() {
+
+      FixedList<ProductPrices> sut = ProductDataService.GetProductPrices(-27883);
+      
+      Assert.NotNull(sut);
+      Assert.NotEmpty(sut);
+    }
+
+
+    [Fact]
+    public void GetProductPriceTypeTest() {
+
+      FixedList<ProductPriceType> sut = ProductPriceType.GetList();
+      
+      Assert.NotNull(sut);
+      Assert.NotEmpty(sut);
+    }
+
+
+    [Fact]
     public async Task GetProductsForOrderTest() {
 
       var usecase = ProductForOrderUseCases.UseCaseInteractor();
 
       ProductOrderQuery query = new ProductOrderQuery {
-        Keywords = "TMG12X4",
+        Keywords = "TABAI38X2-50",
         OnStock = true,
         Order = {
           CustomerUID = "154a6994-caa4-460e-95cd-de7e4a789b55",
@@ -59,7 +81,7 @@ namespace Empiria.Trade.Tests.Core {
 
       var usecase = ProductUseCases.UseCaseInteractor();
       ProductQuery query = new ProductQuery {
-        Keywords = "TMG12X4", //TG5G516X3 TCC12X1
+        Keywords = "THMEF10X70-100", //TG5G516X3 TCC12X1
         OnStock = true
       };
 
