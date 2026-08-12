@@ -136,7 +136,7 @@ namespace Empiria.Trade.Sales.Adapters {
 
   public class AuthorizationDto {
 
-    public OrderAuthorizationStatus AuthorizationStatus {
+    public OrderStatus AuthorizationStatus {
       get; internal set;
     }
 

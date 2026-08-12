@@ -118,7 +118,7 @@ namespace Empiria.Trade.Sales.Adapters
 
     private static AuthorizationDto MapAuthorizationDto(SalesOrder order) {
       var dto = new AuthorizationDto {
-        AuthorizationStatus = order.AuthorizationStatus,
+        AuthorizationStatus = EnumExtensions.GetOrderStatusEnum(order.AuthorizationStatus),
         AuthorizationTime = order.AuthorizationTime,
         AuthorizatedById = order.AuthorizedBy.Id
       };

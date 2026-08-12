@@ -125,9 +125,44 @@ namespace Empiria.Trade.Core {
     } = new TransactionActions();
 
 
-    public OrderAuthorizationStatus AuthorizationStatus {
-      get; internal set;
-    } = OrderAuthorizationStatus.Pending;
+    public DateTime ReceptionTime {
+      get {
+        return ConditionsData.Get("receptionTime", DateTime.MaxValue);
+      }
+      private set {
+        ConditionsData.SetIfValue("receptionTime", value);
+      }
+    }
+
+
+    public DateTime ScheduledTime {
+      get {
+        return ConditionsData.Get("scheduledTime", DateTime.MaxValue);
+      }
+      private set {
+        ConditionsData.SetIfValue("scheduledTime", value);
+      }
+    }
+
+
+    public string PedimentoImportacion {
+      get {
+        return ConditionsData.Get("pedimentoImportacion", string.Empty);
+      }
+      private set {
+        ConditionsData.SetIfValue("pedimentoImportacion", value);
+      }
+    }
+
+
+    public string CartaPorte {
+      get {
+        return ConditionsData.Get("cartaPorte", string.Empty);
+      }
+      private set {
+        ConditionsData.SetIfValue("cartaPorte", value);
+      }
+    }
 
 
     public string ShippingMethod {
@@ -140,12 +175,22 @@ namespace Empiria.Trade.Core {
     }
 
 
-    public DateTime ScheduledTime {
+    public string AuthorizationStatus {
       get {
-        return ConditionsData.Get("scheduledTime", DateTime.MaxValue);
+        return ExtData.Get("orderStatus", string.Empty);
       }
       private set {
-        ConditionsData.SetIfValue("scheduledTime", value);
+        ExtData.SetIfValue("orderStatus", value);
+      }
+    }
+
+
+    public string OrderStatus {
+      get {
+        return ExtData.Get("orderStatus", string.Empty);
+      }
+      private set {
+        ExtData.SetIfValue("orderStatus", value);
       }
     }
 
@@ -277,13 +322,14 @@ namespace Empiria.Trade.Core {
       this.Customer = fields.GetCustomer();
       this.CustomerAddress = fields.GetCustomerAddress();
       this.CustomerContact = fields.GetCustomerContact();
-      //this.ShippingMethod = fields.ShippingMethod;
       this.PriceList = GetPriceList();
       this.SalesOrderItems = LoadSalesOrderItems(fields.Items);
       this.ScheduledTime = ExecutionServer.DateMaxValue;
-      //this.ReceptionTime = ExecutionServer.DateMaxValue;
-      //this.PedimentoImportacion = string.Empty;
-      //this.CartaPorte = string.Empty;
+      //TODO GUARDAR EN EXT_DATA
+      this.ShippingMethod = fields.ShippingMethod.ToString();
+      this.ReceptionTime = ExecutionServer.DateMaxValue;
+      this.PedimentoImportacion = string.Empty;
+      this.CartaPorte = string.Empty;
 
       SetOrderTotals();
 
@@ -329,6 +375,7 @@ namespace Empiria.Trade.Core {
     }
 
     private void SetOrderTotals() {
+
       this.OrderTotal = 0;
       this.ItemsTotal = 0;
       this.Tax = 0;
