@@ -314,7 +314,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
           DiscountPolicy = orderItem.DiscountPolicy,
           Discount1 = orderItem.Discount,
           Discount2 = orderItem.AdditionalDiscount,
-          Subtotal = orderItem.Subtotal_
+          Subtotal = orderItem.ItemSubtotal
         };
         billingItems.Add(item);
       }

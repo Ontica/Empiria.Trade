@@ -35,7 +35,7 @@ namespace Empiria.Trade.Products {
 
 
     [DataField("Price_List_Type_Id")]
-    public ProductPriceType PricePriceType {
+    public ProductPriceType PriceType {
       get; set;
     }
 

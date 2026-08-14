@@ -61,7 +61,7 @@ namespace Empiria.Trade.Products {
 
 
     [DataField("VENDOR_ID")]
-    internal Party Vendor {
+    public Party Vendor {
       get; private set;
     }
 
@@ -104,40 +104,40 @@ namespace Empiria.Trade.Products {
 
     public string Diametro {
       get {
-        return Attributes.Get("diametro", string.Empty);
+        return Attributes.Get("Diametro", string.Empty);
       }
       private set {
-        Attributes.SetIfValue("diametro", value);
+        Attributes.SetIfValue("Diametro", value);
       }
     }
 
 
     public string Largo {
       get {
-        return Attributes.Get("largo", string.Empty);
+        return Attributes.Get("Largo", string.Empty);
       }
       private set {
-        Attributes.SetIfValue("largo", value);
+        Attributes.SetIfValue("Largo", value);
       }
     }
 
 
     public string Hilos {
       get {
-        return Attributes.Get("hilos", string.Empty);
+        return Attributes.Get("Hilos", string.Empty);
       }
       private set {
-        Attributes.SetIfValue("hilos", value);
+        Attributes.SetIfValue("Hilos", value);
       }
     }
 
 
     public decimal Peso {
       get {
-        return Attributes.Get<decimal>("peso", 0);
+        return Attributes.Get<decimal>("Peso", 0);
       }
       private set {
-        Attributes.SetIfValue("peso", value);
+        Attributes.SetIfValue("Peso", value);
       }
     }
 

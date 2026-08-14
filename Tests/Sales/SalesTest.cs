@@ -221,7 +221,7 @@ namespace Empiria.Trade.Tests.Sales {
         PaymentConditions = "Credito",
         ShippingMethod = ShippingMethods.RutaLocal,
         OrderTime = DateTime.Now,
-        Status = EntityStatus.Pending,
+        Status = OrderStatus.Pending,
         Items = GetSalesOrderItemFields()
       };
     }
@@ -234,17 +234,31 @@ namespace Empiria.Trade.Tests.Sales {
       var fields = new SalesOrderItemsFields {
         OrderItemUID = "",
         VendorProductUID = "85fd259d-0d24-4301-9fdd-c413404401a5",
-        Quantity = 100,
-        UnitPrice = 0,
-        SalesPrice = 0,
+        Quantity = 200,
+        UnitPrice = 20,
+        SalesPrice = 150,
         DiscountPolicy = "",
         Discount1 = 0,
-        Discount2 = 0,
+        Discount2 = 15,
         Subtotal = 800,
         Notes = ""
       };
 
       itemsFields.Add(fields);
+
+      var fields2 = new SalesOrderItemsFields {
+        OrderItemUID = "",
+        VendorProductUID = "ac353797-b864-44bc-a948-bc4c08d4ce38",
+        Quantity = 100,
+        UnitPrice = 10,
+        SalesPrice = 90,
+        DiscountPolicy = "",
+        Discount1 = 0,
+        Discount2 = 12,
+        Subtotal = 500,
+        Notes = ""
+      };
+      itemsFields.Add(fields2);
 
       return new FixedList<SalesOrderItemsFields>(itemsFields);
     }

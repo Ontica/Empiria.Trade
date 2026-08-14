@@ -60,12 +60,18 @@ namespace Empiria.Trade.Tests.Core {
       var usecase = ProductForOrderUseCases.UseCaseInteractor();
 
       ProductOrderQuery query = new ProductOrderQuery {
-        Keywords = "TABAI38X2-50",
+        Keywords = "TTRC12X3-1800",
         OnStock = true,
         Order = {
-          CustomerUID = "154a6994-caa4-460e-95cd-de7e4a789b55",
-          SalesAgentUID = "",
-          SupplierUID = ""
+          CustomerUID = "c74f0f44-39a4-4f8b-8e0a-7853909648b7",
+          CustomerAddressUID = "4886782b-fefa-48fd-8cf0-e4412dd94753",
+          CustomerContactUID = "5dc570bd-8653-4ade-a869-0540fc391f49",
+          PaymentConditions = "Credito",
+          SalesAgentUID = "7dc0b0bb-cac3-469e-8da9-309efda127ef",
+          ShippingMethod = ShippingMethods.RutaLocal,
+          SupplierUID = "4c0c43e4-8bdc-4b7d-b91e-3fb385441120",
+          OrderTime = new System.DateTime(2026, 08, 12),
+          Status = OrderStatus.Pending
         }
       };
 
@@ -98,7 +104,8 @@ namespace Empiria.Trade.Tests.Core {
       var usecase = ProductUseCases.UseCaseInteractor();
       ProductQuery query = new ProductQuery {
         Keywords = "TMG12X4", //TG5G516X3 TCC12X1
-        OnStock = false
+        OnStock = false, 
+        SupplierUID = "b8b6d1ce-ffd0-47fd-92ef-3db32fa44ed5"
       };
 
       FixedList<ProductForSearchingDto> sut = usecase.GetProductsForPurchaseOrder(query);

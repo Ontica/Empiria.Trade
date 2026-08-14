@@ -45,7 +45,7 @@ namespace Empiria.Trade.Products.Adapters {
     static internal FixedList<ProductForSearchingDto> MapToSalesOrder(FixedList<ProductEntry> products,
                                                                     bool withUnits) {
 
-      return products.Select(x => MapProduct(x, withUnits))
+      return products.Select(x => MapTo(x, withUnits))
                                  .Where(x => x.Presentations.Count > 0)
                                  .ToFixedList();
     }
@@ -65,7 +65,7 @@ namespace Empiria.Trade.Products.Adapters {
 
     #region Private methods
 
-    private static ProductPresentationForSeach AssignProductPresentation(ProductEntry presentation) {
+    private static ProductPresentationForSeach AssignPresentationForPurchaseOrder(ProductEntry presentation) {
 
       return new ProductPresentationForSeach {
         PresentationUID = presentation.UID,
@@ -75,6 +75,20 @@ namespace Empiria.Trade.Products.Adapters {
         Description = presentation.Description,
         Units = presentation.PackingSmallBag,
         Vendors = MapVendors(presentation)
+      };
+    }
+
+
+    private static ProductPresentationForSeach AssignPresentationForSearcher(ProductEntry presentation) {
+
+      return new ProductPresentationForSeach {
+        PresentationUID = presentation.UID,
+        Name = $"{presentation.InternalCode} " +
+               $"| Empaque: {presentation.PackingSmallBag} " +
+               $"| Unidades: {presentation.PackagingSize} {presentation.BaseUnit.Description}",
+        Description = presentation.Description,
+        Units = presentation.PackingSmallBag,
+        Vendors = MapVendorsForSearcher(presentation)
       };
     }
 
@@ -114,6 +128,11 @@ namespace Empiria.Trade.Products.Adapters {
 
       MergePresentationAndStockByLocation(_presentations, stockAndLocations);
 
+      _presentations = _presentations.Where(x => x.Vendor.Id == -100 ||
+                                                 x.Vendor.Id == -99 ||
+                                                 x.Vendor.Id == -98)
+                                     .ToFixedList();
+
       if (withUnits) {
         _presentations = _presentations.FindAll(x => x.Stock > 0);
       }
@@ -127,30 +146,30 @@ namespace Empiria.Trade.Products.Adapters {
       //TODO VALIDAR TIPO UNIDAD E IDENTIFICAR ALMACENES
       foreach (var p in presentations) {
 
-        var stockAndLocation = stocksAndLocations.Where(x=>x.Product_Id == p.Id && x.Location.Id != -1)
+        var stockAndLocation = stocksAndLocations.Where(x=>x.Product_Id == p.Id /*&& x.Location.Id != -1*/)
                                                  .ToList();
 
-        var locs = new List<Location>();
+        //var locs = new List<Location>();
 
-        foreach (var stockLocation in stockAndLocation) {
-          locs.Add(stockLocation.Location);
-        }
+        //foreach (var stockLocation in stockAndLocation) {
+        //  locs.Add(stockLocation.Location);
+        //}
 
-        var warehouses = new List<Location>();
+        //var warehouses = new List<Location>();
 
-        foreach (var loc in locs) {
-          var warehouse = InventoryBuilder.GetRootLocation(loc);
+        //foreach (var loc in locs) {
+        //  var warehouse = InventoryBuilder.GetRootLocation(loc);
 
-          var exist = warehouses.Find(x => x.Id == warehouse.Id);
+        //  var exist = warehouses.Find(x => x.Id == warehouse.Id);
           
-          if (exist == null) {
-            warehouses.Add(warehouse);
-          }
-        }
+        //  if (exist == null) {
+        //    warehouses.Add(warehouse);
+        //  }
+        //}
 
         p.Stock = stockAndLocation.Sum(x => x.Stock);
-
-        p.Locations = locs.ToFixedList();
+        
+        //p.Locations = locs.ToFixedList();
       }
     }
 
@@ -160,12 +179,12 @@ namespace Empiria.Trade.Products.Adapters {
 
       FixedList<ProductEntry> _presentations = GetPresentationsWithStock(baseProduct, withUnits);
 
-      var productPresentations = _presentations.Select((x) => AssignProductPresentation((ProductEntry) x))
+      var productPresentations = _presentations.Select((x) => AssignPresentationForSearcher((ProductEntry) x))
                                                .ToFixedList();
 
       if (_presentations.Count == 0) {
 
-        productPresentations.ToList().Add(AssignProductPresentation(baseProduct));
+        productPresentations.ToList().Add(AssignPresentationForSearcher(baseProduct));
       }
 
       return new FixedList<ProductPresentationForSeach>(productPresentations);
@@ -177,12 +196,12 @@ namespace Empiria.Trade.Products.Adapters {
 
       FixedList<ProductEntry> _presentations = GetPresentationsByBaseProduct(baseProduct);
 
-      var productPresentations = _presentations.Select((x) => AssignProductPresentation((ProductEntry) x))
+      var productPresentations = _presentations.Select((x) => AssignPresentationForPurchaseOrder((ProductEntry) x))
                                                .ToFixedList();
 
       if (_presentations.Count == 0) {
 
-        productPresentations.ToList().Add(AssignProductPresentation(baseProduct));
+        productPresentations.ToList().Add(AssignPresentationForPurchaseOrder(baseProduct));
       }
 
       return new FixedList<ProductPresentationForSeach>(productPresentations);
@@ -267,6 +286,24 @@ namespace Empiria.Trade.Products.Adapters {
         VendorUID = presentation.Vendor.UID,
         VendorName = presentation.Vendor.Name,
         Stock = presentation.Stock,
+        Sku = "SKU"
+      };
+
+      vendors.Add(vendor);
+      return vendors.ToFixedList();
+    }
+
+
+    static private FixedList<VendorDto> MapVendorsForSearcher(ProductEntry presentation) {
+
+      var vendors = new List<VendorDto>();
+
+      var vendor = new VendorDto {
+        VendorProductUID = presentation.VendorProductUID,
+        VendorUID = presentation.Vendor.UID,
+        VendorName = presentation.Vendor.Name,
+        Stock = presentation.Stock,
+        Price = presentation.ProductPrices.Find(x => x.PriceType.Id == -25678).Price,
         Sku = "SKU"
       };
 
