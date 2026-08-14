@@ -22,8 +22,8 @@ namespace Empiria.Trade.Financial.Data {
     #region Public methods
 
     static internal FixedList<MoneyAccount> GetMoneyAccounts() {
-      string sql = "SELECT * FROM TRDMoneyAccounts " +
-                  $"WHERE MoneyAccountId > 0  AND Status <>  'X'";
+      string sql = "SELECT * FROM OMS_Money_Accounts " +
+                  $"WHERE Money_Account_Id > 0  AND Status <>  'X'";
 
       var op = DataOperation.Parse(sql);
 
@@ -31,7 +31,7 @@ namespace Empiria.Trade.Financial.Data {
     }
 
     static internal MoneyAccount GetMoneyAccount(int ownerId) {
-      string sql = $"SELECT * FROM TRDMoneyAccounts WHERE  OwnerId = {ownerId}";
+      string sql = $"SELECT * FROM OMS_Money_Accounts WHERE  Owner_Id = {ownerId}";
 
       var op = DataOperation.Parse(sql);
 
@@ -68,23 +68,23 @@ namespace Empiria.Trade.Financial.Data {
       string moneyAccountTypeFilter = string.Empty;
 
       if (fields.CustomerUID != string.Empty) {
-        customerFilter = $"INNER JOIN TRDParties ON TRDMoneyAccounts.OwnerId = TRdParties.PartyId WHERE (partyUID = '{fields.CustomerUID}') AND ";
+        customerFilter = $"INNER JOIN TRDParties ON OMS_Money_Accounts.Owner_Id = Parties.Party_Id WHERE (Party_UID = '{fields.CustomerUID}') AND ";
       } else {
         customerFilter = "WHERE ";
       }
 
       if (fields.Keywords != string.Empty) {
-        keywordsFilter = $" {SearchExpression.ParseAndLikeKeywords("MoneyAccountKeywords", fields.Keywords)} AND ";
+        keywordsFilter = $" {SearchExpression.ParseAndLikeKeywords("Keywords", fields.Keywords)} AND ";
       }
 
       if (fields.MoneyAccountTypeUID != string.Empty) {
         var moneyAccountTypeId = GetMoneyAccountTypeId(fields.MoneyAccountTypeUID);
-        moneyAccountTypeFilter = $" AND MoneyAccountTypeId ={moneyAccountTypeId} ";
+        moneyAccountTypeFilter = $" AND Money_Account_Type_Id ={moneyAccountTypeId} ";
       }
 
-      var sql = $"SELECT * FROM TRDMoneyAccounts {customerFilter} " +
-                 $" {keywordsFilter}  (PostedTime >= CONVERT(SMALLDATETIME, '{fromDate}') AND " +
-                 $"PostedTime <= CONVERT(SMALLDATETIME,'{toDate}')) {moneyAccountTypeFilter} {statusFilter} ";
+      var sql = $"SELECT * FROM OMS_Money_Accounts {customerFilter} " +
+                 $" {keywordsFilter}  (Posted_Time >= CONVERT(SMALLDATETIME, '{fromDate}') AND " +
+                 $"Posted_Time <= CONVERT(SMALLDATETIME,'{toDate}')) {moneyAccountTypeFilter} {statusFilter} ";
 
       var dataOperation = DataOperation.Parse(sql);
 
@@ -96,8 +96,8 @@ namespace Empiria.Trade.Financial.Data {
     #region Private methods
 
     static internal int GetMoneyAccountTypeId(string moneyAccountUid) {
-      var sql = "SELECT * FROM SimpleObjects " +
-               $"WHERE ObjectKey = '{moneyAccountUid}'";
+      var sql = "SELECT * FROM Common_Storage " +
+               $"WHERE Object_Name = '{moneyAccountUid}'";
 
 
       var dataOperation = DataOperation.Parse(sql);
