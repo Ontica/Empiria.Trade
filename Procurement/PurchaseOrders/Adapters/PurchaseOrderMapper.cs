@@ -70,7 +70,8 @@ namespace Empiria.Trade.Procurement.Adapters {
         CanDelete = status != EntityStatus.Closed ? true : false,
         CanEdit = status != EntityStatus.Closed ? true : false,
         CanEditItems = status != EntityStatus.Closed ? true : false,
-        CanExport = true //status == EntityStatus.Closed ? true : false
+        CanExport = true, //status == EntityStatus.Closed ? true : false
+        CanExportLabels = status == EntityStatus.Closed ? true : false
       };
     }
 

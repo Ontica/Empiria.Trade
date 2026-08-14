@@ -263,6 +263,11 @@ namespace Empiria.Trade.Procurement.Adapters {
       get; set;
     }
 
+
+    public bool CanExportLabels {
+      get; set;
+    }
+
   }
 
 } // namespace Empiria.Trade.Inventory.PurchaseOrders.Adapters

@@ -49,7 +49,7 @@ namespace Empiria.Trade.WebApi.Procurement {
 
 
     [HttpGet]
-    [Route("v4/trade/procurement/purchase-orders/{purchaseOrderUID:guid}/box-labels")]
+    [Route("v4/trade/procurement/purchase-orders/{purchaseOrderUID:guid}/export-labels")]
     public SingleObjectModel ExportOrderToExcel([FromUri] string purchaseOrderUID) {
 
       using (var usecases = PurchaseOrderUseCases.UseCaseInteractor()) {
