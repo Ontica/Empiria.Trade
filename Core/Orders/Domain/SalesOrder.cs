@@ -382,13 +382,13 @@ namespace Empiria.Trade.Core {
       this.ItemsCount = this.SalesOrderItems.Count;
 
       foreach (SalesOrderItem item in this.SalesOrderItems) {
-        this.ItemsTotal += item.Subtotal_;
+        
+        this.ItemsTotal += item.ItemSubtotal;
         this.Shipment += item.Shipment;
         this.Discount += item.Discount;
         this.Tax += item.TaxesIVA;
-        this.OrderTotal += item.Subtotal;
       }
-
+      this.OrderTotal += this.ItemsTotal + this.Tax + this.Shipment - this.Discount;
     }
 
     private string GetPriceList() {

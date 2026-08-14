@@ -26,13 +26,13 @@ namespace Empiria.Trade.Core {
     }
 
 
-    static public DataRow GetProductPrice(int vendorProductId, int customerPriceListNumber) {
+    static public DataRow GetProductPrice(int productId, int customerPriceListNumber) {
 
-      string pricelistNumber = "PriceList" + customerPriceListNumber.ToString();
+      string pricelistNumber = "Price_List_Type_Id" + customerPriceListNumber.ToString();
 
       var sql = $"SELECT ProductPriceId, {pricelistNumber} " +
-                $"FROM TRDProductPrices " +
-                $"WHERE VendorProductId = {vendorProductId}";
+                $"FROM Product_Price_List " +
+                $"WHERE Product_Id = {productId}";
 
       var op = DataOperation.Parse(sql);
 

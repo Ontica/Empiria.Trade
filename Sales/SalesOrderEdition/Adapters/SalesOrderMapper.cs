@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
+using System;
 using System.Collections.Generic;
 
 using Empiria.Trade.Core;
@@ -89,7 +90,7 @@ namespace Empiria.Trade.Sales.Adapters
       var dto = new OrderDataDto {
         UID = order.UID,
         OrderNumber = order.OrderNo,
-        OrderTime = order.RequestedTime,
+        OrderTime = order.RequestedTime >= new DateTime(2070,12,31) ? DateTime.Now : order.RequestedTime,
         Notes = order.Observations,
         //Status = order.Status,
       
@@ -149,13 +150,14 @@ namespace Empiria.Trade.Sales.Adapters
 
 
     private static CustomerCreditDto MapCustomerCredit(SalesOrder order) {
-      var dto = new CustomerCreditDto {
-        TotalDebt = GetCustomerTotalDebt(order.Customer.Id), //order.TotalDebt,
-        CreditLimit = GetCusomerCreditLimit(order.Customer.Id), //order.CreditLimit,
-        CreditTransactions = GetCreditTransactions(order.Customer.Id)
-      };
 
-      return dto;
+      //var dto = new CustomerCreditDto {
+      //  TotalDebt = GetCustomerTotalDebt(order.Customer.Id), //order.TotalDebt,
+      //  CreditLimit = GetCusomerCreditLimit(order.Customer.Id), //order.CreditLimit,
+      //  CreditTransactions = GetCreditTransactions(order.Customer.Id)
+      //};
+
+      return new CustomerCreditDto();
     }
 
 

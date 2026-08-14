@@ -214,7 +214,7 @@ namespace Empiria.Trade.Sales.UseCases {
     public ISalesOrderDto UpdateSalesOrder(SalesOrderFields fields) {
       Assertion.Require(fields, "fields");
                   
-      if (fields.Status != EntityStatus.Pending) { // OrderStatus.Captured
+      if (fields.Status != OrderStatus.Captured) { // OrderStatus.Captured
         Assertion.RequireFail($"It is only possible to update orders in the Captured status, " +
                               $"your order status is:{fields.Status}");
       }
@@ -283,6 +283,17 @@ namespace Empiria.Trade.Sales.UseCases {
       return SalesOrderStatusService.GetPackingStatusList();
     }
 
+
+    static internal decimal GetItemExistence(int productId) {
+
+      var usecase = CataloguesUseCases.UseCaseInteractor();
+
+      FixedList<SalesInventoryStock> inventoryStock =
+        CataloguesUseCases.GetInventoryStockByVendorProduct(productId, "");
+
+      return inventoryStock.Sum(x => x.Stock);
+    }
+
     #endregion Use cases
 
     #region Private methods
@@ -330,17 +341,6 @@ namespace Empiria.Trade.Sales.UseCases {
     }
 
 
-    private decimal GetItemExistence(int productId) {
-
-      var usecase = CataloguesUseCases.UseCaseInteractor();
-
-      FixedList<SalesInventoryStock> inventoryStock =
-        CataloguesUseCases.GetInventoryStockByVendorProduct(productId, "");
-
-      return inventoryStock.Sum(x => x.Stock);
-    }
-
-
     private SalesOrder InitializeSalesOrder(SalesOrderFields fields) {
       SalesOrder order;
 
@@ -381,6 +381,8 @@ namespace Empiria.Trade.Sales.UseCases {
 
         var product = ProductEntry.Parse(item.VendorProductUID);
         var productExistence = GetItemExistence(product.Id);
+        
+        item.ProductStock = productExistence;
 
         if (productExistence < item.Quantity) {
 

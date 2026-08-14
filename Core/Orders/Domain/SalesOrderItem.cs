@@ -8,7 +8,10 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using System.Linq;
 using Empiria.Orders;
+using Empiria.Products;
+using Empiria.Trade.Products;
 
 namespace Empiria.Trade.Core {
 
@@ -22,7 +25,10 @@ namespace Empiria.Trade.Core {
     }
 
     public SalesOrderItem(SalesOrder salesOrder, SalesOrderItemsFields fields) {
+
+      this.ProductUID = fields.VendorProductUID;
       this.SalesOrder = salesOrder;
+
       LoadOrderItem(fields);
     }
 
@@ -35,9 +41,56 @@ namespace Empiria.Trade.Core {
     }
 
 
-    public decimal Subtotal_ {
+    public string ProductUID {
       get; set;
-    } = 0;
+    } = string.Empty;
+
+
+    public ProductEntry ProductEntry {
+      get {
+        return ProductEntry.ParseUID(this.ProductUID == string.Empty ? this.Product.UID : this.ProductUID);
+      }
+    }
+
+
+    public int PriceListNumber {
+      get; protected set;
+    } = 3;
+
+
+    public decimal ProductPrice {
+      get; private set;
+    }
+
+
+    public int ItemQuantity {
+      get; private set;
+    }
+
+
+    public decimal BasePrice {
+      get; private set;
+    }
+
+
+    public decimal ItemUnitPrice {
+      get; private set;
+    }
+
+
+    public decimal SalesPrice {
+      get; private set;
+    }
+
+
+    public decimal ItemDiscount {
+      get; private set;
+    }
+
+
+    public decimal ItemSubtotal {
+      get; set;
+    }
 
 
     public decimal Shipment {
@@ -50,14 +103,14 @@ namespace Empiria.Trade.Core {
     }
 
 
-    public int PriceListNumber {
-      get; protected set;
+    public decimal ItemTotal {
+      get; private set;
     }
 
 
     public string DiscountPolicy {
       get; set;
-    } = String.Empty;
+    } = string.Empty;
 
 
     public decimal AdditionalDiscount {
@@ -81,22 +134,23 @@ namespace Empiria.Trade.Core {
 
       FixedList<VendorPrices> prices = GetCustomerPriceList();
 
+      var productPrice = ProductEntry.ProductPrices.Find(x => x.PriceType.Id == -25678).Price;
+
       //this.OrderItemTypeId = 1045;
-      //this.Notes = String.IsNullOrEmpty(fields.Notes) ? String.Empty : fields.Notes;
-      //this.VendorProduct = fields.GetVendorProduct();
-      //this.PriceListNumber = GetPriceListNumber(prices);
-      //this.ProductPriceId = GetProductPriceId(VendorProduct.Id);
-      //this.Quantity = fields.Quantity;
-      //this.BasePrice = GetProductPrice(VendorProduct.Id);
-      //this.SalesPrice = GetSalesPrice();
+      this.Notes = String.IsNullOrEmpty(fields.Notes) ? String.Empty : fields.Notes;
+      this.PriceListNumber = GetPriceListNumber(prices);
+      this.ProductPrice = productPrice;
+      this.ItemQuantity = fields.Quantity;
+      this.BasePrice = productPrice;
+      this.ItemUnitPrice = productPrice;
+      this.SalesPrice = GetSalesPrice();
       //this.DiscountPolicy = GetDiscount().ToString();
-      //this.Discount = GetDiscount();
-      //this.AdditionalDiscount = fields.Discount2;
-      //this.Subtotal_ = GetSubtotal();
-      //this.Shipment = 0;
-      //this.TaxesIVA = GetTaxesIva(this.Subtotal_);
-      //this.Total = GetTotal(this.Subtotal_);
-      //this.ReceivedQty = 0;
+      //this.ItemDiscount = GetDiscount();
+      this.AdditionalDiscount = fields.Discount2;
+      this.ItemSubtotal = GetSubtotal(); //fields.Quantity * fields.UnitPrice; 
+      this.Shipment = 0;
+      this.TaxesIVA = this.ItemSubtotal * 0.16M;
+      this.ItemTotal = this.ItemSubtotal + this.TaxesIVA + this.Shipment;
       //this.ScheduledTime = ExecutionServer.DateMaxValue;
       //this.ReceptionTime = ExecutionServer.DateMaxValue;
       //this.Reviewed = string.Empty;
@@ -104,7 +158,7 @@ namespace Empiria.Trade.Core {
 
 
     public static void SaveSalesOrderItems(FixedList<SalesOrderItem> orderItems, int orderId) {
-      
+
       foreach (SalesOrderItem orderItem in orderItems) {
         orderItem.SalesOrder = SalesOrder.Parse(orderId);
         orderItem.Save();
@@ -119,12 +173,12 @@ namespace Empiria.Trade.Core {
 
 
     public static FixedList<SalesOrderItem> GetOrderItems(int orderId) {
-     
+
       var orderItems = SalesOrderItemsData.GetOrderItems(orderId);
 
       foreach (SalesOrderItem orderItem in orderItems) {
-        orderItem.DiscountPolicy = "10"; 
-        orderItem.Subtotal_ = CalculeSubtotal(orderItem);
+        orderItem.DiscountPolicy = "10";
+        orderItem.ItemSubtotal = CalculeSubtotal(orderItem);
       }
 
       return orderItems;
@@ -135,7 +189,7 @@ namespace Empiria.Trade.Core {
     #region Private methods
 
     private int GetProductPriceId(int vendorProductId) {
-     var productPriceRow =  SalesOrderItemsData.GetProductPrice(vendorProductId, this.PriceListNumber);
+      var productPriceRow = SalesOrderItemsData.GetProductPrice(vendorProductId, this.PriceListNumber);
 
       return Convert.ToInt32(productPriceRow[0]);
     }
@@ -157,20 +211,20 @@ namespace Empiria.Trade.Core {
     }
 
     private decimal GetAdditionalDiscount() {
-      
+
       decimal additionalDiscount = 0;
 
       //var discounts = SalesDiscount.GetDiscountByVendor(this.VendorProduct, this.Order.OrderTime);
       var discounts = new FixedList<SalesDiscount>();
 
       foreach (SalesDiscount discount in discounts) {
-        additionalDiscount += (this.Subtotal_ * discount.Discount) / 100;
-        this.Subtotal_ = Subtotal_ - ((this.Subtotal_ * discount.Discount) / 100);
+        additionalDiscount += (this.ItemSubtotal * discount.Discount) / 100;
+        this.ItemSubtotal = ItemSubtotal - ((this.ItemSubtotal * discount.Discount) / 100);
         this.Notes += $"Tiene un descuento de: {discount.Discount} % por {discount.Description}";
       }
 
       return additionalDiscount;
-    
+
     }
 
     private int GetPriceListNumber(FixedList<VendorPrices> vendorPrices) {
@@ -180,7 +234,7 @@ namespace Empiria.Trade.Core {
     }
 
     private decimal GetSalesPrice() {
-      return (this.Quantity * this.UnitPrice);
+      return (this.ItemQuantity * this.ItemUnitPrice);
     }
 
     private decimal GetSubtotal() {
@@ -197,7 +251,7 @@ namespace Empiria.Trade.Core {
       return subTotal;
     }
 
-   
+
 
     #endregion Private methods
 

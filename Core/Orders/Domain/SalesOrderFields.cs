@@ -39,7 +39,7 @@ namespace Empiria.Trade.Core {
     //Notes = string Observations
 
     //OrderStatus
-    public EntityStatus Status {
+    public OrderStatus Status {
       get; set;
     }
 

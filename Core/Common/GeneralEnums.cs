@@ -153,9 +153,6 @@ namespace Empiria.Trade.Core {
         case "Cancelada":
           return OrderStatus.Cancelled;
 
-        case "Empty":
-          return OrderStatus.Empty;
-
         case "Pendiente":
           return OrderStatus.Pending;
 
@@ -169,7 +166,9 @@ namespace Empiria.Trade.Core {
           return OrderStatus.Suppled;
 
         default:
-          throw Assertion.EnsureNoReachThisCode($"Unrecognized status {orderStatus}");
+
+          return OrderStatus.Empty;
+
       }
     }
 

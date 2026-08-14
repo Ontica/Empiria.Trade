@@ -8,9 +8,12 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-
-using Empiria.Trade.Products.Adapters;
+using System.Collections.Generic;
 using Empiria.Trade.Core;
+using Empiria.Trade.Core.Catalogues;
+using Empiria.Trade.Products;
+using Empiria.Trade.Products.Adapters;
+using Empiria.Trade.Sales.UseCases;
 
 namespace Empiria.Trade.Sales.Adapters {
 
@@ -22,42 +25,43 @@ namespace Empiria.Trade.Sales.Adapters {
     static public SalesOrderItemDto Map(SalesOrderItem orderItem) {
       var dto = new SalesOrderItemDto {
         OrderItemUID = orderItem.UID,
-        Quantity = orderItem.Quantity,
-        UnitPrice = orderItem.UnitPrice,
-        //SalesPrice = orderItem.SalesPrice,
+        Quantity = orderItem.ItemQuantity,
+        UnitPrice = orderItem.ProductPrice,
+        SalesPrice = orderItem.SalesPrice,
         DiscountPolicy = orderItem.DiscountPolicy,
-        Discount1 = orderItem.Discount,
+        Discount1 = orderItem.ItemDiscount,
         Discount2 = orderItem.AdditionalDiscount,
         //Shipment = orderItem.Shipment,
         //Taxes = orderItem.TaxesIVA,
         //Total = orderItem.Total,
-        Subtotal = orderItem.Subtotal_,
+        Subtotal = orderItem.ItemSubtotal,
         Notes = orderItem.Notes,
-        Product = MapBaseProductDto(orderItem),
+        Product = MapBaseProductDto(orderItem.ProductEntry),
         Presentation = MapPresentation(orderItem),
-        Vendor = MapVendor(orderItem)
+        Vendor = MapVendor(orderItem.ProductEntry)
       };
 
       return dto;
     }
 
-    private static ProductDto MapBaseProductDto(SalesOrderItem orderItem) {
+    private static ProductDto MapBaseProductDto(ProductEntry product) {
       var dto = new ProductDto {
-        ProductUID = orderItem.Product.UID,
-        ProductCode = orderItem.Product.InternalCode,
-        Description = orderItem.Product.Name,
+        ProductUID = product.UID,
+        ProductCode = product.InternalCode,
+        Description = product.Description,
         //ProductImageUrl = orderItem.Product,
-        ProductType = MapProductType(orderItem)
+        ProductType = MapProductType(product)
       };
 
       return dto;
     }
 
-    private static ProductTypeDto MapProductType(SalesOrderItem orderItem) {
+    private static ProductTypeDto MapProductType(ProductEntry product) {
+
       var dto = new ProductTypeDto {
-        ProductTypeUID = "ddddd-dc17-49f5-b378-aa692dc21cdd",
-        //Name = orderItem.VendorProduct.ProductFields.ProductGroup.Name,
-        //Attributes = new Attributes().GetAttributesList(orderItem.VendorProduct.ProductFields.Attributes) 
+        ProductTypeUID = product.ProductType.UID,
+        Name = product.ProductType.DisplayName,
+        Attributes = GetProductAttributes(product)
       };
 
       return dto;
@@ -67,27 +71,68 @@ namespace Empiria.Trade.Sales.Adapters {
 
     #region Private methods
 
-    static private VendorDto MapVendor(SalesOrderItem orderItem) {
-      var dto = new VendorDto {
-        //VendorProductUID = orderItem.VendorProduct.UID,
-        //VendorUID = orderItem.VendorProduct.Vendor.UID,
-        //VendorName = orderItem.VendorProduct.Vendor.Name,
-        //Sku = orderItem.VendorProduct.SKU,
-        //Stock = orderItem.VendorProduct.InputQuantity,
+
+    private static FixedList<Attributes> GetProductAttributes(ProductEntry product) {
+
+      List<Attributes> attrs = new List<Attributes>();
+
+      if (product.Diametro != string.Empty) {
+        attrs.Add(
+          new Attributes {
+            Name = "Diametro",
+            Value = product.Diametro
+          });
+      }
+
+      if (product.Largo != string.Empty) {
+        attrs.Add(
+          new Attributes {
+            Name = "Largo",
+            Value = product.Largo
+          });
+      }
+
+      if (product.Hilos != string.Empty) {
+        attrs.Add(
+          new Attributes {
+            Name = "Hilos",
+            Value = product.Hilos
+          });
+      }
+
+      if (product.Peso > 0) {
+        attrs.Add(
+          new Attributes {
+            Name = "Peso",
+            Value = product.Peso.ToString()
+          });
+      }
+
+      return attrs.ToFixedList();
+    }
+
+
+    static private VendorDto MapVendor(ProductEntry productEntry) {
+
+      var productStock = SalesOrderUseCases.GetItemExistence(productEntry.Id);
+
+      return new VendorDto {
+        VendorProductUID = productEntry.UID,
+        VendorUID = productEntry.Vendor.UID,
+        VendorName = productEntry.Vendor.Name,
+        //Sku = productEntry.SKU,
+        Stock = productStock,
         Price = 0
       };
-
-      return dto;
     }
 
     static private ProductPresentationDto MapPresentation(SalesOrderItem orderItem) {
-      var dto = new ProductPresentationDto {
-        //PresentationUID = orderItem.VendorProduct.ProductPresentation.UID,
-        //Description = orderItem.VendorProduct.ProductPresentation.PresentationDescription,
-        //Units = orderItem.VendorProduct.ProductPresentation.QuantityAmount
+      
+      return new ProductPresentationDto {
+        PresentationUID = orderItem.ProductEntry.BaseUnit.UID,
+        Description = orderItem.ProductEntry.BaseUnit.Description,
+        Units = orderItem.ProductEntry.PackagingSize * orderItem.ItemQuantity
       };
-
-      return dto;
     }
 
     #endregion Private methods

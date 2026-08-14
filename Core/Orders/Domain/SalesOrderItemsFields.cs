@@ -29,7 +29,11 @@ namespace Empiria.Trade.Core {
     public int Quantity {
       get; set;
     }
-        
+
+    public decimal ProductStock {
+      get; set;
+    }
+
     public decimal UnitPrice {
       get; set;
     }
@@ -67,9 +71,6 @@ namespace Empiria.Trade.Core {
 
     #region Public methods
 
-    internal VendorProduct GetVendorProduct() {
-      return VendorProduct.Parse(this.VendorProductUID);
-    }
 
     #endregion Public methods
 

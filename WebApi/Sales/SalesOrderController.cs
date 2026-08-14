@@ -45,6 +45,8 @@ namespace Empiria.Trade.Sales.WebApi {
 
       base.RequireBody(fields);
 
+      Assertion.EnsureFailed("Funcionalidad en proceso de desarrollo");
+
       using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
 
         ISalesOrderDto orderDto = usecases.CreateSalesOrder(fields);
