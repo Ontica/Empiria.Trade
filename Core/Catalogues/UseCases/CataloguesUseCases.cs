@@ -14,6 +14,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Empiria.Services;
 using Empiria.Trade.Core.Catalogues.Adapters;
+using Empiria.Trade.Core.Common;
 using Empiria.Trade.Products;
 using Empiria.Trade.Products.Adapters;
 
@@ -94,11 +95,20 @@ namespace Empiria.Trade.Core.Catalogues {
 
     public FixedList<INamedEntity> GetParcelSupplierList() {
 
-      var parcelSupplier = new SimpleObjects();
+      //var parcelSupplier = new SimpleObjects();
 
-      var simpleObjectList = parcelSupplier.GetParcelSupplierList();
-      return parcelSupplier.MergeSimpleObjectToNamedEntityDto(simpleObjectList);
+      //var simpleObjectList = parcelSupplier.GetParcelSupplierList();
+      //return parcelSupplier.MergeSimpleObjectToNamedEntityDto(simpleObjectList);
 
+      //TODO AGREGAR PAQUETERIAS EN COMMONSTORAGE
+      var returnedNamed = new List<INamedEntity>();
+
+      returnedNamed.Add(new NamedEntity("P1", "PAQUETEXPRESS"));
+      returnedNamed.Add(new NamedEntity("P2", "PAQUETERIA CASTORES"));
+      returnedNamed.Add(new NamedEntity("P3", "REDPACK"));
+      returnedNamed.Add(new NamedEntity("P4", "DHL"));
+
+      return returnedNamed.ToFixedList();
     }
 
 
