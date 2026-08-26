@@ -38,18 +38,15 @@ namespace Empiria.Trade.Sales.WebApi {
     }
 
 
-
     [HttpPost]
     [Route("v4/trade/sales/orders")]
     public SingleObjectModel CreateSalesOrder([FromBody] SalesOrderFields fields) {
 
       base.RequireBody(fields);
 
-      Assertion.EnsureFailed("Funcionalidad en proceso de desarrollo");
-
       using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
 
-        ISalesOrderDto orderDto = usecases.CreateSalesOrder(fields);
+        ISalesOrderDto orderDto = usecases.CreateSalesOrderV2(fields);
 
         return new SingleObjectModel(this.Request, orderDto);
       }
@@ -158,7 +155,7 @@ namespace Empiria.Trade.Sales.WebApi {
         SearchOrderFields fields = new SearchOrderFields();
 
         fields.QueryType = QueryType.Sales;
-        fields.Status = OrderStatus.Shipping;
+        fields.Status = SalesOrderStatus.Shipping;
         fields.ShippingMethod = ShippingMethods.Paqueteria;
         fields.Keywords = keywords;
 

@@ -21,32 +21,32 @@ namespace Empiria.Trade.Core {
   public class InventoryEntryDto {
 
     public string UID {
-      get;  set;
+      get; set;
     }
 
 
     public string Product {
-      get;  set;
+      get; set;
     }
 
 
     public string Location {
-      get;  set;
+      get; set;
     }
 
 
     public decimal Quantity {
-      get;  set;
+      get; set;
     }
 
 
     public NamedEntityDto PostedBy {
-      get;  set;
+      get; set;
     }
 
 
     public DateTime PostingTime {
-      get;  set;
+      get; set;
     }
 
   } // class InventoryEntryDto
@@ -56,15 +56,15 @@ namespace Empiria.Trade.Core {
   public class InventoryTypeDto {
 
     public string UID {
-      get;  set;
+      get; set;
     }
 
     public string Name {
-      get;  set;
+      get; set;
     }
 
     public InventoryTypeRulesDto Rules {
-      get;  set;
+      get; set;
     }
 
   } // class InventoryType
@@ -74,12 +74,12 @@ namespace Empiria.Trade.Core {
   public class InventoryTypeRulesDto {
 
     public Boolean EntriesRequired {
-      get;  set;
+      get; set;
     }
 
 
     public Boolean ItemsRequired {
-      get;  set;
+      get; set;
     }
 
   } //  class InventoryTypeRules
@@ -89,63 +89,63 @@ namespace Empiria.Trade.Core {
   public class InventoryOrderDto {
 
     public string UID {
-      get;  set;
+      get; set;
     }
 
 
     public NamedEntityDto OrderType {
-      get;  set;
+      get; set;
     }
 
 
     public string OrderNo {
-      get;  set;
+      get; set;
     }
 
 
     public InventoryTypeDto InventoryType {
-      get;  set;
+      get; set;
     }
 
 
     public NamedEntityDto Warehouse {
-      get;  set;
+      get; set;
     }
 
 
     public NamedEntityDto Responsible {
-      get;  set;
+      get; set;
     }
 
 
     public NamedEntityDto RequestedBy {
-      get;  set;
+      get; set;
     }
 
 
     public string Description {
-      get;  set;
+      get; set;
     }
 
 
     public DateTime ClosingTime {
-      get;  set;
-    }
+      get; set;
+    } = DateTime.MaxValue;
 
 
     public DateTime PostingTime {
-      get;  set;
-    }
+      get; set;
+    } = DateTime.MaxValue;
 
 
     public NamedEntityDto PostedBy {
-      get;  set;
+      get; set;
     }
 
 
     public NamedEntityDto Status {
       get;
-       set;
+      set;
     }
 
 
@@ -165,57 +165,57 @@ namespace Empiria.Trade.Core {
   public class InventoryOrderItemDto {
 
     public string UID {
-      get;  set;
+      get; set;
     } = string.Empty;
 
 
     public string ProductName {
-      get;  set;
+      get; set;
     } = string.Empty;
 
 
     public string Description {
-      get;  set;
+      get; set;
     } = string.Empty;
 
 
     public NamedEntityDto ProductUnit {
-      get;  set;
+      get; set;
     }
 
 
     public decimal Quantity {
-      get;  set;
+      get; set;
     }
 
 
     public string Location {
-      get;  set;
+      get; set;
     }
 
 
     public decimal AssignedQuantity {
-      get;  set;
+      get; set;
     }
 
 
     public NamedEntityDto PostedBy {
-      get;  set;
+      get; set;
     }
 
 
     public DateTime PostingTime {
-      get;  set;
+      get; set;
     }
 
 
     public EntityStatus Status {
-      get;  set;
+      get; set;
     }
 
 
     public FixedList<InventoryEntryDto> Entries {
-      get;  set;
+      get; set;
     }
 
   }
@@ -287,7 +287,7 @@ namespace Empiria.Trade.Core {
 
     public string StakeholderName {
       get;
-       set;
+      set;
     }
 
 

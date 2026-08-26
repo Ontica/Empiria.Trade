@@ -89,7 +89,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
     public string ShippingUID {
       get; internal set;
-    }
+    } = string.Empty;
 
 
     public int OrdersCount {
@@ -104,12 +104,12 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
     public INamedEntity ParcelSupplier {
       get; internal set;
-    }
+    } = new NamedEntityDto("-", "N/A");
 
 
     public string ShippingGuide {
       get; internal set;
-    }
+    } = string.Empty;
 
 
     public decimal ParcelAmount {
@@ -134,17 +134,17 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
     public DateTime ShippingDate {
       get; internal set;
-    } = new DateTime();
+    } = DateTime.MaxValue;
 
 
     public string ShippingNumber {
       get; internal set;
-    }
+    } = string.Empty;
 
 
     public string DeliveryNumber {
       get; internal set;
-    }
+    } = string.Empty;
 
 
     public ShippingMethods ShippingMethod {

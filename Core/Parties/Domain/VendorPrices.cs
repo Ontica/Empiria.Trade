@@ -16,6 +16,7 @@ namespace Empiria.Trade.Core {
   static public class CustomerPrices {
 
     #region Public methods
+
     static public FixedList<VendorPrices> GetVendorPrices(int customerId) {
       var customer = Party.Parse(customerId);
 

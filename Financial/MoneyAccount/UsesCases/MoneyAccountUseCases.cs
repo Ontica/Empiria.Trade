@@ -187,7 +187,12 @@ namespace Empiria.Trade.Financial.UseCases {
 
     public CreditTransactionDto AddCreditTransaction(CreditTrasnactionFields fields) {
       Assertion.Require(fields, "fields");
+      
       var moneyAccount = MoneyAccount.ParseByOwner(fields.CustomerId);
+
+      if (moneyAccount == null) {
+        return new CreditTransactionDto();
+      }
 
       var moneyAccountTransaction = new MoneyAccountTransaction();
       moneyAccountTransaction.AddCreditTransactions(moneyAccount, fields);

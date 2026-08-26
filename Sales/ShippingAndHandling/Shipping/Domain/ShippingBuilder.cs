@@ -138,7 +138,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
         internal ShippingEntry GetShippingByOrderUID(string orderUID) {
 
-            string orderId = Empiria.Orders.Order.Parse(orderUID).Id.ToString();
+            string orderId = Orders.Order.Parse(orderUID).Id.ToString();
             var ordersForShipping = ShippingData.GetOrdersForShippingByOrderUID(orderId);
 
             var helper = new ShippingHelper();

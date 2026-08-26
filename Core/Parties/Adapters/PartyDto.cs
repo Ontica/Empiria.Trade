@@ -57,11 +57,11 @@ namespace Empiria.Trade.Core.Adapters {
 
     public FixedList<CustomerContactDto> Contacts{
       get; internal set;
-    }
+    } = new FixedList<CustomerContactDto>();
 
     public FixedList<CustomerShortAddressDto> Addresses {
       get; internal set;
-    }
+    } = new FixedList<CustomerShortAddressDto>();
 
   }
 

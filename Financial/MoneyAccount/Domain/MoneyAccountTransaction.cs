@@ -171,7 +171,7 @@ namespace Empiria.Trade.Financial {
     public void AddCreditTransactions(MoneyAccount moneyAccount, CreditTrasnactionFields fields) {
       MoneyAccountTransaction moneyTransaction = new MoneyAccountTransaction();
       moneyTransaction.MoneyAccount = moneyAccount;
-      moneyTransaction.TransactionType = MoneyAccountTransactionType.Parse(750);
+      moneyTransaction.TransactionType = MoneyAccountTransactionType.Parse(-1); //750
       moneyTransaction.Description = "Credito " + fields.ExtData;
       moneyTransaction.TransactionTime = fields.TransactionTime;
       moneyTransaction.Credit = fields.CreditAmount;

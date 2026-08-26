@@ -17,15 +17,15 @@ namespace Empiria.Trade.Core.Adapters {
 
     public string UID {
       get; internal set;
-    }
+    } = string.Empty;
 
     public string Name {
       get; internal set;
-    }
+    } = string.Empty;
 
     public string Email {
       get; internal set;
-    }
+    } = string.Empty;
 
     public string Phone {
       get; internal set;
