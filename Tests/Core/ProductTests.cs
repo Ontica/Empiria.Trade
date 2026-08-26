@@ -71,7 +71,7 @@ namespace Empiria.Trade.Tests.Core {
           ShippingMethod = ShippingMethods.RutaLocal,
           SupplierUID = "4c0c43e4-8bdc-4b7d-b91e-3fb385441120",
           OrderTime = new System.DateTime(2026, 08, 12),
-          Status = OrderStatus.Pending
+          Status = SalesOrderStatus.Pending
         }
       };
 

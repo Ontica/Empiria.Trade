@@ -37,7 +37,7 @@ namespace Empiria.Trade.Tests.Procurement {
 
 
     [Fact]
-    public void ExportSaldosEncerradosTest() {
+    public void ExportPurchaseOrderLabelsTest() {
 
       using (var usecases = PurchaseOrderUseCases.UseCaseInteractor()) {
 

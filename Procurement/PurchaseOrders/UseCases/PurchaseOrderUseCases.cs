@@ -50,7 +50,6 @@ namespace Empiria.Trade.Procurement.UseCases {
     }
 
     
-
     public PurchaseOrderDto CreatePurchaseOrder(PurchaseOrderFields fields) {
 
       var orderType = OrderType.PurchaseOrder;
