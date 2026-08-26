@@ -50,7 +50,7 @@ namespace Empiria.Trade.Sales.Adapters {
       columns.Add(new DataTableColumn("salesAgentName", "Vendedor", "text"));
       columns.Add(new DataTableColumn("orderTotal", "Total", "decimal"));
 
-      if (query.Status == OrderStatus.Shipping) {
+      if (query.Status == SalesOrderStatus.Shipping) {
         columns.Add(new DataTableColumn("shippingStatus", "Envío", "text-tag",0,true));
       }
 
@@ -72,14 +72,14 @@ namespace Empiria.Trade.Sales.Adapters {
       switch (query.QueryType) {
 
         case QueryType.Sales: {
-          if ((query.ShippingStatus != string.Empty) && (query.Status == OrderStatus.Shipping)) {            
+          if ((query.ShippingStatus != string.Empty) && (query.Status == SalesOrderStatus.Shipping)) {            
             var list = MapBaseSalesOrdersShipmentStatus(salesOrders);
             var orders = list.ConvertAll(o => (BaseSalesOrderShipmentDto) o);
 
             return  orders.FindAll(x => x.ShippingStatus == query.ShippingStatus).ToFixedList<ISalesOrderDto>();             
           }
 
-          if (query.Status == OrderStatus.Shipping) {
+          if (query.Status == SalesOrderStatus.Shipping) {
             return MapBaseSalesOrdersShipmentStatus(salesOrders);
           } else {
             return MapBaseSalesOrders(salesOrders);
@@ -163,7 +163,7 @@ namespace Empiria.Trade.Sales.Adapters {
 
     static public ISalesOrderDto MapBaseSalesOrder(SalesOrder order) {
       var dto = new BaseSalesOrderDto {
-        UID = order.UID,
+        UID = order.OrderUID,
         OrderNumber = order.OrderNo,
         OrderTime = order.RequestedTime,
         CustomerName = order.Customer.Name,

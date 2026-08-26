@@ -26,17 +26,22 @@ namespace Empiria.Trade.Core {
       //no-op
     }
 
+    protected SalesOrder(OrderType orderType) : base(orderType) {
+      // Required by Empiria Framework for all partitioned types.
+    }
+
     public SalesOrder(SalesOrderFields fields, OrderType orderType) : base(orderType) {
       Assertion.Require(fields, nameof(fields));
       
       if (IsNew) {
         OrderNo = "P-" + EmpiriaString.BuildRandomString(10).ToUpperInvariant();
+        fields.OrderNumber = OrderNo;
+        fields.Name = OrderNo;
+        this.AuthorizationStatus = "Pending";
       }
 
-      Update(fields);
-    }
+      fields.MapToOrderFields(orderType);
 
-    public SalesOrder(SalesOrderFields fields) {
       Update(fields);
     }
 
@@ -55,8 +60,20 @@ namespace Empiria.Trade.Core {
 
     #region Public properties
 
-    public Party Customer {
+    [DataField("ORDER_ID")]
+    public int OrderId {
       get; protected set;
+    }
+
+
+    [DataField("Order_UID")]
+    public string OrderUID {
+      get; protected set;
+    }
+
+
+    public Party Customer {
+      get; set;
     }
 
 
@@ -71,12 +88,12 @@ namespace Empiria.Trade.Core {
 
 
     public Party Supplier {
-      get; protected set;
+      get; set;
     }
 
 
     public Party SalesAgent {
-      get; protected set;
+      get; set;
     }
 
 
@@ -123,6 +140,36 @@ namespace Empiria.Trade.Core {
     public TransactionActions Actions {
       get; private set;
     } = new TransactionActions();
+
+
+    public int SalesAgentId {
+      get {
+        return ExtData.Get("salesAgentId", -1);
+      }
+      private set {
+        ExtData.SetIfValue("salesAgentId", value);
+      }
+    }
+
+
+    public int CustomerContactId {
+      get {
+        return ExtData.Get("customerContactId", -1);
+      }
+      private set {
+        ExtData.SetIfValue("customerContactId", value);
+      }
+    }
+
+
+    public int CustomerAddressId {
+      get {
+        return ExtData.Get("customerAddressId", -1);
+      }
+      private set {
+        ExtData.SetIfValue("customerAddressId", value);
+      }
+    }
 
 
     public DateTime ReceptionTime {
@@ -175,16 +222,6 @@ namespace Empiria.Trade.Core {
     }
 
 
-    public string AuthorizationStatus {
-      get {
-        return ExtData.Get("orderStatus", string.Empty);
-      }
-      private set {
-        ExtData.SetIfValue("orderStatus", value);
-      }
-    }
-
-
     public string OrderStatus {
       get {
         return ExtData.Get("orderStatus", string.Empty);
@@ -194,15 +231,33 @@ namespace Empiria.Trade.Core {
       }
     }
 
+
+    public string AuthorizationStatus {
+      get {
+        return ExtData.Get("authorizationStatus", string.Empty);
+      }
+      private set {
+        ExtData.SetIfValue("authorizationStatus", value);
+      }
+    }
+
     #endregion
 
     #region Public methods
 
-    protected override void OnSave() {
+    //protected override void OnSave() {
+    //  base.Save();
+    //  SalesOrderItem.SaveSalesOrderItems(this.SalesOrderItems, this.Id);
+    //}
 
-      SalesOrderData.Write(this);
-      SalesOrderItem.SaveSalesOrderItems(this.SalesOrderItems, this.Id);
+    public void AddSalesOrderItem(SalesOrderItem item) {
+      Assertion.Require(item, nameof(item));
+
+      item.Order = Order.Parse(item.SalesOrder.Id);
+      item.UpdateItem();
+      item.Save();
     }
+
 
     public void Apply() {
       //Status = OrderStatus.Applied;
@@ -223,16 +278,11 @@ namespace Empiria.Trade.Core {
     }
 
 
-    public void Authorize() {
-      //AuthorizationStatus = OrderAuthorizationStatus.Authorized;
-      //this.AuthorizationTime = DateTime.Now;
-      //this.AuthorizatedById = ExecutionServer.CurrentUserId;
+    public void AuthorizeOrder() {
+      this.AuthorizationStatus = SalesOrderStatus.Authorized.ToString();
+      this.Authorization();
 
-      //this.Status = OrderStatus.Packing;
-      ////AuthorizationStatus = OrderAuthorizationStatus.ToSupply;
-
-
-      SalesOrderData.Write(this);
+      //SalesOrderData.Write(this);
 
       SetOrderValues();
 
@@ -240,6 +290,7 @@ namespace Empiria.Trade.Core {
       actions.OnAuthorize();
       this.Actions = actions.SetActions(this, QueryType.SalesAuthorization);
     }
+
 
     public void Deauthorize() {
       //Status = OrderStatus.Applied;
@@ -253,6 +304,7 @@ namespace Empiria.Trade.Core {
       actions.OnApply();
       this.Actions = actions.SetActions(this, QueryType.SalesAuthorization);
     }
+
 
     public void AuthorizePayment() {
       //this.Status = OrderStatus.Packing;
@@ -268,7 +320,6 @@ namespace Empiria.Trade.Core {
     }
 
 
-
     public void Cancel() {
       //Status = OrderStatus.Cancelled;
 
@@ -282,6 +333,7 @@ namespace Empiria.Trade.Core {
       this.Actions = actions.SetActions(this, QueryType.Sales);
     }
 
+
     public void Close() {
       //this.Status = OrderStatus.Closed;
 
@@ -291,6 +343,7 @@ namespace Empiria.Trade.Core {
       SetOrderValues();
     }
 
+
     public void Deliver() {
       //this.Status = OrderStatus.Delivery;
 
@@ -298,6 +351,12 @@ namespace Empiria.Trade.Core {
 
       SalesOrderData.Write(this);
       SetOrderValues();
+    }
+
+
+    public void GetSalesOrderItems() {
+
+      this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id);
     }
 
 
@@ -316,26 +375,38 @@ namespace Empiria.Trade.Core {
 
     
     public void Update(SalesOrderFields fields) {
-
+      
       this.Supplier = fields.GetSupplier();
+      
       this.SalesAgent = fields.GetSalesAgent();
+      this.SalesAgentId = fields.GetSalesAgent().Id;
+
       this.Customer = fields.GetCustomer();
       this.CustomerAddress = fields.GetCustomerAddress();
+      this.CustomerAddressId = fields.GetCustomerAddress().Id;
+
       this.CustomerContact = fields.GetCustomerContact();
+      this.CustomerContactId = fields.GetCustomerContact().Id;
+
       this.PriceList = GetPriceList();
-      this.SalesOrderItems = LoadSalesOrderItems(fields.Items);
+      this.SalesOrderItems = LoadSalesOrderItems(fields.ItemsFields);
       this.ScheduledTime = ExecutionServer.DateMaxValue;
       //TODO GUARDAR EN EXT_DATA
       this.ShippingMethod = fields.ShippingMethod.ToString();
       this.ReceptionTime = ExecutionServer.DateMaxValue;
       this.PedimentoImportacion = string.Empty;
       this.CartaPorte = string.Empty;
+      this.OrderStatus = fields.Status.ToString();
 
       SetOrderTotals();
 
       var actions = ActionsService.Load();
       actions.OnCreate();
       this.Actions = actions.SetActions(this, QueryType.Sales);
+
+      if (fields.CanUpdateOrder) {
+        base.Update(fields);
+      }
     }
 
 
@@ -350,7 +421,7 @@ namespace Empiria.Trade.Core {
     }
 
     public void GetOrderTotal() {
-      this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id);
+      this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.OrderId);
       SetOrderTotals();
     }
 
@@ -362,10 +433,11 @@ namespace Empiria.Trade.Core {
       GetOrderTotal();
     }
 
-    private FixedList<SalesOrderItem> LoadSalesOrderItems(FixedList<SalesOrderItemsFields> orderItemsFields) {
+    private FixedList<SalesOrderItem> LoadSalesOrderItems(FixedList<SalesOrderItemsFields> itemsFields) {
       List<SalesOrderItem> orderItems = new List<SalesOrderItem>();
 
-      foreach (SalesOrderItemsFields itemFields in orderItemsFields) {
+      foreach (SalesOrderItemsFields itemFields in itemsFields) {
+
         var saleOrderItem = new SalesOrderItem(this, itemFields);
 
         orderItems.Add(saleOrderItem);
@@ -373,6 +445,7 @@ namespace Empiria.Trade.Core {
 
       return orderItems.ToFixedList();
     }
+
 
     private void SetOrderTotals() {
 
@@ -391,6 +464,7 @@ namespace Empiria.Trade.Core {
       this.OrderTotal += this.ItemsTotal + this.Tax + this.Shipment - this.Discount;
     }
 
+
     private string GetPriceList() {
       var pricesList = CustomerPrices.GetVendorPrices(this.Customer.Id);
 
@@ -401,6 +475,20 @@ namespace Empiria.Trade.Core {
       }
 
       return vendorPrice.PriceListId.ToString();
+    }
+
+
+    public CustomerAddress GetCustomerAddress() {
+
+      this.CustomerAddress = CustomerAddress.Parse(this.CustomerAddressId);
+      return this.CustomerAddress;
+    }
+
+
+    public CustomerContact GetCustomerContact() {
+
+      this.CustomerContact = CustomerContact.Parse(this.CustomerContactId);
+      return this.CustomerContact;
     }
 
     #endregion Helpers

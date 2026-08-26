@@ -24,17 +24,33 @@ namespace Empiria.Trade.Core {
       //no-op
     }
 
+    protected SalesOrderItem(OrderItemType orderType) : base(orderType) {
+      // Required by Empiria Framework for all partitioned types.
+    }
+
     public SalesOrderItem(SalesOrder salesOrder, SalesOrderItemsFields fields) {
 
       this.ProductUID = fields.VendorProductUID;
       this.SalesOrder = salesOrder;
 
-      LoadOrderItem(fields);
+      Update(fields);
     }
 
     #endregion
 
     #region Public properties
+
+    [DataField("ORDER_ITEM_ID")]
+    public int OrderItemId {
+      get; protected set;
+    }
+
+
+    [DataField("ORDER_ITEM_UID")]
+    public string OrderItemUID {
+      get; protected set;
+    }
+
 
     public SalesOrder SalesOrder {
       get; private set;
@@ -63,7 +79,7 @@ namespace Empiria.Trade.Core {
     }
 
 
-    public int ItemQuantity {
+    public decimal ItemQuantity {
       get; private set;
     }
 
@@ -113,9 +129,20 @@ namespace Empiria.Trade.Core {
     } = string.Empty;
 
 
+    //public decimal AdditionalDiscount {
+    //  get; protected set;
+    //}
+
+
     public decimal AdditionalDiscount {
-      get; protected set;
+      get {
+        return ExtData.Get<decimal>("additionalDiscount", 0);
+      }
+      private set {
+        ExtData.SetIfValue("additionalDiscount", value);
+      }
     }
+
 
     public string Notes {
       get {
@@ -126,19 +153,36 @@ namespace Empiria.Trade.Core {
       }
     }
 
+
+    public SalesOrderItemsFields ItemFields {
+      get; set;
+    } = new SalesOrderItemsFields();
+
     #endregion Public properties
 
     #region Public methods
 
-    internal void LoadOrderItem(SalesOrderItemsFields fields) {
+    internal void UpdateItem() {
 
-      FixedList<VendorPrices> prices = GetCustomerPriceList();
+      var product = ProductEntry.Parse(ItemFields.VendorProductUID);
+
+      ItemFields.ProductUID = product.UID;
+      ItemFields.ProductUnitUID = product.BaseUnit.UID;
+      ItemFields.Discount = ItemFields.Discount1;
+      //ItemFields.LocationUID = TODO OBTENER LOCALIZACION DE PRODUCTO ASIGNADO A ORDERITEM
+      base.Update(ItemFields);
+    }
+
+
+    internal void Update(SalesOrderItemsFields fields) {
+
+      //FixedList<VendorPrices> prices = GetCustomerPriceList();
 
       var productPrice = ProductEntry.ProductPrices.Find(x => x.PriceType.Id == -25678).Price;
 
       //this.OrderItemTypeId = 1045;
-      this.Notes = String.IsNullOrEmpty(fields.Notes) ? String.Empty : fields.Notes;
-      this.PriceListNumber = GetPriceListNumber(prices);
+      this.Notes = String.IsNullOrEmpty(fields.Notes) ? string.Empty : fields.Notes;
+      //this.PriceListNumber = GetPriceListNumber(prices);
       this.ProductPrice = productPrice;
       this.ItemQuantity = fields.Quantity;
       this.BasePrice = productPrice;
@@ -154,6 +198,7 @@ namespace Empiria.Trade.Core {
       //this.ScheduledTime = ExecutionServer.DateMaxValue;
       //this.ReceptionTime = ExecutionServer.DateMaxValue;
       //this.Reviewed = string.Empty;
+      this.ItemFields = fields;
     }
 
 
@@ -167,9 +212,9 @@ namespace Empiria.Trade.Core {
     }
 
 
-    protected override void OnSave() {
-      SalesOrderItemsData.Write(this);
-    }
+    //protected override void OnSave() {
+    //  SalesOrderItemsData.Write(this);
+    //}
 
 
     public static FixedList<SalesOrderItem> GetOrderItems(int orderId) {
@@ -177,7 +222,13 @@ namespace Empiria.Trade.Core {
       var orderItems = SalesOrderItemsData.GetOrderItems(orderId);
 
       foreach (SalesOrderItem orderItem in orderItems) {
-        orderItem.DiscountPolicy = "10";
+        orderItem.ItemQuantity = orderItem.Quantity;
+        orderItem.ItemUnitPrice = orderItem.UnitPrice;
+        orderItem.ProductPrice = orderItem.UnitPrice;
+        orderItem.SalesPrice = orderItem.UnitPrice;
+        orderItem.ItemDiscount = orderItem.Discount;
+
+        orderItem.DiscountPolicy = string.Empty;
         orderItem.ItemSubtotal = CalculeSubtotal(orderItem);
       }
 
@@ -250,8 +301,6 @@ namespace Empiria.Trade.Core {
 
       return subTotal;
     }
-
-
 
     #endregion Private methods
 

@@ -23,8 +23,9 @@ namespace Empiria.Trade.Sales.Adapters {
     #region Public methods
 
     static public SalesOrderItemDto Map(SalesOrderItem orderItem) {
+      
       var dto = new SalesOrderItemDto {
-        OrderItemUID = orderItem.UID,
+        OrderItemUID = orderItem.UID == string.Empty ? orderItem.OrderItemUID : orderItem.UID,
         Quantity = orderItem.ItemQuantity,
         UnitPrice = orderItem.ProductPrice,
         SalesPrice = orderItem.SalesPrice,
@@ -49,7 +50,7 @@ namespace Empiria.Trade.Sales.Adapters {
         ProductUID = product.UID,
         ProductCode = product.InternalCode,
         Description = product.Description,
-        //ProductImageUrl = orderItem.Product,
+        ProductImageUrl = string.Empty,
         ProductType = MapProductType(product)
       };
 
@@ -59,7 +60,7 @@ namespace Empiria.Trade.Sales.Adapters {
     private static ProductTypeDto MapProductType(ProductEntry product) {
 
       var dto = new ProductTypeDto {
-        ProductTypeUID = product.ProductType.UID,
+        ProductTypeUID = "-1",//product.ProductType.UID,
         Name = product.ProductType.DisplayName,
         Attributes = GetProductAttributes(product)
       };

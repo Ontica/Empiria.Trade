@@ -10,6 +10,7 @@
 using System;
 using System.Linq;
 using Empiria.Orders;
+using Empiria.Parties;
 using Empiria.Services;
 using Empiria.StateEnums;
 using Empiria.Trade.Core;
@@ -39,6 +40,25 @@ namespace Empiria.Trade.Sales.UseCases {
 
     #region Use cases
 
+    public ISalesOrderDto GetSalesOrder(string orderUID, QueryType queryType) {
+      
+      var order = SalesOrder.Parse(orderUID);
+      order.GetSalesOrderItems();
+
+      order.Customer = Party.Parse(order.Beneficiary.Id);
+      order.GetCustomerContact();
+      order.GetCustomerAddress();
+
+      order.Supplier = Party.Parse(order.Provider.Id);
+      order.SalesAgent = Party.Parse(order.SalesAgentId);
+
+      order.CalculateSalesOrder();
+      order.SetOrderActions(queryType);
+
+      return SalesOrderMapper.Map(order);
+    }
+
+
     public ISalesOrderDto ProcessSalesOrder(SalesOrderFields fields) {
       Assertion.Require(fields, "fields");
 
@@ -49,7 +69,31 @@ namespace Empiria.Trade.Sales.UseCases {
       return SalesOrderMapper.Map(order);
     }
 
-    
+
+    public ISalesOrderDto CreateSalesOrderV2(SalesOrderFields fields) {
+      Assertion.Require(fields, "fields");
+
+      ValuateSalesOrder(fields);
+
+      fields.CanUpdateOrder = true;
+      fields.Status = SalesOrderStatus.Applied;
+
+      var orderType = OrderType.SalesOrder;
+
+      var order = new SalesOrder(fields, orderType);
+
+      order.Save();
+
+      foreach (var item in order.SalesOrderItems) {
+
+        order.AddSalesOrderItem(item);
+
+      }
+
+      return SalesOrderMapper.Map(order);
+    }
+
+
     public ISalesOrderDto CreateSalesOrder(SalesOrderFields fields) {
       Assertion.Require(fields, "fields");
 
@@ -59,6 +103,7 @@ namespace Empiria.Trade.Sales.UseCases {
 
       var order = new SalesOrder(fields, orderType);
 
+      order.Update(fields);
       order.Save();
 
       return SalesOrderMapper.Map(order); 
@@ -94,6 +139,33 @@ namespace Empiria.Trade.Sales.UseCases {
       var order = SalesOrder.Parse(orderUID);
 
       order.Close();
+    }
+
+
+    public SearchSalesOrderDto GetOrdersV2(SearchOrderFields fields) {
+      Assertion.Require(fields, "fields");
+
+      var helper = new SalesOrderHelper();
+
+      switch (fields.QueryType) {
+
+        case QueryType.Sales: {
+          var salesOrdersList = helper.GetOrders(fields);
+          return SearchSealesOrderMapper.Map(fields, salesOrdersList);
+        }
+        case QueryType.SalesAuthorization: {
+          FixedList<SalesOrder> salesOrders = helper.GetOrdersToAuthorize(fields);
+          return SearchSealesOrderMapper.Map(fields, salesOrders);
+        }
+        case QueryType.SalesPacking: {
+          FixedList<SalesOrder> salesOrders = helper.GetOrdersToPacking(fields);
+          return SearchSealesOrderMapper.Map(fields, salesOrders);
+        }
+
+        default: {
+          throw Assertion.EnsureNoReachThisCode($"It is invalid queryType:{fields.QueryType}");
+        }
+      }
     }
 
 
@@ -192,16 +264,6 @@ namespace Empiria.Trade.Sales.UseCases {
     }
        
 
-    public ISalesOrderDto GetSalesOrder(string orderUID, QueryType queryType) {
-      var order = SalesOrder.Parse(orderUID);
-    
-      order.CalculateSalesOrder();
-      order.SetOrderActions(queryType);
-
-      return SalesOrderMapper.Map(order);
-    }
-
-
     public ISalesOrderDto GetSalesOrder(string orderNumber) {
       SalesOrderHelper helper = new SalesOrderHelper();
 
@@ -214,13 +276,13 @@ namespace Empiria.Trade.Sales.UseCases {
     public ISalesOrderDto UpdateSalesOrder(SalesOrderFields fields) {
       Assertion.Require(fields, "fields");
                   
-      if (fields.Status != OrderStatus.Captured) { // OrderStatus.Captured
+      if (fields.Status != SalesOrderStatus.Captured) { // OrderStatus.Captured
         Assertion.RequireFail($"It is only possible to update orders in the Captured status, " +
                               $"your order status is:{fields.Status}");
       }
 
       ValidateCustomerAddress(fields.CustomerUID, fields.CustomerAddressUID);
-      ValidateOrderItemsExistence(fields.Items);
+      ValidateOrderItemsExistence(fields.ItemsFields);
 
       var order = SalesOrder.Parse(fields.UID);
 
@@ -243,15 +305,18 @@ namespace Empiria.Trade.Sales.UseCases {
       Assertion.Require(orderUID, "orderUID");
 
       var order = SalesOrder.Parse(orderUID);
+      var orderStatus = EnumExtensions.GetOrderStatusEnum(order.OrderStatus);
 
-      if (order.Status != EntityStatus.Active) { // OrderStatus.Applied
+      if (orderStatus != SalesOrderStatus.Applied ) { // OrderStatus.Applied
         Assertion.RequireFail($"It is only possible to Authorize orders in the Applied status, " +
                               $"your order status is: {order.Status}");
       }
 
-      order.Authorize();
+      order.AuthorizeOrder();
 
       AddCredit(order);
+
+      order.Save();
 
       return SalesOrderMapper.Map(order);
     }
@@ -299,6 +364,7 @@ namespace Empiria.Trade.Sales.UseCases {
     #region Private methods
 
     private  void AddCredit(SalesOrder order) {
+
       var creditFields = new CreditTrasnactionFields() {
         CustomerId = order.Customer.Id,
         TransactionTime = DateTime.Now,
@@ -306,6 +372,7 @@ namespace Empiria.Trade.Sales.UseCases {
         PayableOrderId = order.Id,
         ExtData = order.OrderNo
       };
+
       var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
 
       moneyAccountUseCase.AddCreditTransaction(creditFields);
@@ -362,7 +429,7 @@ namespace Empiria.Trade.Sales.UseCases {
         order.Apply();
       } else {
         AddCredit(order);
-        order.Authorize();
+        order.AuthorizeOrder();
       }
     }
 
@@ -386,7 +453,7 @@ namespace Empiria.Trade.Sales.UseCases {
 
         if (productExistence < item.Quantity) {
 
-          throw Assertion.EnsureNoReachThisCode($"No hay existencia suficiente del producto " +
+          Assertion.EnsureNoReachThisCode($"No hay existencia suficiente del producto " +
             $"{product.InternalCode} {product.Name}");
         }
       }
@@ -395,6 +462,7 @@ namespace Empiria.Trade.Sales.UseCases {
 
 
     private void ValidateCustomerAddress(string customerUID, string customerAddressUID) {
+      
       var usescase = CustomerUseCases.UseCaseInteractor();
       var addresses = usescase.GetCustomerAddress(customerUID);
 
@@ -408,7 +476,7 @@ namespace Empiria.Trade.Sales.UseCases {
 
       ValidateCustomerAddress(fields.CustomerUID, fields.CustomerAddressUID);
       ValidateShippingMethod(fields);
-      ValidateOrderItemsExistence(fields.Items);
+      ValidateOrderItemsExistence(fields.ItemsFields);
     }
 
     #endregion Private methods

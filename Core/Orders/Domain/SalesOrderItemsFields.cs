@@ -8,13 +8,13 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-
+using Empiria.Orders;
 using Empiria.Trade.Products;
 
 namespace Empiria.Trade.Core {
 
   /// <summary>Holds a OrderItems properties. </summary>
-  public class SalesOrderItemsFields {
+  public class SalesOrderItemsFields : OrderItemFields {
 
     #region Public properties
 
@@ -26,15 +26,7 @@ namespace Empiria.Trade.Core {
       get; set;
     }
 
-    public int Quantity {
-      get; set;
-    }
-
     public decimal ProductStock {
-      get; set;
-    }
-
-    public decimal UnitPrice {
       get; set;
     }
 
@@ -44,7 +36,7 @@ namespace Empiria.Trade.Core {
 
    public string DiscountPolicy {
       get; set;
-    }
+    } = string.Empty;
 
     public decimal Shipment {
       get; set;
@@ -57,14 +49,10 @@ namespace Empiria.Trade.Core {
     public decimal Discount2 {
       get; set;
     }
-
-    public decimal Subtotal {
-      get; set;
-    }
-        
+  
     public string Notes {
       get; set;
-    } = String.Empty;
+    } = string.Empty;
 
 
     #endregion

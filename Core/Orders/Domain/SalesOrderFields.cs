@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using Empiria.Financial;
 using Empiria.Orders;
 using Empiria.Parties;
 using Empiria.StateEnums;
@@ -39,41 +40,59 @@ namespace Empiria.Trade.Core {
     //Notes = string Observations
 
     //OrderStatus
-    public OrderStatus Status {
+    public SalesOrderStatus Status {
       get; set;
     }
 
+
     public string CustomerUID {
       get; set;
-    }
+    } = string.Empty;
+
 
     public string CustomerContactUID {
       get; set;
     } = string.Empty;
 
+
+    public string CustomerAddressUID {
+      get; set;
+    } = "Empty";
+
+
     public string SupplierUID {
       get; set;
-    }
+    } = string.Empty;
+
 
     public string SalesAgentUID {
       get; set;
-    }
+    } = string.Empty;
+
 
     public string Shipment {
       get; set;
-    }
+    } = string.Empty;
+
+
+    public string Notes {
+      get; set;
+    } = string.Empty;
+
 
     public ShippingMethods ShippingMethod {
       get; set;
     } = ShippingMethods.None;
 
-    public FixedList<SalesOrderItemsFields> Items {
+
+    public FixedList<SalesOrderItemsFields> ItemsFields {
       get; set;
     }
 
-    public string CustomerAddressUID {
+
+    public bool CanUpdateOrder {
       get; set;
-    } = "Empty";
+    }
 
     #endregion Properties
 
@@ -83,13 +102,16 @@ namespace Empiria.Trade.Core {
       return Party.Parse(this.CustomerUID);
     }
 
+
     internal Party GetSalesAgent() {
       return Party.Parse(this.SalesAgentUID);
     }
 
+
     internal Party GetSupplier() {
       return Party.Parse(this.SupplierUID);
     }
+
 
     internal CustomerAddress GetCustomerAddress() {
       if (this.ShippingMethod == ShippingMethods.Ocurre) {
@@ -99,12 +121,28 @@ namespace Empiria.Trade.Core {
       return CustomerAddress.Parse(this.CustomerAddressUID);
     }
 
+
     internal CustomerContact GetCustomerContact() {
    
       if (String.IsNullOrEmpty(this.CustomerContactUID) ) {
         return CustomerContact.Empty;
       }
       return CustomerContact.Parse(this.CustomerContactUID);
+    }
+
+
+    public void MapToOrderFields(OrderType orderType) {
+
+      this.OrderTypeUID = orderType.UID;
+      this.ProviderUID = this.SupplierUID;
+      this.RequestedByUID = Party.ParseWithContact(ExecutionServer.CurrentContact).UID;
+      this.ResponsibleUID = this.SalesAgentUID;
+      //TODO INVESTIGAR SI EL CustomerUID DEBERIA DE SER EL BeneficiaryUID
+      this.BeneficiaryUID = this.CustomerUID;
+      this.Name = this.OrderNumber;
+      this.Observations = this.Notes;
+      this.StartDate = DateTime.Now;
+      this.CurrencyUID = this.CurrencyUID == string.Empty ? Currency.Default.UID : this.CurrencyUID;
     }
 
     #endregion Internal methods
@@ -130,9 +168,9 @@ namespace Empiria.Trade.Core {
       get; set;
     } = new DateTime(2049, 12, 31);
 
-    public OrderStatus Status {
+    public SalesOrderStatus Status {
       get; set;
-    } = OrderStatus.Empty;
+    } = SalesOrderStatus.Empty;
 
     public ShippingMethods ShippingMethod {
       get; set;
@@ -147,6 +185,7 @@ namespace Empiria.Trade.Core {
     } = String.Empty;
 
     } // class SearchOrderFields
+
 
   public class DeauthorizeFields {
 

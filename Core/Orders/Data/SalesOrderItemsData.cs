@@ -17,12 +17,12 @@ namespace Empiria.Trade.Core {
   static public class SalesOrderItemsData {
 
     static public FixedList<SalesOrderItem> GetOrderItems(int orderId) {
-      string sql = $"SELECT * FROM TRDOrderItems " +
-                   $"WHERE OrderId = {orderId} and OrderItemStatus <> 'X'";
+      string sql = $"SELECT * FROM OMS_Order_Items " +
+                   $"WHERE Order_Item_Order_Id = {orderId} AND Order_Item_Status <> 'X'";
 
       var op = DataOperation.Parse(sql);
 
-      return DataReader.GetFixedList<SalesOrderItem>(op);
+      return DataReader.GetPlainObjectFixedList<SalesOrderItem>(op);
     }
 
 
@@ -41,7 +41,7 @@ namespace Empiria.Trade.Core {
 
 
     static public void Write(SalesOrderItem o) {
-      var op = DataOperation.Parse("writeOrderItems", o.Id, o.UID, o.Order.Id
+      var op = DataOperation.Parse("writeOrderItems", o.Id, o.UID, o.SalesOrder.Id
         //o.OrderItemTypeId,o.VendorProduct.Id, o.Quantity, o.ReceivedQty, o.ProductPriceId, o.PriceListNumber,
         //o.BasePrice, o.SalesPrice, o.Discount, o.AdditionalDiscount, o.Shipment, o.TaxesIVA, o.TaxesIEPS,
         //o.Total, o.Notes, o.ScheduledTime, o.ReceptionTime, o.Reviewed, o.Status

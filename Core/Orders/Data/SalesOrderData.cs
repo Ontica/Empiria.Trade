@@ -23,15 +23,15 @@ namespace Empiria.Trade.Core {
 
       string status = string.Empty;
 
-      if (fields.Status != OrderStatus.Empty) {
-        if (fields.Status == OrderStatus.Authorized) {
-          status = " AND (OrderAuthorizationStatus = 'A')";
-        } else {
-          status = $" AND (OrderStatus = '{(char) fields.Status}')";
-        }
-      } else {
-        status = $" AND (OrderStatus <> '{(char) OrderStatus.Cancelled}')";
-      }
+      //if (fields.Status != OrderStatus.Empty) {
+      //  if (fields.Status == OrderStatus.Authorized) {
+      //    status = " AND (OrderAuthorizationStatus = 'A')";
+      //  } else {
+      //    status = $" AND (OrderStatus = '{(char) fields.Status}')";
+      //  }
+      //} else {
+      //  status = $" AND (OrderStatus <> '{(char) OrderStatus.Cancelled}')";
+      //}
 
       return GetOrders(fields, status);
 
@@ -41,11 +41,11 @@ namespace Empiria.Trade.Core {
 
       string status = string.Empty;
 
-      if (fields.Status != OrderStatus.Empty) {
-        if (fields.Status == OrderStatus.Authorized) {
+      if (fields.Status != SalesOrderStatus.Empty) {
+        if (fields.Status == SalesOrderStatus.Authorized) {
           status = " AND (OrderAuthorizationStatus = 'A')";
         }
-        if (fields.Status == OrderStatus.Pending) {
+        if (fields.Status == SalesOrderStatus.Pending) {
           status = " AND (OrderAuthorizationStatus = 'P')";
         }
       } else {
@@ -59,14 +59,14 @@ namespace Empiria.Trade.Core {
 
       string status = string.Empty;
 
-      if (fields.Status != OrderStatus.Empty) {
-        if (fields.Status == OrderStatus.Suppled) {
+      if (fields.Status != SalesOrderStatus.Empty) {
+        if (fields.Status == SalesOrderStatus.Suppled) {
           status = "  AND ((OrderStatus = 'S') or (OrderStatus = 'D') or (OrderStatus = 'F')) ";
         }
-        if (fields.Status == OrderStatus.ToSupply) {
+        if (fields.Status == SalesOrderStatus.ToSupply) {
           status = " AND (OrderStatus = 'P') ";
         }
-        if (fields.Status == OrderStatus.InProgress) {
+        if (fields.Status == SalesOrderStatus.InProgress) {
           status = " AND (OrderAuthorizationStatus = 'U') ";
         }
       } else {
@@ -78,7 +78,7 @@ namespace Empiria.Trade.Core {
     }
 
     static public FixedList<SalesOrder> GetSalesByCustomer(int customerId) {
-      var sql = $"SELECT * FROM TRDOrders WHERE CustomerId = {customerId} AND OrderStatus <> 'X' ";
+      var sql = $"SELECT * FROM OMS_Orders WHERE CustomerId = {customerId} AND OrderStatus <> 'X' ";
 
       var dataOperation = DataOperation.Parse(sql);
 
@@ -86,7 +86,7 @@ namespace Empiria.Trade.Core {
     }
 
     static public SalesOrder GetSalesOrder(string orderNumber) {
-      var sql = $"SELECT * FROM TRDOrders  WHERE orderNumber = '{orderNumber}' ";
+      var sql = $"SELECT * FROM OMS_Orders  WHERE orderNumber = '{orderNumber}' ";
 
       var dataOperation = DataOperation.Parse(sql);
 
@@ -108,6 +108,7 @@ namespace Empiria.Trade.Core {
     #region Private methods 
 
     private static FixedList<SalesOrder> GetOrders(SearchOrderFields fields, string statusFilter) {
+
       var toDate = fields.ToDate.ToString("yyyy-dd-MM");
       var fromDate = fields.FromDate.ToString("yyyy-dd-MM");
 
@@ -117,26 +118,34 @@ namespace Empiria.Trade.Core {
       string customerFilter = string.Empty;
 
       if (fields.CustomerUID != string.Empty) {
-        customerFilter = $"INNER JOIN TRDParties ON TRdOrders.CustomerId = TRdParties.PartyId WHERE (partyUID = '{fields.CustomerUID}') AND ";
+        var customer = Parties.Party.Parse(fields.CustomerUID);
+
+        customerFilter = $"INNER JOIN Parties P ON O.Order_Beneficary_Id = P.Party_Id " +
+                         $"WHERE (O.Order_Beneficary_Id = {customer.Id}) AND ";
       } else {
         customerFilter = "WHERE ";
       }
 
       if (fields.Keywords != string.Empty) {
-        keywordsFilter = $" {SearchExpression.ParseAndLikeKeywords("OrderKeywords", fields.Keywords)} AND ";
+        keywordsFilter = $"AND {SearchExpression.ParseAndLikeKeywords("Order_Keywords", fields.Keywords)} ";
       }
 
-      if (fields.ShippingMethod != ShippingMethods.None) {
-        shippingMethodFilter = $" AND (ShippingMethod LIKE '%{(char) fields.ShippingMethod}%') ";
-      }
+      //if (fields.ShippingMethod != ShippingMethods.None) {
+      //  shippingMethodFilter = $" AND (ShippingMethod LIKE '%{fields.ShippingMethod}%') ";
+      //}
 
-      var sql = $"SELECT * FROM TRDOrders {customerFilter} " +
-                 $" (OrderTypeId = 1025) AND {keywordsFilter}  (orderTime >= CONVERT(SMALLDATETIME, '{fromDate}') AND " +
-                 $"orderTime <= CONVERT(SMALLDATETIME,'{toDate}')) {statusFilter} {shippingMethodFilter}";
+      var sql = $"SELECT * FROM OMS_Orders O {customerFilter} " +
+                 $"(O.Order_Type_Id = 5012) " +
+                 $"{keywordsFilter} " +
+                 $"AND (O.Order_Start_Date >= CONVERT(SMALLDATETIME, '{fromDate}') " +
+                 $"AND O.Order_Start_Date <= CONVERT(SMALLDATETIME,'{toDate}')) " +
+                 //$"{shippingMethodFilter} " +
+                 $"{statusFilter} ";
+                 
 
       var dataOperation = DataOperation.Parse(sql);
 
-      return DataReader.GetFixedList<SalesOrder>(dataOperation);
+      return DataReader.GetPlainObjectFixedList<SalesOrder>(dataOperation);
     }
 
 

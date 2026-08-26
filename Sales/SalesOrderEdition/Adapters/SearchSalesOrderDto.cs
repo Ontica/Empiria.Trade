@@ -69,7 +69,7 @@ namespace Empiria.Trade.Sales.Adapters {
       get; internal set;
     }
 
-    public OrderStatus Status {
+    public SalesOrderStatus Status {
       get; internal set;
     }
 

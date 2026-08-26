@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using Empiria.Trade.Core.Inventories.Adapters;
 using Empiria.Trade.Core;
 using Empiria.Trade.Core.Catalogues;
+using System.Linq;
+using Empiria.Parties;
 
 namespace Empiria.Trade.Sales {
 
@@ -25,12 +27,22 @@ namespace Empiria.Trade.Sales {
     #region Public methods
 
     public FixedList<SalesOrder> GetOrders(SearchOrderFields fields) {
+      
       var orders = SalesOrderData.GetSalesOrders(fields);
 
-      foreach (var order in orders) {
-       
-        order.GetOrderTotal();
+      if (fields.ShippingMethod != ShippingMethods.None) {
+        
+        orders = orders.Where(x=>x.ShippingMethod == fields.ShippingMethod.ToString()).ToFixedList();
       }
+
+      foreach (var order in orders) {
+        //TODO MODIFICAR ESTE CODIGO
+        order.Customer = Party.Parse(order.Beneficiary.Id); 
+        order.Supplier = Party.Parse(order.Provider.Id);
+        order.SalesAgent = Party.Parse(order.Responsible.Id);
+        //order.GetOrderTotal();
+      }
+
       return orders;
     }
 

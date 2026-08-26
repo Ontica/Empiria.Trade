@@ -10,7 +10,7 @@
 
 using System;
 using System.Collections.Generic;
-
+using Empiria.Parties;
 using Empiria.Trade.Core;
 using Empiria.Trade.Core.Adapters;
 using Empiria.Trade.Financial.Adapters;
@@ -20,8 +20,7 @@ using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 using Empiria.Trade.Sales.ShippingAndHandling.UseCases;
 
 
-namespace Empiria.Trade.Sales.Adapters
-{
+namespace Empiria.Trade.Sales.Adapters {
 
   /// <summary> Methods used to map Order. </summary>
   static public class SalesOrderMapper {
@@ -90,30 +89,29 @@ namespace Empiria.Trade.Sales.Adapters
       var dto = new OrderDataDto {
         UID = order.UID,
         OrderNumber = order.OrderNo,
-        OrderTime = order.RequestedTime >= new DateTime(2070,12,31) ? DateTime.Now : order.RequestedTime,
+        OrderTime = order.RequestedTime >= new DateTime(2070, 12, 31) ? DateTime.Now : order.RequestedTime,
         Notes = order.Observations,
-        //Status = order.Status,
-      
-        StatusName = MapOrderStatus(order.Status.ToString()),
         Customer = MapCustomer(order.Customer),
+        CustomerContact = CustomerConctacMapper.MapCustomerContact(order.CustomerContact),
         CustomerAddress = CustomerAddressMapper.MapShortAddress(order.CustomerAddress),
-        CustomerContact = CustomerConctacMapper.MapCustomerContact(order.CustomerContact), 
         Supplier = order.Supplier.MapToNamedEntity(),
         SalesAgent = order.SalesAgent.MapToNamedEntity(),
-        //ShippingMethod = order.ShippingMethod,
+        ShippingMethod = EnumExtensions.GetShippingMethodEnum(order.ShippingMethod),
         PaymentCondition = order.PaymentConditions,
         PriceList = order.PriceList,
         ItemsCount = order.ItemsCount,
         ItemsTotal = order.ItemsTotal,
         Shipment = order.Shipment,
         Taxes = order.Tax,
-        OrderTotal = order.OrderTotal
+        OrderTotal = order.OrderTotal,
+        Status = EnumExtensions.GetOrderStatusEnum(order.OrderStatus), //order.Status,
+        StatusName = MapOrderStatus(order.OrderStatus.ToString()),
       };
 
       return dto;
     }
 
-    private static ContactDto MapCustomer(Parties.Party customer) {
+    private static ContactDto MapCustomer(Party customer) {
       return PartyMapper.MapToCustomer(customer);
     }
 
@@ -132,10 +130,11 @@ namespace Empiria.Trade.Sales.Adapters
       if (orderUID == "") {
         return new ShippingEntryDto();
       }
-        
 
-      var shippingUseCase = ShippingUseCases.UseCaseInteractor();
-      return shippingUseCase.GetShippingByOrderUID(orderUID);
+      //var shippingUseCase = ShippingUseCases.UseCaseInteractor();
+      //return shippingUseCase.GetShippingByOrderUID(orderUID);
+
+      return new ShippingEntryDto();
     }
 
     private static IShippingAndHandling GetPacking(string orderUID) {
@@ -143,8 +142,9 @@ namespace Empiria.Trade.Sales.Adapters
         return new PackingDto();
       }
 
-      var packingUseCase = PackagingUseCases.UseCaseInteractor();
-      return packingUseCase.GetPackagingForOrder(orderUID);
+      //var packingUseCase = PackagingUseCases.UseCaseInteractor();
+      //return packingUseCase.GetPackagingForOrder(orderUID);
+      return new PackingDto();
     }
 
 
@@ -161,7 +161,9 @@ namespace Empiria.Trade.Sales.Adapters
     }
 
 
-    static private FixedList<SalesOrderItemDto> MapSalesOrderItems(FixedList<SalesOrderItem> salesOrderItems) {
+    static private FixedList<SalesOrderItemDto> MapSalesOrderItems(
+                        FixedList<SalesOrderItem> salesOrderItems) {
+      
       List<SalesOrderItemDto> salesOrderItemsList = new List<SalesOrderItemDto>();
 
       foreach (var saleOrderItem in salesOrderItems) {
@@ -187,10 +189,10 @@ namespace Empiria.Trade.Sales.Adapters
     static private FixedList<CreditTransactionDto> GetCreditTransactions(int customerId) {
       var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
 
-      return moneyAccountUseCase.GetCreditTransactions(customerId);      
+      return moneyAccountUseCase.GetCreditTransactions(customerId);
     }
 
-           
+
     #endregion Private methods
 
 
