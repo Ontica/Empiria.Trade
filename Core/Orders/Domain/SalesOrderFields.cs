@@ -40,7 +40,7 @@ namespace Empiria.Trade.Core {
     //Notes = string Observations
 
     //OrderStatus
-    public SalesOrderStatus Status {
+    public OrderStatus Status {
       get; set;
     }
 
@@ -82,10 +82,10 @@ namespace Empiria.Trade.Core {
 
     public ShippingMethods ShippingMethod {
       get; set;
-    } = ShippingMethods.None;
+    } = ShippingMethods.RutaLocal;
 
 
-    public FixedList<SalesOrderItemsFields> ItemsFields {
+    public FixedList<SalesOrderItemsFields> Items {
       get; set;
     }
 
@@ -168,9 +168,9 @@ namespace Empiria.Trade.Core {
       get; set;
     } = new DateTime(2049, 12, 31);
 
-    public SalesOrderStatus Status {
+    public OrderStatus Status {
       get; set;
-    } = SalesOrderStatus.Empty;
+    } = OrderStatus.Empty;
 
     public ShippingMethods ShippingMethod {
       get; set;

@@ -75,7 +75,7 @@ namespace Empiria.Trade.Core {
       if (query.Status_ != EntityStatus.All) {
         filters.AppendAnd($"Order_Status = '{(char) query.Status_}'");
       } else {
-        filters.AppendAnd($"Order_Status != '{(char) SalesOrderStatus.Cancelled}'");
+        filters.AppendAnd($"Order_Status != '{(char) OrderStatus.Cancelled}'");
       }
 
       return filters.ToString().Length > 0 ? $"AND {filters}" : "";

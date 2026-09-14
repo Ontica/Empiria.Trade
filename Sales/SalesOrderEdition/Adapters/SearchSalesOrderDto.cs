@@ -69,7 +69,7 @@ namespace Empiria.Trade.Sales.Adapters {
       get; internal set;
     }
 
-    public SalesOrderStatus Status {
+    public OrderStatus Status {
       get; internal set;
     }
 
@@ -97,6 +97,11 @@ namespace Empiria.Trade.Sales.Adapters {
   public class BaseSalesOrdersAuthorizationDto : BaseSalesOrderDto {
 
     public decimal TotalDebt {
+      get; internal set;
+    }
+
+
+    public decimal TotalCredit {
       get; internal set;
     }
 

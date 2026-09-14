@@ -72,7 +72,7 @@ namespace Empiria.Trade.Sales.Adapters {
       get; internal set;
     }
 
-    public SalesOrderStatus Status {
+    public OrderStatus Status {
       get; internal set;
     }
 
@@ -104,7 +104,7 @@ namespace Empiria.Trade.Sales.Adapters {
       get; internal set;
     }
 
-    public string PaymentCondition {
+    public string PaymentConditions {
       get; internal set;
     }
 
@@ -136,7 +136,7 @@ namespace Empiria.Trade.Sales.Adapters {
 
   public class AuthorizationDto {
 
-    public SalesOrderStatus AuthorizationStatus {
+    public OrderStatus AuthorizationStatus {
       get; internal set;
     }
 

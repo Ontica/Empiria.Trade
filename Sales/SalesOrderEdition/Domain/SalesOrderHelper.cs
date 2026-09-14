@@ -40,7 +40,7 @@ namespace Empiria.Trade.Sales {
         order.Customer = Party.Parse(order.Beneficiary.Id); 
         order.Supplier = Party.Parse(order.Provider.Id);
         order.SalesAgent = Party.Parse(order.Responsible.Id);
-        //order.GetOrderTotal();
+        order.GetOrderTotal();
       }
 
       return orders;
@@ -76,7 +76,7 @@ namespace Empiria.Trade.Sales {
       foreach (var item in salesOrderItems) {
 
         var data = new InventoryItems();
-        data.OrderId = item.Order.Id;
+        data.OrderId = item.SalesOrder.Id;
         data.OrderItemId = item.Id;
         //data.VendorProductUID = item.VendorProduct.VendorProductUID;
         data.Quantity = item.Quantity;

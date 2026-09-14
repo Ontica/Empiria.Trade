@@ -40,8 +40,6 @@ namespace Empiria.Trade.Core {
         this.AuthorizationStatus = "Pending";
       }
 
-      fields.MapToOrderFields(orderType);
-
       Update(fields);
     }
 
@@ -250,20 +248,23 @@ namespace Empiria.Trade.Core {
     //  SalesOrderItem.SaveSalesOrderItems(this.SalesOrderItems, this.Id);
     //}
 
-    public void AddSalesOrderItem(SalesOrderItem item) {
+    public void AddSalesOrderItem(SalesOrderItem item, int orderId) {
       Assertion.Require(item, nameof(item));
 
-      item.Order = Order.Parse(item.SalesOrder.Id);
+      item.Order = Order.Parse(orderId);
+      item.SalesOrder = SalesOrder.Parse(orderId);
       item.UpdateItem();
       item.Save();
     }
 
 
     public void Apply() {
-      //Status = OrderStatus.Applied;
-      //AuthorizationStatus = OrderAuthorizationStatus.Pending;
+      this.OrderStatus = Core.OrderStatus.Applied.ToString();
+      this.AuthorizationStatus = Core.OrderStatus.Authorized.ToString();
 
-      SalesOrderData.Write(this);
+      //this.Activate();
+
+      //SalesOrderData.Write(this);
 
       SetOrderValues();
 
@@ -271,15 +272,17 @@ namespace Empiria.Trade.Core {
       actions.OnApply();
       this.Actions = actions.SetActions(this, QueryType.Sales);
 
-      // TODO VERIFICAR ACCIONES
-
       this.Activate();
       this.Save();
     }
 
 
     public void AuthorizeOrder() {
-      this.AuthorizationStatus = SalesOrderStatus.Authorized.ToString();
+      this.AuthorizationStatus = Core.OrderStatus.Authorized.ToString();
+      
+      //TODO INVESTIGAR SI SE DEBE APLICAR
+      this.OrderStatus = Core.OrderStatus.Applied.ToString();
+
       this.Authorization();
 
       //SalesOrderData.Write(this);
@@ -289,6 +292,8 @@ namespace Empiria.Trade.Core {
       var actions = ActionsService.Load();
       actions.OnAuthorize();
       this.Actions = actions.SetActions(this, QueryType.SalesAuthorization);
+
+      this.Save();
     }
 
 
@@ -307,16 +312,18 @@ namespace Empiria.Trade.Core {
 
 
     public void AuthorizePayment() {
-      //this.Status = OrderStatus.Packing;
-      //AuthorizationStatus = OrderAuthorizationStatus.ToSupply;
+      this.OrderStatus = Core.OrderStatus.Packing.ToString();
+      this.AuthorizationStatus = Core.OrderStatus.ToSupply.ToString();
 
-      SalesOrderData.Write(this);
+      //SalesOrderData.Write(this);
 
       SetOrderValues();
 
       var actions = ActionsService.Load();
       actions.OnAuthorize();
       this.Actions = actions.SetActions(this, QueryType.SalesAuthorization);
+
+      this.Save();
     }
 
 
@@ -389,14 +396,16 @@ namespace Empiria.Trade.Core {
       this.CustomerContactId = fields.GetCustomerContact().Id;
 
       this.PriceList = GetPriceList();
-      this.SalesOrderItems = LoadSalesOrderItems(fields.ItemsFields);
       this.ScheduledTime = ExecutionServer.DateMaxValue;
+      this.PaymentConditions = fields.PaymentConditions;
       //TODO GUARDAR EN EXT_DATA
       this.ShippingMethod = fields.ShippingMethod.ToString();
       this.ReceptionTime = ExecutionServer.DateMaxValue;
       this.PedimentoImportacion = string.Empty;
       this.CartaPorte = string.Empty;
       this.OrderStatus = fields.Status.ToString();
+
+      this.SalesOrderItems = LoadSalesOrderItems(fields.Items, Customer);
 
       SetOrderTotals();
 
@@ -433,14 +442,29 @@ namespace Empiria.Trade.Core {
       GetOrderTotal();
     }
 
-    private FixedList<SalesOrderItem> LoadSalesOrderItems(FixedList<SalesOrderItemsFields> itemsFields) {
+
+    private FixedList<SalesOrderItem> LoadSalesOrderItems(FixedList<SalesOrderItemsFields> itemsFields, Party customer) {
+      
       List<SalesOrderItem> orderItems = new List<SalesOrderItem>();
 
       foreach (SalesOrderItemsFields itemFields in itemsFields) {
 
-        var saleOrderItem = new SalesOrderItem(this, itemFields);
+        if (itemFields.OrderItemUID != string.Empty) {
 
-        orderItems.Add(saleOrderItem);
+          itemFields.UID = itemFields.OrderItemUID;
+
+          var saleOrderItem = SalesOrderItem.Parse(itemFields.OrderItemUID);
+
+          saleOrderItem.ProductUID = itemFields.VendorProductUID;
+
+          saleOrderItem.Update(itemFields, customer);
+          orderItems.Add(saleOrderItem);
+
+        } else {
+
+          var saleOrderItem = new SalesOrderItem(this, itemFields);
+          orderItems.Add(saleOrderItem);
+        }
       }
 
       return orderItems.ToFixedList();

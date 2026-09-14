@@ -27,11 +27,11 @@ namespace Empiria.Trade.Sales.Adapters {
 
     #region Public methods
 
-    static internal SearchSalesOrderDto Map(SearchOrderFields query, FixedList<SalesOrder> salesOrders ){
+    static internal SearchSalesOrderDto Map(SearchOrderFields query, FixedList<SalesOrder> salesOrders) {
       return new SearchSalesOrderDto {
         Query = query,
         Columns = DataColumns(query),
-        Entries = MapEntries(query, salesOrders) 
+        Entries = MapEntries(query, salesOrders)
       };
     }
 
@@ -40,9 +40,9 @@ namespace Empiria.Trade.Sales.Adapters {
     #region Private methods
 
     static private FixedList<DataTableColumn> DataColumns(SearchOrderFields query) {
-      List<DataTableColumn> columns = new List<DataTableColumn>();  
+      List<DataTableColumn> columns = new List<DataTableColumn>();
 
-    
+
       columns.Add(new DataTableColumn("orderNumber", "No. Orden", "text-link"));
       columns.Add(new DataTableColumn("orderTime", "Fecha", "date"));
       columns.Add(new DataTableColumn("customerName", "Cliente", "text"));
@@ -50,17 +50,19 @@ namespace Empiria.Trade.Sales.Adapters {
       columns.Add(new DataTableColumn("salesAgentName", "Vendedor", "text"));
       columns.Add(new DataTableColumn("orderTotal", "Total", "decimal"));
 
-      if (query.Status == SalesOrderStatus.Shipping) {
-        columns.Add(new DataTableColumn("shippingStatus", "Envío", "text-tag",0,true));
+      if (query.Status == OrderStatus.Shipping) {
+        columns.Add(new DataTableColumn("shippingStatus", "Envío", "text-tag", 0, true));
       }
 
-        switch (query.QueryType) {
-        case QueryType.SalesAuthorization: {  
-          columns.Add(new DataTableColumn("totalDebt", "Adeudo", "decimal")); break;
+      switch (query.QueryType) {
+        case QueryType.SalesAuthorization: {
+          columns.Add(new DataTableColumn("totalDebt", "Adeudo", "decimal"));
+          columns.Add(new DataTableColumn("totalCredit", "Crédito", "decimal"));
+          break;
         }
         case QueryType.SalesPacking: {
           columns.Add(new DataTableColumn("weight", "Peso", "decimal", 2));
-          columns.Add(new DataTableColumn("totalPackages", "No. Paquetes", "decimal",0));
+          columns.Add(new DataTableColumn("totalPackages", "No. Paquetes", "decimal", 0));
           break;
         }
       }
@@ -72,14 +74,14 @@ namespace Empiria.Trade.Sales.Adapters {
       switch (query.QueryType) {
 
         case QueryType.Sales: {
-          if ((query.ShippingStatus != string.Empty) && (query.Status == SalesOrderStatus.Shipping)) {            
+          if ((query.ShippingStatus != string.Empty) && (query.Status == OrderStatus.Shipping)) {
             var list = MapBaseSalesOrdersShipmentStatus(salesOrders);
             var orders = list.ConvertAll(o => (BaseSalesOrderShipmentDto) o);
 
-            return  orders.FindAll(x => x.ShippingStatus == query.ShippingStatus).ToFixedList<ISalesOrderDto>();             
+            return orders.FindAll(x => x.ShippingStatus == query.ShippingStatus).ToFixedList<ISalesOrderDto>();
           }
 
-          if (query.Status == SalesOrderStatus.Shipping) {
+          if (query.Status == OrderStatus.Shipping) {
             return MapBaseSalesOrdersShipmentStatus(salesOrders);
           } else {
             return MapBaseSalesOrders(salesOrders);
@@ -107,7 +109,7 @@ namespace Empiria.Trade.Sales.Adapters {
       foreach (var salesOrder in salesOrders) {
         baseSalesOrderDtoList.Add(MapBaseSalesOrderShipmentStatus(salesOrder));
       }
-      
+
       return baseSalesOrderDtoList.ToFixedList();
     }
 
@@ -125,6 +127,10 @@ namespace Empiria.Trade.Sales.Adapters {
       List<ISalesOrderDto> salesOrderDtoList = new List<ISalesOrderDto>();
 
       foreach (var salesOrder in salesOrders) {
+        salesOrder.Customer = salesOrder.Beneficiary;
+        salesOrder.Supplier = salesOrder.Provider;
+        salesOrder.SalesAgent = salesOrder.Responsible;
+
         salesOrderDtoList.Add(MapBaseSalesOrderAuthorization(salesOrder));
       }
 
@@ -162,22 +168,24 @@ namespace Empiria.Trade.Sales.Adapters {
     }
 
     static public ISalesOrderDto MapBaseSalesOrder(SalesOrder order) {
+
       var dto = new BaseSalesOrderDto {
         UID = order.OrderUID,
         OrderNumber = order.OrderNo,
-        OrderTime = order.RequestedTime,
+        OrderTime = order.PostingTime,
         CustomerName = order.Customer.Name,
         SupplierName = order.Supplier.Name,
         SalesAgentName = order.SalesAgent.Name,
         OrderTotal = order.OrderTotal,
-        //Status = order.Status,
-        StatusName = SalesOrderMapper.MapOrderStatus(order.Status.ToString())
+        Status = EnumExtensions.GetOrderStatusEnum(order.OrderStatus),
+        StatusName = SalesOrderMapper.MapOrderStatus(order.OrderStatus.ToString())
       };
 
       return dto;
     }
 
     static public ISalesOrderDto MapBaseSalesOrderAuthorization(SalesOrder order) {
+
       var dto = new BaseSalesOrdersAuthorizationDto {
         UID = order.UID,
         OrderNumber = order.OrderNo,
@@ -186,9 +194,10 @@ namespace Empiria.Trade.Sales.Adapters {
         SupplierName = order.Supplier.Name,
         SalesAgentName = order.SalesAgent.Name,
         OrderTotal = order.OrderTotal,
-        TotalDebt = GetCustomerTotalDebt(order.Customer.Id),
-        //Status = order.Status,
-        //StatusName = MapOrderAuthorizationStatus(order.AuthorizationStatus.ToString())
+        //TotalDebt = GetCustomerTotalDebt(order.Customer.Id),
+        TotalCredit = order.Beneficiary.ExtendedData.Get<decimal>("LimiteCredito", 0),
+        Status = EnumExtensions.GetOrderStatusEnum(order.OrderStatus),
+        StatusName = MapOrderAuthorizationStatus(order.AuthorizationStatus.ToString())
       };
 
       return dto;
@@ -219,32 +228,37 @@ namespace Empiria.Trade.Sales.Adapters {
         case "Pending":
           return "Por Autorizar";
         default:
-          return "Autorizado";
+          return "Por Autorizar";
       }
 
     }
 
     static private string MapOrderPackingStatus(string status) {
       switch (status) {
-        case "Packing": return "Por surtir";
-        default: return "Surtido";
+        case "Packing":
+          return "Por surtir";
+        default:
+          return "Surtido";
       }
 
     }
 
     static private DataTableTagType GetShippingStatusTagType(string shippingStatus) {
       switch (shippingStatus) {
-        case "Pendiente":  return DataTableTagType.warning;
-        case "Asignado": return DataTableTagType.success;
-          
-        default: return DataTableTagType.none;
+        case "Pendiente":
+          return DataTableTagType.warning;
+        case "Asignado":
+          return DataTableTagType.success;
+
+        default:
+          return DataTableTagType.none;
       }
     }
 
     static private string GetShippingStatus(string orderUID) {
 
       var shippingUseCase = ShippingUseCases.UseCaseInteractor();
-      var shippingEntryDto= shippingUseCase.GetShippingByOrderUID(orderUID);
+      var shippingEntryDto = shippingUseCase.GetShippingByOrderUID(orderUID);
 
       if (shippingEntryDto.ShippingUID == "") {
         return "Pendiente";
@@ -267,16 +281,16 @@ namespace Empiria.Trade.Sales.Adapters {
 
         return packageInfo.Weight;
       } else {
-        return 0; 
+        return 0;
       }
 
     }
 
     static public int GetTotalPackageByOrder(SalesOrder order) {
       if (order.UID != "") {
-          var usecasePackage = PackagingUseCases.UseCaseInteractor();
-          PackagedData packageInfo = usecasePackage.GetPackagedData(order.UID);
-                
+        var usecasePackage = PackagingUseCases.UseCaseInteractor();
+        PackagedData packageInfo = usecasePackage.GetPackagedData(order.UID);
+
         return packageInfo.TotalPackages;
       } else {
         return 0;
@@ -288,4 +302,4 @@ namespace Empiria.Trade.Sales.Adapters {
 
   } //  class SearchSealesOrderMapper
 
-  } // namespace Empiria.Trade.Sales.Adapters
+} // namespace Empiria.Trade.Sales.Adapters

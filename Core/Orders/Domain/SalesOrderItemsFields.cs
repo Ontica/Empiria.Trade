@@ -49,7 +49,7 @@ namespace Empiria.Trade.Core {
     public decimal Discount2 {
       get; set;
     }
-  
+
     public string Notes {
       get; set;
     } = string.Empty;

@@ -46,7 +46,7 @@ namespace Empiria.Trade.Sales.WebApi {
 
       using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
 
-        ISalesOrderDto orderDto = usecases.CreateSalesOrderV2(fields);
+        ISalesOrderDto orderDto = usecases.CreateSalesOrder(fields);
 
         return new SingleObjectModel(this.Request, orderDto);
       }
@@ -91,7 +91,7 @@ namespace Empiria.Trade.Sales.WebApi {
 
       using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
 
-        ISalesOrderDto orderDto = usecases.UpdateSalesOrder(fields);
+        ISalesOrderDto orderDto = usecases.UpdateSalesOrder(orderUID, fields);
 
         return new SingleObjectModel(this.Request, orderDto);
       }
@@ -155,7 +155,7 @@ namespace Empiria.Trade.Sales.WebApi {
         SearchOrderFields fields = new SearchOrderFields();
 
         fields.QueryType = QueryType.Sales;
-        fields.Status = SalesOrderStatus.Shipping;
+        fields.Status = OrderStatus.Shipping;
         fields.ShippingMethod = ShippingMethods.Paqueteria;
         fields.Keywords = keywords;
 

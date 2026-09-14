@@ -41,16 +41,16 @@ namespace Empiria.Trade.Core {
 
       string status = string.Empty;
 
-      if (fields.Status != SalesOrderStatus.Empty) {
-        if (fields.Status == SalesOrderStatus.Authorized) {
-          status = " AND (OrderAuthorizationStatus = 'A')";
-        }
-        if (fields.Status == SalesOrderStatus.Pending) {
-          status = " AND (OrderAuthorizationStatus = 'P')";
-        }
-      } else {
-        status = " AND ((OrderAuthorizationStatus = 'A') or (OrderAuthorizationStatus = 'P'))";
-      }
+      //if (fields.Status != SalesOrderStatus.Empty) {
+      //  if (fields.Status == SalesOrderStatus.Authorized) {
+      //    status = " AND (OrderAuthorizationStatus = 'A')";
+      //  }
+      //  if (fields.Status == SalesOrderStatus.Pending) {
+      //    status = " AND (OrderAuthorizationStatus = 'P')";
+      //  }
+      //} else {
+      //  status = " AND ((OrderAuthorizationStatus = 'A') or (OrderAuthorizationStatus = 'P'))";
+      //}
 
       return GetOrders(fields, status);
     }
@@ -59,14 +59,14 @@ namespace Empiria.Trade.Core {
 
       string status = string.Empty;
 
-      if (fields.Status != SalesOrderStatus.Empty) {
-        if (fields.Status == SalesOrderStatus.Suppled) {
+      if (fields.Status != OrderStatus.Empty) {
+        if (fields.Status == OrderStatus.Suppled) {
           status = "  AND ((OrderStatus = 'S') or (OrderStatus = 'D') or (OrderStatus = 'F')) ";
         }
-        if (fields.Status == SalesOrderStatus.ToSupply) {
+        if (fields.Status == OrderStatus.ToSupply) {
           status = " AND (OrderStatus = 'P') ";
         }
-        if (fields.Status == SalesOrderStatus.InProgress) {
+        if (fields.Status == OrderStatus.InProgress) {
           status = " AND (OrderAuthorizationStatus = 'U') ";
         }
       } else {
@@ -140,7 +140,8 @@ namespace Empiria.Trade.Core {
                  $"AND (O.Order_Start_Date >= CONVERT(SMALLDATETIME, '{fromDate}') " +
                  $"AND O.Order_Start_Date <= CONVERT(SMALLDATETIME,'{toDate}')) " +
                  //$"{shippingMethodFilter} " +
-                 $"{statusFilter} ";
+                 $"{statusFilter} " +
+                 $"AND ORDER_STATUS != 'X'";
                  
 
       var dataOperation = DataOperation.Parse(sql);

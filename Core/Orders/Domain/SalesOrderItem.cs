@@ -28,12 +28,18 @@ namespace Empiria.Trade.Core {
       // Required by Empiria Framework for all partitioned types.
     }
 
+    static public new SalesOrderItem Parse(int id) => ParseId<SalesOrderItem>(id);
+
+    static public new SalesOrderItem Parse(string uid) => ParseKey<SalesOrderItem>(uid);
+
+    static public SalesOrderItem Empty => ParseEmpty<SalesOrderItem>();
+
     public SalesOrderItem(SalesOrder salesOrder, SalesOrderItemsFields fields) {
 
       this.ProductUID = fields.VendorProductUID;
       this.SalesOrder = salesOrder;
 
-      Update(fields);
+      Update(fields, salesOrder.Beneficiary);
     }
 
     #endregion
@@ -53,7 +59,7 @@ namespace Empiria.Trade.Core {
 
 
     public SalesOrder SalesOrder {
-      get; private set;
+      get; set;
     }
 
 
@@ -174,13 +180,16 @@ namespace Empiria.Trade.Core {
     }
 
 
-    internal void Update(SalesOrderItemsFields fields) {
+    internal void Update(SalesOrderItemsFields fields, Parties.Party customer) {
 
       //FixedList<VendorPrices> prices = GetCustomerPriceList();
 
-      var productPrice = ProductEntry.ProductPrices.Find(x => x.PriceType.Id == -25678).Price;
+      //var productPrice = ProductEntry.ProductPrices.Find(x => x.PriceType.Id == -25678).Price;
+
+      var productPrice = ProductEntry.GetProductPrice(customer.ExtendedData.Get<int>("ListaPrecios", 0));
 
       //this.OrderItemTypeId = 1045;
+      this.OrderItemUID = fields.OrderItemUID;
       this.Notes = String.IsNullOrEmpty(fields.Notes) ? string.Empty : fields.Notes;
       //this.PriceListNumber = GetPriceListNumber(prices);
       this.ProductPrice = productPrice;
@@ -230,6 +239,8 @@ namespace Empiria.Trade.Core {
 
         orderItem.DiscountPolicy = string.Empty;
         orderItem.ItemSubtotal = CalculeSubtotal(orderItem);
+
+        orderItem.TaxesIVA = orderItem.ItemSubtotal * 0.16M;
       }
 
       return orderItems;

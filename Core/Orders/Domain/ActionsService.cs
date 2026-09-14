@@ -87,38 +87,37 @@ namespace Empiria.Trade.Core {
 
     private bool ValidateCancel(QueryType queryType, SalesOrder salesOrder) {
 
-      return (salesOrder.OrderStatus == SalesOrderStatus.Captured.ToString() &&
+      return (salesOrder.OrderStatus == OrderStatus.Captured.ToString() &&
               queryType == QueryType.Sales) || OnCreateEvent;
     }
 
     private bool ValidateApply(QueryType queryType, SalesOrder salesOrder) {
 
-      return (salesOrder.OrderStatus == SalesOrderStatus.Captured.ToString() &&
+      return (salesOrder.OrderStatus == OrderStatus.Captured.ToString() &&
               queryType == QueryType.Sales && !OnApplyEvent) || OnCreateEvent;
     }
 
     private bool ValidateUpdate(QueryType queryType, SalesOrder salesOrder) {
 
-      return (salesOrder.OrderStatus == SalesOrderStatus.Captured.ToString() &&
+      return (salesOrder.OrderStatus == OrderStatus.Captured.ToString() &&
               queryType == QueryType.Sales) || OnCreateEvent;
     }
 
     private bool ValidateAuthorize(QueryType queryType, SalesOrder salesOrder) {
 
-      return salesOrder.OrderStatus == SalesOrderStatus.Applied.ToString() &&
+      return salesOrder.OrderStatus == OrderStatus.Applied.ToString() &&
              queryType == QueryType.SalesAuthorization && !OnAuthorizeEvent;
-      
     }
 
     private bool ValidateDeauthorize(QueryType queryType, SalesOrder salesOrder) {
 
-      return salesOrder.AuthorizationStatus == SalesOrderStatus.Authorized.ToString() &&
+      return salesOrder.AuthorizationStatus == OrderStatus.Authorized.ToString() &&
              queryType == QueryType.SalesAuthorization;
     }
 
     private bool ValidateEditPacking(QueryType queryType, SalesOrder salesOrder) {
 
-      if (salesOrder.OrderStatus != SalesOrderStatus.Packing.ToString()) {
+      if (salesOrder.OrderStatus != OrderStatus.Packing.ToString()) {
         return false;
       }
 
@@ -137,7 +136,7 @@ namespace Empiria.Trade.Core {
 
     private bool ValidateEditPicking(QueryType queryType, SalesOrder salesOrder) {
 
-      if (salesOrder.OrderStatus != SalesOrderStatus.Packing.ToString()) {
+      if (salesOrder.OrderStatus != OrderStatus.Packing.ToString()) {
         return false;
       }
 
@@ -156,7 +155,7 @@ namespace Empiria.Trade.Core {
 
     private bool ValidateEditClosePacking(QueryType queryType, SalesOrder salesOrder) {
 
-      if (salesOrder.OrderStatus != SalesOrderStatus.Packing.ToString()) {
+      if (salesOrder.OrderStatus != OrderStatus.Packing.ToString()) {
         return false;
       }
 
@@ -180,12 +179,12 @@ namespace Empiria.Trade.Core {
     }
 
     private bool ValidateEditShipping(SalesOrder salesOrder) {
-      return salesOrder.OrderStatus == SalesOrderStatus.Shipping.ToString();
+      return salesOrder.OrderStatus == OrderStatus.Shipping.ToString();
     }
 
     private bool ValidateEditSendShipping(SalesOrder salesOrder) {
       
-      return salesOrder.OrderStatus == SalesOrderStatus.Shipping.ToString();
+      return salesOrder.OrderStatus == OrderStatus.Shipping.ToString();
     }
 
 

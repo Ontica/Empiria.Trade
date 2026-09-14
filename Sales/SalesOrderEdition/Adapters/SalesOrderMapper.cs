@@ -89,7 +89,7 @@ namespace Empiria.Trade.Sales.Adapters {
       var dto = new OrderDataDto {
         UID = order.UID,
         OrderNumber = order.OrderNo,
-        OrderTime = order.RequestedTime >= new DateTime(2070, 12, 31) ? DateTime.Now : order.RequestedTime,
+        OrderTime = order.PostingTime >= new DateTime(2070,01,01) ? DateTime.Now : order.PostingTime,
         Notes = order.Observations,
         Customer = MapCustomer(order.Customer),
         CustomerContact = CustomerConctacMapper.MapCustomerContact(order.CustomerContact),
@@ -97,7 +97,7 @@ namespace Empiria.Trade.Sales.Adapters {
         Supplier = order.Supplier.MapToNamedEntity(),
         SalesAgent = order.SalesAgent.MapToNamedEntity(),
         ShippingMethod = EnumExtensions.GetShippingMethodEnum(order.ShippingMethod),
-        PaymentCondition = order.PaymentConditions,
+        PaymentConditions = order.PaymentConditions,
         PriceList = order.PriceList,
         ItemsCount = order.ItemsCount,
         ItemsTotal = order.ItemsTotal,

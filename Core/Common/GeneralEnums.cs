@@ -17,7 +17,7 @@ namespace Empiria.Trade.Core {
   } // class GeneralEnums
 
 
-  public enum SalesOrderStatus {
+  public enum OrderStatus {
     Captured = 'C',
     Applied = 'A',
     Authorized = 'O',
@@ -95,107 +95,107 @@ namespace Empiria.Trade.Core {
       }
     }
 
-
-    static public SalesOrderStatus GetOrderStatusEnum(string orderStatus) {
+    
+    static public OrderStatus GetOrderStatusEnum(string orderStatus) {
 
       switch (orderStatus) {
         case "Capturada":
         case "Captured":
-          return SalesOrderStatus.Captured;
+          return OrderStatus.Captured;
 
         case "Aplicada":
         case "Applied":
-          return SalesOrderStatus.Applied;
+          return OrderStatus.Applied;
 
         case "Autorizada":
         case "Autorizado":
         case "Authorized":
-          return SalesOrderStatus.Authorized;
+          return OrderStatus.Authorized;
 
         case "Surtiendo":
         case "Packing":
-          return SalesOrderStatus.Packing;
+          return OrderStatus.Packing;
 
         case "Envío":
         case "Shipping":
-          return SalesOrderStatus.Shipping;
+          return OrderStatus.Shipping;
 
         case "Entregada":
         case "Delivery":
-          return SalesOrderStatus.Delivery;
+          return OrderStatus.Delivery;
 
         case "Cerrada":
         case "Closed":
-          return SalesOrderStatus.Closed;
+          return OrderStatus.Closed;
 
         case "Cancelada":
         case "Cancelled":
-          return SalesOrderStatus.Cancelled;
+          return OrderStatus.Cancelled;
 
         case "Pendiente":
         case "Pending":
-          return SalesOrderStatus.Pending;
+          return OrderStatus.Pending;
 
         case "Por surtir":
         case "ToSupply":
-          return SalesOrderStatus.ToSupply;
+          return OrderStatus.ToSupply;
 
         case "En proceso":
         case "InProgress":
-          return SalesOrderStatus.InProgress;
+          return OrderStatus.InProgress;
 
         case "Surtida":
         case "Suppled":
-          return SalesOrderStatus.Suppled;
+          return OrderStatus.Suppled;
 
         default:
 
-          return SalesOrderStatus.Empty;
+          return OrderStatus.Empty;
 
       }
     }
 
 
-    static public string GetOrderStatusName(this SalesOrderStatus status) {
+    static public string GetOrderStatusName(this OrderStatus status) {
 
       switch (status) {
-        case SalesOrderStatus.Captured:
+        case OrderStatus.Captured:
           return "Capturada";
 
-        case SalesOrderStatus.Applied:
+        case OrderStatus.Applied:
           return "Aplicada";
 
-        case SalesOrderStatus.Authorized:
+        case OrderStatus.Authorized:
           return "Autorizada";
 
-        case SalesOrderStatus.Packing:
+        case OrderStatus.Packing:
           return "Surtiendo";
 
-        case SalesOrderStatus.Shipping:
+        case OrderStatus.Shipping:
           return "Envío";
 
-        case SalesOrderStatus.Delivery:
+        case OrderStatus.Delivery:
           return "Entregada";
 
-        case SalesOrderStatus.Closed:
+        case OrderStatus.Closed:
           return "cerrada";
 
-        case SalesOrderStatus.Cancelled:
+        case OrderStatus.Cancelled:
           return "Cancelada";
 
-        case SalesOrderStatus.Empty:
+        case OrderStatus.Empty:
           return "Empty";
 
-        case SalesOrderStatus.Pending:
+        case OrderStatus.Pending:
           return "Pendiente";
 
-        case SalesOrderStatus.ToSupply:
+        case OrderStatus.ToSupply:
           return "Por surtir";
 
-        case SalesOrderStatus.InProgress:
+        case OrderStatus.InProgress:
           return "En proceso";
 
-        case SalesOrderStatus.Suppled:
+        case OrderStatus.Suppled:
           return "Surtida";
 
         default:
