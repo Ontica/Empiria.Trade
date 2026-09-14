@@ -34,7 +34,7 @@ namespace Empiria.Trade.Financial.Data {
 
       var dataOperation = DataOperation.Parse(sql);
 
-      var debt = Empiria.Data.DataReader.GetScalar<decimal>(dataOperation);
+      var debt = DataReader.GetScalar<decimal>(dataOperation);
 
       return debt;
     }

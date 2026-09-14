@@ -41,6 +41,10 @@ namespace Empiria.Trade.Financial {
       return MoneyAccountData.GetMoneyAccount(ownerId);
     }
 
+    static public FixedList<MoneyAccount> ParseListByOwner(int ownerId) {
+      return MoneyAccountData.GetMoneyAccountsByOwner(ownerId);
+    }
+
     #endregion Constructors and parsers
 
     #region Public properties

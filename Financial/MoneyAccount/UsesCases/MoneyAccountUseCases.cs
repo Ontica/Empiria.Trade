@@ -188,16 +188,17 @@ namespace Empiria.Trade.Financial.UseCases {
     public CreditTransactionDto AddCreditTransaction(CreditTrasnactionFields fields) {
       Assertion.Require(fields, "fields");
       
-      var moneyAccount = MoneyAccount.ParseByOwner(fields.CustomerId);
+      //var moneyAccount = MoneyAccount.ParseByOwner(fields.CustomerId);
+      var moneyAccount = MoneyAccount.ParseListByOwner(fields.CustomerId);
 
-      if (moneyAccount == null) {
+      if (moneyAccount.Count == 0) {
         return new CreditTransactionDto();
       }
 
       var moneyAccountTransaction = new MoneyAccountTransaction();
-      moneyAccountTransaction.AddCreditTransactions(moneyAccount, fields);
+      moneyAccountTransaction.AddCreditTransactions(moneyAccount[0], fields);
 
-      return CreditTransactionMapper.Map(moneyAccountTransaction, moneyAccount.DaysToPay);
+      return CreditTransactionMapper.Map(moneyAccountTransaction, moneyAccount[0].DaysToPay);
     }
 
 
@@ -215,6 +216,17 @@ namespace Empiria.Trade.Financial.UseCases {
       var moneyAccount = MoneyAccount.ParseByOwner(ownerId);
 
       return moneyAccount.GetDebit();
+    }
+
+
+    public decimal GetMoneyAccountTotalDebits(int ownerId) {
+      var moneyAccounts = MoneyAccount.ParseListByOwner(ownerId);
+
+      decimal total = 0;
+      foreach (var debs in moneyAccounts) {
+        total += debs.GetDebit();
+      }
+      return total;
     }
 
 

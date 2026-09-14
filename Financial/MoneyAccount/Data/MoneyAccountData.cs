@@ -30,6 +30,7 @@ namespace Empiria.Trade.Financial.Data {
       return DataReader.GetFixedList<MoneyAccount>(op);
     }
 
+
     static internal MoneyAccount GetMoneyAccount(int ownerId) {
       string sql = $"SELECT * FROM OMS_Money_Accounts WHERE  Owner_Id = {ownerId}";
 
@@ -37,6 +38,16 @@ namespace Empiria.Trade.Financial.Data {
 
       return DataReader.GetObject<MoneyAccount>(op);
     }
+
+
+    static internal FixedList<MoneyAccount> GetMoneyAccountsByOwner(int ownerId) {
+      string sql = $"SELECT * FROM OMS_Money_Accounts WHERE Owner_Id = {ownerId}";
+
+      var op = DataOperation.Parse(sql);
+
+      return DataReader.GetPlainObjectFixedList<MoneyAccount>(op);
+    }
+
 
     static internal void Write(MoneyAccount o) {
 
