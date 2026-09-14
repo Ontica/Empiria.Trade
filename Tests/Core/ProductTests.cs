@@ -17,6 +17,7 @@ using Empiria.Trade.Sales.Adapters;
 using Empiria.Trade.Sales.UseCases;
 using Empiria.Trade.Core;
 using Empiria.Trade.Products.Data;
+using System.Collections.Generic;
 
 namespace Empiria.Trade.Tests.Core {
 
@@ -59,19 +60,33 @@ namespace Empiria.Trade.Tests.Core {
 
       var usecase = ProductForOrderUseCases.UseCaseInteractor();
 
+      var items = new List<SalesOrderItemsFields>();
+
+      var item = new SalesOrderItemsFields {
+        Quantity = 5000,
+        SalesPrice = 2156.15m,
+        Subtotal = 2156.15m,
+        UnitPrice = 0.43123m,
+        VendorProductUID = "4fc7db76-f004-4280-9ad7-b42b4a8e6924"
+      };
+
+      items.Add(item);
+
       ProductOrderQuery query = new ProductOrderQuery {
-        Keywords = "TTRC12X3-1800",
+        Keywords = "TG5G14X1",
         OnStock = true,
         Order = {
           CustomerUID = "c74f0f44-39a4-4f8b-8e0a-7853909648b7",
-          CustomerAddressUID = "4886782b-fefa-48fd-8cf0-e4412dd94753",
-          CustomerContactUID = "5dc570bd-8653-4ade-a869-0540fc391f49",
-          PaymentConditions = "Credito",
-          SalesAgentUID = "7dc0b0bb-cac3-469e-8da9-309efda127ef",
+          CustomerAddressUID = "asas1212-caa4-460e-95cd-de7e11122233",
+          CustomerContactUID = "68449009-0f03-401b-a3af-dd2b97724bf2",
+          //PaymentConditions = "Credito",
+          SalesAgentUID = "9f63cc87-f7e9-4664-81fe-d176c06e81ec",
+          OrderNumber = "P-2XKOROX2UK",
           ShippingMethod = ShippingMethods.RutaLocal,
-          SupplierUID = "4c0c43e4-8bdc-4b7d-b91e-3fb385441120",
-          OrderTime = new System.DateTime(2026, 08, 12),
-          Status = SalesOrderStatus.Pending
+          SupplierUID = "4d462287-9cee-400d-bd63-e2f31b171315",
+          //OrderTime = new System.DateTime(2026, 08, 12),
+          Status = OrderStatus.Captured,
+          Items = items.ToFixedList()
         }
       };
 
@@ -103,9 +118,9 @@ namespace Empiria.Trade.Tests.Core {
 
       var usecase = ProductUseCases.UseCaseInteractor();
       ProductQuery query = new ProductQuery {
-        Keywords = "TMG12X4", //TG5G516X3 TCC12X1
+        Keywords = "TMG12X1-35", //TG5G516X3 TCC12X1
         OnStock = false, 
-        SupplierUID = "b8b6d1ce-ffd0-47fd-92ef-3db32fa44ed5"
+        SupplierUID = ""
       };
 
       FixedList<ProductForSearchingDto> sut = usecase.GetProductsForPurchaseOrder(query);

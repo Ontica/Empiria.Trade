@@ -12,6 +12,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
+using DocumentFormat.OpenXml.Presentation;
 using Empiria.Locations;
 using Empiria.Parties;
 using Empiria.Trade.Core;
@@ -67,12 +68,15 @@ namespace Empiria.Trade.Products.Adapters {
 
     private static ProductPresentationForSeach AssignPresentationForPurchaseOrder(ProductEntry presentation) {
 
+      var description = presentation.Vendor.Id == -100 && presentation.Descripcion_Ing != string.Empty ?
+                        presentation.Descripcion_Ing : presentation.Description;
+
       return new ProductPresentationForSeach {
         PresentationUID = presentation.UID,
         Name = $"{presentation.InternalCode} " +
                $"| Empaque: {presentation.PackingSmallBag} " +
                $"| Unidades: {presentation.PackagingSize} {presentation.BaseUnit.Description}",
-        Description = presentation.Description,
+        Description = description,
         Units = presentation.PackingSmallBag,
         Vendors = MapVendors(presentation)
       };
@@ -176,7 +180,7 @@ namespace Empiria.Trade.Products.Adapters {
 
     static private FixedList<ProductPresentationForSeach> GetPresentations(ProductEntry baseProduct,
                                                                                   bool withUnits) {
-
+      
       FixedList<ProductEntry> _presentations = GetPresentationsWithStock(baseProduct, withUnits);
 
       var productPresentations = _presentations.Select((x) => AssignPresentationForSearcher((ProductEntry) x))
@@ -296,6 +300,10 @@ namespace Empiria.Trade.Products.Adapters {
 
     static private FixedList<VendorDto> MapVendorsForSearcher(ProductEntry presentation) {
 
+      var presentationPrices = presentation.ProductPrices.Find(x => x.PriceType.Id == -25678);
+
+      var productPrice = presentationPrices != null ? presentationPrices.Price : 0;
+
       var vendors = new List<VendorDto>();
 
       var vendor = new VendorDto {
@@ -303,7 +311,7 @@ namespace Empiria.Trade.Products.Adapters {
         VendorUID = presentation.Vendor.UID,
         VendorName = presentation.Vendor.Name,
         Stock = presentation.Stock,
-        Price = presentation.ProductPrices.Find(x => x.PriceType.Id == -25678).Price,
+        Price = productPrice,
         Sku = "SKU"
       };
 

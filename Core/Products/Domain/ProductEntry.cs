@@ -106,8 +106,15 @@ namespace Empiria.Trade.Products {
       get {
         return Attributes.Get("Diametro", string.Empty);
       }
+    }
+
+
+    public string Descripcion_Ing {
+      get {
+        return Attributes.Get("Descripcion_Ing", string.Empty);
+      }
       private set {
-        Attributes.SetIfValue("Diametro", value);
+        Attributes.SetIfValue("Descripcion_Ing", value);
       }
     }
 
@@ -240,6 +247,40 @@ namespace Empiria.Trade.Products {
 
     private void LoadData(ProductFields data) {
       throw new NotImplementedException();
+    }
+
+
+    internal decimal GetProductPrice(int priceListNo) {
+
+      switch (priceListNo) {
+        case 1:
+          if (ProductPrices.Find(a => a.PriceType.Id == -25676) == null) {
+            return ProductPrices.Find(a => a.PriceType.Id == -25678).Price;
+          }
+          return ProductPrices.Find(a => a.PriceType.Id == -25676).Price;
+        case 2:
+          if (ProductPrices.Find(a => a.PriceType.Id == -25677) == null) {
+            return ProductPrices.Find(a => a.PriceType.Id == -25678).Price;
+          }
+          return ProductPrices.Find(a => a.PriceType.Id == -25677).Price;
+        case 3:
+          if (ProductPrices.Find(a => a.PriceType.Id == -25678) == null) {
+            return ProductPrices.Find(a => a.PriceType.Id == -25678).Price;
+          }
+          return ProductPrices.Find(a => a.PriceType.Id == -25678).Price;
+        case 5:
+          if (ProductPrices.Find(a => a.PriceType.Id == -25679) == null) {
+            return ProductPrices.Find(a => a.PriceType.Id == -25678).Price;
+          }
+          return ProductPrices.Find(a => a.PriceType.Id == -25679).Price;
+        case 7:
+          if (ProductPrices.Find(a => a.PriceType.Id == -25680) == null) {
+            return ProductPrices.Find(a => a.PriceType.Id == -25678).Price;
+          }
+          return ProductPrices.Find(a => a.PriceType.Id == -25680).Price;
+        default:
+          return ProductPrices.Find(a => a.PriceType.Id == -25678).Price;
+      }
     }
 
     #endregion Methods
