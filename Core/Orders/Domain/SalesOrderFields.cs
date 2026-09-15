@@ -162,11 +162,11 @@ namespace Empiria.Trade.Core {
 
     public DateTime FromDate {
       get; set;
-    } = new DateTime(2020, 1, 1);
+    } = DateTime.Now.AddDays(-30);
 
     public DateTime ToDate {
       get; set;
-    } = new DateTime(2049, 12, 31);
+    } = DateTime.Now;
 
     public OrderStatus Status {
       get; set;
@@ -194,5 +194,16 @@ namespace Empiria.Trade.Core {
     } = String.Empty;
 
   } //class DeauthorizeFields
+
+
+  static public class SearchOrderFieldsExtensions {
+
+    static public void EnsureIsValidSearch(this SearchOrderFields fields) {
+
+      Assertion.Require(fields.FromDate > DateTime.MinValue && fields.ToDate > DateTime.MinValue,
+                        "Favor de especificar fechas para realizar la búsqueda.");
+    }
+
+  }
 
 } // namespace Empiria.Trade.Sales.Adapters

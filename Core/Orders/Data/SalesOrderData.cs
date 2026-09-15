@@ -19,98 +19,11 @@ namespace Empiria.Trade.Core {
 
     #region Internal methods
 
-    static public FixedList<SalesOrder> GetSalesOrders(SearchOrderFields fields) {
+    static public FixedList<SalesOrder> GetOrders(SearchOrderFields fields, string statusFilter = "") {
 
-      string status = string.Empty;
-
-      //if (fields.Status != OrderStatus.Empty) {
-      //  if (fields.Status == OrderStatus.Authorized) {
-      //    status = " AND (OrderAuthorizationStatus = 'A')";
-      //  } else {
-      //    status = $" AND (OrderStatus = '{(char) fields.Status}')";
-      //  }
-      //} else {
-      //  status = $" AND (OrderStatus <> '{(char) OrderStatus.Cancelled}')";
-      //}
-
-      return GetOrders(fields, status);
-
-    }
-
-    static public FixedList<SalesOrder> GetSalesOrdersToAuthorize(SearchOrderFields fields) {
-
-      string status = string.Empty;
-
-      //if (fields.Status != SalesOrderStatus.Empty) {
-      //  if (fields.Status == SalesOrderStatus.Authorized) {
-      //    status = " AND (OrderAuthorizationStatus = 'A')";
-      //  }
-      //  if (fields.Status == SalesOrderStatus.Pending) {
-      //    status = " AND (OrderAuthorizationStatus = 'P')";
-      //  }
-      //} else {
-      //  status = " AND ((OrderAuthorizationStatus = 'A') or (OrderAuthorizationStatus = 'P'))";
-      //}
-
-      return GetOrders(fields, status);
-    }
-
-    static public FixedList<SalesOrder> GetSalesOrdersToPacking(SearchOrderFields fields) {
-
-      string status = string.Empty;
-
-      if (fields.Status != OrderStatus.Empty) {
-        if (fields.Status == OrderStatus.Suppled) {
-          status = "  AND ((OrderStatus = 'S') or (OrderStatus = 'D') or (OrderStatus = 'F')) ";
-        }
-        if (fields.Status == OrderStatus.ToSupply) {
-          status = " AND (OrderStatus = 'P') ";
-        }
-        if (fields.Status == OrderStatus.InProgress) {
-          status = " AND (OrderAuthorizationStatus = 'U') ";
-        }
-      } else {
-        status = "  AND ((OrderStatus = 'P') or (OrderStatus = 'S') or (OrderStatus = 'D') or (OrderStatus = 'F')) ";
-      }
-
-      return GetOrders(fields, status);
-
-    }
-
-    static public FixedList<SalesOrder> GetSalesByCustomer(int customerId) {
-      var sql = $"SELECT * FROM OMS_Orders WHERE CustomerId = {customerId} AND OrderStatus <> 'X' ";
-
-      var dataOperation = DataOperation.Parse(sql);
-
-      return DataReader.GetFixedList<SalesOrder>(dataOperation);
-    }
-
-    static public SalesOrder GetSalesOrder(string orderNumber) {
-      var sql = $"SELECT * FROM OMS_Orders  WHERE orderNumber = '{orderNumber}' ";
-
-      var dataOperation = DataOperation.Parse(sql);
-
-      return DataReader.GetObject<SalesOrder>(dataOperation);
-    }
-
-    static public void Write(SalesOrder o) {
-      var op = DataOperation.Parse("writeOrder", o.Id, o.UID
-        //o.OrderTypeId, o.Customer.Id, o.Supplier.Id, o.SalesAgent.Id,o.CustomerContact.Id, o.OrderNumber,
-        //o.OrderTime, o.Notes, o.Keywords, o.ExtData.ToString(), o.CustomerAddress.Id,
-        //(char)o.ShippingMethod, (char)o.Status, (char)o.AuthorizationStatus, o.AuthorizationTime,
-        //o.AuthorizatedById,o.ScheduledTime,o.ReceptionTime, o.PedimentoImportacion, o.CartaPorte
-        );
-      DataWriter.Execute(op);
-    }
-
-    #endregion Internal methods
-
-    #region Private methods 
-
-    private static FixedList<SalesOrder> GetOrders(SearchOrderFields fields, string statusFilter) {
-
-      var toDate = fields.ToDate.ToString("yyyy-dd-MM");
       var fromDate = fields.FromDate.ToString("yyyy-dd-MM");
+      var toDate = fields.ToDate.AddDays(1).ToString("yyyy-dd-MM");
+      var minimumDate = new DateTime(2026, 4, 30).ToString("yyyy-dd-MM");
 
       string keywordsFilter = string.Empty;
 
@@ -134,21 +47,77 @@ namespace Empiria.Trade.Core {
       //  shippingMethodFilter = $" AND (ShippingMethod LIKE '%{fields.ShippingMethod}%') ";
       //}
 
+      //TODO FILTRO FECHA SERIA POR Order_Start_Date O Order_Posting_Time?
       var sql = $"SELECT * FROM OMS_Orders O {customerFilter} " +
                  $"(O.Order_Type_Id = 5012) " +
                  $"{keywordsFilter} " +
-                 $"AND (O.Order_Start_Date >= CONVERT(SMALLDATETIME, '{fromDate}') " +
-                 $"AND O.Order_Start_Date <= CONVERT(SMALLDATETIME,'{toDate}')) " +
+                 $"AND O.Order_Posting_Time >= CONVERT(SMALLDATETIME, '{minimumDate}') " +
+                 $"AND (O.Order_Posting_Time >= CONVERT(SMALLDATETIME, '{fromDate}') " +
+                 $"AND O.Order_Posting_Time <= CONVERT(SMALLDATETIME,'{toDate}')) " +
                  //$"{shippingMethodFilter} " +
                  $"{statusFilter} " +
                  $"AND ORDER_STATUS != 'X'";
-                 
 
       var dataOperation = DataOperation.Parse(sql);
 
       return DataReader.GetPlainObjectFixedList<SalesOrder>(dataOperation);
     }
 
+
+    static public FixedList<SalesOrder> GetSalesOrdersToPacking(SearchOrderFields fields) {
+
+      string status = string.Empty;
+
+      if (fields.Status != OrderStatus.Empty) {
+        if (fields.Status == OrderStatus.Suppled) {
+          status = "  AND ((OrderStatus = 'S') or (OrderStatus = 'D') or (OrderStatus = 'F')) ";
+        }
+        if (fields.Status == OrderStatus.ToSupply) {
+          status = " AND (OrderStatus = 'P') ";
+        }
+        if (fields.Status == OrderStatus.InProgress) {
+          status = " AND (OrderAuthorizationStatus = 'U') ";
+        }
+      } else {
+        status = "  AND ((OrderStatus = 'P') or (OrderStatus = 'S') or (OrderStatus = 'D') or (OrderStatus = 'F')) ";
+      }
+
+      return GetOrders(fields, status);
+
+    }
+
+
+    static public FixedList<SalesOrder> GetSalesByCustomer(int customerId) {
+      var sql = $"SELECT * FROM OMS_Orders WHERE CustomerId = {customerId} AND OrderStatus <> 'X' ";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetFixedList<SalesOrder>(dataOperation);
+    }
+
+
+    static public SalesOrder GetSalesOrder(string orderNumber) {
+      var sql = $"SELECT * FROM OMS_Orders  WHERE orderNumber = '{orderNumber}' ";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetObject<SalesOrder>(dataOperation);
+    }
+
+
+    static public void Write(SalesOrder o) {
+      var op = DataOperation.Parse("writeOrder", o.Id, o.UID
+        //o.OrderTypeId, o.Customer.Id, o.Supplier.Id, o.SalesAgent.Id,o.CustomerContact.Id, o.OrderNumber,
+        //o.OrderTime, o.Notes, o.Keywords, o.ExtData.ToString(), o.CustomerAddress.Id,
+        //(char)o.ShippingMethod, (char)o.Status, (char)o.AuthorizationStatus, o.AuthorizationTime,
+        //o.AuthorizatedById,o.ScheduledTime,o.ReceptionTime, o.PedimentoImportacion, o.CartaPorte
+        );
+      DataWriter.Execute(op);
+    }
+
+    #endregion Internal methods
+
+    #region Private methods 
 
 
     #endregion Private methods
