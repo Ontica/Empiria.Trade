@@ -168,16 +168,18 @@ namespace Empiria.Trade.Sales.UseCases {
     public SearchSalesOrderDto GetOrdersV2(SearchOrderFields fields) {
       Assertion.Require(fields, "fields");
 
-      var helper = new SalesOrderHelper();
+      //fields.EnsureIsValidSearch();
+
+      var helper = new SalesOrderHelper(fields);
 
       switch (fields.QueryType) {
 
         case QueryType.Sales: {
-          var salesOrdersList = helper.GetOrders(fields);
+          var salesOrdersList = helper.GetOrders();
           return SearchSealesOrderMapper.Map(fields, salesOrdersList);
         }
         case QueryType.SalesAuthorization: {
-          FixedList<SalesOrder> salesOrders = helper.GetOrdersToAuthorize(fields);
+          FixedList<SalesOrder> salesOrders = helper.GetAuthorizationOrders();
           return SearchSealesOrderMapper.Map(fields, salesOrders);
         }
         case QueryType.SalesPacking: {
@@ -195,16 +197,16 @@ namespace Empiria.Trade.Sales.UseCases {
     public SearchSalesOrderDto GetOrders(SearchOrderFields fields) {
       Assertion.Require(fields, "fields");
 
-      var helper = new SalesOrderHelper();
+      var helper = new SalesOrderHelper(fields);
 
       switch (fields.QueryType) {
 
         case QueryType.Sales: {
-          var salesOrdersList = helper.GetOrders(fields);
+          var salesOrdersList = helper.GetOrders();
           return SearchSealesOrderMapper.Map(fields, salesOrdersList);
         }
         case QueryType.SalesAuthorization: {
-          FixedList<SalesOrder> salesOrders = helper.GetOrdersToAuthorize(fields);
+          FixedList<SalesOrder> salesOrders = helper.GetAuthorizationOrders();
           return SearchSealesOrderMapper.Map(fields, salesOrders);
         }
         case QueryType.SalesPacking: {
@@ -232,8 +234,9 @@ namespace Empiria.Trade.Sales.UseCases {
 
 
     public FixedList<ISalesOrderDto> GetOrdersForShipping(SearchOrderFields fields) {
-      var helper = new SalesOrderHelper();
-      var salesOrdersList = helper.GetOrders(fields);
+      var helper = new SalesOrderHelper(fields);
+
+      var salesOrdersList = helper.GetOrders();
 
       return SearchSealesOrderMapper.MapEntries(fields, salesOrdersList);
     }
@@ -280,7 +283,7 @@ namespace Empiria.Trade.Sales.UseCases {
       order.Supplier = Party.Parse(order.Provider.Id);
       order.SalesAgent = Party.Parse(order.SalesAgentId);
 
-      order.GetOrderTotal();
+      order.GetItemsAndOrderTotal();
 
       switch (order.PaymentConditions) {
         case "Contado":
