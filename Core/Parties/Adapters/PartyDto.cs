@@ -55,6 +55,10 @@ namespace Empiria.Trade.Core.Adapters {
       get; internal set;
     }
 
+    public string PriceList {
+      get; internal set;
+    }
+
     public FixedList<CustomerContactDto> Contacts{
       get; internal set;
     } = new FixedList<CustomerContactDto>();

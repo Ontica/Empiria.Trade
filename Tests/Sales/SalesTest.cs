@@ -105,14 +105,16 @@ namespace Empiria.Trade.Tests.Sales {
       var fields = new SearchOrderFields {
         CustomerUID = "",
         QueryType = QueryType.SalesAuthorization,
-        Keywords = "",
-        //Status = OrderStatus.Authorized,
+        //Keywords = "",
+        FromDate = new DateTime(2026,9,5),
+        ToDate = new DateTime(2026, 9, 11),
+        Status = OrderStatus.Pending,
         //ShippingMethod = ShippingMethods.RutaLocal
       };
 
       var usecases = SalesOrderUseCases.UseCaseInteractor();
 
-      SearchSalesOrderDto salesOrders = usecases.GetOrders(fields);
+      SearchSalesOrderDto salesOrders = usecases.GetOrdersV2(fields);
 
       Assert.NotNull(salesOrders);
     }
@@ -248,9 +250,9 @@ namespace Empiria.Trade.Tests.Sales {
 
       return new SalesOrderFields {
         //UID = "b7a9fb1e-6f18-4956-8e93-33abff1d9c81",
-        CustomerUID = "c74f0f44-39a4-4f8b-8e0a-7853909648b7",
-        CustomerContactUID = "5dc570bd-8653-4ade-a869-0540fc391f49",
-        CustomerAddressUID = "asas1212-caa4-460e-95cd-de7e11122233",
+        CustomerUID = "db100dac-92a3-4125-8de7-0cc072b49a72",
+        CustomerContactUID = "b6f39137-9679-48ff-8fe7-bb18ec69bc5b",
+        CustomerAddressUID = "11828272-485f-4b51-a61e-6050a321a8cc",
         SalesAgentUID = "32bdc986-2301-40f4-ba04-80b69d3e3a1f",
         SupplierUID = "4c0c43e4-8bdc-4b7d-b91e-3fb385441120",
         PaymentConditions = "Credito",

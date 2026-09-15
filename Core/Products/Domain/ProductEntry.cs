@@ -250,36 +250,40 @@ namespace Empiria.Trade.Products {
     }
 
 
-    internal decimal GetProductPrice(int priceListNo) {
+    internal ProductPrices GetProductPrice(int priceListNo) {
 
       switch (priceListNo) {
         case 1:
           if (ProductPrices.Find(a => a.PriceType.Id == -25676) == null) {
-            return ProductPrices.Find(a => a.PriceType.Id == -25678).Price;
+            return ProductPrices.Find(a => a.PriceType.Id == -25678);
           }
-          return ProductPrices.Find(a => a.PriceType.Id == -25676).Price;
+          return ProductPrices.Find(a => a.PriceType.Id == -25676);
         case 2:
           if (ProductPrices.Find(a => a.PriceType.Id == -25677) == null) {
-            return ProductPrices.Find(a => a.PriceType.Id == -25678).Price;
+            return ProductPrices.Find(a => a.PriceType.Id == -25678);
           }
-          return ProductPrices.Find(a => a.PriceType.Id == -25677).Price;
+          return ProductPrices.Find(a => a.PriceType.Id == -25677);
         case 3:
           if (ProductPrices.Find(a => a.PriceType.Id == -25678) == null) {
-            return ProductPrices.Find(a => a.PriceType.Id == -25678).Price;
+            return ProductPrices.Find(a => a.PriceType.Id == -25678);
           }
-          return ProductPrices.Find(a => a.PriceType.Id == -25678).Price;
+          return ProductPrices.Find(a => a.PriceType.Id == -25678);
+        case 4:
+          return ProductPrices.Find(a => a.PriceType.Id == -25678);
         case 5:
           if (ProductPrices.Find(a => a.PriceType.Id == -25679) == null) {
-            return ProductPrices.Find(a => a.PriceType.Id == -25678).Price;
+            return ProductPrices.Find(a => a.PriceType.Id == -25678);
           }
-          return ProductPrices.Find(a => a.PriceType.Id == -25679).Price;
+          return ProductPrices.Find(a => a.PriceType.Id == -25679);
+        case 6:
+          return ProductPrices.Find(a => a.PriceType.Id == -25678);
         case 7:
           if (ProductPrices.Find(a => a.PriceType.Id == -25680) == null) {
-            return ProductPrices.Find(a => a.PriceType.Id == -25678).Price;
+            return ProductPrices.Find(a => a.PriceType.Id == -25678);
           }
-          return ProductPrices.Find(a => a.PriceType.Id == -25680).Price;
+          return ProductPrices.Find(a => a.PriceType.Id == -25680);
         default:
-          return ProductPrices.Find(a => a.PriceType.Id == -25678).Price;
+          return ProductPrices.Find(a => a.PriceType.Id == -25678);
       }
     }
 

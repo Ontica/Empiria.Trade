@@ -192,10 +192,10 @@ namespace Empiria.Trade.Core {
       this.OrderItemUID = fields.OrderItemUID;
       this.Notes = String.IsNullOrEmpty(fields.Notes) ? string.Empty : fields.Notes;
       //this.PriceListNumber = GetPriceListNumber(prices);
-      this.ProductPrice = productPrice;
+      this.ProductPrice = productPrice.Price;
       this.ItemQuantity = fields.Quantity;
-      this.BasePrice = productPrice;
-      this.ItemUnitPrice = productPrice;
+      this.BasePrice = productPrice.Price;
+      this.ItemUnitPrice = productPrice.Price;
       this.SalesPrice = GetSalesPrice();
       //this.DiscountPolicy = GetDiscount().ToString();
       //this.ItemDiscount = GetDiscount();

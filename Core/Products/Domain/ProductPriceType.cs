@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using Empiria.Locations;
 
 namespace Empiria.Trade.Core {
   
@@ -31,8 +32,13 @@ namespace Empiria.Trade.Core {
       
       return CommonStorage.GetList<ProductPriceType>().ToFixedList();
     }
-    
+
     #endregion Constructor and parsers
+
+    #region MyRegion
+
+
+    #endregion
 
   } // class ProductPriceType
 

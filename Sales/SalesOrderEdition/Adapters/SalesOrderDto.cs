@@ -92,10 +92,6 @@ namespace Empiria.Trade.Sales.Adapters {
       get; internal set;
     }
 
-    public string PriceList {
-      get; internal set;
-    }
-
     public NamedEntityDto Supplier {
       get; internal set;
     }

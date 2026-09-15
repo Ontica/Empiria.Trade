@@ -62,7 +62,7 @@ namespace Empiria.Trade.Tests.Core {
     public void ShouldGetCustomerContacts() {
       var usecase = PartyUseCases.UseCaseInteractor();
 
-      var sut = usecase.GetCustomersInfo("JIAXING");
+      var sut = usecase.GetCustomersInfo("BALEROS");
 
       Assert.NotNull(sut);
     }

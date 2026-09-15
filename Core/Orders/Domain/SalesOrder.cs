@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using Empiria.Financial;
 using Empiria.Orders;
 using Empiria.Parties;
+using Empiria.Trade.Products;
 
 
 namespace Empiria.Trade.Core {
@@ -128,11 +129,6 @@ namespace Empiria.Trade.Core {
     public decimal OrderTotal {
       get; private set;
     } = 0m;
-
-
-    public string PriceList {
-      get; private set;
-    } = string.Empty;
 
 
     public TransactionActions Actions {
@@ -395,7 +391,6 @@ namespace Empiria.Trade.Core {
       this.CustomerContact = fields.GetCustomerContact();
       this.CustomerContactId = fields.GetCustomerContact().Id;
 
-      this.PriceList = GetPriceList();
       this.ScheduledTime = ExecutionServer.DateMaxValue;
       this.PaymentConditions = fields.PaymentConditions;
       //TODO GUARDAR EN EXT_DATA
@@ -429,7 +424,7 @@ namespace Empiria.Trade.Core {
       this.Actions = actions.SetActions(this, queryType);
     }
 
-    public void GetOrderTotal() {
+    public void GetItemsAndOrderTotal() {
       this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.OrderId);
       SetOrderTotals();
     }
@@ -439,7 +434,7 @@ namespace Empiria.Trade.Core {
     #region Helpers
 
     private void SetOrderValues() {
-      GetOrderTotal();
+      GetItemsAndOrderTotal();
     }
 
 
@@ -458,6 +453,7 @@ namespace Empiria.Trade.Core {
           saleOrderItem.ProductUID = itemFields.VendorProductUID;
 
           saleOrderItem.Update(itemFields, customer);
+
           orderItems.Add(saleOrderItem);
 
         } else {
@@ -486,19 +482,6 @@ namespace Empiria.Trade.Core {
         this.Tax += item.TaxesIVA;
       }
       this.OrderTotal += this.ItemsTotal + this.Tax + this.Shipment - this.Discount;
-    }
-
-
-    private string GetPriceList() {
-      var pricesList = CustomerPrices.GetVendorPrices(this.Customer.Id);
-
-      var vendorPrice = pricesList.Find(r => r.VendorId == this.Supplier.Id);
-
-      if (vendorPrice == null) {
-        return string.Empty;
-      }
-
-      return vendorPrice.PriceListId.ToString();
     }
 
 

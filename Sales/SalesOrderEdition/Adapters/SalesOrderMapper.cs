@@ -98,7 +98,6 @@ namespace Empiria.Trade.Sales.Adapters {
         SalesAgent = order.SalesAgent.MapToNamedEntity(),
         ShippingMethod = EnumExtensions.GetShippingMethodEnum(order.ShippingMethod),
         PaymentConditions = order.PaymentConditions,
-        PriceList = order.PriceList,
         ItemsCount = order.ItemsCount,
         ItemsTotal = order.ItemsTotal,
         Shipment = order.Shipment,
@@ -112,6 +111,7 @@ namespace Empiria.Trade.Sales.Adapters {
     }
 
     private static ContactDto MapCustomer(Party customer) {
+
       return PartyMapper.MapToCustomer(customer);
     }
 

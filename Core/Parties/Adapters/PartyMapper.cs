@@ -9,7 +9,9 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using Empiria.Parties;
+using Empiria.Trade.Core.Domain;
 using Empiria.Trade.Core.UsesCases;
+using Empiria.Trade.Products;
 
 namespace Empiria.Trade.Core.Adapters {
 
@@ -45,6 +47,7 @@ namespace Empiria.Trade.Core.Adapters {
       return new ContactDto {
         UID = party.UID,
         Name = party.Name,
+        PriceList = GetPriceList(party),
         Contacts = MapCustomerContacts(party.Id),
         Addresses = MapCustomerAddresses(party.UID)
       };
@@ -75,6 +78,39 @@ namespace Empiria.Trade.Core.Adapters {
 
     #region Private methods
 
+    static private string GetPriceList(Party customer) {
+
+      var priceTypeName = ProductPriceType.GetList();
+      var customerPriceList = customer.ExtendedData.Get<int>("ListaPrecios", 0);
+
+      switch (customerPriceList) {
+        case 1:
+
+          return priceTypeName.Find(a => a.Name.Contains("Lista Precios 1")).Name;
+        case 2:
+
+          return priceTypeName.Find(a => a.Name.Contains("Lista Precios 2")).Name;
+        case 3:
+
+          return priceTypeName.Find(a => a.Name.Contains("Lista Precios 3")).Name;
+        case 4:
+
+          return priceTypeName.Find(a => a.Name.Contains("Lista Precios 3")).Name;
+        case 5:
+
+          return priceTypeName.Find(a => a.Name.Contains("Lista Precios 5")).Name;
+        case 6:
+
+          return priceTypeName.Find(a => a.Name.Contains("Lista Precios 3")).Name;
+        case 7:
+
+          return priceTypeName.Find(a => a.Name.Contains("Lista Precios 7")).Name;
+
+        default:
+          return priceTypeName.Find(a => a.Name.Contains("Lista Precios 3")).Name;
+      }
+
+    }
 
     #endregion Private methods
 
