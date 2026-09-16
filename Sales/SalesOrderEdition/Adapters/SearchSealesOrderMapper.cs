@@ -196,7 +196,7 @@ namespace Empiria.Trade.Sales.Adapters {
       var dto = new BaseSalesOrdersAuthorizationDto {
         UID = order.OrderUID,
         OrderNumber = order.OrderNo,
-        OrderTime = order.RequestedTime,
+        OrderTime = order.PostingTime,
         CustomerName = order.Customer.Name,
         SupplierName = order.Supplier.Name,
         SalesAgentName = order.SalesAgent.Name,
@@ -211,10 +211,11 @@ namespace Empiria.Trade.Sales.Adapters {
     }
 
     static public ISalesOrderDto MapBaseSalesOrderPacking(SalesOrder order) {
+      
       var dto = new BaseSalesOrderPackingDto {
         UID = order.OrderUID,
         OrderNumber = order.OrderNo,
-        OrderTime = order.RequestedTime,
+        OrderTime = order.PostingTime,
         CustomerName = order.Customer.Name,
         SupplierName = order.Supplier.Name,
         SalesAgentName = order.SalesAgent.Name,
@@ -222,7 +223,7 @@ namespace Empiria.Trade.Sales.Adapters {
         //Weight = GetWeightTotalPackageByOrder(order),
         //TotalPackages = GetTotalPackageByOrder(order),
         Status = EnumExtensions.GetOrderStatusEnum(order.SalesOrderProcessStatus),
-        StatusName = MapOrderPackingStatus(order.Status.ToString())
+        StatusName = MapOrderPackingStatus(order.SalesOrderProcessStatus.ToString())
       };
 
       return dto;
@@ -243,8 +244,13 @@ namespace Empiria.Trade.Sales.Adapters {
     static private string MapOrderPackingStatus(string status) {
       switch (status) {
         case "Packing":
+        case "ToSupply":
         case "Authorized":
           return "Por surtir";
+
+        case "InProgress":
+          return "En proceso";
+
         default:
           return "Surtido";
       }

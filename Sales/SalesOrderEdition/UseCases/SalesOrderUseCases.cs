@@ -45,7 +45,7 @@ namespace Empiria.Trade.Sales.UseCases {
     public ISalesOrderDto GetSalesOrder(string orderUID, QueryType queryType) {
 
       SalesOrder order = SalesOrder.Parse(orderUID);
-      
+      order.OrderQueryType = queryType;
       order.Customer = Party.Parse(order.Beneficiary.Id);
       order.GetCustomerContact();
       order.GetCustomerAddress();

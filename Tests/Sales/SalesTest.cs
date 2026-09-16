@@ -56,7 +56,7 @@ namespace Empiria.Trade.Tests.Sales {
 
       var salesOrderUseCase = SalesOrderUseCases.UseCaseInteractor();
 
-      var sut = salesOrderUseCase.GetSalesOrder("b1bdf729-c0e3-4476-95af-5bff62cdeb96", QueryType.Sales);
+      var sut = salesOrderUseCase.GetSalesOrder("3d8db525-3c7d-422f-8c90-a6f35b46d52c", QueryType.SalesPacking);
 
       Assert.NotNull(sut);
     }
@@ -108,7 +108,7 @@ namespace Empiria.Trade.Tests.Sales {
         //Keywords = "",
         //FromDate = new DateTime(2026,9,5),
         //ToDate = new DateTime(2026, 9, 11),
-        Status = OrderStatus.ToSupply,
+        //Status = OrderStatus.ToSupply,
         //ShippingMethod = ShippingMethods.RutaLocal
       };
 

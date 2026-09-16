@@ -43,9 +43,7 @@ namespace Empiria.Trade.Sales {
 
       FixedList<SalesOrder> returnedOrders = FilterOrdersByShippingMethod(ordersByStatus);
 
-      foreach (var order in returnedOrders) {
-        order.GetItemsAndOrderTotal();
-      }
+      GetItemsForOrders(returnedOrders);
 
       return returnedOrders;
     }
@@ -69,10 +67,7 @@ namespace Empiria.Trade.Sales {
 
       var orders = SalesOrderData.GetSalesByCustomer(customerId);
 
-      foreach (var order in orders) {
-
-        order.GetItemsAndOrderTotal();
-      }
+      GetItemsForOrders(orders);
 
       return orders;
     }
@@ -180,7 +175,8 @@ namespace Empiria.Trade.Sales {
       } else if (_fields.Status == OrderStatus.Empty) {
 
         //status = "  AND ((OrderStatus = 'P') or (OrderStatus = 'S') or (OrderStatus = 'D') or (OrderStatus = 'F')) ";
-        return orders.FindAll(x => x.SalesOrderProcessStatus == OrderStatus.Packing.ToString() ||
+        return orders.FindAll(x => x.SalesOrderProcessStatus == OrderStatus.Authorized.ToString() ||
+                                   x.SalesOrderProcessStatus == OrderStatus.Packing.ToString() ||
                                    x.SalesOrderProcessStatus == OrderStatus.Shipping.ToString() ||
                                    x.SalesOrderProcessStatus == OrderStatus.Delivery.ToString() ||
                                    x.SalesOrderProcessStatus == OrderStatus.Closed.ToString());

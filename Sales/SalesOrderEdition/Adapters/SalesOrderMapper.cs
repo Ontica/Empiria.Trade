@@ -50,31 +50,48 @@ namespace Empiria.Trade.Sales.Adapters {
     }
 
 
-    static public string MapOrderStatus(string status) {
+    static public string MapOrderStatus(string status, QueryType queryType = QueryType.Sales) {
+      
       switch (status) {
+
         case "Captured":
+
           return "Capturada";
         case "Applied":
+
           return "Aplicada";
         case "Authorized":
+
+          if (queryType == QueryType.SalesPacking) {
+            return "Por surtir";
+          }
           return "Autorizada";
         case "Packing":
+
           return "Surtiéndose";
         case "Shipping":
+
           return "Envío";
         case "Delivery":
+
           return "Entrega";
         case "Closed":
+
           return "Cerrada";
         case "Cancelled":
+
           return "Cancelada";
         case "Pending":
+
           return "Por Autorizar";
         case "ToSupply":
+
           return "Por surtir";
         case "InProgress":
+
           return "En proceso";
         case "Suppled":
+
           return "Surtido";
         default:
           return "Capturada";
@@ -87,7 +104,7 @@ namespace Empiria.Trade.Sales.Adapters {
     private static OrderDataDto MapDataDto(SalesOrder order) {
 
       var dto = new OrderDataDto {
-        UID = order.UID,
+        UID = order.OrderUID,
         OrderNumber = order.OrderNo,
         OrderTime = order.PostingTime >= new DateTime(2070,01,01) ? DateTime.Now : order.PostingTime,
         Notes = order.Observations,
@@ -104,7 +121,7 @@ namespace Empiria.Trade.Sales.Adapters {
         Taxes = order.Tax,
         OrderTotal = order.OrderTotal,
         Status = EnumExtensions.GetOrderStatusEnum(order.SalesOrderProcessStatus), //order.Status,
-        StatusName = MapOrderStatus(order.SalesOrderProcessStatus.ToString()),
+        StatusName = MapOrderStatus(order.SalesOrderProcessStatus.ToString(), order.OrderQueryType),
       };
 
       return dto;
@@ -117,6 +134,7 @@ namespace Empiria.Trade.Sales.Adapters {
 
     //TODO PARA QUE LO UTILIZA EL FRONT
     private static AuthorizationDto MapAuthorizationDto(SalesOrder order) {
+
       var dto = new AuthorizationDto {
         AuthorizationStatus = EnumExtensions.GetOrderStatusEnum(order.SalesOrderProcessStatus),
         AuthorizationTime = order.AuthorizationTime,

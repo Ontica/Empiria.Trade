@@ -117,14 +117,13 @@ namespace Empiria.Trade.Core {
 
     private bool ValidateEditPacking(QueryType queryType, SalesOrder salesOrder) {
 
-      if (salesOrder.SalesOrderProcessStatus != OrderStatus.Packing.ToString()) {
-        return false;
-      }
-
       if (queryType != QueryType.SalesPacking) {
         return false;
       }
 
+      if (salesOrder.SalesOrderProcessStatus != OrderStatus.Packing.ToString()) {
+        return false;
+      }
 
       if (OnSupplyEvent) {
         return false;

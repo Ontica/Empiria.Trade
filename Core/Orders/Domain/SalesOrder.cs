@@ -33,7 +33,7 @@ namespace Empiria.Trade.Core {
 
     public SalesOrder(SalesOrderFields fields, OrderType orderType) : base(orderType) {
       Assertion.Require(fields, nameof(fields));
-      
+
       if (IsNew) {
         OrderNo = "P-" + EmpiriaString.BuildRandomString(10).ToUpperInvariant();
         fields.OrderNumber = OrderNo;
@@ -234,6 +234,11 @@ namespace Empiria.Trade.Core {
       }
     }
 
+
+    public QueryType OrderQueryType {
+      get; set;
+    }
+
     #endregion
 
     #region Public methods
@@ -255,7 +260,7 @@ namespace Empiria.Trade.Core {
 
     public void Apply() {
       this.SalesOrderProcessStatus = Core.OrderStatus.Applied.ToString();
-      
+
       SetOrderValues();
 
       var actions = ActionsService.Load();
@@ -267,9 +272,9 @@ namespace Empiria.Trade.Core {
 
 
     public void AuthorizeOrder() {
-      
+
       this.SalesOrderProcessStatus = Core.OrderStatus.Authorized.ToString();
-      
+
       this.Authorization();
 
       SetOrderValues();
@@ -367,11 +372,11 @@ namespace Empiria.Trade.Core {
       this.Actions = actions.SetActions(this, QueryType.SalesPacking);
     }
 
-    
+
     public void Update(SalesOrderFields fields) {
-      
+
       this.Supplier = fields.GetSupplier();
-      
+
       this.SalesAgent = fields.GetSalesAgent();
       this.SalesAgentId = fields.GetSalesAgent().Id;
 
@@ -431,7 +436,7 @@ namespace Empiria.Trade.Core {
 
 
     private FixedList<SalesOrderItem> LoadSalesOrderItems(FixedList<SalesOrderItemsFields> itemsFields, Party customer) {
-      
+
       List<SalesOrderItem> orderItems = new List<SalesOrderItem>();
 
       foreach (SalesOrderItemsFields itemFields in itemsFields) {
@@ -467,7 +472,7 @@ namespace Empiria.Trade.Core {
       this.ItemsCount = this.SalesOrderItems.Count;
 
       foreach (SalesOrderItem item in this.SalesOrderItems) {
-        
+
         this.ItemsTotal += item.ItemSubtotal;
         this.Shipment += item.Shipment;
         this.Discount += item.Discount;
