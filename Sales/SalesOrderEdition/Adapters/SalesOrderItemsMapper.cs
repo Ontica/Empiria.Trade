@@ -27,7 +27,7 @@ namespace Empiria.Trade.Sales.Adapters {
       var dto = new SalesOrderItemDto {
         OrderItemUID = orderItem.UID == string.Empty ? orderItem.OrderItemUID : orderItem.UID,
         Quantity = orderItem.ItemQuantity,
-        UnitPrice = orderItem.ProductPrice,
+        UnitPrice = orderItem.ItemUnitPrice,
         SalesPrice = orderItem.SalesPrice,
         DiscountPolicy = orderItem.DiscountPolicy,
         Discount1 = orderItem.ItemDiscount,

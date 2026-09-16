@@ -56,7 +56,7 @@ namespace Empiria.Trade.Tests.Sales {
 
       var salesOrderUseCase = SalesOrderUseCases.UseCaseInteractor();
 
-      var sut = salesOrderUseCase.GetSalesOrder("3d8db525-3c7d-422f-8c90-a6f35b46d52c", QueryType.SalesPacking);
+      var sut = salesOrderUseCase.GetSalesOrder("fd7eefd6-9dcb-4020-8209-69b304f9085a", QueryType.Sales);
 
       Assert.NotNull(sut);
     }
@@ -80,7 +80,7 @@ namespace Empiria.Trade.Tests.Sales {
       SalesOrderFields orderFields = GetSalesOrderFields();
 
       var useCase = SalesOrderUseCases.UseCaseInteractor();
-      var sut = useCase.UpdateSalesOrder("b7a9fb1e-6f18-4956-8e93-33abff1d9c81", orderFields);
+      var sut = useCase.UpdateSalesOrder("fd7eefd6-9dcb-4020-8209-69b304f9085a", orderFields);
 
       Assert.NotNull(sut);
     }
@@ -128,7 +128,6 @@ namespace Empiria.Trade.Tests.Sales {
         VendorProductUID = "56214e92-2cb0-49fd-943e-0a1c5df51a10",
         Quantity = 1,
         UnitPrice = 100,
-        SalesPrice = 0,
         DiscountPolicy = "",
         Discount = 0,
         Discount2 = 0,
@@ -249,15 +248,15 @@ namespace Empiria.Trade.Tests.Sales {
     private SalesOrderFields GetSalesOrderFields() {
 
       return new SalesOrderFields {
-        //UID = "b7a9fb1e-6f18-4956-8e93-33abff1d9c81",
+        UID = "fd7eefd6-9dcb-4020-8209-69b304f9085a",
         CustomerUID = "db100dac-92a3-4125-8de7-0cc072b49a72",
         CustomerContactUID = "b6f39137-9679-48ff-8fe7-bb18ec69bc5b",
         CustomerAddressUID = "11828272-485f-4b51-a61e-6050a321a8cc",
         SalesAgentUID = "32bdc986-2301-40f4-ba04-80b69d3e3a1f",
         SupplierUID = "4c0c43e4-8bdc-4b7d-b91e-3fb385441120",
         PaymentConditions = "Credito",
-        OrderNumber = "P-56QFDP99FB",
-        ShippingMethod = ShippingMethods.Paqueteria,
+        OrderNumber = "P-YSR9PRJR24",
+        ShippingMethod = ShippingMethods.RutaLocal,
         //OrderTime = DateTime.Now,
         Status = OrderStatus.Captured,
         Notes = "",
@@ -271,33 +270,31 @@ namespace Empiria.Trade.Tests.Sales {
       List<SalesOrderItemsFields> itemsFields = new List<SalesOrderItemsFields>();
 
       var fields = new SalesOrderItemsFields {
-        OrderItemUID = "2acb4a1c-9663-445f-9e36-8a712d5cf9eb",
-        VendorProductUID = "3a396d5d-7522-4663-9542-c1f7ec171a51",
-        Quantity = 5,
-        UnitPrice = 0.94434m,
-        SalesPrice = 4.7217m,
+        OrderItemUID = "4ac0455e-d321-452c-af58-3ab4e4c69839",
+        VendorProductUID = "97a37dc2-0663-4fc8-840b-bd702ee8435c",
+        Quantity = 100,
+        UnitPrice = 7.61m,
         //DiscountPolicy = "",
-        //Discount1 = 0,
-        //Discount2 = 0,
-        Subtotal = 4.7217m,
-        Notes = "N/A"
+        Discount1 = 10,
+        Discount2 = 10,
+        //Subtotal = 4.7217m,
+        Notes = "N/AA"
       };
 
       itemsFields.Add(fields);
 
-      var fields2 = new SalesOrderItemsFields {
-        OrderItemUID = "0c9c4c0d-c73d-469e-8e15-f8568b13ae15",
-        VendorProductUID = "43a90f2f-9126-4137-a115-8160d820cd97",
-        Quantity = 4,
-        UnitPrice = 14.77064m,
-        SalesPrice = 59.08256m,
-        DiscountPolicy = "",
-        //Discount = 0,
-        Discount2 = 12,
-        Subtotal = 51.9926528m,
-        Notes = "NOTAS DE PRODUCTO 2"
-      };
-      itemsFields.Add(fields2);
+      //var fields2 = new SalesOrderItemsFields {
+      //  OrderItemUID = "0c9c4c0d-c73d-469e-8e15-f8568b13ae15",
+      //  VendorProductUID = "43a90f2f-9126-4137-a115-8160d820cd97",
+      //  Quantity = 4,
+      //  UnitPrice = 14.77064m,
+      //  DiscountPolicy = "",
+      //  //Discount = 0,
+      //  Discount2 = 12,
+      //  Subtotal = 51.9926528m,
+      //  Notes = "NOTAS DE PRODUCTO 2"
+      //};
+      //itemsFields.Add(fields2);
 
       return new FixedList<SalesOrderItemsFields>(itemsFields);
     }

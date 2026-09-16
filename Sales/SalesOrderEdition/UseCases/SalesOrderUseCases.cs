@@ -110,7 +110,7 @@ namespace Empiria.Trade.Sales.UseCases {
       }
 
       ValidateCustomerAddress(fields.CustomerUID, fields.CustomerAddressUID);
-      ValidateOrderItemsExistence(fields.Items);
+      ValidateItemsFields(fields.Items);
 
       var order = SalesOrder.Parse(orderUID);
 
@@ -448,7 +448,7 @@ namespace Empiria.Trade.Sales.UseCases {
     }
 
 
-    private void ValidateOrderItemsExistence(FixedList<SalesOrderItemsFields> itemsFields) {
+    private void ValidateItemsFields(FixedList<SalesOrderItemsFields> itemsFields) {
 
       foreach (var fields in itemsFields) {
 
@@ -462,6 +462,12 @@ namespace Empiria.Trade.Sales.UseCases {
           Assertion.EnsureNoReachThisCode($"No hay existencia suficiente del producto " +
             $"{product.InternalCode} {product.Name}");
         }
+
+        Assertion.Require(fields.Discount1 >= 0 && fields.Discount1 <= 100, $"El Descuento 1 del producto " +
+                          $"{product.InternalCode} no puede ser menor a 0% ni mayor a 100%");
+
+        Assertion.Require(fields.Discount2 >= 0 && fields.Discount2 <= 100, $"El Descuento 2 del producto " +
+                          $"{product.InternalCode} no puede ser menor a 0% ni mayor a 100%");
       }
 
     }
@@ -482,7 +488,7 @@ namespace Empiria.Trade.Sales.UseCases {
 
       ValidateCustomerAddress(fields.CustomerUID, fields.CustomerAddressUID);
       ValidateShippingMethod(fields);
-      ValidateOrderItemsExistence(fields.Items);
+      ValidateItemsFields(fields.Items);
     }
 
     #endregion Private methods

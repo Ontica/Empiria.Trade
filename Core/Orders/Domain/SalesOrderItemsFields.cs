@@ -30,11 +30,7 @@ namespace Empiria.Trade.Core {
       get; set;
     }
 
-    public decimal SalesPrice {
-      get; set;
-    }
-
-   public string DiscountPolicy {
+    public string DiscountPolicy {
       get; set;
     } = string.Empty;
 

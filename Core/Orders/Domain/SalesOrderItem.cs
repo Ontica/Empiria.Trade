@@ -182,11 +182,12 @@ namespace Empiria.Trade.Core {
 
     internal void Update(SalesOrderItemsFields fields, Parties.Party customer) {
 
-      //FixedList<VendorPrices> prices = GetCustomerPriceList();
-
-      //var productPrice = ProductEntry.ProductPrices.Find(x => x.PriceType.Id == -25678).Price;
-
       var productPrice = ProductEntry.GetProductPrice(customer.ExtendedData.Get<int>("ListaPrecios", 0));
+      decimal unitPrice = productPrice.Price;
+
+      if (fields.UnitPrice > productPrice.Price) {
+        unitPrice = fields.UnitPrice;
+      }
 
       //this.OrderItemTypeId = 1045;
       this.OrderItemUID = fields.OrderItemUID;
@@ -194,13 +195,13 @@ namespace Empiria.Trade.Core {
       //this.PriceListNumber = GetPriceListNumber(prices);
       this.ProductPrice = productPrice.Price;
       this.ItemQuantity = fields.Quantity;
-      this.BasePrice = productPrice.Price;
-      this.ItemUnitPrice = productPrice.Price;
+      this.BasePrice = unitPrice;
+      this.ItemUnitPrice = unitPrice;
       this.SalesPrice = GetSalesPrice();
       //this.DiscountPolicy = GetDiscount().ToString();
-      //this.ItemDiscount = GetDiscount();
+      this.ItemDiscount = fields.Discount1; //GetDiscount();
       this.AdditionalDiscount = fields.Discount2;
-      this.ItemSubtotal = GetSubtotal(); //fields.Quantity * fields.UnitPrice; 
+      this.ItemSubtotal = GetSubtotal(fields.Discount1);
       this.Shipment = 0;
       this.TaxesIVA = this.ItemSubtotal * 0.16M;
       this.ItemTotal = this.ItemSubtotal + this.TaxesIVA + this.Shipment;
@@ -233,7 +234,7 @@ namespace Empiria.Trade.Core {
       foreach (SalesOrderItem orderItem in orderItems) {
         orderItem.ItemQuantity = orderItem.Quantity;
         orderItem.ItemUnitPrice = orderItem.UnitPrice;
-        orderItem.ProductPrice = orderItem.UnitPrice;
+        //orderItem.ProductPrice = orderItem.UnitPrice;
         orderItem.SalesPrice = orderItem.UnitPrice;
         orderItem.ItemDiscount = orderItem.Discount;
 
@@ -299,8 +300,8 @@ namespace Empiria.Trade.Core {
       return (this.ItemQuantity * this.ItemUnitPrice);
     }
 
-    private decimal GetSubtotal() {
-      var subTotal = this.GetSalesPrice() - ((this.GetSalesPrice() * this.Discount) / 100);
+    private decimal GetSubtotal(decimal discount) {
+      var subTotal = this.GetSalesPrice() - ((this.GetSalesPrice() * discount) / 100); // this.Discount
       subTotal = subTotal - ((subTotal * AdditionalDiscount) / 100);
 
       return subTotal;
