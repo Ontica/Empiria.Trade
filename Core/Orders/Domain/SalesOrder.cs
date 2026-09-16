@@ -416,7 +416,8 @@ namespace Empiria.Trade.Core {
     }
 
     public void GetItemsAndOrderTotal() {
-      this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.OrderId);
+      FixedList<SalesOrderItem> getItems = SalesOrderItem.GetOrderItems(this.OrderId);
+      this.SalesOrderItems = getItems;
       SetOrderTotals();
     }
 

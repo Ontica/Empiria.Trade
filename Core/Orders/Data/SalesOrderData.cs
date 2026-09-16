@@ -83,7 +83,6 @@ namespace Empiria.Trade.Core {
       }
 
       return GetOrders(fields, status);
-
     }
 
 

@@ -122,7 +122,7 @@ namespace Empiria.Trade.Sales.WebApi {
       base.RequireBody(fields);
       using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
 
-        SearchSalesOrderDto salesOrders = usecases.GetOrdersV2(fields);
+        SearchSalesOrderDto salesOrders = usecases.GetOrders(fields);
         return new SingleObjectModel(base.Request, salesOrders);
 
 

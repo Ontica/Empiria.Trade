@@ -34,6 +34,23 @@ namespace Empiria.Trade.Sales {
 
     #region Public methods
 
+    public FixedList<SalesOrder> GetAuthorizationOrders() {
+      //var orders = SalesOrderData.GetSalesOrdersToAuthorize(fields);
+
+      FixedList<SalesOrder> orders = SalesOrderData.GetOrders(_fields);
+
+      FixedList<SalesOrder> ordersByStatus = FilterOrdersForAuthorizationStatus(orders);
+
+      FixedList<SalesOrder> returnedOrders = FilterOrdersByShippingMethod(ordersByStatus);
+
+      foreach (var order in returnedOrders) {
+        order.GetItemsAndOrderTotal();
+      }
+
+      return returnedOrders;
+    }
+
+
     public FixedList<SalesOrder> GetOrders() {
 
       var orders = SalesOrderData.GetOrders(_fields);
@@ -47,38 +64,49 @@ namespace Empiria.Trade.Sales {
       return returnedOrders;
     }
 
-    
-    public FixedList<SalesOrder> GetAuthorizationOrders() {
-      //var orders = SalesOrderData.GetSalesOrdersToAuthorize(fields);
 
-      FixedList<SalesOrder> orders = SalesOrderData.GetOrders(_fields);
+    internal FixedList<SalesOrder> GetOrdersByCustomer(int customerId) {
 
-      FixedList<SalesOrder> ordersByStatus = FilterOrdersByAuthorizationStatus(orders);
-      
-      FixedList<SalesOrder> returnedOrders = FilterOrdersByShippingMethod(ordersByStatus);
+      var orders = SalesOrderData.GetSalesByCustomer(customerId);
 
-      foreach (var order in returnedOrders) {
-        order.GetItemsAndOrderTotal();
-      }
-
-      return returnedOrders;
-    }
-
-
-    public FixedList<SalesOrder> GetOrdersToPacking(SearchOrderFields fields) {
-      var orders = SalesOrderData.GetSalesOrdersToPacking(fields);
       foreach (var order in orders) {
+
         order.GetItemsAndOrderTotal();
       }
 
       return orders;
     }
 
+
+    public FixedList<SalesOrder> GetOrdersToPacking() {
+
+      //var _orders = SalesOrderData.GetSalesOrdersToPacking(_fields);
+
+      FixedList<SalesOrder> orders = SalesOrderData.GetOrders(_fields);
+
+      FixedList<SalesOrder> ordersByStatus = FilterOrdersForPackingStatus(orders);
+
+      FixedList<SalesOrder> returnedOrders = FilterOrdersByShippingMethod(ordersByStatus);
+
+      GetItemsForOrders(returnedOrders);
+
+      return returnedOrders;
+    }
+
+
+    internal SalesOrder GetSalesOrder(string orderNumber) {
+      var order = SalesOrderData.GetSalesOrder(orderNumber);
+
+      order.GetItemsAndOrderTotal();
+
+      return order;
+    }
+
     #endregion Public methods
 
     #region Private methods
 
-    private FixedList<SalesOrder> FilterOrdersByAuthorizationStatus(FixedList<SalesOrder> orders) {
+    private FixedList<SalesOrder> FilterOrdersForAuthorizationStatus(FixedList<SalesOrder> orders) {
 
       if (_fields.Status == OrderStatus.Authorized) {
 
@@ -129,6 +157,39 @@ namespace Empiria.Trade.Sales {
     }
 
 
+    private FixedList<SalesOrder> FilterOrdersForPackingStatus(FixedList<SalesOrder> orders) {
+
+      if (_fields.Status == OrderStatus.Suppled) {
+
+        //status = "  AND ((OrderStatus = 'S') or (OrderStatus = 'D') or (OrderStatus = 'F')) ";
+        return orders.FindAll(x => x.SalesOrderProcessStatus == OrderStatus.Shipping.ToString() ||
+                                   x.SalesOrderProcessStatus == OrderStatus.Delivery.ToString() ||
+                                   x.SalesOrderProcessStatus == OrderStatus.Closed.ToString());
+
+      } else if (_fields.Status == OrderStatus.ToSupply || _fields.Status == OrderStatus.Packing) {
+
+        //status = " AND (OrderStatus = 'P') ";
+        return orders.FindAll(x => x.SalesOrderProcessStatus == OrderStatus.Packing.ToString() ||
+                                   x.SalesOrderProcessStatus == OrderStatus.Authorized.ToString());
+
+      } else if (_fields.Status == OrderStatus.InProgress) {
+
+        //status = " AND (OrderAuthorizationStatus = 'U') ";
+        return orders.FindAll(x => x.SalesOrderProcessStatus == OrderStatus.InProgress.ToString());
+
+      } else if (_fields.Status == OrderStatus.Empty) {
+
+        //status = "  AND ((OrderStatus = 'P') or (OrderStatus = 'S') or (OrderStatus = 'D') or (OrderStatus = 'F')) ";
+        return orders.FindAll(x => x.SalesOrderProcessStatus == OrderStatus.Packing.ToString() ||
+                                   x.SalesOrderProcessStatus == OrderStatus.Shipping.ToString() ||
+                                   x.SalesOrderProcessStatus == OrderStatus.Delivery.ToString() ||
+                                   x.SalesOrderProcessStatus == OrderStatus.Closed.ToString());
+      }
+
+      return new FixedList<SalesOrder>();
+    }
+
+
     private FixedList<InventoryItems> GetDataForInventoryOutput(FixedList<SalesOrderItem> salesOrderItems) {
 
       var dataForInventoryList = new List<InventoryItems>();
@@ -148,17 +209,6 @@ namespace Empiria.Trade.Sales {
     }
 
 
-    internal FixedList<SalesOrder> GetOrdersByCustomer(int customerId) {
-      var orders = SalesOrderData.GetSalesByCustomer(customerId);
-
-      foreach (var order in orders) {
-
-        order.GetItemsAndOrderTotal();
-      }
-      return orders;
-    }
-
-
     private void GetItemsForOrders(FixedList<SalesOrder> orders) {
 
       foreach (var order in orders) {
@@ -171,15 +221,7 @@ namespace Empiria.Trade.Sales {
       }
     }
 
-
-    internal SalesOrder GetSalesOrder(string orderNumber) {
-      var order = SalesOrderData.GetSalesOrder(orderNumber);
-
-      order.GetItemsAndOrderTotal();
-
-      return order;
-    }
-
+    
 
     #endregion Private methods
 

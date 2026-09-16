@@ -44,9 +44,8 @@ namespace Empiria.Trade.Sales.UseCases {
 
     public ISalesOrderDto GetSalesOrder(string orderUID, QueryType queryType) {
 
-      var order = SalesOrder.Parse(orderUID);
-      order.GetSalesOrderItems();
-
+      SalesOrder order = SalesOrder.Parse(orderUID);
+      
       order.Customer = Party.Parse(order.Beneficiary.Id);
       order.GetCustomerContact();
       order.GetCustomerAddress();
@@ -165,7 +164,7 @@ namespace Empiria.Trade.Sales.UseCases {
     }
 
 
-    public SearchSalesOrderDto GetOrdersV2(SearchOrderFields fields) {
+    public SearchSalesOrderDto GetOrders(SearchOrderFields fields) {
       Assertion.Require(fields, "fields");
 
       //fields.EnsureIsValidSearch();
@@ -175,7 +174,7 @@ namespace Empiria.Trade.Sales.UseCases {
       switch (fields.QueryType) {
 
         case QueryType.Sales: {
-          
+           
           var salesOrdersList = helper.GetOrders();
           return SearchSealesOrderMapper.Map(fields, salesOrdersList);
         }
@@ -185,7 +184,8 @@ namespace Empiria.Trade.Sales.UseCases {
           return SearchSealesOrderMapper.Map(fields, salesOrders);
         }
         case QueryType.SalesPacking: {
-          FixedList<SalesOrder> salesOrders = helper.GetOrdersToPacking(fields);
+          
+          FixedList<SalesOrder> salesOrders = helper.GetOrdersToPacking();
           return SearchSealesOrderMapper.Map(fields, salesOrders);
         }
 

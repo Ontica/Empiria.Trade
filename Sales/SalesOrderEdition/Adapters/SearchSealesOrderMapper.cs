@@ -94,9 +94,11 @@ namespace Empiria.Trade.Sales.Adapters {
 
         }
         case QueryType.SalesAuthorization: {
+
           return MapBaseSalesOrderAuthorizationList(salesOrders);
         }
         case QueryType.SalesPacking: {
+
           return MapBaseSalesOrderPackingList(salesOrders);
         }
 
@@ -217,9 +219,9 @@ namespace Empiria.Trade.Sales.Adapters {
         SupplierName = order.Supplier.Name,
         SalesAgentName = order.SalesAgent.Name,
         OrderTotal = order.OrderTotal,
-        Weight = GetWeightTotalPackageByOrder(order),
-        TotalPackages = GetTotalPackageByOrder(order),
-        //Status = order.Status,
+        //Weight = GetWeightTotalPackageByOrder(order),
+        //TotalPackages = GetTotalPackageByOrder(order),
+        Status = EnumExtensions.GetOrderStatusEnum(order.SalesOrderProcessStatus),
         StatusName = MapOrderPackingStatus(order.Status.ToString())
       };
 
@@ -241,6 +243,7 @@ namespace Empiria.Trade.Sales.Adapters {
     static private string MapOrderPackingStatus(string status) {
       switch (status) {
         case "Packing":
+        case "Authorized":
           return "Por surtir";
         default:
           return "Surtido";
