@@ -106,9 +106,9 @@ namespace Empiria.Trade.Tests.Sales {
         CustomerUID = "",
         QueryType = QueryType.SalesAuthorization,
         //Keywords = "",
-        FromDate = new DateTime(2026,9,5),
-        ToDate = new DateTime(2026, 9, 11),
-        Status = OrderStatus.Pending,
+        //FromDate = new DateTime(2026,9,5),
+        //ToDate = new DateTime(2026, 9, 11),
+        //Status = OrderStatus.Pending,
         //ShippingMethod = ShippingMethods.RutaLocal
       };
 

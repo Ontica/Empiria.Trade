@@ -103,8 +103,8 @@ namespace Empiria.Trade.Sales.Adapters {
         Shipment = order.Shipment,
         Taxes = order.Tax,
         OrderTotal = order.OrderTotal,
-        Status = EnumExtensions.GetOrderStatusEnum(order.OrderStatus), //order.Status,
-        StatusName = MapOrderStatus(order.OrderStatus.ToString()),
+        Status = EnumExtensions.GetOrderStatusEnum(order.SalesOrderProcessStatus), //order.Status,
+        StatusName = MapOrderStatus(order.SalesOrderProcessStatus.ToString()),
       };
 
       return dto;
@@ -115,9 +115,10 @@ namespace Empiria.Trade.Sales.Adapters {
       return PartyMapper.MapToCustomer(customer);
     }
 
+    //TODO PARA QUE LO UTILIZA EL FRONT
     private static AuthorizationDto MapAuthorizationDto(SalesOrder order) {
       var dto = new AuthorizationDto {
-        AuthorizationStatus = EnumExtensions.GetOrderStatusEnum(order.AuthorizationStatus),
+        AuthorizationStatus = EnumExtensions.GetOrderStatusEnum(order.SalesOrderProcessStatus),
         AuthorizationTime = order.AuthorizationTime,
         AuthorizatedById = order.AuthorizedBy.Id
       };

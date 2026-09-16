@@ -38,7 +38,6 @@ namespace Empiria.Trade.Core {
         OrderNo = "P-" + EmpiriaString.BuildRandomString(10).ToUpperInvariant();
         fields.OrderNumber = OrderNo;
         fields.Name = OrderNo;
-        this.AuthorizationStatus = "Pending";
       }
 
       Update(fields);
@@ -216,12 +215,12 @@ namespace Empiria.Trade.Core {
     }
 
 
-    public string OrderStatus {
+    public string SalesOrderProcessStatus {
       get {
-        return ExtData.Get("orderStatus", string.Empty);
+        return ExtData.Get("salesOrderProcessStatus", string.Empty);
       }
       private set {
-        ExtData.SetIfValue("orderStatus", value);
+        ExtData.SetIfValue("salesOrderProcessStatus", value);
       }
     }
 
@@ -255,33 +254,23 @@ namespace Empiria.Trade.Core {
 
 
     public void Apply() {
-      this.OrderStatus = Core.OrderStatus.Applied.ToString();
-      this.AuthorizationStatus = Core.OrderStatus.Authorized.ToString();
-
-      //this.Activate();
-
-      //SalesOrderData.Write(this);
-
+      this.SalesOrderProcessStatus = Core.OrderStatus.Applied.ToString();
+      
       SetOrderValues();
 
       var actions = ActionsService.Load();
       actions.OnApply();
       this.Actions = actions.SetActions(this, QueryType.Sales);
 
-      this.Activate();
       this.Save();
     }
 
 
     public void AuthorizeOrder() {
-      this.AuthorizationStatus = Core.OrderStatus.Authorized.ToString();
       
-      //TODO INVESTIGAR SI SE DEBE APLICAR
-      this.OrderStatus = Core.OrderStatus.Applied.ToString();
-
+      this.SalesOrderProcessStatus = Core.OrderStatus.Authorized.ToString();
+      
       this.Authorization();
-
-      //SalesOrderData.Write(this);
 
       SetOrderValues();
 
@@ -308,10 +297,9 @@ namespace Empiria.Trade.Core {
 
 
     public void AuthorizePayment() {
-      this.OrderStatus = Core.OrderStatus.Packing.ToString();
-      this.AuthorizationStatus = Core.OrderStatus.ToSupply.ToString();
+      //this.AuthorizationStatus = Core.OrderStatus.ToSupply.ToString();
 
-      //SalesOrderData.Write(this);
+      this.SalesOrderProcessStatus = Core.OrderStatus.Packing.ToString();
 
       SetOrderValues();
 
@@ -339,8 +327,9 @@ namespace Empiria.Trade.Core {
 
     public void Close() {
       //this.Status = OrderStatus.Closed;
-
       //AuthorizationStatus = OrderAuthorizationStatus.Empty;
+
+      this.SalesOrderProcessStatus = OrderStatus.Closed.ToString();
 
       SalesOrderData.Write(this);
       SetOrderValues();
@@ -349,8 +338,9 @@ namespace Empiria.Trade.Core {
 
     public void Deliver() {
       //this.Status = OrderStatus.Delivery;
-
       //AuthorizationStatus = OrderAuthorizationStatus.Suppled;
+
+      this.SalesOrderProcessStatus = OrderStatus.Delivery.ToString();
 
       SalesOrderData.Write(this);
       SetOrderValues();
@@ -365,8 +355,9 @@ namespace Empiria.Trade.Core {
 
     public void Supply() {
       //this.Status = OrderStatus.Shipping;
-
       //AuthorizationStatus = OrderAuthorizationStatus.Suppled;
+
+      this.SalesOrderProcessStatus = OrderStatus.Shipping.ToString();
 
       SalesOrderData.Write(this);
       SetOrderValues();
@@ -398,7 +389,7 @@ namespace Empiria.Trade.Core {
       this.ReceptionTime = ExecutionServer.DateMaxValue;
       this.PedimentoImportacion = string.Empty;
       this.CartaPorte = string.Empty;
-      this.OrderStatus = fields.Status.ToString();
+      this.SalesOrderProcessStatus = fields.Status.ToString();
 
       this.SalesOrderItems = LoadSalesOrderItems(fields.Items, Customer);
 

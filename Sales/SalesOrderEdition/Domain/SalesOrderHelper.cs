@@ -57,11 +57,11 @@ namespace Empiria.Trade.Sales {
       
       FixedList<SalesOrder> returnedOrders = FilterOrdersByShippingMethod(ordersByStatus);
 
-      foreach (var order in orders) {
+      foreach (var order in returnedOrders) {
         order.GetItemsAndOrderTotal();
       }
 
-      return orders;
+      return returnedOrders;
     }
 
 
@@ -82,16 +82,16 @@ namespace Empiria.Trade.Sales {
 
       if (_fields.Status == OrderStatus.Authorized) {
 
-        return orders.FindAll(x => x.AuthorizationStatus == OrderStatus.Authorized.ToString());
+        return orders.FindAll(x => x.SalesOrderProcessStatus == OrderStatus.Authorized.ToString());
 
-      } else if (_fields.Status == OrderStatus.Pending) {
+      } else if (_fields.Status == OrderStatus.Applied) {
 
-        return orders.FindAll(x => x.AuthorizationStatus == OrderStatus.Pending.ToString());
+        return orders.FindAll(x => x.SalesOrderProcessStatus == OrderStatus.Applied.ToString());
 
       } else if (_fields.Status == OrderStatus.Empty) {
 
-        return orders.FindAll(x => x.AuthorizationStatus == OrderStatus.Pending.ToString() ||
-                                 x.AuthorizationStatus == OrderStatus.Authorized.ToString());
+        return orders.FindAll(x => x.SalesOrderProcessStatus == OrderStatus.Applied.ToString() ||
+                                 x.SalesOrderProcessStatus == OrderStatus.Authorized.ToString());
       }
 
       return new FixedList<SalesOrder>();
@@ -113,15 +113,15 @@ namespace Empiria.Trade.Sales {
 
       if (_fields.Status == OrderStatus.Cancelled) {
 
-        return orders.FindAll(x => x.OrderStatus == OrderStatus.Cancelled.ToString());
+        return orders.FindAll(x => x.SalesOrderProcessStatus == OrderStatus.Cancelled.ToString());
 
       } else if (_fields.Status == OrderStatus.Authorized) {
 
-        return orders.FindAll(x => x.AuthorizationStatus == OrderStatus.Authorized.ToString());
+        return orders.FindAll(x => x.SalesOrderProcessStatus == OrderStatus.Authorized.ToString());
 
       } else if (_fields.Status != OrderStatus.Empty) {
 
-        return orders.FindAll(x => x.OrderStatus == _fields.Status.ToString());
+        return orders.FindAll(x => x.SalesOrderProcessStatus == _fields.Status.ToString());
 
       }
 

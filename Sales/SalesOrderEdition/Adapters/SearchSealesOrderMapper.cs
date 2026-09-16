@@ -74,7 +74,9 @@ namespace Empiria.Trade.Sales.Adapters {
       switch (query.QueryType) {
 
         case QueryType.Sales: {
+          
           if ((query.ShippingStatus != string.Empty) && (query.Status == OrderStatus.Shipping)) {
+            
             var list = MapBaseSalesOrdersShipmentStatus(salesOrders);
             var orders = list.ConvertAll(o => (BaseSalesOrderShipmentDto) o);
 
@@ -82,8 +84,11 @@ namespace Empiria.Trade.Sales.Adapters {
           }
 
           if (query.Status == OrderStatus.Shipping) {
+
             return MapBaseSalesOrdersShipmentStatus(salesOrders);
+
           } else {
+
             return MapBaseSalesOrders(salesOrders);
           }
 
@@ -151,7 +156,7 @@ namespace Empiria.Trade.Sales.Adapters {
 
     private static ISalesOrderDto MapBaseSalesOrderShipmentStatus(SalesOrder order) {
       var dto = new BaseSalesOrderShipmentDto {
-        UID = order.UID,
+        UID = order.OrderUID,
         OrderNumber = order.OrderNo,
         OrderTime = order.RequestedTime,
         CustomerName = order.Customer.Name,
@@ -159,8 +164,8 @@ namespace Empiria.Trade.Sales.Adapters {
         SalesAgentName = order.SalesAgent.Name,
         OrderTotal = order.OrderTotal,
         //Status = order.Status,
-        ShippingStatus = GetShippingStatus(order.UID),
-        TagType = GetShippingStatusTagType(GetShippingStatus(order.UID)),
+        ShippingStatus = GetShippingStatus(order.OrderUID),
+        TagType = GetShippingStatusTagType(GetShippingStatus(order.OrderUID)),
         StatusName = SalesOrderMapper.MapOrderStatus(order.Status.ToString())
       };
 
@@ -177,8 +182,8 @@ namespace Empiria.Trade.Sales.Adapters {
         SupplierName = order.Supplier.Name,
         SalesAgentName = order.SalesAgent.Name,
         OrderTotal = order.OrderTotal,
-        Status = EnumExtensions.GetOrderStatusEnum(order.OrderStatus),
-        StatusName = SalesOrderMapper.MapOrderStatus(order.OrderStatus.ToString())
+        Status = EnumExtensions.GetOrderStatusEnum(order.SalesOrderProcessStatus),
+        StatusName = SalesOrderMapper.MapOrderStatus(order.SalesOrderProcessStatus.ToString())
       };
 
       return dto;
@@ -187,7 +192,7 @@ namespace Empiria.Trade.Sales.Adapters {
     static public ISalesOrderDto MapBaseSalesOrderAuthorization(SalesOrder order) {
 
       var dto = new BaseSalesOrdersAuthorizationDto {
-        UID = order.UID,
+        UID = order.OrderUID,
         OrderNumber = order.OrderNo,
         OrderTime = order.RequestedTime,
         CustomerName = order.Customer.Name,
@@ -196,8 +201,8 @@ namespace Empiria.Trade.Sales.Adapters {
         OrderTotal = order.OrderTotal,
         //TotalDebt = GetCustomerTotalDebt(order.Customer.Id),
         TotalCredit = order.Beneficiary.ExtendedData.Get<decimal>("LimiteCredito", 0),
-        Status = EnumExtensions.GetOrderStatusEnum(order.OrderStatus),
-        StatusName = MapOrderAuthorizationStatus(order.AuthorizationStatus.ToString())
+        Status = EnumExtensions.GetOrderStatusEnum(order.SalesOrderProcessStatus),
+        StatusName = MapOrderAuthorizationStatus(order.SalesOrderProcessStatus.ToString())
       };
 
       return dto;
@@ -205,7 +210,7 @@ namespace Empiria.Trade.Sales.Adapters {
 
     static public ISalesOrderDto MapBaseSalesOrderPacking(SalesOrder order) {
       var dto = new BaseSalesOrderPackingDto {
-        UID = order.UID,
+        UID = order.OrderUID,
         OrderNumber = order.OrderNo,
         OrderTime = order.RequestedTime,
         CustomerName = order.Customer.Name,
@@ -225,7 +230,7 @@ namespace Empiria.Trade.Sales.Adapters {
       switch (status) {
         case "Authorized":
           return "Autorizado";
-        case "Pending":
+        case "Applied":
           return "Por Autorizar";
         default:
           return "Por Autorizar";
@@ -275,9 +280,9 @@ namespace Empiria.Trade.Sales.Adapters {
     }
 
     static public decimal GetWeightTotalPackageByOrder(SalesOrder order) {
-      if (order.UID != "") {
+      if (order.OrderUID != "") {
         var usecasePackage = PackagingUseCases.UseCaseInteractor();
-        PackagedData packageInfo = usecasePackage.GetPackagedData(order.UID);
+        PackagedData packageInfo = usecasePackage.GetPackagedData(order.OrderUID);
 
         return packageInfo.Weight;
       } else {
@@ -287,9 +292,9 @@ namespace Empiria.Trade.Sales.Adapters {
     }
 
     static public int GetTotalPackageByOrder(SalesOrder order) {
-      if (order.UID != "") {
+      if (order.OrderUID != "") {
         var usecasePackage = PackagingUseCases.UseCaseInteractor();
-        PackagedData packageInfo = usecasePackage.GetPackagedData(order.UID);
+        PackagedData packageInfo = usecasePackage.GetPackagedData(order.OrderUID);
 
         return packageInfo.TotalPackages;
       } else {

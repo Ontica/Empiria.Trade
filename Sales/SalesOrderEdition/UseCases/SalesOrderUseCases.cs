@@ -175,10 +175,12 @@ namespace Empiria.Trade.Sales.UseCases {
       switch (fields.QueryType) {
 
         case QueryType.Sales: {
+          
           var salesOrdersList = helper.GetOrders();
           return SearchSealesOrderMapper.Map(fields, salesOrdersList);
         }
         case QueryType.SalesAuthorization: {
+
           FixedList<SalesOrder> salesOrders = helper.GetAuthorizationOrders();
           return SearchSealesOrderMapper.Map(fields, salesOrders);
         }
@@ -191,35 +193,6 @@ namespace Empiria.Trade.Sales.UseCases {
           throw Assertion.EnsureNoReachThisCode($"It is invalid queryType:{fields.QueryType}");
         }
       }
-    }
-
-
-    public SearchSalesOrderDto GetOrders(SearchOrderFields fields) {
-      Assertion.Require(fields, "fields");
-
-      var helper = new SalesOrderHelper(fields);
-
-      switch (fields.QueryType) {
-
-        case QueryType.Sales: {
-          var salesOrdersList = helper.GetOrders();
-          return SearchSealesOrderMapper.Map(fields, salesOrdersList);
-        }
-        case QueryType.SalesAuthorization: {
-          FixedList<SalesOrder> salesOrders = helper.GetAuthorizationOrders();
-          return SearchSealesOrderMapper.Map(fields, salesOrders);
-        }
-        case QueryType.SalesPacking: {
-          FixedList<SalesOrder> salesOrders = helper.GetOrdersToPacking(fields);
-          return SearchSealesOrderMapper.Map(fields, salesOrders);
-        }
-
-        default: {
-          throw Assertion.EnsureNoReachThisCode($"It is invalid queryType:{fields.QueryType}");
-        }
-
-      }
-
     }
 
 
@@ -285,15 +258,17 @@ namespace Empiria.Trade.Sales.UseCases {
 
       order.GetItemsAndOrderTotal();
 
-      switch (order.PaymentConditions) {
-        case "Contado":
-          order.AuthorizePayment();
-          break;
-        case "Crédito":
-        case "Credito":
-          SetCreditOrder(order);
-          break;
-      }
+      SetCreditOrder(order);
+
+      //switch (order.PaymentConditions) {
+      //  case "Contado":
+      //    order.AuthorizePayment();
+      //    break;
+      //  case "Crédito":
+      //  case "Credito":
+      //    SetCreditOrder(order);
+      //    break;
+      //}
 
       SalesOrderHelper helper = new SalesOrderHelper();
       //helper.CreateInventoryOrderBySale(order.SalesOrderItems);
@@ -321,7 +296,7 @@ namespace Empiria.Trade.Sales.UseCases {
       Assertion.Require(orderUID, "orderUID");
 
       var order = SalesOrder.Parse(orderUID);
-      var orderStatus = EnumExtensions.GetOrderStatusEnum(order.OrderStatus);
+      var orderStatus = EnumExtensions.GetOrderStatusEnum(order.SalesOrderProcessStatus);
 
       if (orderStatus != OrderStatus.Applied) { // OrderStatus.Applied
         Assertion.RequireFail($"It is only possible to Authorize orders in the Applied status, " +
