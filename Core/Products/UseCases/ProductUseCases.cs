@@ -63,7 +63,8 @@ namespace Empiria.Trade.Products.UseCases {
     }
 
 
-    public async Task<FixedList<ProductForSearchingDto>> GetProductsForOrder(ProductQuery query) {
+    public async Task<FixedList<ProductForSearchingDto>> GetProductsForOrder(ProductQuery query,
+                                                                             string customerUID = "") {
       var builder = new ProductBuilder(query);
 
       //FixedList<ProductEntry> products = await Task.Run(() => builder.GetProductsForOrder())
@@ -72,7 +73,7 @@ namespace Empiria.Trade.Products.UseCases {
       FixedList<ProductEntry> products = await Task.Run(() => GetProducts(query))
                                             .ConfigureAwait(false);
 
-      return ProductMapper.MapToSalesOrder(products, query.OnStock);
+      return ProductMapper.MapToSalesOrder(products, query.OnStock, customerUID);
     }
 
 

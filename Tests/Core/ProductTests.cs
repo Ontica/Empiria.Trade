@@ -64,7 +64,6 @@ namespace Empiria.Trade.Tests.Core {
 
       var item = new SalesOrderItemsFields {
         Quantity = 5000,
-        SalesPrice = 2156.15m,
         Subtotal = 2156.15m,
         UnitPrice = 0.43123m,
         VendorProductUID = "4fc7db76-f004-4280-9ad7-b42b4a8e6924"
@@ -102,7 +101,7 @@ namespace Empiria.Trade.Tests.Core {
 
       var usecase = ProductUseCases.UseCaseInteractor();
       ProductQuery query = new ProductQuery {
-        Keywords = "THMEF10X70-100", //TG5G516X3 TCC12X1
+        Keywords = "TG5G14X212-200", //TG5G516X3 TCC12X1
         OnStock = true
       };
 

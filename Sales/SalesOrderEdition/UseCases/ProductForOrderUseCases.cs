@@ -43,7 +43,7 @@ namespace Empiria.Trade.Sales.UseCases {
 
         ProductQuery query = MapToProductQuery(OrderQuery);
 
-        return await usecases.GetProductsForOrder(query).ConfigureAwait(false);
+        return await usecases.GetProductsForOrder(query, OrderQuery.Order.CustomerUID).ConfigureAwait(false);
       }
     }
 
