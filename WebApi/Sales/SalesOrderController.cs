@@ -244,12 +244,12 @@ namespace Empiria.Trade.Sales.WebApi {
 
     [HttpPost]
     [Route("v4/trade/sales/orders/{orderUID:guid}/deauthorize")]
-    public SingleObjectModel CancelCreditOrder([FromUri] string orderUID, [FromBody] DeauthorizeFields deauthorizeFields) {
+    public SingleObjectModel CancelCreditOrder([FromUri] string orderUID, [FromBody] DeauthorizeFields fields) {
 
       base.RequireResource(orderUID, "orderUID");
 
       using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
-        ISalesOrderDto orderDto = usecases.CancelCreditInOrder(orderUID, deauthorizeFields.Notes);
+        ISalesOrderDto orderDto = usecases.CancelCreditInOrder(orderUID, fields);
 
         return new SingleObjectModel(this.Request, orderDto);
       }

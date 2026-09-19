@@ -189,10 +189,14 @@ namespace Empiria.Trade.Tests.Sales {
 
 
     [Fact]
-    public void ShouldCancelCredintInOrder() {
+    public void ShouldDeauthorizeSalesOrder() {
 
       var salesOrderUseCase = SalesOrderUseCases.UseCaseInteractor();
-      var x = salesOrderUseCase.CancelCreditInOrder("68c0c501-89f7-4e04-ad08-e7e34f5cbb33", "cancel");
+
+      DeauthorizeFields fields = new DeauthorizeFields {
+        Notes = "CANCELADO POR EL SISTEMA"
+      };
+      var x = salesOrderUseCase.CancelCreditInOrder("b1bdf729-c0e3-4476-95af-5bff62cdeb96", fields);
 
       Assert.NotNull(x);
     }

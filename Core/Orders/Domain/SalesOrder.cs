@@ -273,7 +273,7 @@ namespace Empiria.Trade.Core {
 
     public void AuthorizeOrder() {
 
-      this.SalesOrderProcessStatus = Core.OrderStatus.Authorized.ToString();
+      this.SalesOrderProcessStatus = OrderStatus.Authorized.ToString();
 
       this.Authorization();
 
@@ -288,16 +288,16 @@ namespace Empiria.Trade.Core {
 
 
     public void Deauthorize() {
-      //Status = OrderStatus.Applied;
-      //AuthorizationStatus = OrderAuthorizationStatus.Pending;
-
-      SalesOrderData.Write(this);
+      this.SalesOrderProcessStatus = OrderStatus.Applied.ToString();
+      this.Open();
 
       SetOrderValues();
 
       var actions = ActionsService.Load();
       actions.OnApply();
       this.Actions = actions.SetActions(this, QueryType.SalesAuthorization);
+
+      this.Save();
     }
 
 

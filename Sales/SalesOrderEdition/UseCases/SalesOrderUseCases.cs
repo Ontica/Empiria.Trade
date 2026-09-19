@@ -45,22 +45,16 @@ namespace Empiria.Trade.Sales.UseCases {
     public ISalesOrderDto GetSalesOrder(string orderUID, QueryType queryType) {
 
       SalesOrder order = SalesOrder.Parse(orderUID);
-      order.OrderQueryType = queryType;
-      order.Customer = Party.Parse(order.Beneficiary.Id);
-      order.GetCustomerContact();
-      order.GetCustomerAddress();
 
-      order.Supplier = Party.Parse(order.Provider.Id);
-      order.SalesAgent = Party.Parse(order.SalesAgentId);
-
+      SetSalesOrderDefaultValues(order, queryType);
+      
       order.GetItemsAndOrderTotal();
-
       order.SetOrderActions(queryType);
 
       return SalesOrderMapper.Map(order);
     }
 
-
+    
     public ISalesOrderDto ProcessSalesOrder(SalesOrderFields fields) {
       Assertion.Require(fields, "fields");
 
@@ -367,15 +361,17 @@ namespace Empiria.Trade.Sales.UseCases {
     }
 
 
-    public ISalesOrderDto CancelCreditInOrder(string orderUID, string notes) {
+    public ISalesOrderDto CancelCreditInOrder(string orderUID, DeauthorizeFields fields) {
 
+      Assertion.Require(fields.Notes != string.Empty, "Especificar motivo por el cual se desautoriza el pedido");
       var order = SalesOrder.Parse(orderUID);
-
-      var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
-      moneyAccountUseCase.CancelTransaction(order.Id, notes);
-
+      SetSalesOrderDefaultValues(order, QueryType.SalesAuthorization);
       order.Deauthorize();
 
+      var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
+      moneyAccountUseCase.CancelTransaction(order.Id, fields.Notes);
+
+      //TODO CANCELAR SALIDA DE INVENTARIOS
 
       return SalesOrderMapper.Map(order);
     }
@@ -434,6 +430,17 @@ namespace Empiria.Trade.Sales.UseCases {
 
         order.AuthorizeOrder();
       }
+    }
+
+
+    private void SetSalesOrderDefaultValues(SalesOrder order, QueryType queryType) {
+      order.OrderQueryType = queryType;
+      order.Customer = Party.Parse(order.Beneficiary.Id);
+      order.GetCustomerContact();
+      order.GetCustomerAddress();
+
+      order.Supplier = Party.Parse(order.Provider.Id);
+      order.SalesAgent = Party.Parse(order.SalesAgentId);
     }
 
 
