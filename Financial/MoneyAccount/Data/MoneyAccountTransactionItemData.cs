@@ -11,6 +11,7 @@
 using System;
 using Empiria.Data;
 using Empiria.DataTypes;
+using Empiria.StateEnums;
 
 namespace Empiria.Trade.Financial.Data {
   /// Provides data for Money Account Transactions Item.
@@ -35,6 +36,18 @@ namespace Empiria.Trade.Financial.Data {
       var op = DataOperation.Parse(sql);
 
       return DataReader.GetFixedList<MoneyAccountTransactionItem>(op);
+    }
+
+
+    static internal void UpdateStatus(int transactionId, EntityStatus status, string notes) {
+
+      string sql = $"UPDATE OMS_Money_Account_Transaction_Items " +
+                   $"SET Money_Account_Transaction_Item_Status = '{((char) status)}', Notes = '{notes}' " +
+                   $"WHERE Money_Account_Transaction_Id = {transactionId}";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      DataWriter.Execute(dataOperation);
     }
 
     #endregion Public methods

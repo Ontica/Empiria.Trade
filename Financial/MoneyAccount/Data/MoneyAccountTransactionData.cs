@@ -10,6 +10,7 @@
 
 using System;
 using Empiria.Data;
+using Empiria.StateEnums;
 
 namespace Empiria.Trade.Financial.Data {
   /// <summary>Provides data for MoneyAccountTransactions.  </summary>
@@ -48,14 +49,25 @@ namespace Empiria.Trade.Financial.Data {
       return DataReader.GetFixedList<MoneyAccountTransaction>(op);
     }
 
-    internal static MoneyAccountTransaction GetMoneyAccountTransactionByReference(int referenceId) {
+    static internal FixedList<MoneyAccountTransaction> GetMoneyAccountTransactionByReference(int referenceId) {
       string sql = $"SELECT * FROM OMS_Money_Account_Transactions WHERE Reference_Id =  {referenceId} ";                  
 
       var op = DataOperation.Parse(sql);
 
-      return DataReader.GetObject<MoneyAccountTransaction>(op);
+      return DataReader.GetPlainObjectFixedList<MoneyAccountTransaction>(op);
     }
 
+
+    static internal void UpdateStatus(int id, EntityStatus status, string notes = "") {
+
+      string sql = $"UPDATE OMS_Money_Account_Transactions " +
+                   $"SET Money_Account_Transaction_Status = '{((char)status)}', Notes = '{notes}' " +
+                   $"WHERE Money_Account_Transaction_Id = {id}";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      DataWriter.Execute(dataOperation);
+    }
 
     #endregion Public methods
 

@@ -203,11 +203,18 @@ namespace Empiria.Trade.Financial.UseCases {
 
 
     public CreditTransactionDto CancelTransaction(int referenceId, string notes) {
-      Assertion.Require(referenceId, "orderId");
+      Assertion.Require(referenceId, "referenceId");
 
       var transaction = MoneyAccountTransaction.ParseByReferenceId(referenceId);
-      transaction.Cancel(notes);
+      
+      if (transaction == null) {
+        
+        transaction = new MoneyAccountTransaction();
+      } else {
 
+        transaction.Cancel(notes);
+      }
+      
       return CreditTransactionMapper.Map(transaction, 10);
     }
 

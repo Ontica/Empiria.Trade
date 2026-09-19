@@ -9,6 +9,8 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 using Empiria.StateEnums;
 using Empiria.Trade.Financial.Adapters;
 using Empiria.Trade.Financial.Data;
@@ -40,7 +42,7 @@ namespace Empiria.Trade.Financial {
     }
 
     static public MoneyAccountTransaction ParseByReferenceId(int referenceId) {
-      return MoneyAccountTransactionData.GetMoneyAccountTransactionByReference(referenceId);
+      return MoneyAccountTransactionData.GetMoneyAccountTransactionByReference(referenceId).FirstOrDefault();
     }
 
 
@@ -48,7 +50,16 @@ namespace Empiria.Trade.Financial {
 
     #region Public properties
 
-    
+    [DataField("Money_Account_Transaction_Id")]
+    public int TransactionId {
+      get; private set;
+    }
+
+    [DataField("Money_Account_Transaction_UID")]
+    public string TransactionUID {
+      get; private set;
+    }
+
     [DataField("Money_Account_Id")]
     public MoneyAccount MoneyAccount {
       get; private set;
@@ -132,7 +143,7 @@ namespace Empiria.Trade.Financial {
         TransactionNumber = "MAT-" + EmpiriaString.BuildRandomString(10).ToUpperInvariant();
       }
       MoneyAccountTransactionData.Write(this);
-            
+
     }
 
     internal void Update(string moneyAccountUID, MoneyAccountTransactionFields fields) {
@@ -147,7 +158,7 @@ namespace Empiria.Trade.Financial {
       this.LoadItems();
     }
 
-    
+
     static public FixedList<MoneyAccountTransaction> GetTransactions(int moneyAccountId) {
       FixedList<MoneyAccountTransaction> maTransactions = MoneyAccountTransactionData.GetTransactions(moneyAccountId);
       List<MoneyAccountTransaction> maTransactionList = new List<MoneyAccountTransaction>();
@@ -165,7 +176,12 @@ namespace Empiria.Trade.Financial {
       this.Status = EntityStatus.Deleted;
       this.Notes = notes;
       this.LoadItems();
-      this.Save();
+      //this.Save();
+      MoneyAccountTransactionData.UpdateStatus(this.TransactionId, EntityStatus.Deleted, notes);
+
+      if (this.Items.Count > 0) {
+        MoneyAccountTransactionItemData.UpdateStatus(this.TransactionId, EntityStatus.Deleted, notes);
+      }
     }
 
     public void AddCreditTransactions(MoneyAccount moneyAccount, CreditTrasnactionFields fields) {
@@ -185,7 +201,7 @@ namespace Empiria.Trade.Financial {
     }
 
     public void LoadItems() {
-      this.Items =  MoneyAccountTransactionItem.GetTransactionItems(this.Id);
+      this.Items = MoneyAccountTransactionItem.GetTransactionItems(this.Id);
     }
 
     #endregion Public methods
