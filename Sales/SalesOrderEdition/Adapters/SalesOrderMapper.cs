@@ -104,7 +104,7 @@ namespace Empiria.Trade.Sales.Adapters {
     private static OrderDataDto MapDataDto(SalesOrder order) {
 
       var dto = new OrderDataDto {
-        UID = order.OrderUID,
+        UID = order.UID == string.Empty ? order.OrderUID : order.UID,
         OrderNumber = order.OrderNo,
         OrderTime = order.PostingTime >= new DateTime(2070,01,01) ? DateTime.Now : order.PostingTime,
         Notes = order.Observations,
@@ -170,15 +170,20 @@ namespace Empiria.Trade.Sales.Adapters {
 
     private static CustomerCreditDto MapCustomerCredit(SalesOrder order) {
 
-      //var dto = new CustomerCreditDto {
-      //  TotalDebt = GetCustomerTotalDebt(order.Customer.Id), //order.TotalDebt,
-      //  CreditLimit = GetCusomerCreditLimit(order.Customer.Id), //order.CreditLimit,
-      //  CreditTransactions = GetCreditTransactions(order.Customer.Id)
-      //};
+      var dto = new CustomerCreditDto {
+        TotalDebt = GetCustomerTotalDebits(order.Customer.Id), //order.TotalDebt,
+        CreditLimit = order.Beneficiary.ExtendedData.Get<decimal>("LimiteCredito", 0), //GetCusomerCreditLimit(order.Customer.Id), //order.CreditLimit,
+        CreditTransactions = GetCreditTransactions(order.Beneficiary.Id)
+      };
 
-      return new CustomerCreditDto();
+      return dto;
     }
 
+    static private decimal GetCustomerTotalDebits(int customerId) {
+      var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
+
+      return moneyAccountUseCase.GetMoneyAccountTotalDebits(customerId);
+    }
 
     static private FixedList<SalesOrderItemDto> MapSalesOrderItems(
                         FixedList<SalesOrderItem> salesOrderItems) {

@@ -49,6 +49,16 @@ namespace Empiria.Trade.Financial {
 
     #region Public properties
 
+    [DataField("Money_Account_Id")]
+    public int MoneyAccountId {
+      get; protected set;
+    }
+
+    [DataField("Money_Account_UID")]
+    public string MoneyAccountUID {
+      get; protected set;
+    }
+
     [DataField("Money_Account_Type_Id")]
     public MoneyAccountType MoneyAccountType {
       get; protected set;
@@ -172,7 +182,7 @@ namespace Empiria.Trade.Financial {
     }
 
     public decimal GetDebit() {
-      return MoneyAccountTransactionData.GetMoneyAccountTotalDebt(this.Id);
+      return MoneyAccountTransactionData.GetMoneyAccountTotalDebt(this.MoneyAccountId);
     }
 
     public FixedList<MoneyAccountTransaction> GetTransactions() {

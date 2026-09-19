@@ -201,7 +201,7 @@ namespace Empiria.Trade.Sales.Adapters {
         SupplierName = order.Supplier.Name,
         SalesAgentName = order.SalesAgent.Name,
         OrderTotal = order.OrderTotal,
-        //TotalDebt = GetCustomerTotalDebt(order.Customer.Id),
+        TotalDebt = GetCustomerTotalDebits(order.Customer.Id),
         TotalCredit = order.Beneficiary.ExtendedData.Get<decimal>("LimiteCredito", 0),
         Status = EnumExtensions.GetOrderStatusEnum(order.SalesOrderProcessStatus),
         StatusName = MapOrderAuthorizationStatus(order.SalesOrderProcessStatus.ToString())
@@ -286,6 +286,13 @@ namespace Empiria.Trade.Sales.Adapters {
       var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
 
       return moneyAccountUseCase.GetMoneyAccountTotalDebt(customerId);
+    }
+
+
+    static private decimal GetCustomerTotalDebits(int customerId) {
+      var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
+
+      return moneyAccountUseCase.GetMoneyAccountTotalDebits(customerId);
     }
 
     static public decimal GetWeightTotalPackageByOrder(SalesOrder order) {

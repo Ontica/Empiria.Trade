@@ -232,11 +232,15 @@ namespace Empiria.Trade.Financial.UseCases {
 
     public FixedList<CreditTransactionDto> GetCreditTransactions(int customerId) {
 
-      var moneyAccount = MoneyAccount.ParseByOwner(customerId);
+      var moneyAccount = MoneyAccount.ParseListByOwner(customerId);
 
-      moneyAccount.LoadMoneyAccountTransactions();
+      if (moneyAccount.Count == 0) {
+        return new FixedList<CreditTransactionDto>();
+      }
 
-      return CreditTransactionMapper.MapCreditTransactions(moneyAccount.MoneyAccountTransactions, moneyAccount.DaysToPay);
+      moneyAccount[0].LoadMoneyAccountTransactions();
+
+      return CreditTransactionMapper.MapCreditTransactions(moneyAccount[0].MoneyAccountTransactions, moneyAccount[0].DaysToPay);
     }
 
     public decimal GetMoneyAccountCreditLimit(int ownerId) {
