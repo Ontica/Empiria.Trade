@@ -114,10 +114,7 @@ namespace Empiria.Trade.Core {
 
 
     internal CustomerAddress GetCustomerAddress() {
-      if (this.ShippingMethod == ShippingMethods.Ocurre) {
-        return CustomerAddress.Empty;
-      }
-
+      
       return CustomerAddress.Parse(this.CustomerAddressUID);
     }
 
@@ -137,7 +134,7 @@ namespace Empiria.Trade.Core {
       this.ProviderUID = this.SupplierUID;
       this.RequestedByUID = Party.ParseWithContact(ExecutionServer.CurrentContact).UID;
       this.ResponsibleUID = this.SalesAgentUID;
-      //TODO INVESTIGAR SI EL CustomerUID DEBERIA DE SER EL BeneficiaryUID
+
       this.BeneficiaryUID = this.CustomerUID;
       this.Name = this.OrderNumber;
       this.Observations = this.Notes;

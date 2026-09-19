@@ -421,8 +421,8 @@ namespace Empiria.Trade.Core {
     }
 
     public void GetItemsAndOrderTotal() {
-      FixedList<SalesOrderItem> getItems = SalesOrderItem.GetOrderItems(this.OrderId);
-      this.SalesOrderItems = getItems;
+      this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id == 0 ? this.OrderId : this.Id);
+      
       SetOrderTotals();
     }
 
@@ -435,7 +435,8 @@ namespace Empiria.Trade.Core {
     }
 
 
-    private FixedList<SalesOrderItem> LoadSalesOrderItems(FixedList<SalesOrderItemsFields> itemsFields, Party customer) {
+    private FixedList<SalesOrderItem> LoadSalesOrderItems(FixedList<SalesOrderItemsFields> itemsFields,
+                                                          Party customer) {
 
       List<SalesOrderItem> orderItems = new List<SalesOrderItem>();
 

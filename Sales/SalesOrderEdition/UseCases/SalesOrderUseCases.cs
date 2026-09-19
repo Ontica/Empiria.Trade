@@ -53,7 +53,8 @@ namespace Empiria.Trade.Sales.UseCases {
       order.Supplier = Party.Parse(order.Provider.Id);
       order.SalesAgent = Party.Parse(order.SalesAgentId);
 
-      order.CalculateSalesOrder();
+      order.GetItemsAndOrderTotal();
+
       order.SetOrderActions(queryType);
 
       return SalesOrderMapper.Map(order);
@@ -63,10 +64,6 @@ namespace Empiria.Trade.Sales.UseCases {
     public ISalesOrderDto ProcessSalesOrder(SalesOrderFields fields) {
       Assertion.Require(fields, "fields");
 
-      if (fields.PaymentConditions == string.Empty) {
-        fields.PaymentConditions = "Contado";
-      }
-      
       ValuateSalesOrder(fields);
 
       SalesOrder order = InitializeSalesOrder(fields);
@@ -109,7 +106,7 @@ namespace Empiria.Trade.Sales.UseCases {
                               $"your order status is:{fields.Status}");
       }
 
-      ValidateCustomerAddress(fields.CustomerUID, fields.CustomerAddressUID);
+      ValidateCustomer(fields.CustomerUID, fields.CustomerAddressUID);
       ValidateItemsFields(fields.Items);
 
       var order = SalesOrder.Parse(orderUID);
@@ -473,7 +470,7 @@ namespace Empiria.Trade.Sales.UseCases {
     }
 
 
-    private void ValidateCustomerAddress(string customerUID, string customerAddressUID) {
+    private void ValidateCustomer(string customerUID, string customerAddressUID) {
 
       var usescase = CustomerUseCases.UseCaseInteractor();
       var addresses = usescase.GetCustomerAddress(customerUID);
@@ -486,7 +483,7 @@ namespace Empiria.Trade.Sales.UseCases {
 
     private void ValuateSalesOrder(SalesOrderFields fields) {
 
-      ValidateCustomerAddress(fields.CustomerUID, fields.CustomerAddressUID);
+      ValidateCustomer(fields.CustomerUID, fields.CustomerAddressUID);
       ValidateShippingMethod(fields);
       ValidateItemsFields(fields.Items);
     }

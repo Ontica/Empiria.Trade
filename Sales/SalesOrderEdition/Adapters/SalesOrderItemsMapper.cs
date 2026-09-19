@@ -34,7 +34,6 @@ namespace Empiria.Trade.Sales.Adapters {
         Discount2 = orderItem.AdditionalDiscount,
         //Shipment = orderItem.Shipment,
         //Taxes = orderItem.TaxesIVA,
-        //Total = orderItem.Total,
         Subtotal = orderItem.ItemSubtotal,
         Notes = orderItem.Notes,
         Product = MapBaseProductDto(orderItem.ProductEntry),
