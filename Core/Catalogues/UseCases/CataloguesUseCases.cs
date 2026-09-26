@@ -87,8 +87,6 @@ namespace Empiria.Trade.Core.Catalogues {
 
       PackageType packageType = PackageType.Parse(packageTypeUid);
 
-      packageType.GetVolumeAttributes();
-
       return packageType;
     }
 

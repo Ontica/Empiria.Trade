@@ -200,7 +200,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
         FixedList<PackingItem> packingItems = usecasePackage.GetPackingItemsByOrderPackingUID(
                                    shippingPackage.OrderPacking.OrderPackingUID);
 
-        var packageForItem = PackageForItem.Parse(shippingPackage.OrderPacking.OrderPackingUID);
+        var packageForItem = Core.PackagingEntry.Parse(shippingPackage.OrderPacking.OrderPackingUID);
         var packageType = usecasePackage.GetPackageTypeById(packageForItem.PackageTypeId);
 
         pallet.TotalWeight += packingItems.Sum(x => x.ItemWeight);
@@ -347,7 +347,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       foreach (var packageUID in packages) {
 
-        var package = PackageForItem.Parse(packageUID);
+        var package = Core.PackagingEntry.Parse(packageUID);
 
         var shippingPackages = ShippingData.GetShippingPackagesByPackageId(package.Id);
 
@@ -369,7 +369,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       foreach (var packageUID in packages) {
 
-        var package = PackageForItem.Parse(packageUID);
+        var package = Core.PackagingEntry.Parse(packageUID);
 
         FixedList<ShippingPackage> shippingPackages =
           ShippingData.GetShippingPackagesByPackageId(package.Id);

@@ -231,7 +231,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
     private void GetPackingTypesByOrder(ShippingLabel label, string orderUID) {
 
-      FixedList<PackageForItem> packingOrder =
+      FixedList<Core.PackagingEntry> packingOrder =
           PackagingData.GetPackagesForItemsByOrder(orderUID);
 
       foreach (var pack in packingOrder) {

@@ -48,9 +48,7 @@ namespace Empiria.Trade.Packaging.UseCases {
 
       var builder = new PackagingBuilder();
 
-      FixedList<INamedEntity> packageTypes = builder.GetPackageTypeList();
-
-      return packageTypes;
+      return builder.GetPackageTypeList();
     }
 
 
@@ -68,9 +66,9 @@ namespace Empiria.Trade.Packaging.UseCases {
     }
 
 
-    public PackageForItem GetPackagingByUID(string Uid) {
+    public PackagingEntry GetPackagingByUID(string Uid) {
 
-      return PackageForItem.Parse(Uid);
+      return PackagingEntry.Parse(Uid);
     }
 
 
@@ -99,7 +97,7 @@ namespace Empiria.Trade.Packaging.UseCases {
       PackagingBuilder.ValidateIfExistPackagesForItems(
                                   orderUID, orderFields.PackageID, string.Empty);
 
-      var packagingOrder = new PackageForItem(orderUID, orderFields, string.Empty);
+      PackagingEntry packagingOrder = new PackagingEntry(orderUID, orderFields, string.Empty);
 
       packagingOrder.Save();
 
@@ -113,7 +111,7 @@ namespace Empiria.Trade.Packaging.UseCases {
       PackagingBuilder.ValidateIfExistPackagesForItems(
                                   orderUID, orderFields.PackageID, packageForItemUID);
 
-      var packagingOrder = new PackageForItem(orderUID, orderFields, packageForItemUID);
+      var packagingOrder = new PackagingEntry(orderUID, orderFields, packageForItemUID);
 
       PackagingData.WritePacking(packagingOrder);
 

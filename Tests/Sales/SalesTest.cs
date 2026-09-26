@@ -56,7 +56,7 @@ namespace Empiria.Trade.Tests.Sales {
 
       var salesOrderUseCase = SalesOrderUseCases.UseCaseInteractor();
 
-      var sut = salesOrderUseCase.GetSalesOrder("0bdc9f71-77d5-438e-abdb-df4650adca4f", QueryType.Sales);
+      var sut = salesOrderUseCase.GetSalesOrder("c369fea9-955e-48db-b18f-263100db8e16", QueryType.SalesPacking);
 
       Assert.NotNull(sut);
     }

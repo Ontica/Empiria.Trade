@@ -15,50 +15,49 @@ namespace Empiria.Trade.Core {
 
   public class Packing {
 
-
-    [DataField("OrderPackingId")]
+    [DataField("Order_Packing_Id")]
     public int OrderPackingId {
       get; private set;
     }
 
 
-    [DataField("OrderPackingUID")]
+    [DataField("Order_Packing_UID")]
     public string OrderPackingUID {
       get; private set;
     }
 
 
-    [DataField("PackingItemId")]
+    [DataField("Packing_Item_Id")]
     public int PackingItemId {
       get; private set;
     }
 
 
-    [DataField("PackingItemUID")]
+    [DataField("Packing_Item_UID")]
     public string PackingItemUID {
       get; private set;
     }
 
 
-    [DataField("PackageTypeId")]
+    [DataField("Package_Type_Id")]
     public PackageType PackageType {
       get; private set;
     }
 
 
-    [DataField("OrderId")]
-    public Empiria.Orders.Order Order {
+    [DataField("Order_Id")]
+    public SalesOrder Order {
       get; private set;
     }
 
 
-    [DataField("OrderItemId")]
+    [DataField("Order_Item_Id")]
     public int OrderItemId {
       get; private set;
     }
 
 
-    [DataField("InventoryEntryId")]
+    [DataField("Inventory_Entry_Id")]
     public int InventoryEntry {
       get; private set;
     }
@@ -67,17 +66,16 @@ namespace Empiria.Trade.Core {
     //}
 
 
-    [DataField("PackageID")]
+    [DataField("Package_ID")]
     public string PackageID {
       get; private set;
     }
 
 
-    [DataField("PackageQuantity")]
+    [DataField("Package_Quantity")]
     public decimal Quantity {
       get; private set;
     }
-
 
   } // class Packing
 

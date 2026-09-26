@@ -217,7 +217,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
             foreach (var shippingPackage in shippingPackages) {
 
-                var packaging = PackageForItem.Parse(shippingPackage.OrderPacking.Id);
+                var packaging = Core.PackagingEntry.Parse(shippingPackage.OrderPacking.Id);
 
                 if (!packagesUID.Any(x => x.Equals(packaging.UID))) {
                     ShippingData.DeleteShippingPackageById(shippingPackage.ShippingPackageId);

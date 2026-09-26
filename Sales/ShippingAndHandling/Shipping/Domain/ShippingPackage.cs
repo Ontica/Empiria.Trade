@@ -60,7 +60,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
 
 
     [DataField("OrderPackingId")]
-    public PackageForItem OrderPacking {
+    public Core.PackagingEntry OrderPacking {
       get; set;
     }
 
@@ -105,7 +105,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
     private void MapToShippingPackage(string package, ShippingPallet pallet) {
       
       this.ShippingPallet = pallet;
-      this.OrderPacking = PackageForItem.Parse(package);
+      this.OrderPacking = Core.PackagingEntry.Parse(package);
       this.Order = Empiria.Orders.Order.Parse(this.OrderPacking.OrderId);
 
     }

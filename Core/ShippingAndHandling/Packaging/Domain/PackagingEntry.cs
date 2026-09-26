@@ -2,7 +2,7 @@
 *                                                                                                            *
 *  Module   : Packaging Management                       Component : Domain Layer                            *
 *  Assembly : Empiria.Trade.ShippingAndHandling.dll      Pattern   : Partitioned Type / Information Holder   *
-*  Type     : PackageForItem                             License   : Please read LICENSE.txt file            *
+*  Type     : PackagingEntry                             License   : Please read LICENSE.txt file            *
 *                                                                                                            *
 *  Summary  : Represents a Packaging order.                                                                  *
 *                                                                                                            *
@@ -15,72 +15,68 @@ namespace Empiria.Trade.Core {
 
 
   /// <summary>Represents a Packaging order.</summary>
-  public class PackageForItem : BaseObject {
+  public class PackagingEntry : BaseObject {
 
 
     #region Constructor and parsers
 
-
-    public PackageForItem() {
+    public PackagingEntry() {
       //no-op
     }
 
-    static public PackageForItem Parse(int id) => ParseId<PackageForItem>(id);
+    static public PackagingEntry Parse(int id) => ParseId<PackagingEntry>(id);
 
-    static public PackageForItem Parse(string uid) => ParseKey<PackageForItem>(uid);
+    static public PackagingEntry Parse(string uid) => ParseKey<PackagingEntry>(uid);
 
-    static public PackageForItem Empty => ParseEmpty<PackageForItem>();
+    static public PackagingEntry Empty => ParseEmpty<PackagingEntry>();
 
-
-    public PackageForItem(string orderUID, PackingItemFields orderFields, string packageForItemUID) {
+    public PackagingEntry(string orderUID, PackingItemFields orderFields, string packageForItemUID) {
 
       MapToPackagingOrder(orderUID, orderFields, packageForItemUID);
 
     }
-
 
     #endregion Constructor and parsers
 
 
     #region Properties
 
-
-    [DataField("OrderPackingId")]
+    [DataField("Order_Packing_Id")]
     public int OrderPackingId {
       get;
       internal set;
     }
 
 
-    [DataField("OrderPackingUID")]
+    [DataField("Order_Packing_UID")]
     public string OrderPackingUID {
       get;
       internal set;
     }
 
 
-    [DataField("OrderId")]
+    [DataField("Order_Id")]
     public int OrderId {
       get;
       internal set;
     }
 
 
-    [DataField("PackageTypeId")]
+    [DataField("Package_Type_Id")]
     public int PackageTypeId {
       get;
       internal set;
     }
 
 
-    [DataField("PackageID")]
+    [DataField("Package_ID")]
     public string PackageID {
       get;
       internal set;
     }
 
 
-    public Order Order {
+    public SalesOrder Order {
       get;
       internal set;
     }
@@ -91,12 +87,10 @@ namespace Empiria.Trade.Core {
       internal set;
     }
 
-
     #endregion Properties
 
 
     #region Private methods
-
 
     protected override void OnSave() {
 
@@ -118,16 +112,13 @@ namespace Empiria.Trade.Core {
         OrderPackingUID = packageForItemUID;
       }
 
-      Order = Order.Parse(orderUID);
+      Order = SalesOrder.Parse(orderUID);
       PackageType = PackageType.Parse(orderFields.PackageTypeUID);
 
       OrderId = Order.Id;
       PackageTypeId = PackageType.PackageTypeId;
       PackageID = orderFields.PackageID;
-
-
     }
-
 
     #endregion Private methods
 

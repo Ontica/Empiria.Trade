@@ -9,6 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
 using System.Collections.Generic;
+using DocumentFormat.OpenXml.Presentation;
 using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Products;
 using Empiria.Trade.Products.Adapters;
@@ -60,11 +61,11 @@ namespace Empiria.Trade.Core {
         var packingOrderItem = new PackingItemDto();
         packingOrderItem.UID = item.UID;
         packingOrderItem.Quantity = item.Quantity;
-        
-        packingOrderItem.OrderItemUID= item.OrderItemUID;
+
+        packingOrderItem.OrderItemUID = item.OrderItemUID;
         packingOrderItem.Product = GetProductDto(item.Product, item.ProductImageUrl);
-        packingOrderItem.Presentation = GetPresentationDto(item.Presentation);
-        packingOrderItem.Vendor = GetVendorDto(item.VendorProductId);
+        packingOrderItem.Presentation = GetPresentationDto(item.Product);
+        packingOrderItem.Vendor = GetVendorDto(item.Product);
 
         MergeWarehousesDto(packingOrderItem, item);
 
@@ -75,48 +76,47 @@ namespace Empiria.Trade.Core {
     }
 
 
-    static private ProductPresentationDto GetPresentationDto(ProductPresentation presentation) {
+    static private ProductPresentationDto GetPresentationDto(ProductEntry presentation) {
       var presentationDto = new ProductPresentationDto();
-      
+
       presentationDto.PresentationUID = presentation.UID;
-      presentationDto.Description = presentation.PresentationDescription;
-      presentationDto.Units = presentation.QuantityAmount;
+      presentationDto.Description = presentation.Description;
+      presentationDto.Units = presentation.PackingSmallBag;
 
       return presentationDto;
     }
 
 
-    static private ProductDto GetProductDto(ProductFields product, string productImageUrl) {
+    static private ProductDto GetProductDto(ProductEntry product, string productImageUrl) {
 
       ProductTypeDto type = new ProductTypeDto {
         ProductTypeUID = product.UID,
-        Name = product.ProductGroup.Name,
-        Attributes = new Attributes().GetAttributesList(product.Attributes)
+        Name = product.BaseUnit.Name,
+        //Name = product.Group.Name,
+        //Attributes = new Attributes().GetAttributesList(product.Attributes)
       };
 
-      var productDto = new ProductDto();
-
-      productDto.ProductUID = product.UID;
-      productDto.ProductCode = product.ProductCode;
-      productDto.Description = product.ProductName;
-      productDto.ProductImageUrl = productImageUrl;
-      productDto.ProductType = type;
-
-      return productDto;
+      return new ProductDto {
+        ProductUID = product.UID,
+        ProductCode = product.InternalCode,
+        Description = $"| Empaque: {product.PackingSmallBag} " +
+                               $"| Unidades: {product.PackagingSize} {product.BaseUnit.Description}",
+        ProductImageUrl = productImageUrl,
+        ProductType = type
+      };
     }
 
 
-    static private VendorDto GetVendorDto(int vendorProductId) {
-      var vendorDto = new VendorDto();
+    static private VendorDto GetVendorDto(ProductEntry product) {
 
-      var vendorProduct = VendorProduct.Parse(vendorProductId);
-      vendorDto.VendorProductUID = vendorProduct.VendorProductUID;
-      vendorDto.VendorUID = vendorProduct.Vendor.UID;
-      vendorDto.VendorName = vendorProduct.Vendor.Name;
-      vendorDto.Sku = vendorProduct.SKU;
-      vendorDto.Stock = 0; // TODO SACAR STOCK
-      vendorDto.Price = 0; // TODO SACAR PRICE
-
+      var vendorDto = new VendorDto {
+        VendorProductUID = product.UID,
+        VendorUID = product.Vendor.UID,
+        VendorName = product.Vendor.Name,
+        Sku = "",
+        Stock = product.Stock, // TODO SACAR STOCK
+        Price = 0 // TODO SACAR PRICE
+      };
       return vendorDto;
     }
 
@@ -157,7 +157,7 @@ namespace Empiria.Trade.Core {
       var picking = new PickingDataDto();
       var responsible = Parties.Party.Parse(pickingData.ResponsibleId);
       var assignedTo = Parties.Party.Parse(pickingData.AssignedToId);
-      
+
       picking.OrderUID = pickingData.OrderUID;
       //picking.InventoryOrderNo = pickingData.InventoryOrderNo;
       //picking.InventoryOrderType = new NamedEntityDto(inventoryType.UID, inventoryType.Name);
@@ -177,8 +177,8 @@ namespace Empiria.Trade.Core {
         missingItem.OrderItemUID = miss.OrderItemUID;
         missingItem.Quantity = miss.Quantity;
         missingItem.Product = GetProductDto(miss.Product, miss.ProductImageUrl);
-        missingItem.Presentation = GetPresentationDto(miss.Presentation);
-        missingItem.Vendor = GetVendorDto(miss.VendorProductId);
+        missingItem.Presentation = GetPresentationDto(miss.Product);
+        missingItem.Vendor = GetVendorDto(miss.Product);
         missingItem.WarehouseBins = GetWarehouseBinList(miss.WarehouseBins);
         missingItems.Add(missingItem);
       }

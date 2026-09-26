@@ -57,6 +57,7 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
     [Route("v4/trade/sales/packing/{orderUID:guid}/packing-item")]
     public SingleObjectModel CreatePackageForItem([FromUri] string orderUID,
                                                 [FromBody] PackingItemFields packingItemFields) {
+      Assertion.EnsureFailed("Funcionalidad en proceso de desarrollo");
 
       base.RequireBody(packingItemFields);
 

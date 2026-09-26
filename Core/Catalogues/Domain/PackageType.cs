@@ -9,17 +9,17 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
 using System;
+using Empiria.Trade.Core.Catalogues;
 using Newtonsoft.Json;
 
-namespace Empiria.Trade.Core.Catalogues {
+namespace Empiria.Trade.Core {
 
 
   /// <summary>Represents a package type.</summary>
-  public class PackageType : GeneralObject {
+  public class PackageType : CommonStorage {
 
 
     #region Constructor and parsers
-
 
     public PackageType() {
       //no-op
@@ -31,6 +31,10 @@ namespace Empiria.Trade.Core.Catalogues {
 
     static public PackageType Empty => ParseEmpty<PackageType>();
 
+    static public FixedList<PackageType> GetList() {
+
+      return CommonStorage.GetList<PackageType>().ToFixedList();
+    }
 
     #endregion Constructor and parsers
 
@@ -38,78 +42,68 @@ namespace Empiria.Trade.Core.Catalogues {
     #region Properties
 
 
-    [DataField("ObjectId")]
+    [DataField("Object_Id")]
     public int PackageTypeId {
       get; set;
     }
 
 
-    [DataField("ObjectKey")]
+    [DataField("Object_Named_Key")]
     public string ObjectKey {
       get; set;
     }
 
 
-    [DataField("ObjectExtData")]
+    [DataField("Object_Ext_Data")]
     public string ObjectExtData {
       get; set;
     }
 
 
-    public decimal TotalVolume {
-      get; set;
-    }
-
-
-    public FixedList<Attributes> Attributes {
-      get; set;
-    } = new FixedList<Attributes>();
-
-
     public decimal Length {
-      get; set;
+      get {
+        return ExtData.Get("length", 1);
+      }
+      private set {
+        ExtData.SetIfValue("length", value);
+      }
     }
 
 
     public decimal Width {
-      get; set;
+      get {
+        return ExtData.Get("width", 1);
+      }
+      private set {
+        ExtData.SetIfValue("width", value);
+      }
     }
 
 
     public decimal Height {
-      get; set;
+      get {
+        return ExtData.Get("height", 1);
+      }
+      private set {
+        ExtData.SetIfValue("height", value);
+      }
     }
 
+
+    public decimal TotalVolume {
+      get {
+        return Length  * Width * Height;
+      }
+    }
+
+
+    public decimal TotalVolumeInMeters {
+      get {
+        return (Length/100) * (Width/100) * (Height/100);
+      }
+    }
 
     #endregion Properties
-
-
-    public void GetVolumeAttributes() {
-
-      this.Attributes = new Attributes().GetAttributesList(ObjectExtData);
-
-      foreach (var attr in this.Attributes) {
-
-        decimal value = Convert.ToDecimal(attr.Value);
-
-        if (attr.Name == "length") {
-          this.Length = value;
-        }
-
-        if (attr.Name == "width") {
-          this.Width = value;
-        }
-
-        if (attr.Name == "height") {
-          this.Height = value;
-        }
-
-      }
-
-      this.TotalVolume = (Length == 0 ? 1 : Length) *
-                         (Width == 0 ? 1 : Width) *
-                         (Height == 0 ? 1 : Height);
-    }
 
   } // class PackageType
 

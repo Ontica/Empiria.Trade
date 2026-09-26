@@ -8,7 +8,9 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
+using System;
 using System.Collections.Generic;
+using System.IO.Packaging;
 using System.Linq;
 
 using Empiria.Trade.Core.Catalogues;
@@ -35,7 +37,7 @@ namespace Empiria.Trade.Core
 
     public PackingEntry GetPackagesAndItemsForOrder(string orderUid) {
 
-      FixedList<PackageForItem> packsForItems = GetPackagesForItemsData(orderUid);
+      FixedList<PackagingEntry> packsForItems = GetPackagesForItemsData(orderUid);
 
       return MergePackagesIntoPackingEntry(orderUid, packsForItems);
     }
@@ -55,7 +57,7 @@ namespace Empiria.Trade.Core
 
     public FixedList<PackagedForItem> GetPackagedForItemList(string orderUID) {
       
-      FixedList<PackageForItem> packsForItems = GetPackagesForItemsData(orderUID);
+      FixedList<PackagingEntry> packsForItems = GetPackagesForItemsData(orderUID);
 
       var helper = new PackingHelper();
 
@@ -66,7 +68,7 @@ namespace Empiria.Trade.Core
     static public void ValidateIfExistPackagesForItems(
                         string orderUID, string packageID, string packageForItemUID) {
 
-      FixedList<PackageForItem> packages = GetPackagesForItemsData(orderUID);
+      FixedList<PackagingEntry> packages = GetPackagesForItemsData(orderUID);
 
       var existPackage = packages.FirstOrDefault(x => x.PackageID.ToUpper() == packageID.ToUpper());
       
@@ -75,20 +77,15 @@ namespace Empiria.Trade.Core
                                                x.OrderPackingUID != packageForItemUID);
       }
       Assertion.Require(existPackage == null,
-                        $"Ya existe otra caja con el nombre proporcionado: '{packageID}'");
+                        $"Ya existe caja/contenedor con el nombre proporcionado: '{packageID}'");
     }
 
 
     public FixedList<INamedEntity> GetPackageTypeList() {
-      var data = new PackagingData();
 
-      FixedList<PackageType> packageTypes = data.GetPackageTypeList();
+      FixedList<PackageType> packageTypes = PackageType.GetList();
 
-      GetVolumeAttributes(packageTypes);
-
-      FixedList<INamedEntity> namedDto = MergePackageTypeToNamedDto(packageTypes);
-
-      return namedDto;
+      return MergePackageTypeToNamedDto(packageTypes);
     }
 
 
@@ -97,18 +94,9 @@ namespace Empiria.Trade.Core
 
     #region Private methods
 
-    static private FixedList<PackageForItem> GetPackagesForItemsData(string orderUID) {
+    static private FixedList<PackagingEntry> GetPackagesForItemsData(string orderUID) {
 
       return PackagingData.GetPackagesForItemsByOrder(orderUID);
-    }
-
-
-    private void GetVolumeAttributes(FixedList<PackageType> packageTypes) {
-
-      foreach (var packageType in packageTypes) {
-
-        packageType.GetVolumeAttributes();
-      }
     }
 
 
@@ -117,8 +105,8 @@ namespace Empiria.Trade.Core
       var returnedNamed = new List<INamedEntity>();
 
       foreach (var package in packageTypes) {
-        string length = package.Length > 0 ? $"largo {package.Length} " : "";
-        string width = package.Width > 0 ? $"ancho {package.Width} " : "";
+        string length = package.Length > 0 ? $"largo {package.Length}, " : "";
+        string width = package.Width > 0 ? $"ancho {package.Width}, " : "";
         string height = package.Height > 0 ? $"alto {package.Height}" : "";
 
         var packageName = $"{package.Name} " +
@@ -126,7 +114,7 @@ namespace Empiria.Trade.Core
                           $"{width}" +
                           $"{height})";
 
-        var namedDto = new NamedEntity(package.ObjectKey, packageName);
+        var namedDto = new NamedEntity(package.UID, packageName);
 
         returnedNamed.Add(namedDto);
       }
@@ -136,7 +124,7 @@ namespace Empiria.Trade.Core
 
 
     private PackingEntry MergePackagesIntoPackingEntry(string orderUID,
-                                FixedList<PackageForItem> packsForItems) {
+                                FixedList<PackagingEntry> packsForItems) {
 
       var helper = new PackingHelper();
 
@@ -147,9 +135,11 @@ namespace Empiria.Trade.Core
       FixedList<MissingItem> missingItems = helper.GetMissingItems(
         orderUID, packagesForItems);
 
+      PickingData pickingData = GetPickingData(orderUID);
+
       var packingEntry = new PackingEntry();
 
-      packingEntry.PickingData = new PickingData();
+      packingEntry.PickingData = pickingData;
       packingEntry.PackagedItems = packagesForItems;
       packingEntry.Data = packingData;
       packingEntry.MissingItems = missingItems;
@@ -158,9 +148,24 @@ namespace Empiria.Trade.Core
     }
 
 
+    private PickingData GetPickingData(string orderUID) {
+      
+      SalesOrder order = SalesOrder.Parse(orderUID);
+
+      return new PickingData {
+        OrderUID = order.OrderUID,
+        InventoryOrderTypeId = -1,
+        InventoryOrderNo = "",
+        ResponsibleId = order.PostedBy.Id,
+        AssignedToId = order.Responsible.Id,
+        Notes = order.Observations
+      };
+    }
+
+
     public FixedList<PackingItem> GetPackingItemsByOrderPackingUID(string orderPackingUID) {
 
-      var packageForItem = PackageForItem.Parse(orderPackingUID);
+      var packageForItem = PackagingEntry.Parse(orderPackingUID);
       
       var helper = new PackingHelper();
 

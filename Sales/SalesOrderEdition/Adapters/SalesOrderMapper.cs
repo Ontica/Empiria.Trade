@@ -161,9 +161,8 @@ namespace Empiria.Trade.Sales.Adapters {
         return new PackingDto();
       }
 
-      //var packingUseCase = PackagingUseCases.UseCaseInteractor();
-      //return packingUseCase.GetPackagingForOrder(orderUID);
-      return new PackingDto();
+      var packingUseCase = PackagingUseCases.UseCaseInteractor();
+      return packingUseCase.GetPackagingForOrder(orderUID);
     }
 
 

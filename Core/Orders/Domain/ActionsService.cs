@@ -121,7 +121,8 @@ namespace Empiria.Trade.Core {
         return false;
       }
 
-      if (salesOrder.SalesOrderProcessStatus != OrderStatus.Packing.ToString()) {
+      if (salesOrder.SalesOrderProcessStatus != OrderStatus.Packing.ToString() &&
+          salesOrder.SalesOrderProcessStatus != OrderStatus.Authorized.ToString()) {
         return false;
       }
 
@@ -135,14 +136,14 @@ namespace Empiria.Trade.Core {
 
     private bool ValidateEditPicking(QueryType queryType, SalesOrder salesOrder) {
 
-      if (salesOrder.SalesOrderProcessStatus != OrderStatus.Packing.ToString()) {
-        return false;
-      }
-
       if (queryType != QueryType.SalesPacking) {
         return false;
       }
 
+      if (salesOrder.SalesOrderProcessStatus != OrderStatus.Packing.ToString() &&
+          salesOrder.SalesOrderProcessStatus != OrderStatus.Authorized.ToString()) {
+        return false;
+      }
 
       if (OnSupplyEvent) {
         return false;
@@ -153,12 +154,13 @@ namespace Empiria.Trade.Core {
     }
 
     private bool ValidateEditClosePacking(QueryType queryType, SalesOrder salesOrder) {
-
-      if (salesOrder.SalesOrderProcessStatus != OrderStatus.Packing.ToString()) {
+      
+      if (queryType != QueryType.SalesPacking) {
         return false;
       }
 
-      if (queryType != QueryType.SalesPacking) {
+      if (salesOrder.SalesOrderProcessStatus != OrderStatus.Packing.ToString() &&
+          salesOrder.SalesOrderProcessStatus != OrderStatus.Authorized.ToString()) {
         return false;
       }
 

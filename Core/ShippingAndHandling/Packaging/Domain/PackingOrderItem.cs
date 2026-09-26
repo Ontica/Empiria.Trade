@@ -45,49 +45,55 @@ namespace Empiria.Trade.Core {
     #region Properties
 
 
-    [DataField("PackingItemId")]
+    [DataField("Packing_Item_Id")]
     public int PackingItemId {
       get;
       internal set;
     }
 
 
-    [DataField("PackingItemUID")]
+    [DataField("Packing_Item_UID")]
     public string PackingItemUID {
       get;
       internal set;
     }
 
 
-    [DataField("OrderPackingId")]
-    public PackageForItem OrderPacking {
+    [DataField("Order_Packing_Id")]
+    public PackagingEntry OrderPacking {
       get;
       internal set;
     }
 
 
-    [DataField("OrderId")]
+    [DataField("Order_Id")]
     public int OrderId {
       get;
       internal set;
     }
 
 
-    [DataField("OrderItemId")]
+    [DataField("Order_Item_Id")]
     public int OrderItemId {
       get;
       internal set;
     }
 
 
-    [DataField("WarehouseBinId")]
+    [DataField("Inventory_Entry_Id")]
+    public int InventoryEntryId {
+      get; private set;
+    }
+
+
+    [DataField("Warehouse_Bin_Id")]
     public WarehouseBin WarehouseBin {
       get;
       internal set;
     }
 
 
-    [DataField("PackageQuantity")]
+    [DataField("Package_Quantity")]
     public decimal Quantity {
       get;
       internal set;
@@ -125,7 +131,7 @@ namespace Empiria.Trade.Core {
         this.Quantity = missingItemFields.Quantity;
       }
       
-      this.OrderPacking = PackageForItem.Parse(packingItemUID);
+      this.OrderPacking = PackagingEntry.Parse(packingItemUID);
       this.OrderId = orderItem.Order.Id;
       this.OrderItemId = orderItem.Id;
       this.WarehouseBin = warehouseBin;

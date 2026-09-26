@@ -263,15 +263,14 @@ namespace Empiria.Trade.Core {
 
     public string ProductImageUrl {
       get; set;
-    }
+    } = string.Empty;
 
 
-    public ProductFields Product {
-      get; set;
-    }
+    //public ProductFields ProductFields {
+    //  get; set;
+    //}
 
-
-    public ProductPresentation Presentation {
+    public ProductEntry Product {
       get; set;
     }
 
@@ -288,15 +287,12 @@ namespace Empiria.Trade.Core {
 
     public void MergeCommonFieldsData(int orderItemId) {
 
-      var orderItem = OrderItem.Parse(orderItemId);
-      var vendorProduct = VendorProduct.Parse(0); // orderItem.VendorProduct.Id
+      var orderItem = SalesOrderItem.Parse(orderItemId);
 
-      //this.ProductImageUrl = orderItem.VendorProduct.ProductFields.ProductImageUrl;
       this.OrderItemUID = orderItem.UID;
-      //this.VendorProductId = orderItem.VendorProduct.Id;
-      this.Product = vendorProduct.ProductFields;
-      this.Presentation = vendorProduct.ProductPresentation;
-      this.Vendor = vendorProduct.Vendor;
+      this.VendorProductId = orderItem.ProductEntry.Id;
+      this.Product = orderItem.ProductEntry;
+      this.Vendor = orderItem.ProductEntry.Vendor;
     }
 
 

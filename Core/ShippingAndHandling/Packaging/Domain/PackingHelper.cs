@@ -31,6 +31,7 @@ namespace Empiria.Trade.Core {
       var packingOrderItems = packagesForItems.SelectMany(x => x.OrderItems).ToList();
 
       foreach (var item in orderItems) {
+        
         var quantityOrderItems = packingOrderItems
                                   .Where(x => x.OrderItemUID == item.OrderItemUID)
                                   .Sum(x => x.Quantity);
@@ -40,7 +41,7 @@ namespace Empiria.Trade.Core {
           missing.OrderItemUID = item.OrderItemUID;
           missing.Quantity = item.Quantity - quantityOrderItems;
           missing.MergeCommonFieldsData(item.OrderItemId);
-          missing.ItemWeight = missing.Quantity * missing.Product.ProductWeight;
+          missing.ItemWeight = missing.Quantity * (missing.Product.Peso * missing.Product.PackingSmallBag);
           missing.WarehouseBins = new FixedList<WarehouseBinForPacking>();
 
           missingItems.Add(missing);
@@ -51,7 +52,7 @@ namespace Empiria.Trade.Core {
 
 
     public FixedList<PackagedForItem> GetPackagesByOrder(string orderUid,
-                                          FixedList<PackageForItem> packItems) {
+                                          FixedList<PackagingEntry> packItems) {
 
       if (packItems.Count == 0) {
         return new FixedList<PackagedForItem>();
@@ -84,7 +85,6 @@ namespace Empiria.Trade.Core {
     public PackageType GetPackageTypeById(int packageTypeId) {
 
       var packageType = PackageType.Parse(packageTypeId);
-      packageType.GetVolumeAttributes();
       return packageType;
 
     }
@@ -104,7 +104,7 @@ namespace Empiria.Trade.Core {
         var type = PackageType.Parse(item.PackageTypeUID);
 
         if (type != null) {
-          type.GetVolumeAttributes();
+          
           volume += type.TotalVolume;
         }
         weight += item.PackageWeight;
@@ -138,7 +138,8 @@ namespace Empiria.Trade.Core {
         packingOrderItem.UID = item.PackingItemUID;
         packingOrderItem.OrderPackingUID = item.OrderPacking.OrderPackingUID;
         packingOrderItem.Quantity = item.Quantity;
-        packingOrderItem.ItemWeight = item.Quantity * packingOrderItem.Product.ProductWeight;
+        //TODO PESO = (CANTIDAD ITEM) * ((CANTIDAD PRODUCTOS * PRESENTACION) * PESO)
+        packingOrderItem.ItemWeight = item.Quantity * packingOrderItem.Product.Peso;
 
         packingOrderItems.Add(packingOrderItem);
       }
