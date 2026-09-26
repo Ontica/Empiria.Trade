@@ -14,13 +14,12 @@ using Empiria.Trade.Core;
 using Empiria.Trade.Core.Catalogues;
 using Newtonsoft.Json;
 
-namespace Empiria.Trade.Products.Adapters
-{
+namespace Empiria.Trade.Products.Adapters {
 
-    /// <summary>Output DTO used to return the entries of Products.</summary>
-    public class ProductDto {
-    
-    
+  /// <summary>Output DTO used to return the entries of Products.</summary>
+  public class ProductDto {
+
+
     public string ProductUID {
       get; set;
     }
@@ -124,7 +123,7 @@ namespace Empiria.Trade.Products.Adapters
 
 
     public FixedList<Attributes> Attributes {
-      get;  set;
+      get; set;
     } = new FixedList<Attributes>();
 
 

@@ -8,16 +8,10 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using DocumentFormat.OpenXml.Presentation;
-using Empiria.Locations;
 using Empiria.Parties;
-using Empiria.Trade.Core;
 using Empiria.Trade.Core.Catalogues;
-using Empiria.Trade.Core.Domain;
 using Empiria.Trade.Products.Domain;
 
 namespace Empiria.Trade.Products.Adapters {

@@ -38,49 +38,42 @@ namespace Empiria.Trade.Products {
 
     [DataField("VendorProductId")]
     public int VendorProductId {
-      get;
-      internal set;
+      get; internal set;
     }
 
 
     [DataField("VendorProductUID")]
     public string VendorProductUID {
-      get;
-      internal set;
+      get; internal set;
     }
 
 
     [DataField("ProductId")]
     public ProductFields ProductFields {
-      get;
-      internal set;
+      get; internal set;
     }
 
 
     [DataField("PresentationId")]
     public ProductPresentation ProductPresentation {
-      get;
-      private set;
+      get; set;
     }
 
 
     [DataField("VendorId")]
     public Party Vendor {
-      get;
-      private set;
+      get; set;
     }
 
 
     [DataField("SKU")]
     public string SKU {
-      get;
-      private set;
+      get; set;
     }
 
 
     public decimal InputQuantity {
-      get;
-      set;
+      get; set;
     }
 
 

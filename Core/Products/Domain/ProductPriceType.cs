@@ -35,11 +35,6 @@ namespace Empiria.Trade.Core {
 
     #endregion Constructor and parsers
 
-    #region MyRegion
-
-
-    #endregion
-
   } // class ProductPriceType
 
 } // namespace Empiria.Trade.Products
