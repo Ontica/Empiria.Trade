@@ -68,7 +68,7 @@ namespace Empiria.Trade.Core {
         package.UID = entry.OrderPackingUID;
         package.OrderUID = orderUid;
         package.PackageID = entry.PackageID;
-        package.PackageTypeUID = packageType.ObjectKey;
+        package.PackageTypeUID = packageType.UID;
         package.PackageTypeName = packageType.Name;
         package.OrderItems = GetPackingItems(entry.OrderPackingId);
         package.PackageWeight = package.OrderItems.Sum(x => x.ItemWeight);
@@ -101,6 +101,7 @@ namespace Empiria.Trade.Core {
       decimal volume = 0, weight = 0;
 
       foreach (var item in packageForItemsList) {
+
         var type = PackageType.Parse(item.PackageTypeUID);
 
         if (type != null) {

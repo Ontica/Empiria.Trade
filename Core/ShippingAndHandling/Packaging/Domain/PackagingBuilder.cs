@@ -77,7 +77,7 @@ namespace Empiria.Trade.Core
                                                x.OrderPackingUID != packageForItemUID);
       }
       Assertion.Require(existPackage == null,
-                        $"Ya existe caja/contenedor con el nombre proporcionado: '{packageID}'");
+                        $"Ya existe paquete con el nombre: '{packageID}'");
     }
 
 

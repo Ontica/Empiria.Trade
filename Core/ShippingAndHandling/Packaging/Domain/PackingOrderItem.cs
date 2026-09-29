@@ -87,10 +87,17 @@ namespace Empiria.Trade.Core {
 
 
     [DataField("Warehouse_Bin_Id")]
-    public WarehouseBin WarehouseBin {
+    public int WarehouseBinId {
       get;
       internal set;
     }
+
+
+    //[DataField("Warehouse_Bin_Id")]
+    //public WarehouseBin WarehouseBin {
+    //  get;
+    //  internal set;
+    //}
 
 
     [DataField("Package_Quantity")]
@@ -134,7 +141,7 @@ namespace Empiria.Trade.Core {
       this.OrderPacking = PackagingEntry.Parse(packingItemUID);
       this.OrderId = orderItem.Order.Id;
       this.OrderItemId = orderItem.Id;
-      this.WarehouseBin = warehouseBin;
+      this.WarehouseBinId = warehouseBin.Id;
     }
 
 
