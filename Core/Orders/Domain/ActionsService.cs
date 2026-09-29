@@ -169,7 +169,7 @@ namespace Empiria.Trade.Core {
       }
 
       var builder = new PackagingBuilder();
-      var packingOrder = builder.GetPackagesAndItemsForOrder(salesOrder.UID);
+      var packingOrder = builder.GetPackagingEntriesWithItemsByOrder(salesOrder.UID);
 
       if (packingOrder.MissingItems.Count == 0) {
         return true;

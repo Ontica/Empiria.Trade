@@ -120,7 +120,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
     private IEnumerable<ShippingLabel> GetPackagesDataForLabels(ShippingOrderItem item, ShippingEntry shipping) {
 
-      var packagings = PackagingData.GetPackagesForItemsByOrder(item.Order.UID);
+      var packagings = PackagingData.GetPackagingEntriesByOrder(item.Order.UID);
       var labels = new List<ShippingLabel>();
 
       int packingCount = 0;
@@ -232,7 +232,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     private void GetPackingTypesByOrder(ShippingLabel label, string orderUID) {
 
       FixedList<Core.PackagingEntry> packingOrder =
-          PackagingData.GetPackagesForItemsByOrder(orderUID);
+          PackagingData.GetPackagingEntriesByOrder(orderUID);
 
       foreach (var pack in packingOrder) {
         var packageType = PackageType.Parse(pack.PackageType.Id);

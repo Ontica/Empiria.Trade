@@ -32,7 +32,7 @@ namespace Empiria.Trade.Core {
 
     static public PackagingEntry Empty => ParseEmpty<PackagingEntry>();
 
-    public PackagingEntry(string orderUID, PackingItemFields orderFields, string packagingUID) {
+    public PackagingEntry(string orderUID, PackagingEntryFields orderFields, string packagingUID) {
 
       this.SalesOrder = SalesOrder.Parse(orderUID);
 
@@ -103,7 +103,7 @@ namespace Empiria.Trade.Core {
     }
 
 
-    private void Update(string orderUID, PackingItemFields orderFields, string packagingUID) {
+    private void Update(string orderUID, PackagingEntryFields orderFields, string packagingUID) {
 
       var packaging = Parse(packagingUID);
 

@@ -38,7 +38,7 @@ namespace Empiria.Trade.Core
     }
 
 
-    static public FixedList<PackagingEntry> GetPackagesForItemsByOrder(string orderUid) {
+    static public FixedList<PackagingEntry> GetPackagingEntriesByOrder(string orderUid) {
 
       int orderId = Order.Parse(orderUid).Id;
 

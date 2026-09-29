@@ -56,7 +56,7 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
     [HttpPost]
     [Route("v4/trade/sales/packing/{orderUID:guid}/packing-item")]
     public SingleObjectModel CreatePackagingEntry([FromUri] string orderUID,
-                                                [FromBody] PackingItemFields packingItemFields) {
+                                                [FromBody] PackagingEntryFields packingItemFields) {
       
       base.RequireBody(packingItemFields);
 
@@ -73,7 +73,7 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
     [Route("v4/trade/sales/packing/{orderUID:guid}/packing-item/{packingItemUID:guid}")]
     public SingleObjectModel UpdatePackageForItem([FromUri] string orderUID,
                                                 [FromUri] string packingItemUID,
-                                                [FromBody] PackingItemFields packingItemFields) {
+                                                [FromBody] PackagingEntryFields packingItemFields) {
       
       base.RequireBody(packingItemFields);
 

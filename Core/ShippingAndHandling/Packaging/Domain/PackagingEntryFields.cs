@@ -2,7 +2,7 @@
 *                                                                                                            *
 *  Module   : Packing Management                         Component : Interface adapters                      *
 *  Assembly : Empiria.Trade.ShippingAndHandling.dll      Pattern   : Data Transfer Object                    *
-*  Type     : PackingItemFields                          License   : Please read LICENSE.txt file            *
+*  Type     : PackagingEntryFields                       License   : Please read LICENSE.txt file            *
 *                                                                                                            *
 *  Summary  : DTO used to manage packing and handling fields.                                                *
 *                                                                                                            *
@@ -12,7 +12,7 @@ namespace Empiria.Trade.Core {
 
 
   /// <summary>DTO used to manage order packing fields.</summary>
-  public class PackingItemFields {
+  public class PackagingEntryFields {
 
 
     public string OrderUID {
@@ -28,8 +28,6 @@ namespace Empiria.Trade.Core {
     public string PackageID {
       get; set;
     }
-
-
 
   } // class PackingItemFields
 

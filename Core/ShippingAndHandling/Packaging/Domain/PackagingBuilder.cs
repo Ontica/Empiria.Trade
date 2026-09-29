@@ -35,11 +35,11 @@ namespace Empiria.Trade.Core
 
     #region Public methods
 
-    public PackingEntry GetPackagesAndItemsForOrder(string orderUid) {
+    public PackingEntry GetPackagingEntriesWithItemsByOrder(string orderUid) {
 
-      FixedList<PackagingEntry> packsForItems = GetPackagesForItemsData(orderUid);
+      FixedList<PackagingEntry> packagingEntries = GetPackagingEntriesByOrder(orderUid);
 
-      return MergePackagesIntoPackingEntry(orderUid, packsForItems);
+      return MergePackagesIntoPackingEntry(orderUid, packagingEntries);
     }
 
 
@@ -57,7 +57,7 @@ namespace Empiria.Trade.Core
 
     public FixedList<PackagedForItem> GetPackagedForItemList(string orderUID) {
       
-      FixedList<PackagingEntry> packsForItems = GetPackagesForItemsData(orderUID);
+      FixedList<PackagingEntry> packsForItems = GetPackagingEntriesByOrder(orderUID);
 
       var helper = new PackingHelper();
 
@@ -68,7 +68,7 @@ namespace Empiria.Trade.Core
     static public void ValidateIfExistPackagesForItems(
                         string orderUID, string packageID, string packageForItemUID) {
 
-      FixedList<PackagingEntry> packages = GetPackagesForItemsData(orderUID);
+      FixedList<PackagingEntry> packages = GetPackagingEntriesByOrder(orderUID);
 
       var existPackage = packages.FirstOrDefault(x => x.PackageID.ToUpper() == packageID.ToUpper());
       
@@ -94,9 +94,9 @@ namespace Empiria.Trade.Core
 
     #region Private methods
 
-    static private FixedList<PackagingEntry> GetPackagesForItemsData(string orderUID) {
+    static private FixedList<PackagingEntry> GetPackagingEntriesByOrder(string orderUID) {
 
-      return PackagingData.GetPackagesForItemsByOrder(orderUID);
+      return PackagingData.GetPackagingEntriesByOrder(orderUID);
     }
 
 
@@ -124,11 +124,11 @@ namespace Empiria.Trade.Core
 
 
     private PackingEntry MergePackagesIntoPackingEntry(string orderUID,
-                                FixedList<PackagingEntry> packsForItems) {
+                                FixedList<PackagingEntry> packagingEntries) {
 
       var helper = new PackingHelper();
 
-      FixedList<PackagedForItem> packagesForItems = helper.GetPackagesByOrder(orderUID, packsForItems);
+      FixedList<PackagedForItem> packagesForItems = helper.GetPackagesByOrder(orderUID, packagingEntries);
 
       PackagedData packingData = helper.GetPackingData(orderUID, packagesForItems);
 

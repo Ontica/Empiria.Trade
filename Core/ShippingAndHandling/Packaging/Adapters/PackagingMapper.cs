@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using DocumentFormat.OpenXml.Presentation;
+using Empiria.Products;
 using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Products;
 using Empiria.Trade.Products.Adapters;
@@ -80,7 +81,9 @@ namespace Empiria.Trade.Core {
       var presentationDto = new ProductPresentationDto();
 
       presentationDto.PresentationUID = presentation.UID;
-      presentationDto.Description = presentation.Description;
+      presentationDto.Description = $"Empaque: {presentation.PackingSmallBag} " +
+                                    $"({presentation.BaseUnit.Description}) " +
+                                    $"| Peso empaque: {presentation.Peso * presentation.PackingSmallBag} ";
       presentationDto.Units = presentation.PackingSmallBag;
 
       return presentationDto;
@@ -99,8 +102,7 @@ namespace Empiria.Trade.Core {
       return new ProductDto {
         ProductUID = product.UID,
         ProductCode = product.InternalCode,
-        Description = $"| Empaque: {product.PackingSmallBag} " +
-                               $"| Unidades: {product.PackagingSize} {product.BaseUnit.Description}",
+        Description = product.Description,
         ProductImageUrl = productImageUrl,
         ProductType = type
       };

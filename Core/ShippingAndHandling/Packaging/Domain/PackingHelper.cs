@@ -52,15 +52,15 @@ namespace Empiria.Trade.Core {
 
 
     public FixedList<PackagedForItem> GetPackagesByOrder(string orderUid,
-                                          FixedList<PackagingEntry> packItems) {
+                                          FixedList<PackagingEntry> packagingEntries) {
 
-      if (packItems.Count == 0) {
+      if (packagingEntries.Count == 0) {
         return new FixedList<PackagedForItem>();
       }
 
       var packagesList = new List<PackagedForItem>();
 
-      foreach (var entry in packItems) {
+      foreach (var entry in packagingEntries) {
         
         PackageType packageType = GetPackageTypeById(entry.PackageType.Id);
 
