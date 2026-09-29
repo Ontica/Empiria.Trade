@@ -48,7 +48,10 @@ namespace Empiria.Trade.Sales.Adapters {
       columns.Add(new DataTableColumn("customerName", "Cliente", "text"));
       columns.Add(new DataTableColumn("statusName", "Estatus", "text-tag"));
       columns.Add(new DataTableColumn("salesAgentName", "Vendedor", "text"));
-      columns.Add(new DataTableColumn("orderTotal", "Total", "decimal"));
+
+      if (query.QueryType == QueryType.Sales || query.QueryType == QueryType.SalesAuthorization) {
+        columns.Add(new DataTableColumn("orderTotal", "Total", "decimal"));
+      }
 
       if (query.Status == OrderStatus.Shipping) {
         columns.Add(new DataTableColumn("shippingStatus", "Envío", "text-tag", 0, true));

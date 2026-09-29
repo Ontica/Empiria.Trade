@@ -99,7 +99,6 @@ namespace Empiria.Trade.Core {
         OrderPackingId = Id;
       }
       PackagingData.WritePacking(this);
-
     }
 
 

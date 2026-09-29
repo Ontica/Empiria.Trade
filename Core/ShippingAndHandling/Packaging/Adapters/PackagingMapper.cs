@@ -93,7 +93,7 @@ namespace Empiria.Trade.Core {
         ProductTypeUID = product.UID,
         Name = product.BaseUnit.Name,
         //Name = product.Group.Name,
-        //Attributes = new Attributes().GetAttributesList(product.Attributes)
+        Attributes = product.ProductAttributes
       };
 
       return new ProductDto {
