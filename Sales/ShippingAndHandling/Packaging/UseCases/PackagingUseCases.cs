@@ -92,7 +92,7 @@ namespace Empiria.Trade.Packaging.UseCases {
     }
 
 
-    public ISalesOrderDto CreatePackageForItem(string orderUID, PackingItemFields orderFields) {
+    public ISalesOrderDto CreatePackagingEntry(string orderUID, PackingItemFields orderFields) {
 
       PackagingBuilder.ValidateIfExistPackagesForItems(
                                   orderUID, orderFields.PackageID, string.Empty);

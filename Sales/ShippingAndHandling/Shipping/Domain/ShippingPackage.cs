@@ -106,7 +106,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
       
       this.ShippingPallet = pallet;
       this.OrderPacking = Core.PackagingEntry.Parse(package);
-      this.Order = Empiria.Orders.Order.Parse(this.OrderPacking.OrderId);
+      this.Order = Empiria.Orders.Order.Parse(this.OrderPacking.SalesOrder.Id);
 
     }
 

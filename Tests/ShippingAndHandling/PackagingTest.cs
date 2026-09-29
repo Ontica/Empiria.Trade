@@ -33,7 +33,7 @@ namespace Empiria.Trade.Tests {
     #region Initialization
 
     public PackagingTest() {
-      //TestsCommonMethods.Authenticate();
+      TestsCommonMethods.Authenticate();
     }
 
     #endregion Initialization
@@ -92,7 +92,7 @@ namespace Empiria.Trade.Tests {
 
 
     [Fact]
-    public void CreatePackageForItemTest() {
+    public void CreatePackagingTest() {
 
       var usecase = PackagingUseCases.UseCaseInteractor();
 
@@ -100,11 +100,11 @@ namespace Empiria.Trade.Tests {
 
       var packingItemFields = new PackingItemFields {
         OrderUID = "c369fea9-955e-48db-b18f-263100db8e16",
-        PackageID = "CAJA GRANDE 1",
-        PackageTypeUID = "CAJA100-1-1"
+        PackageID = "CAJA PRUEBA 1 - P-RLA17YHPWD0",
+        PackageTypeUID = "ddkdk79e-7bbc-4169-8645-99274f785858"
       };
 
-      ISalesOrderDto sut = usecase.CreatePackageForItem(orderUID, packingItemFields);
+      ISalesOrderDto sut = usecase.CreatePackagingEntry(orderUID, packingItemFields);
 
       Assert.NotNull(sut);
 

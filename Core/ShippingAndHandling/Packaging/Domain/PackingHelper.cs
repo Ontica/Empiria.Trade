@@ -62,7 +62,7 @@ namespace Empiria.Trade.Core {
 
       foreach (var entry in packItems) {
         
-        PackageType packageType = GetPackageTypeById(entry.PackageTypeId);
+        PackageType packageType = GetPackageTypeById(entry.PackageType.Id);
 
         var package = new PackagedForItem();
         package.UID = entry.OrderPackingUID;

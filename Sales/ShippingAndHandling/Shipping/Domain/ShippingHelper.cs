@@ -201,7 +201,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
                                    shippingPackage.OrderPacking.OrderPackingUID);
 
         var packageForItem = Core.PackagingEntry.Parse(shippingPackage.OrderPacking.OrderPackingUID);
-        var packageType = usecasePackage.GetPackageTypeById(packageForItem.PackageTypeId);
+        var packageType = usecasePackage.GetPackageTypeById(packageForItem.PackageType.Id);
 
         pallet.TotalWeight += packingItems.Sum(x => x.ItemWeight);
         pallet.TotalVolume += packageType.TotalVolume;

@@ -127,7 +127,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       foreach (var packing in packagings) {
 
         packingCount = packingCount + 1;
-        var packageType = PackageType.Parse(packing.PackageTypeId);
+        var packageType = PackageType.Parse(packing.PackageType.Id);
 
         var label = new ShippingLabel();
         label.ShippingUID = item.ShippingOrder.ShippingUID;
@@ -235,7 +235,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
           PackagingData.GetPackagesForItemsByOrder(orderUID);
 
       foreach (var pack in packingOrder) {
-        var packageType = PackageType.Parse(pack.PackageTypeId);
+        var packageType = PackageType.Parse(pack.PackageType.Id);
 
         if (packageType.Name.Contains("Caja")) {
           label.PackageQuantity++;
@@ -255,7 +255,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
                                              FixedList<ShippingPackage> shippingPackages) {
 
       foreach (var pack in shippingPackages) {
-        var packageType = PackageType.Parse(pack.OrderPacking.PackageTypeId);
+        var packageType = PackageType.Parse(pack.OrderPacking.PackageType.Id);
 
         if (packageType.Name.Contains("Caja")) {
           label.PackageQuantity++;

@@ -123,10 +123,12 @@ namespace Empiria.Trade.Core
     }
 
 
-    public static void WritePacking(PackagingEntry order) {
+    public static void WritePacking(PackagingEntry packagingEntry) {
 
-      var op = DataOperation.Parse("writePackaging",
-        order.OrderPackingId, order.UID, order.OrderId, order.PackageTypeId, order.PackageID);
+      var op = DataOperation.Parse("write_OMS_Packaging",
+                packagingEntry.Id, packagingEntry.UID, packagingEntry.PackageType.Id,
+                packagingEntry.SalesOrder.Id, packagingEntry.PackageID, packagingEntry.PostedBy.Id,
+                packagingEntry.PostingTime);
 
       DataWriter.Execute(op);
     }

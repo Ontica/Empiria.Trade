@@ -55,15 +55,14 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
 
     [HttpPost]
     [Route("v4/trade/sales/packing/{orderUID:guid}/packing-item")]
-    public SingleObjectModel CreatePackageForItem([FromUri] string orderUID,
+    public SingleObjectModel CreatePackagingEntry([FromUri] string orderUID,
                                                 [FromBody] PackingItemFields packingItemFields) {
-      Assertion.EnsureFailed("Funcionalidad en proceso de desarrollo");
-
+      
       base.RequireBody(packingItemFields);
 
       using (var usecases = PackagingUseCases.UseCaseInteractor()) {
 
-        ISalesOrderDto packingItem = usecases.CreatePackageForItem(orderUID, packingItemFields);
+        ISalesOrderDto packingItem = usecases.CreatePackagingEntry(orderUID, packingItemFields);
 
         return new SingleObjectModel(this.Request, packingItem);
       }

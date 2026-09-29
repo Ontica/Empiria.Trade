@@ -8,7 +8,9 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
+using System;
 using Empiria.Orders;
+using Empiria.Parties;
 using Empiria.Trade.Core.Catalogues;
 
 namespace Empiria.Trade.Core {
@@ -30,10 +32,11 @@ namespace Empiria.Trade.Core {
 
     static public PackagingEntry Empty => ParseEmpty<PackagingEntry>();
 
-    public PackagingEntry(string orderUID, PackingItemFields orderFields, string packageForItemUID) {
+    public PackagingEntry(string orderUID, PackingItemFields orderFields, string packagingUID) {
 
-      MapToPackagingOrder(orderUID, orderFields, packageForItemUID);
+      this.SalesOrder = SalesOrder.Parse(orderUID);
 
+      Update(orderUID, orderFields, packagingUID);
     }
 
     #endregion Constructor and parsers
@@ -43,48 +46,43 @@ namespace Empiria.Trade.Core {
 
     [DataField("Order_Packing_Id")]
     public int OrderPackingId {
-      get;
-      internal set;
+      get; private set;
     }
 
 
     [DataField("Order_Packing_UID")]
     public string OrderPackingUID {
-      get;
-      internal set;
+      get; private set;
     }
 
 
     [DataField("Order_Id")]
-    public int OrderId {
-      get;
-      internal set;
+    public SalesOrder SalesOrder {
+      get; private set;
     }
 
 
     [DataField("Package_Type_Id")]
-    public int PackageTypeId {
-      get;
-      internal set;
+    public PackageType PackageType {
+      get; private set;
     }
 
 
     [DataField("Package_ID")]
     public string PackageID {
-      get;
-      internal set;
+      get; private set;
     }
 
 
-    public SalesOrder Order {
-      get;
-      internal set;
+    [DataField("Posted_By_Id")]
+    public Party PostedBy {
+      get; private set;
     }
 
 
-    public PackageType PackageType {
-      get;
-      internal set;
+    [DataField("Posting_Time")]
+    public DateTime PostingTime {
+      get; private set;
     }
 
     #endregion Properties
@@ -94,28 +92,27 @@ namespace Empiria.Trade.Core {
 
     protected override void OnSave() {
 
-      if (OrderPackingId == 0) {
+      if (base.IsNew) {
 
         OrderPackingId = Id;
+
+        PostedBy = Party.ParseWithContact(ExecutionServer.CurrentContact);
+        PostingTime = DateTime.Now;
       }
       PackagingData.WritePacking(this);
     }
 
 
-    private void MapToPackagingOrder(string orderUID, PackingItemFields orderFields, string packageForItemUID) {
+    private void Update(string orderUID, PackingItemFields orderFields, string packagingUID) {
 
-      var packaging = Parse(packageForItemUID);
+      var packaging = Parse(packagingUID);
 
       if (packaging.Id > 0) {
         OrderPackingId = packaging.OrderPackingId;
-        OrderPackingUID = packageForItemUID;
+        OrderPackingUID = packagingUID;
       }
 
-      Order = SalesOrder.Parse(orderUID);
       PackageType = PackageType.Parse(orderFields.PackageTypeUID);
-
-      OrderId = Order.Id;
-      PackageTypeId = PackageType.PackageTypeId;
       PackageID = orderFields.PackageID;
     }
 
