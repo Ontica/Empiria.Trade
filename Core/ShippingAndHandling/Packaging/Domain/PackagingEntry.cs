@@ -32,11 +32,11 @@ namespace Empiria.Trade.Core {
 
     static public PackagingEntry Empty => ParseEmpty<PackagingEntry>();
 
-    public PackagingEntry(string orderUID, PackagingEntryFields orderFields, string packagingUID) {
+    public PackagingEntry(string orderUID, PackagingEntryFields fields, string orderPackingUID) {
 
       this.SalesOrder = SalesOrder.Parse(orderUID);
 
-      Update(orderUID, orderFields, packagingUID);
+      Update(fields, orderPackingUID);
     }
 
     #endregion Constructor and parsers
@@ -103,17 +103,14 @@ namespace Empiria.Trade.Core {
     }
 
 
-    private void Update(string orderUID, PackagingEntryFields orderFields, string packagingUID) {
+    public void Update(PackagingEntryFields fields, string orderPackingUID) {
 
-      var packaging = Parse(packagingUID);
+      fields.EnsureIsValid(SalesOrder.UID, orderPackingUID);
+      
+      var packaging = Parse(orderPackingUID);
 
-      if (packaging.Id > 0) {
-        OrderPackingId = packaging.OrderPackingId;
-        OrderPackingUID = packagingUID;
-      }
-
-      PackageType = PackageType.Parse(orderFields.PackageTypeUID);
-      PackageID = orderFields.PackageID;
+      PackageType = PackageType.Parse(fields.PackageTypeUID);
+      PackageID = fields.PackageID;
     }
 
     #endregion Private methods

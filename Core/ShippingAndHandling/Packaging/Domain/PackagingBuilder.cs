@@ -35,11 +35,11 @@ namespace Empiria.Trade.Core
 
     #region Public methods
 
-    public PackingEntry GetPackagingEntriesWithItemsByOrder(string orderUid) {
+    public PackingEntry GetPackagingEntriesWithItemsByOrder(string orderUID) {
 
-      FixedList<PackagingEntry> packagingEntries = GetPackagingEntriesByOrder(orderUid);
+      FixedList<PackagingEntry> packagingEntries = PackagingData.GetPackagingEntriesByOrder(orderUID);
 
-      return MergePackagesIntoPackingEntry(orderUid, packagingEntries);
+      return MergePackagesIntoPackingEntry(orderUID, packagingEntries);
     }
 
 
@@ -57,27 +57,11 @@ namespace Empiria.Trade.Core
 
     public FixedList<PackagedForItem> GetPackagedForItemList(string orderUID) {
       
-      FixedList<PackagingEntry> packsForItems = GetPackagingEntriesByOrder(orderUID);
+      FixedList<PackagingEntry> packsForItems = PackagingData.GetPackagingEntriesByOrder(orderUID);
 
       var helper = new PackingHelper();
 
       return helper.GetPackagesByOrder(orderUID, packsForItems);
-    }
-
-
-    static public void ValidateIfExistPackagesForItems(
-                        string orderUID, string packageID, string packageForItemUID) {
-
-      FixedList<PackagingEntry> packages = GetPackagingEntriesByOrder(orderUID);
-
-      var existPackage = packages.FirstOrDefault(x => x.PackageID.ToUpper() == packageID.ToUpper());
-      
-      if (packageForItemUID != string.Empty) {
-        existPackage = packages.FirstOrDefault(x => x.PackageID.ToUpper() == packageID.ToUpper() &&
-                                               x.OrderPackingUID != packageForItemUID);
-      }
-      Assertion.Require(existPackage == null,
-                        $"Ya existe paquete con el nombre: '{packageID}'");
     }
 
 
@@ -93,12 +77,6 @@ namespace Empiria.Trade.Core
 
 
     #region Private methods
-
-    static private FixedList<PackagingEntry> GetPackagingEntriesByOrder(string orderUID) {
-
-      return PackagingData.GetPackagingEntriesByOrder(orderUID);
-    }
-
 
     private FixedList<INamedEntity> MergePackageTypeToNamedDto(FixedList<PackageType> packageTypes) {
 

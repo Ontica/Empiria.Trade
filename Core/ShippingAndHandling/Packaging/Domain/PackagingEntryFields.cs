@@ -8,6 +8,9 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
+using System.IO.Packaging;
+using System.Linq;
+
 namespace Empiria.Trade.Core {
 
 
@@ -29,7 +32,23 @@ namespace Empiria.Trade.Core {
       get; set;
     }
 
-  } // class PackingItemFields
+
+    public virtual void EnsureIsValid(string orderUID, string packageForItemUID) {
+
+      FixedList<PackagingEntry> packages = PackagingData.GetPackagingEntriesByOrder(orderUID);
+
+      var existPackage = packages.FirstOrDefault(x => x.PackageID.ToUpper() == this.PackageID.ToUpper());
+
+      if (packageForItemUID != string.Empty) {
+
+        existPackage = packages.FirstOrDefault(x => x.PackageID.ToUpper() == this.PackageID.ToUpper() &&
+                                               x.OrderPackingUID != packageForItemUID);
+
+      }
+      Assertion.Require(existPackage == null, $"Ya existe paquete con el nombre: '{this.PackageID}'");
+    }
+
+  } // class PackagingEntryFields
 
 
   public class MissingItemField {

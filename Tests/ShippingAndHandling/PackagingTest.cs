@@ -100,8 +100,8 @@ namespace Empiria.Trade.Tests {
 
       var packingItemFields = new PackagingEntryFields {
         OrderUID = "c369fea9-955e-48db-b18f-263100db8e16",
-        PackageID = "CAJA PRUEBA 1 - P-RLA17YHPWD0",
-        PackageTypeUID = "ddkdk79e-7bbc-4169-8645-99274f785858"
+        PackageID = "CAJA LARGA PRUEBA 1",
+        PackageTypeUID = "qwerty9e-7bbc-4169-8645-99274f785858"
       };
 
       ISalesOrderDto sut = usecase.CreatePackagingEntry(orderUID, packingItemFields);
@@ -116,18 +116,18 @@ namespace Empiria.Trade.Tests {
 
       var usecase = PackagingUseCases.UseCaseInteractor();
 
-      string orderUID = "c75a25fc-92e6-493e-aefb-fc24a312898a";
-      string packageForItemUID = "789bc9f2-1304-488e-b573-d2da58f04515";
+      string orderUID = "c369fea9-955e-48db-b18f-263100db8e16";
+      string packageForItemUID = "86b03027-aa8e-4753-bbcc-78b54e0cda97";
+
       var packingItemFields = new PackagingEntryFields {
-        OrderUID = "c75a25fc-92e6-493e-aefb-fc24a312898a",
-        PackageID = "Caja 00001",
-        PackageTypeUID = "0452a10b-0607-4d45-8614-385dda701b54"
+        OrderUID = "c369fea9-955e-48db-b18f-263100db8e16",
+        PackageID = "CAJA LARGA PRUEBA 1-1",
+        PackageTypeUID = "qwerty9e-7bbc-4169-8645-99274f785858"
       };
 
       ISalesOrderDto sut = usecase.UpdatePackageForItem(orderUID, packageForItemUID, packingItemFields);
 
       Assert.NotNull(sut);
-
     }
 
 

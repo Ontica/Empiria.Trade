@@ -92,12 +92,9 @@ namespace Empiria.Trade.Packaging.UseCases {
     }
 
 
-    public ISalesOrderDto CreatePackagingEntry(string orderUID, PackagingEntryFields orderFields) {
+    public ISalesOrderDto CreatePackagingEntry(string orderUID, PackagingEntryFields fields) {
 
-      PackagingBuilder.ValidateIfExistPackagesForItems(
-                                  orderUID, orderFields.PackageID, string.Empty);
-
-      PackagingEntry packagingOrder = new PackagingEntry(orderUID, orderFields, string.Empty);
+      PackagingEntry packagingOrder = new PackagingEntry(orderUID, fields, string.Empty);
 
       packagingOrder.Save();
 
@@ -105,15 +102,14 @@ namespace Empiria.Trade.Packaging.UseCases {
     }
 
 
-    public ISalesOrderDto UpdatePackageForItem(string orderUID, string packageForItemUID,
-                                                  PackagingEntryFields orderFields) {
+    public ISalesOrderDto UpdatePackageForItem(string orderUID, string orderPackingUID,
+                                                  PackagingEntryFields fields) {
 
-      PackagingBuilder.ValidateIfExistPackagesForItems(
-                                  orderUID, orderFields.PackageID, packageForItemUID);
+      var packagingEntry = PackagingEntry.Parse(orderPackingUID);
 
-      var packagingOrder = new PackagingEntry(orderUID, orderFields, packageForItemUID);
+      packagingEntry.Update(fields, orderPackingUID);
 
-      PackagingData.WritePacking(packagingOrder);
+      packagingEntry.Save();
 
       return GetSalesOrder(orderUID);
     }
