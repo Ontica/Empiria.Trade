@@ -45,6 +45,7 @@ namespace Empiria.Trade.Sales.Adapters {
     }
 
     private static ProductDto MapBaseProductDto(ProductEntry product) {
+      
       var dto = new ProductDto {
         ProductUID = product.UID,
         ProductCode = product.InternalCode,
@@ -61,7 +62,7 @@ namespace Empiria.Trade.Sales.Adapters {
       var dto = new ProductTypeDto {
         ProductTypeUID = "-1",//product.ProductType.UID,
         Name = product.ProductType.DisplayName,
-        Attributes = GetProductAttributes(product)
+        Attributes = product.ProductAttributes
       };
 
       return dto;
@@ -70,47 +71,6 @@ namespace Empiria.Trade.Sales.Adapters {
     #endregion Public methods
 
     #region Private methods
-
-
-    private static FixedList<Attributes> GetProductAttributes(ProductEntry product) {
-
-      List<Attributes> attrs = new List<Attributes>();
-
-      if (product.Diametro != string.Empty) {
-        attrs.Add(
-          new Attributes {
-            Name = "Diametro",
-            Value = product.Diametro
-          });
-      }
-
-      if (product.Largo != string.Empty) {
-        attrs.Add(
-          new Attributes {
-            Name = "Largo",
-            Value = product.Largo
-          });
-      }
-
-      if (product.Hilos != string.Empty) {
-        attrs.Add(
-          new Attributes {
-            Name = "Hilos",
-            Value = product.Hilos
-          });
-      }
-
-      if (product.Peso > 0) {
-        attrs.Add(
-          new Attributes {
-            Name = "Peso",
-            Value = product.Peso.ToString()
-          });
-      }
-
-      return attrs.ToFixedList();
-    }
-
 
     static private VendorDto MapVendor(ProductEntry productEntry) {
 
@@ -125,6 +85,7 @@ namespace Empiria.Trade.Sales.Adapters {
         Price = 0
       };
     }
+
 
     static private ProductPresentationDto MapPresentation(SalesOrderItem orderItem) {
       

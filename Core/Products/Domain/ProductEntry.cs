@@ -8,12 +8,13 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
-
-using Empiria.Parties;
-using Empiria.Ontology;
-using Empiria.Products;
-using Empiria.Trade.Products.Data;
+using System.Collections.Generic;
 using Empiria.Locations;
+using Empiria.Ontology;
+using Empiria.Parties;
+using Empiria.Products;
+using Empiria.Trade.Core;
+using Empiria.Trade.Products.Data;
 
 namespace Empiria.Trade.Products {
 
@@ -94,17 +95,10 @@ namespace Empiria.Trade.Products {
       }
     }
 
-    
+
     public FixedList<ProductPrices> ProductPrices {
       get {
         return ProductDataService.GetProductPrices(this.Id);
-      }
-    }
-
-
-    public string Diametro {
-      get {
-        return Attributes.Get("Diametro", string.Empty);
       }
     }
 
@@ -115,6 +109,13 @@ namespace Empiria.Trade.Products {
       }
       private set {
         Attributes.SetIfValue("Descripcion_Ing", value);
+      }
+    }
+
+
+    public string Diametro {
+      get {
+        return Attributes.Get("Diametro", string.Empty);
       }
     }
 
@@ -175,6 +176,13 @@ namespace Empiria.Trade.Products {
       }
       private set {
         ExtensionData.SetIfValue("packagingSize", value);
+      }
+    }
+
+
+    public FixedList<Attributes> ProductAttributes {
+      get {
+        return GetProductAttributes();
       }
     }
 
@@ -250,10 +258,51 @@ namespace Empiria.Trade.Products {
     }
 
 
+    private FixedList<Attributes> GetProductAttributes() {
+
+      List<Attributes> attrs = new List<Attributes>();
+
+      if (this.Diametro != string.Empty) {
+
+        attrs.Add(new Attributes {
+          Name = "Diametro",
+          Value = this.Diametro
+        });
+      }
+
+      if (this.Largo != string.Empty) {
+
+        attrs.Add(new Attributes {
+          Name = "Largo",
+          Value = this.Largo
+        });
+      }
+
+      if (this.Hilos != string.Empty) {
+
+        attrs.Add(new Attributes {
+          Name = "Hilos",
+          Value = this.Hilos
+        });
+      }
+
+      if (this.Peso > 0) {
+
+        attrs.Add(new Attributes {
+          Name = "Peso",
+          Value = this.Peso.ToString()
+        });
+      }
+
+      return attrs.ToFixedList();
+    }
+
+
+
     internal ProductPrices GetProductPrice(int priceListNo) {
 
       var priceList3 = ProductPrices.Find(a => a.PriceType.Id == -25678) ?? new ProductPrices();
-      
+
       switch (priceListNo) {
         case 1:
           if (ProductPrices.Find(a => a.PriceType.Id == -25676) == null) {

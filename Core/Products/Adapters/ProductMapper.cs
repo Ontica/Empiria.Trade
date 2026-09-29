@@ -10,8 +10,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using Empiria.Parties;
-using Empiria.Trade.Core.Catalogues;
+using Empiria.Trade.Core;
+
 using Empiria.Trade.Products.Domain;
 
 namespace Empiria.Trade.Products.Adapters {
@@ -90,15 +92,6 @@ namespace Empiria.Trade.Products.Adapters {
         Units = presentation.PackingSmallBag,
         Vendors = MapVendorsForSearcher(presentation, customerUID)
       };
-    }
-
-
-    static private FixedList<Attributes> GetAttributes(ProductEntry entry) {
-      try {
-        return new FixedList<Attributes>();
-      } catch (Exception e) {
-        throw new Exception($"{entry.InternalCode}. {e.Message}", e);
-      }
     }
 
 
@@ -223,15 +216,13 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
-    static private ProductTypeDto GetProductType(ProductEntry entry) {
+    static private ProductTypeDto GetProductType(ProductEntry product) {
 
       var type = new ProductTypeDto();
 
-      var attributes = GetAttributes(entry);
-
-      type.ProductTypeUID = entry.ProductType.UID;
-      type.Name = entry.ProductCategory.Name; //Group/Subgroup - Name
-      type.Attributes = attributes;
+      type.ProductTypeUID = product.ProductType.UID;
+      type.Name = product.ProductCategory.Name; //Group/Subgroup - Name
+      type.Attributes = product.ProductAttributes;
 
       return type;
     }
