@@ -219,8 +219,7 @@ namespace Empiria.Trade.Core {
 
 
   public class WarehouseBinForPacking {
-
-
+    //de localizacion
     public string UID {
       get; set;
     }

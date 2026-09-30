@@ -130,11 +130,13 @@ namespace Empiria.Trade.Core {
 
       foreach (var bin in warehouseBins) {
         var whBin = new WarehouseBinForPackingDto();
+
         whBin.UID = bin.UID;
         whBin.OrderItemUID = bin.OrderItemUID;
         whBin.Name = bin.Name;
         whBin.WarehouseName = bin.WarehouseName;
         whBin.Stock = bin.Stock;
+
         whBinDto.Add(whBin);
       }
 
@@ -157,6 +159,7 @@ namespace Empiria.Trade.Core {
 
     private static PickingDataDto MapPickingData(PickingData pickingData) {
       var picking = new PickingDataDto();
+
       var responsible = Parties.Party.Parse(pickingData.ResponsibleId);
       var assignedTo = Parties.Party.Parse(pickingData.AssignedToId);
 

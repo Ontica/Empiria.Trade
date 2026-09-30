@@ -69,6 +69,7 @@ namespace Empiria.Trade.Inventory.UseCases {
 
 
     public FixedList<NamedEntityDto> GetWarehouses() {
+
       return CommonStorage.GetList<Location>().FindAll(x =>
                               x.Level == 1 && x.GetStatus<EntityStatus>() != EntityStatus.Deleted)
                           .MapToNamedEntityList();

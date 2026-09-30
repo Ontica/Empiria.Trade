@@ -139,7 +139,7 @@ namespace Empiria.Trade.Products.Adapters {
       //TODO VALIDAR TIPO UNIDAD E IDENTIFICAR ALMACENES
       foreach (var p in presentations) {
 
-        var stockAndLocation = stocksAndLocations.Where(x => x.Product_Id == p.Id /*&& x.Location.Id != -1*/)
+        var stockAndLocation = stocksAndLocations.Where(x => x.Product_Id == p.Id && x.Location.Id != -1)
                                                  .ToList();
 
         //var locs = new List<Location>();
