@@ -164,7 +164,6 @@ namespace Empiria.Trade.Tests {
       FixedList<INamedEntity> sut = usecase.GetParcelSupplierList();
 
       Assert.NotNull(sut);
-
     }
 
 
