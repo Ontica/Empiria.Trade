@@ -72,9 +72,9 @@ namespace Empiria.Trade.Packaging.UseCases {
     }
 
 
-    public PackingOrderItem GetPackingOrderItemByUID(string Uid) {
+    public PackagingItem GetPackingOrderItemByUID(string Uid) {
 
-      return PackingOrderItem.Parse(Uid);
+      return PackagingItem.Parse(Uid);
     }
 
     
@@ -102,7 +102,7 @@ namespace Empiria.Trade.Packaging.UseCases {
     }
 
 
-    public ISalesOrderDto UpdatePackageForItem(string orderUID, string orderPackingUID,
+    public ISalesOrderDto UpdatePackagingEntry(string orderUID, string orderPackingUID,
                                                   PackagingEntryFields fields) {
 
       var packagingEntry = PackagingEntry.Parse(orderPackingUID);
@@ -110,6 +110,12 @@ namespace Empiria.Trade.Packaging.UseCases {
       packagingEntry.Update(fields, orderPackingUID);
 
       packagingEntry.Save();
+
+      return GetSalesOrder(orderUID);
+    }
+
+
+    public ISalesOrderDto UpdatePickingEntry(string orderUID) {
 
       return GetSalesOrder(orderUID);
     }
@@ -126,12 +132,9 @@ namespace Empiria.Trade.Packaging.UseCases {
 
 
     public ISalesOrderDto CreatePackingOrderItemFields(
-              string orderUID, string packingItemUID, MissingItemField missingItemFields) {
+              string orderUID, string orderPackingUID, MissingItemField missingItemFields) {
 
-      var builder = new PackagingBuilder();
-
-      var packagingOrder = new PackingOrderItem(orderUID, packingItemUID,
-                                missingItemFields);
+      var packagingOrder = new PackagingItem(orderUID, orderPackingUID, missingItemFields);
 
       packagingOrder.Save();
 

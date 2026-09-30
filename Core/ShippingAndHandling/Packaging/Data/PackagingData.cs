@@ -51,34 +51,34 @@ namespace Empiria.Trade.Core
     }
 
 
-    public FixedList<PackingOrderItem> GetPackingOrderItems(int OrderPackingId) {
+    public FixedList<PackagingItem> GetPackingOrderItems(int OrderPackingId) {
 
       string sql = $"SELECT * " +
                    $"FROM OMS_Packaging_Items WHERE Order_Packing_Id = {OrderPackingId}";
 
       var dataOperation = DataOperation.Parse(sql);
 
-      return DataReader.GetPlainObjectFixedList<PackingOrderItem>(dataOperation);
+      return DataReader.GetPlainObjectFixedList<PackagingItem>(dataOperation);
 
     }
 
 
-    static public FixedList<PackingOrderItem> GetPackingOrderItemsByOrder(int OrderId) {
+    static public FixedList<PackagingItem> GetPackingOrderItemsByOrder(int OrderId) {
 
       string sql = $"SELECT * " +
                    $"FROM OMS_Packaging_Items WHERE Order_Id = {OrderId}";
 
       var dataOperation = DataOperation.Parse(sql);
 
-      return DataReader.GetPlainObjectFixedList<PackingOrderItem>(dataOperation);
+      return DataReader.GetPlainObjectFixedList<PackagingItem>(dataOperation);
 
     }
 
 
-    static public FixedList<PackingOrderItem> GetPackingOrderItem(
-      string packingItemUID, string orderItemUID, int warehouseBinId) {
+    static public FixedList<PackagingItem> GetPackingOrderItem(
+      string orderPackingUID, string orderItemUID, int warehouseBinId) {
 
-      var orderPackingId = PackagingEntry.Parse(packingItemUID).OrderPackingId;
+      var orderPackingId = PackagingEntry.Parse(orderPackingUID).OrderPackingId;
       var orderItemId = OrderItem.Parse(orderItemUID).Id;
 
       string sql = $"SELECT * " +
@@ -89,12 +89,12 @@ namespace Empiria.Trade.Core
 
       var dataOperation = DataOperation.Parse(sql);
 
-      return DataReader.GetPlainObjectFixedList<PackingOrderItem>(dataOperation);
+      return DataReader.GetPlainObjectFixedList<PackagingItem>(dataOperation);
 
     }
 
 
-    public FixedList<PackingOrderItem> GetPackingItemByOrderItemAndWarehouseBin(
+    public FixedList<PackagingItem> GetPackingItemByOrderItemAndWarehouseBin(
       int orderItemId, int warehouseBinId) {
 
       string sql = $"SELECT * " +
@@ -103,7 +103,7 @@ namespace Empiria.Trade.Core
 
       var dataOperation = DataOperation.Parse(sql);
 
-      return DataReader.GetPlainObjectFixedList<PackingOrderItem>(dataOperation);
+      return DataReader.GetPlainObjectFixedList<PackagingItem>(dataOperation);
 
     }
 

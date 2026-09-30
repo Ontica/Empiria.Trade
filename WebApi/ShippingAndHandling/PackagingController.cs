@@ -10,10 +10,7 @@
 using System;
 using System.Web.Http;
 using Empiria.WebApi;
-using Empiria.Trade.Sales.ShippingAndHandling.UseCases;
-using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
-using Empiria.Trade.Sales.Adapters;
-using Empiria.Trade.Inventory.Adapters;
+
 using Empiria.Trade.Packaging.UseCases;
 using Empiria.Trade.Core;
 //using Empiria.Trade.Shipping.UseCases;
@@ -79,7 +76,22 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
 
       using (var usecases = PackagingUseCases.UseCaseInteractor()) {
 
-        ISalesOrderDto packingItem = usecases.UpdatePackageForItem(orderUID, packingItemUID, packingItemFields);
+        ISalesOrderDto packingItem = usecases.UpdatePackagingEntry(orderUID, packingItemUID, packingItemFields);
+
+        return new SingleObjectModel(this.Request, packingItem);
+      }
+    }
+
+
+    [HttpPut]
+    [Route("v4/trade/sales/packing/{orderUID:guid}/picking")]
+    public SingleObjectModel UpdatePicking([FromUri] string orderUID) {
+
+      Assertion.RequireFail("Funcionalidad en proceso de desarrollo");
+
+      using (var usecases = PackagingUseCases.UseCaseInteractor()) {
+
+        ISalesOrderDto packingItem = usecases.UpdatePickingEntry(orderUID);
 
         return new SingleObjectModel(this.Request, packingItem);
       }

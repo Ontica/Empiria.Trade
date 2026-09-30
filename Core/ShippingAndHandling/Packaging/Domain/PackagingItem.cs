@@ -2,7 +2,7 @@
 *                                                                                                            *
 *  Module   : Packaging Management                       Component : Domain Layer                            *
 *  Assembly : Empiria.Trade.ShippingAndHandling.dll      Pattern   : Partitioned Type / Information Holder   *
-*  Type     : PackingOrderItem                           License   : Please read LICENSE.txt file            *
+*  Type     : PackagingItem                              License   : Please read LICENSE.txt file            *
 *                                                                                                            *
 *  Summary  : Represents a Packaging order item.                                                             *
 *                                                                                                            *
@@ -15,27 +15,27 @@ using Empiria.Trade.Core.Catalogues;
 namespace Empiria.Trade.Core {
 
     /// <summary>Represents a Packaging order item.</summary>
-    public class PackingOrderItem : BaseObject {
+    public class PackagingItem : BaseObject {
 
 
 
     #region Constructor and parsers
 
 
-    public PackingOrderItem() {
+    public PackagingItem() {
       //no-op
     }
 
-    static public PackingOrderItem Parse(int id) => ParseId<PackingOrderItem>(id);
+    static public PackagingItem Parse(int id) => ParseId<PackagingItem>(id);
 
-    static public PackingOrderItem Parse(string uid) => ParseKey<PackingOrderItem>(uid);
+    static public PackagingItem Parse(string uid) => ParseKey<PackagingItem>(uid);
 
-    static public PackingOrderItem Empty => ParseEmpty<PackingOrderItem>();
+    static public PackagingItem Empty => ParseEmpty<PackagingItem>();
 
 
-    public PackingOrderItem(string orderUID, string packingItemUID, MissingItemField missingItemFields) {
+    public PackagingItem(string orderUID, string orderPackingUID, MissingItemField missingItemFields) {
 
-      MapToPackagingOrderItem(orderUID, packingItemUID, missingItemFields);
+      Update(orderUID, orderPackingUID, missingItemFields);
 
     }
 
@@ -120,13 +120,13 @@ namespace Empiria.Trade.Core {
     }
 
 
-    private void MapToPackagingOrderItem(string orderUID, string packingItemUID, MissingItemField missingItemFields) {
+    public void Update(string orderUID, string orderPackingUID, MissingItemField missingItemFields) {
 
       var warehouseBin = WarehouseBin.Parse(missingItemFields.WarehouseBinUID);
       var orderItem = OrderItem.Parse(missingItemFields.orderItemUID);
       
       var existPackingItem = PackagingData.GetPackingOrderItem(
-                              packingItemUID, missingItemFields.orderItemUID,
+                              orderPackingUID, missingItemFields.orderItemUID,
                               warehouseBin.Id);
       
       if (existPackingItem.Count > 0) {
@@ -138,7 +138,7 @@ namespace Empiria.Trade.Core {
         this.Quantity = missingItemFields.Quantity;
       }
       
-      this.OrderPacking = PackagingEntry.Parse(packingItemUID);
+      this.OrderPacking = PackagingEntry.Parse(orderPackingUID);
       this.OrderId = orderItem.Order.Id;
       this.OrderItemId = orderItem.Id;
       this.WarehouseBinId = warehouseBin.Id;

@@ -128,6 +128,7 @@ namespace Empiria.Trade.Core
 
     private PickingData GetPickingData(string orderUID) {
       
+      //TODO averiguar si pickingData es una orden de inventario
       SalesOrder order = SalesOrder.Parse(orderUID);
 
       return new PickingData {

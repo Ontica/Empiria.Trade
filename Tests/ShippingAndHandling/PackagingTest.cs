@@ -59,7 +59,7 @@ namespace Empiria.Trade.Tests {
 
       var usecase = PackagingUseCases.UseCaseInteractor();
       string uid = "63e22d5b-0a2d-49a5-8aa8-64b97e46a283";
-      PackingOrderItem sut = usecase.GetPackingOrderItemByUID(uid);
+      PackagingItem sut = usecase.GetPackingOrderItemByUID(uid);
 
       Assert.NotNull(sut);
 
@@ -112,7 +112,7 @@ namespace Empiria.Trade.Tests {
 
 
     [Fact]
-    public void UpdatePackageForItemTest() {
+    public void UpdatePackagingTest() {
 
       var usecase = PackagingUseCases.UseCaseInteractor();
 
@@ -125,7 +125,7 @@ namespace Empiria.Trade.Tests {
         PackageTypeUID = "qwerty9e-7bbc-4169-8645-99274f785858"
       };
 
-      ISalesOrderDto sut = usecase.UpdatePackageForItem(orderUID, packageForItemUID, packingItemFields);
+      ISalesOrderDto sut = usecase.UpdatePackagingEntry(orderUID, packageForItemUID, packingItemFields);
 
       Assert.NotNull(sut);
     }
