@@ -139,7 +139,6 @@ namespace Empiria.Trade.Packaging.UseCases {
       packagingOrder.Save();
 
       return GetSalesOrder(orderUID);
-
     }
 
 

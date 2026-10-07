@@ -100,6 +100,10 @@ namespace Empiria.Trade.Sales.Adapters {
       get; internal set;
     }
 
+    //public NamedEntityDto ParcelSupplier {
+    //  get; internal set;
+    //}
+
     public string PaymentConditions {
       get; internal set;
     }
@@ -127,7 +131,7 @@ namespace Empiria.Trade.Sales.Adapters {
     public decimal OrderTotal {
       get; internal set;
     }
-
+    
   } // class Data
 
   public class AuthorizationDto {

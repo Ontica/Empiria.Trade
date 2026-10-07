@@ -9,6 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
 using System.Linq;
+using Empiria.Locations;
 using Empiria.Orders;
 using Empiria.Trade.Core.Catalogues;
 
@@ -36,7 +37,6 @@ namespace Empiria.Trade.Core {
     public PackagingItem(string orderUID, string orderPackingUID, MissingItemField missingItemFields) {
 
       Update(orderUID, orderPackingUID, missingItemFields);
-
     }
 
     #endregion Constructor and parsers
@@ -85,11 +85,10 @@ namespace Empiria.Trade.Core {
       get; private set;
     }
 
-
+    
     [DataField("Warehouse_Bin_Id")]
     public int WarehouseBinId {
-      get;
-      internal set;
+      get; internal set;
     }
 
 
@@ -116,14 +115,16 @@ namespace Empiria.Trade.Core {
 
       if (this.PackingItemId == 0) {
         this.PackingItemId = this.Id;
+        this.PackingItemUID = this.UID;
       }
+      PackagingData.WritePackagingItem(this);
     }
 
 
     public void Update(string orderUID, string orderPackingUID, MissingItemField missingItemFields) {
 
-      var warehouseBin = WarehouseBin.Parse(missingItemFields.WarehouseBinUID);
-      var orderItem = OrderItem.Parse(missingItemFields.orderItemUID);
+      var warehouseBin = Location.Parse(missingItemFields.WarehouseBinUID);
+      var orderItem = SalesOrderItem.Parse(missingItemFields.orderItemUID);
       
       var existPackingItem = PackagingData.GetPackingOrderItem(
                               orderPackingUID, missingItemFields.orderItemUID,
@@ -131,6 +132,7 @@ namespace Empiria.Trade.Core {
       
       if (existPackingItem.Count > 0) {
         this.PackingItemId = existPackingItem.First().PackingItemId;
+        this.PackingItemUID = existPackingItem.First().PackingItemUID;
         this.Quantity = existPackingItem.First().Quantity + missingItemFields.Quantity;
 
       } else {

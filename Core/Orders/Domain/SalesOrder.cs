@@ -215,6 +215,16 @@ namespace Empiria.Trade.Core {
     }
 
 
+    //public string ParcelSupplierUID {
+    //  get {
+    //    return ConditionsData.Get("parcelSupplierUID", string.Empty);
+    //  }
+    //  private set {
+    //    ConditionsData.SetIfValue("parcelSupplierUID", value);
+    //  }
+    //}
+
+
     public string SalesOrderProcessStatus {
       get {
         return ExtData.Get("salesOrderProcessStatus", string.Empty);
@@ -391,6 +401,9 @@ namespace Empiria.Trade.Core {
       this.PaymentConditions = fields.PaymentConditions;
       //TODO GUARDAR EN EXT_DATA
       this.ShippingMethod = fields.ShippingMethod.ToString();
+      
+      //this.ParcelSupplierUID = fields.ShippingMethod == ShippingMethods.Paqueteria ? fields.ParcelSupplierUID : "";
+      
       this.ReceptionTime = ExecutionServer.DateMaxValue;
       this.PedimentoImportacion = string.Empty;
       this.CartaPorte = string.Empty;

@@ -79,7 +79,7 @@ namespace Empiria.Trade.Core
       string orderPackingUID, string orderItemUID, int warehouseBinId) {
 
       var orderPackingId = PackagingEntry.Parse(orderPackingUID).OrderPackingId;
-      var orderItemId = OrderItem.Parse(orderItemUID).Id;
+      var orderItemId = SalesOrderItem.Parse(orderItemUID).Id;
 
       string sql = $"SELECT * " +
                    $"FROM OMS_Packaging_Items " +
@@ -129,6 +129,16 @@ namespace Empiria.Trade.Core
                 packagingEntry.Id, packagingEntry.UID, packagingEntry.PackageType.Id,
                 packagingEntry.SalesOrder.Id, packagingEntry.PackageID, packagingEntry.PostedBy.Id,
                 packagingEntry.PostingTime);
+
+      DataWriter.Execute(op);
+    }
+
+
+    public static void WritePackagingItem(PackagingItem item) {
+
+      var op = DataOperation.Parse("write_OMS_Packaging_Items",
+                item.PackingItemId, item.PackingItemUID, item.OrderPacking.Id, item.OrderId, item.OrderItemId,
+                item.InventoryEntryId, item.WarehouseBinId, item.Quantity);
 
       DataWriter.Execute(op);
     }

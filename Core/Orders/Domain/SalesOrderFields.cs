@@ -85,6 +85,11 @@ namespace Empiria.Trade.Core {
     } = ShippingMethods.RutaLocal;
 
 
+    public string ParcelSupplierUID {
+      get; internal set;
+    }
+
+
     public FixedList<SalesOrderItemsFields> Items {
       get; set;
     }
@@ -93,7 +98,7 @@ namespace Empiria.Trade.Core {
     public bool CanUpdateOrder {
       get; set;
     }
-
+    
     #endregion Properties
 
     #region Internal methods

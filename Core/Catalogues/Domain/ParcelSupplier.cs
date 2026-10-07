@@ -3,7 +3,7 @@
 namespace Empiria.Trade.Core {
   
   /// <summary></summary>
-  internal class ParcelSupplier : CommonStorage {
+  public class ParcelSupplier : CommonStorage {
 
     #region Constructor and parsers
 

@@ -56,7 +56,7 @@ namespace Empiria.Trade.Tests.Sales {
 
       var salesOrderUseCase = SalesOrderUseCases.UseCaseInteractor();
 
-      var sut = salesOrderUseCase.GetSalesOrder("c369fea9-955e-48db-b18f-263100db8e16", QueryType.SalesPacking);
+      var sut = salesOrderUseCase.GetSalesOrder("b126e056-4da5-4def-840c-b41e2ffdfc44", QueryType.Sales);
 
       Assert.NotNull(sut);
     }
@@ -80,7 +80,7 @@ namespace Empiria.Trade.Tests.Sales {
       SalesOrderFields orderFields = GetSalesOrderFields();
 
       var useCase = SalesOrderUseCases.UseCaseInteractor();
-      var sut = useCase.UpdateSalesOrder("fd7eefd6-9dcb-4020-8209-69b304f9085a", orderFields);
+      var sut = useCase.UpdateSalesOrder("b126e056-4da5-4def-840c-b41e2ffdfc44", orderFields);
 
       Assert.NotNull(sut);
     }
