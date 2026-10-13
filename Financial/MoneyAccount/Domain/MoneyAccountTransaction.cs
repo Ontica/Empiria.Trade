@@ -184,7 +184,9 @@ namespace Empiria.Trade.Financial {
       }
     }
 
+
     public void AddCreditTransactions(MoneyAccount moneyAccount, CreditTrasnactionFields fields) {
+
       MoneyAccountTransaction moneyTransaction = new MoneyAccountTransaction();
       moneyTransaction.MoneyAccount = moneyAccount;
       moneyTransaction.TransactionType = MoneyAccountTransactionType.Parse(-1); //750
@@ -199,6 +201,7 @@ namespace Empiria.Trade.Financial {
 
       moneyTransaction.Save();
     }
+
 
     public void LoadItems() {
       this.Items = MoneyAccountTransactionItem.GetTransactionItems(this.Id);

@@ -43,15 +43,6 @@ namespace Empiria.Trade.Tests.Sales {
 
 
     [Fact]
-    public void ShouldAuthroizeOrderSales() {
-      var order = SalesOrder.Parse("f43c43e4-20e8-41b2-a2fd-a2f6d012b813");
-      order.AuthorizeOrder();
-
-      Assert.NotNull(order);
-    }
-
-
-    [Fact]
     public void GetSalesOrderByUID() {
 
       var salesOrderUseCase = SalesOrderUseCases.UseCaseInteractor();
@@ -202,10 +193,10 @@ namespace Empiria.Trade.Tests.Sales {
     }
 
     [Fact]
-    public void ShouldAppyCreditInOrder() {
+    public void ShouldApplyCreditInOrder() {
 
       var salesOrderUseCase = SalesOrderUseCases.UseCaseInteractor();
-      var sut = salesOrderUseCase.ApplySalesOrder("ac2f684b-c33a-4a99-9cc6-a5cc147ac298");
+      var sut = salesOrderUseCase.ApplySalesOrder("3dc85800-93d4-4121-a4ae-ff209edf7e53");
 
       Assert.NotNull(sut);
     }

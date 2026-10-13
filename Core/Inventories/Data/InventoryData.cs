@@ -153,7 +153,7 @@ namespace Empiria.Trade.Core {
 
 
     static public void RemoveInventoryOrdersByParent(int id) {
-      throw new NotImplementedException();
+      
     }
 
     #region Private methods

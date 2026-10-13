@@ -16,7 +16,6 @@ namespace Empiria.Trade.Core {
   /// <summary>Represents a Packing item for order.</summary>
   public class PackingEntry {
 
-
     public PickingData PickingData {
       get; set;
     } = new PickingData();
@@ -25,6 +24,7 @@ namespace Empiria.Trade.Core {
     public PackagedData Data {
       get; set;
     } = new PackagedData();
+
 
     public FixedList<PackagedForItem> PackagedItems {
       get; set;
@@ -35,12 +35,10 @@ namespace Empiria.Trade.Core {
       get; set;
     } = new FixedList<MissingItem>();
 
-
   } // class PackingEntry
 
 
   public class PickingData {
-
 
     public string OrderUID {
       get; set;
@@ -77,7 +75,6 @@ namespace Empiria.Trade.Core {
 
   public class PackagedData {
 
-
     public string OrderUID {
       get; set;
     } = string.Empty;
@@ -97,12 +94,10 @@ namespace Empiria.Trade.Core {
       get; set;
     }
 
-
   } // class PackagedData
 
 
   public class PackagedForItem {
-
 
     public string UID {
       get; set;
@@ -143,7 +138,6 @@ namespace Empiria.Trade.Core {
       get; set;
     } = new FixedList<PackingItem>();
     
-
   } // class PackagedForItem
 
 
@@ -172,7 +166,6 @@ namespace Empiria.Trade.Core {
     public decimal Quantity {
       get; set;
     }
-
 
   } // class PackingItem
 

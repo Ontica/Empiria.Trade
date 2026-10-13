@@ -127,17 +127,17 @@ namespace Empiria.Trade.Core
 
 
     private PickingData GetPickingData(string orderUID) {
-      
-      //TODO averiguar si pickingData es una orden de inventario
-      SalesOrder order = SalesOrder.Parse(orderUID);
+
+      //TODO CARGAR INFO DE ORDEN DE INVENTARIO PARA PICKING
+      InventoryOrder inventory = InventoryOrder.Parse(orderUID);
 
       return new PickingData {
-        OrderUID = order.OrderUID,
+        OrderUID = inventory.UID,
         InventoryOrderTypeId = -1,
         InventoryOrderNo = "",
-        ResponsibleId = order.PostedBy.Id,
-        AssignedToId = order.Responsible.Id,
-        Notes = order.Observations
+        ResponsibleId = inventory.PostedBy.Id,
+        AssignedToId = inventory.Responsible.Id,
+        Notes = inventory.Observations
       };
     }
 
