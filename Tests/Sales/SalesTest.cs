@@ -206,7 +206,7 @@ namespace Empiria.Trade.Tests.Sales {
     public void ShouldGetOrderByOrderNumber() {
 
       var salesOrderUseCase = SalesOrderUseCases.UseCaseInteractor();
-      var x = salesOrderUseCase.GetSalesOrder("P-TYN9NOZ37B");
+      var x = salesOrderUseCase.GetSalesOrderByNumber("P-TYN9NOZ37B");
 
       Assert.NotNull(x);
     }

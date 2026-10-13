@@ -14,9 +14,11 @@ using System.Linq;
 using DocumentFormat.OpenXml.Drawing.Charts;
 using Empiria.Orders;
 using Empiria.Parties;
+using Empiria.StateEnums;
 using Empiria.Trade.Core;
 using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Core.Inventories.Adapters;
+using Empiria.Trade.Inventory.UseCases;
 using iText.Layout.Borders;
 
 namespace Empiria.Trade.Sales {
@@ -37,12 +39,6 @@ namespace Empiria.Trade.Sales {
     #region Public methods
 
     static internal void GenerateInventoryOrder(SalesOrder order) {
-
-      var existInventoryOrders = new List<InventoryOrder>();
-
-      if (existInventoryOrders.Count > 0) {
-        //InventoryData.RemoveInventoryOrdersByParent(order.Id);
-      }
 
       var parentOrderUID = order.OrderUID == string.Empty ? order.UID : order.OrderUID;
 
