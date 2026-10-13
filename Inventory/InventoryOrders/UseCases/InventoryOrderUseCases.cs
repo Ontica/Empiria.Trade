@@ -51,6 +51,13 @@ namespace Empiria.Trade.Inventory.UseCases {
     }
 
 
+    static public FixedList<InventoryOrder> GetInventoryOrdersByParent(int parentId) {
+      Assertion.Require(parentId, nameof(parentId));
+
+      return InventoryOrder.GetInventoryOrdersByParent(parentId);
+    }
+
+
     public InventoryOrderDataDto SearchInventoryOrder(InventoryOrderQuery query) {
       Assertion.Require(query, nameof(query));
 

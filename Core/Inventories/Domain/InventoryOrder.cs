@@ -40,10 +40,10 @@ namespace Empiria.Trade.Core {
 
     static public new InventoryOrder Empty => ParseEmpty<InventoryOrder>();
 
-    static public InventoryOrder GetInventoryOrderByParent(int orderId) {
+    static public FixedList<InventoryOrder> GetInventoryOrdersByParent(int orderId) {
       Assertion.Require(orderId, nameof(orderId));
 
-      return InventoryData.GetInventoryOrderByParent(orderId);
+      return InventoryData.GetInventoryOrdersByParent(orderId);
     }
 
     #endregion Constructors and parsers
@@ -112,6 +112,7 @@ namespace Empiria.Trade.Core {
     #region Helpers
 
     private void DeleteItems() {
+      
       foreach (var item in base.GetItems<InventoryOrderItem>()) {
         Items.Remove(item);
         item.Save();

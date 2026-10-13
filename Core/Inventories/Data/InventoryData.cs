@@ -8,7 +8,9 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using Empiria.Billing;
 using Empiria.Data;
+using Empiria.StateEnums;
 
 namespace Empiria.Trade.Core {
 
@@ -53,12 +55,13 @@ namespace Empiria.Trade.Core {
     }
 
 
-    static internal InventoryOrder GetInventoryOrderByParent(int orderId) {
-      var sql = $"SELECT * FROM OMS_Orders WHERE Order_Parent_Id = '{orderId}' ";
+    static internal FixedList<InventoryOrder> GetInventoryOrdersByParent(int orderId) {
+      
+      var sql = $"SELECT * FROM OMS_Orders WHERE Order_Parent_Id = {orderId}";
 
       var dataOperation = DataOperation.Parse(sql);
 
-      return DataReader.GetObject<InventoryOrder>(dataOperation);
+      return DataReader.GetFixedList<InventoryOrder>(dataOperation);
     }
 
 
@@ -152,8 +155,15 @@ namespace Empiria.Trade.Core {
     }
 
 
-    static public void RemoveInventoryOrdersByParent(int id) {
+    static public void UpdateInventoryOrdersByParent(int parentId, EntityStatus status) {
       
+      var sql = $"UPDATE OMS_Orders " +
+                $"SET Order_Status = '{(char) status}' " +
+                $"WHERE Order_Parent_Id = {parentId}";
+
+      var op = DataOperation.Parse(sql);
+
+      DataWriter.Execute(op);
     }
 
     #region Private methods
