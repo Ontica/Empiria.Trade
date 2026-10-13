@@ -31,6 +31,8 @@ namespace Empiria.Trade.Core {
 
     static public InventoryType InventarioEntradasCompra => Parse(1009);
 
+    static public InventoryType InventarioSalidasPorVenta => Parse(1008);
+
     #endregion Constructors and parsers
 
     #region Properties

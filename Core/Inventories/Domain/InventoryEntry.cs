@@ -197,10 +197,10 @@ namespace Empiria.Trade.Core {
     }
 
 
-    [DataField("Inv_Entry_Status", Default = InventoryStatus.Abierto)]
+    [DataField("Inv_Entry_Status", Default = InventoryStatus.EnProceso)]
     public InventoryStatus Status {
       get; set;
-    } = InventoryStatus.Abierto;
+    } = InventoryStatus.EnProceso;
 
 
     internal int OrderItemProductId {
@@ -273,7 +273,7 @@ namespace Empiria.Trade.Core {
       this.ItemUnitName = this.OrderItem.ProductUnit.Name;
       this.InputQuantity = fields.Quantity;
       this.InputCost = fields.Quantity * this.OrderItem.UnitPrice;
-
+      this.Status = InventoryStatus.EnProceso;
     }
 
 
@@ -327,7 +327,7 @@ namespace Empiria.Trade.Core {
       this.OutputCost = 0;
       this.Tags = string.Empty;
       this.Position = 0;
-      this.Status = InventoryStatus.Abierto;
+      this.Status = InventoryStatus.EnProceso;
     }
 
 

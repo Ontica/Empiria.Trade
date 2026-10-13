@@ -22,16 +22,70 @@ namespace Empiria.Trade.WebApi.Inventory {
 
     #region V2
 
-    
     [HttpPost]
-    [Route("v8/order-management/inventory-orders/search")]
-    public SingleObjectModel SearchInventoryOrderList([FromBody] InventoryOrderQuery query) {
+    [Route("v8/order-management/inventory-orders/{orderUID:guid}/close")]
+    public SingleObjectModel CloseInventoryOrder([FromUri] string orderUID) {
+
+      Assertion.RequireFail("Funcionalidad en proceso de desarrollo.");
 
       using (var usecases = InventoryOrderUseCases.UseCaseInteractor()) {
 
-        InventoryOrderDataDto inventoryOrderDto = usecases.SearchInventoryOrder(query);
+        InventoryHolderDto inventoryOrder = usecases.CloseInventoryOrder(orderUID);
 
-        return new SingleObjectModel(this.Request, inventoryOrderDto);
+        return new SingleObjectModel(this.Request, inventoryOrder);
+      }
+    }
+
+
+    [HttpPost]
+    [Route("v8/order-management/inventory-orders")]
+    public SingleObjectModel CreateInventoryOrder([FromBody] InventoryOrderFields fields) {
+
+      using (var usecases = InventoryOrderUseCases.UseCaseInteractor()) {
+
+        InventoryHolderDto inventoryOrder = usecases.CreateInventoryOrder(fields);
+
+        return new SingleObjectModel(this.Request, inventoryOrder);
+      }
+    }
+
+
+    [HttpPost]
+    [Route("v8/order-management/inventory-orders/{orderUID}/items")]
+    public SingleObjectModel CreateInventoryOrderItem([FromUri] string orderUID, [FromBody] InventoryOrderItemFields fields) {
+
+      using (var usecases = InventoryOrderUseCases.UseCaseInteractor()) {
+
+        InventoryHolderDto inventoryOrder = usecases.CreateInventoryOrderItem(orderUID, fields);
+
+        return new SingleObjectModel(this.Request, inventoryOrder);
+      }
+    }
+
+
+    [HttpDelete]
+    [Route("v8/order-management/inventory-orders/{orderUID:guid}")]
+    public NoDataModel DeleteInventoryOrder([FromUri] string orderUID) {
+
+      using (var usecases = InventoryOrderUseCases.UseCaseInteractor()) {
+
+        usecases.DeleteInventoryOrder(orderUID);
+
+        return new NoDataModel(this.Request);
+      }
+    }
+
+
+    [HttpDelete]
+    [Route("v8/order-management/inventory-orders/{orderUID:guid}/items/{orderItemUID:guid}")]
+    public SingleObjectModel DeleteInventoryOrderItem([FromUri] string orderUID,
+                                                [FromUri] string orderItemUID) {
+
+      using (var usecases = InventoryOrderUseCases.UseCaseInteractor()) {
+
+        InventoryHolderDto inventoryOrder = usecases.DeleteInventoryOrderItem(orderUID, orderItemUID);
+
+        return new SingleObjectModel(this.Request, inventoryOrder);
       }
     }
 
@@ -63,19 +117,6 @@ namespace Empiria.Trade.WebApi.Inventory {
 
 
     [HttpGet]
-    [Route("v8/order-management/warehouses")]
-    public CollectionModel GetWarehouses() {
-
-      using (var usecases = InventoryOrderUseCases.UseCaseInteractor()) {
-
-        FixedList<NamedEntityDto> warehouses = usecases.GetWarehouses();
-
-        return new CollectionModel(this.Request, warehouses);
-      }
-    }
-
-
-    [HttpGet]
     [Route("v8/order-management/inventory-orders/inventory-supervisor")]
     public CollectionModel GetResponsibles() {
 
@@ -84,6 +125,19 @@ namespace Empiria.Trade.WebApi.Inventory {
         FixedList<NamedEntityDto> parties = usecases.GetPartiesByRol("Inventory-manager");
 
         return new CollectionModel(this.Request, parties);
+      }
+    }
+
+
+    [HttpGet]
+    [Route("v8/order-management/warehouses")]
+    public CollectionModel GetWarehouses() {
+
+      using (var usecases = InventoryOrderUseCases.UseCaseInteractor()) {
+
+        FixedList<NamedEntityDto> warehouses = usecases.GetWarehouses();
+
+        return new CollectionModel(this.Request, warehouses);
       }
     }
 
@@ -102,69 +156,14 @@ namespace Empiria.Trade.WebApi.Inventory {
 
 
     [HttpPost]
-    [Route("v8/order-management/inventory-orders")]
-    public SingleObjectModel CreateInventoryOrder([FromBody] InventoryOrderFields fields) {
+    [Route("v8/order-management/inventory-orders/search")]
+    public SingleObjectModel SearchInventoryOrderList([FromBody] InventoryOrderQuery query) {
 
       using (var usecases = InventoryOrderUseCases.UseCaseInteractor()) {
 
-        InventoryHolderDto inventoryOrder = usecases.CreateInventoryOrder(fields);
+        InventoryOrderDataDto inventoryOrderDto = usecases.SearchInventoryOrder(query);
 
-        return new SingleObjectModel(this.Request, inventoryOrder);
-      }
-    }
-
-
-    [HttpPost]
-    [Route("v8/order-management/inventory-orders/{orderUID}/items")]
-    public SingleObjectModel CreateInventoryOrderItem([FromUri] string orderUID, [FromBody] InventoryOrderItemFields fields) {
-
-      using (var usecases = InventoryOrderUseCases.UseCaseInteractor()) {
-
-        InventoryHolderDto inventoryOrder = usecases.CreateInventoryOrderItem(orderUID, fields);
-
-        return new SingleObjectModel(this.Request, inventoryOrder);
-      }
-    }
-
-
-    [HttpPost]
-    [Route("v8/order-management/inventory-orders/{orderUID:guid}/close")]
-    public SingleObjectModel CloseInventoryOrder([FromUri] string orderUID) {
-
-      Assertion.RequireFail("Funcionalidad en proceso de desarrollo.");
-
-      using (var usecases = InventoryOrderUseCases.UseCaseInteractor()) {
-
-        InventoryHolderDto inventoryOrder = usecases.CloseInventoryOrder(orderUID);
-
-        return new SingleObjectModel(this.Request, inventoryOrder);
-      }
-    }
-
-
-    [HttpDelete]
-    [Route("v8/order-management/inventory-orders/{orderUID:guid}")]
-    public NoDataModel DeleteInventoryOrder([FromUri] string orderUID) {
-
-      using (var usecases = InventoryOrderUseCases.UseCaseInteractor()) {
-
-        usecases.DeleteInventoryOrder(orderUID);
-
-        return new NoDataModel(this.Request);
-      }
-    }
-
-
-    [HttpDelete]
-    [Route("v8/order-management/inventory-orders/{orderUID:guid}/items/{orderItemUID:guid}")]
-    public SingleObjectModel DeleteInventoryOrderItem([FromUri] string orderUID,
-                                                [FromUri] string orderItemUID) {
-
-      using (var usecases = InventoryOrderUseCases.UseCaseInteractor()) {
-
-        InventoryHolderDto inventoryOrder = usecases.DeleteInventoryOrderItem(orderUID, orderItemUID);
-
-        return new SingleObjectModel(this.Request, inventoryOrder);
+        return new SingleObjectModel(this.Request, inventoryOrderDto);
       }
     }
 

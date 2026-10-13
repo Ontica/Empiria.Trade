@@ -40,6 +40,12 @@ namespace Empiria.Trade.Core {
 
     static public new InventoryOrder Empty => ParseEmpty<InventoryOrder>();
 
+    static public InventoryOrder GetInventoryOrderByParent(int orderId) {
+      Assertion.Require(orderId, nameof(orderId));
+
+      return InventoryData.GetInventoryOrderByParent(orderId);
+    }
+
     #endregion Constructors and parsers
 
     #region Properties

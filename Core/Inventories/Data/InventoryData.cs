@@ -53,6 +53,15 @@ namespace Empiria.Trade.Core {
     }
 
 
+    static internal InventoryOrder GetInventoryOrderByParent(int orderId) {
+      var sql = $"SELECT * FROM OMS_Orders WHERE Order_Parent_Id = '{orderId}' ";
+
+      var dataOperation = DataOperation.Parse(sql);
+
+      return DataReader.GetObject<InventoryOrder>(dataOperation);
+    }
+
+
     static internal FixedList<SalesInventoryStock> GetInventoryStockByVendorProduct(
                                         int productId, string warehouseBinClauses) {
 
@@ -140,6 +149,11 @@ namespace Empiria.Trade.Core {
           entry.PostingTime, (char) entry.Status);
 
       DataWriter.Execute(op);
+    }
+
+
+    static public void RemoveInventoryOrdersByParent(int id) {
+      throw new NotImplementedException();
     }
 
     #region Private methods
