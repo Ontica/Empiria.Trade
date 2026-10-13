@@ -49,7 +49,7 @@ namespace Empiria.Trade.Procurement.Domain {
       return new InventoryOrderFields {
         ParentOrderUID = parentOrderUID,
         InventoryTypeUID = InventoryType.InventarioEntradasCompra.UID,
-        Description = $"Generado por: {order.OrderNo}",
+        Description = $"Generado por compra: {order.OrderNo}",
         CurrencyUID = order.Currency.UID,
         ExchangeRate = order.ExchangeRate,
         RequestedByUID = order.RequestedBy.UID,

@@ -8,14 +8,16 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
+using System;
 using System.Collections.Generic;
-
-using Empiria.Trade.Core.Inventories.Adapters;
+using System.Linq;
+using DocumentFormat.OpenXml.Drawing.Charts;
+using Empiria.Orders;
+using Empiria.Parties;
 using Empiria.Trade.Core;
 using Empiria.Trade.Core.Catalogues;
-using System.Linq;
-using Empiria.Parties;
-using System;
+using Empiria.Trade.Core.Inventories.Adapters;
+using iText.Layout.Borders;
 
 namespace Empiria.Trade.Sales {
 
@@ -33,6 +35,36 @@ namespace Empiria.Trade.Sales {
     }
 
     #region Public methods
+
+    static internal void GenerateInventoryOrder(SalesOrder order) {
+
+      var existInventoryOrders = new List<InventoryOrder>();
+
+      if (existInventoryOrders.Count > 0) {
+        //InventoryData.RemoveInventoryOrdersByParent(order.Id);
+      }
+
+      var parentOrderUID = order.OrderUID == string.Empty ? order.UID : order.OrderUID;
+
+      InventoryOrderFields inventoryFields = new InventoryOrderFields {
+        ParentOrderUID = parentOrderUID,
+        InventoryTypeUID = InventoryType.InventarioSalidasPorVenta.UID,
+        Description = $"Generado por pedido: {order.OrderNo}",
+        CurrencyUID = order.Currency.UID,
+        ExchangeRate = order.ExchangeRate,
+        RequestedByUID = order.RequestedBy.UID,
+        ResponsibleUID = order.Responsible.UID,
+        WarehouseUID = order.Warehouse.UID
+      };
+
+      InventoryOrder inventoryOrder = new InventoryOrder(inventoryFields.WarehouseUID,
+                                                         OrderType.InventoryOrder);
+
+      inventoryOrder.Update(inventoryFields);
+
+      inventoryOrder.Save();
+    }
+
 
     public FixedList<SalesOrder> GetAuthorizationOrders() {
       //var orders = SalesOrderData.GetSalesOrdersToAuthorize(fields);
@@ -217,7 +249,7 @@ namespace Empiria.Trade.Sales {
       }
     }
 
-    
+
 
     #endregion Private methods
 

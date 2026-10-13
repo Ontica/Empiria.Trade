@@ -283,7 +283,8 @@ namespace Empiria.Trade.Core {
 
     public void AuthorizeOrder() {
 
-      this.SalesOrderProcessStatus = OrderStatus.Authorized.ToString();
+      //this.SalesOrderProcessStatus = OrderStatus.Authorized.ToString();
+      this.SalesOrderProcessStatus = OrderStatus.Packing.ToString();
 
       this.Authorization();
 

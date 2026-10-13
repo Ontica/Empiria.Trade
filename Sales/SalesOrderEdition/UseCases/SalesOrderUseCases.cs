@@ -42,19 +42,48 @@ namespace Empiria.Trade.Sales.UseCases {
 
     #region Use cases
 
+    public ISalesOrderDto ApplySalesOrder(string orderUID) {
+      Assertion.Require(orderUID, "orderUID");
+
+      var order = SalesOrder.Parse(orderUID);
+
+      order.Customer = order.Beneficiary;
+      order.GetCustomerContact();
+      order.GetCustomerAddress();
+      order.Supplier = Party.Parse(order.Provider.Id);
+      order.SalesAgent = Party.Parse(order.SalesAgentId);
+
+      order.GetItemsAndOrderTotal();
+
+      switch (order.PaymentConditions) {
+        case "Contado":
+          order.Apply();
+          break;
+        case "Crédito":
+        case "Credito":
+          SetCreditOrder(order);
+          break;
+      }
+
+      SalesOrderHelper.GenerateInventoryOrder(order);
+
+      return SalesOrderMapper.Map(order);
+    }
+
+
     public ISalesOrderDto GetSalesOrder(string orderUID, QueryType queryType) {
 
       SalesOrder order = SalesOrder.Parse(orderUID);
 
       SetSalesOrderDefaultValues(order, queryType);
-      
+
       order.GetItemsAndOrderTotal();
       order.SetOrderActions(queryType);
 
       return SalesOrderMapper.Map(order);
     }
 
-    
+
     public ISalesOrderDto ProcessSalesOrder(SalesOrderFields fields) {
       Assertion.Require(fields, "fields");
 
@@ -67,6 +96,7 @@ namespace Empiria.Trade.Sales.UseCases {
 
 
     public ISalesOrderDto CreateSalesOrder(SalesOrderFields fields) {
+
       Assertion.Require(fields, "fields");
 
       ValuateSalesOrder(fields);
@@ -95,13 +125,7 @@ namespace Empiria.Trade.Sales.UseCases {
     public ISalesOrderDto UpdateSalesOrder(string orderUID, SalesOrderFields fields) {
       Assertion.Require(fields, "fields");
 
-      if (fields.Status != OrderStatus.Captured) { // OrderStatus.Captured
-        Assertion.RequireFail($"It is only possible to update orders in the Captured status, " +
-                              $"your order status is:{fields.Status}");
-      }
-
-      ValidateCustomer(fields.CustomerUID, fields.CustomerAddressUID);
-      ValidateItemsFields(fields.Items);
+      ValuateSalesOrder(fields);
 
       var order = SalesOrder.Parse(orderUID);
 
@@ -165,7 +189,7 @@ namespace Empiria.Trade.Sales.UseCases {
       switch (fields.QueryType) {
 
         case QueryType.Sales: {
-           
+
           var salesOrdersList = helper.GetOrders();
           return SearchSealesOrderMapper.Map(fields, salesOrdersList);
         }
@@ -175,7 +199,7 @@ namespace Empiria.Trade.Sales.UseCases {
           return SearchSealesOrderMapper.Map(fields, salesOrders);
         }
         case QueryType.SalesPacking: {
-          
+
           FixedList<SalesOrder> salesOrders = helper.GetOrdersToPacking();
           return SearchSealesOrderMapper.Map(fields, salesOrders);
         }
@@ -236,38 +260,6 @@ namespace Empiria.Trade.Sales.UseCases {
     }
 
 
-    public ISalesOrderDto ApplySalesOrder(string orderUID) {
-      Assertion.Require(orderUID, "orderUID");
-
-      var order = SalesOrder.Parse(orderUID);
-      
-      order.Customer = order.Beneficiary;
-      order.GetCustomerContact();
-      order.GetCustomerAddress();
-      order.Supplier = Party.Parse(order.Provider.Id);
-      order.SalesAgent = Party.Parse(order.SalesAgentId);
-
-      order.GetItemsAndOrderTotal();
-
-      SetCreditOrder(order);
-
-      //switch (order.PaymentConditions) {
-      //  case "Contado":
-      //    order.AuthorizePayment();
-      //    break;
-      //  case "Crédito":
-      //  case "Credito":
-      //    SetCreditOrder(order);
-      //    break;
-      //}
-
-      //SalesOrderHelper helper = new SalesOrderHelper();
-      //helper.CreateInventoryOrderBySale(order.SalesOrderItems);
-
-      return SalesOrderMapper.Map(order);
-    }
-
-
     public ISalesOrderDto GetSalesOrder(string orderNumber) {
       SalesOrderHelper helper = new SalesOrderHelper();
 
@@ -289,10 +281,9 @@ namespace Empiria.Trade.Sales.UseCases {
       var order = SalesOrder.Parse(orderUID);
       var orderStatus = EnumExtensions.GetOrderStatusEnum(order.SalesOrderProcessStatus);
 
-      if (orderStatus != OrderStatus.Applied) { // OrderStatus.Applied
-        Assertion.RequireFail($"It is only possible to Authorize orders in the Applied status, " +
-                              $"your order status is: {order.Status}");
-      }
+      Assertion.Require(orderStatus == OrderStatus.Applied, $"It is only possible to Authorize orders " +
+                        $"in the Applied status, your order status is: {order.Status}");
+
 
       order.AuthorizeOrder();
 
@@ -347,7 +338,7 @@ namespace Empiria.Trade.Sales.UseCases {
 
     private void AddCredit(SalesOrder order) {
 
-      var creditFields = new CreditTrasnactionFields() {
+      var trasnactionFields = new CreditTrasnactionFields() {
         CustomerId = order.Customer.Id,
         TransactionTime = DateTime.Now,
         CreditAmount = order.OrderTotal,
@@ -357,7 +348,7 @@ namespace Empiria.Trade.Sales.UseCases {
 
       var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
 
-      moneyAccountUseCase.AddCreditTransaction(creditFields);
+      moneyAccountUseCase.AddCreditTransaction(trasnactionFields);
     }
 
 
@@ -397,7 +388,7 @@ namespace Empiria.Trade.Sales.UseCases {
       SalesOrder order;
 
       var orderType = OrderType.SalesOrder;
-      
+
       fields.MapToOrderFields(orderType);
 
       if (fields.UID.Length > 0) {
@@ -413,22 +404,25 @@ namespace Empiria.Trade.Sales.UseCases {
     private void SetCreditOrder(SalesOrder order) {
 
       var customerCreditLimit = order.Beneficiary.ExtendedData.Get<decimal>("LimiteCredito", 0);
-      
+
       var customerDebit = GetCustomerTotalDebt(order.Beneficiary.Id);
 
       var orderTotal = order.OrderTotal;
 
       var debitTotal = customerDebit + orderTotal;
 
-      //if (debitTotal > GetCusomerCreditLimit(order.Beneficiary.Id)) {
       if (debitTotal <= customerCreditLimit) {
-        //SI DEUDA ES MENOR O IGUAL A LIMITE, SE APLICA
-        order.Apply();
-      } else {
 
+        //DEUDA <= CREDITO, PASA DIRECTO A SURTIR
+        order.AuthorizeOrder();
+
+        //TODO SINO EXISTE, AGREGAR DATOS DE CREDITO A OMS_MONEY_ACCOUNTS DE ESTA ORDER
+        //TODO AGREGAR OMS_MONEY_ACCOUNT_TRANSACTIONS DE DESTA ORDER
         AddCredit(order);
 
-        order.AuthorizeOrder();
+      } else {
+
+        order.Apply();
       }
     }
 
@@ -488,10 +482,16 @@ namespace Empiria.Trade.Sales.UseCases {
     }
 
 
-    private void ValuateSalesOrder(SalesOrderFields fields) {
+    private void ValuateSalesOrder(SalesOrderFields fields, string orderUID = "") {
+
+      if (orderUID != string.Empty && fields.Status != OrderStatus.Captured) {
+
+        Assertion.RequireFail($"It is only possible to update orders in the Captured status, " +
+                              $"your order status is:{fields.Status}");
+      }
 
       ValidateCustomer(fields.CustomerUID, fields.CustomerAddressUID);
-      ValidateShippingMethod(fields);
+      //ValidateShippingMethod(fields);
       ValidateItemsFields(fields.Items);
     }
 
@@ -503,4 +503,3 @@ namespace Empiria.Trade.Sales.UseCases {
 
 
 
-  
