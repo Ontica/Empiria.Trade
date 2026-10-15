@@ -30,7 +30,7 @@ namespace Empiria.Trade.Core {
       var pickingData = MapPickingData(packaging.PickingData);
       var packagedItems = MapToPackagedItems(packaging);
       var packingData = MapPackingData(packaging.Data);
-      var missingItems = MapToMissingItems_(packaging.MissingItems);
+      var missingItems = MapToMissingItems(packaging.MissingItems);
 
       return new PackingDto() {
         Picking = pickingData,
@@ -173,7 +173,7 @@ namespace Empiria.Trade.Core {
     }
 
 
-    static private FixedList<MissingItemDto> MapToMissingItems_(FixedList<MissingItem> missing) {
+    static private FixedList<MissingItemDto> MapToMissingItems(FixedList<MissingItem> missing) {
 
       var missingItems = new List<MissingItemDto>();
 

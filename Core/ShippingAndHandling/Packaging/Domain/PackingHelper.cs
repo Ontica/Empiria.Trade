@@ -8,9 +8,9 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using Empiria.Locations;
 using Empiria.Trade.Core.Catalogues;
 
@@ -20,7 +20,6 @@ namespace Empiria.Trade.Core {
   public class PackingHelper {
 
     #region Public methods
-
 
     public FixedList<MissingItem> GetMissingItems(string orderUid,
                                         FixedList<PackagedForItem> packagesForItems) {
@@ -40,10 +39,14 @@ namespace Empiria.Trade.Core {
                                   .Sum(x => x.Quantity);
 
         if (item.Quantity > quantityOrderItems) {
+          
+          var orderItem = SalesOrderItem.Parse(item.OrderItemId);
+
           var missing = new MissingItem();
+
           missing.OrderItemUID = item.OrderItemUID;
           missing.Quantity = item.Quantity - quantityOrderItems;
-          missing.MergeCommonFieldsData(item.OrderItemId);
+          missing.MergeCommonFieldsData(orderItem);
           missing.ItemWeight = missing.Quantity * (missing.Product.Peso * missing.Product.PackingSmallBag);
           missing.WarehouseBins = GetWarehouseBins(item);
 
@@ -122,11 +125,6 @@ namespace Empiria.Trade.Core {
       return data;
     }
 
-    #endregion Public methods
-
-
-    #region Private methods
-
 
     public FixedList<PackingItem> GetPackingItems(int orderPackingId) {
 
@@ -137,21 +135,31 @@ namespace Empiria.Trade.Core {
 
       foreach (var item in packingItems) {
 
+        var location = Location.Parse(item.WarehouseBinId);
+        var warehouse = InventoryBuilder.GetRootLocation(location);
+        var orderItem = SalesOrderItem.Parse(item.OrderItemId);
+
         var packingOrderItem = new PackingItem();
-        packingOrderItem.MergeCommonFieldsData(item.OrderItemId);
+
+        packingOrderItem.MergeCommonFieldsData(orderItem);
 
         packingOrderItem.UID = item.PackingItemUID;
         packingOrderItem.OrderPackingUID = item.OrderPacking.OrderPackingUID;
         packingOrderItem.Quantity = item.Quantity;
         packingOrderItem.ItemWeight = item.Quantity * (packingOrderItem.Product.Peso *
                                                        packingOrderItem.Product.PackingSmallBag);
-
+        packingOrderItem.WarehouseForPacking = MergeWarehouseForPacking(warehouse);
+        packingOrderItem.WarehouseBinForPacking = MergeWarehouseBinForPacking(orderItem, location, warehouse.Name);
         packingOrderItems.Add(packingOrderItem);
       }
 
       return packingOrderItems.ToFixedList();
     }
 
+    #endregion Public methods
+
+
+    #region Private methods
 
     private FixedList<WarehouseBinForPacking> GetWarehouseBins(OrderItemTemp orderItem) {
 
@@ -165,12 +173,15 @@ namespace Empiria.Trade.Core {
       foreach (var inventory in inventoryStocks) {
 
         var warehouseRoot = InventoryBuilder.GetRootLocation(inventory.Location);
+        var warehouseName = warehouseRoot.Id == -1 ? "ALMACEN VW" : $"ALMACEN {warehouseRoot.ShortName}";
+        var locationName = inventory.Location.Name == "-1" ? "LOC. VIRTUAL" : inventory.Location.Name;
 
         WarehouseBinForPacking warehouseBin = new WarehouseBinForPacking {
           UID = inventory.Location.LocationUID,
           OrderItemUID = orderItem.OrderItemUID,
-          Name = inventory.Location.Name == "-1" ? "LOCALIZACION VIRTUAL" : inventory.Location.Name,
-          WarehouseName = warehouseRoot.Id == -1 ? "ALMACEN VIRTUAL" : $"ALMACEN {warehouseRoot.Name}",
+          Name = locationName,
+          WarehouseName = warehouseName,
+          Description = $"{warehouseName} - {locationName} {inventory.Stock}",
           Stock = inventory.Stock,
         };
 
@@ -178,6 +189,28 @@ namespace Empiria.Trade.Core {
       }
 
       return warehouseBins.ToFixedList();
+    }
+    
+
+    private WarehouseBinForPacking MergeWarehouseBinForPacking(SalesOrderItem orderItem,
+                                                               Location location, string warehouseName) {
+
+      return new WarehouseBinForPacking {
+        UID = location.UID,
+        OrderItemUID = orderItem.OrderItemUID,
+        WarehouseName = warehouseName == "-1" ? "" : warehouseName,
+        Description = location.Id == -1 ? "" : location.Description,
+        Name = location.Id == -1 ? "LOCALIZACION VIRTUAL" : location.Name
+      };
+    }
+
+    private WarehouseForPacking MergeWarehouseForPacking(Location warehouse) {
+
+      return new WarehouseForPacking {
+        UID = warehouse.UID,
+        Code = warehouse.Id == -1 ? "VW" : $"{warehouse.ShortName}",
+        Name = warehouse.Id == -1 ? "ALMACEN VIRTUAL" : $"{warehouse.Name}"
+      };
     }
 
     #endregion Private methods

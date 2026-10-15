@@ -128,16 +128,24 @@ namespace Empiria.Trade.Core
 
     private PickingData GetPickingData(string orderUID) {
 
-      //TODO CARGAR INFO DE ORDEN DE INVENTARIO PARA PICKING
-      InventoryOrder inventory = InventoryOrder.Parse(orderUID);
+      SalesOrder order = SalesOrder.Parse(orderUID);
+      //ACTUALMENTE EXISTE SOLO UNA ORDEN DE INVENTARIO PARA PICKING
+      //TODO V2 CARGAR ARRAY DE ORDENES DE INVENTARIO PARA PICKING
+
+      var inventoryOrders = InventoryOrder.GetInventoryOrdersByParent(order.Id);
+
+      if (inventoryOrders.Count == 0) {
+        return new PickingData();
+      }
 
       return new PickingData {
-        OrderUID = inventory.UID,
+        OrderUID = inventoryOrders[0].UID,
         InventoryOrderTypeId = -1,
-        InventoryOrderNo = "",
-        ResponsibleId = inventory.PostedBy.Id,
-        AssignedToId = inventory.Responsible.Id,
-        Notes = inventory.Observations
+        InventoryOrderNo = inventoryOrders[0].OrderNo,
+        ResponsibleId = inventoryOrders[0].RequestedBy.Id,
+        AssignedToId = inventoryOrders[0].Responsible.Id,
+        Notes = inventoryOrders[0].Observations,
+        
       };
     }
 

@@ -53,7 +53,7 @@ namespace Empiria.Trade.Core {
     public int InventoryOrderTypeId {
       get;
       internal set;
-    }
+    } = -1;
 
 
     public int ResponsibleId {
@@ -233,10 +233,15 @@ namespace Empiria.Trade.Core {
     }
 
 
-    public decimal Stock {
+    public string Description {
       get; set;
     }
 
+
+    public decimal Stock {
+      get; set;
+    }
+    
   } // WarehouseBinForPacking
 
 
@@ -277,9 +282,7 @@ namespace Empiria.Trade.Core {
     }
 
 
-    public void MergeCommonFieldsData(int orderItemId) {
-
-      var orderItem = SalesOrderItem.Parse(orderItemId);
+    public void MergeCommonFieldsData(SalesOrderItem orderItem) {
 
       this.OrderItemUID = orderItem.UID;
       this.VendorProductId = orderItem.ProductEntry.Id;
