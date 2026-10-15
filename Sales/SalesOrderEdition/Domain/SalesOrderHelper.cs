@@ -8,18 +8,15 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using DocumentFormat.OpenXml.Drawing.Charts;
+
 using Empiria.Orders;
 using Empiria.Parties;
-using Empiria.StateEnums;
+
 using Empiria.Trade.Core;
 using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Core.Inventories.Adapters;
-using Empiria.Trade.Inventory.UseCases;
-using iText.Layout.Borders;
 
 namespace Empiria.Trade.Sales {
 

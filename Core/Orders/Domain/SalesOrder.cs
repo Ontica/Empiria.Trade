@@ -253,11 +253,6 @@ namespace Empiria.Trade.Core {
 
     #region Public methods
 
-    //protected override void OnSave() {
-    //  base.Save();
-    //  SalesOrderItem.SaveSalesOrderItems(this.SalesOrderItems, this.Id);
-    //}
-
     public void AddSalesOrderItem(SalesOrderItem item, int orderId) {
       Assertion.Require(item, nameof(item));
 
@@ -269,7 +264,8 @@ namespace Empiria.Trade.Core {
 
 
     public void Apply() {
-      this.SalesOrderProcessStatus = Core.OrderStatus.Applied.ToString();
+
+      this.SalesOrderProcessStatus = OrderStatus.Applied.ToString();
 
       SetOrderValues();
 
@@ -298,20 +294,6 @@ namespace Empiria.Trade.Core {
     }
 
 
-    public void Deauthorize() {
-      this.SalesOrderProcessStatus = OrderStatus.Applied.ToString();
-      this.Open();
-
-      SetOrderValues();
-
-      var actions = ActionsService.Load();
-      actions.OnApply();
-      this.Actions = actions.SetActions(this, QueryType.SalesAuthorization);
-
-      this.Save();
-    }
-
-
     public void AuthorizePayment() {
       //this.AuthorizationStatus = Core.OrderStatus.ToSupply.ToString();
 
@@ -324,6 +306,11 @@ namespace Empiria.Trade.Core {
       this.Actions = actions.SetActions(this, QueryType.SalesAuthorization);
 
       this.Save();
+    }
+
+
+    public void CalculateSalesOrder() {
+      this.SetOrderValues();
     }
 
 
@@ -342,13 +329,28 @@ namespace Empiria.Trade.Core {
 
 
     public void Close() {
-      //this.Status = OrderStatus.Closed;
-      //AuthorizationStatus = OrderAuthorizationStatus.Empty;
 
       this.SalesOrderProcessStatus = OrderStatus.Closed.ToString();
 
-      SalesOrderData.Write(this);
       SetOrderValues();
+
+      //this.Close(this.RequestedBy);
+
+      this.Save();
+    }
+
+
+    public void Deauthorize() {
+      this.SalesOrderProcessStatus = OrderStatus.Applied.ToString();
+      this.Open();
+
+      SetOrderValues();
+
+      var actions = ActionsService.Load();
+      actions.OnApply();
+      this.Actions = actions.SetActions(this, QueryType.SalesAuthorization);
+
+      this.Save();
     }
 
 
@@ -363,24 +365,52 @@ namespace Empiria.Trade.Core {
     }
 
 
+    public CustomerAddress GetCustomerAddress() {
+
+      this.CustomerAddress = CustomerAddress.Parse(this.CustomerAddressId);
+      return this.CustomerAddress;
+    }
+
+
+    public CustomerContact GetCustomerContact() {
+
+      this.CustomerContact = CustomerContact.Parse(this.CustomerContactId);
+      return this.CustomerContact;
+    }
+
+
+    public void GetItemsAndOrderTotal() {
+      this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id == 0 ? this.OrderId : this.Id);
+
+      SetOrderTotals();
+    }
+
+
     public void GetSalesOrderItems() {
 
       this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id);
     }
 
 
+    public void SetOrderActions(QueryType queryType) {
+      var actions = ActionsService.Load();
+
+      this.Actions = actions.SetActions(this, queryType);
+    }
+
+
     public void Supply() {
-      //this.Status = OrderStatus.Shipping;
-      //AuthorizationStatus = OrderAuthorizationStatus.Suppled;
 
       this.SalesOrderProcessStatus = OrderStatus.Shipping.ToString();
 
-      SalesOrderData.Write(this);
       SetOrderValues();
 
       var actions = ActionsService.Load();
       actions.OnSuppy();
-      this.Actions = actions.SetActions(this, QueryType.SalesPacking);
+      this.Actions = actions.SetActions(this, QueryType.SalesShipping);
+      //this.Actions = actions.SetActions(this, QueryType.SalesPacking);
+
+      this.Save();
     }
 
 
@@ -421,23 +451,6 @@ namespace Empiria.Trade.Core {
       if (fields.CanUpdateOrder) {
         base.Update(fields);
       }
-    }
-
-
-    public void CalculateSalesOrder() {
-      this.SetOrderValues();
-    }
-
-    public void SetOrderActions(QueryType queryType) {
-      var actions = ActionsService.Load();
-
-      this.Actions = actions.SetActions(this, queryType);
-    }
-
-    public void GetItemsAndOrderTotal() {
-      this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id == 0 ? this.OrderId : this.Id);
-      
-      SetOrderTotals();
     }
 
     #endregion Public methods
@@ -494,20 +507,6 @@ namespace Empiria.Trade.Core {
         this.Tax += item.TaxesIVA;
       }
       this.OrderTotal += this.ItemsTotal + this.Tax + this.Shipment - this.Discount;
-    }
-
-
-    public CustomerAddress GetCustomerAddress() {
-
-      this.CustomerAddress = CustomerAddress.Parse(this.CustomerAddressId);
-      return this.CustomerAddress;
-    }
-
-
-    public CustomerContact GetCustomerContact() {
-
-      this.CustomerContact = CustomerContact.Parse(this.CustomerContactId);
-      return this.CustomerContact;
     }
 
     #endregion Helpers

@@ -48,11 +48,7 @@ namespace Empiria.Trade.Sales.UseCases {
 
       var order = SalesOrder.Parse(orderUID);
 
-      order.Customer = order.Beneficiary;
-      order.GetCustomerContact();
-      order.GetCustomerAddress();
-      order.Supplier = Party.Parse(order.Provider.Id);
-      order.SalesAgent = Party.Parse(order.SalesAgentId);
+      SetSalesOrderDefaultValues(order, QueryType.Sales);
 
       order.GetItemsAndOrderTotal();
 
@@ -313,11 +309,14 @@ namespace Empiria.Trade.Sales.UseCases {
       Assertion.Require(orderUID, "orderUID");
 
       var order = SalesOrder.Parse(orderUID);
+      
+      SetSalesOrderDefaultValues(order, QueryType.SalesPacking);
 
-      if (order.Status != EntityStatus.OnReview) { // OrderStatus.Packing
-        Assertion.RequireFail($"It is only possible to Supply orders in the Packing status, " +
-                              $"your order status is: {order.Status}");
-      }
+      order.GetItemsAndOrderTotal();
+
+      Assertion.Require(order.SalesOrderProcessStatus == OrderStatus.Packing.ToString(),
+                          $"It is only possible to Supply orders in the Packing status, " +
+                          $"your order status is: {OrderStatus.Packing.ToString()}");
 
       order.Supply();
 
@@ -443,8 +442,10 @@ namespace Empiria.Trade.Sales.UseCases {
 
 
     private void SetSalesOrderDefaultValues(SalesOrder order, QueryType queryType) {
+      
       order.OrderQueryType = queryType;
-      order.Customer = Party.Parse(order.Beneficiary.Id);
+      
+      order.Customer = order.Beneficiary;
       order.GetCustomerContact();
       order.GetCustomerAddress();
 

@@ -47,7 +47,7 @@ namespace Empiria.Trade.Tests.Sales {
 
       var salesOrderUseCase = SalesOrderUseCases.UseCaseInteractor();
 
-      var sut = salesOrderUseCase.GetSalesOrder("b126e056-4da5-4def-840c-b41e2ffdfc44", QueryType.Sales);
+      var sut = salesOrderUseCase.GetSalesOrder("a0194f91-9c1c-4405-8c1a-a0c284432533", QueryType.SalesPacking);
 
       Assert.NotNull(sut);
     }
@@ -122,18 +122,6 @@ namespace Empiria.Trade.Tests.Sales {
       Assert.NotNull(orderDto);
     }
 
-    [Fact]
-    public void ShouldGetOrder() {
-
-      var order = SalesOrder.Parse("2cc43be3-b153-42e1-8ede-06ecb6bc7b1b");
-      order.CalculateSalesOrder();
-
-      order.SetOrderActions(QueryType.SalesPacking);
-
-
-      var orderDto = SalesOrderMapper.Map(order);
-      Assert.NotNull(orderDto);
-    }
 
     [Fact]
     public void ShouldCancelOrderItem() {
@@ -173,8 +161,9 @@ namespace Empiria.Trade.Tests.Sales {
     public void ShouldSupplySalesOrder() {
 
       var useCase = SalesOrderUseCases.UseCaseInteractor();
-      string orderUID = "999b56ab-7e63-4bed-bdff-666de817cb86";
-      var sut = useCase.SupplySalesOrder(orderUID);
+
+      var sut = useCase.SupplySalesOrder("a0194f91-9c1c-4405-8c1a-a0c284432533");
+      
       Assert.NotNull(sut);
     }
 
