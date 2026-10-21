@@ -11,7 +11,7 @@
 using Empiria.Trade.Core;
 using Empiria.Trade.Sales.ShippingAndHandling.Data;
 
-namespace Empiria.Trade.Sales.ShippingAndHandling {
+namespace Empiria.Trade.Sales {
 
   /// <summary>Represents a shipping package in pallet entry.</summary>
   public class ShippingPackage : BaseObject {
@@ -41,32 +41,32 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
     #region Properties
 
 
-    [DataField("ShippingPackageId")]
+    [DataField("Shipping_Package_Id")]
     public int ShippingPackageId {
       get; set;
     }
 
 
-    [DataField("ShippingPackageUID")]
+    [DataField("Shipping_Package_UID")]
     public string ShippingPackageUID {
       get; set;
     } = string.Empty;
 
 
-    [DataField("ShippingPalletId")]
+    [DataField("Shipping_Pallet_Id")]
     public ShippingPallet ShippingPallet {
       get; set;
     }
 
 
-    [DataField("OrderPackingId")]
-    public Core.PackagingEntry OrderPacking {
+    [DataField("Order_Packing_Id")]
+    public PackagingEntry OrderPacking {
       get; set;
     }
 
 
-    [DataField("OrderId")]
-    public Empiria.Orders.Order Order {
+    [DataField("Order_Id")]
+    public SalesOrder Order {
       get; set;
     }
 
@@ -105,8 +105,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
     private void MapToShippingPackage(string package, ShippingPallet pallet) {
       
       this.ShippingPallet = pallet;
-      this.OrderPacking = Core.PackagingEntry.Parse(package);
-      this.Order = Empiria.Orders.Order.Parse(this.OrderPacking.SalesOrder.Id);
+      this.OrderPacking = PackagingEntry.Parse(package);
+      this.Order = SalesOrder.Parse(this.OrderPacking.SalesOrder.Id);
 
     }
 

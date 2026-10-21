@@ -19,7 +19,9 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
     EnProceso = 'E',
 
-    Cerrado = 'C'
+    Cerrado = 'C',
+
+    Eliminado = 'X'
 
   }
 

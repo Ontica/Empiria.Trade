@@ -69,7 +69,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
             ShippingEntry shipping = CreateOrUpdateShipping(fields);
 
-            CreateOrdersForShipping(shipping.ShippingUID, fields.Orders);
+            CreateOrdersForShipping(shipping.UID, fields.Orders);
 
             return shipping;
         }
@@ -171,7 +171,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
             FixedList<ShippingEntry> shippingList = ShippingData.GetShippingOrdersByQuery(query);
 
-            shippingList = shippingList.Where(x => x.ShippingOrderId > 0).ToList().ToFixedList();
+            shippingList = shippingList.Where(x => x.Id > 0).ToList().ToFixedList();
 
             foreach (var shipping in shippingList) {
                 helper.GetShippingNumber(shipping);

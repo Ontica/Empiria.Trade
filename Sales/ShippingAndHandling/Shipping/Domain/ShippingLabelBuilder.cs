@@ -101,12 +101,12 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       var labelsByItem = labelsByPallet.ToList();
 
       FixedList<ShippingOrderItem> shippingItems =
-        ShippingData.GetOrdersForShippingByShippingId(shipping.ShippingUID);
+        ShippingData.GetOrdersForShippingByShippingId(shipping.UID);
 
 
       foreach (var item in shippingItems) {
 
-        var existPallet = labelsByPallet.FindAll(x => x.ShippingUID == item.ShippingOrder.ShippingUID);
+        var existPallet = labelsByPallet.FindAll(x => x.ShippingUID == item.ShippingOrder.UID);
 
         if (existPallet.Count == 0) {
 
@@ -130,7 +130,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
         var packageType = PackageType.Parse(packing.PackageType.Id);
 
         var label = new ShippingLabel();
-        label.ShippingUID = item.ShippingOrder.ShippingUID;
+        label.ShippingUID = item.ShippingOrder.UID;
         label.ShippingNumber = item.ShippingOrder.ShippingNumber;
         label.DeliveryNumber = item.ShippingOrder.DeliveryNumber;
         label.ParcelSupplier = SimpleObjectData.Parse(shipping.ParcelSupplierId).Name;
@@ -156,17 +156,17 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       var labelsByItem = labelsByPallet.ToList();
 
       FixedList<ShippingOrderItem> shippingItems =
-        ShippingData.GetOrdersForShippingByShippingId(shipping.ShippingUID);
+        ShippingData.GetOrdersForShippingByShippingId(shipping.UID);
 
       int packingCount = 0;
       foreach (var item in shippingItems) {
 
-        var existPallet = labelsByPallet.FindAll(x => x.ShippingUID == item.ShippingOrder.ShippingUID);
+        var existPallet = labelsByPallet.FindAll(x => x.ShippingUID == item.ShippingOrder.UID);
 
         if (existPallet.Count == 0) {
           packingCount = packingCount + 1;
           var label = new ShippingLabel();
-          label.ShippingUID = item.ShippingOrder.ShippingUID;
+          label.ShippingUID = item.ShippingOrder.UID;
           label.ShippingNumber = item.ShippingOrder.ShippingNumber;
           label.DeliveryNumber = item.ShippingOrder.DeliveryNumber;
           label.ParcelSupplier = SimpleObjectData.Parse(shipping.ParcelSupplierId).Name;
@@ -192,7 +192,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     private FixedList<ShippingLabel> GetLabelsForPallets(ShippingEntry shipping) {
 
       FixedList<ShippingPallet> shippingPallets =
-        ShippingData.GetPalletByShippingUID(shipping.ShippingUID);
+        ShippingData.GetPalletByShippingUID(shipping.UID);
 
       var labelsByPallet = new List<ShippingLabel>();
 
@@ -201,7 +201,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
         palletCount = palletCount + 1;
         var label = new ShippingLabel();
 
-        label.ShippingUID = shipping.ShippingUID;
+        label.ShippingUID = shipping.UID;
         label.ShippingNumber = shipping.ShippingNumber;
         label.DeliveryNumber = shipping.DeliveryNumber;
         label.ParcelSupplier = SimpleObjectData.Parse(shipping.ParcelSupplierId).Name;

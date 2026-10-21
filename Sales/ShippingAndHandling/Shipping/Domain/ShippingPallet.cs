@@ -11,7 +11,7 @@
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 using Empiria.Trade.Sales.ShippingAndHandling.Data;
 
-namespace Empiria.Trade.Sales.ShippingAndHandling {
+namespace Empiria.Trade.Sales {
 
   /// <summary>Represents a shipping pallet entry.</summary>
   public class ShippingPallet : BaseObject {
@@ -41,28 +41,28 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
     #region Properties
 
 
-    [DataField("ShippingPalletId")]
+    [DataField("Shipping_Pallet_Id")]
     public int ShippingPalletId {
       get; set;
     }
 
 
-    [DataField("ShippingPalletUID")]
+    [DataField("Shipping_Pallet_UID")]
     public string ShippingPalletUID {
       get; set;
     } = string.Empty;
 
 
-    [DataField("ShippingPalletName")]
-    public string ShippingPalletName {
-      get; set;
-    } = string.Empty;
-
-
-    [DataField("ShippingOrderId")]
+    [DataField("Shipping_Order_Id")]
     public ShippingEntry ShippingOrder {
       get; set;
     }
+
+
+    [DataField("Shipping_Pallet_Name")]
+    public string ShippingPalletName {
+      get; set;
+    } = string.Empty;
 
 
     public string[] ShippingPackages {

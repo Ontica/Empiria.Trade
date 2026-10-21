@@ -54,7 +54,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       foreach (var shipping in shippingList) {
 
         FixedList<ShippingOrderItem> ordersForShipping =
-          ShippingData.GetOrdersForShippingByShippingId(shipping.ShippingUID);
+          ShippingData.GetOrdersForShippingByShippingId(shipping.UID);
 
         if (ordersForShipping.Count > 0) {
           GetOrdersMeasurementUnits(ordersForShipping);
@@ -93,7 +93,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       if (ordersForShipping.Count > 0) {
 
         ordersList = ShippingData.GetOrdersForShippingByShippingId(
-              ordersForShipping.First().ShippingOrder.ShippingUID);
+              ordersForShipping.First().ShippingOrder.UID);
 
         ValidateGetOrdersByShipping(orders, ordersList);
 
@@ -123,11 +123,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     internal void GetShippingNumber(ShippingEntry shipping) {
 
       shipping.ShippingNumber = $"S{(char) shipping.ShippingMethod}-" +
-                                $"{shipping.ShippingOrderId.ToString().PadLeft(9, '0')}";
+                                $"{shipping.Id.ToString().PadLeft(9, '0')}";
 
       if (shipping.Status == ShippingStatus.EnProceso || shipping.Status == ShippingStatus.Cerrado) {
         shipping.DeliveryNumber = $"E{(char) shipping.ShippingMethod}-" +
-                                  $"{shipping.ShippingOrderId.ToString().PadLeft(9, '0')}";
+                                  $"{shipping.Id.ToString().PadLeft(9, '0')}";
       }
 
     }
@@ -148,7 +148,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       } else {
 
         shipping = ShippingData.GetShippingOrdersByUID(
-                                orderForShippingList.First().ShippingOrder.ShippingUID)
+                                orderForShippingList.First().ShippingOrder.UID)
                                .FirstOrDefault();
 
         var customer = orderForShippingList.First().Order.Customer;
@@ -212,13 +212,13 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
     internal void GetShippingWithPallets(ShippingEntry shippingEntry) {
 
-      if (shippingEntry.ShippingOrderId == -1) {
+      if (shippingEntry.Id == -1) {
 
         shippingEntry.ShippingPallets = new FixedList<ShippingPallet>();
 
       } else {
 
-        var shippingPallets = ShippingData.GetPalletByShippingUID(shippingEntry.ShippingUID);
+        var shippingPallets = ShippingData.GetPalletByShippingUID(shippingEntry.UID);
 
         foreach (var pallet in shippingPallets) {
 

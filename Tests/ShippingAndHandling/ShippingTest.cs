@@ -21,6 +21,7 @@ using Empiria.Trade.Sales.ShippingAndHandling;
 using Empiria.Trade.Core.Catalogues;
 using System.Collections.Generic;
 using Empiria.Services;
+using Empiria.Trade.Sales;
 
 namespace Empiria.Trade.Tests {
 
@@ -32,7 +33,7 @@ namespace Empiria.Trade.Tests {
     #region Initialization
 
     public ShippingTest() {
-      //TestsCommonMethods.Authenticate();
+      TestsCommonMethods.Authenticate();
     }
 
     #endregion Initialization
@@ -168,12 +169,25 @@ namespace Empiria.Trade.Tests {
 
 
     [Fact]
-    public void GetShippingTest() {
+    public void GetShippingOrderByUIDTest() {
 
       var usecase = ShippingUseCases.UseCaseInteractor();
       string shippingUID = "9ed68735-af5c-4e49-85dc-4a177c82b273";
 
-      ShippingEntry sut = usecase.GetShippingByShippingUID(shippingUID);
+      ShippingEntry sut = usecase.GetShippingOrderByUID(shippingUID);
+
+      Assert.NotNull(sut);
+    }
+
+
+    [Fact]
+    public void GetShippingOrderByIDTest() {
+
+      var usecase = ShippingUseCases.UseCaseInteractor();
+      Financial.MoneyAccount sut = Financial.MoneyAccount.Parse(-1);
+      //ShippingEntry sut = ShippingEntry.Parse(1);
+      //ShippingOrderItem sut = ShippingOrderItem.Parse(-1);
+
       Assert.NotNull(sut);
     }
 

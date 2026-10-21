@@ -14,181 +14,181 @@ using Empiria.Trade.Sales.ShippingAndHandling.Data;
 using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
 using Empiria.Trade.Core;
 
-namespace Empiria.Trade.Sales.ShippingAndHandling {
+namespace Empiria.Trade.Sales {
 
-    /// <summary>Represents a shipping entry.</summary>
-    public class ShippingEntry : BaseObject {
+  /// <summary>Represents a shipping entry.</summary>
+  public class ShippingEntry : BaseObject {
 
 
-        #region Constructors and parsers
+    #region Constructors and parsers
 
-        public ShippingEntry() {
-            //no-op
-        }
+    public ShippingEntry() {
+      //no-op
+    }
 
 
-        static public ShippingEntry Parse(int id) => ParseId<ShippingEntry>(id);
+    static public ShippingEntry Parse(int id) => ParseId<ShippingEntry>(id);
 
-        static public ShippingEntry Parse(string uid) => ParseKey<ShippingEntry>(uid);
+    static public ShippingEntry Parse(string uid) => ParseKey<ShippingEntry>(uid);
 
-        static public ShippingEntry Empty => ParseEmpty<ShippingEntry>();
+    static public ShippingEntry Empty => ParseEmpty<ShippingEntry>();
 
 
-        public ShippingEntry(ShippingFields fields) {
+    public ShippingEntry(ShippingFields fields) {
 
-            MapToShippingEntry(fields);
+      MapToShippingEntry(fields);
 
-        }
+    }
 
 
-        #endregion Constructors and parsers
+    #endregion Constructors and parsers
 
 
-        #region Properties
+    #region Properties
 
 
-        [DataField("ShippingOrderId")]
-        public int ShippingOrderId {
-            get; set;
-        }
+    //[DataField("Shipping_Order_Id")]
+    //public int ShippingOrderId {
+    //  get; set;
+    //}
 
 
-        [DataField("ParcelSupplierId")]
-        public int ParcelSupplierId {
-            get; set;
-        }
+    //[DataField("Shipping_Order_UID")]
+    //public string ShippingUID {
+    //  get; set;
+    //} = string.Empty;
 
 
-        [DataField("ShippingUID")]
-        public string ShippingUID {
-            get; set;
-        } = string.Empty;
+    [DataField("Parcel_Supplier_Id")]
+    public int ParcelSupplierId {
+      get; set;
+    }
 
 
-        [DataField("ShippingGuide")]
-        public string ShippingGuide {
-            get; set;
-        } = string.Empty;
+    [DataField("Shipping_Guide")]
+    public string ShippingGuide {
+      get; set;
+    } = string.Empty;
 
 
-        [DataField("ParcelAmount")]
-        public decimal ParcelAmount {
-            get; set;
-        }
+    [DataField("Parcel_Amount")]
+    public decimal ParcelAmount {
+      get; set;
+    }
 
 
-        [DataField("CustomerAmount")]
-        public decimal CustomerAmount {
-            get; set;
-        }
+    [DataField("Customer_Amount")]
+    public decimal CustomerAmount {
+      get; set;
+    }
 
 
-        [DataField("ShippingDate")]
-        public DateTime ShippingDate {
-            get; set;
-        }
+    [DataField("Shipping_Date")]
+    public DateTime ShippingDate {
+      get; set;
+    }
 
 
-        [DataField("DeliveryDate")]
-        public DateTime DeliveryDate {
-            get; set;
-        }
+    [DataField("Delivery_Date")]
+    public DateTime DeliveryDate {
+      get; set;
+    }
 
 
-        [DataField("ShippingMethod", Default = ShippingMethods.None)]
-        public ShippingMethods ShippingMethod {
-            get; set;
-        } = ShippingMethods.None;
+    [DataField("Shipping_Method", Default = ShippingMethods.None)]
+    public ShippingMethods ShippingMethod {
+      get; set;
+    } = ShippingMethods.None;
 
 
-        [DataField("ShippingStatus", Default = ShippingStatus.EnCaptura)]
-        public ShippingStatus Status {
-            get; set;
-        } = ShippingStatus.EnCaptura;
+    [DataField("Shipping_Status", Default = ShippingStatus.EnCaptura)]
+    public ShippingStatus Status {
+      get; set;
+    } = ShippingStatus.EnCaptura;
 
 
-        internal string Keywords {
-            get {
-                return EmpiriaString.BuildKeywords(
+    internal string Keywords {
+      get {
+        return EmpiriaString.BuildKeywords(
 
-                  ShippingUID, ShippingGuide
-                );
-            }
-        }
+          UID, ShippingGuide
+        );
+      }
+    }
 
 
-        public string ShippingNumber {
-            get; set;
-        }
+    public string ShippingNumber {
+      get; set;
+    }
 
 
-        public string DeliveryNumber {
-            get; internal set;
-        }=string.Empty;
+    public string DeliveryNumber {
+      get; internal set;
+    } = string.Empty;
 
 
-        public decimal OrdersTotal {
-            get; internal set;
-        }
+    public decimal OrdersTotal {
+      get; internal set;
+    }
 
 
-        public FixedList<ShippingOrderItem> OrdersForShipping {
-            get; set;
-        } = new FixedList<ShippingOrderItem>();
+    public FixedList<ShippingOrderItem> OrdersForShipping {
+      get; set;
+    } = new FixedList<ShippingOrderItem>();
 
 
-        public FixedList<ShippingPallet> ShippingPallets {
-            get; set;
-        } = new FixedList<ShippingPallet>();
+    public FixedList<ShippingPallet> ShippingPallets {
+      get; set;
+    } = new FixedList<ShippingPallet>();
 
 
-        public bool CanEdit {
-            get; internal set;
-        }
+    public bool CanEdit {
+      get; internal set;
+    }
 
 
-        public INamedEntity Customer {
-            get; internal set;
-        } = new NamedEntity("", "");
+    public INamedEntity Customer {
+      get; internal set;
+    } = new NamedEntity("", "");
 
 
-        #endregion Properties
+    #endregion Properties
 
 
-        #region Private methods
+    #region Private methods
 
-        protected override void OnSave() {
+    protected override void OnSave() {
 
-            if (this.ShippingOrderId == 0) {
+      if (this.Id == 0) {
 
-                this.ShippingOrderId = this.Id;
-                this.ShippingUID = this.UID;
-            }
-            ShippingData.WriteShipping(this);
-        }
+        //this.ShippingOrderId = this.Id;
+        //this.ShippingUID = this.UID;
+      }
+      ShippingData.WriteShipping(this);
+    }
 
 
-        private void MapToShippingEntry(ShippingFields fields) {
+    private void MapToShippingEntry(ShippingFields fields) {
 
-            if (fields.ShippingData.ShippingUID != string.Empty) {
-                this.ShippingOrderId = Parse(fields.ShippingData.ShippingUID).ShippingOrderId;
-                this.ShippingUID = fields.ShippingData.ShippingUID;
-            }
+      if (fields.ShippingData.ShippingUID != string.Empty) {
+        //this.ShippingOrderId = Parse(fields.ShippingData.ShippingUID).ShippingOrderId;
+        //this.ShippingUID = fields.ShippingData.ShippingUID;
+      }
 
-            this.ParcelSupplierId = SimpleObjectData.Parse(fields.ShippingData.ParcelSupplierUID).Id;
-            this.ShippingGuide = fields.ShippingData.ShippingGuide;
-            this.ParcelAmount = fields.ShippingData.ParcelAmount;
-            this.CustomerAmount = fields.ShippingData.CustomerAmount;
-            this.ShippingDate = DateTime.Now;
-            this.DeliveryDate = DateTime.Now;
-            //this.ShippingMethod = SalesOrder.Parse(fields.Orders.First()).ShippingMethod;
-            this.Status = fields.ShippingData.Status;
-        }
+      this.ParcelSupplierId = SimpleObjectData.Parse(fields.ShippingData.ParcelSupplierUID).Id;
+      this.ShippingGuide = fields.ShippingData.ShippingGuide;
+      this.ParcelAmount = fields.ShippingData.ParcelAmount;
+      this.CustomerAmount = fields.ShippingData.CustomerAmount;
+      this.ShippingDate = DateTime.Now;
+      this.DeliveryDate = DateTime.Now;
+      //this.ShippingMethod = SalesOrder.Parse(fields.Orders.First()).ShippingMethod;
+      this.Status = fields.ShippingData.Status;
+    }
 
 
-        #endregion Private methods
+    #endregion Private methods
 
-    } // class ShippingEntry
+  } // class ShippingEntry
 
 
 } // namespace Empiria.Trade.ShippingAndHandling

@@ -79,7 +79,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
       ShippingEntry shippingOrder = builder.CreateShippingOrder(fields);
 
-      return GetShippingByUID(shippingOrder.ShippingUID, ShippingQueryType.Shipping);
+      return GetShippingByUID(shippingOrder.UID, ShippingQueryType.Shipping);
 
     }
 
@@ -160,7 +160,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
     }
 
 
-    public ShippingEntry GetShippingByShippingUID(string shippingUID) {
+    public ShippingEntry GetShippingOrderByUID(string shippingUID) {
       Assertion.Require(shippingUID, nameof(shippingUID));
 
       return ShippingEntry.Parse(shippingUID);
@@ -203,7 +203,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
       ShippingEntry shippingOrder = builder.UpdateShippingOrder(fields);
 
-      return GetShippingByUID(shippingOrder.ShippingUID, ShippingQueryType.Shipping);
+      return GetShippingByUID(shippingOrder.UID, ShippingQueryType.Shipping);
     }
 
 

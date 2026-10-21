@@ -81,7 +81,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
             var shippingDto = new ShippingEntryDto {
                 Customer = new NamedEntityDto(entry.Customer.UID, entry.Customer.Name),
-                ShippingUID = entry.ShippingOrderId == -1 ? "" : entry.ShippingUID,
+                ShippingUID = entry.Id == -1 ? "" : entry.UID,
                 ParcelSupplier = new NamedEntityDto(parcel.UID, parcelName),
                 ShippingGuide = entry.ShippingGuide,
                 ShippingNumber = entry.ShippingNumber,
@@ -99,11 +99,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
                 ShippingLabelsMedia = new MediaData("text/html",
                     $"http://apps.sujetsa.com.mx:8080/reporting.api/ShippingAndHandling/" +
-                    $"ShippingLabels?shippingUID={entry.ShippingUID}"),
+                    $"ShippingLabels?shippingUID={entry.UID}"),
 
                 BillingsMedia = new MediaData("text/html",
                     $"http://apps.sujetsa.com.mx:8080/reporting.api/ShippingAndHandling/" +
-                    $"BillingList?shippingUID={entry.ShippingUID}")
+                    $"BillingList?shippingUID={entry.UID}")
             };
 
             return shippingDto;
@@ -130,7 +130,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
                 itemDto.BillingMedia = new MediaData("text/html",
                 $"http://apps.sujetsa.com.mx:8080/reporting.api/ShippingAndHandling/" +
-                $"Billing?shippingUID={item.ShippingOrder.ShippingUID}&orderUID={item.Order.UID}");
+                $"Billing?shippingUID={item.ShippingOrder.UID}&orderUID={item.Order.UID}");
 
         orderForShippingDto.Add(itemDto);
             }

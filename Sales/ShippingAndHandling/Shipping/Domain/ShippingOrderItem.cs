@@ -11,7 +11,7 @@
 using Empiria.Trade.Core;
 using Empiria.Trade.Sales.ShippingAndHandling.Data;
 
-namespace Empiria.Trade.Sales.ShippingAndHandling {
+namespace Empiria.Trade.Sales {
 
 
   /// <summary>Represents a shipping order item entry.</summary>
@@ -43,25 +43,25 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
     #endregion Constructors and parsers
 
 
-    [DataField("ShippingOrderItemId")]
+    [DataField("Shipping_Order_Item_Id")]
     public int OrderForShippingId {
       get; internal set;
     }
 
 
-    [DataField("ShippingOrderItemUID")]
+    [DataField("Shipping_Order_Item_UID")]
     public string OrderForShippingUID {
       get; internal set;
     }
 
 
-    [DataField("ShippingOrderId")]
+    [DataField("Shipping_Order_Id")]
     public ShippingEntry ShippingOrder {
       get; internal set;
     }
 
 
-    [DataField("OrderId")]
+    [DataField("Order_Id")]
     public SalesOrder Order {
       get; internal set;
     }
@@ -112,7 +112,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling {
       this.ShippingOrder = shipping;
       
       var existItem = ShippingData.GetOrdersForShippingByShippingId(
-                    shipping.ShippingUID).Find(o => o.Order.Id == this.Order.Id);
+                    shipping.UID).Find(o => o.Order.Id == this.Order.Id);
 
       if (existItem != null) {
         
