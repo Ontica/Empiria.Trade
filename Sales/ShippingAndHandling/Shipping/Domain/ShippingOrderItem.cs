@@ -111,7 +111,7 @@ namespace Empiria.Trade.Sales {
       this.Order = SalesOrder.Parse(orderUID);
       this.ShippingOrder = shipping;
       
-      var existItem = ShippingData.GetOrdersForShippingByShippingId(
+      var existItem = ShippingData.GetSalesOrdersForShipping(
                     shipping.UID).Find(o => o.Order.Id == this.Order.Id);
 
       if (existItem != null) {

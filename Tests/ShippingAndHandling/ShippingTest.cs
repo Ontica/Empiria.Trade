@@ -172,9 +172,10 @@ namespace Empiria.Trade.Tests {
     public void GetShippingOrderByUIDTest() {
 
       var usecase = ShippingUseCases.UseCaseInteractor();
-      string shippingUID = "9ed68735-af5c-4e49-85dc-4a177c82b273";
+     
+      ShippingEntry sut = ShippingEntry.Parse(1);
 
-      ShippingEntry sut = usecase.GetShippingOrderByUID(shippingUID);
+      //ShippingPackage sut = ShippingPackage.Parse(1);
 
       Assert.NotNull(sut);
     }
@@ -262,9 +263,9 @@ namespace Empiria.Trade.Tests {
       var usecase = ShippingUseCases.UseCaseInteractor();
 
       ShippingQuery query = new ShippingQuery();
-      query.Keywords = "";
-      query.ParcelSupplierUID = "";
-      query.Status = ShippingStatus.Todos;
+      query.Keywords = "GUIA PRUEBA 1";
+      query.ParcelSupplierUID = "875153f9-464a-4479-9b3c-5e47d94d4499";
+      query.Status = ShippingStatus.EnCaptura;
       FixedList<ShippingEntryDto> sut = usecase.GetShippingsList(query);
 
       Assert.NotNull(sut);

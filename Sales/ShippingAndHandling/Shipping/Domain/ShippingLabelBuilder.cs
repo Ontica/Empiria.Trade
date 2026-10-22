@@ -47,7 +47,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       List<BillingDto> billingList = new List<BillingDto>();
 
-      var shippingItems = ShippingData.GetOrdersForShippingByShippingId(shippingUID);
+      var shippingItems = ShippingData.GetSalesOrdersForShipping(shippingUID);
 
       foreach (var item in shippingItems) {
 
@@ -81,7 +81,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     internal FixedList<SupplyLabel> GetSupplyLabels(string shippingUID) {
 
       FixedList<ShippingOrderItem> ordersForShipping =
-        ShippingData.GetOrdersForShippingByShippingId(shippingUID);
+        ShippingData.GetSalesOrdersForShipping(shippingUID);
 
       var shippingLabels = new List<SupplyLabel>();
 
@@ -101,7 +101,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       var labelsByItem = labelsByPallet.ToList();
 
       FixedList<ShippingOrderItem> shippingItems =
-        ShippingData.GetOrdersForShippingByShippingId(shipping.UID);
+        ShippingData.GetSalesOrdersForShipping(shipping.UID);
 
 
       foreach (var item in shippingItems) {
@@ -133,7 +133,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
         label.ShippingUID = item.ShippingOrder.UID;
         label.ShippingNumber = item.ShippingOrder.ShippingNumber;
         label.DeliveryNumber = item.ShippingOrder.DeliveryNumber;
-        label.ParcelSupplier = SimpleObjectData.Parse(shipping.ParcelSupplierId).Name;
+        label.ParcelSupplier = shipping.ParcelSupplier.Name;
         label.PackingName = $"{packing.PackageID} / {packageType.Name}";
         label.PackingCount = $"({packingCount}/{packagings.Count}) ";
         label.ShippingGuide = shipping.ShippingGuide;
@@ -156,7 +156,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       var labelsByItem = labelsByPallet.ToList();
 
       FixedList<ShippingOrderItem> shippingItems =
-        ShippingData.GetOrdersForShippingByShippingId(shipping.UID);
+        ShippingData.GetSalesOrdersForShipping(shipping.UID);
 
       int packingCount = 0;
       foreach (var item in shippingItems) {
@@ -169,7 +169,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
           label.ShippingUID = item.ShippingOrder.UID;
           label.ShippingNumber = item.ShippingOrder.ShippingNumber;
           label.DeliveryNumber = item.ShippingOrder.DeliveryNumber;
-          label.ParcelSupplier = SimpleObjectData.Parse(shipping.ParcelSupplierId).Name;
+          label.ParcelSupplier = shipping.ParcelSupplier.Name;
           label.PackingName = $"Orden: ";
           label.PackingCount = $"{item.Order.OrderNo} ({packingCount}/{shippingItems.Count}) ";
           label.ShippingGuide = shipping.ShippingGuide;
@@ -204,7 +204,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
         label.ShippingUID = shipping.UID;
         label.ShippingNumber = shipping.ShippingNumber;
         label.DeliveryNumber = shipping.DeliveryNumber;
-        label.ParcelSupplier = SimpleObjectData.Parse(shipping.ParcelSupplierId).Name;
+        label.ParcelSupplier = shipping.ParcelSupplier.Name;
         label.PackingName = $"Tarima: ";
         label.PackingCount = $"({palletCount}/{shippingPallets.Count}) " +
                              $"{shippingPallet.ShippingPalletName} ";

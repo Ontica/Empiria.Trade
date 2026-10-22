@@ -55,7 +55,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
       var builder = new ShippingBuilder();
 
-      var orders = builder.GetOrdersUIDList(shippingOrderUID);
+      var orders = builder.GetSalesOrdersUID(shippingOrderUID);
 
       SalesOrderUseCases orderUseCases = new SalesOrderUseCases();
 

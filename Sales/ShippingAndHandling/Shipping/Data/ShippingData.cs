@@ -74,13 +74,13 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
     }
 
 
-    static internal FixedList<ShippingOrderItem> GetOrdersForShippingByOrderUID(string orderIdList) {
+    static internal FixedList<ShippingOrderItem> GetShippingOrderItemsByOrdersID(string orderIdList) {
 
       if (orderIdList == string.Empty) {
         return new FixedList<ShippingOrderItem>();
       }
 
-      string sql = $"SELECT * FROM TRDShippingOrderItems where OrderId IN ({orderIdList})";
+      string sql = $"SELECT * FROM OMS_Shipping_Order_Item where Order_Id IN ({orderIdList})";
 
       var dataOperation = DataOperation.Parse(sql);
 
@@ -88,11 +88,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
     }
 
 
-    static internal FixedList<ShippingOrderItem> GetOrdersForShippingByShippingId(string shippingOrderUID) {
+    static internal FixedList<ShippingOrderItem> GetSalesOrdersForShipping(string shippingOrderUID) {
       
-      var shippingId = ShippingEntry.Parse(shippingOrderUID).Id;
+      var shipping = ShippingEntry.Parse(shippingOrderUID);
 
-      string sql = $"SELECT * FROM TRDShippingOrderItems where ShippingOrderId IN ({shippingId})";
+      string sql = $"SELECT * FROM OMS_Shipping_Order_Item where Shipping_Order_Id IN ({shipping.ShippingOrderId})";
 
       var dataOperation = DataOperation.Parse(sql);
 
@@ -100,11 +100,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
     }
 
 
-    internal static FixedList<ShippingOrderItem> GetOrdersForShippingByOrders(string[] OrderUIDs) {
+    internal static FixedList<ShippingOrderItem> GetShippingOrderItemsByOrdersUID(string[] OrderUIDs) {
 
       string orderIdList = GetOrderIdList(OrderUIDs);
 
-      var shippingOrderItem = GetOrdersForShippingByOrderUID(orderIdList);
+      var shippingOrderItem = GetShippingOrderItemsByOrdersID(orderIdList);
 
       return shippingOrderItem;
     }
@@ -112,28 +112,26 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
 
     internal static FixedList<ShippingEntry> GetShippingOrdersByQuery(ShippingQuery query) {
 
-      var clauses = string.Empty;
+      var clauses = "WHERE Shipping_Status != 'X' ";
       
       if (query.Keywords != string.Empty) {
-        clauses += $"WHERE {SearchExpression.ParseAndLikeKeywords("ShippingKeywords", query.Keywords)} ";
+        clauses += $"AND {SearchExpression.ParseAndLikeKeywords("Shipping_Order_Keywords", query.Keywords)} ";
       }
 
       if (query.ParcelSupplierUID != string.Empty) {
-        var parcelSupplierId = SimpleObjectData.Parse(query.ParcelSupplierUID).Id;
+        var parcelSupplier = ParcelSupplier.Parse(query.ParcelSupplierUID);
         
-        clauses += (clauses != "" ? "AND " : "WHERE ") + $"ParcelSupplierId IN ({parcelSupplierId}) ";
+        clauses += (clauses != "" ? "AND " : "WHERE ") + $"Parcel_Supplier_Id IN ({parcelSupplier.Id}) ";
       }
-
 
       if (query.QueryType == ShippingQueryType.Delivery && query.Status == ShippingStatus.Todos) {
 
-        clauses += (clauses != "" ? "AND " : "WHERE ") + $"ShippingStatus IN ('E', 'C') ";
+        clauses += (clauses != "" ? "AND " : "WHERE ") + $"Shipping_Status IN ('E', 'C') ";
       }
-
 
       if (query.Status != ShippingStatus.Todos) {
         
-        clauses += (clauses != "" ? "AND ": "WHERE ") + $"ShippingStatus IN ('{(char)query.Status}') ";
+        clauses += (clauses != "" ? "AND ": "WHERE ") + $"Shipping_Status IN ('{(char)query.Status}') ";
       }
 
       string sql = $"SELECT * FROM OMS_Shipping_Order {clauses}";
@@ -163,9 +161,9 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
 
     internal static void WriteShipping(ShippingEntry shipping) {
 
-      var op = DataOperation.Parse("writeShipping",
-        shipping.Id, shipping.ParcelSupplierId,
-        shipping.UID, shipping.ShippingGuide, shipping.ParcelAmount,
+      var op = DataOperation.Parse("write_OMS_Shipping_Order",
+        shipping.Id, shipping.UID, shipping.ParcelSupplier.Id,
+         shipping.ShippingGuide, shipping.ParcelAmount,
         shipping.CustomerAmount, shipping.ShippingDate, shipping.DeliveryDate,
         shipping.Keywords, (char)shipping.ShippingMethod, (char) shipping.Status);
 
@@ -174,7 +172,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
     
 
     static internal void WriteShippingOrderItem(ShippingOrderItem shippingOrderItem) {
-      var op = DataOperation.Parse("writeShippingOrderItems",
+      var op = DataOperation.Parse("write_OMS_Shipping_Order_Item",
         shippingOrderItem.OrderForShippingId,
         shippingOrderItem.OrderForShippingUID,
         shippingOrderItem.ShippingOrder.Id,
@@ -184,25 +182,25 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
     }
 
 
-    static internal void WriteShippingPallet(ShippingPallet shippingPallet) {
-      var op = DataOperation.Parse("writeShippingPallet",
-        shippingPallet.ShippingPalletId,
-        shippingPallet.ShippingPalletUID,
-        shippingPallet.ShippingPalletName,
-        shippingPallet.ShippingOrder.Id);
-
-      DataWriter.Execute(op);
-    }
-
-
     static internal void WriteShippingPackage(ShippingPackage shippingPackage) {
 
-      var op = DataOperation.Parse("writeShippingPackage",
+      var op = DataOperation.Parse("write_OMS_Shipping_Packages",
         shippingPackage.ShippingPackageId,
         shippingPackage.ShippingPackageUID,
         shippingPackage.ShippingPallet.ShippingPalletId,
         shippingPackage.OrderPacking.OrderPackingId,
         shippingPackage.Order.Id);
+
+      DataWriter.Execute(op);
+    }
+
+
+    static internal void WriteShippingPallet(ShippingPallet shippingPallet) {
+      var op = DataOperation.Parse("write_OMS_Shipping_Pallets",
+        shippingPallet.ShippingPalletId,
+        shippingPallet.ShippingPalletUID,
+        shippingPallet.ShippingPalletName,
+        shippingPallet.ShippingOrder.Id);
 
       DataWriter.Execute(op);
     }
@@ -223,7 +221,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
 
       foreach (var uid in orderUIDs) {
 
-        int orderId = Empiria.Orders.Order.Parse(uid).Id;
+        int orderId = SalesOrder.Parse(uid).Id;
         orderIdList += $"{orderId},";
       }
 

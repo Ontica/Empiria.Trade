@@ -150,6 +150,8 @@ namespace Empiria.Trade.Sales.WebApi {
     public SingleObjectModel GetOrdersForShipping([FromUri] string keywords) {
       base.RequireResource(keywords, "keywords");
 
+      Assertion.RequireFail("Funcionalidad en proceso de desarrollo.");
+
       using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
 
         SearchOrderFields fields = new SearchOrderFields();

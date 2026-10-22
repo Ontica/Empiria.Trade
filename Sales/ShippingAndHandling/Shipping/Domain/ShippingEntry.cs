@@ -9,10 +9,11 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
 using System;
-using Empiria.Trade.Core.Common;
-using Empiria.Trade.Sales.ShippingAndHandling.Data;
-using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
+using Empiria.Parties;
 using Empiria.Trade.Core;
+using Empiria.Trade.Core.Common;
+using Empiria.Trade.Sales.ShippingAndHandling.Adapters;
+using Empiria.Trade.Sales.ShippingAndHandling.Data;
 
 namespace Empiria.Trade.Sales {
 
@@ -36,7 +37,7 @@ namespace Empiria.Trade.Sales {
 
     public ShippingEntry(ShippingFields fields) {
 
-      MapToShippingEntry(fields);
+      Update(fields);
 
     }
 
@@ -47,23 +48,23 @@ namespace Empiria.Trade.Sales {
     #region Properties
 
 
-    //[DataField("Shipping_Order_Id")]
-    //public int ShippingOrderId {
-    //  get; set;
-    //}
-
-
-    //[DataField("Shipping_Order_UID")]
-    //public string ShippingUID {
-    //  get; set;
-    //} = string.Empty;
-
-
-    [DataField("Parcel_Supplier_Id")]
-    public int ParcelSupplierId {
+    [DataField("Shipping_Order_Id")]
+    public int ShippingOrderId {
       get; set;
     }
 
+
+    [DataField("Shipping_Order_UID")]
+    public string ShippingOrderUID {
+      get; set;
+    }
+
+
+    [DataField("Parcel_Supplier_Id")]
+    public ParcelSupplier ParcelSupplier {
+      get; set;
+    }
+    
 
     [DataField("Shipping_Guide")]
     public string ShippingGuide {
@@ -147,9 +148,13 @@ namespace Empiria.Trade.Sales {
     }
 
 
-    public INamedEntity Customer {
-      get; internal set;
-    } = new NamedEntity("", "");
+    public Party Customer {
+      get; set;
+    }
+
+    //public INamedEntity Customer {
+    //  get; internal set;
+    //} = new NamedEntity("Empty", "Empty");
 
 
     #endregion Properties
@@ -168,14 +173,14 @@ namespace Empiria.Trade.Sales {
     }
 
 
-    private void MapToShippingEntry(ShippingFields fields) {
+    private void Update(ShippingFields fields) {
 
       if (fields.ShippingData.ShippingUID != string.Empty) {
-        //this.ShippingOrderId = Parse(fields.ShippingData.ShippingUID).ShippingOrderId;
-        //this.ShippingUID = fields.ShippingData.ShippingUID;
+        this.ShippingOrderId = Parse(fields.ShippingData.ShippingUID).ShippingOrderId;
+        this.ShippingOrderUID = fields.ShippingData.ShippingUID;
       }
 
-      this.ParcelSupplierId = SimpleObjectData.Parse(fields.ShippingData.ParcelSupplierUID).Id;
+      this.ParcelSupplier = ParcelSupplier.Parse(fields.ShippingData.ParcelSupplierUID);
       this.ShippingGuide = fields.ShippingData.ShippingGuide;
       this.ParcelAmount = fields.ShippingData.ParcelAmount;
       this.CustomerAmount = fields.ShippingData.CustomerAmount;
