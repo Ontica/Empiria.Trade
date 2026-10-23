@@ -20,11 +20,9 @@ namespace Empiria.Trade.Sales {
 
     #region Constructors and parsers
 
-
     public ShippingOrderItem() {
       //no-op
     }
-
 
     static public ShippingOrderItem Parse(int id) => ParseId<ShippingOrderItem>(id);
 
@@ -33,15 +31,18 @@ namespace Empiria.Trade.Sales {
     static public ShippingOrderItem Empty => ParseEmpty<ShippingOrderItem>();
 
 
-    public ShippingOrderItem(string order, ShippingEntry shipping) {
+    public ShippingOrderItem(string orderUID, ShippingEntry shipping) {
 
-      MapToShippingOrderItem(order, shipping);
+      this.SalesOrder = SalesOrder.Parse(orderUID);
+      this.ShippingOrder = shipping;
 
+      Update(orderUID, shipping);
     }
-
 
     #endregion Constructors and parsers
 
+
+    #region Properties
 
     [DataField("Shipping_Order_Item_Id")]
     public int OrderForShippingId {
@@ -91,13 +92,25 @@ namespace Empiria.Trade.Sales {
       get; set;
     }
 
+    #endregion Properties
+
 
     #region Private methods
+
+    static public ShippingOrderItem GetBaseShippingOrderItem(SalesOrder salesOrder) {
+
+      return new ShippingOrderItem {
+        OrderForShippingId = -1,
+        OrderForShippingUID = "",
+        ShippingOrder = ShippingEntry.Parse(-1),
+        SalesOrder = salesOrder
+      };
+    }
 
 
     protected override void OnSave() {
 
-      if (this.OrderForShippingId == 0) {
+      if (IsNew) {
 
         this.OrderForShippingId = this.Id;
         this.OrderForShippingUID = this.UID;
@@ -106,11 +119,8 @@ namespace Empiria.Trade.Sales {
     }
 
 
-    private void MapToShippingOrderItem(string orderUID, ShippingEntry shipping) {
+    private void Update(string orderUID, ShippingEntry shipping) {
 
-      this.SalesOrder = SalesOrder.Parse(orderUID);
-      this.ShippingOrder = shipping;
-      
       var existItem = ShippingData.GetShippingOrderItems(
                     shipping.UID).Find(o => o.SalesOrder.Id == this.SalesOrder.Id);
 
@@ -121,7 +131,6 @@ namespace Empiria.Trade.Sales {
       }
 
     }
-
 
     #endregion Private methods
 

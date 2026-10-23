@@ -55,44 +55,44 @@ namespace Empiria.Trade.Sales.Adapters {
       switch (status) {
 
         case "Captured":
-
           return "Capturada";
+
         case "Applied":
-
           return "Aplicada";
-        case "Authorized":
 
+        case "Authorized":
           if (queryType == QueryType.SalesPacking) {
             return "Por surtir";
           }
           return "Autorizada";
+
         case "Packing":
-
           return "Surtiéndose";
+
         case "Shipping":
-
           return "Envío";
+
         case "Delivery":
-
           return "Entrega";
+
         case "Closed":
-
           return "Cerrada";
+
         case "Cancelled":
-
           return "Cancelada";
+
         case "Pending":
-
           return "Por Autorizar";
+
         case "ToSupply":
-
           return "Por surtir";
+
         case "InProgress":
-
           return "En proceso";
-        case "Suppled":
 
+        case "Suppled":
           return "Surtido";
+
         default:
           return "Capturada";
       }

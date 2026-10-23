@@ -38,7 +38,6 @@ namespace Empiria.Trade.Sales {
     public ShippingEntry(ShippingFields fields) {
 
       Update(fields);
-
     }
 
 
@@ -64,7 +63,7 @@ namespace Empiria.Trade.Sales {
     public ParcelSupplier ParcelSupplier {
       get; set;
     }
-    
+
 
     [DataField("Shipping_Guide")]
     public string ShippingGuide {
@@ -164,10 +163,10 @@ namespace Empiria.Trade.Sales {
 
     protected override void OnSave() {
 
-      if (this.Id == 0) {
+      if (IsNew) {
 
-        //this.ShippingOrderId = this.Id;
-        //this.ShippingUID = this.UID;
+        this.ShippingOrderId = this.Id;
+        this.ShippingOrderUID = this.UID;
       }
       ShippingData.WriteShipping(this);
     }
@@ -180,13 +179,15 @@ namespace Empiria.Trade.Sales {
         this.ShippingOrderUID = fields.ShippingData.ShippingUID;
       }
 
+      var salesOrder = SalesOrder.Parse(fields.Orders[0].ToString());
+
       this.ParcelSupplier = ParcelSupplier.Parse(fields.ShippingData.ParcelSupplierUID);
       this.ShippingGuide = fields.ShippingData.ShippingGuide;
       this.ParcelAmount = fields.ShippingData.ParcelAmount;
       this.CustomerAmount = fields.ShippingData.CustomerAmount;
       this.ShippingDate = DateTime.Now;
       this.DeliveryDate = DateTime.Now;
-      //this.ShippingMethod = SalesOrder.Parse(fields.Orders.First()).ShippingMethod;
+      this.ShippingMethod = EnumExtensions.GetShippingMethodEnum(salesOrder.ShippingMethod);
       this.Status = fields.ShippingData.Status;
     }
 

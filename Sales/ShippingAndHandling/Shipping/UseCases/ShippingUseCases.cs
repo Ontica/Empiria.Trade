@@ -80,7 +80,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
       ShippingEntry shippingOrder = builder.CreateShippingOrder(fields);
 
       return GetShippingByUID(shippingOrder.UID, ShippingQueryType.Shipping);
-
     }
 
 

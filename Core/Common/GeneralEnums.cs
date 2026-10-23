@@ -77,19 +77,24 @@ namespace Empiria.Trade.Core {
   static public class EnumExtensions {
 
     static public ShippingMethods GetShippingMethodEnum(string shippingMethod) {
+      
       switch (shippingMethod) {
         case "L":
         case "RutaLocal":
           return ShippingMethods.RutaLocal;
+
         case "F":
         case "RutaForanea":
           return ShippingMethods.RutaForanea;
+
         case "O":
         case "Ocurre":
           return ShippingMethods.Ocurre;
+
         case "P":
         case "Paqueteria":
           return ShippingMethods.Paqueteria;
+
         default:
           return ShippingMethods.None;
       }
@@ -215,9 +220,6 @@ namespace Empiria.Trade.Core {
           return PaymentCondition.None;
       }
     }
-
-
-    
 
   }
 

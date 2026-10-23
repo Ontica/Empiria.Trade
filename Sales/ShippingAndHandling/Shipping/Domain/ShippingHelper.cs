@@ -203,7 +203,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
     internal void GetShippingWithPallets(ShippingEntry shippingEntry) {
 
-      if (shippingEntry.Id == -1) {
+      if (shippingEntry.ShippingOrderId == -1) {
 
         shippingEntry.ShippingPallets = new FixedList<ShippingPallet>();
 
@@ -283,13 +283,9 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       foreach (var orderUID in orders) {
         var order = SalesOrder.Parse(orderUID);
-        var orderForShipping = new ShippingOrderItem();
-        orderForShipping.OrderForShippingId = -1;
-        orderForShipping.OrderForShippingUID = "";
-        orderForShipping.ShippingOrder = ShippingEntry.Parse(-1);
-        orderForShipping.SalesOrder = order;
-        ordersList.Add(orderForShipping);
+        ordersList.Add(ShippingOrderItem.GetBaseShippingOrderItem(order));
       }
+
       return ordersList.ToFixedList();
     }
 
@@ -407,13 +403,12 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     private void ValidateShippingMethodForOrders(FixedList<ShippingOrderItem> ordersForShipping) {
 
       foreach (var order in ordersForShipping) {
-        if (true
-           //order.Order.ShippingMethod != ShippingMethods.Paqueteria
-           ) {
+
+        if (order.SalesOrder.ShippingMethod != ShippingMethods.Paqueteria.ToString()) {
+
           Assertion.EnsureFailed("La forma de envío de uno o mas pedidos no es 'Paquetería'.");
         }
       }
-
     }
 
 

@@ -41,7 +41,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
         var shippingOrder = new ShippingOrderItem(order, shipping);
         shippingOrder.Save();
-
       }
     }
 

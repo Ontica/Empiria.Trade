@@ -160,7 +160,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
     internal static void WriteShipping(ShippingEntry shipping) {
 
       var op = DataOperation.Parse("write_OMS_Shipping_Order",
-        shipping.Id, shipping.UID, shipping.ParcelSupplier.Id,
+        shipping.ShippingOrderId, shipping.ShippingOrderUID, shipping.ParcelSupplier.Id,
          shipping.ShippingGuide, shipping.ParcelAmount,
         shipping.CustomerAmount, shipping.ShippingDate, shipping.DeliveryDate,
         shipping.Keywords, (char)shipping.ShippingMethod, (char) shipping.Status);
@@ -170,6 +170,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
     
 
     static internal void WriteShippingOrderItem(ShippingOrderItem shippingOrderItem) {
+      
       var op = DataOperation.Parse("write_OMS_Shipping_Order_Item",
         shippingOrderItem.OrderForShippingId,
         shippingOrderItem.OrderForShippingUID,

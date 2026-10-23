@@ -284,7 +284,6 @@ namespace Empiria.Trade.Sales.Adapters {
       } else {
         return "Asignado";
       }
-
     }
 
     static private decimal GetCustomerTotalDebt(int customerId) {

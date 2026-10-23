@@ -63,7 +63,7 @@ namespace Empiria.Trade.Tests.Sales {
       fields.QueryType = QueryType.Sales;
       fields.Status = OrderStatus.Shipping;
       fields.ShippingMethod = ShippingMethods.Paqueteria;
-      fields.Keywords = "";
+      fields.Keywords = "P-H7NPUF6L4D";
 
       var sut = salesOrderUseCase.GetSalesOrdersForShipping(fields);
 

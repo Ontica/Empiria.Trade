@@ -247,7 +247,8 @@ namespace Empiria.Trade.Tests {
 
       ShippingFieldsQuery query = new ShippingFieldsQuery {
         Orders = new[] {
-                    "930c332d-a0d5-47f1-b48c-865e09dc36f8"
+                    "251dc352-f05e-4656-ad0e-46c60a035cdd",
+                    "7bbee1de-4af0-42c0-994f-90ccaf71fa54"
                 }
       };
 
@@ -307,7 +308,6 @@ namespace Empiria.Trade.Tests {
       ShippingDto sut = usecase.UpdateShippingOrder(shippingUID, GetShippingFields());
 
       Assert.NotNull(sut);
-
     }
 
 
@@ -359,15 +359,16 @@ namespace Empiria.Trade.Tests {
 
     private ShippingFields GetShippingFields() {
       string[] orders = new string[] {
-        "d0389b37-bea7-400e-904d-e2056bafb723"
+        "251dc352-f05e-4656-ad0e-46c60a035cdd",
+        "7bbee1de-4af0-42c0-994f-90ccaf71fa54"
       };
 
       ShippingDataFields dataFields = new ShippingDataFields() {
-        ShippingUID = "",
-        ParcelSupplierUID = "g5se58ab-75d0-4e8f-bed4-2305e5er2t55",
-        ShippingGuide = "GUIA CASTORSITO ABCD01",
-        ParcelAmount = 1,
-        CustomerAmount = 1
+        ShippingUID = "c448a856-af33-4b06-976b-a3e0c67f17af",
+        ParcelSupplierUID = "875153f9-464a-4479-9b3c-5e47d94d4499",
+        ShippingGuide = "GUIA ABCD02",
+        ParcelAmount = 200,
+        CustomerAmount = 50
       };
 
       ShippingFields fields = new ShippingFields() {
