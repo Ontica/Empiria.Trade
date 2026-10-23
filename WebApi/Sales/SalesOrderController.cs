@@ -122,7 +122,7 @@ namespace Empiria.Trade.Sales.WebApi {
       base.RequireBody(fields);
       using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
 
-        SearchSalesOrderDto salesOrders = usecases.GetOrders(fields);
+        SearchSalesOrderDto salesOrders = usecases.SearchSalesOrders(fields);
         return new SingleObjectModel(base.Request, salesOrders);
 
 
@@ -150,8 +150,6 @@ namespace Empiria.Trade.Sales.WebApi {
     public SingleObjectModel GetOrdersForShipping([FromUri] string keywords) {
       base.RequireResource(keywords, "keywords");
 
-      Assertion.RequireFail("Funcionalidad en proceso de desarrollo.");
-
       using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
 
         SearchOrderFields fields = new SearchOrderFields();
@@ -161,7 +159,7 @@ namespace Empiria.Trade.Sales.WebApi {
         fields.ShippingMethod = ShippingMethods.Paqueteria;
         fields.Keywords = keywords;
 
-        var salesOrders = usecases.GetOrdersForShipping(fields);
+        var salesOrders = usecases.GetSalesOrdersForShipping(fields);
 
         return new SingleObjectModel(base.Request, salesOrders);
       } // using 

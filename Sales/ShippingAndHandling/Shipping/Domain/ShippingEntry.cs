@@ -133,7 +133,7 @@ namespace Empiria.Trade.Sales {
     }
 
 
-    public FixedList<ShippingOrderItem> OrdersForShipping {
+    public FixedList<ShippingOrderItem> ShippingOrderItems {
       get; set;
     } = new FixedList<ShippingOrderItem>();
 

@@ -26,8 +26,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
 
       var orderId = SalesOrder.Parse(orderUID).Id;
 
-      string sql = $"DELETE FROM TRDShippingOrderItems " +
-                   $"WHERE OrderId = '{orderId}' ";
+      string sql = $"DELETE FROM OMS_Shipping_Order_Item " +
+                   $"WHERE Order_Id = '{orderId}' ";
 
       var dataOperation = DataOperation.Parse(sql);
 
@@ -40,8 +40,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
 
       var shippingId = ShippingEntry.Parse(shippingOrderUID).Id;
 
-      string sql = $"DELETE FROM TRDShippingOrderItems " +
-                   $"WHERE ShippingOrderId = '{shippingId}' ";
+      string sql = $"DELETE FROM OMS_Shipping_Order_Item " +
+                   $"WHERE Shipping_Order_Id = '{shippingId}' ";
 
       var dataOperation = DataOperation.Parse(sql);
 
@@ -54,7 +54,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
       var shippingId = ShippingEntry.Parse(shippingOrderUID).Id;
 
       string sql = $"DELETE FROM OMS_Shipping_Order " +
-                   $"WHERE ShippingOrderId = '{shippingId}' ";
+                   $"WHERE Shipping_Order_Id = '{shippingId}' ";
 
       var dataOperation = DataOperation.Parse(sql);
 
@@ -65,8 +65,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
     internal static void DeleteShippingPalletsByShippingUID(string shippingOrderUID) {
       var shippingId = ShippingEntry.Parse(shippingOrderUID).Id;
 
-      string sql = $"DELETE FROM TRDShippingPallets " +
-                   $"WHERE ShippingOrderId = '{shippingId}' ";
+      string sql = $"DELETE FROM OMS_Shipping_Pallets " +
+                   $"WHERE Shipping_Order_Id = '{shippingId}' ";
 
       var dataOperation = DataOperation.Parse(sql);
 
@@ -88,11 +88,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
     }
 
 
-    static internal FixedList<ShippingOrderItem> GetSalesOrdersForShipping(string shippingOrderUID) {
+    static internal FixedList<ShippingOrderItem> GetShippingOrderItems(string shippingOrderUID) {
       
       var shipping = ShippingEntry.Parse(shippingOrderUID);
 
-      string sql = $"SELECT * FROM OMS_Shipping_Order_Item where Shipping_Order_Id IN ({shipping.ShippingOrderId})";
+      string sql = $"SELECT * FROM OMS_Shipping_Order_Item where Shipping_Order_Id IN ({shipping.Id})";
 
       var dataOperation = DataOperation.Parse(sql);
 
@@ -104,9 +104,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
 
       string orderIdList = GetOrderIdList(OrderUIDs);
 
-      var shippingOrderItem = GetShippingOrderItemsByOrdersID(orderIdList);
-
-      return shippingOrderItem;
+      return GetShippingOrderItemsByOrdersID(orderIdList);
     }
 
 
@@ -148,7 +146,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
 
       if (shippingUID != string.Empty) {
 
-        clauses = $"WHERE ShippingUID = '{shippingUID}'";
+        clauses = $"WHERE Shipping_Order_UID = '{shippingUID}'";
       }
 
       string sql = $"SELECT * FROM OMS_Shipping_Order {clauses}";
@@ -176,7 +174,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
         shippingOrderItem.OrderForShippingId,
         shippingOrderItem.OrderForShippingUID,
         shippingOrderItem.ShippingOrder.Id,
-        shippingOrderItem.Order.Id);
+        shippingOrderItem.SalesOrder.Id);
 
       DataWriter.Execute(op);
     }
@@ -233,7 +231,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
 
     static internal FixedList<ShippingPackage> GetShippingPackagesByPackageId(int packageId) {
 
-      string sql = $"SELECT * FROM TRDShippingPackages WHERE OrderPackingId IN ({packageId})";
+      string sql = $"SELECT * FROM OMS_Shipping_Packages WHERE Order_Packing_Id IN ({packageId})";
 
       var dataOperation = DataOperation.Parse(sql);
 
@@ -242,23 +240,22 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
     }
 
 
-    static internal FixedList<ShippingPackage> GetShippingPackagesByPalletUID(string palletUID) {
+    static internal FixedList<ShippingPackage> GetShippingPackagesByPallet(string palletUID) {
 
-      var palletId = ShippingPallet.Parse(palletUID).Id;
+      var pallet = ShippingPallet.Parse(palletUID);
 
-      string sql = $"SELECT * FROM TRDShippingPackages WHERE ShippingPalletId IN ({palletId})";
+      string sql = $"SELECT * FROM OMS_Shipping_Packages WHERE Shipping_Pallet_Id IN ({pallet.Id})";
 
       var dataOperation = DataOperation.Parse(sql);
 
       return DataReader.GetPlainObjectFixedList<ShippingPackage>(dataOperation);
-
     }
 
 
     static internal void DeleteShippingPackageById(int shippingPackageId) {
 
-      string sql = $"DELETE FROM TRDShippingPackages " +
-                   $"WHERE ShippingPackageId = '{shippingPackageId}' ";
+      string sql = $"DELETE FROM OMS_Shipping_Packages " +
+                   $"WHERE Shipping_Package_Id = '{shippingPackageId}' ";
 
       var dataOperation = DataOperation.Parse(sql);
 
@@ -266,16 +263,15 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
     }
 
 
-    static internal FixedList<ShippingPallet> GetPalletByShippingUID(string shippingUID) {
+    static internal FixedList<ShippingPallet> GetPalletByShippingOrder(string shippingUID) {
 
-      var shippingId = ShippingEntry.Parse(shippingUID).Id;
+      var shipping = ShippingEntry.Parse(shippingUID);
 
-      string sql = $"SELECT * FROM TRDShippingPallets WHERE ShippingOrderId IN ({shippingId})";
+      string sql = $"SELECT * FROM OMS_Shipping_Pallets WHERE Shipping_Order_Id IN ({shipping.Id})";
 
       var dataOperation = DataOperation.Parse(sql);
 
       return DataReader.GetPlainObjectFixedList<ShippingPallet>(dataOperation);
-
     }
 
 
@@ -283,8 +279,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
 
       var shippingPalletId = ShippingPallet.Parse(shippingPalletUID).ShippingPalletId;
 
-      string sql = $"DELETE FROM TRDShippingPackages " +
-                   $"WHERE ShippingPalletId = '{shippingPalletId}' ";
+      string sql = $"DELETE FROM OMS_Shipping_Packages " +
+                   $"WHERE Shipping_Pallet_Id = '{shippingPalletId}' ";
 
       var dataOperation = DataOperation.Parse(sql);
 
@@ -296,8 +292,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
 
       var shippingPalletId = ShippingPallet.Parse(shippingPalletUID).ShippingPalletId;
 
-      string sql = $"DELETE FROM TRDShippingPallets " +
-                   $"WHERE ShippingPalletId = '{shippingPalletId}' ";
+      string sql = $"DELETE FROM OMS_Shipping_Pallets " +
+                   $"WHERE Shipping_Pallet_Id = '{shippingPalletId}' ";
 
       var dataOperation = DataOperation.Parse(sql);
 
@@ -309,8 +305,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
 
       var shippingId = ShippingEntry.Parse(shippingOrderUID).Id;
 
-      string sql = $"UPDATE OMS_Shipping_Order SET ShippingStatus = '{(char) status}' " +
-                   $"WHERE ShippingOrderId = {shippingId}";
+      string sql = $"UPDATE OMS_Shipping_Order SET Shipping_Status = '{(char) status}' " +
+                   $"WHERE Shipping_Order_Id = {shippingId}";
 
       var dataOperation = DataOperation.Parse(sql);
 

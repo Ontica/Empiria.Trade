@@ -54,6 +54,24 @@ namespace Empiria.Trade.Tests.Sales {
 
 
     [Fact]
+    public void GetSalesOrderForShipping() {
+
+      var salesOrderUseCase = SalesOrderUseCases.UseCaseInteractor();
+
+      SearchOrderFields fields = new SearchOrderFields();
+
+      fields.QueryType = QueryType.Sales;
+      fields.Status = OrderStatus.Shipping;
+      fields.ShippingMethod = ShippingMethods.Paqueteria;
+      fields.Keywords = "";
+
+      var sut = salesOrderUseCase.GetSalesOrdersForShipping(fields);
+
+      Assert.NotNull(sut);
+    }
+
+
+    [Fact]
     public void ShouldCreateNewOrder() {
 
       SalesOrderFields orderFields = GetSalesOrderFields();
@@ -95,17 +113,17 @@ namespace Empiria.Trade.Tests.Sales {
 
       var fields = new SearchOrderFields {
         CustomerUID = "",
-        QueryType = QueryType.SalesAuthorization,
+        QueryType = QueryType.Sales,
         //Keywords = "",
         //FromDate = new DateTime(2026,9,5),
         //ToDate = new DateTime(2026, 9, 11),
-        //Status = OrderStatus.ToSupply,
+        Status = OrderStatus.Shipping,
         //ShippingMethod = ShippingMethods.RutaLocal
       };
 
       var usecases = SalesOrderUseCases.UseCaseInteractor();
 
-      SearchSalesOrderDto salesOrders = usecases.GetOrders(fields);
+      SearchSalesOrderDto salesOrders = usecases.SearchSalesOrders(fields);
 
       Assert.NotNull(salesOrders);
     }

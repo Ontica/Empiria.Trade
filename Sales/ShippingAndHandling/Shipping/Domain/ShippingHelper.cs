@@ -54,28 +54,28 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       foreach (var shipping in shippingList) {
 
         FixedList<ShippingOrderItem> ordersForShipping =
-          ShippingData.GetSalesOrdersForShipping(shipping.ShippingOrderUID);
+          ShippingData.GetShippingOrderItems(shipping.ShippingOrderUID);
 
         GetOrdersMeasurementUnits(ordersForShipping);
 
-        shipping.OrdersForShipping = ordersForShipping;
+        shipping.ShippingOrderItems = ordersForShipping;
         shipping.OrdersTotal = ordersForShipping.Sum(x => x.OrderTotal);
-        shipping.Customer = ordersForShipping.First().Order.Beneficiary;
+        shipping.Customer = ordersForShipping.First().SalesOrder.Beneficiary;
       }
     }
 
 
     internal FixedList<ShippingOrderItem> GetShippingOrderItemsForShipping(string[] orders) {
 
-      FixedList<ShippingOrderItem> shippingOrderItemList =
+      FixedList<ShippingOrderItem> shippingOrderItems =
                                    ShippingData.GetShippingOrderItemsByOrdersUID(orders);
 
-      FixedList<ShippingOrderItem> orderItemByPackingOrder =
-                                   GetOrdersForShippingIfNotExist(orders, shippingOrderItemList);
+      FixedList<ShippingOrderItem> shippingOrderItemByPackingOrder =
+                                   GetOrdersForShippingIfNotExist(orders, shippingOrderItems);
 
-      GetOrdersMeasurementUnits(orderItemByPackingOrder);
+      GetOrdersMeasurementUnits(shippingOrderItemByPackingOrder);
 
-      return orderItemByPackingOrder;
+      return shippingOrderItemByPackingOrder;
     }
 
 
@@ -88,7 +88,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       if (ordersForShipping.Count > 0) {
 
-        ordersList = ShippingData.GetSalesOrdersForShipping(
+        ordersList = ShippingData.GetShippingOrderItems(
               ordersForShipping.First().ShippingOrder.UID);
 
         ValidateGetOrdersByShipping(orders, ordersList);
@@ -106,7 +106,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       GetOrdersMeasurementUnits(ordersList.ToFixedList());
 
-      ShippingEntry shippingEntry = GetShippingWithOrders(ordersList, "");
+      ShippingEntry shippingEntry = GetShippingWithOrders("", ordersList);
 
       GetShippingNumber(shippingEntry);
 
@@ -129,8 +129,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     }
 
 
-    internal ShippingEntry GetShippingWithOrders(
-      FixedList<ShippingOrderItem> orderForShippingList, string shippingUID) {
+    internal ShippingEntry GetShippingWithOrders(string shippingUID,
+      FixedList<ShippingOrderItem> orderForShippingList) {
 
       if (shippingUID == string.Empty && orderForShippingList.Count == 0) {
         return new ShippingEntry();
@@ -144,11 +144,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       } else {
 
         shipping = ShippingData.GetShippingOrdersByUID(
-                                orderForShippingList.First().ShippingOrder.UID)
+                                orderForShippingList.First().ShippingOrder.ShippingOrderUID)
                                .FirstOrDefault();
 
-        shipping.Customer = orderForShippingList.First().Order.Customer;
-        shipping.OrdersForShipping = orderForShippingList;
+        shipping.Customer = orderForShippingList.First().SalesOrder.Beneficiary;
+        shipping.ShippingOrderItems = orderForShippingList;
         //shipping.CanEdit = orderForShippingList.First().Order.Status == OrderStatus.Shipping ? true : false;
         shipping.OrdersTotal = orderForShippingList.Sum(x => x.OrderTotal);
       }
@@ -163,11 +163,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
         var usecasePackage = PackagingUseCases.UseCaseInteractor();
 
-        PackagedData packageInfo = usecasePackage.GetPackagedData(shippingOrderItem.Order.UID);
+        PackagedData packageInfo = usecasePackage.GetPackagedData(shippingOrderItem.SalesOrder.UID);
 
         if (packageInfo.OrderUID != string.Empty) {
 
-          var salesOrder = SalesOrder.Parse(shippingOrderItem.Order.UID);
+          var salesOrder = SalesOrder.Parse(shippingOrderItem.SalesOrder.UID);
           salesOrder.CalculateSalesOrder();
 
           shippingOrderItem.OrderTotal = salesOrder.OrderTotal;
@@ -175,11 +175,10 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
           shippingOrderItem.TotalWeight = packageInfo.Weight;
           shippingOrderItem.TotalVolume = packageInfo.Volume;
 
-          var packagedList = usecasePackage.GetPackagedForItemList(shippingOrderItem.Order.UID);
+          var packagedList = usecasePackage.GetPackagedForItemList(shippingOrderItem.SalesOrder.UID);
 
           shippingOrderItem.OrderPackages = GetPackagedListByOrder(packagedList);
         }
-
       }
     }
 
@@ -194,13 +193,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
         FixedList<PackingItem> packingItems = usecasePackage.GetPackingItemsByOrderPackingUID(
                                    shippingPackage.OrderPacking.OrderPackingUID);
 
-        var packageForItem = Core.PackagingEntry.Parse(shippingPackage.OrderPacking.OrderPackingUID);
-        var packageType = usecasePackage.GetPackageTypeById(packageForItem.PackageType.Id);
+        var packagingEntry = PackagingEntry.Parse(shippingPackage.OrderPacking.OrderPackingUID);
 
         pallet.TotalWeight += packingItems.Sum(x => x.ItemWeight);
-        pallet.TotalVolume += packageType.TotalVolume;
+        pallet.TotalVolume += packagingEntry.PackageType.TotalVolume;
       }
-
     }
 
 
@@ -212,11 +209,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       } else {
 
-        var shippingPallets = ShippingData.GetPalletByShippingUID(shippingEntry.UID);
+        var shippingPallets = ShippingData.GetPalletByShippingOrder(shippingEntry.ShippingOrderUID);
 
         foreach (var pallet in shippingPallets) {
 
-          var shippingPackages = ShippingData.GetShippingPackagesByPalletUID(pallet.ShippingPalletUID);
+          var shippingPackages = ShippingData.GetShippingPackagesByPallet(pallet.ShippingPalletUID);
 
           pallet.ShippingPackages = shippingPackages.Select(x => x.OrderPacking.OrderPackingUID).ToArray();
           pallet.TotalPackages = shippingPackages.Count();
@@ -224,9 +221,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
         }
 
         shippingEntry.ShippingPallets = shippingPallets;
-
       }
-
     }
 
 
@@ -234,7 +229,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       ValidateOrdersStatusForParcelDelivery(ordersForShipping);
       ValidateShippingByCustomer(ordersForShipping);
-
     }
 
 
@@ -262,7 +256,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       foreach (var orderUID in orders) {
 
-        var existShippingOrderItem = orderItemList.FirstOrDefault(x => x.Order.UID == orderUID);
+        var existShippingOrderItem = orderItemList.FirstOrDefault(x => x.SalesOrder.UID == orderUID);
 
         if (existShippingOrderItem == null) {
 
@@ -272,7 +266,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
           orderItem.OrderForShippingId = -1;
           orderItem.OrderForShippingUID = "";
           orderItem.ShippingOrder = ShippingEntry.Parse(-1);
-          orderItem.Order = order;
+          orderItem.SalesOrder = order;
 
           orderItemList.Add(orderItem);
 
@@ -293,7 +287,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
         orderForShipping.OrderForShippingId = -1;
         orderForShipping.OrderForShippingUID = "";
         orderForShipping.ShippingOrder = ShippingEntry.Parse(-1);
-        orderForShipping.Order = order;
+        orderForShipping.SalesOrder = order;
         ordersList.Add(orderForShipping);
       }
       return ordersList.ToFixedList();
@@ -326,7 +320,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
                     FixedList<ShippingOrderItem> ordersByShipping) {
 
       foreach (var order in orders) {
-        var orderForShipping = ordersByShipping.FirstOrDefault(x => x.Order.UID == order);
+        var orderForShipping = ordersByShipping.FirstOrDefault(x => x.SalesOrder.UID == order);
 
         if (orderForShipping == null) {
           Assertion.EnsureFailed("Uno o más pedidos no pertenecen al mismo envío.");
@@ -385,14 +379,14 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     internal void ValidateOrdersStatusForParcelDelivery(FixedList<ShippingOrderItem> shippingOrderItems) {
 
       foreach (var item in shippingOrderItems) {
-        if (item.Order.SalesOrderProcessStatus != OrderStatus.Shipping.ToString() &&
-            item.Order.SalesOrderProcessStatus != OrderStatus.Delivery.ToString() &&
-            item.Order.SalesOrderProcessStatus != OrderStatus.Closed.ToString()
+
+        if (item.SalesOrder.SalesOrderProcessStatus != OrderStatus.Shipping.ToString() &&
+            item.SalesOrder.SalesOrderProcessStatus != OrderStatus.Delivery.ToString() &&
+            item.SalesOrder.SalesOrderProcessStatus != OrderStatus.Closed.ToString()
            ) {
           Assertion.EnsureFailed("El estatus de los pedidos debe ser 'Envío' o 'Entrega'.");
         }
       }
-
     }
 
 
@@ -401,7 +395,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       foreach (var item in shippingOrderItems) {
 
         var countCustomerId = shippingOrderItems.FindAll(x =>
-                              x.Order.Beneficiary.Id == item.Order.Beneficiary.Id).Count;
+                              x.SalesOrder.Beneficiary.Id == item.SalesOrder.Beneficiary.Id).Count;
 
         if (countCustomerId != shippingOrderItems.Count) {
           Assertion.EnsureFailed("Uno o más pedidos no pertenecen al mismo cliente.");
@@ -425,10 +419,10 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
     internal void ValidateOrdersByCustomer(string shippingOrderUID, string orderUID) {
 
-      var ordersForShipping = ShippingData.GetSalesOrdersForShipping(shippingOrderUID);
+      var ordersForShipping = ShippingData.GetShippingOrderItems(shippingOrderUID);
       var order = SalesOrder.Parse(orderUID);
 
-      if (ordersForShipping.Select(x => x.Order.Customer.Id).FirstOrDefault() != order.Customer.Id) {
+      if (ordersForShipping.Select(x => x.SalesOrder.Beneficiary.Id).FirstOrDefault() != order.Beneficiary.Id) {
         Assertion.EnsureFailed($"El pedidos {order.OrderNo} no pertenecen al mismo cliente.");
       }
 

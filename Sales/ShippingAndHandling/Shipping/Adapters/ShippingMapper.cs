@@ -10,7 +10,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
-
+using Empiria.Parties;
 using Empiria.Storage;
 
 using Empiria.Trade.Core.Common;
@@ -43,9 +43,9 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
     internal static ShippingDto MapShippingForParcelDelivery(ShippingEntry entry) {
 
       ShippingDto shippingDto = new ShippingDto();
-      shippingDto.OrdersForShipping = MapToOrderForShippingDto(entry.OrdersForShipping);
-      shippingDto.ShippingPalletsWithPackages = MapToShippingPalletDto(entry.ShippingPallets);
       shippingDto.ShippingData = MapEntry(entry);
+      shippingDto.OrdersForShipping = MapToOrderForShippingDto(entry.ShippingOrderItems);
+      shippingDto.ShippingPalletsWithPackages = MapToShippingPalletDto(entry.ShippingPallets);
 
       return shippingDto;
     }
@@ -76,8 +76,10 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
     static private ShippingEntryDto MapEntry(ShippingEntry entry) {
 
+      var customer = entry.Customer != null ? entry.Customer : Party.Parse(-1);
+
       var shippingDto = new ShippingEntryDto {
-        Customer = new NamedEntityDto(entry.Customer.UID, entry.Customer.Name),
+        Customer = new NamedEntityDto(customer.UID, customer.Name),
         ShippingUID = entry.Id == -1 ? "" : entry.ShippingOrderUID,
         ParcelSupplier = new NamedEntityDto(entry.ParcelSupplier.UID, entry.ParcelSupplier.Name),
         ShippingGuide = entry.ShippingGuide,
@@ -86,21 +88,21 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
         ParcelAmount = entry.ParcelAmount,
         CustomerAmount = entry.CustomerAmount,
         ShippingDate = entry.ShippingDate,
-        OrdersCount = entry.OrdersForShipping.Count,
+        OrdersCount = entry.ShippingOrderItems.Count,
         OrdersTotal = entry.OrdersTotal,
-        TotalPackages = entry.OrdersForShipping.Sum(x => x.TotalPackages),
-        TotalWeight = entry.OrdersForShipping.Sum(x => x.TotalWeight),
-        TotalVolume = entry.OrdersForShipping.Sum(x => x.TotalVolume),
+        TotalPackages = entry.ShippingOrderItems.Sum(x => x.TotalPackages),
+        TotalWeight = entry.ShippingOrderItems.Sum(x => x.TotalWeight),
+        TotalVolume = entry.ShippingOrderItems.Sum(x => x.TotalVolume),
         ShippingMethod = entry.ShippingMethod,
         Status = entry.Status,
 
         ShippingLabelsMedia = new MediaData("text/html",
-              $"http://apps.sujetsa.com.mx:8080/reporting.api/ShippingAndHandling/" +
-              $"ShippingLabels?shippingUID={entry.UID}"),
+              $"http://192.168.1.209:8085/reporting.api/ShippingAndHandling/" +
+              $"ShippingLabels?shippingUID={entry.ShippingOrderUID}"),
 
         BillingsMedia = new MediaData("text/html",
-              $"http://apps.sujetsa.com.mx:8080/reporting.api/ShippingAndHandling/" +
-              $"BillingList?shippingUID={entry.UID}")
+              $"http://192.168.1.209:8085/reporting.api/ShippingAndHandling/" +
+              $"BillingList?shippingUID={entry.ShippingOrderUID}")
       };
 
       return shippingDto;
@@ -108,31 +110,36 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
 
 
     static private FixedList<ShippingOrderItemDto> MapToOrderForShippingDto(
-                                FixedList<ShippingOrderItem> orderForShipping) {
+                                FixedList<ShippingOrderItem> shippingOrderItems) {
 
-      var orderForShippingDto = new List<ShippingOrderItemDto>();
+      var shippingOrderItemsDto = new List<ShippingOrderItemDto>();
 
-      foreach (var item in orderForShipping) {
+      foreach (var shippingOrderItem in shippingOrderItems) {
 
-        var itemDto = new ShippingOrderItemDto();
-        itemDto.OrderUID = item.Order.UID;
-        itemDto.OrderNumber = item.Order.OrderNo;
-        itemDto.OrderTotal = item.OrderTotal;
-        itemDto.Customer = new NamedEntityDto(item.Order.Customer.UID, item.Order.Customer.Name);
-        itemDto.Vendor = new NamedEntityDto(item.Order.SalesAgent.UID, item.Order.SalesAgent.Name);
-        itemDto.TotalPackages = item.TotalPackages;
-        itemDto.TotalWeight = item.TotalWeight;
-        itemDto.TotalVolume = item.TotalVolume;
-        itemDto.Packages = GetPackagesDtoByOrder(item.OrderPackages);
+        var salesAgent = shippingOrderItem.SalesOrder.SalesAgent =
+                          Party.Parse(shippingOrderItem.SalesOrder.SalesAgentId);
 
-        itemDto.BillingMedia = new MediaData("text/html",
-        $"http://apps.sujetsa.com.mx:8080/reporting.api/ShippingAndHandling/" +
-        $"Billing?shippingUID={item.ShippingOrder.UID}&orderUID={item.Order.UID}");
+        var shippingOrderItemDto = new ShippingOrderItemDto();
 
-        orderForShippingDto.Add(itemDto);
+        shippingOrderItemDto.OrderUID = shippingOrderItem.SalesOrder.UID;
+        shippingOrderItemDto.OrderNumber = shippingOrderItem.SalesOrder.OrderNo;
+        shippingOrderItemDto.OrderTotal = shippingOrderItem.OrderTotal;
+        shippingOrderItemDto.Customer = shippingOrderItem.SalesOrder.Beneficiary.MapToNamedEntity();
+        shippingOrderItemDto.Vendor = salesAgent.MapToNamedEntity();
+        shippingOrderItemDto.TotalPackages = shippingOrderItem.TotalPackages;
+        shippingOrderItemDto.TotalWeight = shippingOrderItem.TotalWeight;
+        shippingOrderItemDto.TotalVolume = shippingOrderItem.TotalVolume;
+        shippingOrderItemDto.Packages = GetPackagesDtoByOrder(shippingOrderItem.OrderPackages);
+
+        shippingOrderItemDto.BillingMedia = new MediaData("text/html",
+            $"http://192.168.1.209:8085/reporting.api/ShippingAndHandling/" +
+            $"Billing?shippingUID={shippingOrderItem.ShippingOrder.ShippingOrderUID}" +
+            $"&orderUID={shippingOrderItem.SalesOrder.OrderUID}");
+
+        shippingOrderItemsDto.Add(shippingOrderItemDto);
       }
 
-      return orderForShippingDto.ToFixedList();
+      return shippingOrderItemsDto.ToFixedList();
     }
 
 

@@ -275,10 +275,10 @@ namespace Empiria.Trade.Tests {
     [Fact]
     public void GetShippingByUIDTest() {
 
-      var usecase = ShippingUseCases.UseCaseInteractor();
+      var usecases = ShippingUseCases.UseCaseInteractor();
 
-      ShippingDto sut = usecase.GetShippingByUID(
-        "57cf33fb-a47f-4466-a1a5-1a473ed60288", ShippingQueryType.Shipping);
+      ShippingDto sut = usecases.GetShippingByUID(
+        "ffffggr4-d9da-400d-86a9-93851da77777", ShippingQueryType.Shipping);
 
       Assert.NotNull(sut);
     }

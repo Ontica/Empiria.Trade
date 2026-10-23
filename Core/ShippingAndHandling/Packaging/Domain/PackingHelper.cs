@@ -92,7 +92,6 @@ namespace Empiria.Trade.Core {
 
       var packageType = PackageType.Parse(packageTypeId);
       return packageType;
-
     }
 
 

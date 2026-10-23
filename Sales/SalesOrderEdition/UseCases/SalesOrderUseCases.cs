@@ -210,7 +210,7 @@ namespace Empiria.Trade.Sales.UseCases {
     }
 
 
-    public SearchSalesOrderDto GetOrders(SearchOrderFields fields) {
+    public SearchSalesOrderDto SearchSalesOrders(SearchOrderFields fields) {
       Assertion.Require(fields, "fields");
 
       //fields.EnsureIsValidSearch();
@@ -252,7 +252,7 @@ namespace Empiria.Trade.Sales.UseCases {
     }
 
 
-    public FixedList<ISalesOrderDto> GetOrdersForShipping(SearchOrderFields fields) {
+    public FixedList<ISalesOrderDto> GetSalesOrdersForShipping(SearchOrderFields fields) {
       var helper = new SalesOrderHelper(fields);
 
       var salesOrdersList = helper.GetOrders();

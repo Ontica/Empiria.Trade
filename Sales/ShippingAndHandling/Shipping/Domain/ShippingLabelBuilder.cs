@@ -47,11 +47,11 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       List<BillingDto> billingList = new List<BillingDto>();
 
-      var shippingItems = ShippingData.GetSalesOrdersForShipping(shippingUID);
+      var shippingItems = ShippingData.GetShippingOrderItems(shippingUID);
 
       foreach (var item in shippingItems) {
 
-        SalesOrder order = SalesOrder.Parse(item.Order.UID);
+        SalesOrder order = SalesOrder.Parse(item.SalesOrder.UID);
 
         order.CalculateSalesOrder();
 
@@ -81,7 +81,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     internal FixedList<SupplyLabel> GetSupplyLabels(string shippingUID) {
 
       FixedList<ShippingOrderItem> ordersForShipping =
-        ShippingData.GetSalesOrdersForShipping(shippingUID);
+        ShippingData.GetShippingOrderItems(shippingUID);
 
       var shippingLabels = new List<SupplyLabel>();
 
@@ -101,7 +101,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       var labelsByItem = labelsByPallet.ToList();
 
       FixedList<ShippingOrderItem> shippingItems =
-        ShippingData.GetSalesOrdersForShipping(shipping.UID);
+        ShippingData.GetShippingOrderItems(shipping.UID);
 
 
       foreach (var item in shippingItems) {
@@ -120,7 +120,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
     private IEnumerable<ShippingLabel> GetPackagesDataForLabels(ShippingOrderItem item, ShippingEntry shipping) {
 
-      var packagings = PackagingData.GetPackagingEntriesByOrder(item.Order.UID);
+      var packagings = PackagingData.GetPackagingEntriesByOrder(item.SalesOrder.UID);
       var labels = new List<ShippingLabel>();
 
       int packingCount = 0;
@@ -138,10 +138,10 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
         label.PackingCount = $"({packingCount}/{packagings.Count}) ";
         label.ShippingGuide = shipping.ShippingGuide;
         //label.ShippingType = item.Order.ShippingMethod;
-        label.Customer = item.Order.Customer.Name;
-        label.CustomerAddress = $"{item.Order.CustomerAddress.Address1} ";
-                                //$"CP. {item.Order.Customer.ZipCode}.";
-        label.CustomerPhoneNumber = item.Order.CustomerContact.PhoneNumber;
+        label.Customer = item.SalesOrder.Beneficiary.Name;
+        label.CustomerAddress = $"{item.SalesOrder.CustomerAddress.Address1} ";
+                                //$"CP. {item.Order.Beneficiary.ZipCode}.";
+        label.CustomerPhoneNumber = item.SalesOrder.CustomerContact.PhoneNumber;
 
         labels.Add(label);
       }
@@ -156,7 +156,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       var labelsByItem = labelsByPallet.ToList();
 
       FixedList<ShippingOrderItem> shippingItems =
-        ShippingData.GetSalesOrdersForShipping(shipping.UID);
+        ShippingData.GetShippingOrderItems(shipping.UID);
 
       int packingCount = 0;
       foreach (var item in shippingItems) {
@@ -171,15 +171,15 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
           label.DeliveryNumber = item.ShippingOrder.DeliveryNumber;
           label.ParcelSupplier = shipping.ParcelSupplier.Name;
           label.PackingName = $"Orden: ";
-          label.PackingCount = $"{item.Order.OrderNo} ({packingCount}/{shippingItems.Count}) ";
+          label.PackingCount = $"{item.SalesOrder.OrderNo} ({packingCount}/{shippingItems.Count}) ";
           label.ShippingGuide = shipping.ShippingGuide;
           //label.ShippingType = item.Order.ShippingMethod;
-          label.Customer = item.Order.Customer.Name;
-          label.CustomerAddress = $"{item.Order.CustomerAddress.Address1} ";
-                                  //$"CP. {item.Order.Customer.ZipCode}.";
-          label.CustomerPhoneNumber = item.Order.CustomerContact.PhoneNumber;
+          label.Customer = item.SalesOrder.Beneficiary.Name;
+          label.CustomerAddress = $"{item.SalesOrder.CustomerAddress.Address1} ";
+                                  //$"CP. {item.Order.Beneficiary.ZipCode}.";
+          label.CustomerPhoneNumber = item.SalesOrder.CustomerContact.PhoneNumber;
 
-          GetPackingTypesByOrder(label, item.Order.UID);
+          GetPackingTypesByOrder(label, item.SalesOrder.UID);
 
           labelsByItem.Add(label);
         }
@@ -192,7 +192,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     private FixedList<ShippingLabel> GetLabelsForPallets(ShippingEntry shipping) {
 
       FixedList<ShippingPallet> shippingPallets =
-        ShippingData.GetPalletByShippingUID(shipping.UID);
+        ShippingData.GetPalletByShippingOrder(shipping.UID);
 
       var labelsByPallet = new List<ShippingLabel>();
 
@@ -210,14 +210,14 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
                              $"{shippingPallet.ShippingPalletName} ";
 
         FixedList<ShippingPackage> shippingPackages =
-            ShippingData.GetShippingPackagesByPalletUID(shippingPallet.ShippingPalletUID);
+            ShippingData.GetShippingPackagesByPallet(shippingPallet.ShippingPalletUID);
 
         SalesOrder order = SalesOrder.Parse(shippingPackages.FirstOrDefault().Order.Id);
         label.ShippingGuide = shipping.ShippingGuide;
         //label.ShippingType = order.ShippingMethod;
-        label.Customer = order.Customer.Name;
+        label.Customer = order.Beneficiary.Name;
         label.CustomerAddress = $"{order.CustomerAddress.Address1} ";
-                                //$"CP. {order.Customer.ZipCode}.";
+                                //$"CP. {order.Beneficiary.ZipCode}.";
         label.CustomerPhoneNumber = order.CustomerContact.PhoneNumber;
         label.WithPallets = true;
         GetPackingTypeCountByPallet(label, shippingPackages);
@@ -275,7 +275,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       BillingDto billing = new BillingDto {
         OrderUID = order.UID,
         OrderNumber = order.OrderNo,
-        Customer = order.Customer.Name,
+        Customer = order.Beneficiary.Name,
         CustomerAddress = order.CustomerAddress.Address1,
         CustomerContact = order.CustomerContact.Name,
         CustomerPhone = order.CustomerContact.PhoneNumber,

@@ -81,15 +81,14 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Adapters {
   /// <summary>Output DTO used to return the entries of shipping.</summary>
   public class ShippingEntryDto : ShippingTotalFieldsDto {
 
+    public string ShippingUID {
+      get; internal set;
+    } = string.Empty;
+
 
     public NamedEntityDto Customer {
       get; internal set;
     }
-
-
-    public string ShippingUID {
-      get; internal set;
-    } = string.Empty;
 
 
     public int OrdersCount {

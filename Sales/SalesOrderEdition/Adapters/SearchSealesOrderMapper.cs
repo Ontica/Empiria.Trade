@@ -74,6 +74,7 @@ namespace Empiria.Trade.Sales.Adapters {
     }
 
     static public FixedList<ISalesOrderDto> MapEntries(SearchOrderFields query, FixedList<SalesOrder> salesOrders) {
+      
       switch (query.QueryType) {
 
         case QueryType.Sales: {
@@ -160,6 +161,7 @@ namespace Empiria.Trade.Sales.Adapters {
 
 
     private static ISalesOrderDto MapBaseSalesOrderShipmentStatus(SalesOrder order) {
+      
       var dto = new BaseSalesOrderShipmentDto {
         UID = order.OrderUID,
         OrderNumber = order.OrderNo,

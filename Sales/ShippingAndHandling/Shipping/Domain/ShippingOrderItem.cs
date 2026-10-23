@@ -62,7 +62,7 @@ namespace Empiria.Trade.Sales {
 
 
     [DataField("Order_Id")]
-    public SalesOrder Order {
+    public SalesOrder SalesOrder {
       get; internal set;
     }
 
@@ -108,11 +108,11 @@ namespace Empiria.Trade.Sales {
 
     private void MapToShippingOrderItem(string orderUID, ShippingEntry shipping) {
 
-      this.Order = SalesOrder.Parse(orderUID);
+      this.SalesOrder = SalesOrder.Parse(orderUID);
       this.ShippingOrder = shipping;
       
-      var existItem = ShippingData.GetSalesOrdersForShipping(
-                    shipping.UID).Find(o => o.Order.Id == this.Order.Id);
+      var existItem = ShippingData.GetShippingOrderItems(
+                    shipping.UID).Find(o => o.SalesOrder.Id == this.SalesOrder.Id);
 
       if (existItem != null) {
         
