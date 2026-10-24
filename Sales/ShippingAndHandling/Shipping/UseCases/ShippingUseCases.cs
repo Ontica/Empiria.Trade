@@ -66,7 +66,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
       
       var builder = new ShippingBuilder();
       
-      builder.CreateOrdersForShipping(shippingOrderUID, orders);
+      builder.CreateShippingOrderItems(shippingOrderUID, orders);
 
       return GetShippingByUID(shippingOrderUID, ShippingQueryType.Shipping);
     }

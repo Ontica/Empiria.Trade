@@ -172,12 +172,7 @@ namespace Empiria.Trade.Sales {
     }
 
 
-    private void Update(ShippingFields fields) {
-
-      if (fields.ShippingData.ShippingUID != string.Empty) {
-        this.ShippingOrderId = Parse(fields.ShippingData.ShippingUID).ShippingOrderId;
-        this.ShippingOrderUID = fields.ShippingData.ShippingUID;
-      }
+    internal void Update(ShippingFields fields) {
 
       var salesOrder = SalesOrder.Parse(fields.Orders[0].ToString());
 

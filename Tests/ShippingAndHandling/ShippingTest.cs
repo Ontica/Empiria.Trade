@@ -120,12 +120,12 @@ namespace Empiria.Trade.Tests {
 
       var usecase = ShippingUseCases.UseCaseInteractor();
 
-      string shippingOrderUID = "68db22ab-891e-466e-80d1-e766fc370bcc";
-      string orderUID = "8a15068a-3bc2-4693-a415-a9e3410f63fc";
+      string shippingOrderUID = "c448a856-af33-4b06-976b-a3e0c67f17af";
+      string orderUID = "7bbee1de-4af0-42c0-994f-90ccaf71fa54";
+
       ShippingDto sut = usecase.DeleteOrderForShipping(shippingOrderUID, orderUID);
 
       Assert.NotNull(sut);
-
     }
 
 
@@ -304,7 +304,7 @@ namespace Empiria.Trade.Tests {
 
       var usecase = ShippingUseCases.UseCaseInteractor();
 
-      string shippingUID = "050590d4-3dd9-4331-8bf8-d7764c371850";
+      string shippingUID = "c448a856-af33-4b06-976b-a3e0c67f17af";
       ShippingDto sut = usecase.UpdateShippingOrder(shippingUID, GetShippingFields());
 
       Assert.NotNull(sut);

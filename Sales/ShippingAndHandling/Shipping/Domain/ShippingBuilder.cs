@@ -33,7 +33,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     #region Public methods
 
 
-    internal void CreateOrdersForShipping(string shippingOrderUID, string[] orders) {
+    internal void CreateShippingOrderItems(string shippingOrderUID, string[] orders) {
 
       var shipping = ShippingEntry.Parse(shippingOrderUID);
 
@@ -62,15 +62,17 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       var helper = new ShippingHelper();
 
-      helper.ShippingValidations(helper.GetShippingOrderItemsForShipping(fields.Orders));
+      helper.ShippingValidations(helper.GetShippingOrderItemsByOrdersUID(fields.Orders));
 
       fields.ShippingData.Status = ShippingStatus.EnCaptura;
 
-      ShippingEntry shipping = CreateOrUpdateShipping(fields);
+      ShippingEntry shippingOrder = new ShippingEntry(fields);
 
-      CreateOrdersForShipping(shipping.UID, fields.Orders);
+      shippingOrder.Save();
 
-      return shipping;
+      CreateShippingOrderItems(shippingOrder.UID, fields.Orders);
+
+      return shippingOrder;
     }
 
 
@@ -114,7 +116,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       var helper = new ShippingHelper();
 
-      FixedList<ShippingOrderItem> orderForShippingList = helper.GetShippingOrderItemsForShipping(orders);
+      FixedList<ShippingOrderItem> orderForShippingList = helper.GetShippingOrderItemsByOrdersUID(orders);
 
       helper.ShippingValidations(orderForShippingList);
 
@@ -134,7 +136,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
       var ordersForShipping = ShippingData.GetShippingOrderItemsByOrdersID(orderId);
 
       var helper = new ShippingHelper();
-      helper.GetOrdersMeasurementUnits(ordersForShipping);
+      helper.GetShippingOrderItemsMeasurementUnits(ordersForShipping);
 
       ShippingEntry shipping = helper.GetShippingWithOrders("", ordersForShipping);
 
@@ -181,9 +183,18 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       var helper = new ShippingHelper();
 
-      helper.ShippingValidations(helper.GetShippingOrderItemsForShipping(fields.Orders));
+      FixedList<ShippingOrderItem> shippingOrderItems = helper.GetShippingOrderItemsByOrdersUID(
+                                                                fields.Orders);
+      
+      helper.ShippingValidations(shippingOrderItems);
 
-      return CreateOrUpdateShipping(fields);
+      ShippingEntry shippingOrder = ShippingEntry.Parse(fields.ShippingData.ShippingUID);
+
+      shippingOrder.Update(fields);
+
+      shippingOrder.Save();
+
+      return shippingOrder;
     }
 
 
