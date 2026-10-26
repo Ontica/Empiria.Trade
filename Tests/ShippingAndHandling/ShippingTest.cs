@@ -73,14 +73,13 @@ namespace Empiria.Trade.Tests {
 
       var usecase = ShippingUseCases.UseCaseInteractor();
 
-      string shippingUID = "78111577-fb09-428d-ac69-9f1062441f33";
+      string shippingUID = "c448a856-af33-4b06-976b-a3e0c67f17af";
 
       ShippingPalletFields fields = new ShippingPalletFields() {
-        ShippingPalletName = "TARIMA 02",
+        ShippingPalletName = "TARIMA X-001-1",
         Packages = new string[] {
-          "768d0762-58a1-46c6-88e1-17103a78d76f",
-          //"3866728f-567e-4947-89eb-27c9da7bf817"
-          "6bf9da6e-6aad-426c-a479-7a3fd4fec217"
+          "6310a6d9-9ed6-4c34-bba2-87848cf32787",
+          "1672717e-8606-4a2c-b69d-52f8835798ba"
         }
       };
 
@@ -96,22 +95,20 @@ namespace Empiria.Trade.Tests {
 
       var usecase = ShippingUseCases.UseCaseInteractor();
 
-      string shippingUID = "78111577-fb09-428d-ac69-9f1062441f33";
-      string shippingPalletUID = "71339233-ef14-45c6-a0a7-598a2383a894";
+      string shippingUID = "c448a856-af33-4b06-976b-a3e0c67f17af";
+      string shippingPalletUID = "69d507d8-72e2-49aa-9d1f-39bd4d0e7d30";
 
       ShippingPalletFields fields = new ShippingPalletFields() {
-        ShippingPalletName = "TARIMA 01",
+        ShippingPalletName = "TARIMA X-001-1",
         Packages = new string[] {
-          "768d0762-58a1-46c6-88e1-17103a78d76f",
-          //"3866728f-567e-4947-89eb-27c9da7bf817"
-          "6bf9da6e-6aad-426c-a479-7a3fd4fec217"
+          "6310a6d9-9ed6-4c34-bba2-87848cf32787",
+          //"1672717e-8606-4a2c-b69d-52f8835798ba"
         }
       };
 
       ShippingDto sut = usecase.UpdateShippingPallet(shippingUID, shippingPalletUID, fields);
 
       Assert.NotNull(sut);
-
     }
 
 
@@ -146,13 +143,12 @@ namespace Empiria.Trade.Tests {
 
       var usecase = ShippingUseCases.UseCaseInteractor();
 
-      string shippingOrderUID = "31841ac9-168a-4b32-8b3c-65d1db9c7930";
-      string shippingPalletUID = "7e18a808-16ea-4544-9116-213a0d649ac6";
+      string shippingOrderUID = "c448a856-af33-4b06-976b-a3e0c67f17af";
+      string shippingPalletUID = "69d507d8-72e2-49aa-9d1f-39bd4d0e7d30";
 
       usecase.DeleteShippingPalletByUID(shippingOrderUID, shippingPalletUID);
 
       Assert.True(true);
-
     }
 
 
@@ -207,9 +203,9 @@ namespace Empiria.Trade.Tests {
     public void ChangeOrdersForShippingStatusTest() {
 
       var usecase = ShippingUseCases.UseCaseInteractor();
-      string shippingUID = "5fcc47c4-ba69-4c7c-bbc3-324bcd25418e";
+      string shippingUID = "c448a856-af33-4b06-976b-a3e0c67f17af";
 
-      ShippingDto sut = usecase.ChangeOrdersForShippingStatus(shippingUID);
+      ShippingDto sut = usecase.UpdateShippingOrderToDelivery(shippingUID);
       Assert.NotNull(sut);
     }
 

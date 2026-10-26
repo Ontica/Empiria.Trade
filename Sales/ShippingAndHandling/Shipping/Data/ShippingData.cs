@@ -198,8 +198,8 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
       var op = DataOperation.Parse("write_OMS_Shipping_Pallets",
         shippingPallet.ShippingPalletId,
         shippingPallet.ShippingPalletUID,
-        shippingPallet.ShippingPalletName,
-        shippingPallet.ShippingOrder.Id);
+        shippingPallet.ShippingOrder.Id,
+        shippingPallet.ShippingPalletName);
 
       DataWriter.Execute(op);
     }
@@ -276,7 +276,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
     }
 
 
-    internal static void DeleteShippingPackageByPalletUID(string shippingPalletUID) {
+    internal static void DeleteShippingPackagesByPalletUID(string shippingPalletUID) {
 
       var shippingPalletId = ShippingPallet.Parse(shippingPalletUID).ShippingPalletId;
 

@@ -331,7 +331,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
 
       foreach (var packageUID in packages) {
 
-        var package = Core.PackagingEntry.Parse(packageUID);
+        var package = PackagingEntry.Parse(packageUID);
 
         var shippingPackages = ShippingData.GetShippingPackagesByPackageId(package.Id);
 

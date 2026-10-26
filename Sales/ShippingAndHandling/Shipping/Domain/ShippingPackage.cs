@@ -32,6 +32,7 @@ namespace Empiria.Trade.Sales {
 
 
     internal ShippingPackage(string package, ShippingPallet pallet) {
+      
       MapToShippingPackage(package, pallet);
     }
 
@@ -93,7 +94,7 @@ namespace Empiria.Trade.Sales {
 
     protected override void OnSave() {
 
-      if (this.ShippingPackageId == 0) {
+      if (IsNew) {
 
         this.ShippingPackageId = this.Id;
         this.ShippingPackageUID = this.UID;
@@ -107,7 +108,6 @@ namespace Empiria.Trade.Sales {
       this.ShippingPallet = pallet;
       this.OrderPacking = PackagingEntry.Parse(package);
       this.Order = SalesOrder.Parse(this.OrderPacking.SalesOrder.Id);
-
     }
 
     #endregion Private methods

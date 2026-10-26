@@ -31,8 +31,9 @@ namespace Empiria.Trade.Sales {
     static public ShippingPallet Empty => ParseEmpty<ShippingPallet>();
 
 
-    public ShippingPallet(string shippingUID, ShippingPalletFields fields, string shippingPalletUID) {
-      MapToShippingPallet(shippingUID, fields, shippingPalletUID);
+    public ShippingPallet(string shippingUID, ShippingPalletFields fields) {
+      
+      Update(shippingUID, fields);
     }
 
 
@@ -92,7 +93,7 @@ namespace Empiria.Trade.Sales {
 
     protected override void OnSave() {
 
-      if (this.ShippingPalletId == 0) {
+      if (IsNew) {
         this.ShippingPalletId = this.Id;
         this.ShippingPalletUID = this.UID;
       }
@@ -100,15 +101,8 @@ namespace Empiria.Trade.Sales {
     }
 
 
-    private void MapToShippingPallet(string shippingUID,
-                  ShippingPalletFields fields, string shippingPalletUID) {
+    public void Update(string shippingUID, ShippingPalletFields fields) {
 
-      var pallet = shippingPalletUID != string.Empty ? Parse(shippingPalletUID) : null;
-
-      if (shippingPalletUID != string.Empty && !pallet.Equals(null)) {
-        this.ShippingPalletId = pallet.Id;
-      }
-      
       this.ShippingOrder = ShippingEntry.Parse(shippingUID);
       this.ShippingPalletName = fields.ShippingPalletName;
     }

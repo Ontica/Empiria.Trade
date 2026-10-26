@@ -36,7 +36,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
     #region Use cases
 
 
-    public ShippingDto ChangeOrdersForShippingStatus(string shippingOrderUID) {
+    public ShippingDto UpdateShippingOrderToDelivery(string shippingOrderUID) {
       Assertion.Require(shippingOrderUID, nameof(shippingOrderUID));
 
       var builder = new ShippingBuilder();
@@ -111,7 +111,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
       FixedList<ShippingPallet> pallets = ShippingData.GetPalletByShippingOrder(shippingOrderUID);
 
       foreach (var pallet in pallets) {
-        ShippingData.DeleteShippingPackageByPalletUID(pallet.ShippingPalletUID);
+        ShippingData.DeleteShippingPackagesByPalletUID(pallet.ShippingPalletUID);
       }
 
       ShippingData.DeleteShippingPalletsByShippingUID(shippingOrderUID);
@@ -126,7 +126,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
       Assertion.Require(shippingUID, nameof(shippingUID));
       Assertion.Require(shippingPalletUID, nameof(shippingPalletUID));
 
-      ShippingData.DeleteShippingPackageByPalletUID(shippingPalletUID);
+      ShippingData.DeleteShippingPackagesByPalletUID(shippingPalletUID);
 
       ShippingData.DeleteShippingPalletByUID(shippingPalletUID);
 
@@ -234,15 +234,20 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
 
 
     public ShippingDto UpdateShippingPallet(string shippingUID, string shippingPalletUID,
-      ShippingPalletFields fields) {
-
+                                            ShippingPalletFields fields) {
       Assertion.Require(shippingUID, nameof(shippingUID));
       Assertion.Require(shippingPalletUID, nameof(shippingPalletUID));
       Assertion.Require(fields, nameof(fields));
 
-      var builder = new ShippingBuilder();
+      ShippingPallet pallet = ShippingPallet.Parse(shippingPalletUID);
 
-      builder.UpdateShippingPallet(shippingUID, shippingPalletUID, fields);
+      pallet.Update(shippingUID, fields);
+
+      pallet.Save();
+
+      ShippingBuilder.ComparePackagesToRemoveFromPallet(shippingPalletUID, fields.Packages);
+
+      ShippingBuilder.CreatePackagesIfNotExistInPallet(shippingPalletUID, fields.Packages);
 
       return GetShippingByUID(shippingUID, ShippingQueryType.Shipping);
     }

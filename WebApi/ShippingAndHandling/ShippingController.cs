@@ -25,11 +25,13 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
 
     [HttpPost]
     [Route("v4/trade/sales/shipping/{shippingOrderUID:guid}/close-edition")]
-    public SingleObjectModel ChangeOrdersForShippingStatus([FromUri] string shippingOrderUID) {
+    public SingleObjectModel UpdateShippingOrderToDelivery([FromUri] string shippingOrderUID) {
+      
+      Assertion.RequireFail("Funcionalidad en proceso de desarrollo.");
 
       using (var usecases = ShippingUseCases.UseCaseInteractor()) {
 
-        ShippingDto shippingOrder = usecases.ChangeOrdersForShippingStatus(shippingOrderUID);
+        ShippingDto shippingOrder = usecases.UpdateShippingOrderToDelivery(shippingOrderUID);
 
         return new SingleObjectModel(this.Request, shippingOrder);
       }
