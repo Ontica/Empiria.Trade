@@ -76,23 +76,6 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     }
 
 
-    internal void DeleteShipping(string shippingOrderUID) {
-
-      FixedList<ShippingPallet> pallets = ShippingData.GetPalletByShippingOrder(shippingOrderUID);
-
-      foreach (var pallet in pallets) {
-        ShippingData.DeleteShippingPackageByPalletUID(pallet.ShippingPalletUID);
-      }
-
-      ShippingData.DeleteShippingPalletsByShippingUID(shippingOrderUID);
-
-      ShippingData.DeleteOrdersForShippingByShippingUID(shippingOrderUID);
-
-      ShippingData.DeleteShipping(shippingOrderUID);
-
-    }
-
-
     internal void GetActionsByShippingQueryType(ShippingDto shipping, ShippingQueryType queryType) {
 
       var helper = new ShippingHelper();

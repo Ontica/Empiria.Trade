@@ -108,9 +108,17 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
     public void DeleteShipping(string shippingOrderUID) {
       Assertion.Require(shippingOrderUID, "shippingOrderUID");
 
-      var builder = new ShippingBuilder();
+      FixedList<ShippingPallet> pallets = ShippingData.GetPalletByShippingOrder(shippingOrderUID);
 
-      builder.DeleteShipping(shippingOrderUID);
+      foreach (var pallet in pallets) {
+        ShippingData.DeleteShippingPackageByPalletUID(pallet.ShippingPalletUID);
+      }
+
+      ShippingData.DeleteShippingPalletsByShippingUID(shippingOrderUID);
+
+      ShippingData.DeleteOrdersForShippingByShippingUID(shippingOrderUID);
+
+      ShippingData.DeleteShipping(shippingOrderUID);
     }
 
 

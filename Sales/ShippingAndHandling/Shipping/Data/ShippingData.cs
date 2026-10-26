@@ -41,7 +41,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
       var shippingId = ShippingEntry.Parse(shippingOrderUID).Id;
 
       string sql = $"DELETE FROM OMS_Shipping_Order_Item " +
-                   $"WHERE Shipping_Order_Id = '{shippingId}' ";
+                   $"WHERE Shipping_Order_Id = {shippingId}";
 
       var dataOperation = DataOperation.Parse(sql);
 
@@ -54,7 +54,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
       var shippingId = ShippingEntry.Parse(shippingOrderUID).Id;
 
       string sql = $"DELETE FROM OMS_Shipping_Order " +
-                   $"WHERE Shipping_Order_Id = '{shippingId}' ";
+                   $"WHERE Shipping_Order_Id = {shippingId}";
 
       var dataOperation = DataOperation.Parse(sql);
 
@@ -66,7 +66,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
       var shippingId = ShippingEntry.Parse(shippingOrderUID).Id;
 
       string sql = $"DELETE FROM OMS_Shipping_Pallets " +
-                   $"WHERE Shipping_Order_Id = '{shippingId}' ";
+                   $"WHERE Shipping_Order_Id = {shippingId}";
 
       var dataOperation = DataOperation.Parse(sql);
 

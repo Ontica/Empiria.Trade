@@ -134,11 +134,10 @@ namespace Empiria.Trade.Tests {
 
       var usecase = ShippingUseCases.UseCaseInteractor();
 
-      string shippingOrderUID = "31841ac9-168a-4b32-8b3c-65d1db9c7930";
+      string shippingOrderUID = "c448a856-af33-4b06-976b-a3e0c67f17af";
       usecase.DeleteShipping(shippingOrderUID);
 
       Assert.True(true);
-
     }
 
 
