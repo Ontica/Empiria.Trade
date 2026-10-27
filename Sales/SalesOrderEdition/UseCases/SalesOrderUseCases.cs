@@ -176,7 +176,7 @@ namespace Empiria.Trade.Sales.UseCases {
 
       Assertion.Require(orderUID, "orderUID");
 
-      var order = SalesOrder.Parse(orderUID);
+      SalesOrder order = SalesOrder.Parse(orderUID);
 
       order.Deliver();
     }

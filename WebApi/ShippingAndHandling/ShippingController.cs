@@ -27,8 +27,6 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
     [Route("v4/trade/sales/shipping/{shippingOrderUID:guid}/close-edition")]
     public SingleObjectModel UpdateShippingOrderToDelivery([FromUri] string shippingOrderUID) {
       
-      Assertion.RequireFail("Funcionalidad en proceso de desarrollo.");
-
       using (var usecases = ShippingUseCases.UseCaseInteractor()) {
 
         ShippingDto shippingOrder = usecases.UpdateShippingOrderToDelivery(shippingOrderUID);

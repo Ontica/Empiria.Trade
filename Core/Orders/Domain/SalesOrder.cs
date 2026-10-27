@@ -355,13 +355,12 @@ namespace Empiria.Trade.Core {
 
 
     public void Deliver() {
-      //this.Status = OrderStatus.Delivery;
-      //AuthorizationStatus = OrderAuthorizationStatus.Suppled;
-
+      
       this.SalesOrderProcessStatus = OrderStatus.Delivery.ToString();
 
-      SalesOrderData.Write(this);
       SetOrderValues();
+
+      this.Save();
     }
 
 

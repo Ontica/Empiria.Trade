@@ -259,9 +259,10 @@ namespace Empiria.Trade.Tests {
       var usecase = ShippingUseCases.UseCaseInteractor();
 
       ShippingQuery query = new ShippingQuery();
-      query.Keywords = "GUIA PRUEBA 1";
-      query.ParcelSupplierUID = "875153f9-464a-4479-9b3c-5e47d94d4499";
-      query.Status = ShippingStatus.EnCaptura;
+      //query.Keywords = "GUIA PRUEBA 1";
+      //query.ParcelSupplierUID = "875153f9-464a-4479-9b3c-5e47d94d4499";
+      //query.Status = ShippingStatus.EnCaptura;
+      query.QueryType = ShippingQueryType.Delivery;
       FixedList<ShippingEntryDto> sut = usecase.GetShippingsList(query);
 
       Assert.NotNull(sut);
