@@ -50,24 +50,20 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.UseCases {
     }
 
 
-    public ShippingDto UpdateShippingStatus(string shippingOrderUID) {
+    public ShippingDto SetShippingOrderToClosed(string shippingOrderUID) {
       Assertion.Require(shippingOrderUID, nameof(shippingOrderUID));
 
-      var builder = new ShippingBuilder();
-
-      var orders = builder.GetSalesOrdersUID(shippingOrderUID);
+      var orders = ShippingBuilder.GetSalesOrdersUID(shippingOrderUID);
 
       SalesOrderUseCases orderUseCases = new SalesOrderUseCases();
 
-      orderUseCases.ChangeOrdersToCloseStatus(orders);
+      orderUseCases.SetSalesOrdersToClosed(orders);
 
       ShippingData.UpdateShippingStatus(shippingOrderUID, ShippingStatus.Cerrado);
 
       var shippingUseCase = new ShippingUseCases();
 
-      var shipping = shippingUseCase.GetShippingByUID(shippingOrderUID, ShippingQueryType.Delivery);
-
-      return shipping;
+      return shippingUseCase.GetShippingOrder(shippingOrderUID, ShippingQueryType.Delivery);
     }
 
     #endregion Public methods

@@ -25,11 +25,11 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
 
     [HttpPost]
     [Route("v4/trade/sales/shipping/{shippingOrderUID:guid}/close-edition")]
-    public SingleObjectModel UpdateShippingOrderToDelivery([FromUri] string shippingOrderUID) {
+    public SingleObjectModel SetShippingOrderToDelivery([FromUri] string shippingOrderUID) {
       
       using (var usecases = ShippingUseCases.UseCaseInteractor()) {
 
-        ShippingDto shippingOrder = usecases.UpdateShippingOrderToDelivery(shippingOrderUID);
+        ShippingDto shippingOrder = usecases.SetShippingOrderToDelivery(shippingOrderUID);
 
         return new SingleObjectModel(this.Request, shippingOrder);
       }
@@ -93,11 +93,11 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
 
     [HttpDelete]
     [Route("v4/trade/sales/shipping/{shippingOrderUID:guid}")]
-    public NoDataModel DeleteShipping([FromUri] string shippingOrderUID) {
+    public NoDataModel DeleteShippingOrder([FromUri] string shippingOrderUID) {
 
       using (var usecases = ShippingUseCases.UseCaseInteractor()) {
 
-        usecases.DeleteShipping(shippingOrderUID);
+        usecases.DeleteShippingOrder(shippingOrderUID);
 
         return new NoDataModel(this.Request);
       }
@@ -165,7 +165,7 @@ namespace Empiria.Trade.WebApi.ShippingAndHandling {
 
       using (var usecases = ShippingUseCases.UseCaseInteractor()) {
 
-        ShippingDto shippingOrder = usecases.GetShippingByUID(shippingOrderUID, queryType);
+        ShippingDto shippingOrder = usecases.GetShippingOrder(shippingOrderUID, queryType);
 
         return new SingleObjectModel(this.Request, shippingOrder);
       }

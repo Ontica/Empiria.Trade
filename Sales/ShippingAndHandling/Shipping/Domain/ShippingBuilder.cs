@@ -116,7 +116,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Domain {
     }
 
 
-    internal string[] GetSalesOrdersUID(string shippingOrderUID) {
+    static internal string[] GetSalesOrdersUID(string shippingOrderUID) {
 
       var shippingOrderItems = ShippingData.GetShippingOrderItems(shippingOrderUID);
 

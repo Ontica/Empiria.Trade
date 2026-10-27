@@ -61,7 +61,7 @@ namespace Empiria.Trade.Sales.WebApi {
 
       using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
 
-        ISalesOrderDto orderDto = usecases.CancelSalesOrder(orderUID);
+        ISalesOrderDto orderDto = usecases.SetSalesOrderToCanceled(orderUID);
 
         return new SingleObjectModel(this.Request, orderDto);
         }
@@ -208,7 +208,7 @@ namespace Empiria.Trade.Sales.WebApi {
       base.RequireResource(orderUID, "orderUID");
 
       using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
-        ISalesOrderDto orderDto = usecases.AuthorizeSalesOrder(orderUID);
+        ISalesOrderDto orderDto = usecases.SetSalesOrderToAuthorized(orderUID);
 
         return new SingleObjectModel(this.Request, orderDto);
       }
@@ -250,7 +250,7 @@ namespace Empiria.Trade.Sales.WebApi {
       base.RequireResource(orderUID, "orderUID");
 
       using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
-        ISalesOrderDto orderDto = usecases.CancelCreditInOrder(orderUID, fields);
+        ISalesOrderDto orderDto = usecases.SetCreditInOrderToCanceled(orderUID, fields);
 
         return new SingleObjectModel(this.Request, orderDto);
       }

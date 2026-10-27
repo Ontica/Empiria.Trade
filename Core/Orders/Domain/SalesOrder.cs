@@ -332,11 +332,11 @@ namespace Empiria.Trade.Core {
 
       this.SalesOrderProcessStatus = OrderStatus.Closed.ToString();
 
-      SetOrderValues();
-
-      //this.Close(this.RequestedBy);
+      this.Close(this.RequestedBy);
 
       this.Save();
+
+      SetOrderValues();
     }
 
 
@@ -358,9 +358,9 @@ namespace Empiria.Trade.Core {
       
       this.SalesOrderProcessStatus = OrderStatus.Delivery.ToString();
 
-      SetOrderValues();
-
       this.Save();
+
+      SetOrderValues();
     }
 
 

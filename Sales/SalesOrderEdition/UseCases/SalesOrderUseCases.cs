@@ -68,83 +68,6 @@ namespace Empiria.Trade.Sales.UseCases {
     }
 
 
-    public ISalesOrderDto AuthorizeSalesOrder(string orderUID) {
-
-      Assertion.Require(orderUID, "orderUID");
-
-      var order = SalesOrder.Parse(orderUID);
-      var orderStatus = EnumExtensions.GetOrderStatusEnum(order.SalesOrderProcessStatus);
-
-      Assertion.Require(orderStatus == OrderStatus.Applied, $"It is only possible to Authorize orders " +
-                        $"in the Applied status, your order status is: {order.Status}");
-
-
-      order.AuthorizeOrder();
-
-      AddCredit(order);
-
-      order.Save();
-
-      return SalesOrderMapper.Map(order);
-    }
-
-
-    public ISalesOrderDto CancelCreditInOrder(string orderUID, DeauthorizeFields fields) {
-
-      Assertion.Require(fields.Notes != string.Empty, "Especificar motivo por el cual se desautoriza el pedido");
-      var order = SalesOrder.Parse(orderUID);
-      SetSalesOrderDefaultValues(order, QueryType.SalesAuthorization);
-      order.Deauthorize();
-
-      var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
-      moneyAccountUseCase.CancelTransaction(order.Id, fields.Notes);
-
-      //TODO CANCELAR SALIDA DE INVENTARIOS
-
-      return SalesOrderMapper.Map(order);
-    }
-
-
-    public ISalesOrderDto CancelSalesOrder(string orderUID) {
-      Assertion.Require(orderUID, "orderUID");
-
-      var order = SalesOrder.Parse(orderUID);
-      order.Cancel();
-
-      return SalesOrderMapper.Map(order);
-    }
-
-
-    public void ChangeOrdersToCloseStatus(string[] ordersUID) {
-      Assertion.Require(ordersUID, "ordersUID");
-
-      foreach (var orderUID in ordersUID) {
-        CloseSalesOrder(orderUID);
-      }
-
-    }
-
-
-    public void ChangeOrdersToDeliveryStatus(string[] ordersUID) {
-      Assertion.Require(ordersUID, "ordersUID");
-
-      foreach (var orderUID in ordersUID) {
-        DeliverySalesOrder(orderUID);
-      }
-
-    }
-
-
-    public void CloseSalesOrder(string orderUID) {
-
-      Assertion.Require(orderUID, "orderUID");
-
-      var order = SalesOrder.Parse(orderUID);
-
-      order.Close();
-    }
-
-
     public ISalesOrderDto CreateSalesOrder(SalesOrderFields fields) {
 
       Assertion.Require(fields, "fields");
@@ -169,16 +92,6 @@ namespace Empiria.Trade.Sales.UseCases {
       }
 
       return SalesOrderMapper.Map(order);
-    }
-
-
-    public void DeliverySalesOrder(string orderUID) {
-
-      Assertion.Require(orderUID, "orderUID");
-
-      SalesOrder order = SalesOrder.Parse(orderUID);
-
-      order.Deliver();
     }
 
 
@@ -207,6 +120,68 @@ namespace Empiria.Trade.Sales.UseCases {
         CataloguesUseCases.GetInventoryStockByVendorProduct(productId, "");
 
       return inventoryStock.Sum(x => x.Stock);
+    }
+
+
+    public FixedList<ISalesOrderDto> GetOrdersByCustomerUID(string customerUID) {
+      var helper = new SalesOrderHelper();
+      var customer = Parties.Party.Parse(customerUID);
+
+      FixedList<SalesOrder> salesOrders = helper.GetOrdersByCustomer(customer.Id);
+
+      return SearchSealesOrderMapper.MapBaseSalesOrders(salesOrders);
+    }
+
+
+    public FixedList<NamedEntityDto> GetPackingStatusList() {
+      return SalesOrderStatusService.GetPackingStatusList();
+    }
+
+
+    public ISalesOrderDto GetSalesOrder(string orderUID, QueryType queryType) {
+
+      SalesOrder order = SalesOrder.Parse(orderUID);
+
+      SetSalesOrderDefaultValues(order, queryType);
+
+      order.GetItemsAndOrderTotal();
+      order.SetOrderActions(queryType);
+
+      return SalesOrderMapper.Map(order);
+    }
+
+
+    public ISalesOrderDto GetSalesOrderByNumber(string orderNumber) {
+      SalesOrderHelper helper = new SalesOrderHelper();
+
+      var order = helper.GetSalesOrder(orderNumber);
+
+      return SalesOrderMapper.Map(order);
+    }
+
+
+    public FixedList<ISalesOrderDto> GetSalesOrdersForShipping(SearchOrderFields fields) {
+      var helper = new SalesOrderHelper(fields);
+
+      var salesOrdersList = helper.GetOrders();
+
+      return SearchSealesOrderMapper.MapEntries(fields, salesOrdersList);
+    }
+
+
+    public FixedList<NamedEntityDto> GetStatusList() {
+      return SalesOrderStatusService.GetStatusList();
+    }
+
+
+    public ISalesOrderDto ProcessSalesOrder(SalesOrderFields fields) {
+      Assertion.Require(fields, "fields");
+
+      ValuateSalesOrder(fields);
+
+      SalesOrder order = InitializeSalesOrder(fields);
+
+      return SalesOrderMapper.Map(order);
     }
 
 
@@ -242,65 +217,76 @@ namespace Empiria.Trade.Sales.UseCases {
     }
 
 
-    public FixedList<ISalesOrderDto> GetOrdersByCustomerUID(string customerUID) {
-      var helper = new SalesOrderHelper();
-      var customer = Parties.Party.Parse(customerUID);
+    public ISalesOrderDto SetCreditInOrderToCanceled(string orderUID, DeauthorizeFields fields) {
 
-      FixedList<SalesOrder> salesOrders = helper.GetOrdersByCustomer(customer.Id);
+      Assertion.Require(fields.Notes != string.Empty, "Especificar motivo por el cual se desautoriza el pedido");
+      var order = SalesOrder.Parse(orderUID);
+      SetSalesOrderDefaultValues(order, QueryType.SalesAuthorization);
+      order.Deauthorize();
 
-      return SearchSealesOrderMapper.MapBaseSalesOrders(salesOrders);
-    }
+      var moneyAccountUseCase = MoneyAccountUseCases.UseCaseInteractor();
+      moneyAccountUseCase.CancelTransaction(order.Id, fields.Notes);
 
-
-    public FixedList<ISalesOrderDto> GetSalesOrdersForShipping(SearchOrderFields fields) {
-      var helper = new SalesOrderHelper(fields);
-
-      var salesOrdersList = helper.GetOrders();
-
-      return SearchSealesOrderMapper.MapEntries(fields, salesOrdersList);
-    }
-
-
-    public FixedList<NamedEntityDto> GetPackingStatusList() {
-      return SalesOrderStatusService.GetPackingStatusList();
-    }
-
-
-    public ISalesOrderDto GetSalesOrder(string orderUID, QueryType queryType) {
-
-      SalesOrder order = SalesOrder.Parse(orderUID);
-
-      SetSalesOrderDefaultValues(order, queryType);
-
-      order.GetItemsAndOrderTotal();
-      order.SetOrderActions(queryType);
+      //TODO CANCELAR SALIDA DE INVENTARIOS
 
       return SalesOrderMapper.Map(order);
     }
 
 
-    public ISalesOrderDto GetSalesOrderByNumber(string orderNumber) {
-      SalesOrderHelper helper = new SalesOrderHelper();
+    public ISalesOrderDto SetSalesOrderToAuthorized(string orderUID) {
 
-      var order = helper.GetSalesOrder(orderNumber);
+      Assertion.Require(orderUID, "orderUID");
+
+      var order = SalesOrder.Parse(orderUID);
+      var orderStatus = EnumExtensions.GetOrderStatusEnum(order.SalesOrderProcessStatus);
+
+      Assertion.Require(orderStatus == OrderStatus.Applied, $"It is only possible to Authorize orders " +
+                        $"in the Applied status, your order status is: {order.Status}");
+
+
+      order.AuthorizeOrder();
+
+      AddCredit(order);
+
+      order.Save();
 
       return SalesOrderMapper.Map(order);
     }
 
 
-    public FixedList<NamedEntityDto> GetStatusList() {
-      return SalesOrderStatusService.GetStatusList();
+    public ISalesOrderDto SetSalesOrderToCanceled(string orderUID) {
+      Assertion.Require(orderUID, "orderUID");
+
+      var order = SalesOrder.Parse(orderUID);
+      order.Cancel();
+
+      return SalesOrderMapper.Map(order);
     }
 
 
-    public ISalesOrderDto ProcessSalesOrder(SalesOrderFields fields) {
-      Assertion.Require(fields, "fields");
+    public void SetSalesOrdersToClosed(string[] ordersUID) {
+      Assertion.Require(ordersUID, "ordersUID");
 
-      ValuateSalesOrder(fields);
+      foreach (var orderUID in ordersUID) {
 
-      SalesOrder order = InitializeSalesOrder(fields);
+        SalesOrder salesOrder = SalesOrder.Parse(orderUID);
 
-      return SalesOrderMapper.Map(order);
+        salesOrder.Close();
+      }
+
+    }
+
+
+    public void SetSalesOrdersToDelivery(string[] ordersUID) {
+      Assertion.Require(ordersUID, "ordersUID");
+
+      foreach (var orderUID in ordersUID) {
+
+        SalesOrder order = SalesOrder.Parse(orderUID);
+
+        order.Deliver();
+      }
+
     }
 
 

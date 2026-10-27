@@ -35,7 +35,7 @@ namespace Empiria.Trade.Tests.Sales {
 
       using (var usecases = SalesOrderUseCases.UseCaseInteractor()) {
         
-        var sut = usecases.AuthorizeSalesOrder("8ca76174-1a8c-4b30-975b-16a4eef46f67");
+        var sut = usecases.SetSalesOrderToAuthorized("8ca76174-1a8c-4b30-975b-16a4eef46f67");
 
         Assert.NotNull(sut);
       }
@@ -194,7 +194,7 @@ namespace Empiria.Trade.Tests.Sales {
       DeauthorizeFields fields = new DeauthorizeFields {
         Notes = "CANCELADO POR EL SISTEMA"
       };
-      var x = salesOrderUseCase.CancelCreditInOrder("b1bdf729-c0e3-4476-95af-5bff62cdeb96", fields);
+      var x = salesOrderUseCase.SetCreditInOrderToCanceled("b1bdf729-c0e3-4476-95af-5bff62cdeb96", fields);
 
       Assert.NotNull(x);
     }

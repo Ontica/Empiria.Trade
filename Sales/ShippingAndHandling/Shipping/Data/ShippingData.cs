@@ -49,7 +49,7 @@ namespace Empiria.Trade.Sales.ShippingAndHandling.Data {
     }
 
 
-    static internal void DeleteShipping(string shippingOrderUID) {
+    static internal void DeleteShippingOrder(string shippingOrderUID) {
 
       var shippingId = ShippingEntry.Parse(shippingOrderUID).Id;
 
