@@ -46,7 +46,7 @@ namespace Empiria.Trade.Sales {
         CurrencyUID = order.Currency.UID,
         ExchangeRate = order.ExchangeRate,
         RequestedByUID = order.RequestedBy.UID,
-        ResponsibleUID = order.Responsible.UID,
+        //ResponsibleUID = order.Responsible.UID,
         WarehouseUID = order.Warehouse.UID
       };
 

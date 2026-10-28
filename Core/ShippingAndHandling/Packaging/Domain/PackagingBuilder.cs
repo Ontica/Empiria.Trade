@@ -140,12 +140,12 @@ namespace Empiria.Trade.Core
 
       return new PickingData {
         OrderUID = inventoryOrders[0].UID,
-        InventoryOrderTypeId = -1,
+        InventoryOrderTypeId = inventoryOrders[0].InventoryType.Id,
         InventoryOrderNo = inventoryOrders[0].OrderNo,
         ResponsibleId = inventoryOrders[0].RequestedBy.Id,
         AssignedToId = inventoryOrders[0].Responsible.Id,
+        Warehouse = inventoryOrders[0].Warehouse,
         Notes = inventoryOrders[0].Observations,
-        
       };
     }
 

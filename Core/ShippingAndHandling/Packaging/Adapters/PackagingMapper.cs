@@ -162,13 +162,20 @@ namespace Empiria.Trade.Core {
 
       var responsible = Parties.Party.Parse(pickingData.ResponsibleId);
       var assignedTo = Parties.Party.Parse(pickingData.AssignedToId);
+      var inventoryType = InventoryType.Parse(pickingData.InventoryOrderTypeId);
+      var inventoryTypeDto = new InventoryTypeDto {
+        UID = inventoryType.UID,
+        Name = inventoryType.Name
+      };
 
       picking.OrderUID = pickingData.OrderUID;
-      //picking.InventoryOrderNo = pickingData.InventoryOrderNo;
-      //picking.InventoryOrderType = new NamedEntityDto(inventoryType.UID, inventoryType.Name);
-      picking.Responsible = new NamedEntityDto(responsible.UID, responsible.Name);
-      //picking.AssignedTo = new NamedEntityDto(assignedTo.UID, assignedTo.Name);
-      //picking.Notes = pickingData.Notes;
+      picking.OrderNo = pickingData.InventoryOrderNo;
+      picking.InventoryType = inventoryTypeDto;
+      picking.RequestedBy = new NamedEntityDto(responsible.UID, responsible.Name);
+      picking.Responsible = new NamedEntityDto(assignedTo.UID, assignedTo.Name);
+      picking.Warehouse = new NamedEntityDto(pickingData.Warehouse.UID, pickingData.Warehouse.Name);
+      picking.Description = pickingData.Notes;
+
       return picking;
     }
 

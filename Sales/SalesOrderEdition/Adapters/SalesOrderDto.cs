@@ -100,15 +100,16 @@ namespace Empiria.Trade.Sales.Adapters {
       get; internal set;
     }
 
-    //public NamedEntityDto ParcelSupplier {
-    //  get; internal set;
-    //}
 
     public string PaymentConditions {
       get; internal set;
     }
 
     public ShippingMethods ShippingMethod {
+      get; internal set;
+    }
+    
+    public NamedEntityDto ParcelSupplier {
       get; internal set;
     }
 

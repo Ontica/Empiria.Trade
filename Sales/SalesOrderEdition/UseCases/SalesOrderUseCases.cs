@@ -315,7 +315,7 @@ namespace Empiria.Trade.Sales.UseCases {
 
       ValuateSalesOrder(fields);
 
-      var order = SalesOrder.Parse(orderUID);
+      SalesOrder order = SalesOrder.Parse(orderUID);
 
       fields.CanUpdateOrder = true;
       fields.OrderNumber = order.OrderNo;

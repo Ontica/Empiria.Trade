@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 
+using Empiria.Locations;
 using Empiria.Orders;
 using Empiria.Trade.Products;
 
@@ -69,7 +70,12 @@ namespace Empiria.Trade.Core {
     public string Notes {
       get; set;
     } = string.Empty;
-    
+
+
+    public Location Warehouse {
+      get; set;
+    }
+
   }
 
 

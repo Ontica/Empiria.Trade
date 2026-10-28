@@ -87,7 +87,7 @@ namespace Empiria.Trade.Core {
 
     public string ParcelSupplierUID {
       get; internal set;
-    }
+    } = string.Empty;
 
 
     public FixedList<SalesOrderItemsFields> Items {

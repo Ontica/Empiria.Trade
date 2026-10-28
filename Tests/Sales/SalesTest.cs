@@ -47,7 +47,7 @@ namespace Empiria.Trade.Tests.Sales {
 
       var salesOrderUseCase = SalesOrderUseCases.UseCaseInteractor();
 
-      var sut = salesOrderUseCase.GetSalesOrder("a0194f91-9c1c-4405-8c1a-a0c284432533", QueryType.SalesPacking);
+      var sut = salesOrderUseCase.GetSalesOrder("002cf56e-c48a-4008-82c7-e7224a460c25", QueryType.SalesPacking);
 
       Assert.NotNull(sut);
     }
@@ -89,7 +89,7 @@ namespace Empiria.Trade.Tests.Sales {
       SalesOrderFields orderFields = GetSalesOrderFields();
 
       var useCase = SalesOrderUseCases.UseCaseInteractor();
-      var sut = useCase.UpdateSalesOrder("b126e056-4da5-4def-840c-b41e2ffdfc44", orderFields);
+      var sut = useCase.UpdateSalesOrder("a1832b0c-90da-43e3-9dca-53143d873a16", orderFields);
 
       Assert.NotNull(sut);
     }
@@ -223,15 +223,16 @@ namespace Empiria.Trade.Tests.Sales {
     private SalesOrderFields GetSalesOrderFields() {
 
       return new SalesOrderFields {
-        UID = "fd7eefd6-9dcb-4020-8209-69b304f9085a",
-        CustomerUID = "db100dac-92a3-4125-8de7-0cc072b49a72",
-        CustomerContactUID = "b6f39137-9679-48ff-8fe7-bb18ec69bc5b",
-        CustomerAddressUID = "11828272-485f-4b51-a61e-6050a321a8cc",
+        //UID = "fd7eefd6-9dcb-4020-8209-69b304f9085a",
+        CustomerUID = "c74f0f44-39a4-4f8b-8e0a-7853909648b7",
+        CustomerContactUID = "5dc570bd-8653-4ade-a869-0540fc391f49",
+        CustomerAddressUID = "4886782b-fefa-48fd-8cf0-e4412dd94753",
         SalesAgentUID = "32bdc986-2301-40f4-ba04-80b69d3e3a1f",
-        SupplierUID = "4c0c43e4-8bdc-4b7d-b91e-3fb385441120",
-        PaymentConditions = "Credito",
-        OrderNumber = "P-YSR9PRJR24",
-        ShippingMethod = ShippingMethods.RutaLocal,
+        SupplierUID = "4d462287-9cee-400d-bd63-e2f31b171315",
+        PaymentConditions = "Contado",
+        OrderNumber = "P-9CYLF20XNF",
+        ShippingMethod = ShippingMethods.Paqueteria,
+        ParcelSupplierUID = "875153f9-464a-4479-9b3c-5e47d94d4499",
         //OrderTime = DateTime.Now,
         Status = OrderStatus.Captured,
         Notes = "",
@@ -245,13 +246,13 @@ namespace Empiria.Trade.Tests.Sales {
       List<SalesOrderItemsFields> itemsFields = new List<SalesOrderItemsFields>();
 
       var fields = new SalesOrderItemsFields {
-        OrderItemUID = "4ac0455e-d321-452c-af58-3ab4e4c69839",
-        VendorProductUID = "97a37dc2-0663-4fc8-840b-bd702ee8435c",
+        //OrderItemUID = "",
+        VendorProductUID = "440b32f0-6afc-4318-b14f-08aebe89167d",
         Quantity = 100,
-        UnitPrice = 7.61m,
+        UnitPrice = 14.03313m,
         //DiscountPolicy = "",
-        Discount1 = 10,
-        Discount2 = 10,
+        //Discount1 = 10,
+        //Discount2 = 10,
         //Subtotal = 4.7217m,
         Notes = "N/AA"
       };
