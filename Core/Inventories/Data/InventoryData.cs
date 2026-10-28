@@ -57,7 +57,7 @@ namespace Empiria.Trade.Core {
 
     static internal FixedList<InventoryOrder> GetInventoryOrdersByParent(int orderId) {
       
-      var sql = $"SELECT * FROM OMS_Orders WHERE Order_Parent_Id = {orderId}";
+      var sql = $"SELECT * FROM OMS_Orders WHERE Order_Status != 'X' AND Order_Parent_Id = {orderId}";
 
       var dataOperation = DataOperation.Parse(sql);
 

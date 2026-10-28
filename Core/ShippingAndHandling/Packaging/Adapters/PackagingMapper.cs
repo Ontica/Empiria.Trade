@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using DocumentFormat.OpenXml.Presentation;
+using Empiria.Locations;
 using Empiria.Products;
 using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Products;
@@ -163,6 +164,7 @@ namespace Empiria.Trade.Core {
       var responsible = Parties.Party.Parse(pickingData.ResponsibleId);
       var assignedTo = Parties.Party.Parse(pickingData.AssignedToId);
       var inventoryType = InventoryType.Parse(pickingData.InventoryOrderTypeId);
+      var warehouse = pickingData.Warehouse != null ? pickingData.Warehouse : Location.Parse(-1);
       var inventoryTypeDto = new InventoryTypeDto {
         UID = inventoryType.UID,
         Name = inventoryType.Name
@@ -173,7 +175,7 @@ namespace Empiria.Trade.Core {
       picking.InventoryType = inventoryTypeDto;
       picking.RequestedBy = new NamedEntityDto(responsible.UID, responsible.Name);
       picking.Responsible = new NamedEntityDto(assignedTo.UID, assignedTo.Name);
-      picking.Warehouse = new NamedEntityDto(pickingData.Warehouse.UID, pickingData.Warehouse.Name);
+      picking.Warehouse = new NamedEntityDto(warehouse.UID, warehouse.Name);
       picking.Description = pickingData.Notes;
 
       return picking;

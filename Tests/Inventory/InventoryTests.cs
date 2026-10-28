@@ -75,7 +75,7 @@ namespace Empiria.Trade.Tests.Procurement {
 
       var usecase = InventoryOrderUseCases.UseCaseInteractor();
 
-      string orderUID = "bd335432-4e01-4c76-bad4-36233cba85d3";
+      string orderUID = "76977b64-7f01-40f6-b6d5-57dc218fccca";
 
       InventoryHolderDto sut = usecase.GetInventoryOrder(orderUID);
 
