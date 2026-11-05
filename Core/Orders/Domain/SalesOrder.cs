@@ -90,6 +90,11 @@ namespace Empiria.Trade.Core {
     }
 
 
+    public ParcelSupplier ParcelSupplier {
+      get; protected set;
+    }
+
+
     public Party SalesAgent {
       get; set;
     }
@@ -355,7 +360,7 @@ namespace Empiria.Trade.Core {
 
 
     public void Deliver() {
-      
+
       this.SalesOrderProcessStatus = OrderStatus.Delivery.ToString();
 
       this.Save();
@@ -382,6 +387,13 @@ namespace Empiria.Trade.Core {
       this.SalesOrderItems = SalesOrderItem.GetOrderItems(this.Id == 0 ? this.OrderId : this.Id);
 
       SetOrderTotals();
+    }
+
+
+    public void GetParcelSupplier() {
+
+      this.ParcelSupplier = ParcelSupplier.Parse(this.ParcelSupplierUID != string.Empty ?
+                                  this.ParcelSupplierUID : "Empty");
     }
 
 
@@ -429,9 +441,10 @@ namespace Empiria.Trade.Core {
 
       this.ScheduledTime = ExecutionServer.DateMaxValue;
       this.PaymentConditions = fields.PaymentConditions;
-      //TODO GUARDAR EN EXT_DATA
+      
       this.ShippingMethod = fields.ShippingMethod.ToString();
       
+      this.ParcelSupplier = fields.GetParcelSupplier();
       if (fields.ParcelSupplierUID != string.Empty) {
 
         this.ParcelSupplierUID = fields.ParcelSupplierUID;

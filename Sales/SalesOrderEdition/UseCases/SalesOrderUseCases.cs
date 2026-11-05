@@ -313,7 +313,7 @@ namespace Empiria.Trade.Sales.UseCases {
     public ISalesOrderDto UpdateSalesOrder(string orderUID, SalesOrderFields fields) {
       Assertion.Require(fields, "fields");
 
-      ValuateSalesOrder(fields);
+      ValuateSalesOrder(fields, orderUID);
 
       SalesOrder order = SalesOrder.Parse(orderUID);
 
@@ -331,7 +331,9 @@ namespace Empiria.Trade.Sales.UseCases {
         order.AddSalesOrderItem(item, order.Id);
       }
 
-      return SalesOrderMapper.Map(order);
+      return GetSalesOrder(orderUID, QueryType.Sales);
+
+      //return SalesOrderMapper.Map(order);
     }
 
     #endregion Use cases
@@ -385,19 +387,21 @@ namespace Empiria.Trade.Sales.UseCases {
 
 
     private SalesOrder InitializeSalesOrder(SalesOrderFields fields) {
-      SalesOrder order;
-
+      
       var orderType = OrderType.SalesOrder;
 
       fields.MapToOrderFields(orderType);
 
       if (fields.UID.Length > 0) {
-        order = SalesOrder.Parse(fields.UID);
+        
+        SalesOrder order = SalesOrder.Parse(fields.UID);
         order.Update(fields);
+        return order;
+
       } else {
-        order = new SalesOrder(fields, orderType);
+
+        return new SalesOrder(fields, orderType);
       }
-      return order;
     }
 
 
@@ -434,6 +438,7 @@ namespace Empiria.Trade.Sales.UseCases {
       order.Customer = order.Beneficiary;
       order.GetCustomerContact();
       order.GetCustomerAddress();
+      order.GetParcelSupplier();
 
       order.Supplier = Party.Parse(order.Provider.Id);
       order.SalesAgent = Party.Parse(order.SalesAgentId);

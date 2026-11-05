@@ -103,9 +103,6 @@ namespace Empiria.Trade.Sales.Adapters {
 
     private static OrderDataDto MapDataDto(SalesOrder order) {
 
-      var parcelSupplier = ParcelSupplier.Parse(order.ParcelSupplierUID != string.Empty ?
-                                                order.ParcelSupplierUID : "Empty");
-
       var dto = new OrderDataDto {
         UID = order.UID == string.Empty ? order.OrderUID : order.UID,
         OrderNumber = order.OrderNo,
@@ -117,7 +114,7 @@ namespace Empiria.Trade.Sales.Adapters {
         Supplier = order.Supplier.MapToNamedEntity(),
         SalesAgent = order.SalesAgent.MapToNamedEntity(),
         ShippingMethod = EnumExtensions.GetShippingMethodEnum(order.ShippingMethod),
-        ParcelSupplier = parcelSupplier.MapToNamedEntity(),
+        ParcelSupplier = order.ParcelSupplier.MapToNamedEntity(),
         PaymentConditions = order.PaymentConditions,
         ItemsCount = order.ItemsCount,
         ItemsTotal = order.ItemsTotal,

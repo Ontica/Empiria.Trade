@@ -133,6 +133,13 @@ namespace Empiria.Trade.Core {
     }
 
 
+    internal ParcelSupplier GetParcelSupplier() {
+      
+      return ParcelSupplier.Parse(ParcelSupplierUID != string.Empty ?
+                                  ParcelSupplierUID : "Empty");
+    }
+
+
     public void MapToOrderFields(OrderType orderType) {
 
       this.OrderTypeUID = orderType.UID;

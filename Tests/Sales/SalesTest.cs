@@ -47,7 +47,7 @@ namespace Empiria.Trade.Tests.Sales {
 
       var salesOrderUseCase = SalesOrderUseCases.UseCaseInteractor();
 
-      var sut = salesOrderUseCase.GetSalesOrder("25f93110-3194-4288-830c-4e444aa0516b", QueryType.Sales);
+      var sut = salesOrderUseCase.GetSalesOrder("6b800588-eb07-4610-9179-f454237f4d38", QueryType.Sales);
 
       Assert.NotNull(sut);
     }
@@ -89,7 +89,7 @@ namespace Empiria.Trade.Tests.Sales {
       SalesOrderFields orderFields = GetSalesOrderFields();
 
       var useCase = SalesOrderUseCases.UseCaseInteractor();
-      var sut = useCase.UpdateSalesOrder("a1832b0c-90da-43e3-9dca-53143d873a16", orderFields);
+      var sut = useCase.UpdateSalesOrder("6b800588-eb07-4610-9179-f454237f4d38", orderFields);
 
       Assert.NotNull(sut);
     }
@@ -223,19 +223,19 @@ namespace Empiria.Trade.Tests.Sales {
     private SalesOrderFields GetSalesOrderFields() {
 
       return new SalesOrderFields {
-        //UID = "fd7eefd6-9dcb-4020-8209-69b304f9085a",
-        CustomerUID = "c74f0f44-39a4-4f8b-8e0a-7853909648b7",
-        CustomerContactUID = "5dc570bd-8653-4ade-a869-0540fc391f49",
-        CustomerAddressUID = "4886782b-fefa-48fd-8cf0-e4412dd94753",
-        SalesAgentUID = "32bdc986-2301-40f4-ba04-80b69d3e3a1f",
+        //UID = "6b800588-eb07-4610-9179-f454237f4d38",
+        CustomerUID = "173fe83a-cb24-4fd5-b33e-9b6dee09907b",
+        CustomerContactUID = "e83b639f-abb2-40ab-a2c7-c49d5574828d",
+        CustomerAddressUID = "633101bd-9902-415d-aecf-fc6b1d71a3b3",
+        SalesAgentUID = "7dc0b0bb-cac3-469e-8da9-309efda127ef",
         SupplierUID = "4d462287-9cee-400d-bd63-e2f31b171315",
         PaymentConditions = "Contado",
-        OrderNumber = "P-9CYLF20XNF",
+        OrderNumber = "P-VCHJXU4G0S",
         ShippingMethod = ShippingMethods.Paqueteria,
-        ParcelSupplierUID = "875153f9-464a-4479-9b3c-5e47d94d4499",
+        ParcelSupplierUID = "4ca3efd0-5397-4291-bc37-5d61b4bdfd64",
         //OrderTime = DateTime.Now,
         Status = OrderStatus.Captured,
-        Notes = "",
+        Notes = "CONTADO - PAQUETERIA",
         Items = GetSalesOrderItemFields()
       };
     }
