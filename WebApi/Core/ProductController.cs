@@ -61,6 +61,8 @@ namespace Empiria.Trade.WebApi.Core {
     public async Task<CollectionModel> GetProductsForInventory([FromBody] ProductQuery query) {
       RequireBody(query);
 
+      Assertion.EnsureFailed("Funcionalidad en proceso de desarrollo.");
+
       using (var usecases = ProductUseCases.UseCaseInteractor()) {
 
         query.OnStock = false;

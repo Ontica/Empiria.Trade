@@ -26,8 +26,6 @@ namespace Empiria.Trade.WebApi.Inventory {
     [Route("v8/order-management/inventory-orders/{orderUID:guid}/close")]
     public SingleObjectModel CloseInventoryOrder([FromUri] string orderUID) {
 
-      Assertion.RequireFail("Funcionalidad en proceso de desarrollo.");
-
       using (var usecases = InventoryOrderUseCases.UseCaseInteractor()) {
 
         InventoryHolderDto inventoryOrder = usecases.CloseInventoryOrder(orderUID);

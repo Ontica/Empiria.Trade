@@ -30,6 +30,7 @@ namespace Empiria.Trade.Inventory {
     #region Public methods
 
     static internal void EnsureIsValidToClose(FixedList<InventoryOrderItem> orderItems) {
+      
       foreach (var item in orderItems) {
 
         var entries = InventoryEntry.GetListFor(item);

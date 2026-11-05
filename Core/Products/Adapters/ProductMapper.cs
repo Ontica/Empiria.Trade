@@ -12,9 +12,8 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Empiria.Parties;
-using Empiria.Trade.Core;
 
-using Empiria.Trade.Products.Domain;
+using Empiria.Trade.Products.Data;
 
 namespace Empiria.Trade.Products.Adapters {
 
@@ -50,16 +49,6 @@ namespace Empiria.Trade.Products.Adapters {
 
     #endregion Public methods V2
 
-    #region Public methods
-
-    static internal FixedList<IProductEntryDto> MapToEntriesDto(FixedList<ProductEntry> entries) {
-
-      var mappedItems = entries.Select((x) => MapEntry((ProductEntry) x));
-
-      return new FixedList<IProductEntryDto>(mappedItems);
-    }
-
-    #endregion Public methods
 
     #region Private methods
 
@@ -117,7 +106,7 @@ namespace Empiria.Trade.Products.Adapters {
 
       FixedList<ProductEntry> _presentations = GetPresentationsByBaseProduct(baseProduct);
 
-      FixedList<ProductsTotals> stockAndLocations = ProductBuilder.GetStockAndLocationByBaseProduct(baseProduct);
+      FixedList<ProductsTotals> stockAndLocations = ProductDataService.GetStocksByBaseProduct(baseProduct);
 
       MergePresentationAndStockByLocation(_presentations, stockAndLocations);
 
@@ -226,21 +215,6 @@ namespace Empiria.Trade.Products.Adapters {
 
       return type;
     }
-
-
-    static public ProductForSearchingDto MapEntry(ProductEntry entry) {
-      var dto = new ProductForSearchingDto();
-
-      dto.ProductUID = entry.UID;
-      dto.ProductCode = entry.InternalCode;
-      dto.Description = entry.Name;
-      dto.ProductImageUrl = entry.ProductImageUrl;
-      dto.ProductType = GetProductType(entry);
-      dto.Presentations = GetPresentations(entry);
-
-      return dto;
-    }
-
 
 
     static private ProductForSearchingDto MapProduct(ProductEntry product,

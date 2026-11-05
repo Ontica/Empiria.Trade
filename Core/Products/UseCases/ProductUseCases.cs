@@ -40,26 +40,30 @@ namespace Empiria.Trade.Products.UseCases {
 
     #region Use cases
 
-    public FixedList<ProductEntry> GetProducts(ProductQuery query) {
+    public FixedList<ProductEntry> GetBaseProducts(ProductQuery query) {
 
       Assertion.Require(query.Keywords != string.Empty,
                         "Por favor escribe una palabra clave para iniciar búsqueda.");
 
-      var builder = new ProductBuilder(query);
+      var helper = new ProductHelper(query);
 
-      return builder.GetProducts();
+      return helper.BaseProducts.OrderBy(x => x.InternalCode.Length)
+                                .ThenBy(x => x.InternalCode)
+                                .ToFixedList();
     }
 
 
     public FixedList<ProductForSearchingDto> GetProductsForPurchaseOrder(ProductQuery query) {
 
-      return ProductMapper.MapToPurchaseOrder(GetProducts(query));
+      return ProductMapper.MapToPurchaseOrder(GetBaseProducts(query));
     }
 
 
     public FixedList<ProductForSearchingDto> GetProductsForSearcher(ProductQuery query) {
 
-      return ProductMapper.MapToSearcher(GetProducts(query), query.OnStock);
+      FixedList<ProductEntry> products = GetBaseProducts(query);
+
+      return ProductMapper.MapToSearcher(products, query.OnStock);
     }
 
 
@@ -67,10 +71,7 @@ namespace Empiria.Trade.Products.UseCases {
                                                                              string customerUID = "") {
       var builder = new ProductBuilder(query);
 
-      //FixedList<ProductEntry> products = await Task.Run(() => builder.GetProductsForOrder())
-      //                                      .ConfigureAwait(false);
-      //return ProductMapper.MapToEntriesDto(products);
-      FixedList<ProductEntry> products = await Task.Run(() => GetProducts(query))
+      FixedList<ProductEntry> products = await Task.Run(() => GetBaseProducts(query))
                                             .ConfigureAwait(false);
 
       return ProductMapper.MapToSalesOrder(products, query.OnStock, customerUID);
@@ -80,10 +81,11 @@ namespace Empiria.Trade.Products.UseCases {
     public async Task<FixedList<IProductEntryDto>> GetProductsListV1(ProductQuery query) {
       var builder = new ProductBuilder(query);
 
-      FixedList<ProductEntry> products = await Task.Run(() => builder.GetProductsList())
-                                            .ConfigureAwait(false);
+      FixedList<ProductEntry> products = await Task.Run(() =>
+                                                        ProductDataService.GetProductsList(query.Keywords))
+                                                   .ConfigureAwait(false);
 
-      return ProductMapper.MapToEntriesDto(products);
+      return new FixedList<IProductEntryDto>();
     }
 
 

@@ -17,6 +17,7 @@ using Empiria.Trade.Core;
 using Empiria.Trade.Products;
 using Empiria.Trade.Inventory.Data;
 using Empiria.Trade.Inventory.Adapters;
+using Empiria.Parties;
 
 namespace Empiria.Trade.Inventory.UseCases {
 
@@ -33,7 +34,6 @@ namespace Empiria.Trade.Inventory.UseCases {
     static public InventoryOrderUseCases UseCaseInteractor() {
       return CreateInstance<InventoryOrderUseCases>();
     }
-
 
     #endregion Constructors and parsers
 
@@ -151,13 +151,16 @@ namespace Empiria.Trade.Inventory.UseCases {
       Assertion.Require(orderUID, nameof(orderUID));
 
       InventoryOrder order = InventoryOrder.Parse(orderUID);
+      
+      order.Activate();
 
-      order.Close(Parties.Party.ParseWithContact(ExecutionServer.CurrentContact));
+      order.Close(Party.ParseWithContact(ExecutionServer.CurrentContact));
       order.Save();
 
       order.CloseItems();
 
-      OutputInventoryEntriesVW(order);
+      //TODO DEFINIR QUE HACER CON ESTA FUNCION
+      //OutputInventoryEntriesVW(order);
 
       var inventoryEntryUseCase = InventoryEntryUseCases.UseCaseInteractor();
       inventoryEntryUseCase.CloseInventoryEntries(order.UID);
@@ -254,9 +257,10 @@ namespace Empiria.Trade.Inventory.UseCases {
 
       foreach (var item in order.GetItems<InventoryOrderItem>()) {
 
+        var price = InventoryOrderData.GetProductPriceFromVirtualWarehouse(item.Product.Id);
+
         var inventoryEntry = new InventoryEntry(InventoryEntryType.InventoryEntryItemType, order, item);
 
-        var price = InventoryOrderData.GetProductPriceFromVirtualWarehouse(item.Product.Id);
         inventoryEntry.OutputEntry(price);
 
         inventoryEntry.Save();

@@ -8,6 +8,7 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using Empiria.Locations;
 
 namespace Empiria.Trade.Products {
 
@@ -26,7 +27,7 @@ namespace Empiria.Trade.Products {
 
 
     [DataField("LOCATION_ID")]
-    public Locations.Location Location {
+    public Location Location {
       get; internal set;
     }
 

@@ -84,27 +84,6 @@ namespace Empiria.Trade.Products.Domain {
     }
 
 
-    internal FixedList<ProductEntry> GetProductsByCode(FixedList<ProductEntry> products) {
-
-      var hashProducts = new EmpiriaHashTable<ProductEntry>();
-
-      foreach (var product in products) {
-
-        AssingHashProductByCode(hashProducts, product);
-      }
-
-      return hashProducts.ToFixedList();
-    }
-
-
-    internal FixedList<ProductEntry> GetProductsOrderBy(FixedList<ProductEntry> productsByCode) {
-
-      return productsByCode.OrderBy(p => p.InternalCode)
-                           .ThenBy(p => p.Name)
-                           .ToList().ToFixedList();
-    }
-
-
     internal void GetProductsWithCustomerPrice(FixedList<ProductEntry> products) {
 
       var customerExtData = GetCustomerAssignedPriceNumber();
@@ -252,14 +231,6 @@ namespace Empiria.Trade.Products.Domain {
       }
 
       return price;
-    }
-
-
-    internal FixedList<ProductEntry> GetProductsByStock(FixedList<ProductEntry> products) {
-
-      FixedList<ProductEntry> productsByStock = new FixedList<ProductEntry>(products);
-
-      return productsByStock;
     }
 
 

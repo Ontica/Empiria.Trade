@@ -28,98 +28,12 @@ namespace Empiria.Trade.Products.Domain {
     #endregion Constructors and parsers
 
 
-    #region Public methods V2
-
-    internal FixedList<ProductEntry> GetProducts() {
-
-      var helper = new ProductHelper(query);
-
-      return helper.BaseProducts.OrderBy(x=>x.InternalCode.Length)
-                                .ThenBy(x => x.InternalCode)
-                                .ToFixedList();
-    }
-
-
-    static public FixedList<ProductsTotals> GetStockAndLocationByBaseProduct(ProductEntry product) {
-      return ProductDataService.GetStocksByBaseProduct(product);
-    }
-
-    #endregion Public methods V2
-
     #region Public methods
-
-    internal FixedList<ProductEntry> GetProductsForOrder() {
-
-      FixedList<ProductEntry> products = ProductDataService.GetProductsList(query.Keywords);
-
-      var productHelper = new ProductHelper(query);
-
-      FixedList<ProductEntry> productsByStock = productHelper.GetProductsByStock(products);
-
-      ValidateToGetPriceList(productsByStock);
-
-      FixedList<ProductEntry> productsByCode = productHelper.GetProductsByCode(productsByStock);
-
-      FixedList<ProductEntry> orderedProducts = productHelper.GetProductsOrderBy(productsByCode);
-
-      return orderedProducts;
-    }
-
-
-    internal FixedList<ProductEntry> GetProductsForPurchaseOrder() {
-
-      FixedList<ProductEntry> products = ProductDataService.GetProductsList(query.Keywords);
-
-      var helper = new ProductHelper(query);
-
-      FixedList<ProductEntry> productsByStock = helper.GetProductsByStock(products);
-
-      FixedList<ProductEntry> productsByCode = helper.GetProductsByCodeForPurchaseOrder(productsByStock);
-
-      FixedList<ProductEntry> orderedProducts = helper.GetProductsOrderBy(productsByCode);
-
-      return orderedProducts;
-    }
-
-
-    internal FixedList<ProductEntry> GetProductsList() {
-
-      FixedList<ProductEntry> products = ProductDataService.GetProductsList(query.Keywords);
-
-      var helper = new ProductHelper(query);
-
-      FixedList<ProductEntry> productsByStock = helper.GetProductsByStock(products);
-
-      ValidateToGetPriceList(productsByStock);
-
-      FixedList<ProductEntry> productsByCode = helper.GetProductsByCode(productsByStock);
-
-      FixedList<ProductEntry> orderedProducts = helper.GetProductsOrderBy(productsByCode);
-
-      return orderedProducts;
-    }
 
     #endregion Public methods
 
 
     #region Private methods
-
-
-    private void ValidateToGetPriceList(FixedList<ProductEntry> products) {
-
-      var helper = new ProductHelper(query);
-
-      if (query.CustomerUID != "") {
-
-        helper.GetProductsWithCustomerPrice(products);
-
-      } else {
-
-        helper.GetDefaultProductBasePrices(products);
-
-      }
-
-    }
 
     #endregion Private methods
 
