@@ -12,7 +12,9 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Empiria.Locations;
+using Empiria.Products;
 using Empiria.Trade.Core.Catalogues;
+using Empiria.Trade.Products;
 
 namespace Empiria.Trade.Core {
 
@@ -165,23 +167,28 @@ namespace Empiria.Trade.Core {
       var usecase = CataloguesUseCases.UseCaseInteractor();
 
       FixedList<InventoryStockEntry> inventoryStocks =
-        CataloguesUseCases.GetInventoryStockByVendorProduct(orderItem.ProductId, "");
+        CataloguesUseCases.GetInventoryStockByProduct(orderItem.ProductId, "");
+
+      var product = ProductEntry.ParseId(orderItem.ProductId);
 
       var warehouseBins = new List<WarehouseBinForPacking>();
 
-      foreach (var inventory in inventoryStocks) {
-        //TODO CARGAR INVENTARIO EN EMPAQUES
-        var warehouseRoot = InventoryBuilder.GetRootLocation(inventory.Location);
+      foreach (var inventoryStock in inventoryStocks) {
+        
+        decimal stockByLocation = product.GetPackingSmallBagStockByLocation(inventoryStock,
+                                                                            inventoryStock.InventoryUnit);
+        
+        var warehouseRoot = InventoryBuilder.GetRootLocation(inventoryStock.Location);
         var warehouseName = warehouseRoot.Id == -1 ? "ALMACEN VW" : $"ALMACEN {warehouseRoot.ShortName}";
-        var locationName = inventory.Location.Name == "-1" ? "LOC. VIRTUAL" : inventory.Location.Name;
+        var locationName = inventoryStock.Location.Name == "-1" ? "LOC. VIRTUAL" : inventoryStock.Location.Name;
 
         WarehouseBinForPacking warehouseBin = new WarehouseBinForPacking {
-          UID = inventory.Location.LocationUID,
+          UID = inventoryStock.Location.LocationUID,
           OrderItemUID = orderItem.OrderItemUID,
           Name = locationName,
           WarehouseName = warehouseName,
-          Description = $"{warehouseName} - {locationName} {inventory.Stock}",
-          Stock = inventory.Stock,
+          Description = $"{warehouseName} - {locationName} {inventoryStock.Stock}",
+          Stock = stockByLocation,
         };
 
         warehouseBins.Add(warehouseBin);

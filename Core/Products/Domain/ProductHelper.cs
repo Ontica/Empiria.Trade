@@ -282,7 +282,7 @@ namespace Empiria.Trade.Products.Domain {
         vendor.VendorUID = product.Vendor.UID;
         vendor.VendorName = product.Vendor.Name;
         vendor.Sku = vendorProduct.SKU;
-        vendor.Stock = InventoryBuilder.GetInventoryStockByVendorProduct(vendorProduct.Id, "").Sum(x => x.Stock);
+        vendor.Stock = InventoryBuilder.GetInventoryStockByProduct(vendorProduct.Id, "").Sum(x => x.Stock);
         vendor.Price = product.PriceList;
         vendorDtos.Add(vendor);
       }

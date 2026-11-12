@@ -41,11 +41,11 @@ namespace Empiria.Trade.Core.Catalogues {
 
     #region Use cases
 
-    static public FixedList<InventoryStockEntry> GetInventoryStockByVendorProduct(
+    static public FixedList<InventoryStockEntry> GetInventoryStockByProduct(
                                                   int productId, string warehouseBinClauses) {
       Assertion.Require(productId, "productId");
 
-      return InventoryBuilder.GetInventoryStockByVendorProduct(productId, warehouseBinClauses);
+      return InventoryBuilder.GetInventoryStockByProduct(productId, warehouseBinClauses);
     }
 
 
@@ -130,7 +130,7 @@ namespace Empiria.Trade.Core.Catalogues {
     public WarehouseBin GetWarehouseBinByVendorProduct(int vendorProductId) {
       Assertion.Require(vendorProductId, "vendorProductId");
 
-      FixedList<InventoryStockEntry> stock = GetInventoryStockByVendorProduct(vendorProductId, "");
+      FixedList<InventoryStockEntry> stock = GetInventoryStockByProduct(vendorProductId, "");
 
       return stock.FirstOrDefault().WarehouseBin;
     }

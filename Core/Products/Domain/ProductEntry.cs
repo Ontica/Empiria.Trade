@@ -337,7 +337,7 @@ namespace Empiria.Trade.Products {
     }
 
 
-    public decimal GetByPackingSmallBag(FixedList<InventoryStockEntry> stockByProductUnit,
+    public decimal GetPackingSmallBagStockByInventoryUnit(FixedList<InventoryStockEntry> stockByProductUnit,
                                        ProductUnit inventoryUnit) {
       var bag = this.PackagingSize;
       var smallBag = this.PackingSmallBag;
@@ -347,6 +347,41 @@ namespace Empiria.Trade.Products {
 
         if (bag == smallBag) {
           
+          return quantity;
+
+        } else {
+          var cantidadEmpaques = Math.Truncate(bag * quantity / smallBag);
+
+          var unidadBase = bag * quantity - (cantidadEmpaques * smallBag);
+
+          return cantidadEmpaques;
+        }
+      }
+
+      if (inventoryUnit.Name == "Pieza") {
+
+        var cantidadEmpaques = Math.Truncate(quantity / smallBag);
+        var unidadBase = quantity - (cantidadEmpaques * smallBag);
+
+        return cantidadEmpaques;
+
+      } else {
+
+        return quantity;
+      }
+    }
+
+
+    internal decimal GetPackingSmallBagStockByLocation(InventoryStockEntry inventoryEntryStock,
+                                                       ProductUnit inventoryUnit) {
+      var bag = this.PackagingSize;
+      var smallBag = this.PackingSmallBag;
+      var quantity = inventoryEntryStock.Stock;
+
+      if (inventoryUnit.Name == "Caja" || inventoryUnit.Name == "Kilogramo") {
+
+        if (bag == smallBag) {
+
           return quantity;
 
         } else {

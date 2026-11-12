@@ -132,7 +132,7 @@ namespace Empiria.Trade.Products.Adapters {
         var stockAndLocation = productsStock.Where(x => x.ProductId == p.Id && x.Location.Id != -1)
                                                  .ToList();
 
-        p.Stock = ProductBuilder.GetStockByPackingSmallBag(productsStock, p);
+        p.Stock = ProductBuilder.GetPackingSmallBagStockByInventoryUnit(productsStock, p);
 
         var locs = new List<Location>();
 

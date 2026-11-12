@@ -114,16 +114,16 @@ namespace Empiria.Trade.Sales.UseCases {
     }
 
 
-    static internal decimal GetItemExistence(int productId) {
+    static public decimal GetItemExistence(int productId) {
 
       var usecase = CataloguesUseCases.UseCaseInteractor();
 
-      FixedList<InventoryStockEntry> inventoryStock =
-        CataloguesUseCases.GetInventoryStockByVendorProduct(productId, "");
+      FixedList<InventoryStockEntry> inventoryStock = InventoryBuilder.GetInventoryStockByProduct(
+                                                                        productId, "");
 
       ProductEntry productEntry = ProductEntry.ParseId(productId);
 
-      return ProductBuilder.GetStockByPackingSmallBag(inventoryStock, productEntry);
+      return ProductBuilder.GetPackingSmallBagStockByInventoryUnit(inventoryStock, productEntry);
     }
 
 
@@ -465,7 +465,7 @@ namespace Empiria.Trade.Sales.UseCases {
       foreach (var fields in itemsFields) {
 
         var product = ProductEntry.Parse(fields.VendorProductUID);
-        var productExistence = GetItemExistence(product.Id);
+        var productExistence = InventoryBuilder.GetItemExistence(product.Id);
 
         fields.ProductStock = productExistence;
 

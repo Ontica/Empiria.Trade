@@ -9,6 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using Empiria.Locations;
+using Empiria.Trade.Products;
 
 namespace Empiria.Trade.Core {
 
@@ -30,10 +31,20 @@ namespace Empiria.Trade.Core {
     #region Public methods
 
 
-    static public FixedList<InventoryStockEntry> GetInventoryStockByVendorProduct(
+    static public FixedList<InventoryStockEntry> GetInventoryStockByProduct(
       int productId, string warehouseBinClauses) {
 
-      return InventoryData.GetInventoryStockByVendorProduct(productId, warehouseBinClauses);
+      return InventoryData.GetInventoryStockByProduct(productId, warehouseBinClauses);
+    }
+
+
+    static public decimal GetItemExistence(int productId) {
+
+      FixedList<InventoryStockEntry> inventoryStock = GetInventoryStockByProduct(productId, "");
+
+      ProductEntry productEntry = ProductEntry.ParseId(productId);
+
+      return ProductBuilder.GetPackingSmallBagStockByInventoryUnit(inventoryStock, productEntry);
     }
 
 

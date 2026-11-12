@@ -25,7 +25,7 @@ namespace Empiria.Trade.Tests.Core
 
       int vendorProductId = 36;
       FixedList<InventoryStockEntry> sut = 
-        CataloguesUseCases.GetInventoryStockByVendorProduct(vendorProductId, "");
+        CataloguesUseCases.GetInventoryStockByProduct(vendorProductId, "");
 
       Assert.NotNull(sut);
 

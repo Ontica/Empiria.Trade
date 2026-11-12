@@ -66,7 +66,7 @@ namespace Empiria.Trade.Core {
     }
 
     
-    static internal FixedList<InventoryStockEntry> GetInventoryStockByVendorProduct(
+    static internal FixedList<InventoryStockEntry> GetInventoryStockByProduct(
                                         int productId, string warehouseBinClauses) {
 
       if (warehouseBinClauses != string.Empty) {

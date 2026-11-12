@@ -74,7 +74,7 @@ namespace Empiria.Trade.Sales.Adapters {
 
     static private VendorDto MapVendor(ProductEntry productEntry) {
 
-      var productStock = SalesOrderUseCases.GetItemExistence(productEntry.Id);
+      var productStock = InventoryBuilder.GetItemExistence(productEntry.Id);
 
       return new VendorDto {
         VendorProductUID = productEntry.UID,
