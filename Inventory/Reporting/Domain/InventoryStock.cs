@@ -2,27 +2,25 @@
 *                                                                                                            *
 *  Module   : Inventory Management                       Component : Domain Layer                            *
 *  Assembly : Empiria.Trade.Inventory.dll                Pattern   : Information Holder                      *
-*  Type     : InventoryStockEntry                        License   : Please read LICENSE.txt file            *
+*  Type     : InventoryStock                             License   : Please read LICENSE.txt file            *
 *                                                                                                            *
 *  Summary  : Represents an inventory stock entry.                                                           *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+
 using Empiria.Trade.Core;
-using Empiria.Trade.Core.Catalogues;
-using Empiria.Trade.Inventory.Adapters;
-using Empiria.Trade.Products;
 
 namespace Empiria.Trade.Inventory {
 
 
   /// <summary>Represents an inventory stock entry.</summary>
-  public class InventoryStockEntry : InventoryEntryStock, IReportEntry {
+  public class InventoryStock : InventoryStockEntry, IReportEntry {
 
 
     #region Constructors and parsers
 
-    internal InventoryStockEntry() {
+    internal InventoryStock() {
       // no-op
     }
 
@@ -31,14 +29,12 @@ namespace Empiria.Trade.Inventory {
 
     #region Properties
 
-
     public ReportItemType ItemType {
       get; set;
     } = ReportItemType.Entry;
 
-
     #endregion Properties
 
-  } // class InventoryStockEntry
+  } // class InventoryStock
 
 } // namespace Empiria.Trade.Inventory

@@ -118,7 +118,7 @@ namespace Empiria.Trade.Sales.UseCases {
 
       var usecase = CataloguesUseCases.UseCaseInteractor();
 
-      FixedList<InventoryEntryStock> inventoryStock =
+      FixedList<InventoryStockEntry> inventoryStock =
         CataloguesUseCases.GetInventoryStockByVendorProduct(productId, "");
 
       ProductEntry productEntry = ProductEntry.ParseId(productId);

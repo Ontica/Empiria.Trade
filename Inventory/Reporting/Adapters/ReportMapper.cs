@@ -61,7 +61,7 @@ namespace Empiria.Trade.Inventory.Adapters {
     }
 
 
-    static private IReportDto MapStocksByLocation(InventoryStockEntry x) {
+    static private IReportDto MapStocksByLocation(InventoryStock x) {
       var dto = new InventoryStockDescriptorDto();
 
       dto.UID = x.VendorProduct.VendorProductUID;
@@ -89,7 +89,7 @@ namespace Empiria.Trade.Inventory.Adapters {
     }
 
 
-    static private IReportDto MapStocksByProduct(InventoryStockEntry x) {
+    static private IReportDto MapStocksByProduct(InventoryStock x) {
       var dto = new InventoryStockDescriptorDto();
 
       dto.UID = x.VendorProduct.VendorProductUID;
@@ -119,12 +119,12 @@ namespace Empiria.Trade.Inventory.Adapters {
 
         case ReportType.StocksByProduct:
 
-          var stocksByProduct = list.Select((x) => MapStocksByProduct((InventoryStockEntry) x));
+          var stocksByProduct = list.Select((x) => MapStocksByProduct((InventoryStock) x));
           return new FixedList<IReportDto>(stocksByProduct);
 
         case ReportType.StocksByLocation:
 
-          var stocksByLocation = list.Select((x) => MapStocksByLocation((InventoryStockEntry) x));
+          var stocksByLocation = list.Select((x) => MapStocksByLocation((InventoryStock) x));
           return new FixedList<IReportDto>(stocksByLocation);
 
         case ReportType.PurchasingReport:

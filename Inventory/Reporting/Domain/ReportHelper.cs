@@ -39,10 +39,10 @@ namespace Empiria.Trade.Inventory.Domain {
     #region Public methods
 
     
-    internal FixedList<InventoryEntryStock> GetStockByVendorProduct(
+    internal FixedList<Core.InventoryStockEntry> GetStockByVendorProduct(
       FixedList<VendorProduct> vendorProducts) {
 
-      var list = new List<InventoryEntryStock>();
+      var list = new List<Core.InventoryStockEntry>();
 
       foreach (var vendorProduct in vendorProducts) {
 
@@ -56,13 +56,13 @@ namespace Empiria.Trade.Inventory.Domain {
     }
 
 
-    internal FixedList<InventoryStockEntry> GetHeadersByProduct(
-      FixedList<InventoryEntryStock> stockByVendorProduct) {
+    internal FixedList<InventoryStock> GetHeadersByProduct(
+      FixedList<Core.InventoryStockEntry> stockByVendorProduct) {
 
-      var list = new List<InventoryStockEntry>();
+      var list = new List<InventoryStock>();
 
       foreach (var stock in stockByVendorProduct) {
-        var entry = new InventoryStockEntry();
+        var entry = new InventoryStock();
 
         var exist = list
           .Where(x => x.VendorProduct.VendorProductId == stock.VendorProduct.VendorProductId)
@@ -91,10 +91,10 @@ namespace Empiria.Trade.Inventory.Domain {
     }
 
 
-    internal FixedList<InventoryStockEntry> GetStockLocationsByProduct(
-      FixedList<InventoryEntryStock> stockByVendorProduct, FixedList<InventoryStockEntry> stockHeaders) {
+    internal FixedList<InventoryStock> GetStockLocationsByProduct(
+      FixedList<Core.InventoryStockEntry> stockByVendorProduct, FixedList<InventoryStock> stockHeaders) {
 
-      var list = new List<InventoryStockEntry>();
+      var list = new List<InventoryStock>();
 
       foreach (var header in stockHeaders) {
         
@@ -109,10 +109,10 @@ namespace Empiria.Trade.Inventory.Domain {
     }
 
 
-    internal FixedList<InventoryStockEntry> GetStockByProductForLocations(
-      FixedList<InventoryEntryStock> stockByVendorProduct, FixedList<InventoryStockEntry> stockHeaders) {
+    internal FixedList<InventoryStock> GetStockByProductForLocations(
+      FixedList<Core.InventoryStockEntry> stockByVendorProduct, FixedList<InventoryStock> stockHeaders) {
 
-      var list = new List<InventoryStockEntry>();
+      var list = new List<InventoryStock>();
 
       foreach (var header in stockHeaders) {
 
@@ -127,12 +127,12 @@ namespace Empiria.Trade.Inventory.Domain {
     }
 
 
-    private IEnumerable<InventoryStockEntry> MapToEntriesByLocation(List<InventoryEntryStock> salesEntries) {
+    private IEnumerable<InventoryStock> MapToEntriesByLocation(List<Core.InventoryStockEntry> salesEntries) {
 
-      var returnedList = new List<InventoryStockEntry>();
+      var returnedList = new List<InventoryStock>();
       foreach (var stock in salesEntries) {
 
-        var entry = new InventoryStockEntry();
+        var entry = new InventoryStock();
         entry.ItemType = ReportItemType.Entry;
         entry.VendorProduct = stock.VendorProduct;
         entry.WarehouseBin = stock.WarehouseBin;
@@ -146,12 +146,12 @@ namespace Empiria.Trade.Inventory.Domain {
     }
 
 
-    private IEnumerable<InventoryStockEntry> MapToEntriesByProduct(List<InventoryEntryStock> salesEntries) {
+    private IEnumerable<InventoryStock> MapToEntriesByProduct(List<Core.InventoryStockEntry> salesEntries) {
 
-      var returnedList = new List<InventoryStockEntry>();
+      var returnedList = new List<InventoryStock>();
       foreach (var stock in salesEntries) {
         
-        var entry = new InventoryStockEntry();
+        var entry = new InventoryStock();
         entry.ItemType = ReportItemType.Entry;
         entry.VendorProduct = stock.VendorProduct;
         entry.WarehouseBin = stock.WarehouseBin;
@@ -164,13 +164,13 @@ namespace Empiria.Trade.Inventory.Domain {
     }
 
 
-    internal FixedList<InventoryStockEntry> GetHeadersByLocation(
-      FixedList<InventoryEntryStock> stockByVendorProduct) {
+    internal FixedList<InventoryStock> GetHeadersByLocation(
+      FixedList<Core.InventoryStockEntry> stockByVendorProduct) {
 
-      var list = new List<InventoryStockEntry>();
+      var list = new List<InventoryStock>();
 
       foreach (var stock in stockByVendorProduct) {
-        var entry = new InventoryStockEntry();
+        var entry = new InventoryStock();
 
         var exist = list
           .Where(x => x.WarehouseBin.Id == stock.WarehouseBin.Id)

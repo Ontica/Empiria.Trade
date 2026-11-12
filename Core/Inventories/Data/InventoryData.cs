@@ -66,7 +66,7 @@ namespace Empiria.Trade.Core {
     }
 
     
-    static internal FixedList<InventoryEntryStock> GetInventoryStockByVendorProduct(
+    static internal FixedList<InventoryStockEntry> GetInventoryStockByVendorProduct(
                                         int productId, string warehouseBinClauses) {
 
       if (warehouseBinClauses != string.Empty) {
@@ -79,16 +79,16 @@ namespace Empiria.Trade.Core {
 
       var dataOperation = DataOperation.Parse(sql);
 
-      return DataReader.GetPlainObjectFixedList<InventoryEntryStock>(dataOperation);
+      return DataReader.GetPlainObjectFixedList<InventoryStockEntry>(dataOperation);
     }
 
 
-    static internal FixedList<InventoryEntryStock> GetInventoryStockByClauses(string clauses) {
+    static internal FixedList<InventoryStockEntry> GetInventoryStockByClauses(string clauses) {
 
       string sql = $"SELECT * FROM VW_Inventory_Stock {clauses}";
       var dataOperation = DataOperation.Parse(sql);
 
-      return DataReader.GetPlainObjectFixedList<InventoryEntryStock>(dataOperation);
+      return DataReader.GetPlainObjectFixedList<InventoryStockEntry>(dataOperation);
     }
 
 
@@ -106,7 +106,7 @@ namespace Empiria.Trade.Core {
     }
 
 
-    internal static FixedList<InventoryEntryStock> GetInventoryStockForProducts(ProductEntry baseProduct) {
+    internal static FixedList<InventoryStockEntry> GetInventoryStockForProducts(ProductEntry baseProduct) {
 
       var filterByBaseProduct = $"Base_Product_Id IN ({baseProduct.Id}) AND " +
                                 $"Product_Id NOT IN ({baseProduct.Id})";
@@ -119,7 +119,7 @@ namespace Empiria.Trade.Core {
 
       var op = DataOperation.Parse(sql);
 
-      return DataReader.GetPlainObjectFixedList<InventoryEntryStock>(op);
+      return DataReader.GetPlainObjectFixedList<InventoryStockEntry>(op);
     }
 
 

@@ -337,7 +337,7 @@ namespace Empiria.Trade.Products {
     }
 
 
-    public decimal GetByPackingSmallBag(FixedList<InventoryEntryStock> stockByProductUnit,
+    public decimal GetByPackingSmallBag(FixedList<InventoryStockEntry> stockByProductUnit,
                                        ProductUnit inventoryUnit) {
       var bag = this.PackagingSize;
       var smallBag = this.PackingSmallBag;

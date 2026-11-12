@@ -8,12 +8,17 @@
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
+using Empiria.Trade.Core;
 
 namespace Empiria.Trade.Inventory {
 
 
   /// <summary>Represents an interface to build entry report.</summary>
   public interface IReportEntry {
+
+    ReportItemType ItemType {
+      get; set;
+    }
 
   } // interface IReportEntry
 
@@ -26,6 +31,10 @@ namespace Empiria.Trade.Inventory {
     internal ReportEntry() {
       // no-op
     }
+
+    public ReportItemType ItemType {
+      get;set;
+    } = ReportItemType.Entry;
 
 
     #endregion Constructors and parsers

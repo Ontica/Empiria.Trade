@@ -107,7 +107,7 @@ namespace Empiria.Trade.Products.Adapters {
 
       FixedList<ProductEntry> _presentations = GetPresentationsByBaseProduct(baseProduct);
 
-      FixedList<InventoryEntryStock> productsStock = InventoryData.GetInventoryStockForProducts(baseProduct);
+      FixedList<InventoryStockEntry> productsStock = InventoryData.GetInventoryStockForProducts(baseProduct);
 
       MergePresentationAndStockByLocation(_presentations, productsStock);
 
@@ -125,7 +125,7 @@ namespace Empiria.Trade.Products.Adapters {
 
 
     private static void MergePresentationAndStockByLocation(FixedList<ProductEntry> presentations,
-                                                            FixedList<InventoryEntryStock> productsStock) {
+                                                            FixedList<InventoryStockEntry> productsStock) {
       //TODO VALIDAR TIPO UNIDAD E IDENTIFICAR ALMACENES
       foreach (var p in presentations) {
 
@@ -145,7 +145,7 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
-    static internal decimal GetByPackingSmallBag(List<InventoryEntryStock> stockByProductUnit,
+    static internal decimal GetByPackingSmallBag(List<InventoryStockEntry> stockByProductUnit,
                                        ProductUnit inventoryUnit,
                                        ProductEntry product) {
       var bag = product.PackagingSize;

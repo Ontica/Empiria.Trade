@@ -164,7 +164,7 @@ namespace Empiria.Trade.Core {
 
       var usecase = CataloguesUseCases.UseCaseInteractor();
 
-      FixedList<InventoryEntryStock> inventoryStocks =
+      FixedList<InventoryStockEntry> inventoryStocks =
         CataloguesUseCases.GetInventoryStockByVendorProduct(orderItem.ProductId, "");
 
       var warehouseBins = new List<WarehouseBinForPacking>();

@@ -32,10 +32,10 @@ namespace Empiria.Trade.Products {
 
     #region Public methods
 
-    static public decimal GetStockByPackingSmallBag(FixedList<InventoryEntryStock> productsStock,
+    static public decimal GetStockByPackingSmallBag(FixedList<InventoryStockEntry> inventoryEntries,
                                                       ProductEntry product) {
 
-      var stockAndLocation = productsStock.Where(x => x.ProductId == product.Id && x.Location.Id != -1)
+      var stockAndLocation = inventoryEntries.Where(x => x.ProductId == product.Id && x.Location.Id != -1)
                                                  .ToList();
 
       decimal stockByPresentation = 0;
@@ -47,8 +47,6 @@ namespace Empiria.Trade.Products {
         var stockByProductUnit = stockAndLocation.FindAll(x => x.InventoryUnit.Id == group.Key.Id);
 
         if (stockByProductUnit.Count > 0) {
-
-          //var _stock = product.GetByPackingSmallBag(stockByProductUnit.ToFixedList(), byUnit.Key);
 
           stockByPresentation += product.GetByPackingSmallBag(stockByProductUnit.ToFixedList(), group.Key);
         }

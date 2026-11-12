@@ -2,7 +2,7 @@
 *                                                                                                            *
 *  Module   : Inventory Management                       Component : Domain Layer                            *
 *  Assembly : Empiria.Trade.Core.dll                     Pattern   : Information Holder                      *
-*  Type     : InventoryEntryStock                        License   : Please read LICENSE.txt file            *
+*  Type     : InventoryStockEntry                        License   : Please read LICENSE.txt file            *
 *                                                                                                            *
 *  Summary  : Represents an inventory stock by vendorProduct for sales.                                      *
 *                                                                                                            *
@@ -18,13 +18,13 @@ namespace Empiria.Trade.Core {
 
 
   /// <summary></summary>
-  public class InventoryEntryStock {
+  public class InventoryStockEntry {
 
 
     #region Constructors and parsers
 
 
-    public InventoryEntryStock() {
+    public InventoryStockEntry() {
       // no-op
     }
 
@@ -106,6 +106,6 @@ namespace Empiria.Trade.Core {
 
     #endregion
 
-  } // class InventoryEntryStock
+  } // class InventoryStockEntry
 
 } // namespace Empiria.Trade.Core

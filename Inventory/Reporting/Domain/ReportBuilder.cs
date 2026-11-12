@@ -51,9 +51,9 @@ namespace Empiria.Trade.Inventory.Domain {
       var stockByVendorProduct = GetStockByVendorProduct();
       var helper = new ReportHelper(query);
 
-      FixedList<InventoryStockEntry> stockHeaders = helper.GetHeadersByProduct(stockByVendorProduct);
+      FixedList<InventoryStock> stockHeaders = helper.GetHeadersByProduct(stockByVendorProduct);
 
-      FixedList<InventoryStockEntry> stockEntries =
+      FixedList<InventoryStock> stockEntries =
         helper.GetStockLocationsByProduct(stockByVendorProduct, stockHeaders);
 
       return new FixedList<IReportEntry>(stockEntries.Select(x => (IReportEntry) x));
@@ -69,9 +69,9 @@ namespace Empiria.Trade.Inventory.Domain {
 
       var helper = new ReportHelper(query);
 
-      FixedList<InventoryStockEntry> stockHeaders = helper.GetHeadersByLocation(stockByVendorProduct);
+      FixedList<InventoryStock> stockHeaders = helper.GetHeadersByLocation(stockByVendorProduct);
 
-      FixedList<InventoryStockEntry> stockEntries =
+      FixedList<InventoryStock> stockEntries =
         helper.GetStockByProductForLocations(stockByVendorProduct, stockHeaders);
 
       return new FixedList<IReportEntry>(stockEntries.Select(x => (IReportEntry) x));
@@ -84,7 +84,7 @@ namespace Empiria.Trade.Inventory.Domain {
     #region Private methods
 
 
-    private FixedList<InventoryEntryStock> GetStockByVendorProduct() {
+    private FixedList<Core.InventoryStockEntry> GetStockByVendorProduct() {
 
       var products = SimpleObjects.ConcatIntsToString(
         ProductFields.ParseIdList(query.Products).ToList());
