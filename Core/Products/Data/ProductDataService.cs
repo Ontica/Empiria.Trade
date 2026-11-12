@@ -74,25 +74,6 @@ namespace Empiria.Trade.Products.Data {
     }
 
 
-    internal static FixedList<ProductsTotals> GetStocksByBaseProduct(ProductEntry baseProduct) {
-
-      var sql = "SELECT PROD.Product_Id, ISNULL(INV_ENTRIES.Inv_Entry_Location_Id, -1) AS Location_Id, " +
-        "ISNULL(INV_ENTRIES.Inv_Stock, 0) AS PRODUCT_STOCK " +
-        "FROM OMS_Products AS PROD " +
-        "LEFT JOIN (SELECT Inv_Entry_Product_Id, Inv_Entry_Location_Id, " +
-        "SUM(Inv_Entry_Input_Qty - Inv_Entry_Output_Qty) AS Inv_Stock " +
-        "FROM OMS_Inventory_Entries " +
-        "WHERE Inv_Entry_Status != 'X' GROUP BY Inv_Entry_Product_Id, Inv_Entry_Location_Id) " +
-        "AS INV_ENTRIES ON PROD.Product_Id = INV_ENTRIES.Inv_Entry_Product_Id " +
-        $"WHERE PROD.Base_Product_Id = {baseProduct.Id} AND PROD.Product_Id <> {baseProduct.Id} " +
-        $"AND PROD.Product_Status <> 'X'";
-
-      var op = DataOperation.Parse(sql);
-
-      return DataReader.GetPlainObjectFixedList<ProductsTotals>(op);
-    }
-
-
     internal static FixedList<ProductGroup> GetProductGroups(int typeId, int categoryId,
                                                              int classificationId = 0) {
 
