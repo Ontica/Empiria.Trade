@@ -41,7 +41,7 @@ namespace Empiria.Trade.Core.Catalogues {
 
     #region Use cases
 
-    static public FixedList<SalesInventoryStock> GetInventoryStockByVendorProduct(
+    static public FixedList<InventoryEntryStock> GetInventoryStockByVendorProduct(
                                                   int productId, string warehouseBinClauses) {
       Assertion.Require(productId, "productId");
 
@@ -49,7 +49,7 @@ namespace Empiria.Trade.Core.Catalogues {
     }
 
 
-    static public FixedList<SalesInventoryStock> GetInventoryStockByClauses(
+    static public FixedList<InventoryEntryStock> GetInventoryStockByClauses(
       int vendorProductId, int warehouseBinId) {
       Assertion.Require(vendorProductId, "vendorProductId");
       Assertion.Require(warehouseBinId, "warehouseBinId");
@@ -72,7 +72,7 @@ namespace Empiria.Trade.Core.Catalogues {
     }
 
 
-    static public FixedList<SalesInventoryStock> GetStockByUIDList(
+    static public FixedList<InventoryEntryStock> GetStockByUIDList(
       List<int> vendorProducts, List<int> warehouseBins) {
 
       var clauses = InventoryData.GetInventoryStockClauses(
@@ -130,7 +130,7 @@ namespace Empiria.Trade.Core.Catalogues {
     public WarehouseBin GetWarehouseBinByVendorProduct(int vendorProductId) {
       Assertion.Require(vendorProductId, "vendorProductId");
 
-      FixedList<SalesInventoryStock> stock = GetInventoryStockByVendorProduct(vendorProductId, "");
+      FixedList<InventoryEntryStock> stock = GetInventoryStockByVendorProduct(vendorProductId, "");
 
       return stock.FirstOrDefault().WarehouseBin;
     }

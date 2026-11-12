@@ -10,10 +10,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using Empiria.Locations;
 using Empiria.Parties;
-
+using Empiria.Products;
+using Empiria.Trade.Core;
 using Empiria.Trade.Products.Data;
+using Empiria.Trade.Products.Domain;
 
 namespace Empiria.Trade.Products.Adapters {
 
@@ -30,19 +32,19 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
-    static internal FixedList<ProductForSearchingDto> MapToSearcher(FixedList<ProductEntry> products,
+    static internal FixedList<ProductForSearchingDto> MapToSearcher(FixedList<ProductEntry> baseProducts,
                                                                     bool withUnits) {
 
-      return products.Select(x => MapTo(x, withUnits))
+      return baseProducts.Select(x => MapTo(x, withUnits))
                                  .Where(x => x.Presentations.Count > 0)
                                  .ToFixedList();
     }
 
 
-    static internal FixedList<ProductForSearchingDto> MapToSalesOrder(FixedList<ProductEntry> products,
+    static internal FixedList<ProductForSearchingDto> MapToSalesOrder(FixedList<ProductEntry> baseProducts,
                                                                     bool withUnits, string customerUID = "") {
 
-      return products.Select(x => MapTo(x, withUnits, customerUID))
+      return baseProducts.Select(x => MapTo(x, withUnits, customerUID))
                                  .Where(x => x.Presentations.Count > 0)
                                  .ToFixedList();
     }
@@ -75,8 +77,7 @@ namespace Empiria.Trade.Products.Adapters {
       return new ProductPresentationForSeach {
         PresentationUID = presentation.UID,
         Name = $"{presentation.InternalCode} " +
-               $"| Empaque: {presentation.PackingSmallBag} " +
-               $"| Unidades: {presentation.PackagingSize} {presentation.BaseUnit.Description}",
+               $"| Empaque: {presentation.PackingSmallBag} {presentation.BaseUnit.Description}(s)",
         Description = presentation.Description,
         Units = presentation.PackingSmallBag,
         Vendors = MapVendorsForSearcher(presentation, customerUID)
@@ -106,9 +107,9 @@ namespace Empiria.Trade.Products.Adapters {
 
       FixedList<ProductEntry> _presentations = GetPresentationsByBaseProduct(baseProduct);
 
-      FixedList<ProductsTotals> stockAndLocations = ProductDataService.GetStocksByBaseProduct(baseProduct);
+      FixedList<InventoryEntryStock> productsStock = InventoryData.GetInventoryStockForProducts(baseProduct);
 
-      MergePresentationAndStockByLocation(_presentations, stockAndLocations);
+      MergePresentationAndStockByLocation(_presentations, productsStock);
 
       _presentations = _presentations.Where(x => x.Vendor.Id == -100 ||
                                                  x.Vendor.Id == -99 ||
@@ -124,34 +125,58 @@ namespace Empiria.Trade.Products.Adapters {
 
 
     private static void MergePresentationAndStockByLocation(FixedList<ProductEntry> presentations,
-                                                            FixedList<ProductsTotals> stocksAndLocations) {
+                                                            FixedList<InventoryEntryStock> productsStock) {
       //TODO VALIDAR TIPO UNIDAD E IDENTIFICAR ALMACENES
       foreach (var p in presentations) {
 
-        var stockAndLocation = stocksAndLocations.Where(x => x.Product_Id == p.Id && x.Location.Id != -1)
+        var stockAndLocation = productsStock.Where(x => x.ProductId == p.Id && x.Location.Id != -1)
                                                  .ToList();
 
-        //var locs = new List<Location>();
+        p.Stock = ProductBuilder.GetStockByPackingSmallBag(productsStock, p);
 
-        //foreach (var stockLocation in stockAndLocation) {
-        //  locs.Add(stockLocation.Location);
-        //}
+        var locs = new List<Location>();
 
-        //var warehouses = new List<Location>();
+        foreach (var stockLocation in stockAndLocation) {
+          locs.Add(stockLocation.Location);
+        }
 
-        //foreach (var loc in locs) {
-        //  var warehouse = InventoryBuilder.GetRootLocation(loc);
+        p.Locations = locs.ToFixedList();
+      }
+    }
 
-        //  var exist = warehouses.Find(x => x.Id == warehouse.Id);
 
-        //  if (exist == null) {
-        //    warehouses.Add(warehouse);
-        //  }
-        //}
+    static internal decimal GetByPackingSmallBag(List<InventoryEntryStock> stockByProductUnit,
+                                       ProductUnit inventoryUnit,
+                                       ProductEntry product) {
+      var bag = product.PackagingSize;
+      var smallBag = product.PackingSmallBag;
+      var quantity = stockByProductUnit.Sum(x => x.Stock);
 
-        p.Stock = stockAndLocation.Sum(x => x.Stock);
+      if (inventoryUnit.Name == "Caja" || inventoryUnit.Name == "Kilogramo") {
 
-        //p.Locations = locs.ToFixedList();
+        if (bag == smallBag) {
+
+          return quantity;
+
+        } else {
+          var cantidadEmpaques = Math.Truncate(bag * quantity / smallBag);
+
+          var unidadBase = bag * quantity - (cantidadEmpaques * smallBag);
+
+          return cantidadEmpaques;
+        }
+      }
+
+      if (inventoryUnit.Name == "Pieza") {
+
+        var cantidadEmpaques = Math.Truncate(quantity / smallBag);
+        var unidadBase = quantity - (cantidadEmpaques * smallBag);
+
+        return cantidadEmpaques;
+
+      } else {
+
+        return quantity;
       }
     }
 
@@ -230,16 +255,16 @@ namespace Empiria.Trade.Products.Adapters {
     }
 
 
-    static private ProductForSearchingDto MapTo(ProductEntry product,
+    static private ProductForSearchingDto MapTo(ProductEntry baseProduct,
                                                      bool withUnits = false,
                                                      string customerUID = "") {
 
       return new ProductForSearchingDto() {
-        ProductUID = product.UID,
-        ProductCode = product.InternalCode,
-        Description = product.Description,
-        ProductType = GetProductsType(product),
-        Presentations = GetPresentations(product, withUnits, customerUID)
+        ProductUID = baseProduct.UID,
+        ProductCode = baseProduct.InternalCode,
+        Description = baseProduct.Description,
+        ProductType = GetProductsType(baseProduct),
+        Presentations = GetPresentations(baseProduct, withUnits, customerUID)
       };
     }
 
@@ -263,7 +288,7 @@ namespace Empiria.Trade.Products.Adapters {
 
     static private FixedList<VendorDto> MapVendorsForSearcher(ProductEntry presentation,
                                                               string customerUID = "") {
-
+      //TODO CAMBIAR CODIGO PARA CONSULTAR PRECIOS
       var _presentationPrices = presentation.ProductPrices.Find(x => x.PriceType.Id == -25678);
 
       var _productPrice = _presentationPrices != null ? _presentationPrices.Price : 0;

@@ -223,19 +223,19 @@ namespace Empiria.Trade.Tests.Sales {
     private SalesOrderFields GetSalesOrderFields() {
 
       return new SalesOrderFields {
-        //UID = "6b800588-eb07-4610-9179-f454237f4d38",
-        CustomerUID = "173fe83a-cb24-4fd5-b33e-9b6dee09907b",
-        CustomerContactUID = "e83b639f-abb2-40ab-a2c7-c49d5574828d",
-        CustomerAddressUID = "633101bd-9902-415d-aecf-fc6b1d71a3b3",
+        UID = "c3ddd018-f379-4ddc-af7b-7b53b95aaf3a",
+        CustomerUID = "5fb372d5-40fc-4f5a-a1da-fbc066f0f51f",
+        CustomerContactUID = "f5d3a5a0-8d87-4be4-b6c9-99784b7b49ec",
+        CustomerAddressUID = "53746829-9f2c-4ae6-ac44-1b2983032bd1",
         SalesAgentUID = "7dc0b0bb-cac3-469e-8da9-309efda127ef",
         SupplierUID = "4d462287-9cee-400d-bd63-e2f31b171315",
-        PaymentConditions = "Contado",
-        OrderNumber = "P-VCHJXU4G0S",
+        PaymentConditions = "Credito",
+        OrderNumber = "P-UJVFTJNRCO",
         ShippingMethod = ShippingMethods.Paqueteria,
         ParcelSupplierUID = "4ca3efd0-5397-4291-bc37-5d61b4bdfd64",
         //OrderTime = DateTime.Now,
         Status = OrderStatus.Captured,
-        Notes = "CONTADO - PAQUETERIA",
+        Notes = "CREDITO - PAQUETERIA",
         Items = GetSalesOrderItemFields()
       };
     }
@@ -247,14 +247,14 @@ namespace Empiria.Trade.Tests.Sales {
 
       var fields = new SalesOrderItemsFields {
         //OrderItemUID = "",
-        VendorProductUID = "440b32f0-6afc-4318-b14f-08aebe89167d",
-        Quantity = 100,
-        UnitPrice = 14.03313m,
+        VendorProductUID = "ccd76530-88aa-4498-91ea-106aadc93acd",
+        Quantity = 40,
+        UnitPrice = 24.4723m,
         //DiscountPolicy = "",
         //Discount1 = 10,
         //Discount2 = 10,
         //Subtotal = 4.7217m,
-        Notes = "N/AA"
+        Notes = "N/A"
       };
 
       itemsFields.Add(fields);

@@ -48,7 +48,7 @@ namespace Empiria.Trade.Inventory.UseCases {
 
       InventoryUtility.EnsureIsValidToClose(orderItems);
 
-      InventoryOrderData.UpdateEntriesStatusByOrder(order.Id, InventoryStatus.Cerrado);
+      InventoryOrderData.UpdateEntriesStatusByOrder(order.Id, InventoryStatus.Activo);
 
       var inventoryOrderUseCase = InventoryOrderUseCases.UseCaseInteractor();
 

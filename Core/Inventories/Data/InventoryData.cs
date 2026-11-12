@@ -11,6 +11,7 @@ using System;
 using Empiria.Billing;
 using Empiria.Data;
 using Empiria.StateEnums;
+using Empiria.Trade.Products;
 
 namespace Empiria.Trade.Core {
 
@@ -64,8 +65,8 @@ namespace Empiria.Trade.Core {
       return DataReader.GetFixedList<InventoryOrder>(dataOperation);
     }
 
-
-    static internal FixedList<SalesInventoryStock> GetInventoryStockByVendorProduct(
+    
+    static internal FixedList<InventoryEntryStock> GetInventoryStockByVendorProduct(
                                         int productId, string warehouseBinClauses) {
 
       if (warehouseBinClauses != string.Empty) {
@@ -78,16 +79,16 @@ namespace Empiria.Trade.Core {
 
       var dataOperation = DataOperation.Parse(sql);
 
-      return DataReader.GetPlainObjectFixedList<SalesInventoryStock>(dataOperation);
+      return DataReader.GetPlainObjectFixedList<InventoryEntryStock>(dataOperation);
     }
 
 
-    static internal FixedList<SalesInventoryStock> GetInventoryStockByClauses(string clauses) {
+    static internal FixedList<InventoryEntryStock> GetInventoryStockByClauses(string clauses) {
 
       string sql = $"SELECT * FROM VW_Inventory_Stock {clauses}";
       var dataOperation = DataOperation.Parse(sql);
 
-      return DataReader.GetPlainObjectFixedList<SalesInventoryStock>(dataOperation);
+      return DataReader.GetPlainObjectFixedList<InventoryEntryStock>(dataOperation);
     }
 
 
@@ -102,6 +103,23 @@ namespace Empiria.Trade.Core {
         filters.AppendAnd($"WarehouseBinId IN ({warehouseBins})");
       }
       return filters.ToString().Length > 0 ? $"WHERE {filters}" : "";
+    }
+
+
+    internal static FixedList<InventoryEntryStock> GetInventoryStockForProducts(ProductEntry baseProduct) {
+
+      var filterByBaseProduct = $"Base_Product_Id IN ({baseProduct.Id}) AND " +
+                                $"Product_Id NOT IN ({baseProduct.Id})";
+
+      //var filterByProduct = $"Product_Id <> {baseProduct.Id}";
+
+      var sql = $"SELECT * FROM VW_Inventory_Stock " +
+                $"WHERE {filterByBaseProduct} " +
+                $"ORDER BY Base_Product_Id, Product_Id";
+
+      var op = DataOperation.Parse(sql);
+
+      return DataReader.GetPlainObjectFixedList<InventoryEntryStock>(op);
     }
 
 

@@ -19,7 +19,7 @@ namespace Empiria.Trade.Core {
 
     Todos = 'T',
 
-    Abierto = 'A',
+    Activo = 'A',
 
     EnProceso = 'E',
 

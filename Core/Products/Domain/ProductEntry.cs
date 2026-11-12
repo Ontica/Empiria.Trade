@@ -9,6 +9,7 @@
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Empiria.Locations;
 using Empiria.Ontology;
 using Empiria.Parties;
@@ -332,6 +333,41 @@ namespace Empiria.Trade.Products {
           return ProductPrices.Find(a => a.PriceType.Id == -25680);
         default:
           return priceList3;
+      }
+    }
+
+
+    public decimal GetByPackingSmallBag(FixedList<InventoryEntryStock> stockByProductUnit,
+                                       ProductUnit inventoryUnit) {
+      var bag = this.PackagingSize;
+      var smallBag = this.PackingSmallBag;
+      var quantity = stockByProductUnit.Sum(x => x.Stock);
+
+      if (inventoryUnit.Name == "Caja" || inventoryUnit.Name == "Kilogramo") {
+
+        if (bag == smallBag) {
+          
+          return quantity;
+
+        } else {
+          var cantidadEmpaques = Math.Truncate(bag * quantity / smallBag);
+
+          var unidadBase = bag * quantity - (cantidadEmpaques * smallBag);
+
+          return cantidadEmpaques;
+        }
+      }
+
+      if (inventoryUnit.Name == "Pieza") {
+
+        var cantidadEmpaques = Math.Truncate(quantity / smallBag);
+        var unidadBase = quantity - (cantidadEmpaques * smallBag);
+
+        return cantidadEmpaques;
+
+      } else {
+
+        return quantity;
       }
     }
 

@@ -164,13 +164,13 @@ namespace Empiria.Trade.Core {
 
       var usecase = CataloguesUseCases.UseCaseInteractor();
 
-      FixedList<SalesInventoryStock> inventoryStocks =
+      FixedList<InventoryEntryStock> inventoryStocks =
         CataloguesUseCases.GetInventoryStockByVendorProduct(orderItem.ProductId, "");
 
       var warehouseBins = new List<WarehouseBinForPacking>();
 
       foreach (var inventory in inventoryStocks) {
-
+        //TODO CARGAR INVENTARIO EN EMPAQUES
         var warehouseRoot = InventoryBuilder.GetRootLocation(inventory.Location);
         var warehouseName = warehouseRoot.Id == -1 ? "ALMACEN VW" : $"ALMACEN {warehouseRoot.ShortName}";
         var locationName = inventory.Location.Name == "-1" ? "LOC. VIRTUAL" : inventory.Location.Name;

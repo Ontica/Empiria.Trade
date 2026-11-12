@@ -84,7 +84,7 @@ namespace Empiria.Trade.Inventory.Domain {
     #region Private methods
 
 
-    private FixedList<SalesInventoryStock> GetStockByVendorProduct() {
+    private FixedList<InventoryEntryStock> GetStockByVendorProduct() {
 
       var products = SimpleObjects.ConcatIntsToString(
         ProductFields.ParseIdList(query.Products).ToList());

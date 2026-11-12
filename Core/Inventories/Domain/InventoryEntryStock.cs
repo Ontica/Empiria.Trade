@@ -2,13 +2,14 @@
 *                                                                                                            *
 *  Module   : Inventory Management                       Component : Domain Layer                            *
 *  Assembly : Empiria.Trade.Core.dll                     Pattern   : Information Holder                      *
-*  Type     : SalesInventoryStock                        License   : Please read LICENSE.txt file            *
+*  Type     : InventoryEntryStock                        License   : Please read LICENSE.txt file            *
 *                                                                                                            *
 *  Summary  : Represents an inventory stock by vendorProduct for sales.                                      *
 *                                                                                                            *
 ************************* Copyright(c) La Vía Óntica SC, Ontica LLC and contributors. All rights reserved. **/
 using System;
 using Empiria.Locations;
+using Empiria.Products;
 using Empiria.StateEnums;
 using Empiria.Trade.Core.Catalogues;
 using Empiria.Trade.Products;
@@ -17,13 +18,13 @@ namespace Empiria.Trade.Core {
 
 
   /// <summary></summary>
-  public class SalesInventoryStock {
+  public class InventoryEntryStock {
 
 
     #region Constructors and parsers
 
 
-    public SalesInventoryStock() {
+    public InventoryEntryStock() {
       // no-op
     }
 
@@ -58,6 +59,12 @@ namespace Empiria.Trade.Core {
     }
 
 
+    [DataField("INVENTORY_UNIT_ID")]
+    public ProductUnit InventoryUnit {
+      get; set;
+    }
+
+
     [DataField("Location_Id")]
     public Location Location {
       get; set;
@@ -82,7 +89,7 @@ namespace Empiria.Trade.Core {
     }
 
 
-    [DataField("Product_Status", Default = EntityStatus.Active)]
+    [DataField("Inventory_Status", Default = EntityStatus.Active)]
     public EntityStatus Status {
       get; set;
     }
@@ -99,6 +106,6 @@ namespace Empiria.Trade.Core {
 
     #endregion
 
-  } // class SalesInventoryStock
+  } // class InventoryEntryStock
 
 } // namespace Empiria.Trade.Core

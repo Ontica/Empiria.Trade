@@ -93,6 +93,7 @@ namespace Empiria.Trade.Procurement.Domain {
                                                               new Locations.Location());
 
         orderItem.UpdateItem(inventoryItemFields);
+        
         orderItem.Save();
       }
     }

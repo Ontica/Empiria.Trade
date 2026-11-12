@@ -17,7 +17,7 @@ namespace Empiria.Trade.Inventory {
 
 
   /// <summary>Represents an inventory stock entry.</summary>
-  public class InventoryStockEntry : SalesInventoryStock, IReportEntry {
+  public class InventoryStockEntry : InventoryEntryStock, IReportEntry {
 
 
     #region Constructors and parsers

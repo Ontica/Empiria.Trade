@@ -39,10 +39,10 @@ namespace Empiria.Trade.Inventory.Domain {
     #region Public methods
 
     
-    internal FixedList<SalesInventoryStock> GetStockByVendorProduct(
+    internal FixedList<InventoryEntryStock> GetStockByVendorProduct(
       FixedList<VendorProduct> vendorProducts) {
 
-      var list = new List<SalesInventoryStock>();
+      var list = new List<InventoryEntryStock>();
 
       foreach (var vendorProduct in vendorProducts) {
 
@@ -57,7 +57,7 @@ namespace Empiria.Trade.Inventory.Domain {
 
 
     internal FixedList<InventoryStockEntry> GetHeadersByProduct(
-      FixedList<SalesInventoryStock> stockByVendorProduct) {
+      FixedList<InventoryEntryStock> stockByVendorProduct) {
 
       var list = new List<InventoryStockEntry>();
 
@@ -92,7 +92,7 @@ namespace Empiria.Trade.Inventory.Domain {
 
 
     internal FixedList<InventoryStockEntry> GetStockLocationsByProduct(
-      FixedList<SalesInventoryStock> stockByVendorProduct, FixedList<InventoryStockEntry> stockHeaders) {
+      FixedList<InventoryEntryStock> stockByVendorProduct, FixedList<InventoryStockEntry> stockHeaders) {
 
       var list = new List<InventoryStockEntry>();
 
@@ -110,7 +110,7 @@ namespace Empiria.Trade.Inventory.Domain {
 
 
     internal FixedList<InventoryStockEntry> GetStockByProductForLocations(
-      FixedList<SalesInventoryStock> stockByVendorProduct, FixedList<InventoryStockEntry> stockHeaders) {
+      FixedList<InventoryEntryStock> stockByVendorProduct, FixedList<InventoryStockEntry> stockHeaders) {
 
       var list = new List<InventoryStockEntry>();
 
@@ -127,7 +127,7 @@ namespace Empiria.Trade.Inventory.Domain {
     }
 
 
-    private IEnumerable<InventoryStockEntry> MapToEntriesByLocation(List<SalesInventoryStock> salesEntries) {
+    private IEnumerable<InventoryStockEntry> MapToEntriesByLocation(List<InventoryEntryStock> salesEntries) {
 
       var returnedList = new List<InventoryStockEntry>();
       foreach (var stock in salesEntries) {
@@ -146,7 +146,7 @@ namespace Empiria.Trade.Inventory.Domain {
     }
 
 
-    private IEnumerable<InventoryStockEntry> MapToEntriesByProduct(List<SalesInventoryStock> salesEntries) {
+    private IEnumerable<InventoryStockEntry> MapToEntriesByProduct(List<InventoryEntryStock> salesEntries) {
 
       var returnedList = new List<InventoryStockEntry>();
       foreach (var stock in salesEntries) {
@@ -165,7 +165,7 @@ namespace Empiria.Trade.Inventory.Domain {
 
 
     internal FixedList<InventoryStockEntry> GetHeadersByLocation(
-      FixedList<SalesInventoryStock> stockByVendorProduct) {
+      FixedList<InventoryEntryStock> stockByVendorProduct) {
 
       var list = new List<InventoryStockEntry>();
 

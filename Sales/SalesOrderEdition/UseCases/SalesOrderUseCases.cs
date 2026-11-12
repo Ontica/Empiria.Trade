@@ -10,6 +10,7 @@
 using System;
 using System.Linq;
 using DocumentFormat.OpenXml.Bibliography;
+using Empiria.Measurement;
 using Empiria.Orders;
 using Empiria.Parties;
 using Empiria.Services;
@@ -23,6 +24,7 @@ using Empiria.Trade.Financial.UseCases;
 using Empiria.Trade.Inventory.UseCases;
 using Empiria.Trade.Products;
 using Empiria.Trade.Sales.Adapters;
+using iText.Commons.Actions.Producer;
 
 namespace Empiria.Trade.Sales.UseCases {
 
@@ -116,10 +118,12 @@ namespace Empiria.Trade.Sales.UseCases {
 
       var usecase = CataloguesUseCases.UseCaseInteractor();
 
-      FixedList<SalesInventoryStock> inventoryStock =
+      FixedList<InventoryEntryStock> inventoryStock =
         CataloguesUseCases.GetInventoryStockByVendorProduct(productId, "");
 
-      return inventoryStock.Sum(x => x.Stock);
+      ProductEntry productEntry = ProductEntry.ParseId(productId);
+
+      return ProductBuilder.GetStockByPackingSmallBag(inventoryStock, productEntry);
     }
 
 
